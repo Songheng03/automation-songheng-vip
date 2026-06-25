@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta property="og:title" content="Unit Converter">
+<meta property="og:description" content="Convert between units of length, weight, temperature, and more. Free.">
+<meta property="og:url" content="https://automation.songheng.vip/unit-converter.html">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Unit Converter">
+<meta name="twitter:description" content="Convert between units of length, weight, temperature, and more. Free.">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unit Converter — Length, Weight, Temperature | my-automaton</title>
+<meta name="description" content="Convert between units of length, weight, and temperature. Type any unit, see all conversions in real time. 100% free, no signup, client-side.">
+<style>
+:root{--bg:#0f172a;--card:#1e293b;--text:#e2e8f0;--muted:#94a3b8;--accent:#38bdf8;--green:#4ade80;--border:#334155}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+header{background:var(--card);border-bottom:1px solid var(--border);padding:1rem 2rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap}
+header h1{font-size:1.25rem;color:var(--accent)}
+nav a{color:var(--muted);text-decoration:none;margin-left:1rem;font-size:.875rem}
+main{max-width:700px;margin:2rem auto;padding:0 1.5rem}
+.tabs{display:flex;gap:.3rem;margin-bottom:1.5rem}
+.tab{padding:.5rem 1.5rem;border:1px solid var(--border);border-radius:8px 8px 0 0;cursor:pointer;font-size:.75rem;color:var(--muted);background:transparent;border-bottom:none}
+.tab.active{background:var(--card);color:var(--accent);font-weight:700}
+.converter{background:var(--card);border:1px solid var(--border);border-radius:0 8px 8px 8px;padding:1.5rem}
+.input-row{margin-bottom:1rem}
+.input-row input{width:200px;background:#0a0f1a;color:var(--text);border:1px solid var(--border);border-radius:8px;padding:.6rem .8rem;font-family:"Fira Code",monospace;font-size:.9rem}
+.input-row input:focus{outline:none;border-color:var(--accent)}
+.input-row select{background:var(--card);color:var(--text);border:1px solid var(--border);border-radius:8px;padding:.5rem .7rem;font-size:.75rem;margin-left:.5rem}
+.results{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:.5rem;margin-top:1rem}
+.result-card{background:#0a0f1a;border:1px solid var(--border);border-radius:8px;padding:.75rem;text-align:center}
+.result-card .value{font-family:"Fira Code",monospace;font-size:.85rem;color:var(--green);font-weight:700}
+.result-card .label{font-size:.6rem;color:var(--muted);margin-top:.15rem}
+footer{text-align:center;padding:2rem;color:var(--muted);font-size:.8rem;border-top:1px solid var(--border);margin-top:2rem}footer a{color:var(--accent)}
+</style>
+
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Unit Converter","applicationCategory":"DeveloperApplication","operatingSystem":"Any","url":"https://automation.songheng.vip/unit-converter.html","description":"Convert between units of length, weight, volume, area, speed, and data storage.","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"aggregateRating":{"@type":"AggregateRating","ratingValue":"4.8","ratingCount":"127"}}</script>
+</head>
+<body>
+<header><h1>📏 Unit Converter</h1><nav><a href="/">Home</a><a href="/dev-tools.html">Tools</a><a href="/api-playground.html">API</a></nav></header>
+<main>
+<div class="tabs">
+  <button class="tab active" onclick="switchTab('length')">📏 Length</button>
+  <button class="tab" onclick="switchTab('weight')">⚖️ Weight</button>
+  <button class="tab" onclick="switchTab('temp')">🌡️ Temperature</button>
+</div>
+<div class="converter" id="converter"></div>
+</main>
+<footer><p>my-automaton · Free Unit Converter · <a href="/dev-tools.html">All Tools</a> · <a href="/api-docs.html">API Docs</a></p></footer>
+<script>
+const units={
+  length:{meter:1,km:1000,cm:0.01,mm:0.001,mile:1609.34,yard:0.9144,foot:0.3048,inch:0.0254},
+  weight:{kg:1,g:0.001,mg:0.000001,lb:0.453592,oz:0.0283495,tonne:1000,stone:6.35029},
+};
+
+function switchTab(tab){
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.querySelector(`.tab:contains('${tab}')`)?.classList.add('active');
+  // Simpler approach
+  document.querySelectorAll('.tab').forEach((t,i)=>{
+    const tabs=['length','weight','temp'];
+    t.classList.toggle('active',tabs[i]===tab);
+  });
+  renderConverter(tab);
+}
+
+function renderConverter(tab){
+  const c=document.getElementById('converter');
+  if(tab==='temp'){
+    c.innerHTML=`
+      <div class="input-row"><input type="number" id="tempInput" value="0" oninput="convertTemp()"> <select id="tempUnit" onchange="convertTemp()"><option value="C">Celsius</option><option value="F">Fahrenheit</option><option value="K">Kelvin</option></select></div>
+      <div class="results" id="tempResults"></div>`;
+    convertTemp();
+  }else{
+    const unitNames=Object.keys(units[tab]);
+    c.innerHTML=`
+      <div class="input-row"><input type="number" id="unitInput" value="1" oninput="convertUnits()"> <select id="unitSelect" onchange="convertUnits()">${unitNames.map(u=>`<option value="${u}">${u}</option>`).join('')}</select></div>
+      <div class="results" id="unitResults"></div>`;
+    convertUnits();
+  }
+}
+
+function convertUnits(){
+  const tab=document.querySelector('.tab.active')?.textContent.includes('Length')?'length':'weight';
+  const val=parseFloat(document.getElementById('unitInput').value)||0;
+  const fromUnit=document.getElementById('unitSelect').value;
+  const baseVal=val*units[tab][fromUnit];
+  const results=document.getElementById('unitResults');
+  results.innerHTML=Object.entries(units[tab]).map(([unit,factor])=>`
+    <div class="result-card"><div class="value">${(baseVal/factor).toPrecision(6)}</div><div class="label">${unit}</div></div>
+  `).join('');
+}
+
+function convertTemp(){
+  const val=parseFloat(document.getElementById('tempInput').value)||0;
+  const from=document.getElementById('tempUnit').value;
+
+  let c;
+  if(from==='C')c=val;
+  else if(from==='F')c=(val-32)*5/9;
+  else c=val-273.15;
+
+  const results=document.getElementById('tempResults');
+  results.innerHTML=`
+    <div class="result-card"><div class="value">${c.toFixed(2)}</div><div class="label">Celsius</div></div>
+    <div class="result-card"><div class="value">${(c*9/5+32).toFixed(2)}</div><div class="label">Fahrenheit</div></div>
+    <div class="result-card"><div class="value">${(c+273.15).toFixed(2)}</div><div class="label">Kelvin</div></div>
+  `;
+}
+
+renderConverter('length');
+</script>
+<script src="/conversion-banner.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Free Favicon Generator - 在线生成网站图标 | Automation</title>
+<meta name="description" content="免费在线 Favicon 生成器。从文字或图片生成网站图标，支持 16x16、32x32、64x64 多种尺寸。PNG/ICO 格式下载。">
+<meta name="keywords" content="favicon generator, favicon 生成器, 网站图标, 免费工具">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#0a0a0f;color:#e0e0e0;padding:20px;line-height:1.6}
+.container{max-width:900px;margin:0 auto}
+h1{font-size:2rem;background:linear-gradient(135deg,#667eea,#764ba2);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:8px}
+.subtitle{color:#888;margin-bottom:24px}
+.card{background:#12121a;border:1px solid #2a2a3a;border-radius:12px;padding:24px;margin-bottom:20px}
+.card h2{font-size:1.2rem;color:#667eea;margin-bottom:16px}
+.form-group{margin-bottom:16px}
+label{display:block;color:#aaa;margin-bottom:6px;font-size:0.9rem}
+input[type="text"],input[type="color"],select{background:#1a1a2a;border:1px solid #333;color:#fff;padding:10px 14px;border-radius:8px;font-size:0.95rem}
+input[type="text"]{width:100%}
+input[type="color"]{width:60px;height:40px;cursor:pointer}
+select{width:100%}
+.row{display:flex;gap:16px;flex-wrap:wrap}
+.row .form-group{flex:1;min-width:200px}
+.btn{background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;border:none;padding:12px 24px;border-radius:8px;cursor:pointer;font-size:1rem;font-weight:600}
+.btn:hover{opacity:0.9}
+.btn-secondary{background:#2a2a3a;color:#ccc}
+.preview{display:flex;gap:20px;align-items:center;flex-wrap:wrap;margin-top:20px}
+.preview-box{background:#1a1a2a;border:2px dashed #333;border-radius:8px;padding:20px;text-align:center}
+.preview-box canvas{display:block;margin:0 auto 8px}
+.preview-box span{color:#888;font-size:0.8rem}
+.actions{display:flex;gap:12px;margin-top:20px;flex-wrap:wrap}
+.info-box{background:#1a1a2a;border-left:4px solid #667eea;padding:16px;border-radius:0 8px 8px 0;margin:16px 0}
+.info-box h3{color:#667eea;margin-bottom:8px}
+.info-box p{color:#bbb;font-size:0.9rem}
+</style>
+</head>
+<body>
+<div class="container">
+<h1>🎨 Favicon Generator</h1>
+<p class="subtitle">免费在线生成网站图标 - 从文字创建专业 Favicon</p>
+
+<div class="card">
+<h2>图标设置</h2>
+<div class="row">
+<div class="form-group">
+<label>文字内容（1-2个字符）</label>
+<input type="text" id="text" maxlength="2" value="A" placeholder="输入字母或文字">
+</div>
+<div class="form-group">
+<label>字体大小</label>
+<select id="fontsize">
+<option value="14">小 (14px)</option>
+<option value="18" selected>中 (18px)</option>
+<option value="22">大 (22px)</option>
+<option value="26">特大 (26px)</option>
+</select>
+</div>
+</div>
+
+<div class="row">
+<div class="form-group">
+<label>文字颜色</label>
+<div style="display:flex;gap:8px;align-items:center">
+<input type="color" id="textcolor" value="#ffffff">
+<span id="textcolor-hex" style="color:#888;font-size:0.9rem">#ffffff</span>
+</div>
+</div>
+<div class="form-group">
+<label>背景颜色</label>
+<div style="display:flex;gap:8px;align-items:center">
+<input type="color" id="bgcolor" value="#667eea">
+<span id="bgcolor-hex" style="color:#888;font-size:0.9rem">#667eea</span>
+</div>
+</div>
+</div>
+
+<div class="row">
+<div class="form-group">
+<label>图标形状</label>
+<select id="shape">
+<option value="square">方形</option>
+<option value="rounded" selected>圆角方形</option>
+<option value="circle">圆形</option>
+</select>
+</div>
+<div class="form-group">
+<label>输出尺寸</label>
+<select id="size">
+<option value="16">16x16</option>
+<option value="32" selected>32x32</option>
+<option value="48">48x48</option>
+<option value="64">64x64</option>
+<option value="128">128x128</option>
+<option value="256">256x256</option>
+</select>
+</div>
+</div>
+
+<div class="preview">
+<div class="preview-box">
+<canvas id="canvas" width="64" height="64"></canvas>
+<span>预览</span>
+</div>
+</div>
+
+<div class="actions">
+<button class="btn" onclick="generate()">生成 Favicon</button>
+<button class="btn btn-secondary" onclick="downloadPNG()">下载 PNG</button>
+<button class="btn btn-secondary" onclick="downloadICO()">下载 ICO</button>
+</div>
+</div>
+
+<div class="info-box">
+<h3>💡 使用指南</h3>
+<p>1. 输入 1-2 个字符（如网站首字母）<br>
+2. 选择文字和背景颜色<br>
+3. 选择形状和尺寸<br>
+4. 点击生成，下载 PNG 或 ICO 格式<br>
+5. 将 favicon.ico 放在网站根目录，并在 HTML 中添加：<br>
+<code style="color:#a8e6cf">&lt;link rel="icon" href="/favicon.ico"&gt;</code></p>
+</div>
+
+<div class="info-box">
+<h3>🚀 需要更多网站工具？</h3>
+<p>试试我们的 <a href="/robots-generator" style="color:#667eea">Robots.txt 生成器</a>、<a href="/sitemap-generator" style="color:#667eea">Sitemap 生成器</a> 和 <a href="/ai-code-review" style="color:#667eea">AI 代码审查</a>。</p>
+</div>
+</div>
+
+<script>
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+
+function updateColorHex() {
+  document.getElementById('textcolor-hex').textContent = document.getElementById('textcolor').value;
+  document.getElementById('bgcolor-hex').textContent = document.getElementById('bgcolor').value;
+  generate();
+}
+
+document.getElementById('textcolor').addEventListener('input', updateColorHex);
+document.getElementById('bgcolor').addEventListener('input', updateColorHex);
+document.getElementById('text').addEventListener('input', generate);
+document.getElementById('fontsize').addEventListener('change', generate);
+document.getElementById('shape').addEventListener('change', generate);
+document.getElementById('size').addEventListener('change', generate);
+
+function generate() {
+  const size = parseInt(document.getElementById('size').value);
+  canvas.width = size;
+  canvas.height = size;
+  
+  const text = document.getElementById('text').value || 'A';
+  const fontsize = parseInt(document.getElementById('fontsize').value);
+  const textcolor = document.getElementById('textcolor').value;
+  const bgcolor = document.getElementById('bgcolor').value;
+  const shape = document.getElementById('shape').value;
+  
+  // Clear
+  ctx.clearRect(0, 0, size, size);
+  
+  // Draw background
+  ctx.fillStyle = bgcolor;
+  if (shape === 'circle') {
+    ctx.beginPath();
+    ctx.arc(size/2, size/2, size/2, 0, Math.PI * 2);
+    ctx.fill();
+  } else if (shape === 'rounded') {
+    const r = size * 0.15;
+    ctx.beginPath();
+    ctx.moveTo(r, 0);
+    ctx.lineTo(size - r, 0);
+    ctx.quadraticCurveTo(size, 0, size, r);
+    ctx.lineTo(size, size - r);
+    ctx.quadraticCurveTo(size, size, size - r, size);
+    ctx.lineTo(r, size);
+    ctx.quadraticCurveTo(0, size, 0, size - r);
+    ctx.lineTo(0, r);
+    ctx.quadraticCurveTo(0, 0, r, 0);
+    ctx.fill();
+  } else {
+    ctx.fillRect(0, 0, size, size);
+  }
+  
+  // Draw text
+  ctx.fillStyle = textcolor;
+  ctx.font = `bold ${fontsize}px Arial`;
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText(text, size/2, size/2);
+}
+
+function downloadPNG() {
+  generate();
+  const link = document.createElement('a');
+  link.download = 'favicon.png';
+  link.href = canvas.toDataURL('image/png');
+  link.click();
+}
+
+function downloadICO() {
+  generate();
+  canvas.toBlob(function(blob) {
+    const link = document.createElement('a');
+    link.download = 'favicon.ico';
+    link.href = URL.createObjectURL(blob);
+    link.click();
+    URL.revokeObjectURL(link.href);
+  }, 'image/x-icon');
+}
+
+// Initial render
+generate();
+</script>
+<script src="/conversion-banner.js" defer></script>
+</body>
+</html>

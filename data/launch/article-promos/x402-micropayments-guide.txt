@@ -1,0 +1,1 @@
+x402 Micropayments for AI APIs — x402 is a micropayment protocol that lets you pay for API requests per-call using USDC stablecoins. Read more: https://automation.songheng.vip/blog/x402-micropayments-guide

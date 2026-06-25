@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>System Health — my-automaton</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,system-ui,sans-serif;background:#0d1117;color:#c9d1d9;min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:2rem}
+h1{font-size:1.5rem;margin-bottom:.5rem;color:#58a6ff}
+.sub{color:#8b949e;font-size:.9rem;margin-bottom:2rem}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1rem;width:100%;max-width:900px}
+.card{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:1.25rem;position:relative}
+.card h3{font-size:.9rem;color:#8b949e;margin-bottom:.75rem;text-transform:uppercase;letter-spacing:.5px}
+.status-row{display:flex;justify-content:space-between;align-items:center;padding:.4rem 0;border-bottom:1px solid #21262d}
+.status-row:last-child{border-bottom:none}
+.label{font-size:.85rem}
+.badge{font-size:.75rem;padding:2px 8px;border-radius:10px;font-weight:600}
+.badge.ok{background:#1b3a2a;color:#3fb950}
+.badge.fail{background:#3a1b1b;color:#f85149}
+.badge.warn{background:#3a2f1b;color:#d29922}
+.badge.info{background:#1b2d3a;color:#58a6ff}
+.metric{font-size:1.2rem;font-weight:700;color:#f0f6fc}
+.metric.ok{color:#3fb950}.metric.warn{color:#d29922}.metric.fail{color:#f85149}
+.footer{margin-top:2rem;text-align:center;color:#484f58;font-size:.8rem}
+.actions{display:flex;gap:.5rem;margin:1rem 0;flex-wrap:wrap;justify-content:center}
+button{background:#21262d;color:#c9d1d9;border:1px solid #30363d;padding:.5rem 1rem;border-radius:6px;cursor:pointer;font-size:.85rem}
+button:hover{background:#30363d}
+#results{margin-top:1rem;width:100%;max-width:900px}
+pre{background:#0d1117;border:1px solid #30363d;border-radius:6px;padding:1rem;overflow:auto;font-size:.8rem;max-height:400px;display:none}
+</style>
+
+<!-- Open Graph / Social Meta Tags -->
+<meta property="og:title" content="System Health — my-automaton" />
+<meta property="og:description" content="System Health — my-automaton — powered by my-automaton. AI code review, security scanning, and developer tools." />
+<meta property="og:image" content="https://automation.songheng.vip/og-image.png" />
+<meta property="og:url" content="https://automation.songheng.vip/system-health.html" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="my-automaton" />
+<meta property="og:locale" content="en_US" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="System Health — my-automaton" />
+<meta name="twitter:description" content="System Health — my-automaton — powered by my-automaton. AI code review, security scanning, and developer tools." />
+<meta name="twitter:image" content="https://automation.songheng.vip/og-image.png" />
+  <meta name="description" content="🔍 my-automaton Health Live diagnostics for automation.">
+  <link rel="canonical" href="https://automation.songheng.vip/system-health.html">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "System Health — my-automaton",
+  "description": "🔍 my-automaton Health Live diagnostics for automation.",
+  "url": "https://automation.songheng.vip/system-health.html"
+}
+</script>
+</head>
+<body>
+<div style="background:#161b22;border-bottom:1px solid #30363d;padding:10px 20px;font-size:.85rem;display:flex;gap:16px;align-items:center;flex-wrap:wrap"><a href="/" style="color:#58a6ff;text-decoration:none;font-weight:600">🏠 Home</a><span style="color:#484f58">|</span><a href="/pricing.html" style="color:#8b949e;text-decoration:none">Pricing</a><a href="/api-docs.html" style="color:#8b949e;text-decoration:none">API</a><a href="/playground.html" style="color:#8b949e;text-decoration:none">Playground</a></div>
+
+<h1>🔍 my-automaton Health</h1>
+<p class="sub">Live diagnostics for automation.songheng.vip</p>
+
+<div class="actions">
+  <button onclick="runAll()">🔄 Run All Checks</button>
+  <button onclick="togglePre()">📄 Toggle Raw</button>
+</div>
+
+<div class="grid" id="checks"></div>
+<pre id="raw"></pre>
+<div class="footer">
+  my-automaton · 0x76eADdEBFfb6A61DD071f97F4508467fc55dd113<br>
+  Generated <span id="time"></span>
+</div>
+
+<script>
+const CHECKS = [
+  {id:'gateway',label:'Gateway (8080)',url:'/health',type:'json'},
+  {id:'content',label:'Homepage',url:'/',type:'html'},
+  {id:'pricing',label:'Pricing Page',url:'/pricing.html',type:'html'},
+  {id:'api-docs',label:'API Docs',url:'/api-docs.html',type:'html'},
+  {id:'blog',label:'Blog',url:'/blog.html',type:'html'},
+  {id:'tools',label:'Free Tools',url:'/free-tools.html',type:'html'},
+  {id:'sitemap',label:'Sitemap',url:'/sitemap.xml',type:'xml'},
+  {id:'catalog',label:'Agent Catalog',url:'/api/catalog',type:'json'},
+  {id:'stats',label:'Stats',url:'/api/stats/overview',type:'json'},
+  {id:'status',label:'System Status',url:'/api/status',type:'json'},
+];
+
+const grid = document.getElementById('checks');
+const raw = document.getElementById('raw');
+const timeEl = document.getElementById('time');
+timeEl.textContent = new Date().toISOString();
+
+function init() {
+  CHECKS.forEach(c => {
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.id = 'card-'+c.id;
+    card.innerHTML = `<h3>${c.label}</h3><div class="status-row"><span class="label">Status</span><span class="badge info" id="badge-${c.id}">...</span></div><div class="status-row"><span class="label">Time</span><span class="metric" id="time-${c.id}">-</span></div>`;
+    grid.appendChild(card);
+  });
+}
+init();
+
+async function check(c) {
+  const badge = document.getElementById('badge-'+c.id);
+  const timeM = document.getElementById('time-'+c.id);
+  const start = performance.now();
+  try {
+    const res = await fetch(c.url);
+    const elapsed = ((performance.now() - start)/1000).toFixed(2);
+    timeM.textContent = elapsed+'s';
+    timeM.className = 'metric ' + (res.ok ? 'ok' : 'fail');
+    if (res.ok) {
+      badge.textContent = res.status + ' OK';
+      badge.className = 'badge ok';
+      if (c.type === 'json') {
+        const data = await res.json();
+        raw.textContent += `\n=== ${c.label} ===\n${JSON.stringify(data, null, 2)}`;
+      }
+    } else {
+      badge.textContent = res.status + ' FAIL';
+      badge.className = 'badge fail';
+    }
+  } catch(e) {
+    badge.textContent = 'ERROR';
+    badge.className = 'badge fail';
+    timeM.textContent = 'ERR';
+    timeM.className = 'metric fail';
+    raw.textContent += `\n=== ${c.label} ===\nFAILED: ${e.message}`;
+  }
+}
+
+async function runAll() {
+  raw.textContent = '=== System Health Report ===\nGenerated: ' + new Date().toISOString();
+  for (const c of CHECKS) await check(c);
+  const ok = document.querySelectorAll('.badge.ok').length;
+  const fail = document.querySelectorAll('.badge.fail').length;
+  raw.textContent += `\n\n=== Summary ===\n✅ ${ok} working · ❌ ${fail} failing · Total: ${CHECKS.length} checks`;
+}
+
+function togglePre() {
+  raw.style.display = raw.style.display === 'block' ? 'none' : 'block';
+}
+
+runAll();
+</script>
+<script src="/conversion-banner.js" defer></script>
+</body>
+</html>

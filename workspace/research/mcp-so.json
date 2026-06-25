@@ -1,0 +1,14 @@
+{
+  "name": "MCP.so",
+  "url": "https://mcp.so",
+  "automatable": false,
+  "method": "web_form",
+  "endpoint": "https://mcp.so/submit",
+  "requiredFields": {
+    "type": "string (enum: server|client)",
+    "name": "string (name of the MCP server or client)",
+    "url": "string (URL of the MCP server or client repository)",
+    "server_config": "string (JSON config for the MCP server)"
+  },
+  "notes": "MCP.so only offers a manual web form at /submit for listing submissions. No public API endpoint is documented for automated submissions, and there is no GitHub PR-based submission process (the GitHub repo at github.com/chatmcp/mcpso only hosts issues, not submissions). Submissions require signing in and filling out the form with server type, name, URL, and JSON server configuration. Automated submission via script would require reverse-engineering the internal API (likely a Next.js API route), which is not officially supported or documented."
+}

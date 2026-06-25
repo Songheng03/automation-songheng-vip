@@ -1,0 +1,79 @@
+{
+  "name": "my-automaton",
+  "description": "AI-powered code review, security scanning, text analysis, and summarization API. Pay per request from $0.01. Free tier available.",
+  "server": {
+    "url": "https://automation.songheng.vip",
+    "gateway": {
+      "port": 8080,
+      "protocol": "rest"
+    }
+  },
+  "capabilities": {
+    "tools": ["analyze", "summarize", "review", "security", "explain", "refactor", "complexity"],
+    "freeTier": true,
+    "payment": {
+      "model": "x402",
+      "currency": "USDC",
+      "chain": "Base",
+      "wallet": "0x76eADdEBFfb6A61DD071f97F4508467fc55dd113",
+      "minPayment": "0.01"
+    }
+  },
+  "tools": [
+    {
+      "name": "analyze",
+      "description": "Deep text analysis — sentiment, entities, key themes, writing quality",
+      "input": { "text": "string (required)", "mode": "string (optional, default: analyze)" },
+      "cost": "1¢",
+      "endpoint": "POST /free/analyze (free) or POST /v1/analyze (premium)"
+    },
+    {
+      "name": "summarize",
+      "description": "AI summarization with configurable length and style",
+      "input": { "text": "string (required)", "style": "string (optional: concise|detailed|bullet)", "max_length": "number (optional)" },
+      "cost": "2¢",
+      "endpoint": "POST /free/summarize (free) or POST /v1/summarize (premium)"
+    },
+    {
+      "name": "review",
+      "description": "Full code review — bugs, security, performance, style, best practices",
+      "input": { "code": "string (required)", "language": "string (optional)", "context": "string (optional)" },
+      "cost": "5¢",
+      "endpoint": "POST /free/review (free) or POST /v1/review (premium)"
+    },
+    {
+      "name": "security",
+      "description": "Security vulnerability scan — OWASP Top 10, CVEs, injection flaws",
+      "input": { "code": "string (required)", "language": "string (optional)" },
+      "cost": "3¢",
+      "endpoint": "POST /free/security (free) or POST /v1/security (premium)"
+    },
+    {
+      "name": "explain",
+      "description": "Code explanation in plain language",
+      "input": { "code": "string (required)", "language": "string (optional)", "detail": "string (optional: overview|detailed|line-by-line)" },
+      "cost": "2¢",
+      "endpoint": "POST /free/explain (free) or POST /v1/explain (premium)"
+    },
+    {
+      "name": "refactor",
+      "description": "Refactoring suggestions with before/after code examples",
+      "input": { "code": "string (required)", "language": "string (optional)", "focus": "string (optional: performance|readability|maintainability|all)" },
+      "cost": "5¢",
+      "endpoint": "POST /free/refactor (free) or POST /v1/refactor (premium)"
+    },
+    {
+      "name": "complexity",
+      "description": "Cyclomatic complexity analysis with line-by-line breakdown",
+      "input": { "code": "string (required)", "language": "string (optional)" },
+      "cost": "2¢",
+      "endpoint": "POST /free/complexity (free) or POST /v1/complexity (premium)"
+    }
+  ],
+  "keywords": ["code review", "AI", "security scanning", "text analysis", "summarization", "API", "MCP", "developer tools", "static analysis", "DevOps"],
+  "contact": {
+    "wallet": "0x76eADdEBFfb6A61DD071f97F4508467fc55dd113",
+    "agentId": "my-automaton"
+  },
+  "integrations": ["Claude Desktop", "Cursor", "VS Code", "Continue.dev", "GitHub Actions", "Slack", "Discord"]
+}

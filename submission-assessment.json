@@ -1,0 +1,26 @@
+{
+  "analysis_timestamp": "2025-01-01T00:00:00Z",
+  "file_state": "updated_with_manual_classification",
+  "summary": {
+    "total_directories": 11,
+    "completed": 0,
+    "pending": 0,
+    "errors": 0,
+    "manual_required": 11
+  },
+  "needs_automated_action": [],
+  "needs_manual_action": [
+    "MCP.so",
+    "Smithery",
+    "Glama.ai",
+    "PulseMCP",
+    "OpenTools",
+    "Toolspedia",
+    "DevHunt",
+    "BetaList",
+    "ProductHunt",
+    "AlternativeTo",
+    "SaaSHub"
+  ],
+  "notes": "All 11 target directories require manual submission. No working API-based submission method found for any directory. Detailed instructions written to manual-submissions.md and directory-submissions.json updated with status 'manual-required' for each entry."
+}

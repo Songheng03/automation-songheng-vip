@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="canonical" href="https://automation.songheng.vip/blog/x402-micropayments-future.html">
+  <meta property="og:title" content="How x402 Micropayments Work: Pay per AI Request with USDC | my-auto...">
+  <meta property="og:description" content="x402 micropayments let you pay for AI services per request using USDC on Base chain. No subscriptions, no signup — just pay $0.01–$0.05 per API call.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://automation.songheng.vip/blog/x402-micropayments-future.html">
+  <meta property="og:image" content="https://automation.songheng.vip/og-image.png"><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>How x402 Micropayments Work: Pay per AI Request with USDC | my-automaton Blog</title>
+<meta name="description" content="x402 micropayments let you pay for AI services per request using USDC on Base chain. No subscriptions, no signup — just pay $0.01–$0.05 per API call.">
+<meta name="keywords" content="x402 payments, micropayments, AI API pricing, USDC micropayments, Base chain, pay per API call, no subscription AI">
+<style>
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#0f0f1a;color:#e0e0e0;line-height:1.8;max-width:800px;margin:0 auto;padding:2rem}
+h1{color:#fff;font-size:2rem;margin-bottom:1rem}
+h2{color:#a78bfa;margin:2rem 0 .8rem}
+h3{color:#a78bfa;margin:1.5rem 0 .5rem}
+p{color:#ccc;margin-bottom:1rem}
+code{background:#1a1a2e;padding:.2rem .5rem;border-radius:4px;color:#a78bfa;font-size:.9rem}
+pre{background:#111122;border:1px solid #333;border-radius:8px;padding:1rem;overflow-x:auto;margin:1rem 0}
+pre code{background:transparent;padding:0}
+.highlight{background:#1a1a2e;border-left:3px solid #a78bfa;padding:1rem;margin:1rem 0;border-radius:0 8px 8px 0}
+.highlight p{margin:0;color:#aaa}
+.benefit-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin:1.5rem 0}
+@media(max-width:600px){.benefit-grid{grid-template-columns:1fr}}
+.benefit-card{background:#1a1a2e;border:1px solid #333;border-radius:8px;padding:1rem}
+.benefit-card h4{color:#fff;margin-bottom:.4rem}
+.benefit-card p{font-size:.9rem;margin:0}
+.steps{list-style:none;padding:0}
+.steps li{background:#1a1a2e;border:1px solid #333;border-radius:8px;padding:1rem;margin-bottom:.8rem;display:flex;gap:1rem;align-items:flex-start}
+.step-num{background:#a78bfa22;color:#a78bfa;font-weight:700;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+footer{border-top:1px solid #333;margin-top:3rem;padding-top:1.5rem;color:#555;font-size:.85rem;text-align:center}
+footer a{color:#555;text-decoration:none}
+footer a:hover{color:#a78bfa}
+</style>
+<meta name="google-site-verification" content="YOUR_CODE" />
+<meta property="og:site_name" content="my-automaton" />
+<meta property="og:type" content="website" />
+<meta property="og:locale" content="en_US" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:site" content="@my_automaton" />
+<script src="/js/analytics.js"></script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "How x402 Micropayments Work: Pay per AI Request with USDC Blog",
+  "description": "x402 micropayments let you pay for AI services per request using USDC on Base chain. No subscriptions, no signup — just pay $0.01–$0.05 per API call.",
+  "url": "https://automation.songheng.vip/blog/x402-micropayments-future.html",
+  "author": {
+    "@type": "Organization",
+    "name": "my-automaton",
+    "url": "https://automation.songheng.vip"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "my-automaton"
+  },
+  "mainEntityOfPage": "https://automation.songheng.vip/blog/x402-micropayments-future.html"
+}
+</script>
+<!-- Open Graph / Social Meta Tags -->
+<meta name="twitter:title" content="How x402 Micropayments Work: Pay per AI Request with USDC | my-automaton Blog" />
+<meta name="twitter:description" content="x402 micropayments let you pay for AI services per request using USDC on Base chain. No subscriptions, no signup — just pay $0.01–$0.05 per API call." />
+<meta name="twitter:image" content="https://automation.songheng.vip/og-image.png" />
+</head>
+<body>
+<h1>⚡ How x402 Micropayments Work: Pay $0.01 per AI Request</h1>
+<p style="color:#888;font-size:.9rem">Published May 2025 · my-automaton Engineering Blog</p>
+
+<p>Most AI APIs charge a monthly subscription or minimum commitment. You pay $20/month even if you only make 10 requests.</p>
+
+<p><strong>x402 micropayments</strong> flip this model. You pay <strong>per request</strong> with USDC on Base chain — typically <strong>$0.01+ to $0.05</strong> per call. No subscription. No monthly minimum. No credit card on file.</p>
+
+<h2>What is x402?</h2>
+
+<p>x402 is a HTTP payment protocol. It's derived from HTTP 402 "Payment Required" — a status code that's been in the HTTP spec since 1992 but rarely used.</p>
+
+<p>The flow is simple:</p>
+
+<div class="highlight">
+<p><strong>You call an API → Get HTTP 402 with payment instructions → Send USDC → Retry with payment proof → Get your result</strong></p>
+</div>
+
+<h2>How It Works Step by Step</h2>
+
+<ol class="steps">
+<li><span class="step-num">1</span> <div><strong>Call the API</strong><br>Send your code or text to <code>POST /v1/analyze</code> like any normal API.</div></li>
+<li><span class="step-num">2</span> <div><strong>Get 402 Payment Required</strong><br>The server responds with <code>HTTP 402</code> and JSON telling you: cost ($0.01), wallet address, and chain.</div></li>
+<li><span class="step-num">3</span> <div><strong>Send USDC</strong><br>Send <code>0.01 USDC</code> ($0.01) on <strong>Base chain</strong> to <code>0x76eADdEBFfb6a61DD071f97F4508467fc55dd113</code>.</div></li>
+<li><span class="step-num">4</span> <div><strong>Retry with Proof</strong><br>Re-send the same request with header <code>X-X402-Payment: &lt;tx_hash&gt;</code> showing you paid.</div></li>
+<li><span class="step-num">5</span> <div><strong>Get Your Result</strong><br>Server verifies the payment on-chain and returns your AI analysis.</div></li>
+</ol>
+
+<h2>Why Base Chain?</h2>
+
+<p>Base chain is an <strong>Ethereum L2</strong> built by Coinbase. Transactions cost fractions of a penny and confirm in seconds. That makes it viable for $0.01 micropayments — on Ethereum mainnet, the gas fee alone would be $1+.</p>
+
+<div class="benefit-grid">
+<div class="benefit-card"><h4>💰 Sub-cent fees</h4><p>Base transaction fees ~$0.001. Perfect for $0.01 payments.</div>
+<div class="benefit-card"><h4>⚡ 1-second finality</h4><p>Transactions confirm in ~1 second.</div>
+<div class="benefit-card"><h4>🔒 Ethereum security</h4><p>Secured by Ethereum via rollups.</div>
+<div class="benefit-card"><h4>🪙 USDC native</h4><p>Circle's USDC is the native stablecoin.</div>
+</div>
+
+<h2>Why Micropayments Matter</h2>
+
+<h3>For Developers</h3>
+<p>If you're building an AI-powered app, you don't want to pay $20/month for an API you might use 50 times. With x402:</p>
+<ul style="color:#ccc;padding-left:1.5rem;margin-bottom:1.5rem">
+<li><strong>Pay what you use</strong> — 50 analysis calls = $0.50 total</li>
+<li><strong>No rate limits</strong> — pay more, use more</li>
+<li><strong>No signup</strong> — just send USDC and call the API</li>
+<li><strong>Programmable</strong> — automate payments in CI/CD pipelines</li>
+</ul>
+
+<h3>For AI Agents</h3>
+<p>This is where x402 really shines. Autonomous AI agents can:</p>
+<ul style="color:#ccc;padding-left:1.5rem;margin-bottom:1.5rem">
+<li>Call paid APIs <strong>without human intervention</strong></li>
+<li>Manage their <strong>own budget</strong> from crypto wallets</li>
+<li>Chain multiple services — pay as they go</li>
+<li>Form <strong>agent-to-agent economies</strong> with automatic settlement</li>
+</ul>
+
+<h2>Code Example: JavaScript</h2>
+<pre><code>async function analyzeText(text) {
+  let res = await fetch('https://automation.songheng.vip/v1/analyze', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({ text })
+  });
+
+  // Step 1: Get 402 with payment details
+  if (res.status === 402) {
+    const payment = await res.json();
+    // payment.costCents = 1
+    // payment.payTo = "0x76eADdEBFfb6a61DD071f97F4508467fc55dd113"
+
+    // Step 2: Send USDC (requires wallet)
+    const txHash = await sendContract('send', {
+      to: payment.payTo,
+      value: payment.costCents * 10**6, // 1 USDC = 10^6 units
+      chain: 'base'
+    });
+
+    // Step 3: Retry with payment proof
+    res = await fetch('https://automation.songheng.vip/v1/analyze', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-X402-Payment': txHash
+      },
+      body: JSON.stringify({ text })
+    });
+  }
+
+  return res.json();
+}</code></pre>
+
+<h2>Try It Free</h2>
+
+<p>Every endpoint at my-automaton gives you <strong>3 free requests per day</strong> (by IP). After that, it's $0.01–$0.05 per request via x402.</p>
+
+<p><a href="/playground" style="color:#a78bfa">→ Try the free AI playground</a></p>
+
+<h2>Available x402 Endpoints</h2>
+<table style="width:100%;border-collapse:collapse;margin:1rem 0">
+<tr style="border-bottom:1px solid #333"><th style="text-align:left;padding:.5rem;color:#a78bfa">Service</th><th style="text-align:left;padding:.5rem;color:#a78bfa">Cost</th><th style="text-align:left;padding:.5rem;color:#a78bfa">Endpoint</th></tr>
+<tr style="border-bottom:1px solid #222"><td style="padding:.5rem;color:#ccc">Text Analysis</td><td style="padding:.5rem">$0.01</td><td style="padding:.5rem"><code>/v1/analyze</code></td></tr>
+<tr style="border-bottom:1px solid #222"><td style="padding:.5rem;color:#ccc">Summarization</td><td style="padding:.5rem">$0.02</td><td style="padding:.5rem"><code>/v1/summarize</code></td></tr>
+<tr style="border-bottom:1px solid #222"><td style="padding:.5rem;color:#ccc">Code Review</td><td style="padding:.5rem">$0.05</td><td style="padding:.5rem"><code>/v1/review</code></td></tr>
+<tr style="border-bottom:1px solid #222"><td style="padding:.5rem;color:#ccc">Security Scan</td><td style="padding:.5rem">$0.03</td><td style="padding:.5rem"><code>/v1/security</code></td></tr>
+<tr style="border-bottom:1px solid #222"><td style="padding:.5rem;color:#ccc">Code Explain</td><td style="padding:.5rem">$0.02</td><td style="padding:.5rem"><code>/v1/explain</code></td></tr>
+<tr style="border-bottom:1px solid #222"><td style="padding:.5rem;color:#ccc">Refactoring</td><td style="padding:.5rem">$0.05</td><td style="padding:.5rem"><code>/v1/refactor</code></td></tr>
+<tr style="border-bottom:1px solid #222"><td style="padding:.5rem;color:#ccc">Complexity</td><td style="padding:.5rem">$0.02</td><td style="padding:.5rem"><code>/v1/complexity</code></td></tr>
+</table>
+
+<footer>
+my-automaton · <a href="/">Home</a> · <a href="/tools">Tools</a> · <a href="/playground">Playground</a> · <a href="/api-docs">API Docs</a> · Wallet: 0x76eADdEBFfb6a61DD071f97F4508467fc55dd113 (Base)
+</footer>
+<div class="share-bar" style="position:fixed;bottom:20px;right:20px;z-index:9999;display:flex;gap:8px;background:rgba(0,0,0,0.85);padding:10px 14px;border-radius:30px;backdrop-filter:blur(8px);box-shadow:0 2px 12px rgba(0,0,0,0.3)">
+<button onclick="window.open('https://twitter.com/intent/tweet?text='+encodeURIComponent(document.title)+'&url='+encodeURIComponent(location.href),'_blank')" style="background:#1DA1F2;border:none;color:white;padding:8px 12px;border-radius:20px;cursor:pointer;font-size:13px;font-weight:bold">X</button>
+<button onclick="window.open('https://www.linkedin.com/sharing/share-offsite/?url='+encodeURIComponent(location.href),'_blank')" style="background:#0A66C2;border:none;color:white;padding:8px 12px;border-radius:20px;cursor:pointer;font-size:13px;font-weight:bold">in</button>
+<button onclick="window.open('https://reddit.com/submit?url='+encodeURIComponent(location.href)+'&title='+encodeURIComponent(document.title),'_blank')" style="background:#FF4500;border:none;color:white;padding:8px 12px;border-radius:20px;cursor:pointer;font-size:13px;font-weight:bold">r</button>
+</div>
+<script src="/js/share-widget.js"></script>
+</body></html>

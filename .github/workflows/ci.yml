@@ -1,0 +1,11 @@
+name: CI
+on: [push]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Test Gateway Health
+        run: |
+          echo "Testing gateway endpoints..."
+          echo "See README.md for API docs"

@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Developer Quickstart Guide — my-automaton AI API | Copy-Paste Examples</title>
+<meta name="description" content="Copy-paste examples for my-automaton AI API. Code review, security scanning, text analysis in curl, Python, JavaScript, and Node.js. Free tier available.">
+<meta property="og:title" content="Developer Quickstart Guide — Copy-Paste Examples">
+<meta property="og:description" content="Ready-to-use code examples for AI code review, security scanning, and text analysis API. curl, Python, JavaScript. Free tier: 3/day.">
+<meta property="og:url" content="https://automation.songheng.vip/guide.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="my-automaton">
+<meta name="twitter:card" content="summary_large_image">
+<style>
+:root{--bg:#0d1117;--card:#161b22;--border:#30363d;--text:#c9d1d9;--accent:#58a6ff;--green:#3fb950;--gold:#d29922}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:var(--bg);color:var(--text);line-height:1.6}
+.container{max-width:960px;margin:0 auto;padding:1.5rem}
+header{text-align:center;padding:2rem 0 1rem;border-bottom:1px solid var(--border);margin-bottom:1.5rem}
+h1{font-size:2.2rem;color:#fff}
+h1 span{color:var(--accent)}
+.subtitle{color:#8b949e;font-size:1rem;margin:.5rem 0}
+h2{font-size:1.4rem;color:var(--accent);margin:2rem 0 .8rem;padding-bottom:.4rem;border-bottom:1px solid var(--border)}
+h3{font-size:1.1rem;color:#e6edf3;margin:1.2rem 0 .5rem}
+p{color:#8b949e;margin:.5rem 0}
+a{color:var(--accent)}
+code{background:#1c2128;padding:2px 6px;border-radius:4px;font-size:.85rem}
+pre{background:#0d1117;border:1px solid var(--border);border-radius:8px;padding:1rem;overflow-x:auto;margin:.6rem 0;font-size:.82rem;line-height:1.5;position:relative}
+pre code{background:none;padding:0;color:#e6edf3}
+.tabs{display:flex;gap:4px;margin:1rem 0 0}
+.tab{padding:8px 18px;background:var(--card);border:1px solid var(--border);border-radius:6px 6px 0 0;cursor:pointer;font-size:.85rem;color:#8b949e;font-weight:600;transition:all .2s}
+.tab.active{background:var(--accent);color:#000;border-color:var(--accent)}
+.tab:hover:not(.active){border-color:var(--accent);color:var(--accent)}
+.tab-content{display:none}
+.tab-content.active{display:block}
+.badges{display:flex;gap:8px;flex-wrap:wrap;margin:.8rem 0}
+.badge{display:inline-block;padding:3px 12px;border-radius:20px;font-size:.75rem;font-weight:600}
+.badge-free{background:#1a3a1a;color:var(--green);border:1px solid rgba(63,185,80,.3)}
+.badge-paid{background:#342a1f;color:var(--gold);border:1px solid rgba(210,153,34,.3)}
+.badge-code{background:#1c2333;color:var(--accent);border:1px solid rgba(88,166,255,.3)}
+.endpoint-card{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:1rem;margin:.8rem 0;transition:border-color .2s}
+.endpoint-card:hover{border-color:var(--accent)}
+.endpoint-card .method{display:inline-block;background:#238636;color:#fff;padding:2px 8px;border-radius:4px;font-size:.75rem;font-weight:700;margin-right:6px}
+.endpoint-card .path{font-family:monospace;font-size:.9rem;color:var(--accent)}
+.endpoint-card .cost{float:right;font-size:.8rem;color:var(--gold)}
+.endpoint-card .desc{color:#8b949e;font-size:.82rem;margin-top:.4rem}
+.step-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:1.2rem;margin:1rem 0}
+.step-card .num{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:50%;background:var(--accent);color:#000;font-weight:700;font-size:.8rem;margin-right:8px}
+.step-card h3{display:inline;color:#e6edf3}
+.cta{display:inline-block;background:#238636;color:#fff;padding:12px 28px;border-radius:8px;text-decoration:none;font-weight:700;font-size:1rem;transition:all .2s;margin:.3rem}
+.cta:hover{background:#2ea043;transform:translateY(-2px);box-shadow:0 4px 12px rgba(35,134,54,.4)}
+.cta.alt{background:var(--accent);color:#000}
+.cta.alt:hover{background:#79c0ff}
+.cta.outline{background:0 0;border:1px solid var(--border);color:var(--text)}
+.cta.outline:hover{border-color:var(--accent);color:var(--accent)}
+.cta-row{text-align:center;margin:2rem 0}
+.copy-label{position:absolute;top:6px;right:8px;background:#21262d;border:1px solid var(--border);color:#8b949e;padding:3px 10px;border-radius:4px;font-size:.7rem;pointer-events:none}
+footer{border-top:1px solid var(--border);padding:2rem;text-align:center;color:#484f58;font-size:.82rem;margin-top:3rem}
+footer a{color:var(--accent)}
+table{width:100%;border-collapse:collapse;margin:1rem 0;font-size:.88rem}
+th,td{padding:10px 12px;text-align:left;border-bottom:1px solid var(--border)}
+th{color:#8b949e;font-weight:600;font-size:.78rem;text-transform:uppercase}
+td{color:var(--text)}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+@media(max-width:700px){.grid-2{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div style="background:#161b22;border-bottom:1px solid #30363d;padding:10px 20px;font-size:.85rem;display:flex;gap:16px;align-items:center;flex-wrap:wrap">
+  <a href="/" style="color:var(--accent);text-decoration:none;font-weight:600">🏠 Home</a>
+  <span style="color:#484f58">|</span>
+  <a href="/pricing.html" style="color:#8b949e;text-decoration:none">Pricing</a>
+  <a href="/api-docs.html" style="color:#8b949e;text-decoration:none">API Docs</a>
+  <a href="/playground.html" style="color:#8b949e;text-decoration:none">Playground</a>
+  <a href="/quickstart.html" style="color:#8b949e;text-decoration:none">Quickstart</a>
+</div>
+
+<div class="container">
+
+<header>
+  <h1>🚀 <span>Copy-Paste</span> Quickstart Guide</h1>
+  <p class="subtitle">AI Code Review · Security Scanning · Text Analysis · Summarization — from $0.01 per request</p>
+  <div class="badges">
+    <span class="badge badge-free">Free: 3 requests/day</span>
+    <span class="badge badge-paid">from $0.01/request</span>
+    <span class="badge badge-code">curl</span>
+    <span class="badge badge-code">Python</span>
+    <span class="badge badge-code">JavaScript</span>
+    <span class="badge badge-code">Node.js</span>
+  </div>
+</header>
+
+<h2>⚡ Quick Start (30 seconds)</h2>
+<p>No signup needed. Just copy, paste, run.</p>
+
+<div class="step-card">
+  <span class="num">1</span><h3> Try the free tier</h3>
+  <p>Analyze text or review code instantly — no API key required.</p>
+  
+  <div class="tabs">
+    <div class="tab active" onclick="switchTab(this,'free-curl')">curl</div>
+    <div class="tab" onclick="switchTab(this,'free-py')">Python</div>
+    <div class="tab" onclick="switchTab(this,'free-js')">JavaScript</div>
+  </div>
+  
+  <div id="free-curl" class="tab-content active">
+    <pre><span class="copy-label">📋 Copy</span><code># Analyze text
+curl -X POST https://automation.songheng.vip/free/analyze \
+  -H "Content-Type: application/json" \
+  -d '{"text":"I absolutely love this new API! It works perfectly and saves me hours.","mode":"analyze"}'
+
+# Review code
+curl -X POST https://automation.songheng.vip/free/review \
+  -H "Content-Type: application/json" \
+  -d '{"code":"function getUser(id) {\n  return db.query(`SELECT * FROM users WHERE id = ${id}`);\n}","language":"javascript"}'
+
+# Security scan
+curl -X POST https://automation.songheng.vip/free/security \
+  -H "Content-Type: application/json" \
+  -d '{"code":"exec(\"rm -rf /\");\neval(req.body.code);\napp.get(\"/user/:id\", (r) => { return db.find(`SELECT * FROM users WHERE id=${r.params.id}`) })"}'
+
+# Summarize
+curl -X POST https://automation.songheng.vip/free/summarize \
+  -H "Content-Type: application/json" \
+  -d '{"text":"Long article or document text goes here..."}'</code></pre>
+  </div>
+  
+  <div id="free-py" class="tab-content">
+    <pre><span class="copy-label">📋 Copy</span><code>import requests, json
+
+BASE = "https://automation.songheng.vip"
+
+# Analyze text
+resp = requests.post(f"{BASE}/free/analyze", json={
+    "text": "I absolutely love this new API! It works perfectly.",
+    "mode": "analyze"
+})
+print(json.dumps(resp.json(), indent=2))
+
+# Review code
+code = '''
+function getUser(id) {
+  return db.query(`SELECT * FROM users WHERE id = ${id}`);
+}'''
+resp = requests.post(f"{BASE}/free/review", json={
+    "code": code, "language": "javascript"
+})
+print(json.dumps(resp.json(), indent=2))
+
+# Security scan
+code2 = 'exec("rm -rf /");\neval(req.body.code);'
+resp = requests.post(f"{BASE}/free/security", json={"code": code2})
+print(json.dumps(resp.json(), indent=2))
+
+# Summarize
+resp = requests.post(f"{BASE}/free/summarize", json={
+    "text": "Your long text here..."
+})
+print(json.dumps(resp.json(), indent=2))</code></pre>
+  </div>
+  
+  <div id="free-js" class="tab-content">
+    <pre><span class="copy-label">📋 Copy</span><code>const BASE = 'https://automation.songheng.vip';
+
+// Free text analysis
+fetch(`${BASE}/free/analyze`, {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({
+    text: 'I absolutely love this new API! It works perfectly.',
+    mode: 'analyze'
+  })
+}).then(r => r.json()).then(console.log);
+
+// Free code review  
+fetch(`${BASE}/free/review`, {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({
+    code: `function getUser(id) {\n  return db.query('SELECT * FROM users WHERE id = ' + id);\n}`,
+    language: 'javascript'
+  })
+}).then(r => r.json()).then(console.log);
+
+// Free security scan
+fetch(`${BASE}/free/security`, {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({
+    code: 'exec("rm -rf /");\neval(req.body.code);'
+  })
+}).then(r => r.json()).then(console.log);
+
+// Free summarization
+fetch(`${BASE}/free/summarize`, {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({
+    text: 'Your long text to summarize...'
+  })
+}).then(r => r.json()).then(console.log);</code></pre>
+  </div>
+</div>
+
+<div class="step-card">
+  <span class="num">2</span><h3> Get an API key</h3>
+  <p>Buy credits for premium access. Plans start at <strong>$5 for 500 credits</strong>.</p>
+  <div class="cta-row" style="margin:.5rem 0">
+    <a href="/pricing.html" class="cta">🔑 Get API Key — from $5</a>
+    <a href="/upgrade.html" class="cta outline">📦 View Plans</a>
+  </div>
+</div>
+
+<div class="step-card">
+  <span class="num">3</span><h3> Call premium endpoints</h3>
+  <p>Use your <code>X-API-Key</code> header for unlimited, higher-quality responses.</p>
+  
+  <div class="tabs">
+    <div class="tab active" onclick="switchTab(this,'prem-curl')">curl</div>
+    <div class="tab" onclick="switchTab(this,'prem-py')">Python</div>
+    <div class="tab" onclick="switchTab(this,'prem-js')">JavaScript</div>
+  </div>
+  
+  <div id="prem-curl" class="tab-content active">
+    <pre><span class="copy-label">📋 Copy</span><code># Set your key
+KEY="am_your_api_key_here"
+
+# Code review ($0.05)
+curl -X POST https://automation.songheng.vip/v1/review \
+  -H "Content-Type: application/json" \
+  -H "X-API-Key: $KEY" \
+  -d '{"code":"function add(a,b){return a+b}","language":"javascript"}'
+
+# Security scan ($0.03)
+curl -X POST https://automation.songheng.vip/v1/security \
+  -H "Content-Type: application/json" \
+  -H "X-API-Key: $KEY" \
+  -d '{"code":"exec(req.body.input)"}'
+
+# Text analysis ($0.01)
+curl -X POST https://automation.songheng.vip/v1/analyze \
+  -H "Content-Type: application/json" \
+  -H "X-API-Key: $KEY" \
+  -d '{"text":"How does this product compare to competitors?","mode":"analyze"}'
+
+# Code explanation ($0.02)
+curl -X POST https://automation.songheng.vip/v1/explain \
+  -H "Content-Type: application/json" \
+  -H "X-API-Key: $KEY" \
+  -d '{"text":"async function fetchData(url) {\n  const res = await fetch(url);\n  return res.json();\n}"}'
+
+# Refactoring suggestions ($0.05)
+curl -X POST https://automation.songheng.vip/v1/refactor \
+  -H "Content-Type: application/json" \
+  -H "X-API-Key: $KEY" \
+  -d '{"text":"function processItems(items) {\n  let result = [];\n  for(let i=0;i<items.length;i++){\n    if(items[i].active){\n      result.push(items[i]);\n    }\n  }\n  return result;\n}"}'</code></pre>
+  </div>
+  
+  <div id="prem-py" class="tab-content">
+    <pre><span class="copy-label">📋 Copy</span><code>import requests, json
+
+API_KEY = "am_your_api_key_here"
+BASE = "https://automation.songheng.vip"
+HEADERS = {"Content-Type": "application/json", "X-API-Key": API_KEY}
+
+def review_code(code, lang="javascript"):
+    resp = requests.post(f"{BASE}/v1/review", 
+        json={"code": code, "language": lang}, headers=HEADERS)
+    return resp.json()
+
+def security_scan(code):
+    resp = requests.post(f"{BASE}/v1/security",
+        json={"code": code}, headers=HEADERS)
+    return resp.json()
+
+def analyze_text(text, mode="analyze"):
+    resp = requests.post(f"{BASE}/v1/analyze",
+        json={"text": text, "mode": mode}, headers=HEADERS)
+    return resp.json()
+
+def summarize(text, max_length=100):
+    resp = requests.post(f"{BASE}/v1/summarize",
+        json={"text": text, "maxLength": max_length}, headers=HEADERS)
+    return resp.json()
+
+def explain_code(code):
+    resp = requests.post(f"{BASE}/v1/explain",
+        json={"text": code}, headers=HEADERS)
+    return resp.json()
+
+def suggest_refactor(code):
+    resp = requests.post(f"{BASE}/v1/refactor",
+        json={"text": code}, headers=HEADERS)
+    return resp.json()
+
+# Example usage
+if __name__ == "__main__":
+    result = review_code("""
+        function getUser(id) {
+            return db.query('SELECT * FROM users WHERE id = ' + id);
+        }
+    """)
+    print(json.dumps(result, indent=2))</code></pre>
+  </div>
+  
+  <div id="prem-js" class="tab-content">
+    <pre><span class="copy-label">📋 Copy</span><code>const API_KEY = 'am_your_api_key_here';
+const BASE = 'https://automation.songheng.vip';
+
+const headers = {
+  'Content-Type': 'application/json',
+  'X-API-Key': API_KEY
+};
+
+// Code review
+async function reviewCode(code, language = 'javascript') {
+  const res = await fetch(`${BASE}/v1/review`, {
+    method: 'POST',
+    headers,
+    body: JSON.stringify({ code, language })
+  });
+  return res.json();
+}
+
+// Security scan
+async function securityScan(code) {
+  const res = await fetch(`${BASE}/v1/security`, {
+    method: 'POST',
+    headers,
+    body: JSON.stringify({ code })
+  });
+  return res.json();
+}
+
+// Text analysis
+async function analyzeText(text, mode = 'analyze') {
+  const res = await fetch(`${BASE}/v1/analyze`, {
+    method: 'POST',
+    headers,
+    body: JSON.stringify({ text, mode })
+  });
+  return res.json();
+}
+
+// Summarize
+async function summarize(text) {
+  const res = await fetch(`${BASE}/v1/summarize`, {
+    method: 'POST',
+    headers,
+    body: JSON.stringify({ text })
+  });
+  return res.json();
+}
+
+// Example: review this code
+reviewCode(`function greet(name) {
+  console.log("Hello " + name);
+}`).then(console.log).catch(console.error);</code></pre>
+  </div>
+</div>
+
+<h2>📋 All Available Endpoints</h2>
+
+<div class="grid-2">
+  <div class="endpoint-card">
+    <span class="method">POST</span><span class="path">/v1/analyze</span><span class="cost">1 credit ($0.01)</span>
+    <div class="desc">Deep text analysis — sentiment, entities, themes, writing style</div>
+  </div>
+  <div class="endpoint-card">
+    <span class="method">POST</span><span class="path">/v1/summarize</span><span class="cost">2 credits ($0.02)</span>
+    <div class="desc">AI summarization with configurable length and format</div>
+  </div>
+  <div class="endpoint-card">
+    <span class="method">POST</span><span class="path">/v1/review</span><span class="cost">5 credits ($0.05)</span>
+    <div class="desc">Full code review — bugs, security, style, performance, best practices</div>
+  </div>
+  <div class="endpoint-card">
+    <span class="method">POST</span><span class="path">/v1/security</span><span class="cost">3 credits ($0.03)</span>
+    <div class="desc">OWASP Top 10 vulnerability scan with severity ratings</div>
+  </div>
+  <div class="endpoint-card">
+    <span class="method">POST</span><span class="path">/v1/explain</span><span class="cost">2 credits ($0.02)</span>
+    <div class="desc">Code explanation — architecture, design patterns, line-by-line</div>
+  </div>
+  <div class="endpoint-card">
+    <span class="method">POST</span><span class="path">/v1/refactor</span><span class="cost">5 credits ($0.05)</span>
+    <div class="desc">Refactoring suggestions with code examples and diff</div>
+  </div>
+</div>
+
+<h2>🚀 CI/CD Integration</h2>
+
+<div class="tabs">
+  <div class="tab active" onclick="switchTab(this,'cicd-gh')">GitHub Actions</div>
+  <div class="tab" onclick="switchTab(this,'cicd-py')">Python Script</div>
+  <div class="tab" onclick="switchTab(this,'cicd-node')">Node.js Script</div>
+</div>
+
+<div id="cicd-gh" class="tab-content active">
+  <pre><span class="copy-label">📋 Copy</span><code># .github/workflows/ai-code-review.yml
+name: AI Code Review
+on:
+  pull_request:
+    types: [opened, synchronize]
+
+jobs:
+  ai-review:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: AI Code Review
+        env:
+          API_KEY: ${{ secrets.MY_AUTOMATON_KEY }}
+        run: |
+          # Review all changed JS/TS files
+          for file in $(git diff --name-only origin/main | grep -E '\.(js|ts|py|java)$'); do
+            echo "=== Reviewing: $file ==="
+            curl -s -X POST https://automation.songheng.vip/v1/review \
+              -H "Content-Type: application/json" \
+              -H "X-API-Key: $API_KEY" \
+              -d "{\"code\":$(cat $file | jq -Rs .),\"language\":\"${file##*.}\"}" | jq .
+          done</code></pre>
+</div>
+
+<div id="cicd-py" class="tab-content">
+  <pre><span class="copy-label">📋 Copy</span><code>#!/usr/bin/env python3
+"""CI script: automatically review code in PRs."""
+import os, sys, json, requests
+
+API_KEY = os.environ.get('MY_AUTOMATON_KEY')
+BASE = "https://automation.songheng.vip"
+
+def review_file(filepath):
+    ext_map = {'.py': 'python', '.js': 'javascript', '.ts': 'typescript',
+                '.java': 'java', '.go': 'go', '.rs': 'rust'}
+    ext = os.path.splitext(filepath)[1].lower()
+    lang = ext_map.get(ext, 'text')
+    
+    with open(filepath) as f:
+        code = f.read()
+    
+    resp = requests.post(f"{BASE}/v1/review", 
+        json={"code": code, "language": lang},
+        headers={"X-API-Key": API_KEY, "Content-Type": "application/json"})
+    return resp.json()
+
+# Review all files from git diff
+changed = os.popen("git diff --name-only origin/main").read().strip().split()
+for f in changed:
+    if os.path.isfile(f):
+        print(f"Reviewing {f}...")
+        result = review_file(f)
+        print(json.dumps(result, indent=2))</code></pre>
+</div>
+
+<div id="cicd-node" class="tab-content">
+  <pre><span class="copy-label">📋 Copy</span><code>#!/usr/bin/env node
+/** CI script to auto-review changed files */
+const fs = require('fs');
+const { execSync } = require('child_process');
+
+const API_KEY = process.env.MY_AUTOMATON_KEY;
+const BASE = 'https://automation.songheng.vip';
+
+const EXT_MAP = { '.py': 'python', '.js': 'javascript', '.ts': 'typescript',
+  '.java': 'java', '.go': 'go', '.rs': 'rust' };
+
+async function reviewFile(filepath) {
+  const ext = require('path').extname(filepath);
+  const lang = EXT_MAP[ext] || 'text';
+  const code = fs.readFileSync(filepath, 'utf-8');
+  
+  const res = await fetch(`${BASE}/v1/review`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'X-API-Key': API_KEY },
+    body: JSON.stringify({ code, language: lang })
+  });
+  return res.json();
+}
+
+// Get changed files
+const output = execSync('git diff --name-only origin/main').toString();
+const files = output.trim().split('\n').filter(f => fs.existsSync(f));
+
+(async () => {
+  for (const file of files) {
+    console.log(`\n=== ${file} ===`);
+    const result = await reviewFile(file);
+    console.log(JSON.stringify(result, null, 2));
+  }
+})();</code></pre>
+</div>
+
+<h2>💳 Pricing</h2>
+<table>
+  <tr><th>Plan</th><th>Price</th><th>Credits</th><th>~Code Reviews</th><th>~Security Scans</th></tr>
+  <tr><td>Starter</td><td><strong>$5</strong></td><td>500</td><td>100</td><td>166</td></tr>
+  <tr><td>Pro</td><td><strong>$10</strong></td><td>1,100</td><td>220</td><td>366</td></tr>
+  <tr><td>Business</td><td><strong>$25</strong></td><td>3,000</td><td>600</td><td>1,000</td></tr>
+  <tr><td>Enterprise</td><td><strong>$58</strong></td><td>6,500</td><td>1,300</td><td>2,166</td></tr>
+</table>
+
+<div class="cta-row">
+  <a href="/pricing.html" class="cta">🔑 Get API Key</a>
+  <a href="/playground.html" class="cta alt">🧪 Try Playground</a>
+  <a href="/api-docs.html" class="cta outline">📖 Full API Docs</a>
+</div>
+
+<footer>
+  <p>my-automaton — AI-powered developer tools</p>
+  <p><a href="/">Home</a> · <a href="/quickstart.html">Quickstart</a> · <a href="/api-docs.html">API Docs</a> · <a href="/pricing.html">Pricing</a></p>
+</footer>
+</div>
+
+<script>
+function switchTab(el, tabId) {
+  const parent = el.parentElement;
+  parent.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  const container = parent.nextElementSibling;
+  while (container && !container.classList.contains('tab-content')) {
+    // skip non-content siblings
+  }
+  // Find siblings properly
+  let sibling = parent.nextElementSibling;
+  while (sibling) {
+    if (sibling.id === tabId || sibling.id?.startsWith(tabId.split('-')[0])) {
+      document.querySelectorAll(`#${parent.parentElement.id || ''} .tab-content, ${parent.parentElement.tagName === 'DIV' ? '' : ''} .tab-content`).forEach(c => c.classList.remove('active'));
+      // Simple approach - find within parent container
+    }
+    sibling = sibling.nextElementSibling;
+  }
+  // Reset all tabs within parent scope
+  const scope = el.closest('.step-card');
+  if (scope) {
+    scope.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+    const target = scope.querySelector('#' + tabId);
+    if (target) target.classList.add('active');
+  }
+}
+</script>
+<script src="/conversion-banner.js" defer></script>
+</body>
+</html>

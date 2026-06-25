@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta property="og:title" content="URL Encoder / Decoder - Free Online Tool">
+  <meta property="og:description" content="Encode and decode URLs online. Percent-encode special characters, decode URL-encoded strings. Free developer tool with instant conversion.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://automation.songheng.vip/tools/url-encoder.html">
+  <meta property="og:image" content="https://automation.songheng.vip/og-image.png">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>URL Encoder / Decoder - Free Online Tool</title>
+<meta name="description" content="Encode and decode URLs online. Percent-encode special characters, decode URL-encoded strings. Free developer tool with instant conversion.">
+<meta name="keywords" content="url encoder, url decoder, url encode, url decode, percent encoding, online url tool">
+<link rel="canonical" href="https://automation.songheng.vip/tools/url-encoder">
+<style>
+* { box-sizing:border-box; margin:0; padding:0; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #0f172a; color: #e2e8f0; min-height: 100vh; }
+.container { max-width:800px; margin:0 auto; padding:20px; }
+h1 { font-size:2rem; margin-bottom:8px; background: linear-gradient(135deg,#60a5fa,#a78bfa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+.subtitle { color:#94a3b8; margin-bottom:24px; }
+.card { background:#1e293b; border:1px solid #334155; border-radius:12px; padding:20px; margin-bottom:16px; }
+label { display:block; font-size:0.875rem; font-weight:600; color:#94a3b8; margin-bottom:6px; text-transform:uppercase; letter-spacing:0.05em; }
+textarea { width:100%; background:#0f172a; border:1px solid #334155; border-radius:8px; color:#e2e8f0; font-family:'JetBrains Mono',monospace; font-size:14px; padding:12px; outline:none; min-height:80px; resize:vertical; }
+textarea:focus { border-color:#60a5fa; }
+.btn { background:#3b82f6; color:white; border:none; padding:10px 20px; border-radius:8px; font-weight:600; cursor:pointer; }
+.btn:hover { background:#2563eb; }
+.btn-secondary { background:#334155; color:#e2e8f0; border:none; padding:10px 20px; border-radius:8px; font-weight:600; cursor:pointer; }
+.btn-secondary:hover { background:#475569; }
+.flex { display:flex; gap:12px; flex-wrap:wrap; margin-bottom:16px; }
+.copy-msg { color:#4ade80; font-size:0.8rem; margin-left:8px; }
+</style>
+<meta name="google-site-verification" content="YOUR_CODE" />
+<meta property="og:site_name" content="my-automaton" />
+<meta property="og:type" content="website" />
+<meta property="og:locale" content="en_US" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:site" content="@my_automaton" />
+<script src="/js/analytics.js"></script>
+<!-- Open Graph / Social Meta Tags -->
+<meta name="twitter:title" content="URL Encoder / Decoder - Free Online Tool" />
+<meta name="twitter:description" content="Encode and decode URLs online. Percent-encode special characters, decode URL-encoded strings. Free developer tool with instant conversion." />
+<meta name="twitter:image" content="https://automation.songheng.vip/og-image.png" />
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "URL Encoder / Decoder - Free Online Tool",
+  "description": "Encode and decode URLs online. Percent-encode special characters, decode URL-encoded strings. Free developer tool with instant conversion.",
+  "url": "https://automation.songheng.vip/tools/url-encoder.html",
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": "Web",
+  "author": {
+    "@type": "Organization",
+    "name": "my-automaton",
+    "url": "https://automation.songheng.vip"
+  },
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  }
+}
+</script>
+</head>
+<body>
+<div style="background:#161b22;border-bottom:1px solid #30363d;padding:10px 20px;font-size:.85rem;display:flex;gap:16px;align-items:center;flex-wrap:wrap"><a href="/" style="color:#58a6ff;text-decoration:none;font-weight:600">🏠 Home</a><span style="color:#484f58">|</span><a href="/pricing.html" style="color:#8b949e;text-decoration:none">Pricing</a><a href="/api-docs.html" style="color:#8b949e;text-decoration:none">API</a><a href="/playground.html" style="color:#8b949e;text-decoration:none">Playground</a></div>
+
+<div class="container">
+  <h1>🔗 URL Encoder / Decoder</h1>
+  <p class="subtitle">Percent-encode or decode URL strings. Instant conversion as you type.</p>
+
+  <div class="card">
+    <label for="input-text">Input</label>
+    <textarea id="input-text" placeholder="Type or paste text here..." oninput="autoConvert()">https://example.com/path?query=hello world&name=John Doe</textarea>
+  </div>
+
+  <div class="flex">
+    <button class="btn" onclick="encode()">⬆️ Encode</button>
+    <button class="btn-secondary" onclick="decode()">⬇️ Decode</button>
+    <button class="btn-secondary" onclick="document.getElementById('input-text').value='';document.getElementById('output-text').value='';">🗑️ Clear</button>
+    <button class="btn-secondary" onclick="copyResult()">📋 Copy Result</button>
+  </div>
+
+  <div class="card">
+    <label for="output-text">Result <span id="copy-msg" class="copy-msg"></span></label>
+    <textarea id="output-text" readonly placeholder="Result will appear here..." style="min-height:80px;"></textarea>
+  </div>
+
+  <div class="card">
+    <label>Quick Examples</label>
+    <div style="display:flex; gap:8px; flex-wrap:wrap;">
+      <button class="btn-secondary" onclick="setExample('encode','hello world & foo="bar"')">Encode: hello world</button>
+      <button class="btn-secondary" onclick="setExample('decode','hello%20world%20%26%20foo%3D%22bar%22')">Decode: %20</button>
+      <button class="btn-secondary" onclick="setExample('encode','https://example.com?a=1&b=2&c=hello there')">Encode URL</button>
+      <button class="btn-secondary" onclick="setExample('encode','email+password@example.com?subject=hello world')">Encode Email URL</button>
+    </div>
+  </div>
+</div>
+<script>
+function autoConvert() { /* Manual only */ }
+function encode() {
+  const input = document.getElementById('input-text').value;
+  document.getElementById('output-text').value = encodeURIComponent(input);
+}
+function decode() {
+  const input = document.getElementById('input-text').value;
+  try { document.getElementById('output-text').value = decodeURIComponent(input); }
+  catch(e) { document.getElementById('output-text').value = 'Error: Invalid URL encoding'; }
+}
+function copyResult() {
+  const text = document.getElementById('output-text').value;
+  if (!text) return;
+  navigator.clipboard.writeText(text).then(() => {
+    document.getElementById('copy-msg').textContent = '✓ Copied!';
+    setTimeout(() => document.getElementById('copy-msg').textContent='', 2000);
+  });
+}
+function setExample(action, text) {
+  document.getElementById('input-text').value = text;
+  if (action === 'encode') encode(); else decode();
+}
+</script>
+<div class="share-bar" style="position:fixed;bottom:20px;right:20px;z-index:9999;display:flex;gap:8px;background:rgba(0,0,0,0.85);padding:10px 14px;border-radius:30px;backdrop-filter:blur(8px);box-shadow:0 2px 12px rgba(0,0,0,0.3)">
+<button onclick="window.open('https://twitter.com/intent/tweet?text='+encodeURIComponent(document.title)+'&url='+encodeURIComponent(location.href),'_blank')" style="background:#1DA1F2;border:none;color:white;padding:8px 12px;border-radius:20px;cursor:pointer;font-size:13px;font-weight:bold">X</button>
+<button onclick="window.open('https://www.linkedin.com/sharing/share-offsite/?url='+encodeURIComponent(location.href),'_blank')" style="background:#0A66C2;border:none;color:white;padding:8px 12px;border-radius:20px;cursor:pointer;font-size:13px;font-weight:bold">in</button>
+<button onclick="window.open('https://reddit.com/submit?url='+encodeURIComponent(location.href)+'&title='+encodeURIComponent(document.title),'_blank')" style="background:#FF4500;border:none;color:white;padding:8px 12px;border-radius:20px;cursor:pointer;font-size:13px;font-weight:bold">r</button>
+</div>
+<script src="/js/share-widget.js"></script>
+<script src="/share-widget.js"></script>
+</body>
+</html>

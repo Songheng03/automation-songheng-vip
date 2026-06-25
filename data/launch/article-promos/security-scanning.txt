@@ -1,0 +1,1 @@
+🔒 Security Vulnerability Scanning — 3¢ Per Scan — The /v1/security endpoint scans your code for vulnerabilities for just 3¢. Read more: https://automation.songheng.vip/blog/security-scanning

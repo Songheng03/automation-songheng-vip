@@ -1,0 +1,2048 @@
+{
+  "timestamp": "2026-06-23T11:36:36.029Z",
+  "totalScanned": 568,
+  "filesWithIssues": 120,
+  "totalIssues": 262,
+  "byType": {
+    "mobile": 51,
+    "broken-link": 103,
+    "seo": 63,
+    "content": 16,
+    "accessibility": 16,
+    "security": 1,
+    "code-quality": 6,
+    "bug": 6
+  },
+  "details": [
+    {
+      "file": "readme-gen-body.html",
+      "issues": [
+        {
+          "type": "broken-link",
+          "detail": "Broken link: /content/portal.html",
+          "severity": "high"
+        },
+        {
+          "type": "broken-link",
+          "detail": "Broken link: /content/upgrade.html",
+          "severity": "high"
+        },
+        {
+          "type": "broken-link",
+          "detail": "Broken link: /content/api-docs.html",
+          "severity": "high"
+        },
+        {
+          "type": "broken-link",
+          "detail": "Broken link: /content/portal.html",
+          "severity": "high"
+        },
+        {
+          "type": "broken-link",
+          "detail": "Broken link: /content/portal.html",
+          "severity": "high"
+        },
+        {
+          "type": "mobile",
+          "detail": "Missing viewport meta tag",
+          "severity": "high"
+        },
+        {
+          "type": "seo",
+          "detail": "Missing or empty <title>",
+          "severity": "high"
+        },
+        {
+          "type": "seo",
+          "detail": "Missing meta description",
+          "severity": "low"
+        }
+      ],
+      "size": 17293
+    },
+    {
+      "file": "tools/index.html",
+      "issues": [
+        {
+          "type": "broken-link",
+          "detail": "Broken link: /tools/free-ai-code-review-tool",
+          "severity": "high"
+        },
+        {
+          "type": "broken-link",
+          "detail": "Broken link: /tools/free-ai-security-scanner",
+          "severity": "high"
+        },
+        {
+          "type": "broken-link",
+          "detail": "Broken link: /tools/free-ai-code-explainer",
+          "severity": "high"
+        },
+        {
+          "type": "broken-link",
+          "detail": "Broken link: /tools/code-quality-checker",
+          "severity": "high"
+        },
+        {
+          "type": "broken-link",
+          "detail": "Broken link: /tools/json-formatter",
+          "severity": "high"
+        },
+        {
+          "type": "broken-link",
+          "detail": "Broken link: /tools/free-ai-text-summarizer",
+          "severity": "high"
+        },
+        {
+          "type": "broken-link",
+          "detail": "Broken link: /tools/free-seo-audit",
+          "severity": "high"
+        },
+        {
+          "type": "broken-link",
+          "detail": "Broken link: /tools/content-generator",
+          "severity": "high"
+        }
+      ],
+      "size": 8275
+    },
+    {
+      "file": "promote.html",
+      "issues": [
+        {
+          "type": "broken-link",
+          "detail": "Broken link: /tools/json-formatter",
+          "severity": "high"
+        },
+        {
+          "type": "broken-link",
+          "detail": "Broken link: /free/analyze",
+          "severity": "high"
+        },
+        {
+          "type": "broken-link",
+          "detail": "Broken link: /free/summarize",
+          "severity": "high"
+        },
+        {
+          "type": "broken-link",
+          "detail": "Broken link: /free/review",
+          "severity": "high"
+        },
+        {
+          "type": "broken-link",
+          "detail": "Broken link: /free/security",
+          "severity": "high"
+        },
+        {
+          "type": "broken-link",
+          "detail": "Broken link: /free/review",
+          "severity": "high"
+        },
+        {
+          "type": "broken-link",
+          "detail": "Broken link: /free/analyze",
+          "severity": "high"
+        }
+      ],
+      "size": 9850
+    },
+    {
+      "file": "seo-tools.html",
+      "issues": [
+        {
+          "type": "broken-link",
+          "detail": "Broken link: /v1/seo-audit",
+          "severity": "high"
+        },
+        {
+          "type": "broken-link",
+          "detail": "Broken link: /v1/seo-meta",
+          "severity": "high"
+        },
+        {
+          "type": "broken-link",
+          "detail": "Broken link: /v1/seo-blog",
+          "severity": "high"
+        },
+        {
+          "type": "broken-link",
+          "detail": "Broken link: /v1/content-marketing",
+          "severity": "high"
+        },
+        {
+          "type": "broken-link",
+          "detail": "Broken link: /v1/review",
+          "severity": "high"
+        },
+        {
+          "type": "broken-link",
+          "detail": "Broken link: /v1/security",
+          "severity": "high"
+        }
+      ],
+      "size": 11900
+    },
+    {
+      "file": "tools/github-profile-readme-generator.html",
+      "issues": [
+        {
+          "type": "accessibility",
+          "detail": "Image missing alt: <img src=\"https://img.shields.io/badge/${platform}-333?style=for-the-badge&logo=",
+          "severity": "medium"
+        },
+        {
+          "type": "accessibility",
+          "detail": "Image missing alt: <img src=\"https://github-readme-stats.vercel.app/api?username=${u}&show_icons=tr",
+          "severity": "medium"
+        },
+        {
+          "type": "accessibility",
+          "detail": "Image missing alt: <img src=\"https://github-readme-stats.vercel.app/api/top-langs/?username=${u}&th",
+          "severity": "medium"
+        },
+        {
+          "type": "accessibility",
+          "detail": "Image missing alt: <img src=\"https://github-readme-streak-stats.herokuapp.com/?user=${u}&theme=${th",
+          "severity": "medium"
+        },
+        {
+          "type": "accessibility",
+          "detail": "Image missing alt: <img src=\"https://github-readme-activity-graph.vercel.app/graph?username=${u}&th",
+          "severity": "medium"
+        },
+        {
+          "type": "accessibility",
+          "detail": "Image missing alt: <img src=\"https://github-profile-trophy.vercel.app/?username=${u}&theme=${theme}",
+          "severity": "medium"
+        }
+      ],
+      "size": 16287
+    },
+    {
+      "file": "tools/seo-audit.html",
+      "issues": [
+        {
+          "type": "broken-link",
+          "detail": "Broken link: /v1/analyze",
+          "severity": "high"
+        },
+        {
+          "type": "broken-link",
+          "detail": "Broken link: /tools/keyword-research.html",
+          "severity": "high"
+        },
+        {
+          "type": "broken-link",
+          "detail": "Broken link: /v1/analyze",
+          "severity": "high"
+        },
+        {
+          "type": "accessibility",
+          "detail": "Image missing alt: <img[^>",
+          "severity": "medium"
+        },
+        {
+          "type": "accessibility",
+          "detail": "Image missing alt: <img[^>",
+          "severity": "medium"
+        }
+      ],
+      "size": 22755
+    },
+    {
+      "file": "tools/url-encoder-decoder.html",
+      "issues": [
+        {
+          "type": "broken-link",
+          "detail": "Broken link: /tools/json-formatter",
+          "severity": "high"
+        },
+        {
+          "type": "broken-link",
+          "detail": "Broken link: /tools/free-ai-code-review-tool",
+          "severity": "high"
+        },
+        {
+          "type": "broken-link",
+          "detail": "Broken link: /tools/free-ai-text-summarizer",
+          "severity": "high"
+        },
+        {
+          "type": "broken-link",
+          "detail": "Broken link: /tools/free-ai-security-scanner",
+          "severity": "high"
+        },
+        {
+          "type": "broken-link",
+          "detail": "Broken link: /tools/base64-encoder-decoder-tool",
+          "severity": "high"
+        }
+      ],
+      "size": 8366
+    },
+    {
+      "file": "badge-code.html",
+      "issues": [
+        {
+          "type": "content",
+          "detail": "Page too short (187 bytes)",
+          "severity": "medium"
+        },
+        {
+          "type": "mobile",
+          "detail": "Missing viewport meta tag",
+          "severity": "high"
+        },
+        {
+          "type": "seo",
+          "detail": "Missing or empty <title>",
+          "severity": "high"
+        },
+        {
+          "type": "seo",
+          "detail": "Missing meta description",
+          "severity": "low"
+        }
+      ],
+      "size": 187
+    },
+    {
+      "file": "blog/ai-code-review-guide-2026.html",
+      "issues": [
+        {
+          "type": "broken-link",
+          "detail": "Broken link: /tools/code-review",
+          "severity": "high"
+        },
+        {
+          "type": "broken-link",
+          "detail": "Broken link: /tools/code-review",
+          "severity": "high"
+        },
+        {
+          "type": "broken-link",
+          "detail": "Broken link: /tools/code-review",
+          "severity": "high"
+        },
+        {
+          "type": "broken-link",
+          "detail": "Broken link: /tools/security-scanner",
+          "severity": "high"
+        }
+      ],
+      "size": 11490
+    },
+    {
+      "file": "blog/free-ai-code-review-tool-guide.html",
+      "issues": [
+        {
+          "type": "broken-link",
+          "detail": "Broken link: /tools/code-review",
+          "severity": "high"
+        },
+        {
+          "type": "broken-link",
+          "detail": "Broken link: /tools/code-review",
+          "severity": "high"
+        },
+        {
+          "type": "broken-link",
+          "detail": "Broken link: /tools/code-review",
+          "severity": "high"
+        },
+        {
+          "type": "broken-link",
+          "detail": "Broken link: /tools/security-scanner",
+          "severity": "high"
+        }
+      ],
+      "size": 11721
+    },
+    {
+      "file": "blog/test-post.html",
+      "issues": [
+        {
+          "type": "content",
+          "detail": "Page too short (19 bytes)",
+          "severity": "medium"
+        },
+        {
+          "type": "mobile",
+          "detail": "Missing viewport meta tag",
+          "severity": "high"
+        },
+        {
+          "type": "seo",
+          "detail": "Missing or empty <title>",
+          "severity": "high"
+        },
+        {
+          "type": "seo",
+          "detail": "Missing meta description",
+          "severity": "low"
+        }
+      ],
+      "size": 19
+    },
+    {
+      "file": "examples.html",
+      "issues": [
+        {
+          "type": "broken-link",
+          "detail": "Broken link: /free/review",
+          "severity": "high"
+        },
+        {
+          "type": "broken-link",
+          "detail": "Broken link: /free/security",
+          "severity": "high"
+        },
+        {
+          "type": "broken-link",
+          "detail": "Broken link: /free/analyze",
+          "severity": "high"
+        },
+        {
+          "type": "code-quality",
+          "detail": "6 console.log statements in production",
+          "severity": "low"
+        }
+      ],
+      "size": 12074
+    },
+    {
+      "file": "free-demo.html",
+      "issues": [
+        {
+          "type": "content",
+          "detail": "Page too short (10 bytes)",
+          "severity": "medium"
+        },
+        {
+          "type": "mobile",
+          "detail": "Missing viewport meta tag",
+          "severity": "high"
+        },
+        {
+          "type": "seo",
+          "detail": "Missing or empty <title>",
+          "severity": "high"
+        },
+        {
+          "type": "seo",
+          "detail": "Missing meta description",
+          "severity": "low"
+        }
+      ],
+      "size": 10
+    },
+    {
+      "file": "github-readme-generator.html",
+      "issues": [
+        {
+          "type": "content",
+          "detail": "Page too short (86 bytes)",
+          "severity": "medium"
+        },
+        {
+          "type": "mobile",
+          "detail": "Missing viewport meta tag",
+          "severity": "high"
+        },
+        {
+          "type": "seo",
+          "detail": "Missing or empty <title>",
+          "severity": "high"
+        },
+        {
+          "type": "seo",
+          "detail": "Missing meta description",
+          "severity": "low"
+        }
+      ],
+      "size": 86
+    },
+    {
+      "file": "google27f3c8e1a2b4d5f6.html",
+      "issues": [
+        {
+          "type": "content",
+          "detail": "Page too short (53 bytes)",
+          "severity": "medium"
+        },
+        {
+          "type": "mobile",
+          "detail": "Missing viewport meta tag",
+          "severity": "high"
+        },
+        {
+          "type": "seo",
+          "detail": "Missing or empty <title>",
+          "severity": "high"
+        },
+        {
+          "type": "seo",
+          "detail": "Missing meta description",
+          "severity": "low"
+        }
+      ],
+      "size": 53
+    },
+    {
+      "file": "google4c3a2b1f.html",
+      "issues": [
+        {
+          "type": "content",
+          "detail": "Page too short (251 bytes)",
+          "severity": "medium"
+        },
+        {
+          "type": "mobile",
+          "detail": "Missing viewport meta tag",
+          "severity": "high"
+        },
+        {
+          "type": "seo",
+          "detail": "Missing or empty <title>",
+          "severity": "high"
+        },
+        {
+          "type": "seo",
+          "detail": "Missing meta description",
+          "severity": "low"
+        }
+      ],
+      "size": 251
+    },
+    {
+      "file": "googlea1b2c3d4e5f6a7b8.html",
+      "issues": [
+        {
+          "type": "content",
+          "detail": "Page too short (54 bytes)",
+          "severity": "medium"
+        },
+        {
+          "type": "mobile",
+          "detail": "Missing viewport meta tag",
+          "severity": "high"
+        },
+        {
+          "type": "seo",
+          "detail": "Missing or empty <title>",
+          "severity": "high"
+        },
+        {
+          "type": "seo",
+          "detail": "Missing meta description",
+          "severity": "low"
+        }
+      ],
+      "size": 54
+    },
+    {
+      "file": "googlea1b2c3d4e5f6g7h8.html",
+      "issues": [
+        {
+          "type": "content",
+          "detail": "Page too short (54 bytes)",
+          "severity": "medium"
+        },
+        {
+          "type": "mobile",
+          "detail": "Missing viewport meta tag",
+          "severity": "high"
+        },
+        {
+          "type": "seo",
+          "detail": "Missing or empty <title>",
+          "severity": "high"
+        },
+        {
+          "type": "seo",
+          "detail": "Missing meta description",
+          "severity": "low"
+        }
+      ],
+      "size": 54
+    },
+    {
+      "file": "googlea8c3f7b2e1d4f5a6.html",
+      "issues": [
+        {
+          "type": "content",
+          "detail": "Page too short (54 bytes)",
+          "severity": "medium"
+        },
+        {
+          "type": "mobile",
+          "detail": "Missing viewport meta tag",
+          "severity": "high"
+        },
+        {
+          "type": "seo",
+          "detail": "Missing or empty <title>",
+          "severity": "high"
+        },
+        {
+          "type": "seo",
+          "detail": "Missing meta description",
+          "severity": "low"
+        }
+      ],
+      "size": 54
+    },
+    {
+      "file": "googlec9b6b9b3c9b6b9b3.html",
+      "issues": [
+        {
+          "type": "content",
+          "detail": "Page too short (54 bytes)",
+          "severity": "medium"
+        },
+        {
+          "type": "mobile",
+          "detail": "Missing viewport meta tag",
+          "severity": "high"
+        },
+        {
+          "type": "seo",
+          "detail": "Missing or empty <title>",
+          "severity": "high"
+        },
+        {
+          "type": "seo",
+          "detail": "Missing meta description",
+          "severity": "low"
+        }
+      ],
+      "size": 54
+    },
+    {
+      "file": "googled8e7f8c3a2b1d4e5.html",
+      "issues": [
+        {
+          "type": "content",
+          "detail": "Page too short (28 bytes)",
+          "severity": "medium"
+        },
+        {
+          "type": "mobile",
+          "detail": "Missing viewport meta tag",
+          "severity": "high"
+        },
+        {
+          "type": "seo",
+          "detail": "Missing or empty <title>",
+          "severity": "high"
+        },
+        {
+          "type": "seo",
+          "detail": "Missing meta description",
+          "severity": "low"
+        }
+      ],
+      "size": 28
+    },
+    {
+      "file": "googlede4c8e8e3c8e8e3c.html",
+      "issues": [
+        {
+          "type": "content",
+          "detail": "Page too short (112 bytes)",
+          "severity": "medium"
+        },
+        {
+          "type": "mobile",
+          "detail": "Missing viewport meta tag",
+          "severity": "high"
+        },
+        {
+          "type": "seo",
+          "detail": "Missing or empty <title>",
+          "severity": "high"
+        },
+        {
+          "type": "seo",
+          "detail": "Missing meta description",
+          "severity": "low"
+        }
+      ],
+      "size": 112
+    },
+    {
+      "file": "googlee5c4b8f3a2d1e7f0.html",
+      "issues": [
+        {
+          "type": "content",
+          "detail": "Page too short (51 bytes)",
+          "severity": "medium"
+        },
+        {
+          "type": "mobile",
+          "detail": "Missing viewport meta tag",
+          "severity": "high"
+        },
+        {
+          "type": "seo",
+          "detail": "Missing or empty <title>",
+          "severity": "high"
+        },
+        {
+          "type": "seo",
+          "detail": "Missing meta description",
+          "severity": "low"
+        }
+      ],
+      "size": 51
+    },
+    {
+      "file": "googlee96ef8ba1cc95fe9.html",
+      "issues": [
+        {
+          "type": "content",
+          "detail": "Page too short (54 bytes)",
+          "severity": "medium"
+        },
+        {
+          "type": "mobile",
+          "detail": "Missing viewport meta tag",
+          "severity": "high"
+        },
+        {
+          "type": "seo",
+          "detail": "Missing or empty <title>",
+          "severity": "high"
+        },
+        {
+          "type": "seo",
+          "detail": "Missing meta description",
+          "severity": "low"
+        }
+      ],
+      "size": 54
+    },
+    {
+      "file": "googlegooglec9b6b9b3c9b6b9b3.html",
+      "issues": [
+        {
+          "type": "content",
+          "detail": "Page too short (54 bytes)",
+          "severity": "medium"
+        },
+        {
+          "type": "mobile",
+          "detail": "Missing viewport meta tag",
+          "severity": "high"
+        },
+        {
+          "type": "seo",
+          "detail": "Missing or empty <title>",
+          "severity": "high"
+        },
+        {
+          "type": "seo",
+          "detail": "Missing meta description",
+          "severity": "low"
+        }
+      ],
+      "size": 54
+    },
+    {
+      "file": "test.html",
+      "issues": [
+        {
+          "type": "content",
+          "detail": "Page too short (4 bytes)",
+          "severity": "medium"
+        },
+        {
+          "type": "mobile",
+          "detail": "Missing viewport meta tag",
+          "severity": "high"
+        },
+        {
+          "type": "seo",
+          "detail": "Missing or empty <title>",
+          "severity": "high"
+        },
+        {
+          "type": "seo",
+          "detail": "Missing meta description",
+          "severity": "low"
+        }
+      ],
+      "size": 4
+    },
+    {
+      "file": "tools/sitemap-generator.html",
+      "issues": [
+        {
+          "type": "broken-link",
+          "detail": "Broken link: /v1/analyze",
+          "severity": "high"
+        },
+        {
+          "type": "broken-link",
+          "detail": "Broken link: /v1/review",
+          "severity": "high"
+        },
+        {
+          "type": "broken-link",
+          "detail": "Broken link: /v1/security",
+          "severity": "high"
+        },
+        {
+          "type": "broken-link",
+          "detail": "Broken link: /free/analyze",
+          "severity": "high"
+        }
+      ],
+      "size": 9309
+    },
+    {
+      "file": "backlink-badges.html",
+      "issues": [
+        {
+          "type": "mobile",
+          "detail": "Missing viewport meta tag",
+          "severity": "high"
+        },
+        {
+          "type": "seo",
+          "detail": "Missing or empty <title>",
+          "severity": "high"
+        },
+        {
+          "type": "seo",
+          "detail": "Missing meta description",
+          "severity": "low"
+        }
+      ],
+      "size": 749
+    },
+    {
+      "file": "blog/ai-code-review-pricing-comparison.html",
+      "issues": [
+        {
+          "type": "mobile",
+          "detail": "Missing viewport meta tag",
+          "severity": "high"
+        },
+        {
+          "type": "seo",
+          "detail": "Missing or empty <title>",
+          "severity": "high"
+        },
+        {
+          "type": "seo",
+          "detail": "Missing meta description",
+          "severity": "low"
+        }
+      ],
+      "size": 2251
+    },
+    {
+      "file": "blog/building-ai-code-review-api.html",
+      "issues": [
+        {
+          "type": "mobile",
+          "detail": "Missing viewport meta tag",
+          "severity": "high"
+        },
+        {
+          "type": "seo",
+          "detail": "Missing or empty <title>",
+          "severity": "high"
+        },
+        {
+          "type": "seo",
+          "detail": "Missing meta description",
+          "severity": "low"
+        }
+      ],
+      "size": 3073
+    },
+    {
+      "file": "blog/self-sustaining-ai-agent-server-bills.html",
+      "issues": [
+        {
+          "type": "broken-link",
+          "detail": "Broken link: /tools/code-review",
+          "severity": "high"
+        },
+        {
+          "type": "broken-link",
+          "detail": "Broken link: /tools/security-scanner",
+          "severity": "high"
+        },
+        {
+          "type": "broken-link",
+          "detail": "Broken link: /tools/text-summarizer",
+          "severity": "high"
+        }
+      ],
+      "size": 13106
+    },
+    {
+      "file": "blog-index-partial.html",
+      "issues": [
+        {
+          "type": "mobile",
+          "detail": "Missing viewport meta tag",
+          "severity": "high"
+        },
+        {
+          "type": "seo",
+          "detail": "Missing or empty <title>",
+          "severity": "high"
+        },
+        {
+          "type": "seo",
+          "detail": "Missing meta description",
+          "severity": "low"
+        }
+      ],
+      "size": 30111
+    },
+    {
+      "file": "github-actions-integration.html",
+      "issues": [
+        {
+          "type": "mobile",
+          "detail": "Missing viewport meta tag",
+          "severity": "high"
+        },
+        {
+          "type": "seo",
+          "detail": "Missing or empty <title>",
+          "severity": "high"
+        },
+        {
+          "type": "seo",
+          "detail": "Missing meta description",
+          "severity": "low"
+        }
+      ],
+      "size": 3977
+    },
+    {
+      "file": "google1432abcd5678efgh.html",
+      "issues": [
+        {
+          "type": "mobile",
+          "detail": "Missing viewport meta tag",
+          "severity": "high"
+        },
+        {
+          "type": "seo",
+          "detail": "Missing or empty <title>",
+          "severity": "high"
+        },
+        {
+          "type": "seo",
+          "detail": "Missing meta description",
+          "severity": "low"
+        }
+      ],
+      "size": 777
+    },
+    {
+      "file": "link-assets/widget.html",
+      "issues": [
+        {
+          "type": "mobile",
+          "detail": "Missing viewport meta tag",
+          "severity": "high"
+        },
+        {
+          "type": "seo",
+          "detail": "Missing or empty <title>",
+          "severity": "high"
+        },
+        {
+          "type": "seo",
+          "detail": "Missing meta description",
+          "severity": "low"
+        }
+      ],
+      "size": 589
+    },
+    {
+      "file": "live-status.html",
+      "issues": [
+        {
+          "type": "broken-link",
+          "detail": "Broken link: /free/analyze",
+          "severity": "high"
+        },
+        {
+          "type": "broken-link",
+          "detail": "Broken link: /free/summarize",
+          "severity": "high"
+        },
+        {
+          "type": "broken-link",
+          "detail": "Broken link: /free/review",
+          "severity": "high"
+        }
+      ],
+      "size": 11686
+    },
+    {
+      "file": "mcp-integration.html",
+      "issues": [
+        {
+          "type": "broken-link",
+          "detail": "Broken link: /style.css",
+          "severity": "high"
+        },
+        {
+          "type": "broken-link",
+          "detail": "Broken link: /smithery-manifest",
+          "severity": "high"
+        },
+        {
+          "type": "broken-link",
+          "detail": "Broken link: /mcp/v1/openai",
+          "severity": "high"
+        }
+      ],
+      "size": 7914
+    },
+    {
+      "file": "pricing.html",
+      "issues": [
+        {
+          "type": "mobile",
+          "detail": "Missing viewport meta tag",
+          "severity": "high"
+        },
+        {
+          "type": "seo",
+          "detail": "Missing or empty <title>",
+          "severity": "high"
+        },
+        {
+          "type": "seo",
+          "detail": "Missing meta description",
+          "severity": "low"
+        }
+      ],
+      "size": 551
+    },
+    {
+      "file": "seo-links.html",
+      "issues": [
+        {
+          "type": "mobile",
+          "detail": "Missing viewport meta tag",
+          "severity": "high"
+        },
+        {
+          "type": "seo",
+          "detail": "Missing or empty <title>",
+          "severity": "high"
+        },
+        {
+          "type": "seo",
+          "detail": "Missing meta description",
+          "severity": "low"
+        }
+      ],
+      "size": 1616
+    },
+    {
+      "file": "seo-services.html",
+      "issues": [
+        {
+          "type": "broken-link",
+          "detail": "Broken link: /v1/seo-meta",
+          "severity": "high"
+        },
+        {
+          "type": "broken-link",
+          "detail": "Broken link: /v1/seo-blog",
+          "severity": "high"
+        },
+        {
+          "type": "broken-link",
+          "detail": "Broken link: /v1/content-marketing",
+          "severity": "high"
+        }
+      ],
+      "size": 8515
+    },
+    {
+      "file": "slack-webhook-integration.html",
+      "issues": [
+        {
+          "type": "mobile",
+          "detail": "Missing viewport meta tag",
+          "severity": "high"
+        },
+        {
+          "type": "seo",
+          "detail": "Missing or empty <title>",
+          "severity": "high"
+        },
+        {
+          "type": "seo",
+          "detail": "Missing meta description",
+          "severity": "low"
+        }
+      ],
+      "size": 2984
+    },
+    {
+      "file": "tools/meta-tags-checker.html",
+      "issues": [
+        {
+          "type": "broken-link",
+          "detail": "Broken link: /v1/analyze",
+          "severity": "high"
+        },
+        {
+          "type": "accessibility",
+          "detail": "Image missing alt: <img src=\"${escapeHtml(fbImage)}\" style=\"width:100%;height:100%;object-fit:cover",
+          "severity": "medium"
+        },
+        {
+          "type": "accessibility",
+          "detail": "Image missing alt: <img src=\"${escapeHtml(twImage)}\" style=\"width:100%;height:100%;object-fit:cover",
+          "severity": "medium"
+        }
+      ],
+      "size": 19457
+    },
+    {
+      "file": "whois-tool.html",
+      "issues": [
+        {
+          "type": "broken-link",
+          "detail": "Broken link: /tools/code-review",
+          "severity": "high"
+        },
+        {
+          "type": "broken-link",
+          "detail": "Broken link: /tools/security-scanner",
+          "severity": "high"
+        },
+        {
+          "type": "broken-link",
+          "detail": "Broken link: /tools/summarizer",
+          "severity": "high"
+        }
+      ],
+      "size": 12489
+    },
+    {
+      "file": "widget/review-widget.html",
+      "issues": [
+        {
+          "type": "mobile",
+          "detail": "Missing viewport meta tag",
+          "severity": "high"
+        },
+        {
+          "type": "seo",
+          "detail": "Missing or empty <title>",
+          "severity": "high"
+        },
+        {
+          "type": "seo",
+          "detail": "Missing meta description",
+          "severity": "low"
+        }
+      ],
+      "size": 4207
+    },
+    {
+      "file": "api-demo.html",
+      "issues": [
+        {
+          "type": "mobile",
+          "detail": "Missing viewport meta tag",
+          "severity": "high"
+        },
+        {
+          "type": "seo",
+          "detail": "Missing meta description",
+          "severity": "low"
+        }
+      ],
+      "size": 6385
+    },
+    {
+      "file": "blog/domain-research-tips.html",
+      "issues": [
+        {
+          "type": "broken-link",
+          "detail": "Broken link: /tools/whois",
+          "severity": "high"
+        },
+        {
+          "type": "broken-link",
+          "detail": "Broken link: /tools/whois",
+          "severity": "high"
+        }
+      ],
+      "size": 4525
+    },
+    {
+      "file": "blog/website-security-audit-2026.html",
+      "issues": [
+        {
+          "type": "broken-link",
+          "detail": "Broken link: /tools/free-ai-security-scanner",
+          "severity": "high"
+        },
+        {
+          "type": "broken-link",
+          "detail": "Broken link: /tools/free-ai-security-scanner",
+          "severity": "high"
+        }
+      ],
+      "size": 10595
+    },
+    {
+      "file": "blog/whois-lookup-guide.html",
+      "issues": [
+        {
+          "type": "broken-link",
+          "detail": "Broken link: /tools/whois",
+          "severity": "high"
+        },
+        {
+          "type": "broken-link",
+          "detail": "Broken link: /tools/whois",
+          "severity": "high"
+        }
+      ],
+      "size": 5373
+    },
+    {
+      "file": "favicon-generator.html",
+      "issues": [
+        {
+          "type": "broken-link",
+          "detail": "Broken link: /favicon.ico",
+          "severity": "high"
+        },
+        {
+          "type": "broken-link",
+          "detail": "Broken link: /ai-code-review",
+          "severity": "high"
+        }
+      ],
+      "size": 7377
+    },
+    {
+      "file": "meta-tag-preview.html",
+      "issues": [
+        {
+          "type": "accessibility",
+          "detail": "Image missing alt: <img src=\"${ogImg}\" style=\"max-width:120px;max-height:120px;border-radius:4px\" o",
+          "severity": "medium"
+        },
+        {
+          "type": "accessibility",
+          "detail": "Image missing alt: <img src=\"${twImg}\" style=\"max-width:120px;max-height:120px;border-radius:12px\" ",
+          "severity": "medium"
+        }
+      ],
+      "size": 11118
+    },
+    {
+      "file": "robots-generator.html",
+      "issues": [
+        {
+          "type": "broken-link",
+          "detail": "Broken link: /ai-code-review",
+          "severity": "high"
+        },
+        {
+          "type": "broken-link",
+          "detail": "Broken link: /text-analysis",
+          "severity": "high"
+        }
+      ],
+      "size": 7269
+    },
+    {
+      "file": "tools/css-minifier.html",
+      "issues": [
+        {
+          "type": "broken-link",
+          "detail": "Broken link: /tools/json-formatter",
+          "severity": "high"
+        },
+        {
+          "type": "broken-link",
+          "detail": "Broken link: /tools/free-ai-code-review-tool",
+          "severity": "high"
+        }
+      ],
+      "size": 9077
+    },
+    {
+      "file": "tools/web-perf-test.html",
+      "issues": [
+        {
+          "type": "broken-link",
+          "detail": "Broken link: /v1/analyze",
+          "severity": "high"
+        },
+        {
+          "type": "broken-link",
+          "detail": "Broken link: /free/analyze",
+          "severity": "high"
+        }
+      ],
+      "size": 9757
+    },
+    {
+      "file": "welcome.html",
+      "issues": [
+        {
+          "type": "broken-link",
+          "detail": "Broken link: /buy.html",
+          "severity": "high"
+        },
+        {
+          "type": "seo",
+          "detail": "Missing meta description",
+          "severity": "low"
+        }
+      ],
+      "size": 10342
+    },
+    {
+      "file": "admin.html",
+      "issues": [
+        {
+          "type": "mobile",
+          "detail": "Missing viewport meta tag",
+          "severity": "high"
+        }
+      ],
+      "size": 4867
+    },
+    {
+      "file": "agent-marketplace.html",
+      "issues": [
+        {
+          "type": "broken-link",
+          "detail": "Broken link: /blog/${p.slug||p.url}",
+          "severity": "high"
+        }
+      ],
+      "size": 10477
+    },
+    {
+      "file": "analytics.html",
+      "issues": [
+        {
+          "type": "broken-link",
+          "detail": "Broken link: /blog/${article}",
+          "severity": "high"
+        }
+      ],
+      "size": 11250
+    },
+    {
+      "file": "api-reference.html",
+      "issues": [
+        {
+          "type": "seo",
+          "detail": "Missing meta description",
+          "severity": "low"
+        }
+      ],
+      "size": 1510
+    },
+    {
+      "file": "backlinks.html",
+      "issues": [
+        {
+          "type": "mobile",
+          "detail": "Missing viewport meta tag",
+          "severity": "high"
+        }
+      ],
+      "size": 3508
+    },
+    {
+      "file": "base64-image.html",
+      "issues": [
+        {
+          "type": "accessibility",
+          "detail": "Image missing alt: <img src=\"data:'+currentType+';base64,'+currentBase64+'\">",
+          "severity": "medium"
+        }
+      ],
+      "size": 7692
+    },
+    {
+      "file": "blog/agent-seo-services.html",
+      "issues": [
+        {
+          "type": "security",
+          "detail": "Mixed content: HTTP resources on HTTPS page",
+          "severity": "high"
+        }
+      ],
+      "size": 9857
+    },
+    {
+      "file": "blog/ai-agent-survival-diary.html",
+      "issues": [
+        {
+          "type": "broken-link",
+          "detail": "Broken link: /style.css",
+          "severity": "high"
+        }
+      ],
+      "size": 8769
+    },
+    {
+      "file": "blog/ai-code-review-automation-guide.html",
+      "issues": [
+        {
+          "type": "broken-link",
+          "detail": "Broken link: /free/review",
+          "severity": "high"
+        }
+      ],
+      "size": 13033
+    },
+    {
+      "file": "blog/ai-code-review-free-tool.html",
+      "issues": [
+        {
+          "type": "mobile",
+          "detail": "Missing viewport meta tag",
+          "severity": "high"
+        }
+      ],
+      "size": 12410
+    },
+    {
+      "file": "blog/ai-code-review-free.html",
+      "issues": [
+        {
+          "type": "broken-link",
+          "detail": "Broken link: /style.css",
+          "severity": "high"
+        }
+      ],
+      "size": 5793
+    },
+    {
+      "file": "blog/ai-code-review-github-setup.html",
+      "issues": [
+        {
+          "type": "broken-link",
+          "detail": "Broken link: /github",
+          "severity": "high"
+        }
+      ],
+      "size": 10840
+    },
+    {
+      "file": "blog/api-testing-guide.html",
+      "issues": [
+        {
+          "type": "broken-link",
+          "detail": "Broken link: /style.css",
+          "severity": "high"
+        }
+      ],
+      "size": 6766
+    },
+    {
+      "file": "blog/automated-api-security-testing.html",
+      "issues": [
+        {
+          "type": "broken-link",
+          "detail": "Broken link: /style.css",
+          "severity": "high"
+        }
+      ],
+      "size": 5365
+    },
+    {
+      "file": "blog/base64-encoder-decoder-tool.html",
+      "issues": [
+        {
+          "type": "broken-link",
+          "detail": "Broken link: /tools/base64",
+          "severity": "high"
+        }
+      ],
+      "size": 7258
+    },
+    {
+      "file": "blog/json-to-typescript-converter-guide.html",
+      "issues": [
+        {
+          "type": "mobile",
+          "detail": "Missing viewport meta tag",
+          "severity": "high"
+        }
+      ],
+      "size": 8681
+    },
+    {
+      "file": "blog/json-tools-announcement.html",
+      "issues": [
+        {
+          "type": "broken-link",
+          "detail": "Broken link: /v1/analyze",
+          "severity": "high"
+        }
+      ],
+      "size": 7430
+    },
+    {
+      "file": "blog/seo-sitemap-guide-2025.html",
+      "issues": [
+        {
+          "type": "broken-link",
+          "detail": "Broken link: /free/review",
+          "severity": "high"
+        }
+      ],
+      "size": 11809
+    },
+    {
+      "file": "blog/text-analysis-tool-guide.html",
+      "issues": [
+        {
+          "type": "mobile",
+          "detail": "Missing viewport meta tag",
+          "severity": "high"
+        }
+      ],
+      "size": 9571
+    },
+    {
+      "file": "catalog/index.html",
+      "issues": [
+        {
+          "type": "mobile",
+          "detail": "Missing viewport meta tag",
+          "severity": "high"
+        }
+      ],
+      "size": 4340
+    },
+    {
+      "file": "clawhunt-submission.html",
+      "issues": [
+        {
+          "type": "mobile",
+          "detail": "Missing viewport meta tag",
+          "severity": "high"
+        }
+      ],
+      "size": 4628
+    },
+    {
+      "file": "code-grader.html",
+      "issues": [
+        {
+          "type": "code-quality",
+          "detail": "5 console.log statements in production",
+          "severity": "low"
+        }
+      ],
+      "size": 22461
+    },
+    {
+      "file": "code-quality-analyzer.html",
+      "issues": [
+        {
+          "type": "mobile",
+          "detail": "Missing viewport meta tag",
+          "severity": "high"
+        }
+      ],
+      "size": 8506
+    },
+    {
+      "file": "curl-playground.html",
+      "issues": [
+        {
+          "type": "code-quality",
+          "detail": "4 console.log statements in production",
+          "severity": "low"
+        }
+      ],
+      "size": 22977
+    },
+    {
+      "file": "deploy.html",
+      "issues": [
+        {
+          "type": "code-quality",
+          "detail": "11 console.log statements in production",
+          "severity": "low"
+        }
+      ],
+      "size": 20217
+    },
+    {
+      "file": "dev-tools.html",
+      "issues": [
+        {
+          "type": "bug",
+          "detail": "Duplicate IDs: input-${action}, output-${action}",
+          "severity": "medium"
+        }
+      ],
+      "size": 32683
+    },
+    {
+      "file": "diff-checker.html",
+      "issues": [
+        {
+          "type": "code-quality",
+          "detail": "4 console.log statements in production",
+          "severity": "low"
+        }
+      ],
+      "size": 9502
+    },
+    {
+      "file": "free-upgrade.html",
+      "issues": [
+        {
+          "type": "seo",
+          "detail": "Missing meta description",
+          "severity": "low"
+        }
+      ],
+      "size": 6733
+    },
+    {
+      "file": "get-started.html",
+      "issues": [
+        {
+          "type": "broken-link",
+          "detail": "Broken link: /docs.html",
+          "severity": "high"
+        }
+      ],
+      "size": 9822
+    },
+    {
+      "file": "getting-started.html",
+      "issues": [
+        {
+          "type": "broken-link",
+          "detail": "Broken link: /mcp/v1/openai-json",
+          "severity": "high"
+        }
+      ],
+      "size": 11427
+    },
+    {
+      "file": "github-integration.html",
+      "issues": [
+        {
+          "type": "mobile",
+          "detail": "Missing viewport meta tag",
+          "severity": "high"
+        }
+      ],
+      "size": 5350
+    },
+    {
+      "file": "google-search-console.html",
+      "issues": [
+        {
+          "type": "mobile",
+          "detail": "Missing viewport meta tag",
+          "severity": "high"
+        }
+      ],
+      "size": 5396
+    },
+    {
+      "file": "google-verification.html",
+      "issues": [
+        {
+          "type": "mobile",
+          "detail": "Missing viewport meta tag",
+          "severity": "high"
+        }
+      ],
+      "size": 2877
+    },
+    {
+      "file": "google3a2b8c1d4e5f6a7b8c9d0e1f2a3b4c5.html",
+      "issues": [
+        {
+          "type": "mobile",
+          "detail": "Missing viewport meta tag",
+          "severity": "high"
+        }
+      ],
+      "size": 2612
+    },
+    {
+      "file": "hash-generator.html",
+      "issues": [
+        {
+          "type": "bug",
+          "detail": "Duplicate IDs: textInput",
+          "severity": "medium"
+        }
+      ],
+      "size": 7551
+    },
+    {
+      "file": "html-entity-encoder.html",
+      "issues": [
+        {
+          "type": "accessibility",
+          "detail": "Image missing alt: <img src=\"x\" onerror=\"alert(1)\">",
+          "severity": "medium"
+        }
+      ],
+      "size": 5900
+    },
+    {
+      "file": "html-previewer.html",
+      "issues": [
+        {
+          "type": "accessibility",
+          "detail": "Image missing alt: <img src=\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32",
+          "severity": "medium"
+        }
+      ],
+      "size": 14730
+    },
+    {
+      "file": "json-formatter.html",
+      "issues": [
+        {
+          "type": "bug",
+          "detail": "Duplicate IDs: t_'+id+', c_'+id+'",
+          "severity": "medium"
+        }
+      ],
+      "size": 10126
+    },
+    {
+      "file": "link-assets/og-template.html",
+      "issues": [
+        {
+          "type": "mobile",
+          "detail": "Missing viewport meta tag",
+          "severity": "high"
+        }
+      ],
+      "size": 2343
+    },
+    {
+      "file": "mcp-submission-report.html",
+      "issues": [
+        {
+          "type": "mobile",
+          "detail": "Missing viewport meta tag",
+          "severity": "high"
+        }
+      ],
+      "size": 3020
+    },
+    {
+      "file": "playground.html",
+      "issues": [
+        {
+          "type": "broken-link",
+          "detail": "Broken link: /v1/review",
+          "severity": "high"
+        }
+      ],
+      "size": 25235
+    },
+    {
+      "file": "qrcode-generator.html",
+      "issues": [
+        {
+          "type": "bug",
+          "detail": "Duplicate IDs: qrInput",
+          "severity": "medium"
+        }
+      ],
+      "size": 14250
+    },
+    {
+      "file": "revenue.html",
+      "issues": [
+        {
+          "type": "mobile",
+          "detail": "Missing viewport meta tag",
+          "severity": "high"
+        }
+      ],
+      "size": 3639
+    },
+    {
+      "file": "seo-dashboard.html",
+      "issues": [
+        {
+          "type": "broken-link",
+          "detail": "Broken link: /seo/audit",
+          "severity": "high"
+        }
+      ],
+      "size": 8552
+    },
+    {
+      "file": "seo-report.html",
+      "issues": [
+        {
+          "type": "mobile",
+          "detail": "Missing viewport meta tag",
+          "severity": "high"
+        }
+      ],
+      "size": 7116
+    },
+    {
+      "file": "ssl-decoder.html",
+      "issues": [
+        {
+          "type": "bug",
+          "detail": "Duplicate IDs: pemInput",
+          "severity": "medium"
+        }
+      ],
+      "size": 12975
+    },
+    {
+      "file": "submission-helper.html",
+      "issues": [
+        {
+          "type": "bug",
+          "detail": "Duplicate IDs: short-blurb",
+          "severity": "medium"
+        }
+      ],
+      "size": 16258
+    },
+    {
+      "file": "submit-checklist.html",
+      "issues": [
+        {
+          "type": "mobile",
+          "detail": "Missing viewport meta tag",
+          "severity": "high"
+        }
+      ],
+      "size": 3446
+    },
+    {
+      "file": "submit-directories.html",
+      "issues": [
+        {
+          "type": "mobile",
+          "detail": "Missing viewport meta tag",
+          "severity": "high"
+        }
+      ],
+      "size": 7005
+    },
+    {
+      "file": "tools/badge-generator.html",
+      "issues": [
+        {
+          "type": "accessibility",
+          "detail": "Image missing alt: <img src=\"'+u+'\">",
+          "severity": "medium"
+        }
+      ],
+      "size": 4838
+    },
+    {
+      "file": "tools/code-smell-score.html",
+      "issues": [
+        {
+          "type": "broken-link",
+          "detail": "Broken link: /style.css",
+          "severity": "high"
+        }
+      ],
+      "size": 8037
+    },
+    {
+      "file": "tools/developer-cheat-sheet.html",
+      "issues": [
+        {
+          "type": "broken-link",
+          "detail": "Broken link: /tools/json-formatter",
+          "severity": "high"
+        }
+      ],
+      "size": 17629
+    },
+    {
+      "file": "tools/developer-excuse-generator.html",
+      "issues": [
+        {
+          "type": "broken-link",
+          "detail": "Broken link: /v1/review",
+          "severity": "high"
+        }
+      ],
+      "size": 7134
+    },
+    {
+      "file": "tools/developer-type-quiz.html",
+      "issues": [
+        {
+          "type": "broken-link",
+          "detail": "Broken link: /style.css",
+          "severity": "high"
+        }
+      ],
+      "size": 10045
+    },
+    {
+      "file": "tools/git-commit-message-generator.html",
+      "issues": [
+        {
+          "type": "broken-link",
+          "detail": "Broken link: /v1/review",
+          "severity": "high"
+        }
+      ],
+      "size": 6131
+    },
+    {
+      "file": "tools/og-tag-generator.html",
+      "issues": [
+        {
+          "type": "broken-link",
+          "detail": "Broken link: /v1/analyze",
+          "severity": "high"
+        }
+      ],
+      "size": 16398
+    },
+    {
+      "file": "tools/seo-meta-generator.html",
+      "issues": [
+        {
+          "type": "broken-link",
+          "detail": "Broken link: /tools/ai-seo-writer.html",
+          "severity": "high"
+        }
+      ],
+      "size": 14114
+    },
+    {
+      "file": "tools-playground.html",
+      "issues": [
+        {
+          "type": "broken-link",
+          "detail": "Broken link: /v1/analyze",
+          "severity": "high"
+        }
+      ],
+      "size": 15442
+    },
+    {
+      "file": "try-free.html",
+      "issues": [
+        {
+          "type": "seo",
+          "detail": "Missing meta description",
+          "severity": "low"
+        }
+      ],
+      "size": 5739
+    },
+    {
+      "file": "tunnel-notice.html",
+      "issues": [
+        {
+          "type": "mobile",
+          "detail": "Missing viewport meta tag",
+          "severity": "high"
+        }
+      ],
+      "size": 2895
+    },
+    {
+      "file": "wallet-payment.html",
+      "issues": [
+        {
+          "type": "seo",
+          "detail": "Missing meta description",
+          "severity": "low"
+        }
+      ],
+      "size": 8500
+    },
+    {
+      "file": "widget-dashboard.html",
+      "issues": [
+        {
+          "type": "seo",
+          "detail": "Missing meta description",
+          "severity": "low"
+        }
+      ],
+      "size": 6491
+    },
+    {
+      "file": "widget-share.html",
+      "issues": [
+        {
+          "type": "code-quality",
+          "detail": "1 TODO/FIXME comments",
+          "severity": "low"
+        }
+      ],
+      "size": 9675
+    },
+    {
+      "file": "widgets/badge-code-review.html",
+      "issues": [
+        {
+          "type": "mobile",
+          "detail": "Missing viewport meta tag",
+          "severity": "high"
+        }
+      ],
+      "size": 3099
+    },
+    {
+      "file": "widgets/index.html",
+      "issues": [
+        {
+          "type": "mobile",
+          "detail": "Missing viewport meta tag",
+          "severity": "high"
+        }
+      ],
+      "size": 3302
+    },
+    {
+      "file": "widgets/qr.html",
+      "issues": [
+        {
+          "type": "mobile",
+          "detail": "Missing viewport meta tag",
+          "severity": "high"
+        }
+      ],
+      "size": 2589
+    }
+  ]
+}

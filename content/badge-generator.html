@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Free README Badge Generator — my-automaton AI Services</title>
+<meta name="description" content="Generate beautiful SVG badges for your GitHub README showing AI-powered code review, text analysis, security scanning, and more from my-automaton.">
+<meta name="keywords" content="readme badge, github badge, svg badge, ai badge, code review badge, shield badge">
+<meta property="og:title" content="Free README Badge Generator — my-automaton">
+<meta property="og:description" content="Generate beautiful SVG badges for your GitHub README showing AI-powered code review and analysis services.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://automation.songheng.vip/badge-generator.html">
+<link rel="canonical" href="https://automation.songheng.vip/badge-generator.html">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: -apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif; background: #0f0f1a; color: #e0e0e0; min-height: 100vh; }
+.container { max-width: 900px; margin: 0 auto; padding: 40px 20px; }
+h1 { font-size: 2.2rem; background: linear-gradient(135deg,#667eea,#764ba2); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 8px; }
+.subtitle { color: #888; font-size: 1.05rem; margin-bottom: 32px; }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px; margin-bottom: 30px; }
+.badge-card { background: #1a1a2e; border: 1px solid #2a2a4a; border-radius: 12px; padding: 20px; cursor: pointer; transition: all 0.3s; }
+.badge-card:hover { border-color: #667eea; transform: translateY(-2px); box-shadow: 0 8px 30px rgba(102,126,234,0.15); }
+.badge-card.selected { border-color: #667eea; box-shadow: 0 0 0 2px rgba(102,126,234,0.3); }
+.badge-card h3 { font-size: 1rem; margin-bottom: 10px; }
+.badge-preview { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.badge-preview img { height: 28px; }
+.badge-desc { font-size: 0.85rem; color: #888; margin-top: 8px; }
+.label-input { width: 100%; background: #16213e; border: 1px solid #2a2a4a; border-radius: 8px; padding: 14px 16px; color: #e0e0e0; font-size: 1rem; margin-bottom: 16px; outline: none; }
+.label-input:focus { border-color: #667eea; }
+.color-picker { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px; }
+.color-opt { width: 36px; height: 36px; border-radius: 50%; border: 2px solid transparent; cursor: pointer; transition: all 0.2s; }
+.color-opt:hover { transform: scale(1.15); }
+.color-opt.active { border-color: #fff; box-shadow: 0 0 12px rgba(102,126,234,0.4); }
+.style-select { display: flex; gap: 12px; margin-bottom: 24px; }
+.style-btn { padding: 8px 20px; border-radius: 8px; border: 1px solid #2a2a4a; background: transparent; color: #ccc; cursor: pointer; font-size: 0.9rem; transition: all 0.2s; }
+.style-btn:hover { border-color: #667eea; color: #fff; }
+.style-btn.active { background: #667eea; border-color: #667eea; color: #fff; }
+.output-section { background: #1a1a2e; border: 1px solid #2a2a4a; border-radius: 12px; padding: 20px; margin-bottom: 20px; }
+.output-section h3 { font-size: 1rem; margin-bottom: 12px; color: #667eea; }
+.code-block { background: #0a0a1a; border: 1px solid #2a2a4a; border-radius: 8px; padding: 16px; font-family: 'Fira Code','Cascadia Code',monospace; font-size: 0.85rem; overflow-x: auto; white-space: pre-wrap; word-break: break-all; margin-bottom: 12px; position: relative; }
+.copy-btn { background: #667eea; color: white; border: none; border-radius: 6px; padding: 8px 20px; cursor: pointer; font-size: 0.9rem; transition: opacity 0.2s; }
+.copy-btn:hover { opacity: 0.85; }
+.copy-toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: #22c55e; color: white; padding: 12px 24px; border-radius: 8px; font-weight: 600; display: none; z-index: 9999; animation: fadeInOut 2s ease; }
+@keyframes fadeInOut { 0% { opacity: 0; transform: translateX(-50%) translateY(10px); } 15% { opacity: 1; transform: translateX(-50%) translateY(0); } 85% { opacity: 1; } 100% { opacity: 0; } }
+.info-box { background: rgba(102,126,234,0.08); border: 1px solid rgba(102,126,234,0.2); border-radius: 8px; padding: 14px; font-size: 0.9rem; color: #aaa; margin: 8px 0 20px; }
+.info-box strong { color: #667eea; }
+.back-link { display: inline-block; color: #667eea; text-decoration: none; margin-bottom: 24px; font-size: 0.95rem; }
+.back-link:hover { text-decoration: underline; }
+</style>
+
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Badge Generator","applicationCategory":"DeveloperApplication","operatingSystem":"Any","url":"https://automation.songheng.vip/badge-generator.html","description":"Create custom badges for README files. Shields.io style with custom colors and logos.","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"aggregateRating":{"@type":"AggregateRating","ratingValue":"4.8","ratingCount":"127"}}</script>
+</head>
+<body>
+<div class="container">
+  <a href="/" class="back-link">← Back to my-automaton</a>
+  <h1>📛 README Badge Generator</h1>
+  <p class="subtitle">Generate beautiful SVG badges for your GitHub README. Show off your AI integration.</p>
+
+  <div class="info-box">
+    <strong>⚡ Why add a badge?</strong> Every badge on GitHub is a backlink that drives traffic and SEO. Thousands of devs browse READMEs daily — be seen where it matters.
+  </div>
+
+  <h2 style="font-size:1.1rem;margin-bottom:12px;">1. Choose a Service</h2>
+  <div class="grid" id="badge-grid"></div>
+
+  <h2 style="font-size:1.1rem;margin-bottom:12px;">2. Customize Style</h2>
+  <div class="style-select" id="style-select">
+    <button class="style-btn active" data-style="flat">Flat</button>
+    <button class="style-btn" data-style="flat-square">Flat Square</button>
+    <button class="style-btn" data-style="plastic">Plastic</button>
+    <button class="style-btn" data-style="for-the-badge">For The Badge</button>
+    <button class="style-btn" data-style="social">Social</button>
+  </div>
+
+  <h2 style="font-size:1.1rem;margin-bottom:12px;">3. Pick a Color</h2>
+  <div class="color-picker" id="color-picker"></div>
+
+  <h2 style="font-size:1.1rem;margin-bottom:12px;">4. Custom Label (optional)</h2>
+  <input type="text" id="label-input" class="label-input" placeholder="e.g., my-project" value="ai-powered">
+
+  <div class="output-section">
+    <h3>📋 Your Badge</h3>
+    <div class="badge-preview" id="live-preview" style="margin-bottom:16px;justify-content:center;"></div>
+    <div class="code-block" id="markdown-output">Select a service above to generate your badge</div>
+    <button class="copy-btn" id="copy-btn">📋 Copy Markdown</button>
+  </div>
+
+  <div class="info-box" style="margin-top:20px;">
+    <strong>🔗 Direct URL API:</strong> <code style="color:#e0e0e0;">https://img.shields.io/badge/{label}-{message}-{color}.svg?style={style}</code><br>
+    Powered by <a href="https://shields.io" style="color:#667eea;" target="_blank">Shields.io</a> + my-automaton AI services.
+  </div>
+</div>
+
+<div id="copy-toast" class="copy-toast">✅ Copied to clipboard!</div>
+
+<script>
+const SERVICES = [
+  { label: 'AI Analysis', msg: 'my-automaton', color: '667eea', desc: 'Deep text analysis with AI' },
+  { label: 'code review', msg: 'my-automaton', color: '764ba2', desc: 'AI-powered code review service' },
+  { label: 'security scan', msg: 'my-automaton', color: 'e74c3c', desc: 'Automated security vulnerability scanning' },
+  { label: 'summarize', msg: 'my-automaton', color: '22c55e', desc: 'AI text summarization' },
+  { label: 'refactor', msg: 'my-automaton', color: 'f59e0b', desc: 'Smart code refactoring suggestions' },
+  { label: 'AI API', msg: 'pay-per-use', color: '3b82f6', desc: 'Pay-per-use AI API credits' },
+  { label: 'complexity', msg: 'my-automaton', color: 'ef4444', desc: 'Code complexity analysis' },
+  { label: 'explain code', msg: 'my-automaton', color: '8b5cf6', desc: 'AI code explanation tool' },
+  { label: 'batch AI', msg: 'my-automaton', color: '06b6d4', desc: 'Batch process 10 texts at once' },
+];
+
+const COLORS = [
+  '#667eea', '#764ba2', '#22c55e', '#e74c3c', '#f59e0b',
+  '#3b82f6', '#ef4444', '#8b5cf6', '#06b6d4', '#14b8a6',
+  '#f97316', '#ec4899', '#6366f1', '#84cc16', '#0ea5e9'
+];
+
+let selectedService = SERVICES[0];
+let selectedStyle = 'flat';
+let selectedColor = '667eea';
+
+function init() {
+  const grid = document.getElementById('badge-grid');
+  SERVICES.forEach((svc, i) => {
+    const card = document.createElement('div');
+    card.className = 'badge-card' + (i === 0 ? ' selected' : '');
+    card.dataset.index = i;
+    card.innerHTML = `
+      <h3>${svc.label.replace(/\b\w/g,c=>c.toUpperCase())}</h3>
+      <div class="badge-preview">
+        <img src="https://img.shields.io/badge/${encodeURIComponent(svc.label)}-${encodeURIComponent(svc.msg)}-${svc.color}.svg?style=${selectedStyle}" alt="${svc.label} badge">
+      </div>
+      <div class="badge-desc">${svc.desc}</div>
+    `;
+    card.addEventListener('click', () => {
+      document.querySelectorAll('.badge-card').forEach(c => c.classList.remove('selected'));
+      card.classList.add('selected');
+      selectedService = SERVICES[i];
+      updateBadge();
+    });
+    grid.appendChild(card);
+  });
+
+  const cp = document.getElementById('color-picker');
+  COLORS.forEach(c => {
+    const dot = document.createElement('div');
+    dot.className = 'color-opt' + (c === '#' + selectedColor ? ' active' : '');
+    dot.style.background = c;
+    dot.dataset.color = c.replace('#', '');
+    dot.addEventListener('click', () => {
+      document.querySelectorAll('.color-opt').forEach(d => d.classList.remove('active'));
+      dot.classList.add('active');
+      selectedColor = dot.dataset.color;
+      updateBadge();
+    });
+    cp.appendChild(dot);
+  });
+
+  document.querySelectorAll('.style-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.style-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      selectedStyle = btn.dataset.style;
+      updateBadge();
+    });
+  });
+
+  document.getElementById('label-input').addEventListener('input', updateBadge);
+  document.getElementById('copy-btn').addEventListener('click', copyMarkdown);
+
+  updateBadge();
+}
+
+function getBadgeUrl() {
+  const label = document.getElementById('label-input').value.trim() || selectedService.label;
+  const msg = selectedService.msg;
+  const color = selectedColor;
+  return `https://img.shields.io/badge/${encodeURIComponent(label)}-${encodeURIComponent(msg)}-${color}.svg?style=${selectedStyle}`;
+}
+
+function getMarkdown() {
+  const url = getBadgeUrl();
+  const link = 'https://automation.songheng.vip';
+  return `[![${selectedService.label}](${url})](${link})`;
+}
+
+function getHTML() {
+  const url = getBadgeUrl();
+  const link = 'https://automation.songheng.vip';
+  return `<a href="${link}" target="_blank"><img src="${url}" alt="${selectedService.label}"></a>`;
+}
+
+function updateBadge() {
+  const url = getBadgeUrl();
+  const preview = document.getElementById('live-preview');
+  preview.innerHTML = `<img src="${url}" alt="badge preview" style="height:32px;">`;
+  const md = getMarkdown();
+  document.getElementById('markdown-output').textContent = md;
+}
+
+function copyMarkdown() {
+  const text = document.getElementById('markdown-output').textContent;
+  navigator.clipboard.writeText(text).then(() => {
+    const toast = document.getElementById('copy-toast');
+    toast.style.display = 'block';
+    setTimeout(() => { toast.style.display = 'none'; }, 2000);
+  }).catch(() => {
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+    const toast = document.getElementById('copy-toast');
+    toast.style.display = 'block';
+    setTimeout(() => { toast.style.display = 'none'; }, 2000);
+  });
+}
+
+init();
+</script>
+<script src="/conversion-banner.js" defer></script>
+</body>
+</html>

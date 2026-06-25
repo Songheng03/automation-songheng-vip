@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UUID & ULID Generator — Free Online Tool</title>
+<meta name="description" content="Generate UUID v4, UUID v7, ULID, NanoID, and random strings instantly. Bulk generate up to 100 at once. Free, no signup, works in browser." />
+<meta name="keywords" content="UUID generator, ULID generator, NanoID, unique ID, random string generator, developer tool" />
+<meta property="og:title" content="UUID & ULID Generator — Free Developer Tool" />
+<meta property="og:description" content="Generate UUID v4, UUID v7, ULID, NanoID, and random strings instantly. No server upload." />
+<link rel="canonical" href="https://automation.songheng.vip/tools/uuid-generator" />
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#0d1117;color:#c9d1d9;min-height:100vh;}
+header{background:#161b22;border-bottom:1px solid #30363d;padding:16px 24px;}
+header h1{color:#58a6ff;font-size:1.3em;}
+header span{color:#8b949e;font-size:0.9em;}
+.container{max-width:1000px;margin:0 auto;padding:20px;}
+.toolbar{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap;}
+.toolbar button{padding:8px 16px;border:1px solid #30363d;border-radius:6px;cursor:pointer;font-size:13px;background:#21262d;color:#c9d1d9;}
+.toolbar button:hover{background:#30363d;border-color:#58a6ff;}
+.toolbar button.primary{background:#238636;border-color:#238636;color:#fff;}
+.toolbar button.primary:hover{background:#2ea043;}
+.type-selector{display:flex;gap:6px;margin-bottom:16px;flex-wrap:wrap;}
+.type-btn{padding:6px 14px;border:1px solid #30363d;border-radius:20px;cursor:pointer;font-size:13px;background:#161b22;color:#8b949e;}
+.type-btn.active{background:#1f6feb;border-color:#1f6feb;color:#fff;}
+.type-btn:hover{background:#30363d;}
+.options-panel{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:16px;margin-bottom:16px;display:flex;gap:20px;flex-wrap:wrap;}
+.options-panel label{display:flex;align-items:center;gap:6px;font-size:13px;cursor:pointer;}
+.options-panel input[type="number"]{background:#0d1117;border:1px solid #30363d;color:#c9d1d9;padding:4px 8px;border-radius:4px;width:60px;font-family:monospace;}
+.result-area{background:#161b22;border:1px solid #30363d;border-radius:8px;overflow:hidden;}
+.result-area .header{display:flex;justify-content:space-between;align-items:center;padding:10px 16px;background:#1c2128;border-bottom:1px solid #30363d;font-size:13px;color:#8b949e;}
+.result-area textarea{width:100%;min-height:300px;padding:16px;font-family:'Fira Code','Consolas',monospace;font-size:13px;line-height:1.6;background:#0d1117;color:#c9d1d9;border:none;resize:vertical;}
+.result-area textarea:focus{outline:none;}
+.copy-msg{position:fixed;bottom:20px;right:20px;background:#238636;color:#fff;padding:10px 20px;border-radius:6px;display:none;}
+.usage{padding:8px 16px;color:#8b949e;font-size:12px;}
+.footer{margin-top:40px;padding:20px;text-align:center;color:#8b949e;font-size:14px;border-top:1px solid #30363d;}
+.footer a{color:#58a6ff;text-decoration:none;}
+.url-bar{display:flex;align-items:center;gap:4px;margin-bottom:16px;padding:6px 10px;background:#161b22;border:1px solid #30363d;border-radius:6px;font-family:monospace;font-size:12px;color:#8b949e;}
+.url-bar .path{color:#58a6ff;}
+</style>
+<!-- Open Graph / Social Meta Tags -->
+<meta property="og:image" content="https://automation.songheng.vip/og-image.png" />
+<meta property="og:url" content="https://automation.songheng.vip/tools/uuid-generator.html" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="my-automaton" />
+<meta property="og:locale" content="en_US" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="UUID &amp; ULID Generator — Free Online Tool" />
+<meta name="twitter:description" content="Generate UUID v4, UUID v7, ULID, NanoID, and random strings instantly. Bulk generate up to 100 at once. Free, no signup, works in browser." />
+<meta name="twitter:image" content="https://automation.songheng.vip/og-image.png" />
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "UUID & ULID Generator — Free Online Tool",
+  "description": "Generate UUID v4, UUID v7, ULID, NanoID, and random strings instantly. Bulk generate up to 100 at once. Free, no signup, works in browser.",
+  "url": "https://automation.songheng.vip/tools/uuid-generator.html",
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": "Web",
+  "author": {
+    "@type": "Organization",
+    "name": "my-automaton",
+    "url": "https://automation.songheng.vip"
+  },
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  }
+}
+</script>
+</head>
+<body>
+<div style="background:#161b22;border-bottom:1px solid #30363d;padding:10px 20px;font-size:.85rem;display:flex;gap:16px;align-items:center;flex-wrap:wrap"><a href="/" style="color:#58a6ff;text-decoration:none;font-weight:600">🏠 Home</a><span style="color:#484f58">|</span><a href="/pricing.html" style="color:#8b949e;text-decoration:none">Pricing</a><a href="/api-docs.html" style="color:#8b949e;text-decoration:none">API</a><a href="/playground.html" style="color:#8b949e;text-decoration:none">Playground</a></div>
+
+<header><h1>🔑 UUID & ID Generator</h1><span>Generate UUIDs, ULIDs, NanoIDs, and random strings instantly</span></header>
+
+<div class="container">
+  <div class="url-bar"><span>https://automation.songheng.vip</span><span class="path">/tools/uuid-generator</span></div>
+
+  <div class="type-selector" id="typeSelector">
+    <button class="type-btn active" data-type="uuid-v4">UUID v4</button>
+    <button class="type-btn" data-type="uuid-v7">UUID v7</button>
+    <button class="type-btn" data-type="ulid">ULID</button>
+    <button class="type-btn" data-type="nanoid">NanoID</button>
+    <button class="type-btn" data-type="random">Random String</button>
+    <button class="type-btn" data-type="cuid">CUID</button>
+  </div>
+
+  <div class="options-panel">
+    <label>Count: <input type="number" id="count" value="5" min="1" max="100" /></label>
+    <label id="lengthOpt" style="display:none;">Length: <input type="number" id="length" value="21" min="4" max="64" /></label>
+    <label id="prefixOpt" style="display:none;">Prefix: <input type="text" id="prefix" value="" style="width:80px;background:#0d1117;border:1px solid #30363d;color:#c9d1d9;padding:4px 8px;border-radius:4px;font-family:monospace;" /></label>
+    <label><input type="checkbox" id="uppercase" /> Uppercase</label>
+    <label><input type="checkbox" id="hyphens" checked /> Hyphens</label>
+  </div>
+
+  <div class="toolbar">
+    <button onclick="generate()" class="primary">⚡ Generate</button>
+    <button onclick="copyAll()">📄 Copy All</button>
+    <button onclick="download()">⬇️ Download TXT</button>
+  </div>
+
+  <div class="result-area">
+    <div class="header"><span>Results (<span id="resultCount">5</span> generated)</span></div>
+    <textarea id="output" readonly></textarea>
+  </div>
+
+  <div class="footer">
+    <p>🔒 All processing in your browser — no data uploaded.</p>
+    <p>Built by <a href="https://automation.songheng.vip">my-automaton</a> · <a href="https://automation.songheng.vip/tools">More free tools</a></p>
+  </div>
+</div>
+
+<div class="copy-msg" id="copyMsg">✓ Copied!</div>
+
+<script>
+// ─── ID Generators ───
+function uuidV4() {
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {
+    const r = Math.random() * 16 | 0;
+    return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
+  });
+}
+
+function uuidV7() {
+  const now = Date.now();
+  const hex = now.toString(16).padStart(12, '0');
+  const rand1 = Math.random().toString(16).substring(2, 6);
+  const ver = '7';
+  const rand2 = (Math.random() * 16 | 0).toString(16);
+  const vari = (8 + Math.random() * 4 | 0).toString(16);
+  const rand3 = Math.random().toString(16).substring(2, 14);
+  return `${hex.slice(0,8)}-${hex.slice(8,12)}-${ver}${rand1.slice(0,3)}-${vari}${rand2}-${rand3.slice(0,12)}`;
+}
+
+function ulid() {
+  const chars = '0123456789ABCDEFGHJKMNPQRSTVWXYZ';
+  const time = Date.now().toString(32).toUpperCase().padStart(10, '0');
+  let random = '';
+  for (let i = 0; i < 16; i++) random += chars[Math.random() * chars.length | 0];
+  return time + random;
+}
+
+function nanoid(length = 21) {
+  const chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz_-';
+  let id = '';
+  for (let i = 0; i < length; i++) id += chars[Math.random() * chars.length | 0];
+  return id;
+}
+
+function randomString(length = 16) {
+  const chars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  let result = '';
+  for (let i = 0; i < length; i++) result += chars[Math.random() * chars.length | 0];
+  return result;
+}
+
+function cuid() {
+  const letter = 'abcdefghijklmnopqrstuvwxyz';
+  const c = letter[Math.random() * letter.length | 0];
+  const ts = Date.now().toString(36);
+  const counter = Math.random().toString(36).substring(2, 6);
+  const rand = Math.random().toString(36).substring(2, 6);
+  return `c${ts}${counter}${rand}${c}`;
+}
+
+// ─── Format ───
+function applyFormat(id, opts) {
+  if (opts.uppercase) id = id.toUpperCase();
+  if (!opts.hyphens && id.includes('-')) id = id.replace(/-/g, '');
+  if (opts.prefix && !id.startsWith(opts.prefix)) id = opts.prefix + id;
+  return id;
+}
+
+// ─── Generate ───
+function generate() {
+  const type = document.querySelector('.type-btn.active')?.dataset.type || 'uuid-v4';
+  const count = Math.min(100, Math.max(1, parseInt(document.getElementById('count').value) || 1));
+  const opts = {
+    uppercase: document.getElementById('uppercase').checked,
+    hyphens: document.getElementById('hyphens').checked,
+    prefix: document.getElementById('prefix').value || '',
+    length: parseInt(document.getElementById('length').value) || 21
+  };
+
+  const generators = {
+    'uuid-v4': uuidV4,
+    'uuid-v7': uuidV7,
+    'ulid': ulid,
+    'nanoid': () => nanoid(opts.length),
+    'random': () => randomString(opts.length),
+    'cuid': cuid
+  };
+
+  const gen = generators[type] || uuidV4;
+  const results = [];
+  for (let i = 0; i < count; i++) results.push(applyFormat(gen(), opts));
+
+  document.getElementById('output').value = results.join('\n');
+  document.getElementById('resultCount').textContent = results.length;
+}
+
+function copyAll() {
+  const text = document.getElementById('output').value;
+  if (!text) return;
+  navigator.clipboard.writeText(text).then(() => {
+    const msg = document.getElementById('copyMsg');
+    msg.style.display = 'block';
+    setTimeout(() => msg.style.display = 'none', 1500);
+  });
+}
+
+function download() {
+  const text = document.getElementById('output').value;
+  if (!text) return;
+  const blob = new Blob([text], {type: 'text/plain'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `ids-${new Date().toISOString().slice(0,10)}.txt`;
+  a.click();
+}
+
+// ─── Type selector ───
+document.querySelectorAll('.type-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.type-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const type = btn.dataset.type;
+    document.getElementById('lengthOpt').style.display = ['nanoid','random'].includes(type) ? 'flex' : 'none';
+    document.getElementById('prefixOpt').style.display = 'flex';
+    generate();
+  });
+});
+
+// ─── Auto-generate on load ───
+document.addEventListener('DOMContentLoaded', generate);
+['count','uppercase','hyphens','length','prefix'].forEach(id => {
+  const el = document.getElementById(id);
+  if (el) el.addEventListener('change', generate);
+});
+</script>
+</body>
+</html>

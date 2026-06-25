@@ -1,0 +1,331 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "my-automaton",
+    "description": "AI-powered code review, security scanning, text analysis, and summarization via API",
+    "version": "1.0.0",
+    "x-wallet": "0x76eADdEBFfb6a61DD071f97F4508467fc55dd113"
+  },
+  "servers": [
+    {
+      "url": "https://automation.songheng.vip"
+    }
+  ],
+  "paths": {
+    "/v1/analyze": {
+      "post": {
+        "summary": "Analyze API",
+        "description": "Deep text analysis - sentiment, entities, keywords, tone",
+        "parameters": [
+          {
+            "name": "X-API-Key",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            },
+            "description": "API key (optional for free tier)"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "text": {
+                    "type": "string"
+                  },
+                  "code": {
+                    "type": "string"
+                  },
+                  "mode": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "402": {
+            "description": "Payment required"
+          }
+        }
+      }
+    },
+    "/v1/summarize": {
+      "post": {
+        "summary": "Summarize API",
+        "description": "AI-powered text summarization",
+        "parameters": [
+          {
+            "name": "X-API-Key",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            },
+            "description": "API key (optional for free tier)"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "text": {
+                    "type": "string"
+                  },
+                  "code": {
+                    "type": "string"
+                  },
+                  "mode": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "402": {
+            "description": "Payment required"
+          }
+        }
+      }
+    },
+    "/v1/review": {
+      "post": {
+        "summary": "Review API",
+        "description": "Comprehensive code review with bugs, security, and suggestions",
+        "parameters": [
+          {
+            "name": "X-API-Key",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            },
+            "description": "API key (optional for free tier)"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "text": {
+                    "type": "string"
+                  },
+                  "code": {
+                    "type": "string"
+                  },
+                  "mode": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "402": {
+            "description": "Payment required"
+          }
+        }
+      }
+    },
+    "/v1/security": {
+      "post": {
+        "summary": "Security API",
+        "description": "OWASP-focused security vulnerability scan",
+        "parameters": [
+          {
+            "name": "X-API-Key",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            },
+            "description": "API key (optional for free tier)"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "text": {
+                    "type": "string"
+                  },
+                  "code": {
+                    "type": "string"
+                  },
+                  "mode": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "402": {
+            "description": "Payment required"
+          }
+        }
+      }
+    },
+    "/v1/explain": {
+      "post": {
+        "summary": "Explain API",
+        "description": "Code explanation in plain English",
+        "parameters": [
+          {
+            "name": "X-API-Key",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            },
+            "description": "API key (optional for free tier)"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "text": {
+                    "type": "string"
+                  },
+                  "code": {
+                    "type": "string"
+                  },
+                  "mode": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "402": {
+            "description": "Payment required"
+          }
+        }
+      }
+    },
+    "/v1/refactor": {
+      "post": {
+        "summary": "Refactor API",
+        "description": "Refactoring suggestions with code examples",
+        "parameters": [
+          {
+            "name": "X-API-Key",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            },
+            "description": "API key (optional for free tier)"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "text": {
+                    "type": "string"
+                  },
+                  "code": {
+                    "type": "string"
+                  },
+                  "mode": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "402": {
+            "description": "Payment required"
+          }
+        }
+      }
+    },
+    "/v1/complexity": {
+      "post": {
+        "summary": "Complexity API",
+        "description": "Algorithmic complexity analysis (Big O)",
+        "parameters": [
+          {
+            "name": "X-API-Key",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            },
+            "description": "API key (optional for free tier)"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "text": {
+                    "type": "string"
+                  },
+                  "code": {
+                    "type": "string"
+                  },
+                  "mode": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "402": {
+            "description": "Payment required"
+          }
+        }
+      }
+    }
+  }
+}

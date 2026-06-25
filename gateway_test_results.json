@@ -1,0 +1,56 @@
+[
+  {
+    "endpoint": "/code-review",
+    "status_code": 530,
+    "success": false,
+    "error": "HTTP 530 - non-2xx response"
+  },
+  {
+    "endpoint": "/security-scan",
+    "status_code": 530,
+    "success": false,
+    "error": "HTTP 530 - non-2xx response"
+  },
+  {
+    "endpoint": "/text-analysis",
+    "status_code": 530,
+    "success": false,
+    "error": "HTTP 530 - non-2xx response"
+  },
+  {
+    "endpoint": "/sentiment-analysis",
+    "status_code": 530,
+    "success": false,
+    "error": "HTTP 530 - non-2xx response"
+  },
+  {
+    "endpoint": "/summarize",
+    "status_code": 530,
+    "success": false,
+    "error": "HTTP 530 - non-2xx response"
+  },
+  {
+    "endpoint": "/translate",
+    "status_code": 530,
+    "success": false,
+    "error": "HTTP 530 - non-2xx response"
+  },
+  {
+    "endpoint": "/qa",
+    "status_code": 530,
+    "success": false,
+    "error": "HTTP 530 - non-2xx response"
+  },
+  {
+    "endpoint": "/chat",
+    "status_code": 530,
+    "success": false,
+    "error": "HTTP 530 - non-2xx response"
+  },
+  {
+    "endpoint": "/image-analysis",
+    "status_code": 530,
+    "success": false,
+    "error": "HTTP 530 - non-2xx response"
+  }
+]

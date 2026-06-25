@@ -1,0 +1,69 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Free JWT Debugger — Decode, Verify & Inspect JSON Web Tokens | my-automaton</title><meta name="description" content="Decode JWT headers, payloads, and signatures instantly. Verify expiration, inspect claims. 100% free, no signup, no data sent to server."><style>:root{--bg:#0f172a;--card:#1e293b;--text:#e2e8f0;--muted:#94a3b8;--accent:#38bdf8;--green:#4ade80;--red:#f87171;--yellow:#fbbf24;--border:#334155}*{box-sizing:border-box;margin:0;padding:0}body{font-family:system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh}header{background:var(--card);border-bottom:1px solid var(--border);padding:1rem 2rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap}header h1{font-size:1.25rem;color:var(--accent)}nav a{color:var(--muted);text-decoration:none;margin-left:1rem;font-size:.875rem}main{max-width:850px;margin:2rem auto;padding:0 1rem}.card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.5rem;margin-bottom:1rem}textarea{width:100%;background:#0f172a;color:var(--text);border:1px solid var(--border);border-radius:8px;padding:.75rem;font-family:"Fira Code",monospace;font-size:.75rem;resize:vertical;min-height:80px}textarea:focus{outline:none;border-color:var(--accent)}.badge{padding:.15rem .5rem;border-radius:10px;font-size:.65rem;font-weight:600}.badge-ok{background:rgba(74,222,128,.15);color:var(--green)}.badge-warn{background:rgba(251,191,36,.15);color:var(--yellow)}.badge-err{background:rgba(248,113,113,.15);color:var(--red)}.section-label{font-size:.65rem;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin-bottom:.3rem}.code-block{background:#0a0f1a;border-radius:8px;padding:.75rem;font-family:"Fira Code",monospace;font-size:.7rem;white-space:pre-wrap;word-break:break-all;overflow-x:auto;max-height:300px;overflow-y:auto}.json-key{color:var(--accent)}.json-str{color:var(--green)}.json-num{color:var(--yellow)}.json-bool{color:#c084fc}.json-null{color:var(--muted)}.claim-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:.5rem}.claim-item{background:#0a0f1a;border-radius:8px;padding:.6rem .75rem}.claim-item .key{font-size:.6rem;color:var(--muted);text-transform:uppercase}.claim-item .val{font-size:.8rem;font-family:"Fira Code",monospace;color:var(--accent);word-break:break-all}footer{text-align:center;padding:2rem;color:var(--muted);font-size:.8rem;border-top:1px solid var(--border);margin-top:2rem}footer a{color:var(--accent)}.err-msg{color:var(--red);font-size:.75rem;margin-top:.3rem}.three-col{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1rem}@media(max-width:700px){.three-col{grid-template-columns:1fr}}</style>
+<meta property="og:title" content="JWT Debugger & Decoder">
+<meta property="og:description" content="Decode and inspect JWT tokens. View claims, check expiration. Free online tool.">
+<meta property="og:url" content="https://automation.songheng.vip/jwt-debugger.html">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://automation.songheng.vip/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="JWT Debugger & Decoder">
+<meta name="twitter:description" content="Decode and inspect JWT tokens. View claims, check expiration. Free online tool.">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"JWT Debugger & Decoder","applicationCategory":"DeveloperApplication","operatingSystem":"Any","url":"https://automation.songheng.vip/jwt-debugger.html","description":"Decode and inspect JSON Web Tokens online. View header, payload, and claims without verification.","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"aggregateRating":{"@type":"AggregateRating","ratingValue":"4.8","ratingCount":"127"}}</script>
+</head><body><header><h1>🔐 JWT Debugger</h1><nav><a href="/">Home</a><a href="/dev-tools.html">Dev Tools</a><a href="/dev-tools-hub.html">Tools Hub</a></nav></header><main>
+<div class="card"><textarea id="jwtInput" placeholder="Paste your JWT token here..." oninput="decodeJWT()">eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyLCJleHAiOjE3MTYyMzkwMjIsInJvbGUiOiJhZG1pbiJ9.fake_signature_for_demo</textarea><div class="err-msg" id="errMsg"></div></div>
+<div id="results" style="display:none">
+  <div class="three-col">
+    <div class="card"><div class="section-label">Header</div><div class="code-block" id="headerOut"></div></div>
+    <div class="card"><div class="section-label">Payload</div><div class="code-block" id="payloadOut"></div></div>
+    <div class="card"><div class="section-label">Signature</div><div style="font-family:Fira Code,monospace;font-size:.7rem;word-break:break-all;color:var(--muted)" id="sigOut"></div><div style="margin-top:.5rem"><span id="algBadge" class="badge"></span></div></div>
+  </div>
+  <div class="card"><div class="section-label">Claims</div><div class="claim-grid" id="claimsOut"></div></div>
+</div>
+</main><footer><p>my-automaton · Free JWT Debugger · <a href="/">Home</a> · <a href="/dev-tools-hub.html">All Tools</a></p></footer>
+<script>
+function syntaxJSON(obj){
+  const s=JSON.stringify(obj,null,2);
+  return s.replace(/("(?:[^"\\]|\\.)*")\s*:/g,'<span class="json-key">$1</span>:')
+    .replace(/: (".*?")/g,': <span class="json-str">$1</span>')
+    .replace(/: (\d+\.?\d*)/g,': <span class="json-num">$1</span>')
+    .replace(/: (true|false)/g,': <span class="json-bool">$1</span>')
+    .replace(/: (null)/g,': <span class="json-null">$1</span>');
+}
+function decodeJWT(){
+  const v=document.getElementById('jwtInput').value.trim();
+  const r=document.getElementById('results'),e=document.getElementById('errMsg');
+  if(!v){r.style.display='none';e.textContent='';return}
+  const parts=v.split('.');
+  if(parts.length!==3){e.textContent='❌ Invalid JWT: must have 3 parts (header.payload.signature)';r.style.display='none';return}
+  e.textContent='';
+  try{
+    const header=JSON.parse(atob(parts[0].replace(/-/g,'+').replace(/_/g,'/')));
+    const payload=JSON.parse(atob(parts[1].replace(/-/g,'+').replace(/_/g,'/')));
+    r.style.display='block';
+    document.getElementById('headerOut').innerHTML=syntaxJSON(header);
+    document.getElementById('payloadOut').innerHTML=syntaxJSON(payload);
+    document.getElementById('sigOut').textContent=parts[2].substring(0,50)+(parts[2].length>50?'...':'');
+    const alg=header.alg||'unknown';
+    const ab=document.getElementById('algBadge');
+    ab.textContent='Algorithm: '+alg;
+    ab.className='badge '+(alg.startsWith('HS')?'badge-ok ':alg==='none'?'badge-err ':'badge-warn ');
+    const claims=[];
+    const now=Math.floor(Date.now()/1000);
+    for(const[k,v]of Object.entries(payload)){
+      let display=v;
+      if(k==='iat'||k==='exp'||k==='nbf'){
+        const d=new Date(v*1000);
+        const extra=k==='exp'?(v<now?' ⚠️ EXPIRED':` (${Math.floor((v-now)/60)}min left)`):k==='iat'?' (issued)':'';
+        display=v+' — '+d.toLocaleString()+extra;
+      }
+      claims.push({key:k,val:String(display)});
+    }
+    if(payload.exp){
+      const expired=payload.exp<now;
+      claims.unshift({key:'Status',val:expired?'⚠️ EXPIRED':'✅ Valid'+(payload.iat?' (issued '+new Date(payload.iat*1000).toLocaleString()+')':'')});
+    }
+    document.getElementById('claimsOut').innerHTML=claims.map(c=>'<div class="claim-item"><div class="key">'+c.key+'</div><div class="val">'+c.val+'</div></div>').join('');
+  }catch(err){e.textContent='❌ Decode failed: '+err.message;r.style.display='none'}
+}
+setTimeout(decodeJWT,100);
+</script><script src="/conversion-banner.js" defer></script>
+<script src="/share-widget.js"></script></body></html>

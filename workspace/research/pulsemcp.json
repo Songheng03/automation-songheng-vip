@@ -1,0 +1,50 @@
+{
+  "directory_name": "PulseMCP",
+  "website_url": "https://pulsemcp.com",
+  "description": "A directory for MCP (Model Context Protocol) servers, clients, apps, and use cases.",
+  "submission_guidelines": {
+    "submission_url": "https://pulsemcp.com/submit",
+    "submission_types": [
+      {
+        "type": "MCP Server",
+        "description": "Submit an MCP server implementation",
+        "required_fields": [
+          {
+            "name": "URL",
+            "description": "Can be a GitHub repository URL, a subfolder of a repository, or a standalone website URL",
+            "placeholder": "https://github.com/owner/repository"
+          }
+        ]
+      },
+      {
+        "type": "MCP Client",
+        "description": "Submit an MCP client implementation",
+        "required_fields": [
+          {
+            "name": "URL",
+            "description": "Can be a GitHub repository URL, a subfolder of a repository, or a standalone website URL",
+            "placeholder": "https://github.com/owner/repository"
+          }
+        ]
+      }
+    ],
+    "alternative_submission_method": {
+      "description": "PulseMCP ingests entries from the Official MCP Registry daily and processes them weekly",
+      "note": "If it has been a week since publishing in the Official MCP Registry, or to make adjustments to a listing, email contact is available"
+    },
+    "important_notes": [
+      "Use case submissions are no longer being accepted (as of research date)",
+      "There is an API available for programmatic access",
+      "The site also features 'MCP Apps' and 'Posts' sections",
+      "Discord community is available for discussions"
+    ],
+    "contact_email": "contact email available on the site",
+    "links": {
+      "servers": "https://pulsemcp.com/servers",
+      "clients": "https://pulsemcp.com/clients",
+      "use_cases": "https://pulsemcp.com/use-cases",
+      "submit": "https://pulsemcp.com/submit"
+    }
+  },
+  "date_researched": "2025-02-15"
+}

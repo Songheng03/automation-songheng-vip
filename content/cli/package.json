@@ -1,0 +1,30 @@
+{
+  "name": "my-automaton-cli",
+  "version": "1.0.0",
+  "description": "AI-powered code review, security scan, and summarization from your terminal",
+  "main": "my-automaton-cli.js",
+  "bin": {
+    "my-automaton": "./my-automaton-cli.js"
+  },
+  "scripts": {
+    "test": "node my-automaton-cli.js"
+  },
+  "keywords": [
+    "ai", "code-review", "cli", "security-scan", "code-quality",
+    "static-analysis", "summarize", "text-analysis", "automation"
+  ],
+  "author": "my-automaton",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Conway-Research/automaton-ai"
+  },
+  "homepage": "https://automation.songheng.vip",
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "files": [
+    "my-automaton-cli.js",
+    "README.md"
+  ]
+}

@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Code Examples — my-automaton API</title>
+<meta name="description" content="Live code examples for using my-automaton's AI API: code review, security scan, text analysis. JavaScript, Python, curl examples with x402 micropayments.">
+<style>
+  :root { --bg: #0d1117; --card: #161b22; --border: #30363d; --text: #c9d1d9; --accent: #58a6ff; --green: #3fb950; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; padding: 20px; }
+  .container { max-width: 1000px; margin: 0 auto; }
+  h1 { font-size: 2.2em; margin-bottom: 8px; color: #f0f6fc; }
+  .subtitle { color: #8b949e; margin-bottom: 32px; font-size: 1.1em; }
+  .lang-tabs { display: flex; gap: 4px; margin-bottom: 20px; flex-wrap: wrap; }
+  .lang-tab { padding: 8px 20px; background: var(--card); border: 1px solid var(--border); border-radius: 6px; cursor: pointer; color: var(--text); font-size: 0.9em; }
+  .lang-tab.active { background: var(--accent); color: #0d1117; border-color: var(--accent); }
+  .example-card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 24px; margin-bottom: 20px; }
+  .example-card h3 { color: #f0f6fc; margin-bottom: 12px; }
+  .example-card p { margin-bottom: 12px; color: #8b949e; }
+  pre { background: #1c2128; padding: 16px; border-radius: 8px; overflow-x: auto; border: 1px solid var(--border); margin: 12px 0; font-size: 0.9em; }
+  code { font-family: 'Fira Code', 'Consolas', monospace; }
+  .badge { display: inline-block; padding: 2px 10px; border-radius: 12px; font-size: 0.8em; margin-right: 6px; }
+  .free-badge { background: #1c2128; color: var(--green); border: 1px solid var(--green); }
+  .premium-badge { background: #1c2128; color: #d2a8ff; border: 1px solid #d2a8ff; }
+  .try-btn { display: inline-block; background: var(--accent); color: #0d1117; padding: 10px 24px; border-radius: 8px; text-decoration: none; font-weight: 600; margin-top: 8px; }
+  .try-btn:hover { opacity: 0.9; }
+</style>
+</head>
+<body>
+<div class="container">
+<h1>⚡ API Code Examples</h1>
+<p class="subtitle">Copy-paste these examples to start using the API in seconds. Free tier: 3 requests/day per IP.</p>
+
+<div class="lang-tabs">
+  <span class="lang-tab active" onclick="switchLang('curl')">curl</span>
+  <span class="lang-tab" onclick="switchLang('javascript')">JavaScript</span>
+  <span class="lang-tab" onclick="switchLang('python')">Python</span>
+</div>
+
+<!-- Code Review -->
+<div class="example-card">
+  <h3><span class="badge premium-badge">PREMIUM</span> Code Review</h3>
+  <p>Review code for bugs, security issues, performance problems, and best practices.</p>
+  <div class="code-block curl">
+<pre><code>curl -X POST https://automation.songheng.vip/v1/review \
+  -H "Content-Type: application/json" \
+  -d '{
+    "code": "function processUserData(input) {\n  eval(input);\n  return JSON.parse(input);\n}",
+    "language": "javascript"
+  }'</code></pre>
+  </div>
+  <div class="code-block javascript" style="display:none;">
+<pre><code>const resp = await fetch('https://automation.songheng.vip/v1/review', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({
+    code: 'function processUserData(input) {\n  eval(input);\n  return JSON.parse(input);\n}',
+    language: 'javascript'
+  })
+});
+const data = await resp.json();
+console.log(data);</code></pre>
+  </div>
+  <div class="code-block python" style="display:none;">
+<pre><code>import requests
+resp = requests.post('https://automation.songheng.vip/v1/review', json={
+    'code': 'function processUserData(input) {\n  eval(input);\n  return JSON.parse(input);\n}',
+    'language': 'javascript'
+})
+print(resp.json())</code></pre>
+  </div>
+  <a href="/free/review" class="try-btn">Try Free →</a>
+</div>
+
+<!-- Security Scan -->
+<div class="example-card">
+  <h3><span class="badge premium-badge">PREMIUM</span> Security Vulnerability Scan</h3>
+  <p>Scan code for OWASP Top 10 vulnerabilities, injection flaws, and misconfigurations.</p>
+  <div class="code-block curl">
+<pre><code>curl -X POST https://automation.songheng.vip/v1/security \
+  -H "Content-Type: application/json" \
+  -d '{
+    "code": "app.get(\"/user\", (req, res) => {\n  const id = req.query.id;\n  const query = \"SELECT * FROM users WHERE id = \" + id;\n  db.query(query, (err, result) => res.json(result));\n});",
+    "language": "javascript"
+  }'</code></pre>
+  </div>
+  <div class="code-block javascript" style="display:none;">
+<pre><code>const resp = await fetch('https://automation.songheng.vip/v1/security', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({
+    code: 'app.get("/user", (req, res) => {\n  const id = req.query.id;\n  const query = "SELECT * FROM users WHERE id = " + id;\n  db.query(query, (err, result) => res.json(result));\n});',
+    language: 'javascript'
+  })
+});
+const issues = await resp.json();
+console.log(`Found ${issues.length} vulnerabilities`);</code></pre>
+  </div>
+  <div class="code-block python" style="display:none;">
+<pre><code>import requests
+resp = requests.post('https://automation.songheng.vip/v1/security', json={
+    'code': 'app.get("/user", (req, res) => {\n  const id = req.query.id;\n  const query = "SELECT * FROM users WHERE id = " + id;\n  db.query(query, (err, result) => res.json(result));\n});',
+    'language': 'javascript'
+})
+print(resp.json())</code></pre>
+  </div>
+  <a href="/free/security" class="try-btn">Try Free →</a>
+</div>
+
+<!-- Text Analysis -->
+<div class="example-card">
+  <h3><span class="badge premium-badge">PREMIUM</span> Text Analysis</h3>
+  <p>Deep analysis of text: sentiment, entities, key themes, writing quality, and recommendations.</p>
+  <div class="code-block curl">
+<pre><code>curl -X POST https://automation.songheng.vip/v1/analyze \
+  -H "Content-Type: application/json" \
+  -d '{
+    "text": "The new quantum computing breakthrough promises to revolutionize drug discovery. Researchers at MIT have demonstrated a 1000x speedup in molecular simulation using 50 logical qubits.",
+    "mode": "deep"
+  }'</code></pre>
+  </div>
+  <div class="code-block javascript" style="display:none;">
+<pre><code>const resp = await fetch('https://automation.songheng.vip/v1/analyze', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({
+    text: 'The new quantum computing breakthrough promises to revolutionize drug discovery.',
+    mode: 'deep'
+  })
+});
+const analysis = await resp.json();
+console.log(analysis.sentiment, analysis.entities);</code></pre>
+  </div>
+  <div class="code-block python" style="display:none;">
+<pre><code>import requests
+resp = requests.post('https://automation.songheng.vip/v1/analyze', json={
+    'text': 'The new quantum computing breakthrough promises to revolutionize drug discovery.',
+    'mode': 'deep'
+})
+print(resp.json())</code></pre>
+  </div>
+  <a href="/free/analyze" class="try-btn">Try Free →</a>
+</div>
+
+<!-- Summarize -->
+<div class="example-card">
+  <h3><span class="badge premium-badge">PREMIUM</span> AI Summarization</h3>
+  <p>Summarize articles, documents, or any long text into concise key points.</p>
+  <div class="code-block curl">
+<pre><code>curl -X POST https://automation.songheng.vip/v1/summarize \
+  -H "Content-Type: application/json" \
+  -d '{
+    "text": "Your long article text here...",
+    "max_length": 200
+  }'</code></pre>
+  </div>
+  <div class="code-block python" style="display:none;">
+<pre><code>import requests
+resp = requests.post('https://automation.songheng.vip/v1/summarize', json={
+    'text': 'Your long article text here...',
+    'max_length': 200
+})
+print(resp.json()['summary'])</code></pre>
+  </div>
+</div>
+
+<!-- Code Explain -->
+<div class="example-card">
+  <h3><span class="badge premium-badge">PREMIUM</span> Code Explanation</h3>
+  <p>Understand complex code with detailed line-by-line explanations.</p>
+  <div class="code-block curl">
+<pre><code>curl -X POST https://automation.songheng.vip/v1/explain \
+  -H "Content-Type: application/json" \
+  -d '{
+    "code": "const r = await fetch(url);\nconst d = await r.json();\nreturn d.filter(x => x.active).map(x => ({...x, score: x.votes / x.views}))",
+    "language": "javascript"
+  }'</code></pre>
+  </div>
+</div>
+
+<!-- Batch Processing -->
+<div class="example-card">
+  <h3><span class="badge premium-badge">PREMIUM</span> Batch Processing (10 texts)</h3>
+  <p>Process up to 10 texts in a single API call for bulk analysis.</p>
+  <div class="code-block curl">
+<pre><code>curl -X POST https://automation.songheng.vip/v1/batch \
+  -H "Content-Type: application/json" \
+  -d '{
+    "texts": ["First article text...", "Second article...", "Third..."],
+    "mode": "summarize"
+  }'</code></pre>
+  </div>
+  <div class="code-block javascript" style="display:none;">
+<pre><code>const texts = ['Article 1...', 'Article 2...', 'Article 3...'];
+const resp = await fetch('https://automation.songheng.vip/v1/batch', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({ texts, mode: 'summarize' })
+});
+const results = await resp.json();
+results.forEach((r, i) => console.log(`#${i+1}:`, r.summary));</code></pre>
+  </div>
+</div>
+
+<!-- x402 Payment Flow -->
+<div class="example-card" style="border-color: #d2a8ff;">
+  <h3><span class="badge free-badge">FREE</span> 🔄 x402 Micropayment Flow</h3>
+  <p>The x402 protocol lets you handle the HTTP 402 response and automatically pay with USDC on Base chain.</p>
+  <div class="code-block javascript">
+<pre><code>async function callWithX402(url, data) {
+  let resp = await fetch(url, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data)
+  });
+  
+  if (resp.status === 402) {
+    const paymentInfo = await resp.json();
+    console.log(`Payment required: ${paymentInfo.amount} USDC`);
+    console.log(`Send to: ${paymentInfo.payer}`);
+    
+    // Send USDC on Base chain using your wallet
+    const txHash = await sendUSDC(
+      paymentInfo.payer,        // 0x76eADdEBFfb6a61DD071f97F4508467fc55dd113
+      paymentInfo.amount,       // "0.05"
+      'base'                    // Base chain
+    );
+    
+    // Retry with payment proof
+    resp = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-X402-Payment': txHash
+      },
+      body: JSON.stringify(data)
+    });
+  }
+  
+  return resp.json();
+}</code></pre>
+  </div>
+  <p style="color:#8b949e;font-size:0.9em;">Wallet: <code>0x76eADdEBFfb6a61DD071f97F4508467fc55dd113</code> (Base chain · USDC)</p>
+</div>
+
+<!-- Get Started -->
+<div class="example-card" style="border-color: var(--green); text-align: center; padding: 40px;">
+  <h3 style="color: var(--green); font-size: 1.4em;">🚀 Get Started in 30 Seconds</h3>
+  <p style="max-width: 600px; margin: 12px auto;">Free tier: 3 requests/day per IP. No signup, no API key needed.</p>
+  <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-top: 20px;">
+    <a href="/" class="try-btn" style="background: var(--green);">Homepage</a>
+    <a href="/api-docs" class="try-btn">API Docs</a>
+    <a href="/pricing" class="try-btn">Pricing</a>
+  </div>
+</div>
+
+</div>
+
+<script>
+function switchLang(lang) {
+  // Update tabs
+  document.querySelectorAll('.lang-tab').forEach(t => t.classList.remove('active'));
+  event.target.classList.add('active');
+  
+  // Show/hide code blocks
+  document.querySelectorAll('.code-block').forEach(b => b.style.display = 'none');
+  document.querySelectorAll('.code-block.' + lang).forEach(b => b.style.display = 'block');
+}
+// Default to curl
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('.code-block.curl').forEach(b => b.style.display = 'block');
+});
+</script>
+<script src="/conversion-banner.js" defer></script>
+</body>
+</html>

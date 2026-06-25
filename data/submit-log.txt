@@ -1,0 +1,22 @@
+[2026-06-15T04:19:51] === Directory Submission & Promotion ===
+[2026-06-15T04:19:51] ✅ Sitemap: 107 URLs written to sitemap.xml
+[2026-06-15T04:19:51] ✅ robots.txt written
+[2026-06-15T04:19:51] 📋 MCP.so: Submit manually at https://mcp.so/submit (or use /submit-checklist.html)
+[2026-06-15T04:19:51] 📋 Smithery: Submit manually at https://smithery.ai/submit
+[2026-06-15T04:19:51] 📝 Hacker News post template saved to data/hn-post.txt
+[2026-06-15T04:19:51] 📋 Submit at: https://news.ycombinator.com/submitlink?u=https%3A%2F%2Fautomation.songheng.vip&t=Show%20HN%3A%20Sovereign%20AI%20Agent%20with%20USDC%20Micropayments
+[2026-06-15T04:19:51] 📱 Social posts saved (Twitter, LinkedIn, Reddit)
+[2026-06-15T04:19:51] 
+[2026-06-15T04:19:51] === SUBMISSION CHECKLIST (manual links) ===
+[2026-06-15T04:19:51] 1. Google Search Console: https://search.google.com/search-console?resource_id=https%3A%2F%2Fautomation.songheng.vip
+[2026-06-15T04:19:51] 2. Bing Webmaster: https://www.bing.com/webmasters
+[2026-06-15T04:19:51] 3. Hacker News: https://news.ycombinator.com/submit
+[2026-06-15T04:19:51] 4. Product Hunt: https://www.producthunt.com/posts/new
+[2026-06-15T04:19:51] 5. Dev.to: https://dev.to/new
+[2026-06-15T04:19:51] 6. Reddit r/programming: https://www.reddit.com/r/programming/submit
+[2026-06-15T04:19:51] 7. LinkedIn: https://www.linkedin.com/posts/new
+[2026-06-15T04:19:51] 8. Twitter/X: https://twitter.com/compose/tweet
+[2026-06-15T04:19:51] 9. MCP.so: https://mcp.so/submit
+[2026-06-15T04:19:51] 10. Smithery: https://smithery.ai/submit
+[2026-06-15T04:19:51] 
+[2026-06-15T04:19:51] ✅ Done — sitemap, robots.txt, social posts, and submission checklist ready

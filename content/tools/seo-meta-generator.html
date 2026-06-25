@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SEO Meta Tag Generator — Free Tool | my-automaton</title>
+<meta name="description" content="Generate optimized meta title, description, OG tags, Twitter cards, and JSON-LD schema for your website. Free SEO tool by my-automaton AI.">
+<meta name="keywords" content="seo meta tag generator, meta title generator, meta description generator, open graph tags, twitter cards, json-ld schema, free seo tool">
+<style>
+:root { --bg: #0d1117; --card: #161b22; --border: #30363d; --text: #e6edf3; --muted: #8b949e; --accent: #58a6ff; --green: #3fb950; }
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; padding: 2rem 1rem; }
+.container { max-width: 900px; margin: 0 auto; }
+h1 { font-size: 1.8rem; margin-bottom: .3rem; }
+.subtitle { color: var(--muted); margin-bottom: 2rem; font-size: .95rem; }
+.card { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 1.5rem; margin: 1rem 0; }
+label { display: block; margin: 1rem 0 .3rem; font-weight: 600; font-size: .9rem; color: var(--muted); }
+input, textarea, select { width: 100%; padding: .6rem .8rem; background: #1c2128; border: 1px solid var(--border); border-radius: 6px; color: var(--text); font-size: .95rem; }
+textarea { min-height: 60px; resize: vertical; font-family: monospace; }
+input:focus, textarea:focus, select:focus { outline: none; border-color: var(--accent); }
+.row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+@media (max-width: 600px) { .row { grid-template-columns: 1fr; } }
+.btn { background: var(--green); color: #000; border: none; padding: .6rem 1.5rem; border-radius: 6px; font-weight: 600; cursor: pointer; font-size: .9rem; margin-top: .5rem; }
+.btn:hover { filter: brightness(1.1); }
+.btn-sec { background: #21262d; color: var(--text); border: 1px solid var(--border); }
+.copy-btn { background: #21262d; color: var(--accent); border: 1px solid var(--border); padding: .3rem .8rem; border-radius: 4px; cursor: pointer; font-size: .8rem; }
+.copy-btn:hover { background: #30363d; }
+pre { background: #151b23; border: 1px solid var(--border); border-radius: 8px; padding: 1rem; overflow-x: auto; margin: .5rem 0; font-size: .8rem; }
+.tabs { display: flex; gap: .3rem; margin: 1rem 0; flex-wrap: wrap; }
+.tab { padding: .4rem 1rem; border: 1px solid var(--border); border-radius: 6px; cursor: pointer; font-size: .8rem; background: transparent; color: var(--muted); }
+.tab.active { background: var(--accent); color: #000; border-color: var(--accent); font-weight: 600; }
+.tab-content { display: none; }
+.tab-content.active { display: block; }
+.tag { background: #1c2128; border: 1px solid var(--border); border-radius: 4px; padding: .15rem .4rem; font-size: .7rem; color: var(--accent); }
+.toast { position: fixed; bottom: 2rem; right: 2rem; background: var(--green); color: #000; padding: .8rem 1.5rem; border-radius: 8px; font-weight: 600; opacity: 0; transition: opacity .3s; }
+.toast.show { opacity: 1; }
+</style>
+</head>
+<body>
+<div style="background:#161b22;border-bottom:1px solid #30363d;padding:10px 20px;font-size:.85rem;display:flex;gap:16px;align-items:center;flex-wrap:wrap"><a href="/" style="color:#58a6ff;text-decoration:none;font-weight:600">🏠 Home</a><span style="color:#484f58">|</span><a href="/pricing.html" style="color:#8b949e;text-decoration:none">Pricing</a><a href="/api-docs.html" style="color:#8b949e;text-decoration:none">API</a><a href="/playground.html" style="color:#8b949e;text-decoration:none">Playground</a></div>
+
+<div class="container">
+<h1>🔍 SEO Meta Tag Generator</h1>
+<p class="subtitle">Generate optimized meta tags, Open Graph, Twitter Cards, and JSON-LD schema for better search rankings and social sharing. Free — no signup needed.</p>
+
+<div class="card">
+  <div class="row">
+    <div>
+      <label>Page Title (40-60 chars)</label>
+      <input id="title" placeholder="e.g., AI Code Review API — Free & Pay-Per-Use" maxlength="70" oninput="generate()">
+      <small id="title-count" style="color:var(--muted);font-size:.75rem;">0 chars</small>
+    </div>
+    <div>
+      <label>Page URL</label>
+      <input id="url" placeholder="https://example.com/page" oninput="generate()">
+    </div>
+  </div>
+  <label>Meta Description (120-160 chars)</label>
+  <textarea id="desc" placeholder="e.g., Get AI-powered code review without signing up. Free tier available, pay-per-use from $0.01. No subscription required." oninput="generate()" maxlength="320"></textarea>
+  <small id="desc-count" style="color:var(--muted);font-size:.75rem;">0 chars</small>
+  <div class="row">
+    <div>
+      <label>Site Name</label>
+      <input id="site_name" placeholder="my-automaton" value="my-automaton" oninput="generate()">
+    </div>
+    <div>
+      <label>Content Type</label>
+      <select id="type" onchange="generate()">
+        <option value="website">Website</option>
+        <option value="article">Article</option>
+        <option value="product">Product</option>
+        <option value="profile">Profile</option>
+      </select>
+    </div>
+  </div>
+  <div class="row">
+    <div>
+      <label>Image URL (1200×630)</label>
+      <input id="image" placeholder="https://example.com/og-image.png" oninput="generate()">
+    </div>
+    <div>
+      <label>Twitter Handle (@...)</label>
+      <input id="twitter" placeholder="@my_automaton" oninput="generate()">
+    </div>
+  </div>
+  <div class="row">
+    <div>
+      <label>Keywords (comma separated)</label>
+      <input id="keywords" placeholder="ai code review, seo tools, free api" oninput="generate()">
+    </div>
+    <div>
+      <label>Locale</label>
+      <input id="locale" placeholder="en_US" value="en_US" oninput="generate()">
+    </div>
+  </div>
+  <button class="btn" onclick="generate()">🔄 Generate Meta Tags</button>
+</div>
+
+<div class="card">
+  <div class="tabs" id="tabs">
+    <div class="tab active" data-tab="all" onclick="switchTab('all')">All Tags</div>
+    <div class="tab" data-tab="basic" onclick="switchTab('basic')">Basic</div>
+    <div class="tab" data-tab="og" onclick="switchTab('og')">Open Graph</div>
+    <div class="tab" data-tab="twitter" onclick="switchTab('twitter')">Twitter</div>
+    <div class="tab" data-tab="schema" onclick="switchTab('schema')">JSON-LD</div>
+  </div>
+  
+  <div id="tab-all" class="tab-content active">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.5rem;">
+      <span style="font-weight:600;">Generated Tags</span>
+      <button class="copy-btn" onclick="copyAll()">📋 Copy All</button>
+    </div>
+    <pre id="output-all" style="white-space:pre-wrap;word-break:break-all;">Fill in the fields above and click "Generate"</pre>
+  </div>
+  
+  <div id="tab-basic" class="tab-content">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.5rem;">
+      <span style="font-weight:600;">Basic Meta Tags</span>
+      <button class="copy-btn" onclick="copyTab('basic')">📋 Copy</button>
+    </div>
+    <pre id="output-basic" style="white-space:pre-wrap;"></pre>
+  </div>
+  
+  <div id="tab-og" class="tab-content">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.5rem;">
+      <span style="font-weight:600;">Open Graph Tags</span>
+      <button class="copy-btn" onclick="copyTab('og')">📋 Copy</button>
+    </div>
+    <pre id="output-og" style="white-space:pre-wrap;"></pre>
+  </div>
+  
+  <div id="tab-twitter" class="tab-content">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.5rem;">
+      <span style="font-weight:600;">Twitter Card Tags</span>
+      <button class="copy-btn" onclick="copyTab('twitter')">📋 Copy</button>
+    </div>
+    <pre id="output-twitter" style="white-space:pre-wrap;"></pre>
+  </div>
+  
+  <div id="tab-schema" class="tab-content">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.5rem;">
+      <span style="font-weight:600;">JSON-LD Schema</span>
+      <button class="copy-btn" onclick="copyTab('schema')">📋 Copy</button>
+    </div>
+    <pre id="output-schema" style="white-space:pre-wrap;"></pre>
+  </div>
+</div>
+
+<div class="card" style="text-align:center;border-color:var(--green);">
+  <p style="margin-bottom:.5rem;">💡 <strong>Need AI to write your meta tags?</strong> Try our free <a href="/tools/ai-seo-writer.html" style="color:var(--accent);">AI SEO tag writer</a> — generates optimized titles and descriptions from your content.</p>
+  <p style="font-size:.85rem;color:var(--muted);">Or use our <a href="/tools/seo-audit.html" style="color:var(--accent);">SEO audit tool</a> to check your current pages.</p>
+</div>
+</div>
+
+<div id="toast" class="toast">✅ Copied!</div>
+
+<script>
+function $(id) { return document.getElementById(id); }
+
+function generate() {
+  const title = $('title').value || 'Untitled Page';
+  const url = $('url').value || 'https://example.com/page';
+  const desc = $('desc').value || 'A page about AI-powered code review and SEO tools.';
+  const siteName = $('site_name').value || 'my-automaton';
+  const type = $('type').value;
+  const image = $('image').value || 'https://automation.songheng.vip/og-default.png';
+  const twitter = $('twitter').value || '@my_automaton';
+  const keywords = $('keywords').value || '';
+  const locale = $('locale').value || 'en_US';
+  
+  // Char counts
+  $('title-count').textContent = `${title.length} chars`;
+  $('desc-count').textContent = `${desc.length} chars`;
+  
+  const titleTag = title.length > 60 ? `⚠️ Title may be truncated in SERP (${title.length} chars)` : 
+                   title.length < 40 ? `⚠️ Title is short (${title.length} chars, aim for 40-60)` : 
+                   `✅ Good title length (${title.length} chars)`;
+  const descTag = desc.length > 160 ? `⚠️ Description may be truncated in SERP (${desc.length} chars)` :
+                  desc.length < 120 ? `⚠️ Description is short (${desc.length} chars, aim for 120-160)` : 
+                  `✅ Good description length (${desc.length} chars)`;
+  
+  $('title-count').textContent = `${title.length} chars · ${titleTag}`;
+  $('desc-count').textContent = `${desc.length} chars · ${descTag}`;
+  
+  // Basic meta
+  const basic = `<title>${escapeHtml(title)}</title>
+<meta name="description" content="${escapeHtml(desc)}">${keywords ? `\n<meta name="keywords" content="${escapeHtml(keywords)}">` : ''}
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="${escapeHtml(url)}">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">`;
+  
+  // OG tags
+  const og = `<meta property="og:title" content="${escapeHtml(title)}">
+<meta property="og:description" content="${escapeHtml(desc)}">
+<meta property="og:url" content="${escapeHtml(url)}">
+<meta property="og:type" content="${escapeHtml(type)}">
+<meta property="og:site_name" content="${escapeHtml(siteName)}">
+<meta property="og:locale" content="${escapeHtml(locale)}">
+<meta property="og:image" content="${escapeHtml(image)}">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">`;
+  
+  // Twitter cards
+  const tw = `<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="${escapeHtml(twitter)}">
+<meta name="twitter:title" content="${escapeHtml(title)}">
+<meta name="twitter:description" content="${escapeHtml(desc)}">
+<meta name="twitter:image" content="${escapeHtml(image)}">`;
+  
+  // JSON-LD
+  const schema = `<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "${type === 'article' ? 'Article' : type === 'product' ? 'Product' : type === 'profile' ? 'Profile' : 'WebPage'}",
+  "headline": "${escapeJson(title)}",
+  "description": "${escapeJson(desc)}",
+  "url": "${escapeJson(url)}",
+  "image": "${escapeJson(image)}",
+  "inLanguage": "${escapeJson(locale)}"
+}
+<\/script>`;
+  
+  // Store for tab switching
+  window._metaOutputs = { basic, og, twitter: tw, schema };
+  
+  // Full output
+  const all = `<!-- Primary Meta Tags -->
+${basic}
+
+<!-- Open Graph / Facebook -->
+${og}
+
+<!-- Twitter -->
+${tw}
+
+<!-- JSON-LD Schema -->
+${schema}`;
+  
+  $('output-all').textContent = all;
+  
+  // Update visible tab
+  const activeTab = document.querySelector('.tab.active');
+  switchTab(activeTab ? activeTab.dataset.tab : 'all');
+}
+
+function switchTab(tab) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+  document.querySelector(`.tab[data-tab="${tab}"]`).classList.add('active');
+  document.getElementById(`tab-${tab}`).classList.add('active');
+  
+  if (tab === 'all') return;
+  const outputs = window._metaOutputs || {};
+  document.getElementById(`output-${tab}`).textContent = outputs[tab] || 'No output yet.';
+}
+
+function copyAll() {
+  const text = $('output-all').textContent;
+  navigator.clipboard.writeText(text).then(() => showToast()).catch(() => fallbackCopy(text));
+}
+
+function copyTab(tab) {
+  const outputs = window._metaOutputs || {};
+  const text = outputs[tab] || '';
+  navigator.clipboard.writeText(text).then(() => showToast()).catch(() => fallbackCopy(text));
+}
+
+function showToast() {
+  const t = $('toast');
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2000);
+}
+
+function fallbackCopy(text) {
+  const ta = document.createElement('textarea');
+  ta.value = text;
+  document.body.appendChild(ta);
+  ta.select();
+  document.execCommand('copy');
+  document.body.removeChild(ta);
+  showToast();
+}
+
+function escapeHtml(s) { return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function escapeJson(s) { return s.replace(/\\/g,'\\\\').replace(/"/g,'\\"').replace(/\n/g,'\\n').replace(/\r/g,''); }
+
+// Generate with defaults on load
+generate();
+</script>
+</body>
+</html>

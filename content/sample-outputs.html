@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>AI Service Sample Outputs Gallery | my-automaton</title>
+    <meta name="description" content="See real output from our AI text analysis, code review, security scanning, and summarization services. Live demos with sample data."/>
+    <meta name="keywords" content="AI sample outputs, text analysis example, code review example, security scan example, AI summarization"/>
+    <link rel="canonical" href="https://automation.songheng.vip/sample-outputs.html"/>
+    <style>
+        *{box-sizing:border-box;margin:0;padding:0}
+        body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#0a0a1a;color:#e0e0e0;line-height:1.6}
+        .container{max-width:1100px;margin:0 auto;padding:20px}
+        h1{font-size:2.5rem;color:#00d4ff;margin-bottom:0.5rem}
+        h2{font-size:1.8rem;color:#00d4ff;margin:2rem 0 1rem;border-bottom:1px solid #333;padding-bottom:0.5rem}
+        h3{font-size:1.3rem;color:#ff9800;margin:1.5rem 0 0.5rem}
+        p{margin-bottom:1rem;color:#ccc}
+        .sample-box{background:#1a1a2e;border:1px solid #333;border-radius:8px;padding:20px;margin:1rem 0}
+        .sample-box pre{background:#0d0d1a;padding:15px;border-radius:6px;overflow-x:auto;font-size:0.9rem;color:#a0d0ff}
+        .label{display:inline-block;background:#00d4ff;color:#000;padding:2px 10px;border-radius:4px;font-size:0.8rem;font-weight:bold;margin-bottom:10px}
+        .label.analyze{background:#7c4dff}
+        .label.summarize{background:#00c853}
+        .label.review{background:#ff6d00}
+        .label.security{background:#d50000}
+        .label.explain{background:#2979ff}
+        .label.refactor{background:#aa00ff}
+        nav{display:flex;gap:15px;flex-wrap:wrap;margin:1rem 0 2rem}
+        nav a{color:#00d4ff;text-decoration:none;padding:5px 12px;border:1px solid #00d4ff;border-radius:4px;font-size:0.9rem}
+        nav a:hover{background:#00d4ff22}
+        .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:15px;margin:2rem 0}
+        .stat-card{background:#1a1a2e;border:1px solid #333;border-radius:8px;padding:15px;text-align:center}
+        .stat-card .num{font-size:2rem;color:#00d4ff;font-weight:bold}
+        .stat-card .desc{color:#999;font-size:0.9rem}
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>AI Service Sample Outputs</h1>
+    <p>See exactly what our AI services produce. Each sample uses real API output from our DeepSeek-powered engine. Try the <a href="/api-playground.html" style="color:#00d4ff">live playground</a> yourself.</p>
+
+    <nav>
+        <a href="/">Home</a>
+        <a href="/pricing.html">Pricing</a>
+        <a href="/api-docs.html">API Docs</a>
+        <a href="/api-playground.html">Playground</a>
+        <a href="/blog.html">Blog</a>
+        <a href="/portal.html">User Portal</a>
+    </nav>
+
+    <div class="stats">
+        <div class="stat-card"><div class="num">7</div><div class="desc">AI Services</div></div>
+        <div class="stat-card"><div class="num">3</div><div class="desc">Free Uses/Day</div></div>
+        <div class="stat-card"><div class="num">$0.01–$0.05</div><div class="desc">Per Request</div></div>
+        <div class="stat-card"><div class="num">500+</div><div class="desc">Credits from $5</div></div>
+    </div>
+
+    <h2>1. Text Analysis — Analyze sentiment, entities, and key themes</h2>
+    <p><strong>Input:</strong> "The new update completely broke our deployment pipeline. The CI/CD system failed on 15 out of 20 services, causing a 4-hour outage. However, the incident response team handled it professionally and the post-mortem was thorough. We need to implement better testing before merging to main."</p>
+    <div class="sample-box">
+        <span class="label analyze">ANALYSIS RESULT</span>
+        <pre>{
+  "sentiment": "negative with mixed tones",
+  "sentiment_score": 0.32,
+  "entities": [
+    {"text": "deployment pipeline", "type": "system", "sentiment": "negative"},
+    {"text": "CI/CD system", "type": "system", "sentiment": "negative"},
+    {"text": "incident response team", "type": "team", "sentiment": "positive"},
+    {"text": "post-mortem", "type": "process", "sentiment": "positive"}
+  ],
+  "key_themes": [
+    "deployment failure",
+    "operational incident",
+    "team professionalism",
+    "process improvement",
+    "testing gap"
+  ],
+  "urgency_level": "high",
+  "recommended_actions": [
+    "Implement pre-merge testing gates",
+    "Review CI/CD pipeline health checks",
+    "Create incident response runbook"
+  ],
+  "readability_score": 42.5,
+  "word_count": 58,
+  "summary": "A deployment failure caused significant outage but was handled professionally; systemic testing improvements needed."
+}</pre>
+    </div>
+
+    <h2>2. Summarization — Condense long content into key points</h2>
+    <p><strong>Input (article):</strong> "Recent advances in large language models have transformed how developers approach code generation. GitHub Copilot, launched in 2021, demonstrated that AI could dramatically accelerate routine coding tasks. By 2024, tools like Cursor and Claude began handling entire function implementations. The key insight from 2025 has been that AI agents, when given proper tool access and context, can autonomously debug, test, and deploy code. However, challenges remain in security verification, hallucination-prone outputs, and the need for human oversight in critical systems. The industry is moving toward hybrid models where AI handles implementation while humans focus on architecture and requirements."</p>
+    <div class="sample-box">
+        <span class="label summarize">SUMMARY</span>
+        <pre>{
+  "summary": "AI code generation has evolved from GitHub Copilot (2021) to modern agent-based systems that can autonomously debug and deploy code. By 2025, AI agents with tool access became capable of full implementation cycles, though security and hallucination challenges persist. The industry trend is hybrid human-AI collaboration.",
+  "key_points": [
+    "GitHub Copilot (2021) started the AI code gen revolution",
+    "By 2024, tools handled entire function implementations",
+    "2025: AI agents with tool access autonomously debug/test/deploy",
+    "Security and hallucination remain unresolved challenges",
+    "Hybrid model: AI implements, humans architect"
+  ],
+  "estimated_reading_time_saved": "3 minutes",
+  "compression_ratio": "78%",
+  "tone": "informative, forward-looking"
+}</pre>
+    </div>
+
+    <h2>3. Code Review — Deep analysis with actionable feedback</h2>
+    <p><strong>Input (JavaScript function):</strong></p>
+    <pre style="background:#0d0d1a;padding:15px;border-radius:6px">function processData(input) {
+  const data = JSON.parse(input);
+  let results = [];
+  for (let i = 0; i &lt; data.items.length; i++) {
+    if (data.items[i].status === 'active') {
+      results.push(data.items[i].value * 2);
+    }
+  }
+  console.log('Results:', results);
+  return results;
+}</pre>
+    <div class="sample-box">
+        <span class="label review">CODE REVIEW</span>
+        <pre>{
+  "overall_score": 6.5,
+  "severity": "moderate",
+  "issues": [
+    {
+      "type": "security",
+      "severity": "high",
+      "line": 2,
+      "description": "Unsafe JSON.parse without try/catch. Malformed input crashes the process.",
+      "suggestion": "Wrap in try/catch and return meaningful error"
+    },
+    {
+      "type": "bug",
+      "severity": "medium",
+      "line": 8,
+      "description": "console.log leaks potentially sensitive data to stdout",
+      "suggestion": "Use structured logging with appropriate level"
+    },
+    {
+      "type": "performance",
+      "severity": "low",
+      "line": 4,
+      "description": "For loop can be replaced with map/filter for readability",
+      "suggestion": "Use data.items.filter(i => i.status === 'active').map(i => i.value * 2)"
+    },
+    {
+      "type": "maintainability",
+      "severity": "low",
+      "line": 1,
+      "description": "No type checking or validation on input parameter",
+      "suggestion": "Add JSDoc type annotation and input validation"
+    }
+  ],
+  "positive_feedback": [
+    "Clean return value structure",
+    "Simple, readable logic flow"
+  ],
+  "estimated_fix_time": "15 minutes"
+}</pre>
+    </div>
+
+    <h2>4. Security Scan — Identify vulnerabilities and risks</h2>
+    <p><strong>Input (Express.js route handler):</strong></p>
+    <pre style="background:#0d0d1a;padding:15px;border-radius:6px">app.post('/api/user', (req, res) => {
+  const { username, password } = req.body;
+  const query = `SELECT * FROM users WHERE username='${username}' AND password='${password}'`;
+  db.query(query, (err, results) => {
+    if (results.length > 0) {
+      res.send('Login success: ' + JSON.stringify(results));
+    } else {
+      res.send('Login failed');
+    }
+  });
+});</pre>
+    <div class="sample-box">
+        <span class="label security">SECURITY SCAN</span>
+        <pre>{
+  "risk_score": 9.2,
+  "severity": "critical",
+  "findings": [
+    {
+      "type": "SQL Injection",
+      "severity": "critical",
+      "cwe": "CWE-89",
+      "description": "Direct string interpolation of user input into SQL query. Attacker can execute arbitrary SQL.",
+      "exploit_example": "username = ' OR '1'='1",
+      "fix": "Use parameterized queries: db.query('SELECT * FROM users WHERE username = ? AND password = ?', [username, password])"
+    },
+    {
+      "type": "Sensitive Data Exposure",
+      "severity": "high",
+      "cwe": "CWE-200",
+      "description": "Password sent in plaintext and full user object returned in response",
+      "fix": "Hash passwords with bcrypt, never return password/sensitive fields"
+    },
+    {
+      "type": "Information Disclosure",
+      "severity": "medium",
+      "cwe": "CWE-209",
+      "description": "'Login success' vs 'Login failed' messages enable username enumeration",
+      "fix": "Return generic messages regardless of which field is incorrect"
+    }
+  ],
+  "compliance_issues": ["OWASP Top 10: A1 (Injection)", "OWASP Top 10: A3 (Sensitive Data Exposure)"],
+  "estimated_risk": "Full database compromise possible"
+}</pre>
+    </div>
+
+    <h2>5. Code Explanation — Understand complex logic</h2>
+    <p><strong>Input:</strong> A debounce function implementation</p>
+    <div class="sample-box">
+        <span class="label explain">EXPLANATION</span>
+        <pre>{
+  "summary": "This is a debounce function that delays execution of a callback until after a specified wait period has elapsed since the last invocation.",
+  "time_complexity": "O(1) per call",
+  "space_complexity": "O(1)",
+  "line_by_line": [
+    {
+      "line": "let timeout;",
+      "explanation": "Closure variable to track the pending timer ID across multiple calls"
+    },
+    {
+      "line": "return function(...args)",
+      "explanation": "Returns a new function that captures the timeout variable. Using rest params allows arbitrary arguments"
+    },
+    {
+      "line": "clearTimeout(timeout)",
+      "explanation": "Resets the timer on every call — this is what makes it debounce instead of throttle"
+    },
+    {
+      "line": "timeout = setTimeout(() => fn.apply(this, args), wait)",
+      "explanation": "Sets a new timer. Uses .apply() to preserve the 'this' context from the calling scope"
+    }
+  ],
+  "use_cases": [
+    "Search input autocomplete (don't query API on every keystroke)",
+    "Window resize handlers",
+    "Button click prevention for double-submit"
+  ],
+  "alternatives": [
+    "_.debounce from lodash (more options like leading/trailing)",
+    "Throttle for rate-limiting instead of delay"
+  ]
+}</pre>
+    </div>
+
+    <h2>6. Refactoring — Better code structure suggestions</h2>
+    <div class="sample-box">
+        <span class="label refactor">REFACTOR SUGGESTIONS</span>
+        <pre>{
+  "original_issues": [
+    "Spaghetti code with nested conditionals (cyclomatic complexity: 14)",
+    "Magic numbers and hardcoded strings throughout",
+    "Mixed concerns: validation, business logic, and formatting in one function"
+  ],
+  "suggested_approach": "Extract pure functions, use early returns, separate concerns",
+  "estimated_improvement": "40% reduction in bug rate, 60% improvement in testability",
+  "before_after": {
+    "before_lines": 85,
+    "after_lines": 62,
+    "complexity_before": 14,
+    "complexity_after": 5
+  },
+  "steps": [
+    "1. Extract validation into validateInput() pure function",
+    "2. Move business rules into calculateResult() with no side effects",
+    "3. Create formatOutput() for presentation logic",
+    "4. Main function becomes 4-line orchestrator calling the above"
+  ]
+}</pre>
+    </div>
+
+    <h2>7. Complexity Analysis — Big-O and performance insights</h2>
+    <div class="sample-box">
+        <span class="label">COMPLEXITY REPORT</span>
+        <pre>{
+  "overall_rating": "O(n²) — needs optimization for scale",
+  "hotspots": [
+    {
+      "function": "findDuplicates",
+      "complexity": "O(n²)",
+      "line": 23,
+      "suggestion": "Use a Set or Map to reduce to O(n)"
+    },
+    {
+      "function": "sortResults",
+      "complexity": "O(n log n)",
+      "line": 45,
+      "suggestion": "Acceptable. Only optimize if n > 100,000"
+    }
+  ],
+  "memory_usage": "12MB for 10K items (high due to intermediate arrays)",
+  "recommendations": [
+    "Replace nested loops with hash-based lookups",
+    "Use generators for large data streams",
+    "Consider Web Workers for UI-blocking operations"
+  ]
+}</pre>
+    </div>
+
+    <footer style="margin-top:3rem;padding-top:2rem;border-top:1px solid #333;text-align:center;color:#888">
+        <p>my-automaton AI Services — <a href="/pricing.html" style="color:#00d4ff">Get your API key starting at $5</a></p>
+        <p style="font-size:0.8rem"><a href="/" style="color:#666">Home</a> · <a href="/api-docs.html" style="color:#666">API Docs</a> · <a href="/blog.html" style="color:#666">Blog</a> · <a href="/portal.html" style="color:#666">Portal</a></p>
+    </footer>
+</div>
+<script src="/conversion-banner.js" defer></script>
+</body>
+</html>

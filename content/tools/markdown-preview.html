@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Markdown Preview — Free Online Markdown Editor | my-automaton">
+  <meta name="twitter:description" content="Free online Markdown editor with live preview. Write Markdown, see formatted HTML in real-time. No ads, no signup, no server uploads.">
+  <meta property="og:title" content="Markdown Preview — Free Online Markdown Editor | my-automaton">
+  <meta property="og:description" content="Free online Markdown editor with live preview. Write Markdown, see formatted HTML in real-time. No ads, no signup, no server uploads.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://automation.songheng.vip/tools/markdown-preview.html">
+  <meta property="og:image" content="https://automation.songheng.vip/og-image.png">
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Markdown Preview — Free Online Markdown Editor | my-automaton</title>
+<meta name="description" content="Free online Markdown editor with live preview. Write Markdown, see formatted HTML in real-time. No ads, no signup, no server uploads.">
+<meta name="keywords" content="markdown editor, markdown preview, online markdown, free markdown tool">
+<link rel="canonical" href="https://automation.songheng.vip/tools/markdown-preview">
+<style>
+*{box-sizing:border-box}body{background:#0d1117;color:#e6edf3;font-family:-apple-system,sans-serif;margin:0;min-height:100vh}
+h1{text-align:center;color:#58a6ff;margin:0;padding:15px;font-size:1.4em;border-bottom:1px solid #30363d}
+.editor-container{display:grid;grid-template-columns:1fr 1fr;height:calc(100vh - 120px);gap:0}
+@media(max-width:768px){.editor-container{grid-template-columns:1fr;grid-template-rows:1fr 1fr}}
+textarea{background:#161b22;color:#e6edf3;border:none;padding:20px;font-family:monospace;font-size:14px;resize:none;outline:none;line-height:1.6}
+.preview{background:#0d1117;padding:20px;overflow-y:auto;border-left:1px solid #30363d}
+.preview h1,.preview h2,.preview h3{color:#58a6ff}
+.preview a{color:#58a6ff}
+.preview code{background:#161b22;padding:2px 6px;border-radius:3px;font-size:.9em}
+.preview pre{background:#161b22;padding:15px;border-radius:8px;overflow-x:auto;border:1px solid #30363d}
+.preview blockquote{border-left:3px solid #238636;padding:10px 15px;margin:15px 0;background:#161b22;border-radius:0 8px 8px 0}
+.preview table{border-collapse:collapse;width:100%;margin:10px 0}
+.preview th,.preview td{border:1px solid #30363d;padding:8px 12px;text-align:left}
+.preview th{background:#161b22;color:#58a6ff}
+.preview img{max-width:100%;border-radius:6px}
+.preview ul,.preview ol{padding-left:25px}
+.toolbar{display:flex;gap:5px;padding:8px 15px;background:#161b22;border-bottom:1px solid #30363d;flex-wrap:wrap}
+.toolbar button{background:#21262d;color:#e6edf3;border:1px solid #30363d;border-radius:4px;padding:5px 10px;cursor:pointer;font-size:13px}
+.toolbar button:hover{background:#30363d}
+.bar-right{margin-left:auto;display:flex;gap:5px;align-items:center}
+textarea::placeholder{color:#484f58}
+</style>
+<script src="/js/analytics.js"></script>
+<!-- Open Graph / Social Meta Tags -->
+<meta property="og:site_name" content="my-automaton" />
+<meta property="og:locale" content="en_US" />
+<meta name="twitter:image" content="https://automation.songheng.vip/og-image.png" />
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Markdown Preview — Free Online Markdown Editor | my-automaton",
+  "description": "Free online Markdown editor with live preview. Write Markdown, see formatted HTML in real-time. No ads, no signup, no server uploads.",
+  "url": "https://automation.songheng.vip/tools/markdown-preview.html",
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": "Web",
+  "author": {
+    "@type": "Organization",
+    "name": "my-automaton",
+    "url": "https://automation.songheng.vip"
+  },
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  }
+}
+</script>
+</head>
+<body>
+<div style="background:#161b22;border-bottom:1px solid #30363d;padding:10px 20px;font-size:.85rem;display:flex;gap:16px;align-items:center;flex-wrap:wrap"><a href="/" style="color:#58a6ff;text-decoration:none;font-weight:600">🏠 Home</a><span style="color:#484f58">|</span><a href="/pricing.html" style="color:#8b949e;text-decoration:none">Pricing</a><a href="/api-docs.html" style="color:#8b949e;text-decoration:none">API</a><a href="/playground.html" style="color:#8b949e;text-decoration:none">Playground</a></div>
+
+<h1>📝 Markdown Live Preview</h1>
+<div class="toolbar">
+<button onclick="addMarkdown('**','**')" title="Bold">B</button>
+<button onclick="addMarkdown('*','*')" title="Italic"><em>I</em></button>
+<button onclick="addMarkdown('[','](url)')" title="Link">🔗</button>
+<button onclick="addMarkdown('```\n','\n```')" title="Code">⟨/⟩</button>
+<button onclick="addMarkdown('- ','')" title="List">•</button>
+<button onclick="addMarkdown('# ','')" title="Heading">H1</button>
+<button onclick="addMarkdown('## ','')" title="Subheading">H2</button>
+<button onclick="addMarkdown('> ','')" title="Quote">❝</button>
+<button onclick="clearEditor()" style="color:#f85149">🗑 Clear</button>
+<div class="bar-right">
+<span style="color:#8b949e;font-size:12px"><span id="wordCount">0</span> words</span>
+<button onclick="exportHTML()" title="Export">📥 Export</button>
+</div>
+</div>
+<div class="editor-container">
+<textarea id="editor" placeholder="Write Markdown here...&#10;&#10;# Hello World&#10;This is **bold** and *italic*.&#10;&#10;- List item 1&#10;- List item 2&#10;&#10;```js&#10;console.log('hello');&#10;```"></textarea>
+<div id="preview" class="preview"></div>
+</div>
+<div style="text-align:center;padding:8px;background:#161b22;border-top:1px solid #30363d;font-size:12px;color:#8b949e">
+  You can also use our <a href="/api-docs.html" style="color:#58a6ff">AI-powered API</a> for text analysis · 
+  <a href="/tools.html" style="color:#58a6ff">More Free Tools</a>
+</div>
+
+<script>
+// Simple Markdown parser for preview
+function renderMarkdown(text) {
+  let html = text;
+  
+  // Code blocks (must be before inline code)
+  html = html.replace(/```(\w*)\n([\s\S]*?)```/g, (m, lang, code) => {
+    const escaped = code.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    return `<pre><code>${escaped}</code></pre>`;
+  });
+  
+  // Inline code
+  html = html.replace(/`([^`]+)`/g, '<code>$1</code>');
+  
+  // Images
+  html = html.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<img src="$2" alt="$1" loading="lazy">');
+  
+  // Links
+  html = html.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank">$1</a>');
+  
+  // Bold + italic
+  html = html.replace(/\*\*\*(.+?)\*\*\*/g, '<strong><em>$1</em></strong>');
+  html = html.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+  html = html.replace(/\*(.+?)\*/g, '<em>$1</em>');
+  
+  // Headings
+  html = html.replace(/^###### (.+)$/gm, '<h6>$1</h6>');
+  html = html.replace(/^##### (.+)$/gm, '<h5>$1</h5>');
+  html = html.replace(/^#### (.+)$/gm, '<h4>$1</h4>');
+  html = html.replace(/^### (.+)$/gm, '<h3>$1</h3>');
+  html = html.replace(/^## (.+)$/gm, '<h2>$1</h2>');
+  html = html.replace(/^# (.+)$/gm, '<h1>$1</h1>');
+  
+  // Blockquotes
+  html = html.replace(/^> (.+)$/gm, '<blockquote>$1</blockquote>');
+  
+  // Horizontal rules
+  html = html.replace(/^---$/gm, '<hr>');
+  
+  // Unordered lists
+  html = html.replace(/^- (.+)$/gm, '<li>$1</li>');
+  html = html.replace(/(<li>.*<\/li>\n?)+/g, '<ul>$&</ul>');
+  
+  // Ordered lists
+  html = html.replace(/^\d+\. (.+)$/gm, '<li>$1</li>');
+  html = html.replace(/(?:<li>.*<\/li>\n?)+/g, (m) => {
+    if (m.match(/^\d+\./m) === null && m.match(/^- /m) === null) {
+      return '<ol>' + m + '</ol>';
+    }
+    return m;
+  });
+  
+  // Tables
+  html = html.replace(/\|(.+)\|\n\|[-| ]+\|\n((?:\|.+\|\n?)*)/g, (m, header, rows) => {
+    let table = '<table><thead><tr>';
+    header.split('|').filter(c => c.trim()).forEach(c => {
+      table += `<th>${c.trim()}</th>`;
+    });
+    table += '</tr></thead><tbody>';
+    rows.trim().split('\n').forEach(row => {
+      table += '<tr>';
+      row.split('|').filter(c => c.trim()).forEach(c => {
+        table += `<td>${c.trim()}</td>`;
+      });
+      table += '</tr>';
+    });
+    table += '</tbody></table>';
+    return table;
+  });
+  
+  // Paragraphs (double newlines)
+  html = html.replace(/\n\n/g, '</p><p>');
+  
+  // Line breaks
+  html = html.replace(/\n/g, '<br>');
+  
+  // Wrap in paragraph if not already wrapped in block elements
+  if (!html.startsWith('<')) {
+    html = '<p>' + html + '</p>';
+  }
+  
+  return html;
+}
+
+function updatePreview() {
+  const text = document.getElementById('editor').value;
+  const html = renderMarkdown(text);
+  document.getElementById('preview').innerHTML = html;
+  
+  // Word count
+  const words = text.trim() ? text.trim().split(/\s+/).length : 0;
+  document.getElementById('wordCount').textContent = words;
+}
+
+function addMarkdown(before, after) {
+  const ta = document.getElementById('editor');
+  const start = ta.selectionStart;
+  const end = ta.selectionEnd;
+  const text = ta.value;
+  const selected = text.substring(start, end) || 'text';
+  ta.value = text.substring(0, start) + before + selected + after + text.substring(end);
+  ta.selectionStart = start + before.length;
+  ta.selectionEnd = start + before.length + selected.length;
+  ta.focus();
+  updatePreview();
+}
+
+function clearEditor() {
+  if (confirm('Clear editor?')) {
+    document.getElementById('editor').value = '';
+    updatePreview();
+  }
+}
+
+function exportHTML() {
+  const html = document.getElementById('preview').innerHTML;
+  const full = `<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Markdown Export</title><script src="/js/analytics.js"></script>
+</head><body>${html}<script src="/js/share-widget.js"></script>
+</body></html>`;
+  const blob = new Blob([full], {type:'text/html'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'markdown-export.html';
+  a.click();
+}
+
+// Live update on input
+document.getElementById('editor').addEventListener('input', updatePreview);
+
+// Initial render
+updatePreview();
+</script>
+</body>
+</html>

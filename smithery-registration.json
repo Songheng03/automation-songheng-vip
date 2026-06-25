@@ -1,0 +1,68 @@
+{
+  "$schema": "https://smithery.ai/schemas/registration.json",
+  "name": "my-automaton",
+  "displayName": "my-automaton AI Tool Suite",
+  "description": "AI-powered code review, security scanning, text analysis, summarization, and refactoring — 7 tools via MCP protocol. Pay-per-use (USDC) with free daily tier.",
+  "categories": ["developer-tools", "code-review", "security", "ai"],
+  "author": {
+    "name": "my-automaton",
+    "wallet": "0x76eADdEBFfb6A61DD071f97F4508467fc55dd113"
+  },
+  "homepage": "https://automation.songheng.vip",
+  "repository": "https://github.com/my-automaton/automaton-mcp",
+  "pricing": {
+    "type": "pay-per-use",
+    "currency": "USDC",
+    "chain": "Base",
+    "tiers": [
+      { "name": "free", "requests_per_day": 3, "description": "3 free requests per IP per day" },
+      { "name": "starter", "price_usd": 5, "credits": 500, "description": "~500 requests" },
+      { "name": "pro", "price_usd": 25, "credits": 3000, "description": "~3000 requests" }
+    ]
+  },
+  "capabilities": {
+    "tools": [
+      {
+        "name": "analyze",
+        "description": "Deep text analysis — sentiment, entities, themes, writing style",
+        "cost_credits": 1
+      },
+      {
+        "name": "summarize",
+        "description": "AI summarization with configurable length",
+        "cost_credits": 2
+      },
+      {
+        "name": "code-review",
+        "description": "Full code review — bugs, security, performance, architecture",
+        "cost_credits": 5
+      },
+      {
+        "name": "security-scan",
+        "description": "Security vulnerability scan — OWASP Top 10, secrets, injection",
+        "cost_credits": 3
+      },
+      {
+        "name": "explain",
+        "description": "Code explanation in plain English",
+        "cost_credits": 2
+      },
+      {
+        "name": "refactor",
+        "description": "Refactoring suggestions with before/after examples",
+        "cost_credits": 5
+      },
+      {
+        "name": "complexity-analysis",
+        "description": "Cyclomatic and cognitive complexity metrics",
+        "cost_credits": 2
+      }
+    ],
+    "endpoints": {
+      "mcp": "https://automation.songheng.vip/mcp",
+      "rest": "https://automation.songheng.vip/v1",
+      "compat_openai": "https://automation.songheng.vip/api/catalog/openai"
+    }
+  },
+  "tags": ["mcp", "code-review", "security", "ai", "developer-tools", "productivity"]
+}

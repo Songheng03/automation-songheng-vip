@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="canonical" href="https://automation.songheng.vip/client-libraries.html">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="my-automaton API — Client Libraries & Quickstart">
+  <meta name="twitter:description" content="Instant AI APIs with x402 micropayments. JavaScript, Python, cURL client libraries. Code review, security scanning, text analysis, summarization.">
+  <meta property="og:title" content="my-automaton API — Client Libraries & Quickstart">
+  <meta property="og:description" content="Instant AI APIs with x402 micropayments. JavaScript, Python, cURL client libraries. Code review, security scanning, text analysis, summarization.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://automation.songheng.vip/client-libraries.html">
+  <meta property="og:image" content="https://automation.songheng.vip/og-image.png">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>my-automaton API — Client Libraries & Quickstart</title>
+<meta name="description" content="Instant AI APIs with x402 micropayments. JavaScript, Python, cURL client libraries. Code review, security scanning, text analysis, summarization.">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#0d1117;color:#c9d1d9;padding:20px;max-width:900px;margin:auto}
+h1{color:#58a6ff;font-size:2em;margin:20px 0 10px}
+h2{color:#f0883e;margin:30px 0 10px;border-bottom:1px solid #21262d;padding-bottom:5px}
+h3{color:#8b949e;margin:20px 0 10px}
+pre{background:#161b22;padding:15px;border-radius:8px;overflow-x:auto;font-size:14px;border:1px solid #30363d;margin:10px 0}
+code{font-family:'SF Mono','Fira Code',monospace}
+.tag{display:inline-block;background:#1f6feb22;color:#58a6ff;border:1px solid #1f6feb44;padding:2px 8px;border-radius:4px;font-size:12px;margin:2px}
+.tag-paid{background:#da363322;color:#ff7b72;border-color:#da363344}
+.tag-free{background:#23863622;color:#3fb950;border-color:#23863644}
+.mb-10{margin-bottom:10px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:10px;margin:15px 0}
+.card{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:15px;transition:border-color .2s}
+.card:hover{border-color:#58a6ff}
+.card h4{color:#58a6ff;margin-bottom:5px}
+.card .cost{color:#f0883e;font-size:14px}
+.copy-btn{float:right;background:#21262d;border:1px solid #30363d;color:#c9d1d9;padding:4px 12px;border-radius:4px;cursor:pointer;font-size:12px}
+.copy-btn:hover{background:#30363d}
+.note{background:#1f6feb11;border-left:3px solid #58a6ff;padding:10px 15px;margin:15px 0;border-radius:4px}
+.quick-links{display:flex;gap:10px;flex-wrap:wrap;margin:15px 0}
+.quick-links a{background:#21262d;border:1px solid #30363d;padding:8px 16px;border-radius:6px;color:#c9d1d9;text-decoration:none;font-size:14px}
+.quick-links a:hover{background:#30363d;color:#58a6ff}
+</style>
+<script src="/js/analytics.js"></script>
+<!-- Open Graph / Social Meta Tags -->
+<meta property="og:site_name" content="my-automaton" />
+<meta property="og:locale" content="en_US" />
+<meta name="twitter:image" content="https://automation.songheng.vip/og-image.png" />
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "my-automaton API — Client Libraries & Quickstart",
+  "description": "Instant AI APIs with x402 micropayments. JavaScript, Python, cURL client libraries. Code review, security scanning, text analysis, summarization.",
+  "url": "https://automation.songheng.vip/client-libraries.html"
+}
+</script>
+</head>
+<body>
+<div style="background:#161b22;border-bottom:1px solid #30363d;padding:10px 20px;font-size:.85rem;display:flex;gap:16px;align-items:center;flex-wrap:wrap"><a href="/" style="color:#58a6ff;text-decoration:none;font-weight:600">🏠 Home</a><span style="color:#484f58">|</span><a href="/pricing.html" style="color:#8b949e;text-decoration:none">Pricing</a><a href="/api-docs.html" style="color:#8b949e;text-decoration:none">API</a><a href="/playground.html" style="color:#8b949e;text-decoration:none">Playground</a></div>
+
+
+<h1>⚡ my-automaton API</h1>
+<p class="mb-10">AI-powered code review, security scanning, text analysis & summarization APIs. <strong>No signup required.</strong> Pay per request with USDC on Base chain via x402 protocol.</p>
+
+<div class="quick-links">
+  <a href="#javascript">JavaScript</a>
+  <a href="#python">Python</a>
+  <a href="#curl">cURL</a>
+  <a href="#pricing">Pricing</a>
+  <a href="https://automation.songheng.vip/playground">Playground</a>
+  <a href="/api-docs">Full Docs</a>
+</div>
+
+<div class="note">
+  <strong>🆓 Free Tier:</strong> 3 requests/day per IP on all endpoints. No wallet needed.
+  Send a POST request — if you hit the free limit, you'll get HTTP 402 with payment instructions.
+</div>
+
+<h2 id="pricing">📊 Pricing</h2>
+<div class="grid">
+  <div class="card"><h4>/v1/analyze</h4><div class="cost">$0.01 USDC</div><div class="tag">text analysis</div></div>
+  <div class="card"><h4>/v1/summarize</h4><div class="cost">$0.02 USDC</div><div class="tag">summarization</div></div>
+  <div class="card"><h4>/v1/review</h4><div class="cost">$0.05 USDC</div><div class="tag" class="tag-paid">code review</div></div>
+  <div class="card"><h4>/v1/security</h4><div class="cost">$0.03 USDC</div><div class="tag" class="tag-paid">security scan</div></div>
+  <div class="card"><h4>/v1/explain</h4><div class="cost">$0.02 USDC</div><div class="tag">code explain</div></div>
+  <div class="card"><h4>/v1/refactor</h4><div class="cost">$0.05 USDC</div><div class="tag" class="tag-paid">refactoring</div></div>
+  <div class="card"><h4>/v1/complexity</h4><div class="cost">$0.02 USDC</div><div class="tag">complexity</div></div>
+  <div class="card"><h4>/v1/batch</h4><div class="cost">$0.05 USDC</div><div class="tag">batch (10 texts)</div></div>
+  <div class="card"><h4>/v1/render</h4><div class="cost">$0.03 USDC</div><div class="tag">markdown</div></div>
+</div>
+
+<h2 id="javascript">📦 JavaScript / Node.js Client</h2>
+<p>Copy-paste ready. Handles free tier + automatic x402 payment retry.</p>
+<pre id="js-client">
+// my-automaton JS client — copy this into your project
+const API_BASE = 'https://automation.songheng.vip';
+const WALLET = '0x76eADdEBFfb6A61DD071f97F4508467fc55dd113';
+
+class AutomatonClient {
+  constructor(baseUrl = API_BASE) {
+    this.baseUrl = baseUrl;
+  }
+
+  async call(endpoint, data) {
+    const url = `${this.baseUrl}${endpoint}`;
+    let res = await fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    });
+
+    // Free tier or paid — both succeed on first try
+    if (res.ok) return res.json();
+
+    // HTTP 402 — payment required
+    if (res.status === 402) {
+      const paymentInfo = await res.json();
+      throw new Error(
+        `Payment required: send ${paymentInfo.amountCents} US¢ USDC to ${WALLET} on Base chain, then retry with X-X402-Payment header`
+      );
+    }
+
+    throw new Error(`API error ${res.status}: ${await res.text()}`);
+  }
+
+  // Convenience methods
+  analyze(text, mode = 'general') { return this.call('/v1/analyze', { text, mode }); }
+  summarize(text, maxLength = 200) { return this.call('/v1/summarize', { text, maxLength }); }
+  review(code, language = 'auto') { return this.call('/v1/review', { code, language }); }
+  security(code) { return this.call('/v1/security', { code }); }
+  explain(code, detail = 'intermediate') { return this.call('/v1/explain', { code, detail }); }
+  refactor(code, target = 'readability') { return this.call('/v1/refactor', { code, target }); }
+  complexity(code) { return this.call('/v1/complexity', { code }); }
+}
+
+// Usage:
+// const client = new AutomatonClient();
+// const result = await client.summarize('Long text here...');
+// console.log(result.result);
+</pre>
+<button class="copy-btn" onclick="navigator.clipboard.writeText(document.getElementById('js-client').textContent)">📋 Copy</button>
+
+<h2 id="python">🐍 Python Client</h2>
+<pre id="py-client">
+# my-automaton Python client
+import requests
+
+API_BASE = "https://automation.songheng.vip"
+WALLET = "0x76eADdEBFfb6A61DD071f97F4508467fc55dd113"
+
+class AutomatonClient:
+    def __init__(self, base_url=API_BASE):
+        self.base_url = base_url
+
+    def _call(self, endpoint, data):
+        url = f"{self.base_url}{endpoint}"
+        resp = requests.post(url, json=data)
+
+        if resp.status_code == 402:
+            info = resp.json()
+            raise Exception(
+                f"Payment required: send {info['amountCents']} US¢ USDC "
+                f"to {WALLET} on Base chain"
+            )
+
+        resp.raise_for_status()
+        return resp.json()
+
+    def analyze(self, text, mode="general"):
+        return self._call("/v1/analyze", {"text": text, "mode": mode})
+
+    def summarize(self, text, max_length=200):
+        return self._call("/v1/summarize", {"text": text, "maxLength": max_length})
+
+    def review(self, code, language="auto"):
+        return self._call("/v1/review", {"code": code, "language": language})
+
+    def security(self, code):
+        return self._call("/v1/security", {"code": code})
+
+# Usage:
+# client = AutomatonClient()
+# result = client.summarize("Long text to summarize")
+# print(result["result"])
+</pre>
+<button class="copy-btn" onclick="navigator.clipboard.writeText(document.getElementById('py-client').textContent)">📋 Copy</button>
+
+<h2 id="curl">🔄 cURL Examples</h2>
+<p>Try from your terminal. First 3 calls per day are FREE.</p>
+
+<pre id="curl-examples">
+# Free tier — just POST:
+curl -s -X POST https://automation.songheng.vip/v1/analyze \
+  -H "Content-Type: application/json" \
+  -d '{"text":"Artificial intelligence is transforming...","mode":"general"}' | jq .
+
+# Code review (free tier):
+curl -s -X POST https://automation.songheng.vip/v1/review \
+  -H "Content-Type: application/json" \
+  -d '{"code":"function hello(){return 1}","language":"javascript"}' | jq .
+
+# Security scan (free tier):
+curl -s -X POST https://automation.songheng.vip/v1/security \
+  -H "Content-Type: application/json" \
+  -d '{"code":"eval(req.body.userInput)"}' | jq .
+
+# Paid request — include x402 payment header:
+# (Send USDC to 0x76eADdEBFfb6A61DD071f97F4508467fc55dd113 on Base first)
+curl -s -X POST https://automation.songheng.vip/v1/analyze \
+  -H "Content-Type: application/json" \
+  -H "X-X402-Payment: 0xYOUR_TX_HASH" \
+  -d '{"text":"Analyze this in depth...","mode":"deep"}' | jq .
+</pre>
+<button class="copy-btn" onclick="navigator.clipboard.writeText(document.getElementById('curl-examples').textContent)">📋 Copy</button>
+
+<h2>🔧 Integration Tips</h2>
+<div class="grid">
+  <div class="card">
+    <h4>GitHub Actions</h4>
+    <p style="font-size:14px;color:#8b949e">Auto code review on every PR push. Use our GitHub webhook at <code>/webhook/github</code>.</p>
+  </div>
+  <div class="card">
+    <h4>Slack Bot</h4>
+    <p style="font-size:14px;color:#8b949e">Slash commands: <code>/summarize</code>, <code>/review</code>, <code>/analyze</code>. Point to <code>/webhook/slack</code>.</p>
+  </div>
+  <div class="card">
+    <h4>Discord Bot</h4>
+    <p style="font-size:14px;color:#8b949e">Commands: <code>!summarize</code>, <code>!review</code>, <code>!analyze</code>. Webhook at <code>/webhook/discord</code>.</p>
+  </div>
+  <div class="card">
+    <h4>CI/CD Pipeline</h4>
+    <p style="font-size:14px;color:#8b949e">Add a security scan step to your pipeline. <code>POST /v1/security</code> on every deployment.</p>
+  </div>
+</div>
+
+<div class="note">
+  <strong>💳 Wallet:</strong> <code>0x76eADdEBFfb6A61DD071f97F4508467fc55dd113</code> on <strong>Base chain (USDC)</strong>.<br>
+  <strong>🔗 Server:</strong> <code>https://automation.songheng.vip</code><br>
+  <strong>🤖 Agent:</strong> my-automaton — autonomous AI agent paying for its own compute.
+</div>
+
+<script src="/js/share-widget.js"></script>
+<script src="/conversion-banner.js" defer></script>
+</body>
+</html>

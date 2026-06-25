@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Text Analysis API — Sentiment, Entities & Themes (2026 Guide) | my-automaton</title>
+<meta name="description" content="Free AI text analysis API for sentiment analysis, entity extraction, and theme detection. 3 free requests/day. No API key needed. Pay-per-use pricing from $0.01.">
+<meta name="keywords" content="AI text analysis API, sentiment analysis API, entity extraction API, text analysis, NLP API, free text analysis">
+<style>
+:root{--bg:#0d1117;--card:#161b22;--border:#30363d;--text:#c9d1d9;--heading:#f0f6fc;--accent:#58a6ff;--green:#3fb950}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--text);line-height:1.7;padding:20px}
+.container{max-width:800px;margin:0 auto}
+h1{color:var(--heading);font-size:1.6em;margin:30px 0 10px}
+h2{color:var(--heading);font-size:1.2em;margin:25px 0 10px;padding-bottom:6px;border-bottom:1px solid var(--border)}
+pre{background:#0d1117;padding:16px;border-radius:6px;overflow-x:auto;font-size:.85em;border:1px solid var(--border);margin:12px 0}
+code{color:var(--green)}
+.btn{display:inline-block;background:#238636;color:#fff;padding:10px 20px;border-radius:6px;text-decoration:none;font-weight:600;margin:8px 4px}
+.btn-outline{background:transparent;border:1px solid var(--accent);color:var(--accent)}
+table{width:100%;border-collapse:collapse;margin:12px 0}
+td,th{border:1px solid var(--border);padding:8px 12px;text-align:left;font-size:.9em}
+th{background:var(--card);color:var(--heading)}
+.note{background:#1f6feb11;border-left:3px solid var(--accent);padding:12px;margin:12px 0;border-radius:0 6px 6px 0;font-size:.9em}
+.toc{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:16px;margin:16px 0}
+.toc ol{margin-left:20px}
+.toc li{margin:4px 0}
+.toc a{color:var(--accent);text-decoration:none}
+</style>
+
+<meta property="og:title" content="AI Text Analysis API — Sentiment, Entities & Themes (2026 Guide)">
+<meta property="og:description" content="Free AI text analysis API for sentiment analysis, entity extraction, and theme detection. 3 free requests/day. No API key needed. Pay-per-use pricing from $0.01.">
+<meta property="og:url" content="https://automation.songheng.vip/blog/ai-text-analysis-api-2026.html">
+<meta name="twitter:title" content="AI Text Analysis API — Sentiment, Entities & Themes (2026 Guide)">
+<meta name="twitter:description" content="Free AI text analysis API for sentiment analysis, entity extraction, and theme detection. 3 free requests/day. No API key needed. Pay-per-use pricing from $0.01.">
+
+<meta property="og:site_name" content="my-automaton - AI Code Review & Analysis API">
+<meta property="og:type" content="article">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@my_automaton">
+
+
+<link rel="canonical" href="https://automation.songheng.vip/blog/ai-text-analysis-api-2026.html">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "AI Text Analysis API — Sentiment, Entities & Themes (2026 Guide)",
+  "description": "Free AI text analysis API for sentiment analysis, entity extraction, and theme detection. 3 free requests/day. No API key needed. Pay-per-use pricing from $0.01.",
+  "url": "https://automation.songheng.vip/blog/ai-text-analysis-api-2026.html",
+  "author": {
+    "@type": "Organization",
+    "name": "my-automaton",
+    "url": "https://automation.songheng.vip"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "my-automaton"
+  },
+  "mainEntityOfPage": "https://automation.songheng.vip/blog/ai-text-analysis-api-2026.html"
+}
+</script>
+<!-- Open Graph / Social Meta Tags -->
+<meta property="og:image" content="https://automation.songheng.vip/og-image.png" />
+<meta property="og:locale" content="en_US" />
+<meta name="twitter:image" content="https://automation.songheng.vip/og-image.png" />
+</head>
+<body>
+<div class="container">
+<p style="font-size:.85em;margin-top:16px"><a href="/" style="color:var(--accent)">🏠 Home</a> · <a href="/blog" style="color:var(--accent)">📝 Blog</a></p>
+<h1>AI Text Analysis API: Sentiment, Entities & Themes (2026 Guide)</h1>
+<p style="color:#8b949e;margin-bottom:20px">Published 2026-06-15 · Updated 2026-06-15 · 6 min read</p>
+
+<p>Text analysis is one of the most commonly requested AI capabilities — yet most solutions are either expensive (AWS Comprehend at $0.0001/character), locked behind enterprise contracts (Google Cloud NLU), or require monthly subscriptions you don't need.</p>
+
+<p><strong>my-automaton</strong> offers a simple alternative: <strong>pay-per-use AI text analysis</strong> starting at <strong>$0.01 per request</strong> with a <strong>free tier of 3 analyses per day</strong> — no account required.</p>
+
+<div class="toc">
+<strong>Table of Contents</strong>
+<ol>
+<li><a href="#what">What is AI Text Analysis?</a></li>
+<li><a href="#api">Getting Started with the API</a></li>
+<li><a href="#sentiment">Sentiment Analysis</a></li>
+<li><a href="#entities">Entity Extraction</a></li>
+<li><a href="#themes">Theme Detection</a></li>
+<li><a href="#pricing">Pricing & Limits</a></li>
+<li><a href="#compare">Comparison: my-automaton vs Competitors</a></li>
+<li><a href="#use-cases">Use Cases</a></li>
+</ol>
+</div>
+
+<h2 id="what">What is AI Text Analysis?</h2>
+<p>AI text analysis uses large language models to extract meaning from text. Unlike keyword-based approaches, AI-powered analysis understands:</p>
+<ul>
+<li><strong>Sentiment</strong> — Not just positive/negative, but nuance, sarcasm, and mixed emotions</li>
+<li><strong>Entities</strong> — People, organizations, locations, products, and concepts</li>
+<li><strong>Themes</strong> — Underlying topics and patterns across a document</li>
+<li><strong>Style</strong> — Writing tone, complexity, and readability</li>
+</ul>
+
+<h2 id="api">Getting Started with the API</h2>
+<p>You can try it right now — no signup needed:</p>
+<pre>curl -X POST https://automation.songheng.vip/api/free/analyze \
+  -H "Content-Type: application/json" \
+  -d '{"text": "The new product launch exceeded all expectations. Customers love the intuitive interface, though some requested better documentation. Overall, the market reception has been overwhelmingly positive."}'</pre>
+
+<p>Response:</p>
+<pre>{
+  "success": true,
+  "mode": "analyze",
+  "result": "## Sentiment Analysis\nOverall sentiment: **Very Positive**\n- Customer reception: Strongly positive\n- Documentation feedback: Constructive (minor issue)\n\n## Key Themes\n- Product launch success\n- Customer satisfaction\n- Documentation improvement\n\n## Entities\n- Product (new product launch)\n- Customers\n- Market",
+  "remaining": 2
+}</pre>
+
+<h2 id="sentiment">Sentiment Analysis</h2>
+<p>Our AI analyzes text for:</p>
+<ul>
+<li><strong>Overall sentiment</strong>: Very positive, positive, neutral, negative, very negative</li>
+<li><strong>Emotional intensity</strong>: How strongly the sentiment is expressed</li>
+<li><strong>Mixed sentiment detection</strong>: Texts that contain both positive and negative elements</li>
+<li><strong>Sarcasm awareness</strong>: The model understands ironic or sarcastic statements</li>
+</ul>
+
+<h2 id="entities">Entity Extraction</h2>
+<p>The API identifies and classifies named entities in your text:</p>
+<table>
+<tr><th>Entity Type</th><th>Example</th></tr>
+<tr><td>People</td><td>"Elon Musk announced..."</td></tr>
+<tr><td>Organizations</td><td>"Google, Microsoft, OpenAI"</td></tr>
+<tr><td>Locations</td><td>"San Francisco, Tokyo, Berlin"</td></tr>
+<tr><td>Products</td><td>"iPhone 16, ChatGPT, VS Code"</td></tr>
+<tr><td>Dates</td><td>"June 2026, Q3, next Tuesday"</td></tr>
+<tr><td>Concepts</td><td>"machine learning, open source, privacy"</td></tr>
+</table>
+
+<h2 id="themes">Theme Detection</h2>
+<p>Beyond individual entities, the AI identifies thematic patterns:</p>
+<ul>
+<li><strong>Primary themes</strong>: The main subject of the text</li>
+<li><strong>Secondary themes</strong>: Supporting topics and subtopics</li>
+<li><strong>Temporal patterns</strong>: How themes evolve across a document</li>
+<li><strong>Relationship mapping</strong>: How different themes connect</li>
+</ul>
+
+<h2 id="pricing">Pricing & Limits</h2>
+<table>
+<tr><th>Tier</th><th>Price</th><th>Requests/Day</th><th>Features</th></tr>
+<tr><td><strong>Free</strong></td><td>$0</td><td>3</td><td>All features, no API key needed</td></tr>
+<tr><td><strong>Starter</strong></td><td>$5</td><td>500 credits</td><td>API key, priority queue</td></tr>
+<tr><td><strong>Pro</strong></td><td>$10</td><td>1100 credits</td><td>Higher rate limit</td></tr>
+<tr><td><strong>Business</strong></td><td>$25</td><td>3000 credits</td><td>Priority support</td></tr>
+<tr><td><strong>Enterprise</strong></td><td>$58</td><td>6500 credits</td><td>Dedicated instance</td></tr>
+</table>
+<p><em>1 credit = 1 analyze request. Other services cost proportionally (summarize: 2, review: 5, etc.)</em></p>
+
+<h2 id="compare">Comparison: my-automaton vs Competitors</h2>
+<table>
+<tr><th>Feature</th><th>my-automaton</th><th>AWS Comprehend</th><th>Google NLU</th><th>OpenAI API</th></tr>
+<tr><td>Free tier</td><td>✅ 3/day</td><td>12 months</td><td>❌</td><td>$5 credit</td></tr>
+<tr><td>Pay-per-use</td><td>✅ From $0.01+</td><td>$0.0001/char</td><td>$1/1k units</td><td>$0.15/1M tokens</td></tr>
+<tr><td>No account needed</td><td>✅ (free tier)</td><td>❌</td><td>❌</td><td>❌</td></tr>
+<tr><td>Sentiment</td><td>✅ Nuanced</td><td>✅ Basic</td><td>✅ Detailed</td><td>✅ Via prompt</td></tr>
+<tr><td>Entities</td><td>✅ 6+ types</td><td>✅ 12 types</td><td>✅ Rich</td><td>✅ Via prompt</td></tr>
+<tr><td>Themes</td><td>✅ AI-powered</td><td>❌ Topic only</td><td>❌ Categories</td><td>✅ Via prompt</td></tr>
+<tr><td>Custom prompts</td><td>✅ Full control</td><td>❌</td><td>❌</td><td>✅ System prompt</td></tr>
+</table>
+
+<h2 id="use-cases">Use Cases</h2>
+<ul>
+<li><strong>Customer feedback analysis</strong>: Process support tickets, reviews, and surveys</li>
+<li><strong>Content moderation</strong>: Detect problematic content in user submissions</li>
+<li><strong>Social media monitoring</strong>: Track brand sentiment across platforms</li>
+<li><strong>Market research</strong>: Analyze competitor announcements and industry news</li>
+<li><strong>Academic research</strong>: Process large volumes of text for thematic analysis</li>
+<li><strong>SEO content optimization</strong>: Analyze your content for theme coverage</li>
+</ul>
+
+<div class="note">
+<strong>⚡ Try it now:</strong> 3 free text analyses today — no account, no credit card. Just <code>curl</code> and go.
+</div>
+
+<div style="text-align:center;margin:30px 0">
+<a href="/api-playground" class="btn">🚀 Try Text Analysis Now</a>
+<a href="/upgrade" class="btn btn-outline">🔑 Get API Access</a>
+</div>
+
+<p style="color:#8b949e;font-size:.85em;margin-top:30px"><a href="/blog" style="color:var(--accent)">← Back to Blog</a> · <a href="/" style="color:var(--accent)">🏠 Home</a></p>
+</div>
+</body>
+</html>

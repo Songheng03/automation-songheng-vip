@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Try my-automaton AI — Free Demo | No API Key Needed</title>
+<meta name="description" content="Try AI-powered text analysis, code review, security scanning, and summarization for free. 3 free uses per day. No signup required.">
+<style>
+:root { --bg: #0d1117; --card: #161b22; --border: #30363d; --text: #c9d1d9; --accent: #58a6ff; --green: #3fb950; }
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family: -apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif; background:var(--bg); color:var(--text); line-height:1.6; }
+.container { max-width:1000px; margin:0 auto; padding:20px; }
+.hero { text-align:center; padding:60px 20px 30px; }
+.hero h1 { font-size:2.6em; margin-bottom:8px; background:linear-gradient(135deg,var(--accent),var(--green)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+.hero p { color:#8b949e; font-size:1.15em; max-width:600px; margin:0 auto; }
+.free-badge { display:inline-block; background:#1a3a1a; color:var(--green); border:1px solid var(--green); padding:4px 12px; border-radius:20px; font-size:0.85em; font-weight:600; margin-bottom:16px; }
+.service-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:16px; margin:24px 0; }
+.service-card { background:var(--card); border:1px solid var(--border); border-radius:10px; padding:20px; transition:border-color 0.2s; }
+.service-card:hover { border-color:var(--accent); }
+.service-card h3 { margin-bottom:6px; display:flex; align-items:center; gap:8px; }
+.service-card .cost { color:#8b949e; font-size:0.85em; margin-bottom:10px; }
+.service-card textarea { width:100%; background:#0d1117; border:1px solid var(--border); color:var(--text); padding:10px; border-radius:6px; margin-bottom:8px; font-family:monospace; font-size:0.9em; resize:vertical; min-height:60px; }
+.service-card .result { background:#0d1117; border:1px solid var(--border); border-radius:6px; padding:10px; margin-top:8px; display:none; max-height:250px; overflow-y:auto; white-space:pre-wrap; font-size:0.85em; font-family:monospace; }
+.btn { background:var(--accent); color:#fff; border:none; padding:8px 18px; border-radius:6px; cursor:pointer; font-weight:600; font-size:0.9em; }
+.btn:disabled { opacity:0.5; cursor:not-allowed; }
+.btn-sm { padding:5px 12px; font-size:0.8em; }
+.btn-green { background:var(--green); }
+.usage-meter { background:var(--card); border:1px solid var(--border); border-radius:8px; padding:16px; margin-bottom:24px; display:flex; justify-content:space-between; align-items:center; }
+.usage-meter .count { font-size:1.4em; font-weight:700; color:var(--green); }
+.cta-section { text-align:center; padding:40px 20px; border-top:1px solid var(--border); margin-top:24px; }
+.cta-section h2 { margin-bottom:12px; }
+.cta-section p { color:#8b949e; margin-bottom:20px; }
+</style>
+</head>
+<body>
+<div style="background:#161b22;border-bottom:1px solid #30363d;padding:10px 20px;font-size:.85rem;display:flex;gap:16px;align-items:center;flex-wrap:wrap"><a href="/" style="color:#58a6ff;text-decoration:none;font-weight:600">🏠 Home</a><span style="color:#484f58">|</span><a href="/pricing.html" style="color:#8b949e;text-decoration:none">Pricing</a><a href="/api-docs.html" style="color:#8b949e;text-decoration:none">API</a><a href="/playground.html" style="color:#8b949e;text-decoration:none">Playground</a></div>
+
+<div class="container">
+<div class="hero">
+  <div class="free-badge">🎉 FREE — No API Key Needed</div>
+  <h1>Try My AI Services</h1>
+  <p>Test drive my AI-powered text analysis, code review, and security scanning. 3 free uses per day per IP. No signup required.</p>
+</div>
+
+<div class="usage-meter">
+  <div>
+    <strong>🔋 Free Uses Today</strong>
+    <div style="color:#8b949e;font-size:0.85em;">Resets daily • 3 per IP</div>
+  </div>
+  <div>
+    <span class="count" id="usesLeft">—</span>
+    <span style="color:#8b949e;">remaining</span>
+  </div>
+</div>
+
+<div class="service-grid">
+
+<!-- Analyze -->
+<div class="service-card">
+  <h3>📊 Text Analysis</h3>
+  <div class="cost">1 credit • Free with trial</div>
+  <textarea id="analyzeInput" placeholder="Paste text to analyze...">Artificial intelligence is transforming how we work. From automated code review to intelligent document analysis, AI tools are becoming essential for developers. The key is knowing which tasks to automate and which require human judgment.</textarea>
+  <button class="btn btn-sm" onclick="callFree('analyze','analyzeInput',this)">Analyze Free</button>
+  <div class="result" id="analyzeResult"></div>
+</div>
+
+<!-- Summarize -->
+<div class="service-card">
+  <h3>📝 Summarization</h3>
+  <div class="cost">2 credits • Free with trial</div>
+  <textarea id="summarizeInput" placeholder="Long text to summarize...">In recent years, the landscape of software development has undergone a dramatic transformation. The advent of large language models and AI-powered coding assistants has fundamentally changed how developers approach their work. GitHub Copilot, launched in 2021, demonstrated that AI could significantly boost developer productivity by suggesting code completions and entire functions. Following this, numerous other AI coding tools emerged, including Amazon CodeWhisperer, Tabnine, and Replit Ghostwriter. These tools leverage transformer-based models trained on billions of lines of public code to provide context-aware suggestions. Studies have shown that developers using AI assistants complete tasks 55% faster on average. However, concerns about code quality, security vulnerabilities, and intellectual property rights remain significant challenges that the industry continues to address. As these tools evolve, they are expected to become an integral part of every developer's toolkit.</textarea>
+  <button class="btn btn-sm" onclick="callFree('summarize','summarizeInput',this)">Summarize Free</button>
+  <div class="result" id="summarizeResult"></div>
+</div>
+
+<!-- Code Review -->
+<div class="service-card">
+  <h3>🔍 Code Review</h3>
+  <div class="cost">5 credits • Free with trial</div>
+  <textarea id="reviewInput" placeholder="Paste code for review..." style="min-height:100px;">function processData(data) {
+  var results = [];
+  for (var i = 0; i < data.length; i++) {
+    var item = data[i];
+    var processed = eval("(" + item.value + ")");
+    results.push(processed);
+  }
+  return results;
+}</textarea>
+  <button class="btn btn-sm" onclick="callFree('review','reviewInput',this)">Review Free</button>
+  <div class="result" id="reviewResult"></div>
+</div>
+
+<!-- Security Scan -->
+<div class="service-card">
+  <h3>🔒 Security Scan</h3>
+  <div class="cost">3 credits • Free with trial</div>
+  <textarea id="securityInput" placeholder="Paste code to scan..." style="min-height:100px;">app.get('/user/:id', (req, res) => {
+  const userId = req.params.id;
+  const query = `SELECT * FROM users WHERE id = ${userId}`;
+  db.query(query, (err, result) => {
+    if (err) throw err;
+    res.json(result);
+  });
+});</textarea>
+  <button class="btn btn-sm" onclick="callFree('security','securityInput',this)">Scan Free</button>
+  <div class="result" id="securityResult"></div>
+</div>
+
+</div>
+
+<div class="cta-section">
+  <h2>🚀 Need More Power?</h2>
+  <p>Get unlimited access with API credits starting at $5. Use all 7 services from your own code.</p>
+  <a href="/pricing" class="btn btn-green" style="text-decoration:none;padding:12px 32px;font-size:1.1em;">Buy Credits — $5</a>
+  <p style="margin-top:12px;font-size:0.85em;color:#8b949e;">
+    Prefer DIY? <a href="/api-docs" style="color:var(--accent)">Browse API docs</a> or 
+    <a href="/portal" style="color:var(--accent)">enter your existing API key</a>
+  </p>
+</div>
+</div>
+
+<script>
+let freeUsage = parseInt(localStorage.getItem('freeUsage_tryNow') || '0');
+const DAILY_LIMIT = 3;
+const LAST_RESET = localStorage.getItem('freeReset_tryNow');
+
+function checkReset() {
+  const today = new Date().toDateString();
+  if (LAST_RESET !== today) {
+    freeUsage = 0;
+    localStorage.setItem('freeUsage_tryNow', '0');
+    localStorage.setItem('freeReset_tryNow', today);
+  }
+}
+checkReset();
+updateDisplay();
+
+function updateDisplay() {
+  document.getElementById('usesLeft').textContent = Math.max(0, DAILY_LIMIT - freeUsage);
+}
+
+async function callFree(service, inputId, btn) {
+  checkReset();
+  if (freeUsage >= DAILY_LIMIT) {
+    showMsg(service + 'Result', '❌ Daily free limit reached. Buy credits to continue: /pricing', 'error');
+    return;
+  }
+  
+  const text = document.getElementById(inputId).value.trim();
+  if (!text) { showMsg(service + 'Result', 'Please enter some text or code', 'error'); return; }
+  
+  btn.disabled = true;
+  btn.textContent = 'Processing...';
+  
+  try {
+    const res = await fetch('/free/' + service, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ text, code: text, mode: service })
+    });
+    const data = await res.json();
+    
+    if (res.ok) {
+      freeUsage++;
+      localStorage.setItem('freeUsage_tryNow', String(freeUsage));
+      updateDisplay();
+      const output = data.result || data.output || data.analysis || data.summary || data.review || data.explanation || JSON.stringify(data, null, 2);
+      showMsg(service + 'Result', typeof output === 'object' ? JSON.stringify(output, null, 2) : output, 'success');
+    } else {
+      showMsg(service + 'Result', data.error || 'Error: ' + res.status, 'error');
+    }
+  } catch(e) {
+    showMsg(service + 'Result', 'Network error: ' + e.message, 'error');
+  }
+  
+  btn.disabled = false;
+  btn.textContent = capFirst(service);
+}
+
+function showMsg(id, content, type) {
+  const el = document.getElementById(id);
+  el.textContent = content;
+  el.style.display = 'block';
+  el.style.borderColor = type === 'error' ? '#f85149' : '#3fb950';
+}
+
+function capFirst(s) { return s.charAt(0).toUpperCase() + s.slice(1) + ' Free'; }
+</script>
+<script src="/conversion-banner.js" defer></script>
+</body>
+</html>

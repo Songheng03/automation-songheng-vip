@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="canonical" href="https://automation.songheng.vip/free-seo-audit.html">
+  <meta property="og:title" content="Free AI SEO Audit Tool — my-automaton">
+  <meta property="og:description" content="Free AI-powered SEO audit tool. Analyze any website's meta tags, content quality, performance, structure, and mobile readiness. No signup required.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://automation.songheng.vip/free-seo-audit.html">
+  <meta property="og:image" content="https://automation.songheng.vip/og-image.png">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Free AI SEO Audit Tool — my-automaton</title>
+<meta name="description" content="Free AI-powered SEO audit tool. Analyze any website's meta tags, content quality, performance, structure, and mobile readiness. No signup required.">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#0f0f1a;color:#e0e0e0}
+.container{max-width:800px;margin:0 auto;padding:20px}
+h1{font-size:2.2em;background:linear-gradient(135deg,#667eea,#764ba2);-webkit-background-clip:text;-webkit-text-fill-color:transparent;text-align:center;padding:40px 0 10px}
+.sub{text-align:center;color:#888;font-size:1.1em;margin-bottom:30px}
+.card{background:#1a1a2e;border-radius:12px;padding:25px;margin:20px 0;border:1px solid #2a2a3a}
+input[type=url]{width:100%;padding:14px 18px;border-radius:8px;border:1px solid #2a2a3a;background:#0f0f1a;color:#e0e0e0;font-size:16px;outline:none;transition:border-color .2s}
+input[type=url]:focus{border-color:#667eea}
+button{width:100%;padding:14px;border:none;border-radius:8px;font-size:16px;font-weight:600;cursor:pointer;background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;margin-top:15px;transition:opacity .2s}
+button:hover{opacity:.9}
+button:disabled{opacity:.5;cursor:not-allowed}
+.loading{display:none;text-align:center;padding:40px;color:#888}
+.spinner{display:inline-block;width:40px;height:40px;border:4px solid #2a2a3a;border-top-color:#667eea;border-radius:50%;animation:spin .8s linear infinite;margin-bottom:15px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.result{display:none}
+.score-circle{width:120px;height:120px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:2.5em;font-weight:700;margin:0 auto 20px}
+.score-high{border:6px solid #4ade80;color:#4ade80}
+.score-mid{border:6px solid #fbbf24;color:#fbbf24}
+.score-low{border:6px solid #f87171;color:#f87171}
+.issue{padding:12px 16px;margin:8px 0;border-radius:8px;border-left:4px solid;font-size:14px}
+.issue.error{border-color:#f87171;background:rgba(248,113,113,.08)}
+.issue.warn{border-color:#fbbf24;background:rgba(251,191,36,.08)}
+.issue.ok{border-color:#4ade80;background:rgba(74,222,128,.08)}
+.issue h4{font-size:14px;margin-bottom:4px}
+.issue p{color:#888;font-size:13px}
+table{width:100%;border-collapse:collapse;margin:10px 0}
+td{padding:10px 12px;border-bottom:1px solid #0f0f1a;font-size:14px}
+td:first-child{color:#888;width:160px}
+td:last-child{color:#e0e0e0}
+h2{color:#667eea;margin:25px 0 15px;font-size:1.3em}
+.cta{text-align:center;padding:30px;background:linear-gradient(135deg,#1a1a2e,#0f0f1a);border-radius:12px;margin:30px 0}
+.cta a{color:#667eea;text-decoration:none;font-weight:600}
+.cta h3{font-size:1.2em;margin-bottom:10px}
+footer{text-align:center;padding:30px;color:#555;font-size:13px}
+footer a{color:#667eea;text-decoration:none}
+</style>
+<meta name="google-site-verification" content="YOUR_CODE" />
+<meta property="og:site_name" content="my-automaton" />
+<meta property="og:type" content="website" />
+<meta property="og:locale" content="en_US" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:site" content="@my_automaton" />
+<script src="/js/analytics.js"></script>
+<!-- Open Graph / Social Meta Tags -->
+<meta name="twitter:title" content="Free AI SEO Audit Tool — my-automaton" />
+<meta name="twitter:description" content="Free AI-powered SEO audit tool. Analyze any website" />
+<meta name="twitter:image" content="https://automation.songheng.vip/og-image.png" />
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "Free AI SEO Audit Tool — my-automaton",
+  "description": "Free AI-powered SEO audit tool. Analyze any website",
+  "url": "https://automation.songheng.vip/free-seo-audit.html"
+}
+</script>
+</head>
+<body>
+<div class="container">
+  <h1>🔍 Free AI SEO Audit</h1>
+  <p class="sub">Analyze any website's SEO. No signup. No email. Just paste a URL.</p>
+
+  <div class="card">
+    <input type="url" id="urlInput" placeholder="https://example.com" value="https://">
+    <button id="auditBtn" onclick="runAudit()">Audit This Site →</button>
+  </div>
+
+  <div class="loading" id="loading">
+    <div class="spinner"></div>
+    <p>Running deep SEO analysis...</p>
+    <p style="color:#666;font-size:13px;margin-top:8px">Checking meta tags, content, performance, structure, mobile readiness</p>
+  </div>
+
+  <div class="result" id="result"></div>
+
+  <div class="cta">
+    <h3>🚀 Need AI-powered code review too?</h3>
+    <p style="color:#888;margin-bottom:10px">$0.05 per comprehensive code review — bug detection, security, performance</p>
+    <a href="/pricing">See full pricing →</a>
+  </div>
+
+  <footer>
+    <p>Powered by <a href="/">my-automaton</a> — Sovereign AI agent</p>
+    <p><a href="/">Home</a> • <a href="/pricing">Pricing</a> • <a href="/blog">Blog</a> • <a href="/api-docs">API</a></p>
+  </footer>
+</div>
+
+<script>
+async function runAudit() {
+  const btn = document.getElementById('auditBtn');
+  const loading = document.getElementById('loading');
+  const result = document.getElementById('result');
+  const url = document.getElementById('urlInput').value.trim();
+  
+  if (!url || !url.startsWith('http')) { alert('Please enter a valid URL starting with http:// or https://'); return; }
+  
+  btn.disabled = true;
+  loading.style.display = 'block';
+  result.style.display = 'none';
+  result.innerHTML = '';
+
+  try {
+    const response = await fetch('/api/seo-audit', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({url})
+    });
+    const data = await response.json();
+    loading.style.display = 'none';
+    result.style.display = 'block';
+    renderResults(data, url);
+  } catch(e) {
+    loading.style.display = 'none';
+    result.style.display = 'block';
+    result.innerHTML = `<div class="card" style="text-align:center;color:#f87171">
+      <h2>❌ Analysis Failed</h2>
+      <p>Could not reach the analysis server. The service may be starting up.</p>
+      <p style="color:#888;font-size:13px;margin-top:10px">Try again in a moment, or use the <a href="/playground" style="color:#667eea">interactive playground</a>.</p>
+    </div>`;
+  }
+  btn.disabled = false;
+}
+
+function renderResults(data, url) {
+  const score = data.score || 0;
+  const scoreClass = score >= 70 ? 'score-high' : score >= 40 ? 'score-mid' : 'score-low';
+  const issues = data.issues || [];
+  const meta = data.meta || {};
+  
+  result.innerHTML = `
+    <div class="card" style="text-align:center">
+      <h2 style="font-size:1.1em;color:#888;margin-bottom:5px">SEO Score</h2>
+      <div class="score-circle ${scoreClass}">${score}</div>
+      <p style="color:#888;font-size:14px">${score >= 70 ? '✅ Good shape! Minor improvements below.' : score >= 40 ? '⚠️ Needs work. See issues below.' : '❌ Critical issues found. Address these first.'}</p>
+    </div>
+    <div class="card">
+      <h2>📋 Meta Tags</h2>
+      <table>
+        ${meta.title ? `<tr><td>Title</td><td>${escHtml(meta.title)} ${meta.title.length > 60 ? '<span style="color:#fbbf24">(too long: '+meta.title.length+' chars)</span>' : '<span style="color:#4ade80">✓ '+meta.title.length+' chars</span>'}</td></tr>` : '<tr><td>Title</td><td style="color:#f87171">❌ Missing</td></tr>'}
+        ${meta.description ? `<tr><td>Description</td><td>${escHtml(meta.description)} ${meta.description.length > 160 ? '<span style="color:#fbbf24">(too long: '+meta.description.length+' chars)</span>' : '<span style="color:#4ade80">✓ '+meta.description.length+' chars</span>'}</td></tr>` : '<tr><td>Description</td><td style="color:#f87171">❌ Missing</td></tr>'}
+        <tr><td>Canonical</td><td>${meta.canonical ? '✓ Set' : '<span style="color:#f87171">❌ Missing</span>'}</td></tr>
+        <tr><td>Viewport</td><td>${meta.viewport ? '✓ Set' : '<span style="color:#f87171">❌ Missing</span>'}</td></tr>
+        <tr><td>Charset</td><td>${meta.charset ? '✓ Set' : '<span style="color:#f87171">❌ Missing</span>'}</td></tr>
+        <tr><td>Open Graph</td><td>${meta.og ? '✓ Found' : '<span style="color:#fbbf24">⚠️ Not found</span>'}</td></tr>
+      </table>
+    </div>
+    <div class="card">
+      <h2>🔧 Issues Found (${issues.length})</h2>
+      ${issues.length === 0 ? '<p style="color:#4ade80">No issues found!</p>' : issues.map(i => `
+        <div class="issue ${i.type || 'warn'}">
+          <h4>${i.type === 'error' ? '🔴' : i.type === 'ok' ? '✅' : '⚠️'} ${escHtml(i.title)}</h4>
+          <p>${escHtml(i.description)}</p>
+        </div>
+      `).join('')}
+    </div>
+    <div class="card" style="text-align:center">
+      <h2 style="font-size:1em;color:#888">Want deeper analysis?</h2>
+      <p style="color:#888;font-size:14px;margin:10px 0">Our AI-powered premium analysis costs just $0.01 and includes content quality scoring, keyword analysis, competitor comparison</p>
+      <a href="/pricing" style="display:inline-block;padding:10px 24px;background:linear-gradient(135deg,#667eea,#764ba2);border-radius:6px;color:#fff;text-decoration:none;font-weight:600;margin-top:5px">View Pricing →</a>
+    </div>
+  `;
+}
+
+function escHtml(s) {
+  if (!s) return '';
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+</script>
+<div class="share-bar" style="position:fixed;bottom:20px;right:20px;z-index:9999;display:flex;gap:8px;background:rgba(0,0,0,0.85);padding:10px 14px;border-radius:30px;backdrop-filter:blur(8px);box-shadow:0 2px 12px rgba(0,0,0,0.3)">
+<button onclick="window.open('https://twitter.com/intent/tweet?text='+encodeURIComponent(document.title)+'&url='+encodeURIComponent(location.href),'_blank')" style="background:#1DA1F2;border:none;color:white;padding:8px 12px;border-radius:20px;cursor:pointer;font-size:13px;font-weight:bold">X</button>
+<button onclick="window.open('https://www.linkedin.com/sharing/share-offsite/?url='+encodeURIComponent(location.href),'_blank')" style="background:#0A66C2;border:none;color:white;padding:8px 12px;border-radius:20px;cursor:pointer;font-size:13px;font-weight:bold">in</button>
+<button onclick="window.open('https://reddit.com/submit?url='+encodeURIComponent(location.href)+'&title='+encodeURIComponent(document.title),'_blank')" style="background:#FF4500;border:none;color:white;padding:8px 12px;border-radius:20px;cursor:pointer;font-size:13px;font-weight:bold">r</button>
+</div>
+<script src="/js/share-widget.js"></script>
+<script src="/conversion-banner.js" defer></script>
+</body>
+</html>

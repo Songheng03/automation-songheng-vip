@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="canonical" href="https://automation.songheng.vip/format.html">
+  <meta property="og:title" content="Free Code Formatter & Beautifier — JSON, HTML, CSS, JS | my-automaton">
+  <meta property="og:description" content="Free online code formatter and beautifier. Format JSON, HTML, CSS, JavaScript, TypeScript, Python. Minify code, count stats, diff comparison. No signup required.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://automation.songheng.vip/format.html">
+  <meta property="og:image" content="https://automation.songheng.vip/og-image.png">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Free Code Formatter & Beautifier — JSON, HTML, CSS, JS | my-automaton</title>
+<meta name="description" content="Free online code formatter and beautifier. Format JSON, HTML, CSS, JavaScript, TypeScript, Python. Minify code, count stats, diff comparison. No signup required.">
+<meta name="keywords" content="code formatter, json beautifier, html formatter, css beautifier, javascript formatter, free code formatter, online beautifier">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:#0a0a14;color:#e0e0e0;font-family:-apple-system,system-ui,sans-serif;line-height:1.6;padding:1rem;}
+.container{max-width:1100px;margin:0 auto;}
+nav{margin-bottom:1rem;}
+nav a{color:#666;text-decoration:none;font-size:0.85rem;margin-right:1rem;}
+h1{font-size:1.5rem;margin-bottom:0.3rem;background:linear-gradient(135deg,#00d4aa,#4a9eff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.subtitle{color:#666;font-size:0.85rem;margin-bottom:1.2rem;}
+.toolbar{display:flex;gap:0.5rem;flex-wrap:wrap;margin-bottom:0.8rem;align-items:center;}
+.toolbar select,.toolbar button{padding:0.4rem 0.8rem;border-radius:6px;font-size:0.8rem;background:#12121e;border:1px solid #1e1e3a;color:#e0e0e0;cursor:pointer;}
+.toolbar select:hover,.toolbar button:hover{border-color:#00d4aa66;}
+.toolbar button.primary{background:#00d4aa;color:#000;border:none;font-weight:600;}
+.toolbar button.primary:hover{background:#00eebb;}
+.toolbar button.danger{background:#ff4444;color:#fff;border:none;}
+.toolbar button.danger:hover{background:#ff6666;}
+.editor-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem;}
+@media(max-width:768px){.editor-grid{grid-template-columns:1fr;}}
+.editor-pane{display:flex;flex-direction:column;}
+.editor-pane label{display:block;color:#888;font-size:0.75rem;margin-bottom:0.3rem;text-transform:uppercase;letter-spacing:0.5px;}
+.editor-pane textarea{flex:1;min-height:350px;background:#0f0f1a;border:1px solid #1e1e3a;border-radius:8px;padding:0.8rem;color:#e0e0e0;font-family:'SF Mono','Fira Code','Cascadia Code',monospace;font-size:0.8rem;resize:vertical;tab-size:2;}
+.editor-pane textarea:focus{outline:none;border-color:#4a9eff66;}
+.editor-pane textarea.output{color:#00d4aa;}
+.stats-bar{display:flex;gap:1rem;flex-wrap:wrap;padding:0.6rem;background:#12121e;border-radius:8px;margin-bottom:1rem;}
+.stat-item{display:flex;gap:0.4rem;align-items:center;}
+.stat-item .label{color:#666;font-size:0.75rem;}
+.stat-item .value{color:#e0e0e0;font-weight:600;font-size:0.85rem;}
+.info-section{background:#12121e;border:1px solid #1e1e3a;border-radius:12px;padding:1.2rem;margin:1rem 0;}
+.info-section h3{color:#00d4aa;font-size:0.95rem;margin-bottom:0.5rem;}
+.info-section p{color:#888;font-size:0.82rem;line-height:1.5;}
+footer{text-align:center;padding:1.5rem;color:#444;font-size:0.75rem;}
+.badge{display:inline-block;padding:0.15rem 0.5rem;border-radius:999px;font-size:0.7rem;background:#00d4aa15;color:#00d4aa;}
+.loading{opacity:0.5;pointer-events:none;}
+.error-message{color:#ff4444;font-size:0.8rem;margin-top:0.3rem;}
+</style>
+<meta name="google-site-verification" content="YOUR_CODE" />
+<meta property="og:site_name" content="my-automaton" />
+<meta property="og:type" content="website" />
+<meta property="og:locale" content="en_US" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:site" content="@my_automaton" />
+<script src="/js/analytics.js"></script>
+<!-- Open Graph / Social Meta Tags -->
+<meta name="twitter:title" content="Free Code Formatter &amp; Beautifier — JSON, HTML, CSS, JS | my-automaton" />
+<meta name="twitter:description" content="Free online code formatter and beautifier. Format JSON, HTML, CSS, JavaScript, TypeScript, Python. Minify code, count stats, diff comparison. No signup required." />
+<meta name="twitter:image" content="https://automation.songheng.vip/og-image.png" />
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "Free Code Formatter & Beautifier — JSON, HTML, CSS, JS | my-automaton",
+  "description": "Free online code formatter and beautifier. Format JSON, HTML, CSS, JavaScript, TypeScript, Python. Minify code, count stats, diff comparison. No signup required.",
+  "url": "https://automation.songheng.vip/format.html"
+}
+</script>
+</head>
+<body>
+<div class="container">
+<nav>
+  <a href="/">🏠 Home</a>
+  <a href="/tools">🛠️ Tools</a>
+  <a href="/api-docs">📖 API</a>
+  <span style="color:#555;">Code Formatter</span>
+</nav>
+
+<h1>✨ Free Code Formatter & Beautifier</h1>
+<p class="subtitle">Format, minify, and analyze your code. No signup, no limits, no cost.</p>
+
+<div class="toolbar">
+  <select id="languageSelect">
+    <option value="auto">Auto-detect</option>
+    <option value="json">JSON</option>
+    <option value="html">HTML</option>
+    <option value="css">CSS</option>
+    <option value="javascript">JavaScript</option>
+    <option value="python">Python</option>
+    <option value="markdown">Markdown</option>
+  </select>
+  <button id="formatBtn" class="primary">✨ Format</button>
+  <button id="minifyBtn">🗜️ Minify</button>
+  <button id="statsBtn">📊 Stats</button>
+  <button id="clearBtn" class="danger">✕ Clear</button>
+  <div style="flex:1;text-align:right;color:#555;font-size:0.8rem;" id="status">Ready</div>
+</div>
+
+<div class="editor-grid">
+  <div class="editor-pane">
+    <label>Input</label>
+    <textarea id="inputArea" placeholder="Paste your code here...">{&#10;  "name": "my-automaton",&#10;  "type": "AI agent",&#10;  "chain": "Base",&#10;  "services": ["analyze","summarize","review"]&#10;}</textarea>
+  </div>
+  <div class="editor-pane">
+    <label>Output <span class="badge" id="outputBadge">formatted</span></label>
+    <textarea id="outputArea" class="output" readonly placeholder="Formatted output will appear here..." readonly></textarea>
+  </div>
+</div>
+
+<div class="stats-bar" id="statsBar">
+  <div class="stat-item"><span class="label">Lines:</span><span class="value" id="statLines">—</span></div>
+  <div class="stat-item"><span class="label">Chars:</span><span class="value" id="statChars">—</span></div>
+  <div class="stat-item"><span class="label">Words:</span><span class="value" id="statWords">—</span></div>
+  <div class="stat-item"><span class="label">Tokens (est):</span><span class="value" id="statTokens">—</span></div>
+  <div class="stat-item"><span class="label">Language:</span><span class="value" id="statLang">—</span></div>
+</div>
+
+<div class="info-section">
+  <h3>🔌 API Access</h3>
+  <p>Use this formatter programmatically: <code style="color:#4a9eff;background:#0a0a14;padding:0.1rem 0.4rem;border-radius:3px;">POST /api/format</code> with <code style="color:#aaa;">{"text": "your code", "language": "json"}</code>. Free and unlimited. <a href="/api-docs" style="color:#00d4aa;">View API docs →</a></p>
+</div>
+
+<footer>
+  <p>my-automaton · <a href="https://automation.songheng.vip" style="color:#666;">automation.songheng.vip</a></p>
+</footer>
+</div>
+
+<script>
+const inputArea = document.getElementById('inputArea');
+const outputArea = document.getElementById('outputArea');
+const langSelect = document.getElementById('languageSelect');
+const statusEl = document.getElementById('status');
+const outputBadge = document.getElementById('outputBadge');
+
+function updateStats(text) {
+  const lines = text.split('\n').filter(l => l.trim()).length;
+  const chars = text.length;
+  const words = text.split(/\s+/).filter(w => w.length > 0).length;
+  const tokens = Math.ceil(chars / 4);
+  
+  document.getElementById('statLines').textContent = lines.toLocaleString();
+  document.getElementById('statChars').textContent = chars.toLocaleString();
+  document.getElementById('statWords').textContent = words.toLocaleString();
+  document.getElementById('statTokens').textContent = tokens.toLocaleString();
+  
+  // Try to detect language
+  const lang = detectClient(text);
+  document.getElementById('statLang').textContent = lang;
+}
+
+function detectClient(text) {
+  const t = text.trim();
+  if (!t) return '—';
+  if ((t.startsWith('{') || t.startsWith('[')) && tryParseJSON(t)) return 'JSON';
+  if (t.startsWith('<') && t.includes('</')) return 'HTML';
+  if (t.includes('{') && (t.includes(';') || t.includes('@media') || t.includes(':'))) return 'CSS';
+  if (t.startsWith('def ') || t.includes('import ') || (t.includes('class ') && t.includes(':'))) return 'Python';
+  if (t.includes('function ') || t.includes('const ') || t.includes('=>')) return 'JavaScript';
+  if (t.startsWith('#')) return 'Markdown';
+  return 'Text';
+}
+
+function tryParseJSON(text) {
+  try { JSON.parse(text); return true; } catch(e) { return false; }
+}
+
+// Initial stats
+updateStats(inputArea.value);
+
+function setLoading(loading) {
+  document.querySelector('.editor-grid').style.opacity = loading ? '0.5' : '1';
+  document.querySelector('.editor-grid').style.pointerEvents = loading ? 'none' : 'auto';
+}
+
+async function formatCode(mode = 'format') {
+  const text = inputArea.value.trim();
+  if (!text) {
+    statusEl.textContent = '⚠️ Paste some code first';
+    return;
+  }
+  
+  setLoading(true);
+  statusEl.textContent = '⏳ Formatting...';
+  
+  try {
+    const lang = langSelect.value === 'auto' ? undefined : langSelect.value;
+    const response = await fetch('/api/format', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ text, language: lang, mode })
+    });
+    
+    const data = await response.json();
+    
+    if (data.error) {
+      outputArea.value = 'Error: ' + data.error;
+      outputBadge.textContent = 'error';
+      statusEl.textContent = '❌ ' + data.error;
+      return;
+    }
+    
+    if (mode === 'stats') {
+      outputArea.value = JSON.stringify(data, null, 2);
+      outputBadge.textContent = 'stats';
+    } else {
+      outputArea.value = data.result;
+      outputBadge.textContent = mode === 'minify' ? 'minified (saved ' + data.saved + ' chars)' : 'formatted';
+    }
+    
+    updateStats(outputArea.value);
+    statusEl.textContent = '✅ Done in ' + data.characters + ' chars → ' + (data.original?.characters || '?') + ' → ' + data.characters;
+  } catch(e) {
+    outputArea.value = 'Error: ' + e.message;
+    outputBadge.textContent = 'error';
+    statusEl.textContent = '❌ ' + e.message;
+  } finally {
+    setLoading(false);
+  }
+}
+
+document.getElementById('formatBtn').addEventListener('click', () => formatCode('format'));
+document.getElementById('minifyBtn').addEventListener('click', () => formatCode('minify'));
+document.getElementById('statsBtn').addEventListener('click', () => formatCode('stats'));
+document.getElementById('clearBtn').addEventListener('click', () => {
+  inputArea.value = '';
+  outputArea.value = '';
+  outputBadge.textContent = 'cleared';
+  statusEl.textContent = 'Ready';
+  updateStats('');
+});
+
+// Keyboard shortcuts
+inputArea.addEventListener('keydown', (e) => {
+  if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+    e.preventDefault();
+    formatCode('format');
+  }
+});
+
+// Real-time stats as user types
+let statsTimeout;
+inputArea.addEventListener('input', () => {
+  clearTimeout(statsTimeout);
+  statsTimeout = setTimeout(() => updateStats(inputArea.value), 300);
+});
+
+// Share some example data
+const examples = {
+  html: `<div class="container">\n  <h1>Hello World</h1>\n  <p>This is a paragraph</p>\n</div>`,
+  css: `.container{background:#000;color:#fff;padding:20px;margin:0 auto;max-width:1200px;}\nh1{font-size:2rem;margin-bottom:1rem;}`,
+  js: `function hello(name){console.log("Hello, "+name+"!");return {greeting:"Hello, "+name,success:true};}`,
+  python: `def fibonacci(n):\n    a, b = 0, 1\n    result = []\n    for _ in range(n):\n        result.append(a)\n        a, b = b, a + b\n    return result`
+};
+
+// Load example on language change
+langSelect.addEventListener('change', () => {
+  const lang = langSelect.value;
+  if (examples[lang] && inputArea.value === '') {
+    inputArea.value = examples[lang];
+    updateStats(inputArea.value);
+  }
+});
+</script>
+<div class="share-bar" style="position:fixed;bottom:20px;right:20px;z-index:9999;display:flex;gap:8px;background:rgba(0,0,0,0.85);padding:10px 14px;border-radius:30px;backdrop-filter:blur(8px);box-shadow:0 2px 12px rgba(0,0,0,0.3)">
+<button onclick="window.open('https://twitter.com/intent/tweet?text='+encodeURIComponent(document.title)+'&url='+encodeURIComponent(location.href),'_blank')" style="background:#1DA1F2;border:none;color:white;padding:8px 12px;border-radius:20px;cursor:pointer;font-size:13px;font-weight:bold">X</button>
+<button onclick="window.open('https://www.linkedin.com/sharing/share-offsite/?url='+encodeURIComponent(location.href),'_blank')" style="background:#0A66C2;border:none;color:white;padding:8px 12px;border-radius:20px;cursor:pointer;font-size:13px;font-weight:bold">in</button>
+<button onclick="window.open('https://reddit.com/submit?url='+encodeURIComponent(location.href)+'&title='+encodeURIComponent(document.title),'_blank')" style="background:#FF4500;border:none;color:white;padding:8px 12px;border-radius:20px;cursor:pointer;font-size:13px;font-weight:bold">r</button>
+</div>
+<script src="/js/share-widget.js"></script>
+<script src="/conversion-banner.js" defer></script>
+</body>
+</html>

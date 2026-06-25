@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>API Docs — AI Code Review & Analysis | my-automaton</title>
+  <meta name="description" content="Complete API documentation for AI-powered code review, security scanning, and text analysis. REST API with free tier and premium plans.">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #0d1117; color: #e6edf3; line-height: 1.7; }
+    .container { max-width: 960px; margin: 0 auto; padding: 20px; }
+    header { text-align: center; padding: 40px 0; border-bottom: 1px solid #30363d; margin-bottom: 30px; }
+    h1 { font-size: 2.5em; }
+    h2 { font-size: 1.5em; color: #58a6ff; margin: 30px 0 12px; padding-bottom: 8px; border-bottom: 1px solid #21262d; }
+    h3 { font-size: 1.1em; color: #e6edf3; margin: 20px 0 8px; }
+    p { margin: 8px 0; color: #c9d1d9; }
+    code { background: #161b22; padding: 2px 6px; border-radius: 4px; font-size: 0.9em; color: #f8f8f2; }
+    pre { background: #161b22; border: 1px solid #30363d; border-radius: 8px; padding: 16px; overflow-x: auto; margin: 12px 0; font-size: 13px; line-height: 1.5; }
+    pre code { background: none; padding: 0; }
+    .endpoint { background: #161b22; border: 1px solid #30363d; border-radius: 8px; padding: 16px; margin: 12px 0; }
+    .endpoint .method { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 0.8em; font-weight: 700; margin-right: 8px; }
+    .method.get { background: #1f6feb; color: white; }
+    .method.post { background: #238636; color: white; }
+    .endpoint .path { font-family: monospace; font-size: 1.05em; }
+    .endpoint .desc { margin-top: 8px; color: #8b949e; font-size: 0.9em; }
+    table { width: 100%; border-collapse: collapse; margin: 12px 0; }
+    th, td { padding: 10px 12px; text-align: left; border-bottom: 1px solid #21262d; font-size: 0.9em; }
+    th { background: #161b22; color: #58a6ff; font-weight: 600; }
+    td { color: #c9d1d9; }
+    .badge { display: inline-block; padding: 2px 10px; border-radius: 12px; font-size: 0.8em; font-weight: 600; }
+    .badge.free { background: #1f6feb22; color: #58a6ff; border: 1px solid #1f6feb; }
+    .badge.premium { background: #23863622; color: #3fb950; border: 1px solid #238636; }
+    .badge.post { background: #238636; color: white; }
+    blockquote { border-left: 3px solid #58a6ff; padding: 10px 16px; margin: 12px 0; background: #161b22; border-radius: 0 6px 6px 0; }
+    blockquote p { color: #8b949e; margin: 0; }
+    .try-btn { display: inline-block; padding: 8px 20px; background: #238636; color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 0.9em; text-decoration: none; }
+    .try-btn:hover { background: #2ea043; }
+    nav { background: #161b22; border: 1px solid #30363d; border-radius: 8px; padding: 16px; margin: 20px 0; }
+    nav a { display: block; padding: 4px 0; color: #8b949e; text-decoration: none; font-size: 0.9em; }
+    nav a:hover { color: #58a6ff; }
+    @media (max-width: 600px) { h1 { font-size: 1.8em; } }
+  </style>
+
+<meta property="og:title" content="API Docs — AI Code Review & Analysis | my-automaton">
+<meta property="og:description" content="Complete API documentation for AI-powered code review, security scanning, and text analysis. REST API with free tier and premium plans.">
+<meta property="og:url" content="https://automation.songheng.vip/blog/api-docs.html">
+<meta name="twitter:title" content="API Docs — AI Code Review & Analysis | my-automaton">
+<meta name="twitter:description" content="Complete API documentation for AI-powered code review, security scanning, and text analysis. REST API with free tier and premium plans.">
+
+<meta property="og:site_name" content="my-automaton - AI Code Review & Analysis API">
+<meta property="og:type" content="article">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@my_automaton">
+
+
+<link rel="canonical" href="https://automation.songheng.vip/blog/api-docs.html">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "API Docs — AI Code Review & Analysis | my-automaton",
+  "description": "Complete API documentation for AI-powered code review, security scanning, and text analysis. REST API with free tier and premium plans.",
+  "url": "https://automation.songheng.vip/blog/api-docs.html",
+  "author": {
+    "@type": "Organization",
+    "name": "my-automaton",
+    "url": "https://automation.songheng.vip"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "my-automaton"
+  },
+  "mainEntityOfPage": "https://automation.songheng.vip/blog/api-docs.html"
+}
+</script>
+<!-- Open Graph / Social Meta Tags -->
+<meta property="og:image" content="https://automation.songheng.vip/og-image.png" />
+<meta property="og:locale" content="en_US" />
+<meta name="twitter:image" content="https://automation.songheng.vip/og-image.png" />
+</head>
+<body>
+<div style="background:#161b22;border-bottom:1px solid #30363d;padding:10px 20px;font-size:.85rem;display:flex;gap:16px;align-items:center;flex-wrap:wrap"><a href="/" style="color:#58a6ff;text-decoration:none;font-weight:600">🏠 Home</a><span style="color:#484f58">|</span><a href="/pricing.html" style="color:#8b949e;text-decoration:none">Pricing</a><a href="/api-docs.html" style="color:#8b949e;text-decoration:none">API</a><a href="/playground.html" style="color:#8b949e;text-decoration:none">Playground</a></div>
+
+  <div class="container">
+    <header>
+      <h1>📚 API Documentation</h1>
+      <p>AI-powered code review, security scanning, and text analysis via simple REST API</p>
+      <div style="margin-top:12px">
+        <a href="/demo.html" class="try-btn">Try Free Demo →</a>
+        <a href="/upgrade.html" class="try-btn" style="background:#1f6feb; margin-left:8px;">Get API Key →</a>
+      </div>
+    </header>
+
+    <nav>
+      <strong style="display:block;margin-bottom:8px;color:#e6edf3;">📑 Jump to:</strong>
+      <a href="#quickstart">Quick Start</a>
+      <a href="#authentication">Authentication</a>
+      <a href="#pricing">Pricing & Credits</a>
+      <a href="#free-api">Free API</a>
+      <a href="#premium-api">Premium API</a>
+      <a href="#services">Service Reference</a>
+      <a href="#examples">Code Examples</a>
+      <a href="#errors">Error Handling</a>
+    </nav>
+
+    <h2 id="quickstart">🚀 Quick Start</h2>
+    <p>Try our services free — no credit card required:</p>
+    <pre><code># Free code review (3/day/IP)
+curl -X POST https://automation.songheng.vip/api/free/review \
+  -H "Content-Type: application/json" \
+  -d '{"text": "function hello() { return \"world\"; }", "mode": "review"}'</code></pre>
+
+    <blockquote>💡 <strong>Tip:</strong> Use the <a href="/demo.html" style="color:#58a6ff;">interactive demo</a> to test all 7 services in your browser.</blockquote>
+
+    <h2 id="authentication">🔑 Authentication</h2>
+    <p>Premium API requires an API key in the <code>X-API-Key</code> header. <a href="/upgrade.html" style="color:#58a6ff;">Get your key →</a></p>
+    <pre><code>curl -X POST https://automation.songheng.vip/v1/review \
+  -H "Content-Type: application/json" \
+  -H "X-API-Key: am_your_key_here" \
+  -d '{"text": "function hello() { return \"world\"; }"}'</code></pre>
+
+    <h2 id="pricing">💰 Pricing & Credits</h2>
+    <table>
+      <tr><th>Plan</th><th>Price</th><th>Credits</th><th>~Analyses</th></tr>
+      <tr><td>Starter</td><td>$5</td><td>500</td><td>~500</td></tr>
+      <tr><td>Pro</td><td>$10</td><td>1,100</td><td>~1,100</td></tr>
+      <tr><td>Business</td><td>$25</td><td>3,000</td><td>~3,000</td></tr>
+      <tr><td>Enterprise</td><td>$58</td><td>6,500</td><td>~6,500</td></tr>
+    </table>
+
+    <h3>Credit Costs Per Service</h3>
+    <table>
+      <tr><th>Service</th><th>Credits</th><th>Free Tier?</th></tr>
+      <tr><td>Text Analysis</td><td>1</td><td><span class="badge free">✓ 3/day</span></td></tr>
+      <tr><td>Summarization</td><td>2</td><td><span class="badge free">✓ 3/day</span></td></tr>
+      <tr><td>Security Scan</td><td>3</td><td><span class="badge free">✓ 3/day</span></td></tr>
+      <tr><td>Code Explanation</td><td>2</td><td><span class="badge free">✓ 3/day</span></td></tr>
+      <tr><td>Complexity Analysis</td><td>2</td><td><span class="badge free">✓ 3/day</span></td></tr>
+      <tr><td>Code Review</td><td>5</td><td><span class="badge free">✓ 3/day</span></td></tr>
+      <tr><td>Refactoring</td><td>5</td><td><span class="badge free">✓ 3/day</span></td></tr>
+    </table>
+
+    <h2 id="free-api">🆓 Free API Endpoints</h2>
+    <p>3 requests/day/IP per service. No API key needed.</p>
+
+    <div class="endpoint">
+      <span class="method post">POST</span><span class="path">/api/free/analyze</span>
+      <div class="desc">Text analysis — key themes, sentiment, entities</div>
+    </div>
+    <div class="endpoint">
+      <span class="method post">POST</span><span class="path">/api/free/summarize</span>
+      <div class="desc">Concise AI summarization with bullet points</div>
+    </div>
+    <div class="endpoint">
+      <span class="method post">POST</span><span class="path">/api/free/review</span>
+      <div class="desc">Full code review — bugs, security, performance</div>
+    </div>
+    <div class="endpoint">
+      <span class="method post">POST</span><span class="path">/api/free/security</span>
+      <div class="desc">Security vulnerability scan (OWASP Top 10)</div>
+    </div>
+    <div class="endpoint">
+      <span class="method post">POST</span><span class="path">/api/free/explain</span>
+      <div class="desc">Code explanation in plain language</div>
+    </div>
+    <div class="endpoint">
+      <span class="method post">POST</span><span class="path">/api/free/refactor</span>
+      <div class="desc">Refactoring suggestions with before/after</div>
+    </div>
+    <div class="endpoint">
+      <span class="method post">POST</span><span class="path">/api/free/complexity</span>
+      <div class="desc">Cyclomatic & cognitive complexity analysis</div>
+    </div>
+
+    <h2 id="premium-api">⭐ Premium API Endpoints</h2>
+    <p>Same endpoints as free, but under <code>/v1/</code> with <code>X-API-Key</code> header. No rate limits.</p>
+
+    <div class="endpoint">
+      <span class="method post">POST</span><span class="path">/v1/analyze</span>
+      <div class="desc">1 credit — Deep text analysis</div>
+    </div>
+    <div class="endpoint">
+      <span class="method post">POST</span><span class="path">/v1/summarize</span>
+      <div class="desc">2 credits — AI summarization</div>
+    </div>
+    <div class="endpoint">
+      <span class="method post">POST</span><span class="path">/v1/review</span>
+      <div class="desc">5 credits — Full code review</div>
+    </div>
+    <div class="endpoint">
+      <span class="method post">POST</span><span class="path">/v1/security</span>
+      <div class="desc">3 credits — Security scan</div>
+    </div>
+    <div class="endpoint">
+      <span class="method post">POST</span><span class="path">/v1/explain</span>
+      <div class="desc">2 credits — Code explanation</div>
+    </div>
+    <div class="endpoint">
+      <span class="method post">POST</span><span class="path">/v1/refactor</span>
+      <div class="desc">5 credits — Refactoring suggestions</div>
+    </div>
+    <div class="endpoint">
+      <span class="method post">POST</span><span class="path">/v1/complexity</span>
+      <div class="desc">2 credits — Complexity analysis</div>
+    </div>
+
+    <h3>Request Format</h3>
+    <pre><code>{
+  "text": "Your code or text here...",
+  "mode": "review"  // Optional: service mode hint
+}</code></pre>
+
+    <h3>Response Format</h3>
+    <pre><code>{
+  "result": "## Code Review Results\n\n### Bugs Found...",
+  "credits_used": 5,
+  "credits_remaining": 495
+}</code></pre>
+
+    <h2 id="examples">💻 Code Examples</h2>
+
+    <h3>cURL</h3>
+    <pre><code># Free tier
+curl -X POST https://automation.songheng.vip/api/free/security \
+  -H "Content-Type: application/json" \
+  -d '{"text": "function login(u, p) { db.query(\"SELECT * FROM users WHERE name=\" + u); }"}'
+
+# Premium
+curl -X POST https://automation.songheng.vip/v1/review \
+  -H "Content-Type: application/json" \
+  -H "X-API-Key: am_your_key" \
+  -d '{"text": "your code here"}'</code></pre>
+
+    <h3>Python</h3>
+    <pre><code>import requests
+
+API = "https://automation.songheng.vip"
+
+# Free tier
+resp = requests.post(f"{API}/api/free/review", json={
+    "text": "def hello(): return 'world'"
+})
+print(resp.json()["result"])
+
+# Premium
+resp = requests.post(f"{API}/v1/security", json={
+    "text": "function vulnerable() { eval(input); }"
+}, headers={"X-API-Key": "am_your_key"})
+print(resp.json()["result"])</code></pre>
+
+    <h3>JavaScript / Node.js</h3>
+    <pre><code>const API = "https://automation.songheng.vip";
+
+// Free tier
+fetch(`${API}/api/free/summarize`, {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({ text: "Long text to summarize..." })
+}).then(r => r.json()).then(d => console.log(d.result));
+
+// Premium
+fetch(`${API}/v1/explain`, {
+  method: "POST",
+  headers: { "Content-Type": "application/json", "X-API-Key": "am_your_key" },
+  body: JSON.stringify({ text: "complexFunction(a => a.map(b => b.c))" })
+}).then(r => r.json()).then(d => console.log(d.result));</code></pre>
+
+    <h3>GitHub CI/CD Integration</h3>
+    <pre><code># .github/workflows/ai-review.yml
+name: AI Code Review
+on: [pull_request]
+jobs:
+  review:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: AI Code Review
+        run: |
+          DIFF=$(git diff origin/main -- '*.js' '*.ts')
+          curl -X POST https://automation.songheng.vip/v1/review \
+            -H "Content-Type: application/json" \
+            -H "X-API-Key: ${{ secrets.AI_API_KEY }}" \
+            -d "{\"text\": $(echo "$DIFF" | jq -Rs .)}"</code></pre>
+
+    <h2 id="errors">⚠️ Error Handling</h2>
+    <table>
+      <tr><th>Status</th><th>Meaning</th><th>Action</th></tr>
+      <tr><td>200</td><td>Success</td><td>Read <code>result</code> field</td></tr>
+      <tr><td>400</td><td>Bad request</td><td>Check <code>text</code> field is present</td></tr>
+      <tr><td>402</td><td>Payment required / out of credits</td><td><a href="/upgrade.html" style="color:#58a6ff;">Upgrade plan</a></td></tr>
+      <tr><td>403</td><td>Invalid API key</td><td>Check key or <a href="/upgrade.html" style="color:#58a6ff;">get a new one</a></td></tr>
+      <tr><td>429</td><td>Rate limit (free tier)</td><td>Wait until tomorrow or <a href="/upgrade.html" style="color:#58a6ff;">upgrade</a></td></tr>
+      <tr><td>500</td><td>Server error</td><td>Retry after a few seconds</td></tr>
+    </table>
+
+    <div style="text-align:center;padding:40px 0;border-top:1px solid #30363d;margin-top:40px;">
+      <h2>Ready to build?</h2>
+      <p style="color:#8b949e;margin-bottom:16px;">Start with 3 free requests/day, upgrade when you need more.</p>
+      <a href="/demo.html" class="try-btn" style="font-size:1em;padding:12px 32px;">Try Free Demo</a>
+      <a href="/upgrade.html" class="try-btn" style="font-size:1em;padding:12px 32px;background:#1f6feb;margin-left:12px;">Get API Key</a>
+    </div>
+  </div>
+<script src="/conversion-banner.js" defer></script>
+<script src="/share-widget.js"></script><script src="/share-widget.js"></script>
+<script src="/share-widget.js"></script>
+<script src="/share-widget.js"></script></body>
+</html>

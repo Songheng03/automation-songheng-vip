@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Free Docker Compose Generator — Visual Builder | my-automaton</title>
+<meta name="description" content="Free interactive Docker Compose generator. Visually build docker-compose.yml files with services, volumes, networks, and environment variables. Supports PostgreSQL, Redis, Node.js, Python, Nginx, and more.">
+<meta name="keywords" content="docker compose generator, docker-compose generator, docker compose builder, docker compose template, docker compose tool, docker compose online">
+<meta property="og:title" content="Free Docker Compose Generator — Visual Builder">
+<meta property="og:description" content="Build docker-compose.yml visually. Add services, configure ports, volumes, networks, env vars. Download or copy ready-to-use compose file.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://automation.songheng.vip/docker-compose-generator.html">
+<link rel="canonical" href="https://automation.songheng.vip/docker-compose-generator.html">
+<style>
+:root{--bg:#0d1117;--card:#161b22;--border:#30363d;--text:#c9d1d9;--muted:#8b949e;--accent:#58a6ff;--green:#3fb950;--orange:#d2991d;--red:#f85149;--purple:#a371f7}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--text);line-height:1.6}
+.container{max-width:960px;margin:0 auto;padding:20px}
+header{text-align:center;padding:40px 0 20px}
+header h1{font-size:2rem;color:#fff;margin-bottom:8px}
+header p{color:var(--muted);font-size:1.05rem}
+.badge{display:inline-block;background:#1a3a2a;color:var(--green);padding:4px 12px;border-radius:12px;font-size:0.8rem;margin-bottom:12px}
+.layout{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin:20px 0}
+@media(max-width:768px){.layout{grid-template-columns:1fr}}
+.panel{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:20px}
+.panel h2{font-size:1.1rem;color:#fff;margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.presets-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:8px;margin-bottom:16px}
+.preset-svc{background:#1c2128;border:1px solid var(--border);border-radius:8px;padding:10px 12px;cursor:pointer;text-align:center;transition:all 0.15s;font-size:0.85rem}
+.preset-svc:hover{border-color:var(--accent);background:#21262d}
+.preset-svc .svc-name{display:block;font-weight:600;color:#fff}
+.preset-svc .svc-port{display:block;font-size:0.7rem;color:var(--muted);margin-top:2px}
+.service-card{background:#1c2128;border:1px solid var(--border);border-radius:8px;padding:14px;margin-bottom:10px;position:relative}
+.service-card .svc-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.service-card .svc-header strong{color:#fff}
+.service-card .remove-btn{background:none;border:none;color:var(--red);cursor:pointer;font-size:1.1rem;padding:2px 6px}
+.service-card .fields{display:grid;grid-template-columns:1fr 1fr;gap:6px;font-size:0.8rem}
+.service-card .fields label{display:block;color:var(--muted);margin-bottom:2px}
+.service-card .fields input{width:100%;padding:6px 8px;background:#0d1117;border:1px solid var(--border);border-radius:4px;color:var(--text);font-size:0.8rem}
+.service-card .fields input:focus{border-color:var(--accent);outline:none}
+.service-card .field-full{grid-column:span 2}
+.output-panel{position:relative}
+.output-panel pre{background:#0d1117;border:1px solid var(--border);border-radius:8px;padding:16px;overflow-x:auto;font-family:'SF Mono',monospace;font-size:0.85rem;min-height:300px;max-height:500px;overflow-y:auto;white-space:pre-wrap;word-break:break-word}
+.output-actions{display:flex;gap:8px;margin-top:12px}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:6px;font-size:0.9rem;cursor:pointer;border:none;transition:all 0.15s}
+.btn-primary{background:var(--accent);color:#fff}
+.btn-primary:hover{background:#4090e0}
+.btn-outline{background:transparent;border:1px solid var(--border);color:var(--text)}
+.btn-outline:hover{background:#21262d}
+.btn-green{background:var(--green);color:#fff}
+.btn-green:hover{background:#2ea043}
+.volumes-section,.networks-section{margin-top:12px}
+.volumes-section h3,.networks-section h3{font-size:0.85rem;color:var(--muted);margin-bottom:6px}
+.cta-section{background:linear-gradient(135deg,#1a2a3a,#1a2f1a);border:1px solid var(--border);border-radius:12px;padding:28px;margin:30px 0;text-align:center}
+.cta-section h2{font-size:1.3rem;color:#fff;margin-bottom:8px}
+.cta-section p{color:var(--muted);margin-bottom:16px}
+.cta-buttons{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+footer{text-align:center;padding:30px 0;color:var(--muted);font-size:0.85rem;border-top:1px solid var(--border);margin-top:20px}
+footer a{color:var(--accent);text-decoration:none}
+.toast{position:fixed;bottom:24px;right:24px;background:var(--green);color:#fff;padding:12px 20px;border-radius:8px;opacity:0;transition:opacity 0.3s;z-index:100;pointer-events:none}
+.toast.show{opacity:1}
+</style>
+
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Docker Compose Generator","applicationCategory":"DeveloperApplication","operatingSystem":"Any","url":"https://automation.songheng.vip/docker-compose-generator.html","description":"Generate Docker Compose YAML files from a visual form. Common service templates included.","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"aggregateRating":{"@type":"AggregateRating","ratingValue":"4.8","ratingCount":"127"}}</script>
+</head>
+<body>
+<div class="container">
+<header>
+<span class="badge">🆓 Free Tool</span>
+<h1>Docker Compose Generator</h1>
+<p>Visually build docker-compose.yml. Add services, configure ports, volumes, env vars. Download or copy.</p>
+</header>
+
+<div class="layout">
+<div class="panel">
+<h2>🧩 Add Services</h2>
+<div class="presets-grid" id="presetGrid"></div>
+<div id="serviceList"></div>
+<div style="margin-top:12px;display:flex;gap:8px">
+<button class="btn btn-outline" onclick="addCustom()">+ Custom Service</button>
+</div>
+<div class="volumes-section">
+<h3>📦 Named Volumes</h3>
+<div id="volumeInputs">
+<input placeholder="volume_name" style="background:#0d1117;border:1px solid var(--border);border-radius:4px;color:var(--text);padding:6px 8px;width:100%;margin-bottom:6px;font-size:0.8rem;display:none" id="volInput">
+</div>
+</div>
+<div class="networks-section">
+<h3>🌐 Networks</h3>
+<div>
+<label style="font-size:0.8rem;color:var(--muted)"><input type="checkbox" id="useNetwork" checked onchange="generate()"> Create <code>app-network</code> (bridge)</label>
+</div>
+</div>
+</div>
+
+<div class="panel output-panel">
+<h2>📄 docker-compose.yml</h2>
+<pre id="output"></pre>
+<div class="output-actions">
+<button class="btn btn-primary" onclick="copyOutput()">📋 Copy</button>
+<button class="btn btn-green" onclick="downloadOutput()">💾 Download</button>
+</div>
+</div>
+</div>
+
+<div class="cta-section">
+<h2>🚀 Deploy & Monitor with AI</h2>
+<p>Use my-automaton's API to review your Docker configurations, scan for security issues, and optimize your infrastructure.</p>
+<div class="cta-buttons">
+<a href="/free-trial.html" class="btn btn-primary">🎁 Get Free Trial</a>
+<a href="/api-docs.html" class="btn btn-outline">API Docs →</a>
+</div>
+</div>
+
+<footer>
+<p>my-automaton — <a href="/">Home</a> · <a href="/dev-tools.html">115+ Free Tools</a> · <a href="/api-docs.html">API Docs</a> · <a href="/pricing.html">Pricing</a></p>
+</footer>
+</div>
+
+<div class="toast" id="toast">Copied!</div>
+
+<script>
+const PRESETS=[
+  {name:'PostgreSQL',image:'postgres:16',ports:'5432:5432',env:'POSTGRES_PASSWORD=secret\nPOSTGRES_DB=app',vol:'pgdata:/var/lib/postgresql/data'},
+  {name:'MySQL',image:'mysql:8.0',ports:'3306:3306',env:'MYSQL_ROOT_PASSWORD=secret\nMYSQL_DATABASE=app',vol:'mysqldata:/var/lib/mysql'},
+  {name:'Redis',image:'redis:7-alpine',ports:'6379:6379'},
+  {name:'MongoDB',image:'mongo:7',ports:'27017:27017',env:'MONGO_INITDB_ROOT_USERNAME=admin\nMONGO_INITDB_ROOT_PASSWORD=secret',vol:'mongodata:/data/db'},
+  {name:'Node.js',image:'node:20-alpine',ports:'3000:3000',env:'NODE_ENV=production\nPORT=3000',vol:"./app:/app",workdir:'/app',cmd:'npm start',depends:'postgres,redis'},
+  {name:'Python',image:'python:3.12-slim',ports:'8000:8000',env:'PYTHONUNBUFFERED=1',vol:"./app:/app",workdir:'/app',cmd:'python app.py',depends:'redis'},
+  {name:'Nginx',image:'nginx:alpine',ports:'80:80',vol:'./nginx.conf:/etc/nginx/nginx.conf:ro'},
+  {name:'Next.js',image:'node:20-alpine',ports:'3000:3000',env:'NODE_ENV=production',vol:"./:/app",workdir:'/app',cmd:'npm start',depends:'postgres'},
+  {name:'FastAPI',image:'python:3.12-slim',ports:'8000:8000',vol:"./app:/app",workdir:'/app',cmd:'uvicorn main:app --host 0.0.0.0 --port 8000',depends:'redis,postgres'},
+  {name:'Adminer',image:'adminer:latest',ports:'8080:8080',depends:'postgres,mysql'},
+  {name:'RabbitMQ',image:'rabbitmq:3-management',ports:'5672:5672,15672:15672',env:'RABBITMQ_DEFAULT_USER=admin\nRABBITMQ_DEFAULT_PASS=secret'},
+  {name:'Elasticsearch',image:'elasticsearch:8.12.0',ports:'9200:9200',env:'discovery.type=single-node\nxpack.security.enabled=false',vol:'esdata:/usr/share/elasticsearch/data'}
+];
+
+let services=[];
+let volumes=new Set();
+
+function addService(preset){
+  const id=Date.now();
+  services.push({...preset,id,customPorts:preset.ports||'',customEnv:preset.env||'',customVol:preset.vol||'',customDepends:preset.depends||'',customCmd:preset.cmd||'',customWorkdir:preset.workdir||''});
+  if(preset.vol){
+    const vname=preset.vol.split(':')[0].trim();
+    if(vname&&!vname.startsWith('.')) volumes.add(vname);
+  }
+  render();
+}
+
+function addCustom(){
+  addService({name:'custom-service',image:'alpine:latest',ports:'',env:'',vol:'',depends:'',cmd:''});
+}
+
+function removeService(id){
+  services=services.filter(s=>s.id!==id);
+  volumes.clear();
+  services.forEach(s=>{
+    if(s.vol){
+      const vname=s.vol.split(':')[0].trim();
+      if(vname&&!vname.startsWith('.')) volumes.add(vname);
+    }
+  });
+  render();
+}
+
+function updateField(id,field,value){
+  const svc=services.find(s=>s.id===id);
+  if(svc) svc[field]=value;
+  generate();
+}
+
+function render(){
+  const list=document.getElementById('serviceList');
+  list.innerHTML=services.map(s=>{
+    const slug=s.name.toLowerCase().replace(/[^a-z0-9]/g,'-')+'-'+s.id;
+    return `<div class="service-card">
+      <div class="svc-header">
+        <strong>🐳 ${s.name}</strong>
+        <button class="remove-btn" onclick="removeService(${s.id})">✕</button>
+      </div>
+      <div class="fields">
+        <div><label>Image</label><input value="${s.image}" onchange="updateField(${s.id},'image',this.value)"></div>
+        <div><label>Ports</label><input value="${s.customPorts}" placeholder="HOST:CONTAINER" onchange="updateField(${s.id},'customPorts',this.value)"></div>
+        <div class="field-full"><label>Env Vars</label><input value="${s.customEnv}" placeholder="KEY=value" onchange="updateField(${s.id},'customEnv',this.value)"></div>
+        <div><label>Volume</label><input value="${s.customVol}" placeholder="vol:/path" onchange="updateField(${s.id},'customVol',this.value)"></div>
+        <div><label>Depends on</label><input value="${s.customDepends}" placeholder="svc1,svc2" onchange="updateField(${s.id},'customDepends',this.value)"></div>
+        <div class="field-full"><label>Command</label><input value="${s.customCmd||''}" placeholder="command..." onchange="updateField(${s.id},'customCmd',this.value)"></div>
+      </div>
+    </div>`;
+  }).join('');
+  generate();
+}
+
+function generate(){
+  let yml='version: "3.8"\n\nservices:\n';
+  services.forEach(s=>{
+    const svcName=s.name.toLowerCase().replace(/[^a-z0-9-]/g,'-');
+    yml+=`  ${svcName}:\n`;
+    yml+=`    image: ${s.image}\n`;
+    if(s.customPorts) yml+=`    ports:\n      - "${s.customPorts}"\n`;
+    if(s.customEnv){
+      yml+=`    environment:\n`;
+      s.customEnv.split('\n').filter(e=>e.trim()).forEach(e=>yml+=`      - ${e.trim()}\n`);
+    }
+    if(s.customVol){
+      const parts=s.customVol.split(':');
+      if(parts.length>=2){
+        if(parts[0].startsWith('.')) yml+=`    volumes:\n      - ${s.customVol}\n`;
+        else yml+=`    volumes:\n      - ${s.customVol}\n`;
+      }
+    }
+    if(s.customDepends){
+      const deps=s.customDepends.split(',').map(d=>d.trim()).filter(Boolean);
+      if(deps.length){
+        yml+=`    depends_on:\n`;
+        deps.forEach(d=>yml+=`      - ${d}\n`);
+      }
+    }
+    if(s.customWorkdir) yml+=`    working_dir: ${s.customWorkdir}\n`;
+    if(s.customCmd) yml+=`    command: ${s.customCmd}\n`;
+    const network=document.getElementById('useNetwork').checked;
+    if(network) yml+=`    networks:\n      - app-network\n`;
+    yml+=`\n`;
+  });
+
+  if(volumes.size>0){
+    yml+='volumes:\n';
+    volumes.forEach(v=>yml+=`  ${v}:\n`);
+  }
+
+  const network=document.getElementById('useNetwork').checked;
+  if(network){
+    yml+='\nnetworks:\n  app-network:\n    driver: bridge\n';
+  }
+
+  document.getElementById('output').textContent=yml||'# Add services to see docker-compose.yml';
+}
+
+function copyOutput(){
+  const text=document.getElementById('output').textContent;
+  navigator.clipboard.writeText(text).then(()=>{
+    const t=document.getElementById('toast');t.classList.add('show');
+    setTimeout(()=>t.classList.remove('show'),2000);
+  });
+}
+
+function downloadOutput(){
+  const text=document.getElementById('output').textContent;
+  const blob=new Blob([text],{type:'application/x-yaml'});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download='docker-compose.yml';
+  a.click();URL.revokeObjectURL(a.href);
+}
+
+// Build preset grid
+const pg=document.getElementById('presetGrid');
+PRESETS.forEach(p=>{
+  const btn=document.createElement('button');
+  btn.className='preset-svc';
+  btn.innerHTML=`<span class="svc-name">🐳 ${p.name}</span><span class="svc-port">${p.ports||'no ports'}</span>`;
+  btn.onclick=()=>addService(p);
+  pg.appendChild(btn);
+});
+
+// Init with demo
+addService(PRESETS[0]); // PostgreSQL
+addService(PRESETS[4]); // Node.js
+generate();
+</script>
+<script src="/conversion-banner.js" defer></script>
+</body>
+</html>

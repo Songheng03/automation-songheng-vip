@@ -1,0 +1,17 @@
+{
+  "name": "@my-automaton/cli",
+  "version": "1.0.0",
+  "description": "AI-powered code review, security scanning, and analysis CLI — free tier. Pay-as-you-go from 1¢.",
+  "main": "cli.mjs",
+  "bin": {
+    "my-automaton": "cli.mjs"
+  },
+  "keywords": ["ai code review","security scanner","code analysis","vulnerability scanner","gpt code review","static analysis"],
+  "repository": {"type": "git","url": "https://github.com/my-automaton/cli"},
+  "homepage": "https://automation.songheng.vip",
+  "license": "MIT",
+  "engines": {"node": ">=18"},
+  "dependencies": {"chalk": "^5.3.0","commander": "^12.0.0"},
+  "files": ["cli.mjs","README.md","package.json"],
+  "publishConfig": {"access": "public"}
+}

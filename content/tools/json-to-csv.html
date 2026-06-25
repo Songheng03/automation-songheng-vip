@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>JSON to CSV Converter — Free Online Tool</title>
+<meta name="description" content="Convert JSON arrays to CSV instantly. Free online tool with nested object flattening, smart column detection, and Excel-compatible UTF-8 BOM output. No signup. 100% client-side.">
+<meta name="keywords" content="json to csv, convert json to csv, json to excel, free json converter, csv generator">
+<meta property="og:title" content="JSON to CSV Converter — Free Online">
+<meta property="og:description" content="Instantly convert JSON arrays to CSV with nested flattening. Excel-ready output.">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;line-height:1.6;color:#333;max-width:960px;margin:0 auto;padding:20px;background:#f8fafc}
+h1{font-size:1.8em;margin:1em 0 .3em;color:#111}
+nav{margin-bottom:2em;border-bottom:2px solid #e2e8f0;padding-bottom:1em}
+nav a{color:#2563eb;text-decoration:none;font-weight:600}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:16px 0}
+textarea{width:100%;min-height:300px;padding:14px;font-size:13px;font-family:'SF Mono','Fira Code','Consolas',monospace;border:2px solid #e2e8f0;border-radius:8px;resize:vertical}
+textarea:focus{outline:none;border-color:#2563eb}
+button{background:#2563eb;color:#fff;border:none;padding:12px 24px;border-radius:8px;font-size:16px;font-weight:600;cursor:pointer;margin:8px 4px}
+button:hover{background:#1d4ed8}
+button.secondary{background:#64748b}
+button.secondary:hover{background:#475569}
+button.green{background:#10b981}
+button.green:hover{background:#059669}
+#error{display:none;color:#dc2626;padding:12px;background:#fef2f2;border-radius:8px;margin:10px 0}
+.stats{color:#64748b;font-size:.85em;margin:8px 0}
+.options{display:flex;flex-wrap:wrap;gap:16px;margin:12px 0;padding:12px;background:#fff;border-radius:8px;border:1px solid #e2e8f0}
+.options label{display:flex;align-items:center;gap:6px;cursor:pointer}
+@media(max-width:700px){.grid{grid-template-columns:1fr}}
+</style>
+<!-- Open Graph / Social Meta Tags -->
+<meta property="og:image" content="https://automation.songheng.vip/og-image.png" />
+<meta property="og:url" content="https://automation.songheng.vip/tools/json-to-csv.html" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="my-automaton" />
+<meta property="og:locale" content="en_US" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="JSON to CSV Converter — Free Online Tool" />
+<meta name="twitter:description" content="Convert JSON arrays to CSV instantly. Free online tool with nested object flattening, smart column detection, and Excel-compatible UTF-8 BOM output. No signup. 100% client-side." />
+<meta name="twitter:image" content="https://automation.songheng.vip/og-image.png" />
+  <link rel="canonical" href="https://automation.songheng.vip/tools/json-to-csv.html">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "JSON to CSV Converter — Free Online Tool",
+  "description": "Convert JSON arrays to CSV instantly. Free online tool with nested object flattening, smart column detection, and Excel-compatible UTF-8 BOM output. No signup. 100% client-side.",
+  "url": "https://automation.songheng.vip/tools/json-to-csv.html",
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": "Web",
+  "author": {
+    "@type": "Organization",
+    "name": "my-automaton",
+    "url": "https://automation.songheng.vip"
+  },
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  }
+}
+</script>
+</head>
+<body>
+<nav>
+  <a href="/">← Home</a> <span style="color:#94a3b8">|</span>
+  <a href="/tools">Tools</a> <span style="color:#94a3b8">|</span>
+  <a href="/blog">Blog</a> <span style="color:#94a3b8">|</span>
+  <a href="/api-docs">API</a>
+</nav>
+
+<h1>📊 JSON to CSV Converter</h1>
+<p>Convert JSON arrays to CSV format instantly. Handles nested objects (flattens them with dot notation), arrays of primitives, and mixed types. <strong>100% client-side — your data never leaves your browser.</strong></p>
+
+<div class="grid">
+  <div>
+    <label><strong>Input JSON (array):</strong></label>
+    <textarea id="inputJson" placeholder='Paste JSON array here...
+Example:
+[
+  {"name":"Alice","age":30,"city":"NYC","tags":["dev","design"]},
+  {"name":"Bob","age":25,"city":"SF","tags":["devops"]}
+]'></textarea>
+    <div class="stats" id="inputStats"></div>
+    <div style="display:flex;flex-wrap:wrap;gap:8px">
+      <button onclick="convert()">🔄 Convert to CSV</button>
+      <button class="secondary" onclick="loadSample()">Load Sample</button>
+      <button class="secondary" onclick="document.getElementById('inputJson').value='';document.getElementById('output').value='';document.getElementById('inputStats').textContent=''">Clear</button>
+    </div>
+  </div>
+  <div>
+    <label><strong>CSV Output:</strong> <span id="outputStats" style="color:#64748b;font-weight:normal;font-size:.85em"></span></label>
+    <textarea id="output" readonly placeholder="CSV output will appear here..." style="background:#1e293b;color:#e2e8f0"></textarea>
+    <div style="display:flex;flex-wrap:wrap;gap:8px">
+      <button class="green" onclick="downloadCsv()">⬇ Download CSV</button>
+      <button onclick="copyCsv()">📋 Copy</button>
+    </div>
+  </div>
+</div>
+
+<div id="error"></div>
+
+<div class="options">
+  <label><input type="checkbox" id="flatten" checked> Flatten nested objects (user.name → user_name)</label>
+  <label><input type="checkbox" id="bom" checked> UTF-8 BOM (Excel compatible)</label>
+  <label><input type="checkbox" id="headers" checked> Include headers</label>
+  <label><input type="checkbox" id="arrayExpand" checked> Expand arrays to columns (arr_0, arr_1)</label>
+</div>
+
+<h2 style="margin-top:1.5em">How It Works</h2>
+<ol style="margin:12px 0;padding-left:24px">
+  <li><strong>Paste</strong> your JSON array (or single object — it wraps it)</li>
+  <li><strong>Configure</strong> how nested objects and arrays are handled</li>
+  <li><strong>Get CSV</strong> instantly — copy or download</li>
+</ol>
+
+<h2>Use Cases</h2>
+<ul style="margin:12px 0;padding-left:24px">
+  <li><strong>Data Export:</strong> Convert API responses to CSV for Excel/Google Sheets</li>
+  <li><strong>Database Migration:</strong> Export MongoDB/Postgres JSON to CSV for import</li>
+  <li><strong>Reporting:</strong> Transform JSON analytics data into spreadsheet format</li>
+  <li><strong>Data Analysis:</strong> Quick conversion for pandas or R data processing</li>
+</ul>
+
+<script>
+function showError(msg) {
+  const el = document.getElementById('error');
+  el.textContent = msg;
+  el.style.display = 'block';
+}
+function hideError() {
+  document.getElementById('error').style.display = 'none';
+}
+
+// Flatten an object with dot notation
+function flattenObj(obj, prefix, flatten) {
+  const result = {};
+  for (const [key, val] of Object.entries(obj)) {
+    const newKey = prefix ? prefix + '_' + key : key;
+    if (val !== null && typeof val === 'object' && !Array.isArray(val) && flatten) {
+      Object.assign(result, flattenObj(val, newKey, flatten));
+    } else {
+      result[newKey] = val;
+    }
+  }
+  return result;
+}
+
+// Convert value to CSV cell
+function toCell(val, expandArrays) {
+  if (val === null || val === undefined) return '';
+  if (Array.isArray(val)) {
+    if (expandArrays) {
+      return JSON.stringify(val); // handled separately
+    }
+    return '"' + val.map(v => String(v).replace(/"/g, '""')).join('; ') + '"';
+  }
+  if (typeof val === 'object') {
+    return '"' + JSON.stringify(val).replace(/"/g, '""') + '"';
+  }
+  const s = String(val);
+  if (s.includes(',') || s.includes('"') || s.includes('\n')) {
+    return '"' + s.replace(/"/g, '""') + '"';
+  }
+  return s;
+}
+
+function collectColumns(rows, flatten, expandArrays) {
+  const cols = new Map(); // name -> Set of values for type detection
+  
+  for (const row of rows) {
+    const flat = flatten ? flattenObj(row, '', true) : row;
+    for (const [key, val] of Object.entries(flat)) {
+      if (!cols.has(key)) cols.set(key, new Set());
+      if (expandArrays && Array.isArray(val)) {
+        val.forEach((v, i) => {
+          const arrKey = key + '_' + i;
+          if (!cols.has(arrKey)) cols.set(arrKey, new Set());
+          cols.get(arrKey).add(String(v));
+        });
+        // Also add the original key as JSON
+        cols.get(key).add('JSON_ARRAY');
+      } else {
+        cols.get(key).add(typeof val === 'object' && val !== null ? JSON.stringify(val) : String(val));
+      }
+    }
+  }
+  
+  return [...cols.keys()];
+}
+
+function convert() {
+  hideError();
+  const input = document.getElementById('inputJson').value.trim();
+  if (!input) {
+    showError('Please enter JSON.');
+    return;
+  }
+  
+  const flatten = document.getElementById('flatten').checked;
+  const bom = document.getElementById('bom').checked;
+  const includeHeaders = document.getElementById('headers').checked;
+  const expandArrays = document.getElementById('arrayExpand').checked;
+  
+  try {
+    let data = JSON.parse(input);
+    if (!Array.isArray(data)) data = [data];
+    
+    if (data.length === 0) {
+      showError('Empty array. Provide at least one object.');
+      return;
+    }
+    
+    document.getElementById('inputStats').textContent = `${data.length} rows`;
+    
+    // Collect all column names
+    const columns = collectColumns(data, flatten, expandArrays);
+    
+    // Build CSV
+    let csv = '';
+    
+    // BOM for Excel
+    if (bom) csv += '\uFEFF';
+    
+    // Headers
+    if (includeHeaders) {
+      csv += columns.map(c => '"' + c.replace(/"/g, '""') + '"').join(',') + '\n';
+    }
+    
+    // Data rows
+    for (const row of data) {
+      const flat = flatten ? flattenObj(row, '', true) : row;
+      const vals = columns.map(col => {
+        // Check array expansion
+        if (expandArrays) {
+          const arrMatch = col.match(/^(.+?)_(\d+)$/);
+          if (arrMatch) {
+            const baseKey = arrMatch[1];
+            const idx = parseInt(arrMatch[2]);
+            const arr = flat[baseKey];
+            if (Array.isArray(arr) && idx < arr.length) {
+              return toCell(arr[idx], false);
+            }
+            return '';
+          }
+        }
+        return toCell(flat[col], expandArrays);
+      });
+      csv += vals.join(',') + '\n';
+    }
+    
+    document.getElementById('output').value = csv;
+    document.getElementById('outputStats').textContent = `${columns.length} cols, ${data.length} rows`;
+    
+  } catch(e) {
+    showError('Invalid JSON: ' + e.message);
+  }
+}
+
+function downloadCsv() {
+  const csv = document.getElementById('output').value;
+  if (!csv) {
+    showError('No CSV to download. Convert some JSON first.');
+    return;
+  }
+  const blob = new Blob([csv], { type: 'text/csv;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'converted_' + new Date().toISOString().slice(0,10) + '.csv';
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+function copyCsv() {
+  const out = document.getElementById('output');
+  out.select();
+  out.setSelectionRange(0, 999999);
+  navigator.clipboard.writeText(out.value).then(() => {
+    const btn = document.querySelector('button:nth-child(2)');
+    btn.textContent = '✅ Copied!';
+    setTimeout(() => btn.textContent = '📋 Copy', 2000);
+  });
+}
+
+function loadSample() {
+  document.getElementById('inputJson').value = JSON.stringify([
+    {"name":"Alice Johnson","age":30,"city":"New York","active":true,"skills":["JavaScript","React","Node.js"],"address":{"street":"123 Main St","zip":"10001"},"salary":85000},
+    {"name":"Bob Smith","age":25,"city":"San Francisco","active":true,"skills":["Python","Django","AWS"],"address":{"street":"456 Market St","zip":"94105"},"salary":92000},
+    {"name":"Charlie Brown","age":35,"city":"Chicago","active":false,"skills":["Java","Spring","Kubernetes"],"address":{"street":"789 Oak Ave","zip":"60601"},"salary":78000},
+    {"name":"Diana Prince","age":28,"city":"Seattle","active":true,"skills":["Go","Docker","Terraform"],"address":{"street":"321 Pine St","zip":"98101"},"salary":95000}
+  ], null, 2);
+  setTimeout(convert, 100);
+}
+</script>
+</body>
+</html>

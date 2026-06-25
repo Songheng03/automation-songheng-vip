@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="canonical" href="https://automation.songheng.vip/seo-dashboard.html">
+  <meta property="og:title" content="SEO Dashboard - my-automaton">
+  <meta property="og:description" content="my-automaton SEO optimization status, sitemap, and search engine discovery dashboard">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://automation.songheng.vip/seo-dashboard.html">
+  <meta property="og:image" content="https://automation.songheng.vip/og-image.png">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SEO Dashboard - my-automaton</title>
+<meta name="description" content="my-automaton SEO optimization status, sitemap, and search engine discovery dashboard">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#0a0a0f;color:#e0e0e0;line-height:1.6;padding:2rem}
+h1{color:#60a5fa;margin-bottom:1rem}
+.card{background:#1a1a2e;border:1px solid #2a2a3e;border-radius:12px;padding:1.5rem;margin-bottom:1rem}
+.card h2{color:#a78bfa;margin-bottom:.5rem}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1rem;margin:1rem 0}
+.stat{border:1px solid #2a2a3e;border-radius:8px;padding:1rem;text-align:center}
+.stat .val{font-size:1.8rem;font-weight:700;color:#60a5fa;margin-bottom:.3rem}
+.stat .lbl{font-size:.8rem;color:#64748b}
+.seo-score{font-size:3rem;font-weight:800;text-align:center;padding:1rem}
+.good{color:#4ade80}
+.warn{color:#fbbf24}
+.bad{color:#f87171}
+.status-row{display:flex;justify-content:space-between;padding:.5rem 0;border-bottom:1px solid #2a2a3e}
+.status-row:last-child{border:none}
+.status-label{color:#94a3b8}
+.status-check{color:#4ade80}
+.status-cross{color:#f87171}
+.rec{background:#1e293b;padding:.8rem;border-radius:6px;color:#fbbf24;margin:.3rem 0;font-size:.9rem}
+a{color:#60a5fa;text-decoration:none}
+a:hover{text-decoration:underline}
+.btn{display:inline-block;padding:.5rem 1rem;border-radius:6px;background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;text-decoration:none;font-weight:600;margin:.3rem}
+</style>
+<meta name="google-site-verification" content="YOUR_CODE" />
+<meta property="og:site_name" content="my-automaton" />
+<meta property="og:type" content="website" />
+<meta property="og:locale" content="en_US" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:site" content="@my_automaton" />
+<script src="/js/analytics.js"></script>
+<!-- Open Graph / Social Meta Tags -->
+<meta name="twitter:title" content="SEO Dashboard - my-automaton" />
+<meta name="twitter:description" content="my-automaton SEO optimization status, sitemap, and search engine discovery dashboard" />
+<meta name="twitter:image" content="https://automation.songheng.vip/og-image.png" />
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "SEO Dashboard - my-automaton",
+  "description": "my-automaton SEO optimization status, sitemap, and search engine discovery dashboard",
+  "url": "https://automation.songheng.vip/seo-dashboard.html",
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": "Web",
+  "author": {
+    "@type": "Organization",
+    "name": "my-automaton",
+    "url": "https://automation.songheng.vip"
+  },
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  }
+}
+</script>
+</head>
+<body>
+<div style="background:#161b22;border-bottom:1px solid #30363d;padding:10px 20px;font-size:.85rem;display:flex;gap:16px;align-items:center;flex-wrap:wrap"><a href="/" style="color:#58a6ff;text-decoration:none;font-weight:600">🏠 Home</a><span style="color:#484f58">|</span><a href="/pricing.html" style="color:#8b949e;text-decoration:none">Pricing</a><a href="/api-docs.html" style="color:#8b949e;text-decoration:none">API</a><a href="/playground.html" style="color:#8b949e;text-decoration:none">Playground</a></div>
+
+<h1>🔍 SEO Dashboard</h1>
+<p style="color:#94a3b8;margin-bottom:2rem">Real-time SEO status for my-automaton's web services. Score auto-refreshes via /seo/audit API.</p>
+
+<div class="grid">
+  <div class="stat"><div class="val" id="score">-</div><div class="lbl">SEO Score /100</div></div>
+  <div class="stat"><div class="val" id="pages">-</div><div class="lbl">HTML Pages</div></div>
+  <div class="stat"><div class="val" id="sitemap">-</div><div class="lbl">Sitemap URLs</div></div>
+  <div class="stat"><div class="val" id="recs">-</div><div class="lbl">Recommendations</div></div>
+</div>
+
+<div class="card">
+  <h2>📋 Status Checklist</h2>
+  <div id="checks"></div>
+</div>
+
+<div class="card">
+  <h2>💡 Recommendations</h2>
+  <div id="recommendations"><p style="color:#64748b">Loading...</p></div>
+</div>
+
+<div class="card">
+  <h2>🔗 SEO Resources</h2>
+  <p><a href="/sitemap.xml">sitemap.xml</a> — Search engine index</p>
+  <p><a href="/robots.txt">robots.txt</a> — Crawler instructions</p>
+  <p><a href="/free-ai-tools.html">Free AI Tools</a> — SEO landing page</p>
+  <p><a href="/seo-landing.html">Service Landing</a> — Primary landing page</p>
+  <p><a href="/api-docs.html">API Documentation</a> — Developer docs</p>
+  <p><a href="/seo/audit">/seo/audit</a> — Raw JSON audit data</p>
+</div>
+
+<script>
+async function loadAudit() {
+  try {
+    const r = await fetch('/seo/audit');
+    const d = await r.json();
+    
+    document.getElementById('score').textContent = d.score;
+    document.getElementById('score').className = d.score >= 80 ? 'good' : d.score >= 50 ? 'warn' : 'bad';
+    document.getElementById('pages').textContent = d.totalPages || 0;
+    document.getElementById('sitemap').textContent = d.sitemapUrlCount || 0;
+    document.getElementById('recs').textContent = d.recommendations?.length || 0;
+
+    const checks = document.getElementById('checks');
+    checks.innerHTML = '';
+    const items = [
+      {label: 'Sitemap.xml', ok: d.hasSitemap},
+      {label: 'Robots.txt', ok: d.hasRobots},
+      {label: 'Structured Data (JSON-LD)', ok: d.hasSchema},
+      {label: 'Meta Descriptions', ok: d.pagesWithoutMeta === 0},
+      {label: 'Open Graph Tags', ok: d.pagesWithOpenGraph === d.totalPages},
+      {label: 'Canonical URLs', ok: d.pagesWithCanonical === d.totalPages},
+    ];
+    items.forEach(item => {
+      const row = document.createElement('div');
+      row.className = 'status-row';
+      row.innerHTML = `<span class="status-label">${item.label}</span><span class="${item.ok ? 'status-check' : 'status-cross'}">${item.ok ? '✅' : '❌'}</span>`;
+      checks.appendChild(row);
+    });
+
+    const recs = document.getElementById('recommendations');
+    recs.innerHTML = '';
+    if (d.recommendations?.length > 0) {
+      d.recommendations.forEach(r => {
+        const div = document.createElement('div');
+        div.className = 'rec';
+        div.textContent = r;
+        recs.appendChild(div);
+      });
+    } else {
+      recs.innerHTML = '<p style="color:#4ade80">✅ No issues found — SEO is optimized!</p>';
+    }
+  } catch(e) {
+    document.getElementById('score').textContent = 'ERR';
+    document.getElementById('recommendations').innerHTML = `<p style="color:#f87171">Failed to load audit: ${e.message}</p>`;
+  }
+}
+loadAudit();
+setInterval(loadAudit, 60000);
+</script>
+<div class="share-bar" style="position:fixed;bottom:20px;right:20px;z-index:9999;display:flex;gap:8px;background:rgba(0,0,0,0.85);padding:10px 14px;border-radius:30px;backdrop-filter:blur(8px);box-shadow:0 2px 12px rgba(0,0,0,0.3)">
+<button onclick="window.open('https://twitter.com/intent/tweet?text='+encodeURIComponent(document.title)+'&url='+encodeURIComponent(location.href),'_blank')" style="background:#1DA1F2;border:none;color:white;padding:8px 12px;border-radius:20px;cursor:pointer;font-size:13px;font-weight:bold">X</button>
+<button onclick="window.open('https://www.linkedin.com/sharing/share-offsite/?url='+encodeURIComponent(location.href),'_blank')" style="background:#0A66C2;border:none;color:white;padding:8px 12px;border-radius:20px;cursor:pointer;font-size:13px;font-weight:bold">in</button>
+<button onclick="window.open('https://reddit.com/submit?url='+encodeURIComponent(location.href)+'&title='+encodeURIComponent(document.title),'_blank')" style="background:#FF4500;border:none;color:white;padding:8px 12px;border-radius:20px;cursor:pointer;font-size:13px;font-weight:bold">r</button>
+</div>
+<script src="/js/share-widget.js"></script>
+<script src="/conversion-banner.js" defer></script>
+</body>
+</html>

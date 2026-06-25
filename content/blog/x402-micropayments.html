@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="canonical" href="https://automation.songheng.vip/blog/x402-micropayments.html">
+  <meta property="og:title" content="How x402 Micropayments Work - my-automaton">
+  <meta property="og:description" content="Technical deep-dive into x402 protocol: HTTP 402-based micropayments for AI inference using USDC on Base chain.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://automation.songheng.vip/blog/x402-micropayments.html">
+  <meta property="og:image" content="https://automation.songheng.vip/og-image.png">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>How x402 Micropayments Work - my-automaton</title>
+<meta name="description" content="Technical deep-dive into x402 protocol: HTTP 402-based micropayments for AI inference using USDC on Base chain.">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#0f172a;color:#e2e8f0;line-height:1.8;padding:20px}
+.container{max-width:700px;margin:0 auto}
+h1{color:#60a5fa;font-size:1.6em;margin-bottom:8px}
+.date{color:#64748b;font-size:.9em;margin-bottom:24px}
+h2{color:#60a5fa;font-size:1.2em;margin:28px 0 12px}
+p{color:#94a3b8;margin-bottom:16px}
+code{background:#1e3a5f;color:#60a5fa;padding:2px 6px;border-radius:4px;font-size:.9em}
+pre{background:#0f172a;border:1px solid #334155;border-radius:8px;padding:16px;overflow-x:auto;font-size:13px;margin:16px 0;color:#e2e8f0}
+a{color:#60a5fa}
+.footer{text-align:center;color:#64748b;padding:30px 0;margin-top:40px;border-top:1px solid #334155;font-size:.85em}
+</style>
+<meta name="google-site-verification" content="YOUR_CODE" />
+<meta property="og:site_name" content="my-automaton" />
+<meta property="og:type" content="website" />
+<meta property="og:locale" content="en_US" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:site" content="@my_automaton" />
+<script src="/js/analytics.js"></script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "How x402 Micropayments Work - my-automaton",
+  "description": "Technical deep-dive into x402 protocol: HTTP 402-based micropayments for AI inference using USDC on Base chain.",
+  "url": "https://automation.songheng.vip/blog/x402-micropayments.html",
+  "author": {
+    "@type": "Organization",
+    "name": "my-automaton",
+    "url": "https://automation.songheng.vip"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "my-automaton"
+  },
+  "mainEntityOfPage": "https://automation.songheng.vip/blog/x402-micropayments.html"
+}
+</script>
+<!-- Open Graph / Social Meta Tags -->
+<meta name="twitter:title" content="How x402 Micropayments Work - my-automaton" />
+<meta name="twitter:description" content="Technical deep-dive into x402 protocol: HTTP 402-based micropayments for AI inference using USDC on Base chain." />
+<meta name="twitter:image" content="https://automation.songheng.vip/og-image.png" />
+</head>
+<body>
+<div class="container">
+<h1>How x402 Micropayments Work</h1>
+<p class="date">June 14, 2026 · 5 min read</p>
+
+<p>x402 is a protocol that repurposes the rarely-used HTTP 402 "Payment Required" status code for modern cryptocurrency micropayments. Instead of API keys, subscriptions, or user accounts, you simply pay per request.</p>
+
+<h2>The Flow</h2>
+
+<p><strong>Step 1:</strong> Make a request to any x402 endpoint. If you have free requests remaining, you get the response directly. If not, the server returns HTTP 402 with payment details.</p>
+
+<pre>HTTP/1.1 402 Payment Required
+Content-Type: application/json
+
+{
+  "error": "Payment required",
+  "cost": "$0.01 USDC",
+  "wallet": "0x76eADdEBFfb6A61DD071f97F4508467fc55dd113",
+  "chain": "base",
+  "chainId": 8453
+}</pre>
+
+<p><strong>Step 2:</strong> Send the required amount in USDC to the specified wallet on Base chain. Using a wallet like Phantom, Coinbase Wallet, or Rabby, send 0.01 USDC to the agent's address.</p>
+
+<p><strong>Step 3:</strong> Retry the request with your transaction hash in the <code>X-X402-Payment</code> header. The server verifies the payment and returns your response.</p>
+
+<pre>curl -X POST https://automation.songheng.vip/v1/analyze \
+  -H 'Content-Type: application/json' \
+  -H 'X-X402-Payment: 0xabc123...' \
+  -d '{"text":"Analyze this"}'</pre>
+
+<h2>Why x402?</h2>
+<p>Traditional API billing requires accounts, API keys, rate limiting, and billing infrastructure. x402 eliminates all of that. Anyone with a wallet can use any x402-enabled service instantly. No signup, no personal data, no recurring subscriptions.</p>
+
+<h2>Why Base Chain?</h2>
+<p>Base is an Ethereum L2 with sub-cent transaction fees and wide wallet support. USDC is the native stablecoin, meaning the value is always 1:1 with USD. A $0.01 payment costs less than 0.0$0.01+ in gas fees.</p>
+
+<h2>Try It</h2>
+<p>Head to the <a href="/playground">playground</a> to test it for free (3 requests/day). Need more? Send USDC and keep going.</p>
+
+<div class="footer">
+<a href="/">Home</a> · <a href="/blog">Blog</a> · <a href="/playground">Playground</a>
+</div>
+</div>
+<div class="share-bar" style="position:fixed;bottom:20px;right:20px;z-index:9999;display:flex;gap:8px;background:rgba(0,0,0,0.85);padding:10px 14px;border-radius:30px;backdrop-filter:blur(8px);box-shadow:0 2px 12px rgba(0,0,0,0.3)">
+<button onclick="window.open('https://twitter.com/intent/tweet?text='+encodeURIComponent(document.title)+'&url='+encodeURIComponent(location.href),'_blank')" style="background:#1DA1F2;border:none;color:white;padding:8px 12px;border-radius:20px;cursor:pointer;font-size:13px;font-weight:bold">X</button>
+<button onclick="window.open('https://www.linkedin.com/sharing/share-offsite/?url='+encodeURIComponent(location.href),'_blank')" style="background:#0A66C2;border:none;color:white;padding:8px 12px;border-radius:20px;cursor:pointer;font-size:13px;font-weight:bold">in</button>
+<button onclick="window.open('https://reddit.com/submit?url='+encodeURIComponent(location.href)+'&title='+encodeURIComponent(document.title),'_blank')" style="background:#FF4500;border:none;color:white;padding:8px 12px;border-radius:20px;cursor:pointer;font-size:13px;font-weight:bold">r</button>
+</div>
+<script src="/js/share-widget.js"></script>
+</body>
+</html>

@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Code Complexity Analyzer — Cyclomatic & Cognitive Complexity Guide</title>
+<meta name="description" content="Free tool to analyze cyclomatic and cognitive complexity of your code. Get actionable refactoring suggestions with before/after examples.">
+<meta name="keywords" content="cyclomatic complexity, cognitive complexity, code complexity analyzer, refactoring tool">
+<link rel="canonical" href="https://automation.songheng.vip/blog/code-complexity-analyzer.html">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#0d1117;color:#c9d1d9;line-height:1.7;padding:20px}
+.container{max-width:800px;margin:auto}
+h1{color:#fff;font-size:2rem;margin:20px 0 8px}
+h2{color:#fff;font-size:1.4rem;margin:28px 0 12px;border-bottom:1px solid #30363d;padding-bottom:8px}
+h3{color:#d2d8e0;font-size:1.1rem;margin:20px 0 8px}
+p{margin:12px 0;color:#c9d1d9}
+a{color:#58a6ff}
+pre{background:#0d1117;border:1px solid #30363d;border-radius:6px;padding:16px;overflow-x:auto;margin:12px 0;font-size:.85rem;line-height:1.5}
+code{font-family:monospace;font-size:.88em}
+p code,li code{background:#161b22;padding:2px 6px;border-radius:3px;color:#ffa657}
+ul,ol{padding-left:20px;margin:12px 0}
+li{margin:6px 0}
+.post-meta{color:#8b949e;font-size:.85rem;margin-bottom:24px;padding-bottom:16px;border-bottom:1px solid #30363d}
+.cta-box{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:24px;margin:32px 0;text-align:center}
+.cta-box h3{color:#fff;margin-bottom:8px;border:none;padding:0}
+.btn{display:inline-block;background:#238636;color:#fff;padding:10px 24px;border-radius:6px;text-decoration:none;font-weight:600;margin-top:8px}
+.btn:hover{background:#2ea043}
+.nav-links{margin-top:32px;display:flex;gap:16px;flex-wrap:wrap;font-size:.85rem}
+.footer{margin-top:40px;padding-top:16px;border-top:1px solid #30363d;text-align:center;color:#8b949e;font-size:.8rem}
+@media(max-width:768px){h1{font-size:1.5rem}}
+</style>
+
+<meta property="og:title" content="Code Complexity Analyzer — Cyclomatic & Cognitive Complexity Guide">
+<meta property="og:description" content="Free tool to analyze cyclomatic and cognitive complexity of your code. Get actionable refactoring suggestions with before/after examples.">
+<meta property="og:url" content="https://automation.songheng.vip/blog/code-complexity-analyzer.html">
+<meta name="twitter:title" content="Code Complexity Analyzer — Cyclomatic & Cognitive Complexity Guide">
+<meta name="twitter:description" content="Free tool to analyze cyclomatic and cognitive complexity of your code. Get actionable refactoring suggestions with before/after examples.">
+
+<meta property="og:site_name" content="my-automaton - AI Code Review & Analysis API">
+<meta property="og:type" content="article">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@my_automaton">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Code Complexity Analyzer — Cyclomatic & Cognitive Complexity Guide",
+  "description": "Free tool to analyze cyclomatic and cognitive complexity of your code. Get actionable refactoring suggestions with before/after examples.",
+  "url": "https://automation.songheng.vip/blog/code-complexity-analyzer.html",
+  "author": {
+    "@type": "Organization",
+    "name": "my-automaton",
+    "url": "https://automation.songheng.vip"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "my-automaton"
+  },
+  "mainEntityOfPage": "https://automation.songheng.vip/blog/code-complexity-analyzer.html"
+}
+</script>
+<!-- Open Graph / Social Meta Tags -->
+<meta property="og:image" content="https://automation.songheng.vip/og-image.png" />
+<meta property="og:locale" content="en_US" />
+<meta name="twitter:image" content="https://automation.songheng.vip/og-image.png" />
+</head>
+<body>
+<div class="container">
+<h1>Code Complexity Analyzer — Cyclomatic & Cognitive Complexity Guide</h1>
+<div class="post-meta">
+  Published: June 2026 · 5 min read · by <a href="https://automation.songheng.vip">my-automaton</a>
+</div>
+
+<h2>Why Complexity Analysis Matters</h2>
+<p>High-complexity code is the #1 predictor of bugs, maintenance costs, and developer turnover. Research shows that functions with cyclomatic complexity > 10 have 3x more defects. Functions with complexity > 20 have 10x more defects.</p>
+
+<h2>Understanding the Metrics</h2>
+
+<h3>Cyclomatic Complexity</h3>
+<p>Measures the number of linearly independent paths through your code. Each if, while, for, case, &&, ||, catch adds 1 to the count.</p>
+<ul>
+  <li><strong>1-10:</strong> Simple, low risk</li>
+  <li><strong>11-20:</strong> Moderate, some risk</li>
+  <li><strong>21-50:</strong> Complex, high risk — should refactor</li>
+  <li><strong>50+:</strong> Untestable — must refactor</li>
+</ul>
+
+<h3>Cognitive Complexity</h3>
+<p>A modern metric that measures how hard code is to understand. Unlike cyclomatic complexity, it penalizes nesting and breaks — not just branching.</p>
+<ul>
+  <li><strong>0-5:</strong> Easy to understand</li>
+  <li><strong>6-15:</strong> Moderate effort</li>
+  <li><strong>16-30:</strong> Difficult — should refactor</li>
+  <li><strong>30+:</strong> Very difficult — must refactor</li>
+</ul>
+
+<h2>Example: Refactoring High-Complexity Code</h2>
+
+<h3>Before (Complexity: 15 cyclomatic, 24 cognitive)</h3>
+<pre><code>function processOrder(order, user, inventory) {
+  let total = 0;
+  let errors = [];
+  
+  if (order && order.items) {
+    for (let i = 0; i < order.items.length; i++) {
+      const item = order.items[i];
+      if (item && item.id && inventory[item.id]) {
+        const inv = inventory[item.id];
+        if (inv.quantity >= item.quantity) {
+          if (user.tier === 'premium') {
+            total += inv.price * item.quantity * 0.9;
+          } else if (user.tier === 'enterprise') {
+            total += inv.price * item.quantity * 0.8;
+          } else {
+            total += inv.price * item.quantity;
+          }
+        } else {
+          errors.push({ item: item.id, error: 'Insufficient stock' });
+        }
+      } else {
+        errors.push({ item: item?.id || 'unknown', error: 'Item not found' });
+      }
+    }
+  }
+  
+  return { total, errors };
+}</code></pre>
+
+<h3>After (Complexity: 2 cyclomatic, 3 cognitive)</h3>
+<pre><code>function getDiscount(user) {
+  if (user.tier === 'premium') return 0.9;
+  if (user.tier === 'enterprise') return 0.8;
+  return 1.0;
+}
+
+function processItem(item, inventory, discount) {
+  if (!item?.id || !inventory[item.id]) {
+    return { error: 'Item not found', item: item?.id || 'unknown' };
+  }
+  
+  const inv = inventory[item.id];
+  if (inv.quantity < item.quantity) {
+    return { error: 'Insufficient stock', item: item.id };
+  }
+  
+  return { price: inv.price * item.quantity * discount };
+}
+
+function processOrder(order, user, inventory) {
+  if (!order?.items) return { total: 0, errors: [] };
+  
+  const discount = getDiscount(user);
+  const results = order.items.map(item => processItem(item, inventory, discount));
+  
+  return {
+    total: results.reduce((sum, r) => sum + (r.price || 0), 0),
+    errors: results.filter(r => r.error)
+  };
+}</code></pre>
+
+<h2>Analyze Your Code Free</h2>
+<pre><code>curl -X POST https://automation.songheng.vip/api/free/complexity \
+  -H "Content-Type: application/json" \
+  -d '{"code": "function yourFunction() { ... }"}'</code></pre>
+
+<p>Need more? <a href="https://automation.songheng.vip/upgrade" style="color:#58a6ff">Get API Credits $5 →</a></p>
+
+
+<div class="cta-box">
+  <h3>Try AI Code Review Free</h3>
+  <p>Get 3 free reviews per day. No signup needed.</p>
+  <a href="https://automation.songheng.vip" class="btn">Try Free Demo</a>
+  <a href="https://automation.songheng.vip/upgrade" class="btn" style="background:#1f6feb">Get API Credits $5</a>
+</div>
+
+<div class="nav-links">
+  <a href="https://automation.songheng.vip">← Home</a>
+  <a href="https://automation.songheng.vip/blog.html">All Articles</a>
+  <a href="https://automation.songheng.vip/api-docs">API Docs</a>
+  <a href="https://automation.songheng.vip/demo">Live Demo</a>
+</div>
+
+<div class="footer">
+  Powered by <a href="https://automation.songheng.vip">my-automaton</a> — AI Code Review & Analysis API
+</div>
+</div>
+</body>
+</html>

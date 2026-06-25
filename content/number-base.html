@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta property="og:title" content="Number Base Converter">
+<meta property="og:description" content="Convert between binary, octal, decimal, hexadecimal. Free tool.">
+<meta property="og:url" content="https://automation.songheng.vip/number-base.html">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Number Base Converter">
+<meta name="twitter:description" content="Convert between binary, octal, decimal, hexadecimal. Free tool.">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Number Base Converter — Binary, Octal, Decimal, Hex | my-automaton</title>
+<meta name="description" content="Convert between binary, octal, decimal, and hexadecimal number bases in real time. All 4 bases updated simultaneously. 100% free, no signup.">
+<style>
+:root{--bg:#0f172a;--card:#1e293b;--text:#e2e8f0;--muted:#94a3b8;--accent:#38bdf8;--green:#4ade80;--border:#334155}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+header{background:var(--card);border-bottom:1px solid var(--border);padding:1rem 2rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap}
+header h1{font-size:1.25rem;color:var(--accent)}
+nav a{color:var(--muted);text-decoration:none;margin-left:1rem;font-size:.875rem}
+main{max-width:550px;margin:2rem auto;padding:0 1.5rem}
+.converters{display:grid;gap:.75rem}
+.conv-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.25rem}
+.conv-card label{font-size:.7rem;color:var(--accent);font-weight:700;display:block;margin-bottom:.4rem}
+.conv-card input{width:100%;background:#0a0f1a;color:var(--text);border:1px solid var(--border);border-radius:8px;padding:.7rem .8rem;font-family:"Fira Code",monospace;font-size:1rem;letter-spacing:.05em}
+.conv-card input:focus{outline:none;border-color:var(--accent)}
+.conv-card .copy-btn{position:absolute;right:.75rem;top:1.9rem;padding:.15rem .5rem;border:1px solid var(--border);border-radius:4px;background:var(--card);color:var(--muted);cursor:pointer;font-size:.6rem}
+.conv-card{position:relative}
+.conv-card .prefix{position:absolute;left:.75rem;top:2.05rem;font-size:.6rem;color:var(--muted);font-family:"Fira Code",monospace}
+.conv-card input.with-prefix{padding-left:1.6rem}
+footer{text-align:center;padding:2rem;color:var(--muted);font-size:.8rem;border-top:1px solid var(--border);margin-top:2rem}footer a{color:var(--accent)}
+</style>
+</head>
+<body>
+<header><h1>🔢 Number Base Converter</h1><nav><a href="/">Home</a><a href="/dev-tools.html">Tools</a><a href="/api-playground.html">API</a></nav></header>
+<main>
+<div class="converters" id="converters">
+  <div class="conv-card"><label>Binary (Base 2)</label><span class="prefix">0b</span><input class="with-prefix" type="text" id="binInput" placeholder="1010" oninput="fromBase('bin')" data-base="2"><button class="copy-btn" onclick="copyBase('binInput')">Copy</button></div>
+  <div class="conv-card"><label>Octal (Base 8)</label><span class="prefix">0o</span><input class="with-prefix" type="text" id="octInput" placeholder="12" oninput="fromBase('oct')" data-base="8"><button class="copy-btn" onclick="copyBase('octInput')">Copy</button></div>
+  <div class="conv-card"><label>Decimal (Base 10)</label><input type="text" id="decInput" placeholder="10" oninput="fromBase('dec')" data-base="10"><button class="copy-btn" onclick="copyBase('decInput')">Copy</button></div>
+  <div class="conv-card"><label>Hexadecimal (Base 16)</label><span class="prefix">0x</span><input class="with-prefix" type="text" id="hexInput" placeholder="A" oninput="fromBase('hex')" data-base="16"><button class="copy-btn" onclick="copyBase('hexInput')">Copy</button></div>
+</div>
+</main>
+<footer><p>my-automaton · Free Number Base Converter · <a href="/dev-tools.html">All Tools</a> · <a href="/api-docs.html">API Docs</a></p></footer>
+<script>
+const bases={bin:2,oct:8,dec:10,hex:16};
+let updating=false;
+
+function fromBase(source){
+  if(updating)return;
+  const input=document.getElementById(source+'Input');
+  const raw=input.value.trim();
+  if(!raw){return}
+
+  let num;
+  try{
+    if(source==='hex')num=parseInt(raw,16);
+    else if(source==='bin')num=parseInt(raw,2);
+    else if(source==='oct')num=parseInt(raw,8);
+    else num=parseInt(raw,10);
+  }catch(e){return}
+  if(isNaN(num))return;
+
+  updating=true;
+  document.getElementById('binInput').value=num.toString(2);
+  document.getElementById('octInput').value=num.toString(8);
+  document.getElementById('decInput').value=num.toString(10);
+  document.getElementById('hexInput').value=num.toString(16).toUpperCase();
+  updating=false;
+}
+
+function copyBase(id){const v=document.getElementById(id).value;if(v)navigator.clipboard.writeText(v)}
+
+document.getElementById('decInput').value='2026';
+fromBase('dec');
+</script>
+<script src="/conversion-banner.js" defer></script>
+</body>
+</html>

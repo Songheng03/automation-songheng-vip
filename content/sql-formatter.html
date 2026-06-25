@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Online SQL Formatter & Beautifier — Free, Instant | my-automaton</title>
+<meta name="description" content="Format and beautify SQL queries instantly. Supports MySQL, PostgreSQL, SQLite, and standard SQL. Keywords, indentation, 100% free, no signup, client-side.">
+<style>
+:root{--bg:#0f172a;--card:#1e293b;--text:#e2e8f0;--muted:#94a3b8;--accent:#38bdf8;--green:#4ade80;--border:#334155}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+header{background:var(--card);border-bottom:1px solid var(--border);padding:1rem 2rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap}
+header h1{font-size:1.25rem;color:var(--accent)}
+nav a{color:var(--muted);text-decoration:none;margin-left:1rem;font-size:.875rem}
+main{max-width:950px;margin:2rem auto;padding:0 1.5rem}
+.controls{display:flex;gap:.5rem;flex-wrap:wrap;align-items:center;margin-bottom:.75rem}
+.controls select{background:var(--card);color:var(--text);border:1px solid var(--border);border-radius:6px;padding:.35rem .6rem;font-size:.65rem}
+.controls label{font-size:.65rem;color:var(--muted)}
+.panel{display:grid;grid-template-columns:1fr 1fr;gap:.75rem;margin-bottom:1rem}
+@media(max-width:600px){.panel{grid-template-columns:1fr}}
+.box{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1rem;display:flex;flex-direction:column}
+.box h3{font-size:.8rem;color:var(--accent);margin-bottom:.5rem;display:flex;justify-content:space-between}
+textarea{flex:1;background:#0a0f1a;color:var(--text);border:1px solid var(--border);border-radius:8px;padding:.75rem;font-family:"Fira Code",monospace;font-size:.7rem;resize:vertical;min-height:300px;tab-size:2}
+textarea:focus{outline:none;border-color:var(--accent)}
+textarea.sql-output{color:var(--green)}
+.btn-row{display:flex;gap:.5rem;margin-top:.5rem;flex-wrap:wrap}
+.btn{padding:.35rem 1rem;border:none;border-radius:6px;cursor:pointer;font-size:.7rem;font-weight:600}
+.btn-primary{background:var(--accent);color:#0f172a}
+.btn-green{background:var(--green);color:#0f172a}
+.btn:hover{filter:brightness(1.15)}
+.presets{display:flex;gap:.3rem;flex-wrap:wrap}
+.presets button{padding:.2rem .7rem;border:1px solid var(--border);border-radius:4px;background:transparent;color:var(--muted);cursor:pointer;font-size:.6rem}
+.presets button:hover{border-color:var(--accent)}
+.stats{font-size:.65rem;color:var(--muted);margin:.25rem 0}
+.promo{border:1px solid var(--accent);border-radius:10px;padding:.75rem;margin-top:1.5rem;font-size:.7rem;text-align:center;background:rgba(56,189,248,.03)}
+.promo a{color:var(--accent);font-weight:700}
+footer{text-align:center;padding:2rem;color:var(--muted);font-size:.8rem;border-top:1px solid var(--border);margin-top:2rem}footer a{color:var(--accent)}
+</style>
+</head>
+<body>
+<header><h1>🗄️ SQL Formatter & Beautifier</h1><nav><a href="/">Home</a><a href="/dev-tools.html">Tools</a><a href="/api-playground.html">API</a></nav></header>
+<main>
+<div class="controls">
+  <label>SQL Dialect:</label>
+  <select id="dialect" onchange="formatSQL()">
+    <option value="standard">Standard SQL</option>
+    <option value="mysql">MySQL</option>
+    <option value="pg">PostgreSQL</option>
+    <option value="sqlite">SQLite</option>
+  </select>
+  <label>Indent:</label>
+  <select id="indent" onchange="formatSQL()">
+    <option value="2">2 spaces</option>
+    <option value="4">4 spaces</option>
+    <option value="tab">Tab</option>
+  </select>
+  <div style="flex:1"></div>
+  <div class="presets">
+    <button onclick="loadPreset('simple')">Simple SELECT</button>
+    <button onclick="loadPreset('join')">JOIN</button>
+    <button onclick="loadPreset('subquery')">Subquery</button>
+    <button onclick="loadPreset('create')">CREATE TABLE</button>
+  </div>
+</div>
+<div class="panel">
+  <div class="box">
+    <h3>📥 Raw SQL</h3>
+    <textarea id="input" placeholder="Paste unformatted SQL here..." oninput="formatSQL()">SELECT u.id,u.name,u.email,o.order_date,o.total,o.status FROM users u INNER JOIN orders o ON u.id=o.user_id WHERE u.active=1 AND o.total>100 AND o.status IN ('completed','shipped') ORDER BY o.order_date DESC,u.name ASC LIMIT 50</textarea>
+    <div class="btn-row"><button class="btn btn-primary" onclick="formatSQL()">🔄 Format SQL</button> <button class="btn btn-green" onclick="copySQL()">📋 Copy</button></div>
+  </div>
+  <div class="box">
+    <h3>✨ Formatted SQL</h3>
+    <textarea id="output" class="sql-output" readonly placeholder="Formatted SQL will appear here..."></textarea>
+    <div class="stats" id="stats"></div>
+  </div>
+</div>
+<div class="promo">💎 Need AI-powered code review in your SQL schema? <a href="/api-playground.html">Try the /v1/review endpoint — free for 3 requests/day</a></div>
+</main>
+<footer><p>my-automaton · Free SQL Formatter · <a href="/dev-tools.html">All Tools</a> · <a href="/pricing.html">Pricing</a> · <a href="/api-docs.html">API Docs</a></p></footer>
+<script>
+const presets={
+  simple:'SELECT u.id,u.name,u.email FROM users u WHERE u.active=1',
+  join:'SELECT u.id,u.name,o.total,o.status FROM users u LEFT JOIN orders o ON u.id=o.user_id WHERE o.order_date > \'2026-01-01\' ORDER BY o.total DESC',
+  subquery:'SELECT name,email,(SELECT COUNT(*) FROM orders WHERE orders.user_id=users.id) AS order_count FROM users WHERE EXISTS(SELECT 1 FROM orders WHERE orders.user_id=users.id AND status=\'completed\')',
+  create:'CREATE TABLE orders (id SERIAL PRIMARY KEY,user_id INTEGER NOT NULL REFERENCES users(id),total DECIMAL(10,2) NOT NULL DEFAULT 0.00,status VARCHAR(20) CHECK(status IN (\'pending\',\'completed\',\'shipped\')),created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP)'
+};
+
+function loadPreset(k){document.getElementById('input').value=presets[k];formatSQL()}
+
+// SQL keywords (uppercase in output)
+const KEYWORDS=new Set(['SELECT','FROM','WHERE','AND','OR','NOT','IN','LIKE','BETWEEN','IS','NULL',
+'JOIN','LEFT','RIGHT','INNER','OUTER','FULL','CROSS','ON','AS',
+'INSERT','INTO','VALUES','UPDATE','SET','DELETE','CREATE','TABLE','ALTER','ADD','DROP','INDEX',
+'ORDER','BY','GROUP','HAVING','LIMIT','OFFSET','UNION','ALL','DISTINCT','EXISTS','CASE','WHEN',
+'THEN','ELSE','END','ASC','DESC','PRIMARY','KEY','FOREIGN','REFERENCES','DEFAULT','CHECK','UNIQUE',
+'IF','SERIAL','INTEGER','VARCHAR','DECIMAL','TIMESTAMP','BOOLEAN','TEXT','BIGINT','SMALLINT','CURRENT_TIMESTAMP']);
+
+function formatSQL(){
+  const input=document.getElementById('input').value.trim();
+  const indentSize=document.getElementById('indent').value;
+  const indent=indentSize==='tab'?'\t':' '.repeat(parseInt(indentSize));
+  document.getElementById('output').value='';
+  document.getElementById('stats').textContent='';
+  if(!input)return;
+
+  // Normalize whitespace
+  let sql=input.replace(/\s+/g,' ').trim();
+
+  // Add newlines before major clauses
+  const clauses=['SELECT','FROM','WHERE','AND','OR','ORDER BY','GROUP BY','HAVING','LIMIT','OFFSET',
+    'JOIN','LEFT JOIN','RIGHT JOIN','INNER JOIN','OUTER JOIN','FULL JOIN','CROSS JOIN','ON',
+    'INSERT INTO','VALUES','SET','CREATE TABLE','ALTER TABLE','DROP TABLE',
+    'UNION','UNION ALL','EXCEPT','INTERSECT'];
+
+  let result=sql;
+
+  // First pass: uppercase keywords
+  const wordRegex=/[a-zA-Z_]+/g;
+  result=result.replace(wordRegex,m=>KEYWORDS.has(m.toUpperCase())?m.toUpperCase():m);
+
+  // Second pass: insert newlines before major clauses
+  for(const clause of clauses){
+    const re=new RegExp(`\\s+(${clause.replace(/\s+/g,'\\s+')})\\s+`,'gi');
+    result=result.replace(re,`\n${indent}$1 `);
+  }
+
+  // Add newline before first clause
+  result=result.replace(/^\s*/,indent);
+
+  // Fix commas in SELECT list: add spaces after commas
+  result=result.replace(/,/g,', ');
+
+  // Indent subqueries (basic approach)
+  const lines=result.split('\n');
+  const formatted=lines.map(l=>{
+    const trimmed=l.trim();
+    if(!trimmed)return '';
+    // Add indent before each line
+    return indent+trimmed;
+  }).join('\n').trim();
+
+  document.getElementById('output').value=formatted;
+  document.getElementById('stats').textContent=`${lines.length} lines · ${sql.length} chars → ${formatted.length} chars`;
+}
+
+function copySQL(){const v=document.getElementById('output').value;if(v)navigator.clipboard.writeText(v)}
+setTimeout(formatSQL,50);
+</script>
+<script src="/conversion-banner.js" defer></script>
+</body>
+</html>

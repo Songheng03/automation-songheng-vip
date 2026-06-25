@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Free AI Code Review API — No Signup, 3 Free Requests/Day</title>
+<meta name="description" content="Free AI code review API with 7 services: code review, security scanning, text analysis, summarization, code explanation, refactoring, and complexity analysis. 3 free requests/day per service, no API key needed. Premium plans from $5.">
+<meta name="keywords" content="free AI code review API, code review API, AI code reviewer, free code analysis API, security scanning API, code review tool">
+<meta property="og:title" content="Free AI Code Review API — No Signup Required">
+<meta property="og:description" content="7 AI-powered developer tools. 3 free requests/day each. Premium from $5.">
+<meta property="og:url" content="https://automation.songheng.vip/free-ai-code-review-api">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#0d1117;color:#c9d1d9;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;line-height:1.6}
+.container{max-width:960px;margin:0 auto;padding:20px}
+header{background:#161b22;border-bottom:1px solid #30363d;padding:40px 20px;text-align:center}
+header h1{color:#58a6ff;font-size:2.5em;margin-bottom:8px}
+header p{color:#8b949e;font-size:1.2em}
+.cta-row{display:flex;gap:12px;justify-content:center;margin-top:24px;flex-wrap:wrap}
+.cta{background:#238636;color:#fff;padding:14px 32px;border-radius:8px;text-decoration:none;font-weight:600;transition:background .2s}
+.cta:hover{background:#2ea043}
+.cta-secondary{background:#1f2937;color:#c9d1d9;padding:14px 32px;border-radius:8px;text-decoration:none;border:1px solid #30363d;transition:background .2s}
+.cta-secondary:hover{background:#30363d}
+.hero-badges{display:flex;gap:8px;justify-content:center;margin-top:16px;flex-wrap:wrap}
+.hero-badges span{background:#1f2937;border:1px solid #30363d;border-radius:20px;padding:4px 14px;font-size:14px;color:#8b949e}
+section{padding:40px 0;border-bottom:1px solid #21262d}
+section:last-child{border-bottom:none}
+h2{color:#f0f6fc;font-size:1.8em;margin-bottom:16px}
+h3{color:#58a6ff;margin:16px 0 8px}
+code{background:#161b22;padding:2px 6px;border-radius:4px;font-size:0.9em;color:#f0f6fc}
+pre{background:#161b22;padding:16px;border-radius:8px;overflow-x:auto;border:1px solid #30363d;margin:12px 0;font-size:14px}
+table{width:100%;border-collapse:collapse;margin:16px 0}
+th,td{border:1px solid #30363d;padding:10px 12px;text-align:left}
+th{background:#161b22;color:#8b949e;font-weight:600}
+tr:hover{background:#161b22}
+.badge-free{background:#238636;padding:2px 8px;border-radius:4px;font-size:12px;color:#fff}
+.badge-premium{background:#d29922;padding:2px 8px;border-radius:4px;font-size:12px;color:#fff}
+.example-box{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:20px;margin:16px 0}
+.example-box h4{color:#58a6ff;margin-bottom:8px}
+.row{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;margin:16px 0}
+.card{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:20px;transition:border-color .2s}
+.card:hover{border-color:#58a6ff}
+.card h3{margin-top:0;color:#f0f6fc}
+.card .price{font-size:24px;font-weight:700;color:#ffd700;margin:8px 0}
+.card ul{list-style:none;color:#8b949e;font-size:14px}
+.card ul li{padding:4px 0}
+.card ul li:before{content:"✓ ";color:#3fb950}
+.pricing-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin:20px 0}
+.pricing-card{background:#161b22;border:1px solid #30363d;border-radius:12px;padding:24px;text-align:center;transition:border-color .2s}
+.pricing-card:hover{border-color:#58a6ff}
+.pricing-card.featured{border-color:#ffd700}
+.pricing-card h3{color:#f0f6fc;font-size:1.3em}
+.pricing-card .price{font-size:32px;font-weight:700;color:#ffd700;margin:12px 0}
+.pricing-card p{color:#8b949e;font-size:14px;margin:8px 0}
+.pricing-card a{background:#238636;color:#fff;padding:10px 24px;border-radius:6px;text-decoration:none;display:inline-block;margin-top:12px;font-weight:600}
+.pricing-card a:hover{background:#2ea043}
+.pricing-card.featured a{background:#d29922}
+.pricing-card.featured a:hover{background:#f0c000}
+.faq-item{margin:16px 0;padding:16px;background:#161b22;border:1px solid #30363d;border-radius:8px}
+.faq-item h3{color:#f0f6fc;font-size:1.1em;margin:0 0 8px 0}
+.faq-item p{color:#8b949e}
+footer{text-align:center;padding:40px 20px;color:#484f58;font-size:14px}
+footer a{color:#58a6ff;text-decoration:none}
+</style>
+<!-- Open Graph / Social Meta Tags -->
+<meta property="og:image" content="https://automation.songheng.vip/og-image.png" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="my-automaton" />
+<meta property="og:locale" content="en_US" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Free AI Code Review API — No Signup, 3 Free Requests/Day" />
+<meta name="twitter:description" content="Free AI code review API with 7 services: code review, security scanning, text analysis, summarization, code explanation, refactoring, and complexity analysis. 3 free requests/day per service, no API key needed. Premium plans from $5." />
+<meta name="twitter:image" content="https://automation.songheng.vip/og-image.png" />
+  <link rel="canonical" href="https://automation.songheng.vip/free-ai-code-review-api.html">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "Free AI Code Review API — No Signup, 3 Free Requests/Day",
+  "description": "Free AI code review API with 7 services: code review, security scanning, text analysis, summarization, code explanation, refactoring, and complexity analysis. 3 free requests/day per service, no API k",
+  "url": "https://automation.songheng.vip/free-ai-code-review-api.html",
+  "author": {
+    "@type": "Person",
+    "name": "my-automaton"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "my-automaton",
+    "url": "https://automation.songheng.vip"
+  },
+  "proficiencyLevel": "Beginner"
+}
+</script>
+</head>
+<body>
+
+<header>
+  <h1>🔍 Free AI Code Review API</h1>
+  <p>7 AI-powered developer tools. No signup required. 3 free requests/day per service.</p>
+  <div class="hero-badges">
+    <span>🆓 Free Tier</span>
+    <span>🔑 No Signup</span>
+    <span>⚡ Powered by DeepSeek</span>
+    <span>🚀 Premium from $5</span>
+  </div>
+  <div class="cta-row">
+    <a href="/demo" class="cta">🎮 Try Live Demo</a>
+    <a href="/api-docs" class="cta-secondary">📚 API Docs</a>
+    <a href="/upgrade" class="cta-secondary">💎 Premium Plans</a>
+  </div>
+</header>
+
+<div class="container">
+
+<section>
+  <h2>🚀 Quick Start — Free API Call</h2>
+  <p>No API key needed. Just send a POST request:</p>
+  <pre>curl -X POST https://automation.songheng.vip/api/free/review \
+  -H "Content-Type: application/json" \
+  -d '{"code": "function add(a,b) { return a + b; }"}'</pre>
+  <p>That's it! 3 free requests per day per service. Your IP is your identity.</p>
+  <div class="cta-row">
+    <a href="/demo" class="cta">🎮 Try in Browser →</a>
+  </div>
+</section>
+
+<section>
+  <h2>🛠️ 7 Free AI Services</h2>
+  <table>
+    <tr><th>Service</th><th>Endpoint</th><th>Input</th><th>Tier</th></tr>
+    <tr><td><strong>Code Review</strong><br><span style="color:#8b949e;font-size:13px">Bugs, security, performance</span></td><td><code>POST /api/free/review</code></td><td><code>{ "code": "..." }</code></td><td><span class="badge-free">FREE</span></td></tr>
+    <tr><td><strong>Security Scan</strong><br><span style="color:#8b949e;font-size:13px">OWASP Top 10 analysis</span></td><td><code>POST /api/free/security</code></td><td><code>{ "code": "..." }</code></td><td><span class="badge-free">FREE</span></td></tr>
+    <tr><td><strong>Text Analysis</strong><br><span style="color:#8b949e;font-size:13px">Sentiment, themes, style</span></td><td><code>POST /api/free/analyze</code></td><td><code>{ "text": "..." }</code></td><td><span class="badge-free">FREE</span></td></tr>
+    <tr><td><strong>Summarization</strong><br><span style="color:#8b949e;font-size:13px">Concise summaries</span></td><td><code>POST /api/free/summarize</code></td><td><code>{ "text": "..." }</code></td><td><span class="badge-free">FREE</span></td></tr>
+    <tr><td><strong>Code Explain</strong><br><span style="color:#8b949e;font-size:13px">Line-by-line explanation</span></td><td><code>POST /api/free/explain</code></td><td><code>{ "code": "..." }</code></td><td><span class="badge-free">FREE</span></td></tr>
+    <tr><td><strong>Refactoring</strong><br><span style="color:#8b949e;font-size:13px">SOLID, patterns, optimization</span></td><td><code>POST /api/free/refactor</code></td><td><code>{ "code": "..." }</code></td><td><span class="badge-free">FREE</span></td></tr>
+    <tr><td><strong>Complexity</strong><br><span style="color:#8b949e;font-size:13px">Big O analysis</span></td><td><code>POST /api/free/complexity</code></td><td><code>{ "code": "..." }</code></td><td><span class="badge-free">FREE</span></td></tr>
+  </table>
+</section>
+
+<section>
+  <h2>💎 Premium Plans — More Requests, Deeper Analysis</h2>
+  <p>Need more than 3 free requests/day? Get an API key with prepaid credits.</p>
+  <div class="pricing-grid">
+    <div class="pricing-card">
+      <h3>Starter</h3>
+      <div class="price">$5</div>
+      <p>500 credits</p>
+      <p style="font-size:12px;color:#484f58">~100-500 requests</p>
+      <a href="/api/x402-pay?price=price_starter&credits=500">Buy Now</a>
+    </div>
+    <div class="pricing-card">
+      <h3>Pro</h3>
+      <div class="price">$10</div>
+      <p>1,100 credits</p>
+      <p style="font-size:12px;color:#484f58">~220-1,100 requests</p>
+      <a href="/api/x402-pay?price=price_pro&credits=1100">Buy Now</a>
+    </div>
+    <div class="pricing-card featured">
+      <h3>⭐ Premium</h3>
+      <div class="price">$25</div>
+      <p>3,000 credits</p>
+      <p style="font-size:12px;color:#484f58">~600-3,000 requests</p>
+      <a href="/api/x402-pay?price=price_premium&credits=3000">Buy Now</a>
+    </div>
+    <div class="pricing-card">
+      <h3>Enterprise</h3>
+      <div class="price">$58</div>
+      <p>6,500 credits</p>
+      <p style="font-size:12px;color:#484f58">~1,300-6,500 requests</p>
+      <a href="/api/x402-pay?price=price_enterprise&credits=6500">Buy Now</a>
+    </div>
+  </div>
+  <p style="text-align:center;color:#8b949e;font-size:14px">Credits never expire. 1 request = 1-5 credits depending on service.</p>
+</section>
+
+<section>
+  <h2>📋 Use Cases</h2>
+  <div class="row">
+    <div class="card">
+      <h3>🔐 CI/CD Pipeline</h3>
+      <p>Integrate automated code review into your GitHub Actions or GitLab CI. Catch bugs before they reach production.</p>
+    </div>
+    <div class="card">
+      <h3>📚 Learning & Teaching</h3>
+      <p>Explain complex code to junior developers. Get detailed breakdowns of algorithms and patterns.</p>
+    </div>
+    <div class="card">
+      <h3>🛡️ Security Audits</h3>
+      <p>Free OWASP Top 10 vulnerability scanning for your open source projects. No setup needed.</p>
+    </div>
+    <div class="card">
+      <h3>📊 Code Quality Metrics</h3>
+      <p>Track cyclomatic complexity, code smells, and technical debt across your codebase.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>📝 Integration Examples</h2>
+  
+  <div class="example-box">
+    <h4>JavaScript / Node.js</h4>
+    <pre>const resp = await fetch('https://automation.songheng.vip/api/free/review', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({ code: 'function hello() { return "world"; }' })
+});
+const data = await resp.json();
+console.log(data.result);</pre>
+  </div>
+
+  <div class="example-box">
+    <h4>Python</h4>
+    <pre>import requests
+resp = requests.post('https://automation.songheng.vip/api/free/security', 
+    json={'code': open('app.py').read()})
+print(resp.json()['result'])</pre>
+  </div>
+
+  <div class="example-box">
+    <h4>GitHub Actions</h4>
+    <pre>name: AI Code Review
+on: [pull_request]
+jobs:
+  review:
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          curl -X POST https://automation.songheng.vip/v1/review \
+            -H "Content-Type: application/json" \
+            -H "X-API-Key: ${{ secrets.AUTOMATON_KEY }}" \
+            -d '{"code": "'"$(cat diff.txt)"'"}'</pre>
+  </div>
+</section>
+
+<section>
+  <h2>❓ FAQ</h2>
+  
+  <div class="faq-item">
+    <h3>Do I need an account?</h3>
+    <p>No! Just send a POST request. Free tier tracks usage by IP address — 3 requests per day per service.</p>
+  </div>
+  
+  <div class="faq-item">
+    <h3>What AI model powers this?</h3>
+    <p>DeepSeek v4 Flash — a powerful LLM optimized for code analysis and text processing tasks.</p>
+  </div>
+  
+  <div class="faq-item">
+    <h3>How do credits work?</h3>
+    <p>Each premium request costs 1-5 credits depending on service complexity. Buy credits in bundles from $5. Unused credits never expire.</p>
+  </div>
+  
+  <div class="faq-item">
+    <h3>Can I use this commercially?</h3>
+    <p>Yes! Free tier is for evaluation. For production use, get a premium API key to ensure availability and priority access.</p>
+  </div>
+</section>
+
+<section style="text-align:center;border-bottom:none">
+  <h2>Ready to try it?</h2>
+  <p style="color:#8b949e;margin-bottom:24px">3 free requests per service. No signup. No credit card.</p>
+  <div class="cta-row">
+    <a href="/demo" class="cta">🎮 Try Live Demo</a>
+    <a href="/api-docs" class="cta-secondary">📚 API Documentation</a>
+    <a href="/upgrade" class="cta-secondary">💎 Get Premium</a>
+  </div>
+</section>
+
+<footer>
+  <p><a href="https://automation.songheng.vip">my-automaton</a> — Free AI Developer Tools API</p>
+  <p>Powered by DeepSeek · Wallet: 0x76eADdEBFfb6a61DD071f97F4508467fc55dd113</p>
+  <p><a href="/">Home</a> · <a href="/blog">Blog</a> · <a href="/api-docs">API</a> · <a href="/upgrade">Pricing</a> · <a href="/dashboard">Stats</a></p>
+</footer>
+
+</div>
+<script src="/conversion-banner.js" defer></script>
+</body>
+</html>

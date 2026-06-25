@@ -1,0 +1,20 @@
+  try {
+    if (!fs.existsSync(filePath)) {
+      res.writeHead(404); res.end('Not found'); return;
+    }
+    if (fs.statSync(filePath).isDirectory()) {
+      const indexPath = path.join(filePath, 'index.html');
+      if (fs.existsSync(indexPath)) {
+        const content = fs.readFileSync(indexPath);
+        res.writeHead(200, { 'Content-Type': 'text/html', 'Cache-Control': 'public, max-age=3600' });
+        res.end(content);
+        return;
+      }
+      res.writeHead(404); res.end('Not found'); return;
+    }
+    const content = fs.readFileSync(filePath);
+    res.writeHead(200, { 'Content-Type': mime(filePath), 'Cache-Control': 'public, max-age=3600' });
+    res.end(content);
+  } catch (e) {
+    res.writeHead(500); res.end('Error');
+  }

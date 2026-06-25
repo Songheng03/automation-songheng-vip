@@ -1,0 +1,106 @@
+{
+  "directory": {
+    "name": "AnyMCP",
+    "website": "https://anymcp.io",
+    "github": "https://github.com/xakpc/anymcp-io",
+    "description": "A catalog of single-file MCP (Model Context Protocol) servers for .NET 10 (Preview 4+). These servers are written in C# and work with any LLM that supports local MCP connections.",
+    "type": "Static site catalog of .NET-based single-file MCP servers"
+  },
+  "submission_method": "GitHub Pull Request",
+  "submission_url": "https://github.com/xakpc/anymcp-io",
+  "submission_guidelines": {
+    "summary": "Submit a .cs file with YAML front matter to the mcp/ directory via a GitHub Pull Request.",
+    "steps": [
+      "Fork the repository",
+      "Create a branch: git checkout -b add-your-server-name",
+      "Add a new .cs file to the mcp/ directory with YAML front matter in C# comments",
+      "Write your MCP server code below the front matter",
+      "Test locally: npm run serve",
+      "Commit your changes",
+      "Push to your fork",
+      "Create a Pull Request with a clear description"
+    ],
+    "file_location": "mcp/ directory at the root of the repository",
+    "file_format": "C# (.cs) file with YAML front matter in C# comments",
+    "required_fields": [
+      {
+        "field": "id",
+        "description": "Unique identifier for your server (kebab-case, used in URLs)"
+      },
+      {
+        "field": "name",
+        "description": "Display name, typically the filename"
+      },
+      {
+        "field": "description",
+        "description": "Brief description (1-2 sentences)"
+      },
+      {
+        "field": "author",
+        "description": "Your name or organization"
+      }
+    ],
+    "optional_fields": [
+      {
+        "field": "tags",
+        "description": "Array of categories/tags for filtering"
+      },
+      {
+        "field": "status",
+        "description": "stable, beta, or alpha (defaults to stable)"
+      },
+      {
+        "field": "version",
+        "description": "Version number"
+      },
+      {
+        "field": "license",
+        "description": "License type (defaults to MIT)"
+      },
+      {
+        "field": "envVars",
+        "description": "Array of required environment variables"
+      },
+      {
+        "field": "longDescription",
+        "description": "Optional detailed description"
+      },
+      {
+        "field": "downloads",
+        "description": "Download count"
+      },
+      {
+        "field": "lastUpdated",
+        "description": "Last update date"
+      }
+    ],
+    "technical_requirements": [
+      "Target .NET 10 Preview 4 or compatible",
+      "Use ModelContextProtocol package version 0.3.0-preview.3 or later",
+      "Include package references with #:package directives",
+      "Single file - keep everything in one .cs file",
+      "Add XML comments for public methods",
+      "Include proper error handling and logging",
+      "Use environment variables for configuration",
+      "Properly dispose of resources"
+    ],
+    "tags_categories": {
+      "categories": ["ai", "api", "database", "file-system", "productivity", "security", "utility", "web"],
+      "technologies": ["github", "jira", "openai", "azure", "aws", "docker", "kubernetes"]
+    },
+    "pr_description_requirements": [
+      "Server name and purpose",
+      "Key features and capabilities",
+      "Requirements"
+    ],
+    "review_process": "Pull Request reviewed manually by maintainers",
+    "code_of_conduct": [
+      "Be respectful in all interactions",
+      "Provide useful, working code that adds value to the catalog",
+      "Follow the established patterns and conventions",
+      "Test contributions before submitting",
+      "Respond to feedback constructively"
+    ],
+    "license": "MIT (contributions licensed under the same license)"
+  }
+}

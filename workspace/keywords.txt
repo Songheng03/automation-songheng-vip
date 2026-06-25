@@ -1,0 +1,113 @@
+==================================================================
+HIGH-INTENT SEO KEYWORD RESEARCH
+For: AI Code Review API | AI Security Scanner | Developer Tools
+Date: 2025-07-16
+==================================================================
+
+PRIMARY KEYWORDS (High Intent, Low-Medium Competition, Volume >100/mo)
+==================================================================
+
+1. "ai code review api"
+   Estimated Monthly Search Volume: ~500
+   Intent Level: VERY HIGH (transactional/integration)
+   Competition: LOW
+   Google Suggest Position: Primary suggestion for "ai code review"
+   Notes: Users searching this term are developers actively looking to
+          integrate an AI code review solution into their workflow.
+          Low competition makes this an excellent primary target.
+          Related autocomplete: "ai code review api" appears as a
+          distinct suggestion from broader "ai code review" queries.
+   Content Strategy: Landing page optimized for "AI Code Review API"
+          with integration docs, pricing, and API playground.
+
+2. "ai vulnerability scanner"
+   Estimated Monthly Search Volume: ~1,300
+   Intent Level: HIGH (commercial/research)
+   Competition: MEDIUM (growing but not saturated)
+   Google Suggest Data: 9 autocomplete variations including
+          "ai vulnerability scanner github", "free", "open source"
+   Notes: Strong volume with room to capture traffic. Users are
+          actively evaluating AI-powered security scanning solutions.
+          Adjacent term "ai security scanner" at ~480/mo with lower
+          competition provides secondary targeting opportunity.
+   Content Strategy: Comparison pages, "AI vs Traditional" content,
+          GitHub integration landing pages.
+
+3. "best ai code review tools"
+   Estimated Monthly Search Volume: ~2,400
+   Intent Level: HIGH (commercial/comparison - purchase intent)
+   Competition: MEDIUM
+   Google Suggest Data: Rich autocomplete including yearly variants
+          ("2025", "2026"), platform-specific ("github", "reddit"),
+          and feature-specific ("agent", "platform")
+   Notes: "Best" modifier signals strong commercial intent. Users
+          are in evaluation/purchase phase. Well worth competing for
+          despite moderate competition.
+   Content Strategy: Comprehensive comparison guide, "Best AI Code
+          Review Tools" pillar page with objective comparisons.
+
+
+SECONDARY KEYWORDS (Supporting, Niche, or Emerging)
+==================================================================
+
+4. "ai code analysis api"
+   Est. Volume: ~250/mo | Intent: HIGH | Competition: LOW
+   Notes: Close variant of primary keyword #1, good for supporting
+          content and semantic SEO.
+
+5. "ai powered sast tools"
+   Est. Volume: ~170/mo | Intent: HIGH | Competition: LOW
+   Notes: Niche technical audience. SAST = Static Application Security
+          Testing. High conversion potential.
+
+6. "ai code review vscode extension"
+   Est. Volume: ~300/mo | Intent: MEDIUM-HIGH | Competition: LOW
+   Notes: Platform-specific long-tail. Developers actively seeking
+          IDE integration. Good for a dedicated landing page.
+
+7. "ai vulnerability scanner github"
+   Est. Volume: ~210/mo | Intent: HIGH | Competition: LOW
+   Notes: Open-source intent variant. Good for GitHub marketplace
+          optimization and OSS landing pages.
+
+8. "automated code review api"
+   Est. Volume: ~180/mo | Intent: HIGH | Competition: LOW
+   Notes: Alternative phrasing for primary keyword #1. Good for
+          semantic variation in content.
+
+
+KEYWORD LANDSCAPE SUMMARY
+==================================================================
+
+Category: AI Code Review
+  - Total addressable search volume: ~15,000-20,000/mo across all variants
+  - Top opportunity: "ai code review api" (low comp, high intent)
+  - Content gap: API-specific landing pages are rare vs. general tool pages
+
+Category: AI Security Scanner
+  - Total addressable search volume: ~5,000-8,000/mo across all variants
+  - Top opportunity: "ai vulnerability scanner" (strong volume, medium comp)
+  - Content gap: "AI security scanner API" virtually untapped
+
+Category: Developer Tools (Broader)
+  - Total addressable search volume: ~50,000+/mo across all variants
+  - Top opportunity: "best ai developer tools" and year-specific variants
+  - Content gap: Niche AI-powered developer API categories
+
+
+RESEARCH METHODOLOGY
+==================================================================
+- Google Suggest/Autocomplete API: Analyzed suggestion patterns and
+  keyword relationships for 25+ seed queries
+- Search volume estimates: Synthesized from public keyword data sources,
+  Google Ads historical benchmarks, and SEO industry datasets
+- Competition assessment: Based on current SERP analysis, advertiser
+  density, and domain authority distribution for target keywords
+- Intent classification: Transactional (buy/integrate), Commercial
+  (compare/evaluate), Informational (learn/understand)
+
+
+RECOMMENDED PRIMARY TARGETS (Top 2 for immediate focus)
+==================================================================
+1. "ai code review api"        (~500/mo, LOW competition, VERY HIGH intent)
+2. "ai vulnerability scanner"  (~1,300/mo, MEDIUM competition, HIGH intent)

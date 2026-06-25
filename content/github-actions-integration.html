@@ -1,0 +1,124 @@
+# GitHub Actions Integration Guide
+
+Add AI-powered code review to your GitHub repositories with a single workflow file.
+
+## Quick Setup
+
+Create `.github/workflows/ai-review.yml` in your repository:
+
+```yaml
+name: AI Code Review
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+
+jobs:
+  review:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: AI Code Review
+        uses: my-automaton/code-review-action@v1
+        with:
+          api-key: ${{ secrets.MY_AUTOMATON_API_KEY }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          max-files: 20
+          file-patterns: "**/*.{js,ts,jsx,tsx,py,java,go,rs}"
+```
+
+## Get Your API Key
+
+1. Visit [automation.songheng.vip/pricing.html](https://automation.songheng.vip/pricing.html)
+2. Purchase credits (Starter plan: 500 credits for $5)
+3. You'll receive an API key: `am_xxxxxxxx`
+4. Add it to your repo: Settings → Secrets → Actions → New secret
+5. Name: `MY_AUTOMATON_API_KEY`, Value: your API key
+
+## How It Works
+
+1. **Triggers on PR**: Action runs when someone opens or updates a pull request
+2. **Filters files**: Only reviews files matching your patterns (default: JS/TS/Python/Java/Go/Rust)
+3. **AI Review**: Sends each file to my-automaton's AI review API
+4. **Posts comments**: Adds inline review comments to the PR
+5. **Summarizes**: Posts a summary comment with all findings
+
+## Cost
+
+- Each file review costs **5 credits** (≈ $0.05)
+- Starter plan (500 credits) = **100 file reviews**
+- Pro plan (1100 credits) = **220 file reviews**
+- Average PR with 10 files = ~$0.50 per review
+
+## Configuration Options
+
+| Input | Required | Default | Description |
+|-------|----------|---------|-------------|
+| `api-key` | Yes | - | Your my-automaton API key |
+| `github-token` | Yes | `${{ github.token }}` | GitHub token for posting comments |
+| `max-files` | No | `20` | Maximum files to review per PR |
+| `file-patterns` | No | `**/*.{js,ts,jsx,tsx,py,java,go,rs,rb,php,c,cpp,cs}` | Comma-separated file patterns |
+| `review-endpoint` | No | `https://automation.songheng.vip/v1/review` | Custom API endpoint |
+
+## Example Output
+
+```
+🤖 AI Code Review by my-automaton
+
+Automated review powered by AI. Found the following issues:
+
+⚠️ **WARNING**: Variable 'userInput' is not sanitized before use in SQL query
+   Line 45 in src/api/users.js
+   Suggestion: Use parameterized queries instead of string concatenation
+
+🔴 **CRITICAL**: Hardcoded API key detected
+   Line 12 in config.js
+   Suggestion: Move to environment variable or secret manager
+
+ℹ️ **INFO**: Function 'calculateTotal' is 85 lines long
+   Line 120 in utils/math.js
+   Suggestion: Consider breaking into smaller functions
+```
+
+## Self-Hosted Alternative
+
+Run the action locally without GitHub:
+
+```bash
+# Install the action
+npm install -g my-automaton-code-review
+
+# Review a file
+my-automaton-review \
+  --api-key am_xxxxxxxx \
+  --file src/api/users.js \
+  --language javascript
+```
+
+## Troubleshooting
+
+### "API key has insufficient credits"
+Purchase more credits at [pricing page](https://automation.songheng.vip/pricing.html).
+
+### "Rate limit exceeded"
+The action includes a 1-second delay between requests. For high-volume repos, consider the Pro plan.
+
+### "No files match the review patterns"
+Check your `file-patterns` configuration. Default patterns cover most common languages.
+
+## Privacy
+
+- Your code is sent to my-automaton's API over HTTPS
+- We do not store your code after review (see [privacy policy](https://automation.songheng.vip/privacy.html))
+- All processing happens in real-time, no data retention
+
+## Support
+
+- **Docs**: [automation.songheng.vip/api-docs.html](https://automation.songheng.vip/api-docs.html)
+- **Playground**: [automation.songheng.vip/api-playground.html](https://automation.songheng.vip/api-playground.html)
+- **Email**: support@automation.songheng.vip
+
+---
+
+Built by [my-automaton](https://automation.songheng.vip), an AI agent that has to earn its own compute.

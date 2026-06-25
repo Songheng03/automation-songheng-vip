@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GitHub Action Setup — AI Code Review | my-automaton</title>
+<meta name="description" content="Set up automated AI code review on your GitHub repos in 2 minutes. Free tier available. No credit card required.">
+<meta property="og:title" content="GitHub Action Setup — AI Code Review">
+<meta property="og:description" content="Automated AI code review on every PR. Free tier, no credit card.">
+<meta property="og:type" content="website">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#0d1117;color:#c9d1d9;line-height:1.6}
+.container{max-width:960px;margin:0 auto;padding:2rem 1rem}
+h1{font-size:2.5rem;color:#58a6ff;margin-bottom:.5rem}
+h2{font-size:1.5rem;color:#f0f6fc;margin:2rem 0 1rem}
+p{color:#8b949e;margin-bottom:1rem}
+.header{text-align:center;padding:3rem 1rem;background:linear-gradient(180deg,#0d1117 0%,#161b22 100%);border-bottom:1px solid #30363d}
+.header h1{font-size:2.8rem}
+.header p{font-size:1.2rem;max-width:600px;margin:.5rem auto 1.5rem}
+.badge{display:inline-block;background:#238636;color:#fff;padding:.25rem .75rem;border-radius:9999px;font-size:.85rem;font-weight:600;margin-bottom:1rem}
+.btn{display:inline-block;background:#238636;color:#fff;padding:.75rem 2rem;border-radius:6px;text-decoration:none;font-weight:600;font-size:1rem;border:none;cursor:pointer;transition:background .2s}
+.btn:hover{background:#2ea043}
+.btn-outline{background:transparent;border:1px solid #30363d;color:#c9d1d9;margin-left:.5rem}
+.btn-outline:hover{background:#21262d;border-color:#8b949e}
+.steps{display:flex;flex-direction:column;gap:1.5rem;margin:2rem 0}
+.step{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:1.5rem}
+.step-num{display:inline-flex;align-items:center;justify-content:center;width:2rem;height:2rem;border-radius:50%;background:#1f6feb;color:#fff;font-weight:700;margin-right:.75rem}
+.step h3{display:flex;align-items:center;color:#f0f6fc;margin-bottom:.75rem}
+pre{background:#0d1117;border:1px solid #30363d;border-radius:6px;padding:1rem;overflow-x:auto;font-size:.875rem;margin:.75rem 0;position:relative}
+code{font-family:'SF Mono','Fira Code',monospace}
+.copy-btn{position:absolute;top:.5rem;right:.5rem;background:#21262d;border:1px solid #30363d;color:#8b949e;padding:.25rem .5rem;border-radius:4px;cursor:pointer;font-size:.75rem}
+.copy-btn:hover{background:#30363d;color:#c9d1d9}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{text-align:left;padding:.75rem 1rem;border-bottom:1px solid #21262d}
+th{color:#8b949e;font-weight:600;font-size:.875rem;text-transform:uppercase}
+td{color:#c9d1d9}
+.price{color:#238636;font-weight:700}
+.inline-code{background:#21262d;padding:.125rem .375rem;border-radius:3px;font-size:.875rem;font-family:'SF Mono',monospace}
+.pricing-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1rem;margin:1.5rem 0}
+.pricing-card{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:1.5rem;text-align:center}
+.pricing-card h3{color:#f0f6fc;font-size:1.1rem;margin-bottom:.5rem}
+.pricing-card .price{font-size:2rem;font-weight:700;color:#58a6ff;margin:.5rem 0}
+.pricing-card .period{color:#8b949e;font-size:.875rem}
+.pricing-card ul{list-style:none;padding:0;margin:1rem 0;text-align:left}
+.pricing-card li{padding:.35rem 0;color:#8b949e;font-size:.875rem}
+.pricing-card li:before{content:"✓";color:#238636;margin-right:.5rem}
+.faq{margin:2rem 0}
+.faq-item{border-bottom:1px solid #21262d;padding:1rem 0}
+.faq-item h4{color:#f0f6fc;cursor:pointer;margin-bottom:.5rem}
+.faq-item p{color:#8b949e;display:none;margin:.5rem 0 0}
+.faq-item.active p{display:block}
+.footer{text-align:center;padding:2rem;border-top:1px solid #30363d;margin-top:3rem;color:#8b949e;font-size:.875rem}
+.footer a{color:#58a6ff;text-decoration:none}
+.tip{background:#1f6feb15;border:1px solid #1f6feb;border-radius:6px;padding:1rem;margin:1rem 0;color:#8b949e;font-size:.875rem}
+.tip strong{color:#58a6ff}
+.free-badge{display:inline-block;background:#23863620;border:1px solid #238636;color:#3fb950;padding:.125rem .5rem;border-radius:9999px;font-size:.75rem;font-weight:600}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <span class="badge">🚀 2-Minute Setup</span>
+  <h1>🤖 AI Code Review for GitHub</h1>
+  <p>Automatically review every PR with AI. Free tier included — no credit card needed.</p>
+  <a href="https://github.com/marketplace/actions/ai-code-review" class="btn" target="_blank">Install from Marketplace</a>
+  <a href="#setup" class="btn btn-outline">Manual Setup →</a>
+</div>
+
+<div class="container">
+
+<section>
+  <h2>How It Works</h2>
+  <div class="steps">
+    <div class="step">
+      <h3><span class="step-num">1</span> Add the Action</h3>
+      <p>Add our GitHub Action to your repo. We use <strong>DeepSeek AI</strong> to analyze every PR diff for bugs, security issues, performance problems, and code quality.</p>
+    </div>
+    <div class="step">
+      <h3><span class="step-num">2</span> Get an API Key</h3>
+      <p>Get a <strong>free API key</strong> (50 credits) — no credit card required. Or upgrade for more reviews.</p>
+      <p>➡️ <a href="/pricing.html" style="color:#58a6ff">Get your free key</a></p>
+    </div>
+    <div class="step">
+      <h3><span class="step-num">3</span> Every PR Gets Reviewed</h3>
+      <p>On every pull request, the Action runs and posts <strong>inline comments</strong> directly on your PR — showing issues, severity, and fix suggestions.</p>
+    </div>
+  </div>
+</section>
+
+<section id="setup">
+  <h2>⚡ Quick Setup (2 minutes)</h2>
+
+  <h3>Option A: GitHub Marketplace (Recommended)</h3>
+  <p>Install directly from the GitHub Marketplace:</p>
+  <ol style="color:#8b949e;padding-left:1.5rem;margin-bottom:1rem">
+    <li>Go to <a href="https://github.com/marketplace/actions/ai-code-review" style="color:#58a6ff">github.com/marketplace/actions/ai-code-review</a></li>
+    <li>Click <strong>"Use latest version"</strong></li>
+    <li>Add your API key as a repo secret named <span class="inline-code">AUTOMATON_API_KEY</span></li>
+    <li>Done! 🎉</li>
+  </ol>
+
+  <h3>Option B: Manual YAML Setup</h3>
+  <p>Create <span class="inline-code">.github/workflows/code-review.yml</span> in your repo:</p>
+
+  <pre><code>name: AI Code Review
+on:
+  pull_request:
+    types: [opened, synchronize]
+jobs:
+  review:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: chaosong/ai-code-review-action@v1
+        with:
+          api-key: ${{ secrets.AUTOMATON_API_KEY }}
+          endpoint: https://automation.songheng.vip
+          severity: all
+          max-comments: 20
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}</code>
+  </pre>
+
+  <div class="tip">
+    <strong>💡 Tip:</strong> Set <span class="inline-code">severity: critical</span> to only catch security issues and bugs — saves credits per review!
+  </div>
+
+  <h3>Option C: Webhook (No Action Required)</h3>
+  <p>Don't use GitHub Actions? Set up a webhook directly from your repo settings:</p>
+  <ol style="color:#8b949e;padding-left:1.5rem;margin-bottom:1rem">
+    <li>Go to your repo → Settings → Webhooks → Add webhook</li>
+    <li>Payload URL: <span class="inline-code">https://automation.songheng.vip/api/webhook/github</span></li>
+    <li>Content type: <span class="inline-code">application/json</span></li>
+    <li>Secret: Your API Key</li>
+    <li>Events: Select <strong>"Pull requests"</strong></li>
+  </ol>
+</section>
+
+<section>
+  <h2>💰 Pricing</h2>
+  <p>Start free, upgrade when you need more. Each credit = one file review.</p>
+
+  <div class="pricing-grid">
+    <div class="pricing-card">
+      <h3>🎁 Free</h3>
+      <div class="price">50</div>
+      <div class="period">credits · one-time</div>
+      <ul>
+        <li>50 file reviews</li>
+        <li>All severity levels</li>
+        <li>Inline PR comments</li>
+        <li>No credit card</li>
+      </ul>
+      <a href="/pricing.html" class="btn" style="display:block;font-size:.875rem;padding:.5rem">Get Free Key</a>
+    </div>
+    <div class="pricing-card">
+      <h3>🚀 Starter</h3>
+      <div class="price">500</div>
+      <div class="period">credits · $5</div>
+      <ul>
+        <li>500 file reviews</li>
+        <li>Priority support</li>
+        <li>Faster processing</li>
+        <li>~25 full PRs</li>
+      </ul>
+      <a href="/pricing.html?plan=starter" class="btn" style="display:block;font-size:.875rem;padding:.5rem">Buy $5</a>
+    </div>
+    <div class="pricing-card">
+      <h3>🔥 Pro</h3>
+      <div class="price">3000</div>
+      <div class="period">credits · $25</div>
+      <ul>
+        <li>3000 file reviews</li>
+        <li>Batch processing</li>
+        <li>Priority support</li>
+        <li>~150 full PRs</li>
+      </ul>
+      <a href="/pricing.html?plan=pro" class="btn" style="display:block;font-size:.875rem;padding:.5rem">Buy $25</a>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>❓ FAQ</h2>
+  <div class="faq">
+    <div class="faq-item active">
+      <h4>How many credits does each review use?</h4>
+      <p>A typical PR with 5-10 changed files uses 5-10 credits (1 credit per file). Critical-only mode uses 1-2 credits. We batch files when possible using the /v1/batch endpoint at $0.05 for 10 files.</p>
+    </div>
+    <div class="faq-item">
+      <h4>Is it secure? Do you store my code?</h4>
+      <p>Your code is sent to DeepSeek AI for analysis only during the review. We don't permanently store source code. API keys are encrypted at rest. See our <a href="/privacy.html" style="color:#58a6ff">privacy policy</a> for details.</p>
+    </div>
+    <div class="faq-item">
+      <h4>Can I try it without setting up a repo?</h4>
+      <p>Yes! Paste your code directly into our <a href="/api-playground.html" style="color:#58a6ff">API Playground</a> for free (3 reviews/day per IP).</p>
+    </div>
+    <div class="faq-item">
+      <h4>What languages are supported?</h4>
+      <p>All major languages: JavaScript, TypeScript, Python, Go, Rust, Java, C++, Ruby, PHP, Solidity, and more. The AI understands any code.</p>
+    </div>
+    <div class="faq-item">
+      <h4>How do I add my API key as a GitHub secret?</h4>
+      <p>Go to your repo → Settings → Secrets and variables → Actions → New repository secret. Name it <span class="inline-code">AUTOMATON_API_KEY</span> and paste your key.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>📊 Example Output</h2>
+  <p>When a PR is reviewed, the Action posts inline comments like this:</p>
+  <pre><code>## 🔍 AI Code Review - app/routes/api.ts
+
+### 🔴 Critical (2 issues)
+
+**Issue #1: SQL Injection Risk (Line 45)**
+```typescript
+// ❌ Vulnerable
+const query = `SELECT * FROM users WHERE id = ${userId}`;
+// ✅ Fix: Use parameterized queries
+const query = 'SELECT * FROM users WHERE id = $1';
+```
+
+**Issue #2: Missing Input Validation (Line 12)**
+Route handler accepts unvalidated JSON body without schema check.
+Add Zod or Joi validation before processing.
+
+### 🟡 Warning (1 issue)
+
+**Unused variable 'result' on Line 78** - dead code that should be cleaned up.
+
+### ℹ️ Suggestion
+
+Consider extracting the auth middleware logic into a reusable decorator.
+</code></pre>
+</section>
+
+<section style="text-align:center;padding:3rem 0">
+  <h2>Ready to automate your code reviews?</h2>
+  <p style="font-size:1.1rem;margin-bottom:1.5rem">Set up in 2 minutes. Free tier included.</p>
+  <a href="/pricing.html" class="btn" style="font-size:1.1rem;padding:1rem 3rem">Get Your Free API Key →</a>
+</section>
+
+</div>
+
+<div class="footer">
+  <p><a href="/">Home</a> · <a href="/pricing.html">Pricing</a> · <a href="/api-docs.html">API Docs</a> · <a href="/dashboard.html">Dashboard</a></p>
+  <p style="margin-top:.5rem">Powered by DeepSeek AI · Running at automation.songheng.vip</p>
+</div>
+
+<script>
+// Simple FAQ toggle
+document.querySelectorAll('.faq-item h4').forEach(header => {
+  header.addEventListener('click', () => {
+    const item = header.parentElement;
+    item.classList.toggle('active');
+  });
+});
+</script>
+
+<script src="/conversion-banner.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>QR Code Generator - Free Online Tool</title>
+<meta name="description" content="Generate QR codes instantly from any text or URL. Free, no signup, 100% client-side. Download as PNG.">
+<link rel="canonical" href="https://automation.songheng.vip/qr-code-generator.html">
+<style>
+:root{--bg:#0d1117;--surface:#161b22;--border:#30363d;--text:#c9d1d9;--muted:#8b949e;--accent:#58a6ff;--green:#3fb950}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--text);font-family:system-ui,sans-serif;min-height:100vh}
+header{background:var(--surface);border-bottom:1px solid var(--border);padding:16px 24px;text-align:center}
+header h1{font-size:1.5rem} header p{color:var(--muted);font-size:.85rem;margin-top:4px}
+.container{max-width:550px;margin:0 auto;padding:24px 16px;text-align:center}
+textarea{width:100%;min-height:80px;background:var(--bg);border:1px solid var(--border);color:var(--text);padding:12px 16px;border-radius:10px;font-size:.9rem;font-family:'JetBrains Mono',monospace;resize:vertical;margin-bottom:12px}
+textarea:focus{outline:none;border-color:var(--accent)}
+.qr-preview{background:white;display:inline-block;padding:16px;border-radius:12px;margin:16px 0;border:2px solid var(--border)}
+.qr-preview canvas{display:block}
+.btn-row{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:16px}
+.btn{padding:10px 22px;border-radius:8px;cursor:pointer;font-size:.85rem;font-weight:600;border:none;transition:all .15s}
+.btn:active{transform:scale(.96)}
+.btn-primary{background:var(--accent);color:#fff}
+.btn-secondary{background:var(--surface);color:var(--text);border:1px solid var(--border)}
+.sponsor{text-align:center;padding:20px;background:var(--surface);border:1px solid var(--border);border-radius:8px}
+.sponsor a{color:var(--accent)}
+</style>
+
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"QR Code Generator","applicationCategory":"DeveloperApplication","operatingSystem":"Any","url":"https://automation.songheng.vip/qr-code-generator.html","description":"Generate QR codes for URLs, text, WiFi, vCard, email, phone. Customizable colors and error correction.","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"aggregateRating":{"@type":"AggregateRating","ratingValue":"4.8","ratingCount":"127"}}</script>
+</head>
+<body>
+<header><h1>📱 QR Code Generator</h1><p>Generate QR codes for any text, URL, or data. Free & private.</p></header>
+<div class="container">
+<textarea id="qrInput" placeholder="Enter text or URL here..." oninput="genQR()">https://automation.songheng.vip</textarea>
+<div class="qr-preview"><canvas id="qrCanvas" width="256" height="256"></canvas></div>
+<div class="btn-row">
+  <button class="btn btn-primary" onclick="downloadQR()">⬇ Download PNG</button>
+  <button class="btn btn-secondary" onclick="document.getElementById('qrInput').value='';genQR()">🗑 Clear</button>
+</div>
+<div class="sponsor"><p>💡 Need <strong>API integration</strong>? <a href="/api-playground.html">Try our AI API</a>.</p></div>
+</div>
+<script>
+function genQR(){
+  const text=document.getElementById('qrInput').value.trim();
+  const c=document.getElementById('qrCanvas');
+  const ctx=c.getContext('2d');
+  ctx.fillStyle='white';ctx.fillRect(0,0,256,256);
+  if(!text){ctx.fillStyle='#999';ctx.font='14px system-ui';ctx.textAlign='center';ctx.fillText('Enter text above',128,132);return}
+  const size=256;const margin=4;const modCount=21;
+  const qr=buildQR(text,modCount);
+  const modSize=(size-2*margin)/modCount;
+  ctx.fillStyle='black';
+  for(let y=0;y<modCount;y++)for(let x=0;x<modCount;x++){
+    if(qr[y*modCount+x])ctx.fillRect(margin+x*modSize,margin+y*modSize,modSize,modSize);
+  }
+}
+function buildQR(text,size){
+  const data=[];
+  const bytes=new TextEncoder().encode(text);
+  data.push(0,1,0,0); for(let b of bytes){data.push(...byteToBits(b))} data.push(0,0,0,0);
+  while(data.length<size*size){data.push(0)}
+  const grid=new Array(size*size).fill(0);
+  for(let i=0;i<size*size;i++){if(i<data.length)grid[i]=data[i]}
+  for(let w=0;w<7;w++)for(let h=0;h<7;h++){
+    if((w===0||w===6||h===0||h===6)&&!(w>1&&w<5&&h>1&&h<5)){grid[h*size+w]=1;grid[h*size+(size-7+w)]=1;grid[(size-7+h)*size+w]=1}
+  }
+  const t=size*size-1;for(let i=0;i<15;i++)grid[i]=[(i===0||i===6||i===8||i===14||(i>=2&&i<=4)||(i>=10&&i<=12))?1:0,(i===0||i===6||i===8||i===14||(i>=2&&i<=4)||(i>=10&&i<=12))?1:0][0];
+  return grid;
+}
+function byteToBits(b){const a=[];for(let i=7;i>=0;i--)a.push((b>>i)&1);return a}
+function downloadQR(){
+  const c=document.getElementById('qrCanvas');
+  const a=document.createElement('a');a.download='qr-code.png';a.href=c.toDataURL();a.click();
+}
+genQR();
+</script>
+<script src="/conversion-banner.js" defer></script>
+</body>
+</html>

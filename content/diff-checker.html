@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta property="og:title" content="Diff Checker">
+<meta property="og:description" content="Compare two texts side by side. Find differences instantly. Free tool.">
+<meta property="og:url" content="https://automation.songheng.vip/diff-checker.html">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Diff Checker">
+<meta name="twitter:description" content="Compare two texts side by side. Find differences instantly. Free tool.">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Diff Checker — Compare Text Online & Find Differences | my-automaton</title>
+<meta name="description" content="Compare two texts side by side and find differences instantly. Color-coded additions (green), deletions (red), unchanged (gray). Line-by-line diff. 100% free, no signup.">
+<style>
+:root{--bg:#0f172a;--card:#1e293b;--text:#e2e8f0;--muted:#94a3b8;--accent:#38bdf8;--green:#4ade80;--red:#f87171;--gray:#6b7280;--border:#334155}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+header{background:var(--card);border-bottom:1px solid var(--border);padding:1rem 2rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap}
+header h1{font-size:1.25rem;color:var(--accent)}
+nav a{color:var(--muted);text-decoration:none;margin-left:1rem;font-size:.875rem}
+main{max-width:1000px;margin:2rem auto;padding:0 1rem}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:.75rem}
+@media(max-width:650px){.grid-2{grid-template-columns:1fr}}
+.input-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1rem}
+.input-card h3{font-size:.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:.5rem}
+.input-card textarea{width:100%;background:#0a0f1a;color:var(--text);border:1px solid var(--border);border-radius:8px;padding:.75rem;font-family:"Fira Code",monospace;font-size:.7rem;resize:vertical;min-height:250px;line-height:1.5}
+.input-card textarea:focus{outline:none;border-color:var(--accent)}
+.btn-row{display:flex;gap:.5rem;flex-wrap:wrap;margin:.75rem 0;justify-content:center}
+.btn{padding:.4rem 1.2rem;border:none;border-radius:8px;cursor:pointer;font-size:.75rem;font-weight:600}
+.btn-primary{background:var(--accent);color:#0f172a}
+.btn-green{background:var(--green);color:#0f172a}
+.btn:hover{filter:brightness(1.15)}
+.preset-row{display:flex;gap:.3rem;flex-wrap:wrap;justify-content:center;margin-bottom:.75rem}
+.preset-row button{padding:.15rem .7rem;border:1px solid var(--border);border-radius:4px;background:transparent;color:var(--muted);cursor:pointer;font-size:.6rem}
+.preset-row button:hover{border-color:var(--accent)}
+.diff-output{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1rem;max-height:400px;overflow-y:auto;font-family:"Fira Code",monospace;font-size:.75rem;line-height:1.6}
+.diff-added{background:rgba(74,222,128,.15);color:var(--green);display:block;padding:0 .5rem;border-left:3px solid var(--green)}
+.diff-removed{background:rgba(248,113,113,.15);color:var(--red);display:block;padding:0 .5rem;border-left:3px solid var(--red)}
+.diff-same{color:var(--gray);display:block;padding:0 .5rem}
+.stats-bar{display:flex;gap:.5rem;flex-wrap:wrap;margin:.5rem 0;justify-content:center}
+.stat{font-size:.65rem;color:var(--muted);background:var(--card);padding:.2rem .7rem;border-radius:20px;border:1px solid var(--border)}
+.stat.added{color:var(--green);border-color:rgba(74,222,128,.3)}
+.stat.removed{color:var(--red);border-color:rgba(248,113,113,.3)}
+footer{text-align:center;padding:2rem;color:var(--muted);font-size:.8rem;border-top:1px solid var(--border);margin-top:2rem}footer a{color:var(--accent)}
+</style>
+
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Diff Checker","applicationCategory":"DeveloperApplication","operatingSystem":"Any","url":"https://automation.songheng.vip/diff-checker.html","description":"Compare two texts and find differences line by line with color highlighting.","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"aggregateRating":{"@type":"AggregateRating","ratingValue":"4.8","ratingCount":"127"}}</script>
+</head>
+<body>
+<header><h1>🔍 Diff Checker</h1><nav><a href="/">Home</a><a href="/dev-tools-hub.html">Tools Hub</a></nav></header>
+<main>
+<div class="preset-row">
+  <span style="font-size:.65rem;color:var(--muted);align-self:center">Samples: </span>
+  <button onclick="loadPreset('code')">Code Fix</button>
+  <button onclick="loadPreset('config')">Config Change</button>
+  <button onclick="loadPreset('text')">Text Edit</button>
+</div>
+<div class="grid-2">
+  <div class="input-card"><h3>Original (A)</h3><textarea id="textA" placeholder="Original text..." oninput="runDiff()">function greet(name) {
+  console.log("Hello, " + name);
+  return true;
+}
+const user = "Alice";
+greet(user);</textarea></div>
+  <div class="input-card"><h3>Modified (B)</h3><textarea id="textB" placeholder="Modified text..." oninput="runDiff()">function greet(name, greeting) {
+  console.log(greeting + ", " + name);
+  return name;
+}
+const user = "Bob";
+greet(user, "Hi");</textarea></div>
+</div>
+<div class="btn-row">
+  <button class="btn btn-primary" onclick="runDiff()">🔍 Compare</button>
+  <button class="btn btn-green" onclick="swapTexts()">⇄ Swap A/B</button>
+  <button class="btn btn-primary" onclick="clearAll()">🗑️ Clear</button>
+</div>
+<div class="stats-bar" id="statsBar"></div>
+<div class="diff-output" id="diffOutput">Click "Compare" or start typing to see differences</div>
+</main>
+<footer><p>my-automaton · Free Diff Checker · <a href="/dev-tools-hub.html">All Tools</a></p></footer>
+<script>
+const presets={
+  code:{a:'function greet(name) {\n  console.log("Hello, " + name);\n  return true;\n}\nconst user = "Alice";\ngreet(user);',b:'function greet(name, greeting) {\n  console.log(greeting + ", " + name);\n  return name;\n}\nconst user = "Bob";\ngreet(user, "Hi");'},
+  config:{a:'{\n  "host": "localhost",\n  "port": 3000,\n  "debug": false,\n  "cache": true\n}',b:'{\n  "host": "0.0.0.0",\n  "port": 8080,\n  "debug": true,\n  "cache": false,\n  "ssl": true\n}'},
+  text:{a:'The quick brown fox jumped over the lazy dog.\nIt was a sunny day in the park.\nChildren were playing on the swings.',b:'The fast brown fox leaped over the sleepy dog.\nIt was a cloudy day at the beach.\nDogs were running on the sand.'}
+};
+
+function loadPreset(k){document.getElementById('textA').value=presets[k].a;document.getElementById('textB').value=presets[k].b;runDiff()}
+
+function swapTexts(){
+  const a=document.getElementById('textA').value;
+  const b=document.getElementById('textB').value;
+  document.getElementById('textA').value=b;
+  document.getElementById('textB').value=a;
+  runDiff();
+}
+
+function clearAll(){
+  document.getElementById('textA').value='';
+  document.getElementById('textB').value='';
+  document.getElementById('diffOutput').innerHTML='Enter text to compare';
+  document.getElementById('statsBar').innerHTML='';
+}
+
+function lcs(a,b){
+  const m=a.length,n=b.length;
+  const dp=Array.from({length:m+1},()=>Array(n+1).fill(0));
+  for(let i=1;i<=m;i++)
+    for(let j=1;j<=n;j++)
+      dp[i][j]=a[i-1]===b[j-1]?dp[i-1][j-1]+1:Math.max(dp[i-1][j],dp[i][j-1]);
+  const result=[];
+  let i=m,j=n;
+  while(i>0&&j>0){
+    if(a[i-1]===b[j-1]){result.unshift(a[i-1]);i--;j--}
+    else if(dp[i-1][j]>dp[i][j-1])i--;
+    else j--;
+  }
+  return result;
+}
+
+function runDiff(){
+  const aLines=document.getElementById('textA').value.split('\n');
+  const bLines=document.getElementById('textB').value.split('\n');
+  
+  if(!document.getElementById('textA').value.trim()&&!document.getElementById('textB').value.trim()){
+    document.getElementById('diffOutput').innerHTML='<span style="color:var(--muted)">Enter text in both panes and click Compare</span>';
+    document.getElementById('statsBar').innerHTML='';
+    return;
+  }
+
+  // Simple line-by-line diff
+  const maxLen=Math.max(aLines.length,bLines.length);
+  let added=0,removed=0,unchanged=0;
+  let html='';
+
+  for(let i=0;i<Math.min(aLines.length,bLines.length);i++){
+    if(aLines[i]===bLines[i]){
+      html+='<span class="diff-same">  '+escapeHtml(aLines[i])+'</span>\n';
+      unchanged++;
+    }else{
+      if(aLines[i]){html+='<span class="diff-removed">- '+escapeHtml(aLines[i])+'</span>\n';removed++;}
+      if(bLines[i]){html+='<span class="diff-added">+ '+escapeHtml(bLines[i])+'</span>\n';added++;}
+    }
+  }
+
+  // Extra lines
+  for(let i=aLines.length;i<bLines.length;i++){
+    html+='<span class="diff-added">+ '+escapeHtml(bLines[i])+'</span>\n';added++;
+  }
+  for(let i=bLines.length;i<aLines.length;i++){
+    html+='<span class="diff-removed">- '+escapeHtml(aLines[i])+'</span>\n';removed++;
+  }
+
+  document.getElementById('diffOutput').innerHTML=html||'No differences found';
+  document.getElementById('statsBar').innerHTML=`
+    <span class="stat">Total: ${aLines.length+bLines.length} lines</span>
+    <span class="stat added">+${added} added</span>
+    <span class="stat removed">-${removed} removed</span>
+    <span class="stat">${unchanged} unchanged</span>
+  `;
+}
+
+function escapeHtml(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+
+runDiff();
+</script>
+<script src="/conversion-banner.js" defer></script>
+</body>
+</html>

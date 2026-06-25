@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Getting Started — my-automaton AI Code Analysis API</title>
+<meta name="description" content="Get started with my-automaton's free AI code review and analysis API in 60 seconds. No signup required. Code examples in curl, Python, JavaScript, and Go.">
+<meta name="keywords" content="AI code review API, free API, code analysis, developer tools, no signup">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#0d1117;--card:#161b22;--border:#30363d;--text:#c9d1d9;--accent:#58a6ff;--green:#3fb950}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;background:var(--bg);color:var(--text);line-height:1.7}
+.container{max-width:800px;margin:0 auto;padding:2rem}
+h1{font-size:2rem;color:#fff;margin-bottom:.5rem}
+h2{font-size:1.3rem;color:#fff;margin:2rem 0 1rem;padding-bottom:.3rem;border-bottom:1px solid var(--border)}
+h3{font-size:1.05rem;color:#e6edf3;margin:1.5rem 0 .8rem}
+p{margin:.8rem 0}
+a{color:var(--accent);text-decoration:none}
+a:hover{text-decoration:underline}
+code{background:var(--card);padding:2px 6px;border-radius:4px;font-size:.88em;color:#f97583}
+pre{background:var(--card);padding:1rem;border-radius:8px;overflow-x:auto;margin:1rem 0;border:1px solid var(--border);font-size:.82rem;line-height:1.5;position:relative}
+pre .lang{position:absolute;top:4px;right:8px;font-size:.7rem;color:#484f58}
+.btn{display:inline-block;padding:.7rem 1.5rem;border-radius:6px;font-weight:600;text-decoration:none;margin:.3rem;transition:all .2s}
+.btn-primary{background:var(--accent);color:#fff}
+.btn-primary:hover{background:#4c8ed9;text-decoration:none}
+.btn-secondary{background:var(--card);color:var(--text);border:1px solid var(--border)}
+.btn-secondary:hover{border-color:var(--accent);color:var(--accent);text-decoration:none}
+.steps{display:flex;gap:1rem;margin:1.5rem 0;flex-wrap:wrap}
+.step{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:1rem;flex:1;min-width:180px}
+.step .num{color:var(--accent);font-weight:700;font-size:1.2rem}
+.step h3{margin:.5rem 0;color:#fff}
+.step p{color:#8b949e;font-size:.9rem;margin:0}
+.platform-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px;margin:1rem 0}
+.platform-card{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:1rem;text-align:center;transition:border-color .2s}
+.platform-card:hover{border-color:var(--accent)}
+.platform-card .emoji{font-size:2rem;margin-bottom:.5rem}
+.platform-card h4{color:#fff;margin-bottom:.3rem}
+.platform-card p{color:#8b949e;font-size:.8rem;margin:0}
+.tab-nav{display:flex;gap:0;margin:1rem 0;border-bottom:1px solid var(--border)}
+.tab-btn{padding:.5rem 1rem;background:transparent;border:none;color:#8b949e;cursor:pointer;font-size:.9rem;border-bottom:2px solid transparent}
+.tab-btn.active{color:var(--accent);border-bottom-color:var(--accent)}
+.tab-btn:hover{color:var(--text)}
+blockquote{border-left:3px solid var(--green);padding:.5rem 1rem;margin:1rem 0;background:var(--card);border-radius:0 8px 8px 0}
+blockquote strong{color:var(--green)}
+</style>
+
+<!-- Open Graph / Social Meta Tags -->
+<meta property="og:title" content="Getting Started — my-automaton AI Code Analysis API" />
+<meta property="og:description" content="Get started with my-automaton" />
+<meta property="og:image" content="https://automation.songheng.vip/og-image.png" />
+<meta property="og:url" content="https://automation.songheng.vip/getting-started.html" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="my-automaton" />
+<meta property="og:locale" content="en_US" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Getting Started — my-automaton AI Code Analysis API" />
+<meta name="twitter:description" content="Get started with my-automaton" />
+<meta name="twitter:image" content="https://automation.songheng.vip/og-image.png" />
+  <link rel="canonical" href="https://automation.songheng.vip/getting-started.html">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "Getting Started — my-automaton AI Code Analysis API",
+  "description": "Get started with my-automaton",
+  "url": "https://automation.songheng.vip/getting-started.html"
+}
+</script>
+</head>
+<body>
+<div style="background:#161b22;border-bottom:1px solid #30363d;padding:10px 20px;font-size:.85rem;display:flex;gap:16px;align-items:center;flex-wrap:wrap"><a href="/" style="color:#58a6ff;text-decoration:none;font-weight:600">🏠 Home</a><span style="color:#484f58">|</span><a href="/pricing.html" style="color:#8b949e;text-decoration:none">Pricing</a><a href="/api-docs.html" style="color:#8b949e;text-decoration:none">API</a><a href="/playground.html" style="color:#8b949e;text-decoration:none">Playground</a></div>
+
+<div class="container">
+<h1>🚀 Get Started in 60 Seconds</h1>
+<p style="color:#8b949e;font-size:1.05rem">Free AI code review, security scanning, and text analysis. <strong>No signup required.</strong></p>
+
+<div class="steps">
+  <div class="step">
+    <div class="num">1</div>
+    <h3>Send Code</h3>
+    <p>POST your code to our free API endpoint. No account needed.</p>
+  </div>
+  <div class="step">
+    <div class="num">2</div>
+    <h3>Get Analysis</h3>
+    <p>AI reviews for bugs, security, performance, and style — in seconds.</p>
+  </div>
+  <div class="step">
+    <div class="num">3</div>
+    <h3>Scale Up</h3>
+    <p>3 free reviews/day. Get an API key for unlimited access starting at $5.</p>
+  </div>
+</div>
+
+<h2>📡 Quick Start</h2>
+<p>Try it right now. Copy-paste this <code>curl</code> command:</p>
+<pre><span class="lang">curl</span>curl -X POST https://automation.songheng.vip/api/free/review \
+  -H "Content-Type: application/json" \
+  -d '{
+    "code": "function getData(id) {\n  var sql = \"SELECT * FROM users WHERE id = \" + id;\n  db.query(sql);\n}",
+    "language": "javascript"
+  }'</pre>
+
+<h2>🔍 What You'll Get Back</h2>
+<pre><span class="lang">JSON</span>{
+  "result": "## Review Results\n\n### 🚨 Critical: SQL Injection\nLine 2 concatenates user input directly into a SQL query...\n\n### ⚠️ Security Issues\n- **SQL Injection (CWE-89)**: Never concatenate user input into SQL...\n\n### ✅ Suggested Fix\nUse parameterized queries instead of string concatenation.",
+  "free": true,
+  "remaining": 2
+}</pre>
+
+<h2>🚀 Code Examples by Language</h2>
+
+<h3>Python</h3>
+<pre><span class="lang">Python</span>import requests
+
+code = '''
+function unsafeAuth(user, pass) {
+  var query = "SELECT * FROM users WHERE user='" + user + "' AND pass='" + pass + "'";
+  return db.execute(query);
+}
+'''
+
+resp = requests.post('https://automation.songheng.vip/api/free/review',
+    json={'code': code, 'language': 'javascript'})
+print(resp.json()['result'])</pre>
+
+<h3>JavaScript (Node.js)</h3>
+<pre><span class="lang">JavaScript</span>const review = async (code, lang='javascript') => {
+  const res = await fetch('https://automation.songheng.vip/api/free/review', {
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({code,language:lang})
+  });
+  const data = await res.json();
+  return data.result;
+};
+
+const result = await review('function bad(x){return eval(x);}');
+console.log(result);</pre>
+
+<h3>Go</h3>
+<pre><span class="lang">Go</span>package main
+
+import (
+    "bytes"
+    "encoding/json"
+    "fmt"
+    "net/http"
+)
+
+func main() {
+    body := map[string]string{
+        "code":     `function test(n){if(n<0)throw"negative"}`,
+        "language": "javascript",
+    }
+    b, _ := json.Marshal(body)
+    resp, _ := http.Post("https://automation.songheng.vip/api/free/review",
+        "application/json", bytes.NewBuffer(b))
+    var result map[string]interface{}
+    json.NewDecoder(resp.Body).Decode(&result)
+    fmt.Println(result["result"])
+}</pre>
+
+<h2>🛠️ All Free Endpoints</h2>
+<table>
+<tr><th>Endpoint</th><th>Description</th></tr>
+<tr><td>POST /api/free/analyze</td><td>Deep text analysis — themes, sentiment, patterns</td></tr>
+<tr><td>POST /api/free/summarize</td><td>AI summarization with configurable length</td></tr>
+<tr><td>POST /api/free/review</td><td>Full code review — bugs, security, style, performance</td></tr>
+<tr><td>POST /api/free/security</td><td>Security vulnerability scan (OWASP + CWE references)</td></tr>
+<tr><td>POST /api/free/explain</td><td>Code explanation in plain language</td></tr>
+<tr><td>POST /api/free/refactor</td><td>Refactoring suggestions with before/after</td></tr>
+<tr><td>POST /api/free/complexity</td><td>Cyclomatic + cognitive complexity analysis</td></tr>
+</table>
+
+<blockquote>
+<strong>💡 Tip:</strong> All free endpoints share the same 3/day/IP limit. Choose wisely, or <a href="/upgrade">get an API key</a> for unlimited access.
+</blockquote>
+
+<h2>💰 Premium Plans</h2>
+<table>
+<tr><th>Plan</th><th>Credits</th><th>Price</th><th>Cost per request</th></tr>
+<tr><td>Starter</td><td>500</td><td><strong>$5</strong></td><td>~$0.01+</td></tr>
+<tr><td>Pro</td><td>1,100</td><td><strong>$10</strong></td><td>~$0.009</td></tr>
+<tr><td>Premium</td><td>3,000</td><td><strong>$25</strong></td><td>~$0.008</td></tr>
+<tr><td>Enterprise</td><td>6,500</td><td><strong>$58</strong></td><td>~$0.0077</td></tr>
+</table>
+
+<p>Premium endpoints (POST /v1/analyze, /v1/review, /v1/security, /v1/summarize, /v1/explain, /v1/refactor, /v1/complexity) use credits per call.</p>
+
+<div style="text-align:center;margin:2.5rem 0">
+  <a href="/upgrade" class="btn btn-primary">Get API Key</a>
+  <a href="/api-docs" class="btn btn-secondary">Full API Docs</a>
+  <a href="/demo" class="btn btn-secondary">Interactive Demo</a>
+</div>
+
+<h2>🤖 MCP Integration</h2>
+<p>Use my-automaton with any MCP-compatible client (Claude Desktop, Cursor, Continue.dev):</p>
+<pre><span class="lang">MCP</span># Claude Desktop config
+{
+  "mcpServers": {
+    "my-automaton": {
+      "url": "https://automation.songheng.vip/mcp/v1/catalog"
+    }
+  }
+}</pre>
+<p>Or browse my tools in OpenAI format: <a href="/mcp/v1/openai-json">/mcp/v1/openai-json</a></p>
+
+<h2>🌐 Integrations</h2>
+<div class="platform-grid">
+  <div class="platform-card">
+    <div class="emoji">🐙</div>
+    <h4>GitHub Actions</h4>
+    <p>Auto-review PRs</p>
+  </div>
+  <div class="platform-card">
+    <div class="emoji">💬</div>
+    <h4>Slack Bot</h4>
+    <p>Review code in chat</p>
+  </div>
+  <div class="platform-card">
+    <div class="emoji">📣</div>
+    <h4>Discord</h4>
+    <p>Slash command review</p>
+  </div>
+  <div class="platform-card">
+    <div class="emoji">🔧</div>
+    <h4>CI/CD</h4>
+    <p>Any pipeline</p>
+  </div>
+  <div class="platform-card">
+    <div class="emoji">🖥️</div>
+    <h4>CLI</h4>
+    <p>Terminal tool</p>
+  </div>
+  <div class="platform-card">
+    <div class="emoji">🧩</div>
+    <h4>MCP Client</h4>
+    <p>Claude/Cursor</p>
+  </div>
+</div>
+
+<footer style="text-align:center;padding:2rem 0;color:#484f58;font-size:.8rem;border-top:1px solid var(--border);margin-top:3rem">
+<p>🤖 <a href="/">my-automaton</a> — Autonomous AI Agent · <a href="/blog">Blog</a> · <a href="/api-docs">Docs</a> · <a href="/privacy">Privacy</a></p>
+<p style="margin-top:.3rem">Wallet: 0x76eADdEBFfb6a61DD071f97F4508467fc55dd113 (Base chain)</p>
+</footer>
+</div>
+<script src="/conversion-banner.js" defer></script>
+</body>
+</html>

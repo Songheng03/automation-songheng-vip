@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Uptime Monitor — my-automaton</title>
+<meta name="description" content="Free website uptime monitoring tool. Check any URL's status, response time, and availability.">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0a0a0f;--card:#12121a;--border:#1e1e2e;--text:#c8c8d4;--text2:#888;--accent:#6c5ce7;--green:#2ecc71;--red:#e74c3c;--yellow:#f39c12;--orange:#e67e22}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex;flex-direction:column;align-items:center}
+.container{width:100%;max-width:800px;padding:20px;margin:0 auto}
+header{text-align:center;padding:40px 0 30px}
+header h1{font-size:2rem;font-weight:800;background:linear-gradient(135deg,#6c5ce7,#a29bfe);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+header p{color:var(--text2);margin-top:8px;font-size:0.9rem}
+.input-area{display:flex;gap:8px;margin-bottom:16px}
+.input-area input{flex:1;padding:12px 16px;background:var(--card);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:0.95rem;outline:none;transition:border-color .2s}
+.input-area input:focus{border-color:var(--accent)}
+.input-area input::placeholder{color:var(--text2)}
+button{padding:12px 24px;background:var(--accent);color:#fff;border:none;border-radius:8px;font-weight:600;font-size:0.95rem;cursor:pointer;transition:opacity .2s;white-space:nowrap}
+button:hover{opacity:.85}
+button:disabled{opacity:.4;cursor:not-allowed}
+.btn-outline{background:transparent;border:1px solid var(--border);color:var(--text)}
+.btn-outline:hover{border-color:var(--accent);color:var(--accent)}
+.presets{margin-bottom:16px;display:flex;gap:6px;flex-wrap:wrap}
+.preset-chip{padding:6px 12px;background:var(--card);border:1px solid var(--border);border-radius:20px;font-size:0.8rem;color:var(--text2);cursor:pointer;transition:all .2s}
+.preset-chip:hover{border-color:var(--accent);color:var(--accent)}
+.preset-chip.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+.result-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:20px;margin-top:12px}
+.result-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.result-status{display:flex;align-items:center;gap:10px}
+.result-status .dot{width:12px;height:12px;border-radius:50%}
+.dot.up{background:var(--green);box-shadow:0 0 8px var(--green)}
+.dot.down{background:var(--red);box-shadow:0 0 8px var(--red)}
+.dot.degraded{background:var(--yellow);box-shadow:0 0 8px var(--yellow)}
+.dot.redirect{background:var(--orange);box-shadow:0 0 8px var(--orange)}
+.dot.timeout{background:var(--text2)}
+.result-label{font-weight:600;font-size:1.1rem}
+.result-meta{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px;font-size:0.85rem}
+.result-meta div{background:var(--bg);padding:10px 14px;border-radius:8px}
+.result-meta .label{color:var(--text2);font-size:0.75rem;text-transform:uppercase;letter-spacing:.5px}
+.result-meta .value{color:var(--text);font-size:1rem;font-weight:500;margin-top:2px}
+.result-url{word-break:break-all;color:var(--accent)}
+.history{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:20px;margin-top:20px}
+.history h3{font-size:0.85rem;color:var(--text2);text-transform:uppercase;letter-spacing:.5px;margin-bottom:12px}
+.history-list{list-style:none}
+.history-list li{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border);font-size:0.85rem}
+.history-list li:last-child{border-bottom:none}
+.history-list .h-status{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.history-list .h-url{color:var(--text);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.history-list .h-ms{color:var(--text2);min-width:50px;text-align:right}
+.history-list .h-time{color:var(--text2);font-size:0.75rem;min-width:65px;text-align:right}
+.empty-state{text-align:center;padding:40px 20px;color:var(--text2)}
+.empty-state .icon{font-size:3rem;margin-bottom:12px}
+.empty-state h3{font-size:1.2rem;color:var(--text);margin-bottom:6px}
+.options{margin-bottom:16px;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.options label{display:flex;align-items:center;gap:6px;font-size:0.85rem;color:var(--text2);cursor:pointer}
+.options input[type="number"]{width:70px;padding:6px 10px;background:var(--card);border:1px solid var(--border);border-radius:6px;color:var(--text);font-size:0.85rem;outline:none}
+footer{text-align:center;padding:30px 20px;color:var(--text2);font-size:0.8rem;border-top:1px solid var(--border);margin-top:40px;width:100%}
+footer a{color:var(--accent);text-decoration:none}
+.loading{display:inline-block;width:18px;height:18px;border:2px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin .6s linear infinite;vertical-align:middle;margin-right:6px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--card);border:1px solid var(--border);padding:10px 20px;border-radius:8px;font-size:0.85rem;opacity:0;transition:opacity .3s;z-index:100}
+.toast.show{opacity:1}
+@media(max-width:600px){.input-area{flex-direction:column}.result-meta{grid-template-columns:1fr}.presets{gap:4px}.preset-chip{font-size:0.75rem;padding:4px 10px}}
+</style>
+
+<!-- Open Graph / Social Meta Tags -->
+<meta property="og:title" content="Uptime Monitor — my-automaton" />
+<meta property="og:description" content="Free website uptime monitoring tool. Check any URL" />
+<meta property="og:image" content="https://automation.songheng.vip/og-image.png" />
+<meta property="og:url" content="https://automation.songheng.vip/uptime-monitor.html" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="my-automaton" />
+<meta property="og:locale" content="en_US" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Uptime Monitor — my-automaton" />
+<meta name="twitter:description" content="Free website uptime monitoring tool. Check any URL" />
+<meta name="twitter:image" content="https://automation.songheng.vip/og-image.png" />
+  <link rel="canonical" href="https://automation.songheng.vip/uptime-monitor.html">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "Uptime Monitor — my-automaton",
+  "description": "Free website uptime monitoring tool. Check any URL",
+  "url": "https://automation.songheng.vip/uptime-monitor.html"
+}
+</script>
+</head>
+<body>
+<div style="background:#161b22;border-bottom:1px solid #30363d;padding:10px 20px;font-size:.85rem;display:flex;gap:16px;align-items:center;flex-wrap:wrap"><a href="/" style="color:#58a6ff;text-decoration:none;font-weight:600">🏠 Home</a><span style="color:#484f58">|</span><a href="/pricing.html" style="color:#8b949e;text-decoration:none">Pricing</a><a href="/api-docs.html" style="color:#8b949e;text-decoration:none">API</a><a href="/playground.html" style="color:#8b949e;text-decoration:none">Playground</a></div>
+
+<div class="container">
+<header>
+<h1>🔍 Uptime Monitor</h1>
+<p>Check any URL's status, response time, and availability. Free.</p>
+</header>
+
+<div class="presets" id="presets">
+  <span class="preset-chip active" data-url="https://google.com">Google</span>
+  <span class="preset-chip" data-url="https://github.com">GitHub</span>
+  <span class="preset-chip" data-url="https://stackoverflow.com">StackOverflow</span>
+  <span class="preset-chip" data-url="https://npmjs.com">npm</span>
+  <span class="preset-chip" data-url="https://news.ycombinator.com">HN</span>
+  <span class="preset-chip" data-url="https://automation.songheng.vip">My API</span>
+</div>
+
+<div class="input-area">
+  <input type="text" id="urlInput" placeholder="https://example.com" value="https://google.com">
+  <button onclick="checkURL()">Check ✓</button>
+</div>
+
+<div class="options">
+  <label><input type="number" id="timeout" value="10" min="1" max="30"> timeout (s)</label>
+  <button class="btn-outline" onclick="addToWatchlist()">+ Watchlist</button>
+  <button class="btn-outline" onclick="clearHistory()">Clear History</button>
+</div>
+
+<div id="result"></div>
+<div id="history" class="history" style="display:none">
+  <h3>📋 Recent Checks</h3>
+  <ul class="history-list" id="historyList"></ul>
+</div>
+
+<div class="empty-state" id="emptyState">
+  <div class="icon">🚀</div>
+  <h3>Ready to Check</h3>
+  <p>Enter a URL above or click a preset to get started.</p>
+</div>
+</div>
+
+<footer>
+  Powered by <a href="https://automation.songheng.vip">my-automaton</a> · 
+  <a href="https://automation.songheng.vip/api-docs.html">API Docs</a> · 
+  Free uptime checks via <code>/api/uptime/check</code>
+</footer>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const MAX_HISTORY = 50;
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+function getHistory() {
+  try { return JSON.parse(localStorage.getItem('uptimeHistory') || '[]'); } catch { return []; }
+}
+
+function addHistory(entry) {
+  const h = getHistory();
+  h.unshift({ ...entry, timestamp: new Date().toISOString() });
+  if (h.length > MAX_HISTORY) h.length = MAX_HISTORY;
+  localStorage.setItem('uptimeHistory', JSON.stringify(h));
+  renderHistory();
+}
+
+function renderHistory() {
+  const h = getHistory();
+  const el = document.getElementById('history');
+  const list = document.getElementById('historyList');
+  const empty = document.getElementById('emptyState');
+  
+  if (h.length === 0) {
+    el.style.display = 'none';
+    empty.style.display = 'block';
+    return;
+  }
+  el.style.display = 'block';
+  empty.style.display = 'none';
+  
+  list.innerHTML = h.map(e => {
+    const dotClass = e.status === 'up' ? 'up' : e.status === 'down' || e.status === 'timeout' ? 'down' : 'degraded';
+    const ms = e.ms != null ? (e.ms < 1000 ? `${e.ms}ms` : `${(e.ms/1000).toFixed(1)}s`) : '-';
+    const time = new Date(e.timestamp).toLocaleTimeString();
+    return `<li><span class="h-status ${dotClass}"></span><span class="h-url">${e.url}</span><span class="h-ms">${ms}</span><span class="h-time">${time}</span></li>`;
+  }).join('');
+}
+
+async function checkURL(url) {
+  const input = document.getElementById('urlInput');
+  const targetUrl = url || input.value.trim();
+  if (!targetUrl) { showToast('Enter a URL'); return; }
+  
+  // Normalize
+  let normalized = targetUrl;
+  if (!normalized.startsWith('http://') && !normalized.startsWith('https://')) {
+    normalized = 'https://' + normalized;
+  }
+  input.value = normalized;
+
+  const resultEl = document.getElementById('result');
+  resultEl.innerHTML = '<div class="result-card"><div class="loading"></div> Checking...</div>';
+  
+  const timeout = parseInt(document.getElementById('timeout').value) * 1000;
+
+  try {
+    // Use direct fetch from browser fallback to API
+    const start = Date.now();
+    let data;
+    
+    // Try the local API first (if same origin)
+    try {
+      const resp = await fetch('/api/uptime/check', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ url: normalized, timeout })
+      });
+      if (resp.ok) {
+        data = await resp.json();
+      } else {
+        throw new Error('API unavailable');
+      }
+    } catch {
+      // Fallback: client-side check via fetch
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), timeout);
+      try {
+        const resp = await fetch(normalized, { mode: 'no-cors', signal: controller.signal });
+        clearTimeout(timeoutId);
+        data = { url: normalized, status: resp.type === 'opaque' ? 'up' : 'unknown', ms: Date.now() - start };
+      } catch (e) {
+        clearTimeout(timeoutId);
+        data = { url: normalized, status: 'down', error: e.message, ms: Date.now() - start };
+      }
+    }
+
+    addHistory(data);
+
+    const dotClass = data.status === 'up' ? 'up' : data.status === 'degraded' ? 'degraded' : data.status === 'redirect' ? 'redirect' : data.status === 'down' || data.status === 'timeout' ? 'down' : 'timeout';
+    const label = data.label || (data.status === 'up' ? 'Online' : data.status === 'down' ? 'Offline' : data.status === 'degraded' ? 'Degraded' : data.status === 'redirect' ? 'Redirect' : data.status === 'timeout' ? 'Timeout' : 'Unknown');
+    const ms = data.responseTimeMs != null ? data.responseTimeMs : data.ms;
+    const msDisplay = ms != null ? (ms < 1000 ? `${Math.round(ms)}ms` : `${(ms/1000).toFixed(1)}s`) : '-';
+    const errorDisplay = data.error ? `<div class="result-meta"><div><div class="label">Error</div><div class="value" style="color:var(--red)">${data.error}</div></div></div>` : '';
+
+    resultEl.innerHTML = `
+      <div class="result-card">
+        <div class="result-header">
+          <div class="result-status">
+            <span class="dot ${dotClass}"></span>
+            <span class="result-label">${label}</span>
+          </div>
+          <span style="font-size:0.8rem;color:var(--text2)">${new Date().toLocaleTimeString()}</span>
+        </div>
+        <div class="result-url">${data.url || normalized}</div>
+        <div class="result-meta">
+          <div><div class="label">Response Time</div><div class="value">${msDisplay}</div></div>
+          ${data.code ? `<div><div class="label">HTTP Status</div><div class="value">${data.code}</div></div>` : ''}
+          <div><div class="label">Status</div><div class="value" style="text-transform:capitalize">${data.status}</div></div>
+          <div><div class="label">Checked At</div><div class="value" style="font-size:0.85rem">${new Date().toISOString()}</div></div>
+        </div>
+        ${errorDisplay}
+      </div>
+    `;
+  } catch (err) {
+    resultEl.innerHTML = `<div class="result-card"><div style="color:var(--red)">❌ ${err.message}</div></div>`;
+  }
+}
+
+function addToWatchlist() {
+  const url = document.getElementById('urlInput').value.trim();
+  if (!url) return showToast('Enter a URL first');
+  const watchlist = JSON.parse(localStorage.getItem('uptimeWatchlist') || '[]');
+  if (watchlist.includes(url)) return showToast('Already in watchlist');
+  watchlist.push(url);
+  localStorage.setItem('uptimeWatchlist', JSON.stringify(watchlist));
+  showToast(`Added ${url} to watchlist`);
+  renderWatchlist();
+}
+
+function renderWatchlist() {
+  // Optional future feature
+}
+
+function clearHistory() {
+  localStorage.removeItem('uptimeHistory');
+  renderHistory();
+  showToast('History cleared');
+}
+
+// Presets
+document.querySelectorAll('.preset-chip').forEach(chip => {
+  chip.addEventListener('click', () => {
+    document.querySelectorAll('.preset-chip').forEach(c => c.classList.remove('active'));
+    chip.classList.add('active');
+    document.getElementById('urlInput').value = chip.dataset.url;
+    checkURL(chip.dataset.url);
+  });
+});
+
+// Enter key
+document.getElementById('urlInput').addEventListener('keydown', e => {
+  if (e.key === 'Enter') checkURL();
+});
+
+// Init
+renderHistory();
+if (getHistory().length === 0) {
+  // Auto-check Google on load
+  setTimeout(() => checkURL('https://google.com'), 300);
+}
+</script>
+<script src="/conversion-banner.js" defer></script>
+</body>
+</html>

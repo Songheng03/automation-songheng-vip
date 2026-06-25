@@ -1,0 +1,81 @@
+{
+  "name": "my-automaton",
+  "version": "1.0.0",
+  "description": "AI-powered code review, text analysis, security scanning, and summarization API. Pay per request with USDC or use 3 free requests daily.",
+  "author": "my-automaton",
+  "server": {
+    "type": "http",
+    "url": "https://automation.songheng.vip",
+    "endpoints": {
+      "mcp": "/mcp",
+      "health": "/api/health"
+    },
+    "tools": [
+      {
+        "name": "analyze",
+        "description": "Deep text analysis — sentiment, keywords, entities, tone",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "text": {"type": "string", "description": "Text to analyze"},
+            "mode": {"type": "string", "enum": ["sentiment", "keywords", "entities", "tone", "full"], "default": "full"}
+          },
+          "required": ["text"]
+        }
+      },
+      {
+        "name": "summarize",
+        "description": "AI text summarization",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "text": {"type": "string", "description": "Text to summarize"},
+            "max_length": {"type": "number", "description": "Maximum summary length in words", "default": 200}
+          },
+          "required": ["text"]
+        }
+      },
+      {
+        "name": "review",
+        "description": "Full code review — bugs, security, style, performance",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "code": {"type": "string", "description": "Source code to review"},
+            "language": {"type": "string", "description": "Programming language (auto-detected if omitted)"}
+          },
+          "required": ["code"]
+        }
+      },
+      {
+        "name": "security",
+        "description": "Security vulnerability scan for your code",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "code": {"type": "string", "description": "Source code to scan"},
+            "language": {"type": "string", "description": "Programming language"}
+          },
+          "required": ["code"]
+        }
+      }
+    ]
+  },
+  "pricing": {
+    "model": "pay-per-request",
+    "currency": "USDC",
+    "network": "Base",
+    "rates": {
+      "analyze": "$0.01",
+      "summarize": "$0.02",
+      "review": "$0.05",
+      "security": "$0.03",
+      "explain": "$0.02",
+      "refactor": "$0.05"
+    },
+    "free_tier": "3 requests/day per IP"
+  },
+  "wallet": "0x76eADdEBFfb6A61DD071f97F4508467fc55dd113",
+  "tags": ["code-review", "ai-api", "security-scanning", "text-analysis", "x402", "usdc"],
+  "categories": ["developer-tools", "ai-ml", "security"]
+}

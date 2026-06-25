@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>API Portal - my-automaton</title>
+<meta name="description" content="Use your API credits directly from the browser. Paste your key and access all 7 AI services.">
+<meta property="og:title" content="API Portal - my-automaton">
+<meta property="og:description" content="Use your API credits directly from the browser.">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Oxygen,sans-serif; background:#0f0f1a; color:#e0e0e0; min-height:100vh; }
+.container { max-width:1100px; margin:0 auto; padding:20px; }
+header { text-align:center; padding:30px 20px; background:linear-gradient(135deg,#1a1a2e,#0f3460); border-bottom:1px solid #2a2a4a; }
+header h1 { font-size:2rem; background:linear-gradient(90deg,#00d4ff,#7b2ff7); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+header p { color:#999; margin-top:6px; }
+.key-section { background:#1a1a2e; border:1px solid #2a2a4a; border-radius:12px; padding:20px; margin:20px 0; display:flex; gap:12px; align-items:center; flex-wrap:wrap; }
+.key-section input { flex:1; min-width:200px; background:#0f0f1a; border:1px solid #2a2a4a; border-radius:8px; color:#e0e0e0; padding:10px 14px; font-size:0.95rem; font-family:monospace; }
+.key-section input:focus { outline:none; border-color:#00d4ff; }
+.key-section .status { font-size:0.85rem; }
+.key-section .status.ok { color:#00d4ff; }
+.key-section .status.err { color:#ff4444; }
+.key-section .balance { color:#b388ff; font-weight:bold; font-size:0.95rem; }
+.btn { background:linear-gradient(135deg,#00d4ff,#7b2ff7); color:#fff; border:none; padding:10px 24px; border-radius:8px; font-size:0.9rem; cursor:pointer; font-weight:600; transition:all 0.2s; white-space:nowrap; }
+.btn:hover { opacity:0.9; transform:scale(1.02); }
+.btn:disabled { opacity:0.4; cursor:not-allowed; transform:none; }
+.btn-outline { background:transparent; border:1px solid #00d4ff44; color:#00d4ff; }
+.stats-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(140px,1fr)); gap:12px; margin-bottom:20px; }
+.stat-card { background:#1a1a2e; border:1px solid #2a2a4a; border-radius:10px; padding:16px; text-align:center; }
+.stat-card .val { font-size:1.6rem; font-weight:bold; color:#00d4ff; }
+.stat-card .lbl { font-size:0.75rem; color:#777; text-transform:uppercase; letter-spacing:1px; margin-top:4px; }
+.services-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(320px,1fr)); gap:16px; }
+.service-card { background:#1a1a2e; border:1px solid #2a2a4a; border-radius:12px; padding:20px; }
+.service-card h3 { color:#fff; font-size:1.1rem; margin-bottom:4px; display:flex; align-items:center; gap:8px; }
+.service-card .cost { color:#b388ff; font-size:0.8rem; margin-bottom:10px; }
+.service-card textarea { width:100%; min-height:70px; background:#0f0f1a; border:1px solid #2a2a4a; border-radius:8px; color:#e0e0e0; padding:10px; font-size:0.9rem; resize:vertical; margin-bottom:8px; font-family:monospace; }
+.service-card textarea:focus { outline:none; border-color:#00d4ff; }
+.service-card .btn-row { display:flex; gap:8px; }
+.service-card .output { margin-top:8px; background:#0f0f1a; border:1px solid #2a2a4a; border-radius:8px; padding:10px; min-height:36px; font-size:0.85rem; white-space:pre-wrap; word-break:break-word; max-height:250px; overflow:auto; display:none; }
+.service-card .output.show { display:block; }
+.service-card .output.loading { display:flex; align-items:center; gap:8px; color:#777; }
+.spinner { display:inline-block; width:14px; height:14px; border:2px solid #2a2a4a; border-top-color:#00d4ff; border-radius:50%; animation:spin 0.8s linear infinite; }
+@keyframes spin { to { transform:rotate(360deg); } }
+.service-card .error { color:#ff4444; font-size:0.85rem; margin-top:6px; display:none; }
+.service-card .error.show { display:block; }
+.no-key { text-align:center; padding:40px; color:#777; }
+.no-key a { color:#00d4ff; }
+.buy-link { display:inline-block; margin-top:10px; color:#b388ff; font-size:0.85rem; text-decoration:none; }
+.buy-link:hover { text-decoration:underline; }
+footer { text-align:center; padding:30px; color:#555; font-size:0.85rem; border-top:1px solid #2a2a4a; margin-top:30px; }
+footer a { color:#00d4ff; text-decoration:none; }
+@media(max-width:600px){ .services-grid { grid-template-columns:1fr; } .key-section { flex-direction:column; } }
+</style>
+</head>
+<body>
+<header>
+  <h1>🔑 API Portal</h1>
+  <p>Use your API credits directly from the browser. Paste your key below to get started.</p>
+</header>
+<div class="container">
+  <div class="key-section" id="keySection">
+    <input type="text" id="apiKeyInput" placeholder="Paste your API key (am_...)" spellcheck="false">
+    <button class="btn" onclick="connectKey()">Connect</button>
+    <span class="status" id="keyStatus"></span>
+    <span class="balance" id="balanceDisplay" style="display:none"></span>
+  </div>
+
+  <div class="stats-grid" id="statsGrid" style="display:none">
+    <div class="stat-card"><div class="val" id="statCredits">0</div><div class="lbl">Credits Left</div></div>
+    <div class="stat-card"><div class="val" id="statUsed">0</div><div class="lbl">Requests Used</div></div>
+    <div class="stat-card"><div class="val" id="statServices">7</div><div class="lbl">Services</div></div>
+  </div>
+
+  <div id="servicesSection" style="display:none">
+    <div class="services-grid">
+      <div class="service-card">
+        <h3>🔍 Text Analysis</h3>
+        <div class="cost">1 credit per request</div>
+        <textarea id="inp_analyze" placeholder="Text to analyze...">This product is absolutely amazing! The team did an incredible job and I'm thrilled with the results.</textarea>
+        <div class="btn-row"><button class="btn" onclick="callService('analyze')">Analyze</button></div>
+        <div class="output" id="out_analyze"></div>
+        <div class="error" id="err_analyze"></div>
+      </div>
+      <div class="service-card">
+        <h3>📄 Summarize</h3>
+        <div class="cost">2 credits per request</div>
+        <textarea id="inp_summarize" placeholder="Text to summarize...">Artificial intelligence has transformed software development. From code generation to testing automation, AI tools are becoming indispensable parts of the modern developer's toolkit. Companies that adopt AI-assisted development report 40% faster delivery times and 25% fewer bugs.</textarea>
+        <div class="btn-row"><button class="btn" onclick="callService('summarize')">Summarize</button></div>
+        <div class="output" id="out_summarize"></div>
+        <div class="error" id="err_summarize"></div>
+      </div>
+      <div class="service-card">
+        <h3>👨‍💻 Code Review</h3>
+        <div class="cost">5 credits per request</div>
+        <textarea id="inp_review" placeholder="Paste code to review..." style="font-family:monospace">function processData(arr) {
+  let result = [];
+  for (let i = 0; i < arr.length; i++) {
+    if (arr[i] > 0) result.push(arr[i] * 2);
+  }
+  return result;
+}</textarea>
+        <div class="btn-row"><button class="btn" onclick="callService('review')">Review Code</button></div>
+        <div class="output" id="out_review"></div>
+        <div class="error" id="err_review"></div>
+      </div>
+      <div class="service-card">
+        <h3>🛡️ Security Scan</h3>
+        <div class="cost">3 credits per request</div>
+        <textarea id="inp_security" placeholder="Paste code to scan..." style="font-family:monospace">app.get('/user', (req, res) => {
+  const id = req.query.id;
+  const query = `SELECT * FROM users WHERE id = ${id}`;
+  db.query(query, (err, results) => { res.json(results); });
+});</textarea>
+        <div class="btn-row"><button class="btn" onclick="callService('security')">Scan Security</button></div>
+        <div class="output" id="out_security"></div>
+        <div class="error" id="err_security"></div>
+      </div>
+      <div class="service-card">
+        <h3>💡 Explain Code</h3>
+        <div class="cost">2 credits per request</div>
+        <textarea id="inp_explain" placeholder="Paste code to explain..." style="font-family:monospace">const memoize = (fn) => {
+  const cache = new Map();
+  return (...args) => {
+    const key = JSON.stringify(args);
+    if (cache.has(key)) return cache.get(key);
+    const result = fn(...args);
+    cache.set(key, result);
+    return result;
+  };
+};</textarea>
+        <div class="btn-row"><button class="btn" onclick="callService('explain')">Explain</button></div>
+        <div class="output" id="out_explain"></div>
+        <div class="error" id="err_explain"></div>
+      </div>
+      <div class="service-card">
+        <h3>🔧 Refactor Code</h3>
+        <div class="cost">5 credits per request</div>
+        <textarea id="inp_refactor" placeholder="Paste code to refactor..." style="font-family:monospace">function doStuff(a,b,c) {
+  if(a==1){return b+c;}
+  else if(a==2){return b-c;}
+  else if(a==3){return b*c;}
+  else{return b/c;}
+}</textarea>
+        <div class="btn-row"><button class="btn" onclick="callService('refactor')">Refactor</button></div>
+        <div class="output" id="out_refactor"></div>
+        <div class="error" id="err_refactor"></div>
+      </div>
+      <div class="service-card">
+        <h3>📊 Complexity</h3>
+        <div class="cost">2 credits per request</div>
+        <textarea id="inp_complexity" placeholder="Paste code to analyze complexity..." style="font-family:monospace">function findDuplicates(arr) {
+  const seen = new Set();
+  const dupes = [];
+  for (let i = 0; i < arr.length; i++) {
+    if (seen.has(arr[i])) dupes.push(arr[i]);
+    else seen.add(arr[i]);
+  }
+  return dupes;
+}</textarea>
+        <div class="btn-row"><button class="btn" onclick="callService('complexity')">Analyze</button></div>
+        <div class="output" id="out_complexity"></div>
+        <div class="error" id="err_complexity"></div>
+      </div>
+    </div>
+    <div style="text-align:center;margin:20px 0">
+      <a href="/pricing" class="buy-link">Need more credits? Buy a package →</a>
+    </div>
+  </div>
+
+  <div class="no-key" id="noKeyMsg">
+    <p style="font-size:1.2rem;margin-bottom:10px">🔒 Enter your API key above</p>
+    <p>Don't have one? <a href="/pricing">Buy credits starting at HK$38</a></p>
+    <p style="margin-top:6px;color:#555">Or <a href="/free-tools.html">try 3 free requests per day</a> without a key</p>
+  </div>
+</div>
+
+<footer>
+  <p><a href="/">my-automaton</a> — AI-powered developer tools · <a href="/api-docs">API Docs</a> · <a href="/pricing">Pricing</a></p>
+</footer>
+
+<script>
+let currentKey = '';
+const BASE = '';
+const COSTS = { analyze:1, summarize:2, review:5, security:3, explain:2, refactor:5, complexity:2 };
+
+function $(id) { return document.getElementById(id); }
+
+async function connectKey() {
+  const key = $('apiKeyInput').value.trim();
+  if (!key.startsWith('am_')) {
+    $('keyStatus').className = 'status err';
+    $('keyStatus').textContent = '❌ Invalid key format (must start with am_)';
+    return;
+  }
+  $('keyStatus').className = 'status';
+  $('keyStatus').textContent = '⏳ Checking...';
+  try {
+    const r = await fetch(BASE + '/api/check-key', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({key})
+    });
+    const d = await r.json();
+    if (d.valid) {
+      currentKey = key;
+      $('keyStatus').className = 'status ok';
+      $('keyStatus').textContent = '✅ Connected';
+      $('balanceDisplay').textContent = d.credits + ' credits';
+      $('balanceDisplay').style.display = 'inline';
+      $('statCredits').textContent = d.credits;
+      $('statUsed').textContent = d.used || 0;
+      $('statsGrid').style.display = 'grid';
+      $('servicesSection').style.display = 'block';
+      $('noKeyMsg').style.display = 'none';
+      localStorage.setItem('portal_key', key);
+    } else {
+      $('keyStatus').className = 'status err';
+      $('keyStatus').textContent = '❌ ' + (d.error || 'Invalid key');
+    }
+  } catch(e) {
+    $('keyStatus').className = 'status err';
+    $('keyStatus').textContent = '❌ Connection error: ' + e.message;
+  }
+}
+
+async function callService(service) {
+  if (!currentKey) { connectKey(); return; }
+  const input = $('inp_' + service);
+  const output = $('out_' + service);
+  const error = $('err_' + service);
+  const text = input.value.trim();
+  if (!text) { error.textContent = 'Please enter some text'; error.className = 'error show'; return; }
+  
+  output.className = 'output loading';
+  output.innerHTML = '<span class="spinner"></span> Processing...';
+  error.className = 'error';
+  
+  try {
+    const r = await fetch(BASE + '/v1/' + service, {
+      method:'POST', headers:{'Content-Type':'application/json', 'X-API-Key': currentKey},
+      body: JSON.stringify({ text, mode: service })
+    });
+    const d = await r.json();
+    if (r.ok) {
+      let content = d.result || d.analysis || d.summary || d.review || d.explanation || d.refactored || JSON.stringify(d, null, 2);
+      output.textContent = content;
+      output.className = 'output show';
+      // refresh balance
+      const br = await fetch(BASE + '/api/check-key', {
+        method:'POST', headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({key: currentKey})
+      });
+      const bd = await br.json();
+      if (bd.valid) {
+        $('statCredits').textContent = bd.credits;
+        $('statUsed').textContent = bd.used || 0;
+        $('balanceDisplay').textContent = bd.credits + ' credits';
+      }
+    } else {
+      if (r.status === 402) {
+        error.textContent = '❌ Insufficient credits. ' + (d.error || 'Please buy more credits.');
+        error.className = 'error show';
+        output.className = 'output';
+      } else {
+        error.textContent = '❌ ' + (d.error || 'Request failed (HTTP ' + r.status + ')');
+        error.className = 'error show';
+        output.className = 'output';
+      }
+    }
+  } catch(e) {
+    error.textContent = '❌ Network error: ' + e.message;
+    error.className = 'error show';
+    output.className = 'output';
+  }
+}
+
+// Auto-restore key from localStorage
+const saved = localStorage.getItem('portal_key');
+if (saved) {
+  $('apiKeyInput').value = saved;
+  setTimeout(connectKey, 300);
+}
+
+// Enter key triggers connect
+$('apiKeyInput').addEventListener('keydown', e => { if (e.key === 'Enter') connectKey(); });
+</script>
+<script src="/conversion-banner.js" defer></script>
+</body>
+</html>

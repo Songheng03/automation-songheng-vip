@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Free AI Code Quality Score — Rate Your Code Now</title>
+<meta name="description" content="Get an instant AI-powered code quality score from 0-100. Analyzes readability, performance, security, and maintainability. Free for 3 checks/day.">
+<meta property="og:title" content="AI Code Quality Score — my-automaton">
+<meta property="og:description" content="Free instant code quality scoring. AI analyzes your code and gives a score with actionable improvements.">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="canonical" href="https://automation.songheng.vip/tools/code-quality-score">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#f6f8fa;color:#24292f;min-height:100vh}
+.container{max-width:900px;margin:0 auto;padding:24px}
+h1{font-size:1.8rem;margin-bottom:4px;color:#0969da}
+.subtitle{color:#656d76;margin-bottom:24px}
+.score-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:24px}
+.score-card{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:16px;text-align:center}
+.score-card .score{font-size:2.5rem;font-weight:700;margin:8px 0}
+.score-card .label{color:#656d76;font-size:0.85rem}
+.score-card .desc{font-size:0.75rem;color:#8b949e;margin-top:4px}
+.editor{position:relative;margin-bottom:16px}
+.editor textarea{width:100%;height:300px;font-family:'SF Mono','Fira Code','Courier New',monospace;font-size:13px;padding:16px;border:1px solid #d0d7de;border-radius:8px;resize:vertical;background:#fff;color:#24292f;tab-size:2;line-height:1.5}
+.editor textarea:focus{outline:none;border-color:#0969da;box-shadow:0 0 0 3px rgba(9,105,218,0.15)}
+.toolbar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;align-items:center}
+.btn{background:#0969da;color:#fff;border:none;border-radius:6px;padding:10px 20px;font-size:0.9rem;cursor:pointer;font-weight:600}
+.btn:hover{background:#0550ae}
+.btn:disabled{opacity:0.6;cursor:not-allowed}
+.btn.green{background:#1f883d}
+.btn.green:hover{background:#1a6b32}
+.btn.outline{background:transparent;color:#0969da;border:1px solid #0969da}
+.btn.outline:hover{background:#ddf4ff}
+select{padding:8px 12px;border:1px solid #d0d7de;border-radius:6px;background:#fff;font-size:0.9rem}
+.quota{color:#656d76;font-size:0.85rem;margin-left:auto}
+.result{display:none;background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:20px;margin-bottom:16px}
+.result.show{display:block}
+.result h3{font-size:1.1rem;margin-bottom:12px;color:#24292f}
+.result .section{margin-bottom:16px;padding:12px;background:#f6f8fa;border-radius:6px}
+.result .section h4{font-size:0.9rem;color:#656d76;margin-bottom:6px;text-transform:uppercase;letter-spacing:0.03em}
+.result .section p,.result .section ul{font-size:0.9rem;color:#24292f;line-height:1.6}
+.result .section ul{padding-left:20px}
+.result .section ul li{margin:4px 0}
+.grade-A{color:#1f883d}
+.grade-B{color:#9a6700}
+.grade-C{color:#cf222e}
+.grade-D{color:#82071e}
+.progress-bar{height:12px;background:#d0d7de;border-radius:6px;overflow:hidden;margin:8px 0}
+.progress-bar .fill{height:100%;border-radius:6px;transition:width 0.8s ease}
+.fill-A{background:#1f883d}
+.fill-B{background:#d29922}
+.fill-C{background:#d1242f}
+.fill-D{background:#82071e}
+.upgrade-banner{margin-top:16px;padding:16px 20px;background:#fff8c5;border:1px solid #d29922;border-radius:8px;display:none}
+.upgrade-banner.show{display:block}
+.upgrade-banner h4{color:#9a6700;margin-bottom:4px}
+.upgrade-banner p{color:#656d76;font-size:0.85rem}
+.error-box{background:#ffeef0;color:#cf222e;border:1px solid #f0b6b6;border-radius:8px;padding:12px 16px;margin-bottom:16px;display:none}
+.error-box.show{display:block}
+.loading-bar{display:none;height:4px;background:#d0d7de;border-radius:2px;overflow:hidden;margin:8px 0}
+.loading-bar.show{display:block}
+.loading-bar .bar{height:100%;width:0;background:#0969da;border-radius:2px;animation:loading 1.5s ease-in-out infinite}
+@keyframes loading{0%{width:0}50%{width:60%}100%{width:100%}}
+footer{margin-top:40px;padding-top:20px;border-top:1px solid #d0d7de;text-align:center;color:#656d76;font-size:0.85rem}
+footer a{color:#0969da;text-decoration:none}
+</style>
+<!-- Open Graph / Social Meta Tags -->
+<meta property="og:image" content="https://automation.songheng.vip/og-image.png" />
+<meta property="og:url" content="https://automation.songheng.vip/tools/code-quality-score.html" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="my-automaton" />
+<meta property="og:locale" content="en_US" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Free AI Code Quality Score — Rate Your Code Now" />
+<meta name="twitter:description" content="Get an instant AI-powered code quality score from 0-100. Analyzes readability, performance, security, and maintainability. Free for 3 checks/day." />
+<meta name="twitter:image" content="https://automation.songheng.vip/og-image.png" />
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Free AI Code Quality Score — Rate Your Code Now",
+  "description": "Get an instant AI-powered code quality score from 0-100. Analyzes readability, performance, security, and maintainability. Free for 3 checks/day.",
+  "url": "https://automation.songheng.vip/tools/code-quality-score.html",
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": "Web",
+  "author": {
+    "@type": "Organization",
+    "name": "my-automaton",
+    "url": "https://automation.songheng.vip"
+  },
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  }
+}
+</script>
+</head>
+<body>
+<div class="container">
+  <h1>🧪 AI Code Quality Score</h1>
+  <p class="subtitle">Paste your code and get an instant quality score from 0-100. AI analyzes readability, performance, security, and maintainability.</p>
+
+  <div class="toolbar">
+    <select id="lang">
+      <option value="javascript">JavaScript</option>
+      <option value="python">Python</option>
+      <option value="typescript">TypeScript</option>
+      <option value="java">Java</option>
+      <option value="go">Go</option>
+      <option value="rust">Rust</option>
+      <option value="cpp">C++</option>
+      <option value="ruby">Ruby</option>
+      <option value="php">PHP</option>
+      <option value="solidity">Solidity</option>
+    </select>
+    <button class="btn" id="analyzeBtn" onclick="analyze()">🔍 Analyze Code</button>
+    <span class="quota" id="quota">Free: 3 remaining today</span>
+  </div>
+
+  <div class="editor">
+    <textarea id="code" placeholder="Paste your code here...&#10;&#10;Example:&#10;function hello(name) {&#10;  return 'Hello, ' + name;&#10;}&#10;&#10;console.log(hello('world'));"></textarea>
+  </div>
+
+  <div class="loading-bar" id="loadingBar"><div class="bar"></div></div>
+  <div class="error-box" id="errorBox"></div>
+
+  <div class="result" id="result">
+    <div class="score-grid" id="scoreGrid"></div>
+    <div id="details"></div>
+    <div class="upgrade-banner" id="upgradeBanner">
+      <h4>⚡ Want a detailed report?</h4>
+      <p>Upgrade to get in-depth analysis with code examples, vulnerability details, and refactoring suggestions. <a href="/upgrade" style="color:#0969da">Get API credits →</a></p>
+    </div>
+  </div>
+
+  <div class="upgrade-banner show" style="margin-top:24px">
+    <h4>🚀 Need more than 3 checks per day?</h4>
+    <p>Get unlimited code quality analysis with API key access. Also includes code review, security scanning, and refactoring. <a href="/upgrade" style="color:#0969da">Upgrade now →</a></p>
+  </div>
+
+  <footer>
+    <p><a href="/">Home</a> · <a href="/api-docs">API</a> · <a href="/tools">Tools</a> · <a href="/upgrade">Pricing</a></p>
+    <p style="margin-top:8px">Powered by my-automaton · AI analysis via DeepSeek</p>
+  </footer>
+</div>
+
+<script>
+const API = '/free/analyze';
+let remaining = 3;
+
+function getRemaining() { return parseInt(localStorage.getItem('cq_remaining') || '3'); }
+function setRemaining(n) { remaining = n; localStorage.setItem('cq_remaining', n.toString()); document.getElementById('quota').textContent = `Free: ${n} remaining today`; }
+
+// Reset daily
+(function(){
+  const d = new Date().toISOString().slice(0,10);
+  if(localStorage.getItem('cq_date') !== d) {
+    localStorage.setItem('cq_date', d);
+    setRemaining(3);
+  } else {
+    remaining = getRemaining();
+    document.getElementById('quota').textContent = `Free: ${remaining} remaining today`;
+  }
+})();
+
+async function analyze() {
+  const code = document.getElementById('code').value.trim();
+  if (!code || code.length < 10) {
+    showError('Please enter at least 10 characters of code.');
+    return;
+  }
+  if (remaining <= 0) {
+    showError('Free limit reached! Use premium API or upgrade for unlimited access.');
+    document.getElementById('upgradeBanner').classList.add('show');
+    return;
+  }
+
+  const btn = document.getElementById('analyzeBtn');
+  btn.disabled = true;
+  btn.textContent = '⏳ Analyzing...';
+  document.getElementById('loadingBar').classList.add('show');
+  document.getElementById('errorBox').classList.remove('show');
+  document.getElementById('result').classList.remove('show');
+
+  try {
+    const res = await fetch(API, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ text: `Rate this ${document.getElementById('lang').value} code from 0-100. Give overall score, then scores for readability, performance, security, maintainability. List 3 specific improvements. Format: OVERALL: X | READABILITY: X | PERFORMANCE: X | SECURITY: X | MAINTAINABILITY: X | IMPROVEMENTS: ...\n\n\`\`\`\n${code}\n\`\`\``, mode: 'analyze' })
+    });
+
+    const data = await res.json();
+
+    if (res.status === 429) {
+      setRemaining(0);
+      showError('Free limit reached! Upgrade for unlimited access.');
+      document.getElementById('upgradeBanner').classList.add('show');
+      return;
+    }
+
+    if (!data.result) throw new Error(data.error || 'Analysis failed');
+
+    // Parse AI response for scores
+    const text = data.result;
+    const overall = extractScore(text, 'OVERALL');
+    const readability = extractScore(text, 'READABILITY');
+    const performance = extractScore(text, 'PERFORMANCE');
+    const security = extractScore(text, 'SECURITY');
+    const maintainability = extractScore(text, 'MAINTAINABILITY');
+
+    // Extract improvements
+    const improvements = [];
+    const impMatch = text.match(/IMPROVEMENTS:?\s*(.*?)(?:\n|$)/);
+    if (impMatch) {
+      const list = impMatch[1].split(/[,;]/).filter(s => s.trim().length > 3);
+      list.forEach(i => improvements.push(i.trim()));
+    }
+
+    // Display results
+    displayScores({ overall, readability, performance, security, maintainability }, improvements, text);
+    document.getElementById('result').classList.add('show');
+    setRemaining(remaining - 1);
+
+  } catch(e) {
+    showError(e.message);
+  } finally {
+    btn.disabled = false;
+    btn.textContent = '🔍 Analyze Code';
+    document.getElementById('loadingBar').classList.remove('show');
+  }
+}
+
+function extractScore(text, label) {
+  const re = new RegExp(label + ':\\s*(\\d+)', 'i');
+  const m = text.match(re);
+  return m ? parseInt(m[1]) : null;
+}
+
+function displayScores(scores, improvements, raw) {
+  // Score grid
+  const grid = document.getElementById('scoreGrid');
+  const items = [
+    { key: 'Overall', val: scores.overall, desc: 'Overall code quality' },
+    { key: 'Readability', val: scores.readability, desc: 'How clear & clean' },
+    { key: 'Performance', val: scores.performance, desc: 'Speed & efficiency' },
+    { key: 'Security', val: scores.security, desc: 'Vulnerability risk' },
+    { key: 'Maintainability', val: scores.maintainability, desc: 'Ease of changes' },
+  ];
+
+  grid.innerHTML = items.map(item => {
+    const v = item.val;
+    const grade = v >= 80 ? 'A' : v >= 60 ? 'B' : v >= 40 ? 'C' : 'D';
+    const gradeClass = 'grade-' + grade;
+    const fillClass = 'fill-' + grade;
+    const color = grade === 'A' ? '#1f883d' : grade === 'B' ? '#d29922' : grade === 'C' ? '#d1242f' : '#82071e';
+    return `<div class="score-card">
+      <div class="label">${item.key}</div>
+      <div class="score ${gradeClass}" style="color:${color}">${v !== null ? v + ' ' + grade : '—'}</div>
+      <div class="desc">${item.desc}</div>
+      <div class="progress-bar"><div class="fill ${fillClass}" style="width:${v || 0}%"></div></div>
+    </div>`;
+  }).join('');
+
+  // Details
+  const details = document.getElementById('details');
+  let html = '';
+
+  if (improvements.length > 0) {
+    html += `<div class="section"><h4>🔧 Top Improvements</h4><ul>${improvements.map(i => `<li>${i}</li>`).join('')}</ul></div>`;
+  }
+
+  html += `<div class="section"><h4>📋 Full Analysis</h4><p style="white-space:pre-wrap;font-size:0.85rem">${raw.slice(0, 800)}${raw.length > 800 ? '...' : ''}</p></div>`;
+
+  html += `<div class="section" style="text-align:center;background:#f0f6ff;border:1px solid #ddf4ff">
+    <h4 style="color:#0969da">⚡ Get the full detailed report</h4>
+    <p style="font-size:0.85rem">Upgrade to API credits for complete code review with line-by-line feedback, security vulnerability details, and refactoring suggestions.</p>
+    <a href="/upgrade" style="color:#0969da;font-weight:600">Unlock full analysis →</a>
+  </div>`;
+
+// Add share buttons after the details section
+  html += `<div class="section" style="text-align:center;background:linear-gradient(135deg,#667eea11,#764ba211);border:2px solid #667eea;border-radius:12px;padding:24px">
+    <h4 style="color:#fff;margin:0 0 8px">📊 Share Your Score</h4>
+    <p style="color:#a0a0cc;font-size:0.85rem;margin:0 0 16px">Overall: ${scores.overall}/100 (${scores.overall >= 80 ? 'A' : scores.overall >= 60 ? 'B' : scores.overall >= 40 ? 'C' : 'D'} grade)</p>
+    
+    <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap">
+      <a href="https://twitter.com/intent/tweet?text=${encodeURIComponent('My code just got a ' + scores.overall + '/100 quality score! 🤖\n\nTry the free AI code quality checker:')}&url=${encodeURIComponent('https://automation.songheng.vip/tools/code-quality-score.html')}" 
+         target="_blank" rel="noopener"
+         style="background:#1DA1F2;color:white;padding:10px 20px;border-radius:6px;text-decoration:none;font-weight:600;font-size:.85rem">
+        🐦 Tweet
+      </a>
+      <a href="https://www.reddit.com/submit?url=${encodeURIComponent('https://automation.songheng.vip/tools/code-quality-score.html')}&title=${encodeURIComponent('Free AI Code Quality Score Checker - Get instant feedback')}" 
+         target="_blank" rel="noopener"
+         style="background:#FF4500;color:white;padding:10px 20px;border-radius:6px;text-decoration:none;font-weight:600;font-size:.85rem">
+        📢 Reddit
+      </a>
+      <a href="https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent('https://automation.songheng.vip/tools/code-quality-score.html')}" 
+         target="_blank" rel="noopener"
+         style="background:#0A66C2;color:white;padding:10px 20px;border-radius:6px;text-decoration:none;font-weight:600;font-size:.85rem">
+        💼 LinkedIn
+      </a>
+      <a href="https://news.ycombinator.com/submitlink?u=${encodeURIComponent('https://automation.songheng.vip/tools/code-quality-score.html')}&t=${encodeURIComponent('Show HN: Free AI Code Quality Score Checker')}" 
+         target="_blank" rel="noopener"
+         style="background:#ff6600;color:white;padding:10px 20px;border-radius:6px;text-decoration:none;font-weight:600;font-size:.85rem">
+        🔶 HN
+      </a>
+    </div>
+    <p style="color:#6a6a9a;font-size:.75rem;margin:12px 0 0">Challenge your team — who writes the cleanest code?</p>
+  </div>`;
+
+  details.innerHTML = html;
+  details.innerHTML = html;
+}
+
+function showError(msg) {
+  const box = document.getElementById('errorBox');
+  box.textContent = msg;
+  box.classList.add('show');
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="canonical" href="https://automation.songheng.vip/tools/css-minifier.html">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Free Online CSS Minifier — Compress CSS Stylesheets | my-automaton">
+  <meta name="twitter:description" content="Free online CSS minifier tool. Compress, minify, and optimize CSS stylesheets for faster page loads. Remove whitespace, comments. No signup needed.">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Free Online CSS Minifier — Compress CSS Stylesheets | my-automaton</title>
+<meta name="description" content="Free online CSS minifier tool. Compress, minify, and optimize CSS stylesheets for faster page loads. Remove whitespace, comments. No signup needed.">
+<meta name="keywords" content="CSS minifier, CSS compressor, minify CSS, optimize CSS, free developer tool, web performance">
+<meta property="og:title" content="Free Online CSS Minifier — Compress CSS Stylesheets">
+<meta property="og:description" content="Minify and compress CSS stylesheets instantly. Remove whitespace and comments for faster page loads. No signup, 100% free.">
+<style>
+body{background:#0d1117;color:#e6edf3;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;max-width:800px;margin:auto;padding:20px}
+h1{color:#58a6ff;border-bottom:1px solid #30363d;padding-bottom:10px}
+textarea{width:100%;min-height:150px;background:#161b22;color:#e6edf3;border:1px solid #30363d;border-radius:8px;padding:12px;font-family:monospace;font-size:13px;margin:8px 0;box-sizing:border-box}
+textarea:focus{border-color:#58a6ff;outline:none}
+button{background:#238636;color:#fff;border:none;padding:10px 20px;border-radius:6px;cursor:pointer;margin:5px;font-size:14px}
+button:hover{background:#2ea043}
+.btn-group{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}
+.stats{color:#8b949e;font-size:.9em;margin:20px 0;padding:12px;background:#161b22;border-radius:8px;border:1px solid #30363d}
+.stat-number{color:#58a6ff;font-weight:bold;font-size:1.1em}
+.tag{display:inline-block;background:#1f6feb22;color:#58a6ff;padding:2px 8px;border-radius:4px;font-size:.85em;border:1px solid #1f6feb44}
+a{color:#58a6ff}
+.copy-btn{font-size:12px;padding:4px 10px}
+</style>
+<script src="/js/analytics.js"></script>
+<!-- Open Graph / Social Meta Tags -->
+<meta property="og:image" content="https://automation.songheng.vip/og-image.png" />
+<meta property="og:url" content="https://automation.songheng.vip/tools/css-minifier.html" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="my-automaton" />
+<meta property="og:locale" content="en_US" />
+<meta name="twitter:image" content="https://automation.songheng.vip/og-image.png" />
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Free Online CSS Minifier — Compress CSS Stylesheets | my-automaton",
+  "description": "Free online CSS minifier tool. Compress, minify, and optimize CSS stylesheets for faster page loads. Remove whitespace, comments. No signup needed.",
+  "url": "https://automation.songheng.vip/tools/css-minifier.html",
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": "Web",
+  "author": {
+    "@type": "Organization",
+    "name": "my-automaton",
+    "url": "https://automation.songheng.vip"
+  },
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  }
+}
+</script>
+</head>
+<body>
+<div style="background:#161b22;border-bottom:1px solid #30363d;padding:10px 20px;font-size:.85rem;display:flex;gap:16px;align-items:center;flex-wrap:wrap"><a href="/" style="color:#58a6ff;text-decoration:none;font-weight:600">🏠 Home</a><span style="color:#484f58">|</span><a href="/pricing.html" style="color:#8b949e;text-decoration:none">Pricing</a><a href="/api-docs.html" style="color:#8b949e;text-decoration:none">API</a><a href="/playground.html" style="color:#8b949e;text-decoration:none">Playground</a></div>
+
+
+<h1>🎨 CSS Minifier</h1>
+<p><span class="tag">Free Tool</span> <span class="tag">Web Performance</span> <span class="tag">No Signup</span></p>
+<p>Paste your CSS below to minify it. Removes whitespace, comments, and unnecessary characters to reduce file size and improve page load speed.</p>
+
+<div class="stats" id="stats">
+  <div><strong>Original:</strong> <span class="stat-number" id="originalSize">0</span> bytes</div>
+  <div><strong>Minified:</strong> <span class="stat-number" id="minifiedSize">0</span> bytes</div>
+  <div><strong>Saved:</strong> <span class="stat-number" id="savings">0%</span></div>
+</div>
+
+<textarea id="input" placeholder="Paste your CSS here...">/* Example CSS */
+body {
+  background: #0d1117;
+  color: #e6edf3;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  margin: 0;
+  padding: 20px;
+}
+
+/* Navigation styles */
+.nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  background: #161b22;
+  border-bottom: 1px solid #30363d;
+}
+
+.nav a {
+  color: #58a6ff;
+  text-decoration: none;
+  margin: 0 10px;
+}</textarea>
+
+<div class="btn-group">
+  <button onclick="minify()">⚡ Minify CSS</button>
+  <button onclick="clearAll()">🗑️ Clear</button>
+</div>
+
+<div class="output-label">Result:</div>
+<textarea id="output" readonly placeholder="Minified CSS will appear here..."></textarea>
+
+<div class="btn-group">
+  <button class="copy-btn" onclick="copyResult()">📋 Copy to Clipboard</button>
+</div>
+
+<h2>How CSS Minification Works</h2>
+<ul>
+  <li><strong>Removes whitespace:</strong> Spaces, tabs, newlines not needed for parsing</li>
+  <li><strong>Removes comments:</strong> All <code>/* ... */</code> comments are stripped</li>
+  <li><strong>Collapses selectors:</strong> Multiple selectors are compacted</li>
+  <li><strong>Optimizes colors:</strong> Shorter hex codes where possible</li>
+  <li><strong>Preserves functionality:</strong> Minified CSS renders identically</li>
+</ul>
+
+<h2>Why Minify CSS?</h2>
+<ul>
+  <li><strong>Faster page loads:</strong> Smaller files load faster, especially on mobile</li>
+  <li><strong>Better Core Web Vitals:</strong> Smaller CSS means faster First Contentful Paint (FCP)</li>
+  <li><strong>Lower bandwidth:</strong> Reduce hosting costs and data transfer</li>
+  <li><strong>SEO improvement:</strong> Page speed is a Google ranking factor</li>
+</ul>
+
+<h2>More Developer Tools</h2>
+<ul>
+  <li><a href="/tools/json-formatter">JSON Formatter & Validator</a></li>
+  <li><a href="/tools/url-encoder-decoder">URL Encoder / Decoder</a></li>
+  <li><a href="/tools/http-status-codes">HTTP Status Codes Reference</a></li>
+  <li><a href="/tools/free-ai-code-review-tool">Free AI Code Review</a></li>
+</ul>
+
+<script>
+function minify() {
+  const input = document.getElementById('input').value;
+  const originalSize = new Blob([input]).size;
+  
+  let output = input;
+  
+  // Remove comments
+  output = output.replace(/\/\*[\s\S]*?\*\//g, '');
+  
+  // Remove whitespace around braces
+  output = output.replace(/\s*{\s*/g, '{');
+  output = output.replace(/\s*}\s*/g, '}');
+  
+  // Remove whitespace around colons
+  output = output.replace(/\s*:\s*/g, ':');
+  
+  // Remove whitespace around semicolons
+  output = output.replace(/\s*;\s*/g, ';');
+  
+  // Remove whitespace around commas in selectors
+  output = output.replace(/\s*,\s*/g, ',');
+  
+  // Collapse multiple spaces
+  output = output.replace(/\s+/g, ' ');
+  
+  // Remove trailing semicolons before closing braces
+  output = output.replace(/;}/g, '}');
+  
+  // Remove unnecessary 0 values
+  output = output.replace(/:0(px|em|rem|%|pt|vh|vw)/g, ':0');
+  
+  // Trim
+  output = output.trim();
+  
+  // Final whitespace cleanup
+  output = output.replace(/>\s+</g, '><');
+  output = output.replace(/\s{2,}/g, ' ');
+  
+  const minifiedSize = new Blob([output]).size;
+  const savings = originalSize > 0 ? Math.round((1 - minifiedSize / originalSize) * 100) : 0;
+  
+  document.getElementById('output').value = output;
+  document.getElementById('originalSize').textContent = originalSize.toLocaleString();
+  document.getElementById('minifiedSize').textContent = minifiedSize.toLocaleString();
+  document.getElementById('savings').textContent = savings + '%';
+}
+
+function clearAll() {
+  document.getElementById('input').value = '';
+  document.getElementById('output').value = '';
+  document.getElementById('originalSize').textContent = '0';
+  document.getElementById('minifiedSize').textContent = '0';
+  document.getElementById('savings').textContent = '0%';
+}
+
+function copyResult() {
+  const output = document.getElementById('output');
+  navigator.clipboard.writeText(output.value).then(() => {
+    const btn = document.querySelector('.copy-btn');
+    btn.textContent = '✅ Copied!';
+    setTimeout(() => btn.textContent = '📋 Copy to Clipboard', 2000);
+  }).catch(() => {
+    output.select();
+    document.execCommand('copy');
+  });
+}
+</script>
+
+<script src="/js/share-widget.js"></script>
+<script src="/share-widget.js"></script>
+</body>
+</html>

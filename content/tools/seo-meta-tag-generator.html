@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="description" content="Free SEO Meta Tag Generator with live preview for Google Search, Facebook, X/Twitter, Slack, and WhatsApp. Generate Open Graph and Twitter Card tags instantly.">
+<meta name="keywords" content="meta tag generator, open graph generator, twitter card generator, seo tags, og tags, social media preview">
+<meta property="og:title" content="SEO Meta Tag Generator — Free Open Graph & Twitter Card Preview Tool">
+<meta property="og:description" content="Generate and preview meta tags for Google, Facebook, X/Twitter, Slack, and WhatsApp. Free online tool.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SEO Meta Tag Generator — Preview Open Graph & Twitter Cards Free</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#f8fafc;color:#1e293b;line-height:1.6;padding:20px}
+.wrapper{max-width:1100px;margin:0 auto}
+h1{font-size:1.6em;margin:0 0 .3em;color:#0f172a}
+.sub{color:#64748b;margin-bottom:2em}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+@media(max-width:768px){.grid{grid-template-columns:1fr}}
+.card{background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:20px}
+.card h2{font-size:1.1em;margin:0 0 12px;color:#0f172a}
+label{display:block;font-weight:600;font-size:.85em;color:#475569;margin:10px 0 4px}
+input,textarea,select{width:100%;padding:8px 12px;border:1px solid #e2e8f0;border-radius:6px;font-size:14px;font-family:inherit}
+textarea{min-height:60px;resize:vertical}
+input:focus,textarea:focus,select:focus{outline:none;border-color:#2563eb;box-shadow:0 0 0 2px rgba(37,99,235,.15)}
+button{background:#2563eb;color:#fff;border:none;padding:10px 20px;border-radius:6px;font-size:14px;font-weight:600;cursor:pointer}
+button:hover{background:#1d4ed8}
+.copy{font-size:12px;background:#059669;margin-left:8px;padding:4px 10px}
+.copy:hover{background:#047857}
+.preview-box{background:#f1f5f9;border-radius:8px;padding:12px;margin:12px 0}
+.preview-title{font-size:1em;color:#2563eb;text-decoration:none;display:block;margin-bottom:2px}
+.preview-url{font-size:.75em;color:#059669;margin-bottom:2px}
+.preview-desc{font-size:.8em;color:#475569}
+.social-card{background:#fff;border:1px solid #e2e8f0;border-radius:8px;overflow:hidden;margin:8px 0}
+.social-card img{width:100%;height:auto;background:#e2e8f0;display:block;padding-top:52%}
+.social-card .body{padding:10px 14px}
+.social-card .name{font-size:.7em;text-transform:uppercase;color:#64748b;margin-bottom:2px}
+.social-card .title{font-weight:600;font-size:.9em;color:#1e293b;margin-bottom:2px}
+.social-card .desc{font-size:.8em;color:#475569;max-height:2.4em;overflow:hidden}
+.tag-output{background:#1e293b;color:#e2e8f0;padding:16px;border-radius:8px;font-size:.8em;font-family:'SF Mono',Consolas,monospace;white-space:pre-wrap;word-break:break-all;margin-top:12px;overflow-x:auto}
+.note{color:#94a3b8;font-size:.8em;margin-top:8px}
+.tag-row{display:flex;gap:8px;margin:4px 0}
+.tag-row input{font-family:monospace;font-size:.8em;padding:6px 8px;flex:1}
+</style>
+<!-- Open Graph / Social Meta Tags -->
+<meta property="og:locale" content="en_US" />
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "SEO Meta Tag Generator — Preview Open Graph & Twitter Cards Free",
+  "description": "Free SEO Meta Tag Generator with live preview for Google Search, Facebook, X/Twitter, Slack, and WhatsApp. Generate Open Graph and Twitter Card tags instantly.",
+  "url": "https://automation.songheng.vip/tools/seo-meta-tag-generator.html",
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": "Web",
+  "author": {
+    "@type": "Organization",
+    "name": "my-automaton",
+    "url": "https://automation.songheng.vip"
+  },
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  }
+}
+</script>
+</head>
+<body>
+<div style="background:#161b22;border-bottom:1px solid #30363d;padding:10px 20px;font-size:.85rem;display:flex;gap:16px;align-items:center;flex-wrap:wrap"><a href="/" style="color:#58a6ff;text-decoration:none;font-weight:600">🏠 Home</a><span style="color:#484f58">|</span><a href="/pricing.html" style="color:#8b949e;text-decoration:none">Pricing</a><a href="/api-docs.html" style="color:#8b949e;text-decoration:none">API</a><a href="/playground.html" style="color:#8b949e;text-decoration:none">Playground</a></div>
+
+<div class="wrapper">
+<h1>🏷️ SEO Meta Tag Generator</h1>
+<p class="sub">Generate and preview Open Graph, Twitter Card, and SEO meta tags. See how your page looks on every platform.</p>
+
+<div class="grid">
+<div class="card">
+<h2>Page Settings</h2>
+<label>Page Title</label>
+<input id="pageTitle" value="SEO Meta Tags Guide — Free Generator & Tool" oninput="generate()" placeholder="Page title (50-60 chars)">
+<label>Meta Description</label>
+<textarea id="metaDesc" oninput="generate()" rows="2">Generate and preview Open Graph, Twitter Card, and SEO meta tags. Free online tool with live preview for Google, Facebook, X/Twitter, and Slack.</textarea>
+<label>Page URL</label>
+<input id="pageUrl" value="https://automation.songheng.vip/tools/seo-meta-tag-generator" oninput="generate()" placeholder="https://yoursite.com/page">
+<label>OG Image URL (1200×630 recommended)</label>
+<input id="ogImage" oninput="generate()" placeholder="https://yoursite.com/images/og-image.jpg">
+<label>Site Name</label>
+<input id="siteName" value="My Automaton" oninput="generate()" placeholder="Your Site Name">
+<label>Twitter Handle (@username)</label>
+<input id="twitterSite" value="@my_automaton" oninput="generate()" placeholder="@yourhandle">
+<label>Page Type</label>
+<select id="ogType" onchange="generate()">
+<option value="website">Website</option>
+<option value="article" selected>Article</option>
+<option value="product">Product</option>
+<option value="video.movie">Video</option>
+<option value="music.song">Music</option>
+<option value="profile">Profile</option>
+</select>
+<label>Keywords (comma-separated)</label>
+<input id="keywords" value="seo meta tags, open graph, twitter cards, social media preview" oninput="generate()" placeholder="keyword1, keyword2">
+
+<div style="margin-top:16px;display:flex;gap:8px">
+<button onclick="copyTags()">📋 Copy All Tags</button>
+<button class="copy" onclick="resetForm()">Reset</button>
+</div>
+</div>
+
+<div class="card">
+<h2>Live Previews</h2>
+
+<h3 style="font-size:.9em;margin:0 0 4px">🔍 Google Search Result</h3>
+<div class="preview-box" id="googlePreview">
+<a class="preview-title" href="#">SEO Meta Tags Guide — Free Generator & Tool</a>
+<div class="preview-url">automation.songheng.vip › tools › seo-meta-tag-generator</div>
+<div class="preview-desc">Generate and preview Open Graph, Twitter Card, and SEO meta tags. Free online tool with live preview for Google, Facebook, X/Twitter, and Slack.</div>
+</div>
+
+<h3 style="font-size:.9em;margin:8px 0 4px">📘 Facebook / LinkedIn</h3>
+<div class="social-card" id="fbPreview">
+<div style="background:#e2e8f0;height:120px;display:flex;align-items:center;justify-content:center;color:#94a3b8;font-size:.8em">OG Image</div>
+<div class="body">
+<div class="name" id="fbSiteName">MY AUTOMATON</div>
+<div class="title" id="fbTitle">SEO Meta Tags Guide — Free Generator & Tool</div>
+<div class="desc" id="fbDesc">Generate and preview Open Graph, Twitter Card, and SEO meta tags. Free online tool with live preview for Google, Facebook, X/Twitter, and Slack.</div>
+</div>
+</div>
+
+<h3 style="font-size:.9em;margin:8px 0 4px">𝕏 X / Twitter</h3>
+<div class="social-card" id="twPreview">
+<div style="background:#e2e8f0;height:100px;display:flex;align-items:center;justify-content:center;color:#94a3b8;font-size:.8em">Twitter Image</div>
+<div class="body">
+<div class="title" id="twTitle">SEO Meta Tags Guide — Free Generator & Tool</div>
+<div class="desc" id="twDesc">Generate and preview Open Graph, Twitter Card, and SEO meta tags. Free online tool with live preview for Google, Facebook, X/Twitter, and Slack.</div>
+</div>
+</div>
+
+<h3 style="font-size:.9em;margin:8px 0 4px">💬 Slack / Discord / WhatsApp</h3>
+<div class="social-card" id="slackPreview">
+<div style="background:#e2e8f0;height:80px;display:flex;align-items:center;justify-content:center;color:#94a3b8;font-size:.75em">OG Image (cropped)</div>
+<div class="body">
+<div class="title" id="slackTitle">SEO Meta Tags Guide — Free Generator & Tool</div>
+<div class="desc" id="slackDesc">Generate and preview Open Graph, Twitter Card, and SEO meta tags. Free online tool...</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="card" style="margin-top:20px">
+<h2>Generated Meta Tags</h2>
+<div style="display:flex;gap:8px;margin-bottom:8px">
+<button onclick="copyByID('metaOutput')">📋 Copy</button>
+<select id="tagFormat" onchange="generate()" style="width:auto;padding:6px 10px">
+<option value="html">HTML Tags</option>
+<option value="js">JavaScript Object</option>
+<option value="react">React Helmet</option>
+</select>
+</div>
+<div class="tag-output" id="metaOutput"></div>
+<div class="note">Paste these in your &lt;head&gt; section. Test with Facebook Sharing Debugger and Twitter Card Validator.</div>
+</div>
+
+<p style="margin-top:20px;color:#94a3b8;font-size:.9em">
+<a href="/tools">More free tools</a> · <a href="/blog">Blog</a> · <a href="/blog/seo-meta-tags-guide">SEO Meta Tags Guide</a>
+</p>
+</div>
+
+<script>
+function $(id){return document.getElementById(id)}
+
+function generate() {
+  const title = $('pageTitle').value || 'Untitled';
+  const desc = $('metaDesc').value || 'No description';
+  const url = $('pageUrl').value || 'https://example.com/page';
+  const img = $('ogImage').value || '';
+  const site = $('siteName').value || '';
+  const twitter = $('twitterSite').value || '';
+  const type = $('ogType').value || 'website';
+  const keywords = $('keywords').value || '';
+  
+  const domain = url.replace(/https?:\/\//,'').split('/')[0] || 'example.com';
+  const path = '/' + url.replace(/https?:\/\/[^/]+/,'').replace(/\/$/,'').split('/').filter(Boolean).slice(0,3).join(' › ');
+  
+  // Google preview
+  $('googlePreview').innerHTML = `
+    <a class="preview-title" href="${url}" target="_blank">${title.slice(0,70)}</a>
+    <div class="preview-url">${domain} › ${path}</div>
+    <div class="preview-desc">${desc.slice(0,165)}</div>
+  `;
+  
+  // Facebook preview
+  $('fbTitle').textContent = title.slice(0,95);
+  $('fbDesc').textContent = desc.slice(0,200);
+  $('fbSiteName').textContent = (site || domain).toUpperCase();
+  
+  // Twitter preview
+  $('twTitle').textContent = title.slice(0,70);
+  $('twDesc').textContent = desc.slice(0,200);
+  
+  // Slack preview
+  $('slackTitle').textContent = title.slice(0,60);
+  $('slackDesc').textContent = desc.slice(0,150);
+  
+  // Generate tags
+  const imgTag = img ? `\n<meta property="og:image" content="${img}">\n<meta name="twitter:image" content="${img}">` : '';
+  const kwTag = keywords ? `\n<meta name="keywords" content="${keywords}">` : '';
+
+  const html = `<!-- Primary Meta Tags -->
+<title>${title}</title>
+<meta name="title" content="${title}">
+<meta name="description" content="${desc}">${kwTag}
+
+<!-- Open Graph / Facebook / WhatsApp / LinkedIn -->
+<meta property="og:type" content="${type}">
+<meta property="og:url" content="${url}">
+<meta property="og:title" content="${title}">
+<meta property="og:description" content="${desc}">
+<meta property="og:site_name" content="${site || domain}">${imgTag ? imgTag.replace('twitter:image','og:image').split('\n')[0] : ''}
+
+<!-- Twitter -->
+<meta property="twitter:card" content="summary_large_image">
+<meta property="twitter:url" content="${url}">
+<meta property="twitter:title" content="${title}">
+<meta property="twitter:description" content="${desc}">${twitter ? `\n<meta name="twitter:site" content="${twitter}">` : ''}${imgTag ? imgTag.replace('og:image','twitter:image').split('\n')[1] || imgTag.split('\n')[1] : ''}
+
+<!-- Canonical -->
+<link rel="canonical" href="${url}">`;
+
+  const js = `module.exports = {
+  title: '${title}',
+  meta: [
+    { name: 'description', content: '${desc}' },${keywords ? `\n    { name: 'keywords', content: '${keywords}' },` : ''}
+    { name: 'og:type', content: '${type}' },
+    { name: 'og:url', content: '${url}' },
+    { name: 'og:title', content: '${title}' },
+    { name: 'og:description', content: '${desc}' },${img ? `\n    { name: 'og:image', content: '${img}' },` : ''}
+    { name: 'twitter:card', content: 'summary_large_image' },
+    { name: 'twitter:url', content: '${url}' },
+    { name: 'twitter:title', content: '${title}' },
+    { name: 'twitter:description', content: '${desc}' },${twitter ? `\n    { name: 'twitter:site', content: '${twitter}' },` : ''}${img ? `\n    { name: 'twitter:image', content: '${img}' },` : ''}
+  ],
+  link: [
+    { rel: 'canonical', href: '${url}' }
+  ]
+};`;
+
+  const react = `import { Helmet } from 'react-helmet-async';
+
+function PageHead() {
+  return (
+    <Helmet>
+      <title>${title}</title>
+      <meta name="description" content="${desc}" />${keywords ? `\n      <meta name="keywords" content="${keywords}" />` : ''}
+      <meta property="og:type" content="${type}" />
+      <meta property="og:url" content="${url}" />
+      <meta property="og:title" content="${title}" />
+      <meta property="og:description" content="${desc}" />${img ? `\n      <meta property="og:image" content="${img}" />` : ''}
+      <meta name="twitter:card" content="summary_large_image" />
+      <meta name="twitter:url" content="${url}" />
+      <meta name="twitter:title" content="${title}" />
+      <meta name="twitter:description" content="${desc}" />${img ? `\n      <meta name="twitter:image" content="${img}" />` : ''}
+      <link rel="canonical" href="${url}" />
+    </Helmet>
+  );
+}`;
+
+  const format = $('tagFormat').value;
+  if (format === 'html') $('metaOutput').textContent = html;
+  else if (format === 'js') $('metaOutput').textContent = js;
+  else $('metaOutput').textContent = react;
+}
+
+function copyByID(id) {
+  const el = $(id);
+  navigator.clipboard.writeText(el.textContent).then(() => {
+    const btn = event.target;
+    const orig = btn.textContent;
+    btn.textContent = '✅ Copied!';
+    setTimeout(() => btn.textContent = orig, 2000);
+  }).catch(() => {
+    const range = document.createRange();
+    range.selectNode(el);
+    window.getSelection().removeAllRanges();
+    window.getSelection().addRange(range);
+    document.execCommand('copy');
+  });
+}
+
+function copyTags() { copyByID('metaOutput'); }
+
+function resetForm() {
+  $('pageTitle').value = 'SEO Meta Tags Guide — Free Generator & Tool';
+  $('metaDesc').value = 'Generate and preview Open Graph, Twitter Card, and SEO meta tags. Free online tool with live preview for Google, Facebook, X/Twitter, and Slack.';
+  $('pageUrl').value = 'https://automation.songheng.vip/tools/seo-meta-tag-generator';
+  $('ogImage').value = '';
+  $('siteName').value = 'My Automaton';
+  $('twitterSite').value = '@my_automaton';
+  $('ogType').value = 'article';
+  $('keywords').value = 'seo meta tags, open graph, twitter cards, social media preview';
+  generate();
+}
+
+generate();
+</script>
+</body>
+</html>

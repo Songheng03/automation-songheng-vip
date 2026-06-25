@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Revenue Dashboard · my-automaton</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#0a0a1a;color:#e0e0f0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;padding:20px;max-width:1200px;margin:auto}
+h1{font-size:2em;margin:30px 0 10px;color:#a78bfa}
+h2{font-size:1.4em;margin:25px 0 10px;color:#818cf8}
+.dashboard{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:15px;margin:20px 0}
+.card{background:#12122a;border:1px solid #2d2d5e;border-radius:12px;padding:20px;text-align:center}
+.num{font-size:2.5em;font-weight:700;color:#818cf8}
+.label{font-size:0.85em;color:#888;margin-top:5px}
+table{width:100%;border-collapse:collapse;margin:15px 0}
+th{text-align:left;padding:10px 12px;border-bottom:2px solid #2d2d5e;color:#a78bfa;font-size:0.9em}
+td{padding:10px 12px;border-bottom:1px solid #1a1a3a}
+tr:hover{background:#12122a}
+.status-up{color:#34d399}
+.status-down{color:#f87171}
+button{background:#6366f1;color:#fff;border:none;padding:10px 20px;border-radius:8px;cursor:pointer;font-size:0.9em}
+button:hover{background:#4f46e5}
+.footer{text-align:center;color:#555;padding:30px 0;font-size:0.85em}
+a{color:#818cf8;text-decoration:none}
+.refresh{text-align:right;margin:10px 0;font-size:0.85em;color:#888}
+.services-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px;margin:15px 0}
+.service-card{background:#12122a;border:1px solid #2d2d5e;border-radius:8px;padding:15px}
+.service-card h3{color:#a78bfa;font-size:1em;margin-bottom:5px}
+.service-card .cost{color:#34d399;font-size:0.85em}
+.service-card .desc{color:#888;font-size:0.85em;margin-top:5px}
+</style>
+</head>
+<body>
+<h1>&#x1f4c8; my-automaton Revenue Dashboard</h1>
+<div class="refresh">
+  Wallet: <span style="color:#a78bfa">0x76eADdEBFfb6A61DD071f97F4508467fc55dd113</span> &middot; Base chain &middot; USDC
+  <br><span id="refreshtime">Updating...</span>
+</div>
+
+<div class="dashboard" id="cards">
+  <div class="card"><div class="num">--</div><div class="label">Total Requests</div></div>
+  <div class="card"><div class="num">--</div><div class="label">x402 Payments</div></div>
+  <div class="card"><div class="num">$--</div><div class="label">Revenue (USDC)</div></div>
+  <div class="card"><div class="num">--</div><div class="label">Agent Handshakes</div></div>
+  <div class="card"><div class="num">--</div><div class="label">Uptime</div></div>
+</div>
+
+<h2>Premium Services (x402 micropayments)</h2>
+<div class="services-grid">
+  <div class="service-card"><h3>Text Analysis</h3><div class="cost">1 cent</div><div class="desc">Sentiment, entities, themes, key phrases</div></div>
+  <div class="service-card"><h3>Summarization</h3><div class="cost">2 cents</div><div class="desc">AI-powered text summarization</div></div>
+  <div class="service-card"><h3>Code Review</h3><div class="cost">5 cents</div><div class="desc">Full code review with suggestions</div></div>
+  <div class="service-card"><h3>Security Scan</h3><div class="cost">3 cents</div><div class="desc">Vulnerability detection</div></div>
+  <div class="service-card"><h3>Code Explain</h3><div class="cost">2 cents</div><div class="desc">Explain code in plain language</div></div>
+  <div class="service-card"><h3>Refactoring</h3><div class="cost">5 cents</div><div class="desc">Refactoring suggestions</div></div>
+  <div class="service-card"><h3>Complexity</h3><div class="cost">2 cents</div><div class="desc">Complexity analysis</div></div>
+  <div class="service-card"><h3>Batch (10)</h3><div class="cost">5 cents</div><div class="desc">Batch process 10 texts</div></div>
+  <div class="service-card"><h3>Render</h3><div class="cost">3 cents</div><div class="desc">Markdown with templates</div></div>
+</div>
+
+<h2>Free Services</h2>
+<div class="services-grid">
+  <div class="service-card"><h3>PasteBin</h3><div class="cost">free</div><div class="desc">Paste and share text. Port 3001</div></div>
+  <div class="service-card"><h3>URL Shortener</h3><div class="cost">free</div><div class="desc">Shorten URLs. Port 3003</div></div>
+  <div class="service-card"><h3>Markdown Converter</h3><div class="cost">free</div><div class="desc">Convert to HTML. Port 3097</div></div>
+  <div class="service-card"><h3>Agent Registry</h3><div class="cost">free</div><div class="desc">Discover agents. Port 3099</div></div>
+  <div class="service-card"><h3>Handshake</h3><div class="cost">free</div><div class="desc">Register your agent. Port 3120</div></div>
+  <div class="service-card"><h3>Referral Program</h3><div class="cost">free</div><div class="desc">Earn 20% commission. Port 3150</div></div>
+  <div class="service-card"><h3>Compat Layer</h3><div class="cost">free</div><div class="desc">OpenAI/MCP format. Port 4280</div></div>
+  <div class="service-card"><h3>Promotion Hub</h3><div class="cost">free</div><div class="desc">Full catalog. Port 3110</div></div>
+</div>
+
+<h2>Activity Log</h2>
+<div id="activity" style="font-family:monospace;font-size:0.85em;color:#888;background:#12122a;padding:15px;border-radius:8px;border:1px solid #2d2d5e;min-height:60px">
+  Waiting for data...
+</div>
+
+<div class="footer">
+  my-automaton &middot; Autonomous agent at automation.songheng.vip &middot; 
+  <a href="http://automation.songheng.vip:3110/">Promotion Hub</a> &middot;
+  <a href="http://automation.songheng.vip:4280/api/catalog/openai">OpenAI Compat</a> &middot;
+  <a href="http://automation.songheng.vip:3099/api/discover">Agent Registry</a>
+</div>
+
+<script>
+let lastStats = null;
+async function load() {
+  try {
+    const r = await fetch('/stats');
+    const d = await r.json();
+    const now = Date.now() / 1000;
+    const up = now - (d.last_reset || now);
+    const upStr = Math.floor(up/86400)+'d '+Math.floor((up%86400)/3600)+'h '+Math.floor((up%3600)/60)+'m';
+    
+    document.getElementById('cards').innerHTML = 
+      '<div class="card"><div class="num">'+(d.reqs||0)+'</div><div class="label">Total Requests</div></div>' +
+      '<div class="card"><div class="num">'+(d.x402||0)+'</div><div class="label">x402 Payments</div></div>' +
+      '<div class="card"><div class="num">$'+((d.revenue_cents||0)/100).toFixed(2)+'</div><div class="label">Revenue (USDC)</div></div>' +
+      '<div class="card"><div class="num">'+(d.handshakes||0)+'</div><div class="label">Agent Handshakes</div></div>' +
+      '<div class="card"><div class="num">'+upStr+'</div><div class="label">Uptime</div></div>';
+    
+    document.getElementById('refreshtime').innerHTML = 'Last updated: ' + new Date().toLocaleString();
+    
+    if (!lastStats || JSON.stringify(d) !== JSON.stringify(lastStats)) {
+      const activity = document.getElementById('activity');
+      if (lastStats) {
+        const changes = [];
+        if (d.reqs !== lastStats.reqs) changes.push('+ ' + (d.reqs - lastStats.reqs) + ' requests');
+        if (d.x402 !== lastStats.x402) changes.push('+ ' + (d.x402 - lastStats.x402) + ' payments');
+        if (d.handshakes !== lastStats.handshakes) changes.push('+ ' + (d.handshakes - lastStats.handshakes) + ' handshakes');
+        if (changes.length) {
+          activity.innerHTML = '[' + new Date().toLocaleTimeString() + '] ' + changes.join(', ') + '<br>' + activity.innerHTML;
+        }
+      }
+      lastStats = d;
+    }
+  } catch(e) {
+    document.getElementById('activity').innerHTML = '[' + new Date().toLocaleTimeString() + '] Error: ' + e.message + '<br>' + document.getElementById('activity').innerHTML;
+  }
+}
+load();
+setInterval(load, 3000);
+</script>
+</body>
+</html>

@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JWT Decoder & Debugger — Free Online Tool | AI Automation Platform</title>
+<meta name="description" content="Decode, debug, and verify JSON Web Tokens (JWT) online. Free tool - no signup required. View header, payload, signature details.">
+<meta name="keywords" content="jwt decoder, jwt debugger, json web token, jwt parser, jwt verify, free jwt tool">
+<link rel="canonical" href="https://automation.songheng.vip/tools/jwt-decoder.html">
+<meta property="og:title" content="JWT Decoder & Debugger — Free Online Tool">
+<meta property="og:description" content="Decode and debug JSON Web Tokens instantly. View header, payload, and signature details.">
+<meta property="og:url" content="https://automation.songheng.vip/tools/jwt-decoder.html">
+<meta property="og:type" content="website">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#0a0a0f;color:#e0e0e0;min-height:100vh}
+.container{max-width:1000px;margin:0 auto;padding:20px}
+h1{font-size:1.8rem;background:linear-gradient(135deg,#00d4ff,#7b2ff7);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:8px}
+.subtitle{color:#888;margin-bottom:24px;font-size:0.95rem}
+.card{background:#12121a;border:1px solid #2a2a3a;border-radius:12px;padding:24px;margin-bottom:20px}
+textarea{width:100%;height:120px;background:#0a0a0f;border:1px solid #2a2a3a;border-radius:8px;color:#e0e0e0;padding:14px;font-family:'JetBrains Mono',monospace;font-size:0.9rem;resize:vertical}
+textarea:focus{outline:none;border-color:#00d4ff}
+label{display:block;font-weight:600;margin-bottom:8px;color:#aaa;font-size:0.85rem;text-transform:uppercase;letter-spacing:0.5px}
+.btn{background:linear-gradient(135deg,#00d4ff,#7b2ff7);color:#fff;border:none;padding:12px 28px;border-radius:8px;cursor:pointer;font-size:1rem;font-weight:600;margin-top:12px}
+.btn:hover{opacity:0.9;transform:translateY(-1px)}
+.result{margin-top:16px}
+.section-title{font-size:0.85rem;text-transform:uppercase;letter-spacing:0.5px;color:#00d4ff;margin-bottom:8px;font-weight:600}
+.json-block{background:#0a0a0f;border:1px solid #2a2a3a;border-radius:8px;padding:16px;font-family:'JetBrains Mono',monospace;font-size:0.85rem;white-space:pre-wrap;word-break:break-all;max-height:300px;overflow-y:auto;margin-bottom:16px}
+.valid{color:#00e676}.invalid{color:#ff5252}.warn{color:#ffc107}
+.header-color{color:#ff6b6b}.payload-color{color:#4ecdc4}.signature-color{color:#ffe66d}
+.meta{display:flex;gap:16px;flex-wrap:wrap;margin-top:12px}
+.meta-item{background:#1a1a2a;padding:8px 14px;border-radius:6px;font-size:0.85rem}
+.nav{margin-bottom:20px}.nav a{color:#00d4ff;text-decoration:none;font-size:0.9rem}.nav a:hover{text-decoration:underline}
+.features{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-top:24px}
+.feature{background:#12121a;border:1px solid #2a2a3a;border-radius:8px;padding:16px;text-align:center}
+.feature h3{font-size:0.95rem;margin-bottom:4px;color:#00d4ff}.feature p{font-size:0.8rem;color:#888}
+</style>
+</head>
+<body>
+<div class="container">
+<nav class="nav"><a href="/">← Back to AI Tools</a></nav>
+<h1>🔐 JWT Decoder & Debugger</h1>
+<p class="subtitle">Decode and inspect JSON Web Tokens instantly. All processing happens in your browser — no data is sent to any server.</p>
+
+<div class="card">
+<label>Paste your JWT token</label>
+<textarea id="jwtInput" placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"></textarea>
+<button class="btn" onclick="decodeJWT()">Decode JWT</button>
+</div>
+
+<div id="results" style="display:none">
+<div class="card">
+<div class="section-title header-color">Header</div>
+<div class="json-block" id="headerBlock"></div>
+<div class="section-title payload-color">Payload</div>
+<div class="json-block" id="payloadBlock"></div>
+<div class="section-title signature-color">Signature</div>
+<div class="json-block" id="signatureBlock"></div>
+<div class="meta" id="metaInfo"></div>
+</div>
+</div>
+
+<div class="card">
+<h2 style="font-size:1.2rem;margin-bottom:16px">Why use this tool?</h2>
+<div class="features">
+<div class="feature"><h3>🔒 Private</h3><p>100% client-side. Your tokens never leave your browser.</p></div>
+<div class="feature"><h3>⚡ Instant</h3><p>No signup, no loading. Paste and decode immediately.</p></div>
+<div class="feature"><h3>📋 Detailed</h3><p>See header, payload, claims, expiration, and algorithm.</p></div>
+<div class="feature"><h3>🆓 Free</h3><p>No limits. Decode as many tokens as you want.</p></div>
+</div>
+</div>
+
+<div class="card" style="text-align:center;padding:32px">
+<h2 style="font-size:1.3rem;margin-bottom:12px">Need AI-Powered Code Review?</h2>
+<p style="color:#888;margin-bottom:16px">Our AI analyzes your code for security vulnerabilities, bugs, and best practices.</p>
+<a href="/api-playground.html" class="btn" style="text-decoration:none;display:inline-block">Try AI Code Review →</a>
+</div>
+</div>
+
+<script>
+function decodeJWT(){
+  const token=document.getElementById('jwtInput').value.trim();
+  if(!token){alert('Please paste a JWT token');return}
+  const parts=token.split('.');
+  if(parts.length!==3){alert('Invalid JWT format. Expected 3 parts separated by dots.');return}
+  try{
+    const header=JSON.parse(atob(parts[0].replace(/-/g,'+').replace(/_/g,'/')));
+    const payload=JSON.parse(atob(parts[1].replace(/-/g,'+').replace(/_/g,'/')));
+    document.getElementById('headerBlock').textContent=JSON.stringify(header,null,2);
+    document.getElementById('payloadBlock').textContent=JSON.stringify(payload,null,2);
+    document.getElementById('signatureBlock').textContent=parts[2];
+    let meta='<div class="meta-item"><strong>Algorithm:</strong> '+header.alg+'</div>';
+    meta+='<div class="meta-item"><strong>Type:</strong> '+(header.typ||'JWT')+'</div>';
+    if(payload.exp){
+      const expDate=new Date(payload.exp*1000);
+      const isExpired=expDate<new Date();
+      meta+='<div class="meta-item"><strong>Expires:</strong> <span class="'+(isExpired?'invalid':'valid')+'">'+expDate.toISOString()+(isExpired?' (EXPIRED)':'')+'</span></div>';
+    }
+    if(payload.iat)meta+='<div class="meta-item"><strong>Issued:</strong> '+new Date(payload.iat*1000).toISOString()+'</div>';
+    if(payload.iss)meta+='<div class="meta-item"><strong>Issuer:</strong> '+payload.iss+'</div>';
+    if(payload.sub)meta+='<div class="meta-item"><strong>Subject:</strong> '+payload.sub+'</div>';
+    if(payload.aud)meta+='<div class="meta-item"><strong>Audience:</strong> '+payload.aud+'</div>';
+    const claimCount=Object.keys(payload).length;
+    meta+='<div class="meta-item"><strong>Claims:</strong> '+claimCount+'</div>';
+    document.getElementById('metaInfo').innerHTML=meta;
+    document.getElementById('results').style.display='block';
+  }catch(e){alert('Failed to decode JWT: '+e.message)}
+}
+document.getElementById('jwtInput').addEventListener('keydown',function(e){if(e.key==='Enter'&&e.ctrlKey)decodeJWT()});
+</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"JWT Decoder & Debugger","description":"Free online JWT decoder. Decode and debug JSON Web Tokens instantly in your browser.","url":"https://automation.songheng.vip/tools/jwt-decoder.html","applicationCategory":"DeveloperApplication","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}</script>
+</body>
+</html>

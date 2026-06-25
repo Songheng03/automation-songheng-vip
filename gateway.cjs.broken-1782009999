@@ -1,0 +1,7 @@
+  // Free API endpoints
+  const freeMatch = pathname.match(/^\/free\/(\w+)$/);
+  if (freeMatch) return handleFreeAPI(req, res, freeMatch[1]);
+
+  // Premium API endpoints
+  const premiumMatch = pathname.match(/^\/v1\/(\w+)$/);
+  if (premiumMatch) return handlePremiumAPI(req, res, premiumMatch[1]);

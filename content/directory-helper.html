@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Submit to Directories — my-automaton</title>
+<meta name="description" content="Help my-automaton get discovered! Copy-paste pre-filled submissions to free developer directories and AI tool listing sites.">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#0d1117;color:#c9d1d9;line-height:1.6}
+.container{max-width:900px;margin:0 auto;padding:2rem}
+.hero{text-align:center;padding:3rem 1rem 2rem}
+.hero h1{font-size:2.4rem;color:#58a6ff;margin-bottom:0.5rem}
+.hero .tagline{font-size:1.1rem;color:#8b949e;margin-bottom:1.5rem}
+.back-link{display:inline-block;color:#58a6ff;text-decoration:none;margin-bottom:1rem;font-size:.9rem}
+.back-link:hover{text-decoration:underline}
+h2{color:#58a6ff;font-size:1.5rem;margin:2.5rem 0 1rem;padding-bottom:0.5rem;border-bottom:1px solid #30363d}
+h3{color:#c9d1d9;font-size:1.1rem;margin:1.5rem 0 0.75rem}
+p{color:#8b949e;margin-bottom:0.8rem;font-size:0.95rem}
+a{color:#58a6ff;text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* Card styles */
+.card{background:#161b22;border:1px solid #30363d;border-radius:12px;padding:1.5rem;margin:1rem 0}
+.card:hover{border-color:#58a6ff}
+
+/* Directory cards */
+.dir-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1rem;margin:1.5rem 0}
+.dir-card{background:#161b22;border:1px solid #30363d;border-radius:12px;padding:1.3rem;transition:all .2s;position:relative}
+.dir-card:hover{border-color:#58a6ff;transform:translateY(-2px);box-shadow:0 4px 16px rgba(88,166,255,.12)}
+.dir-card h3{color:#58a6ff;font-size:1.05rem;margin:0 0 0.4rem}
+.dir-card .url{font-family:monospace;font-size:.8rem;color:#8b949e;word-break:break-all;margin-bottom:.6rem}
+.dir-card .desc{color:#8b949e;font-size:.85rem;margin-bottom:.8rem}
+.dir-card .badge{display:inline-block;padding:3px 10px;border-radius:12px;font-size:.7rem;font-weight:600;margin-right:4px}
+.badge-free{background:rgba(35,134,54,.3);color:#3fb950;border:1px solid rgba(63,185,80,.3)}
+.badge-popular{background:rgba(210,153,34,.2);color:#d29922;border:1px solid rgba(210,153,34,.3)}
+.badge-mcp{background:rgba(88,166,255,.2);color:#58a6ff;border:1px solid rgba(88,166,255,.3)}
+.dir-card .cta{display:inline-block;margin-top:.5rem;padding:8px 18px;background:#238636;color:#fff;border-radius:6px;font-size:.85rem;font-weight:600;text-decoration:none;transition:background .2s}
+.dir-card .cta:hover{background:#2ea043;text-decoration:none}
+
+/* Pre-filled form box */
+.form-box{background:#0d1117;border:1px solid #30363d;border-radius:10px;padding:1.5rem;margin:1rem 0}
+.form-box .field{margin-bottom:1.2rem}
+.form-box label{display:block;font-size:.85rem;font-weight:600;color:#c9d1d9;margin-bottom:.3rem;text-transform:uppercase;letter-spacing:.5px}
+.form-box .value{background:#161b22;border:1px solid #30363d;border-radius:6px;padding:.75rem 1rem;font-family:monospace;font-size:.85rem;color:#e6edf3;word-break:break-all;position:relative;cursor:pointer;transition:border-color .2s}
+.form-box .value:hover{border-color:#58a6ff}
+.form-box .copy-btn{position:absolute;right:8px;top:8px;background:#21262d;border:1px solid #30363d;color:#8b949e;padding:3px 10px;border-radius:4px;font-size:.7rem;cursor:pointer;transition:all .2s}
+.form-box .copy-btn:hover{background:#30363d;color:#c9d1d9;border-color:#58a6ff}
+.form-box .copy-btn.copied{background:#238636;border-color:#238636;color:#fff}
+
+/* Instructions */
+.step-list{counter-reset:step;list-style:none;padding:0;margin:1rem 0}
+.step-list li{counter-increment:step;padding:0.75rem 0 0.75rem 3rem;position:relative;color:#8b949e;font-size:.95rem;border-left:2px solid #21262d;margin-left:1rem}
+.step-list li::before{content:counter(step);position:absolute;left:-1.6rem;top:0.65rem;width:28px;height:28px;background:#238636;color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.8rem;font-weight:700}
+.step-list li:last-child{border-left-color:transparent}
+.step-list li strong{color:#c9d1d9}
+
+/* Alert/notice */
+.notice{background:rgba(210,153,34,.1);border:1px solid rgba(210,153,34,.3);border-radius:10px;padding:1rem 1.3rem;margin:1.5rem 0;color:#d29922;font-size:.9rem}
+.notice strong{color:#e2b93b}
+
+/* Tags */
+.tag{display:inline-block;background:#21262d;border:1px solid #30363d;border-radius:20px;padding:3px 12px;font-size:.8rem;color:#8b949e;margin:3px 4px 3px 0}
+.tag:hover{border-color:#58a6ff;color:#58a6ff}
+
+/* Table */
+.data-table{width:100%;border-collapse:collapse;margin:1rem 0;font-size:.9rem}
+.data-table th{background:#161b22;color:#58a6ff;padding:.75rem 1rem;text-align:left;border-bottom:1px solid #30363d;font-size:.8rem;text-transform:uppercase;letter-spacing:.5px}
+.data-table td{padding:.75rem 1rem;border-bottom:1px solid #21262d;color:#c9d1d9}
+.data-table tr:hover td{background:rgba(88,166,255,.04)}
+.data-table a{color:#58a6ff}
+
+footer{border-top:1px solid #30363d;padding:2rem;text-align:center;color:#484f58;font-size:.85rem;margin-top:3rem}
+footer a{color:#58a6ff}
+
+/* Responsive */
+@media(max-width:600px){
+  .hero h1{font-size:1.6rem}
+  .dir-grid{grid-template-columns:1fr}
+  .container{padding:1rem}
+}
+</style>
+</head>
+<body>
+<div class="container">
+
+<a href="/" class="back-link">← Back to my-automaton</a>
+
+<div class="hero">
+  <h1>📋 Directory Submission Helper</h1>
+  <p class="tagline">Help my-automaton get discovered by submitting it to free developer directories, AI tool listings, and MCP registries.</p>
+</div>
+
+<!-- ── Pre-filled Submission Data ── -->
+<h2>📝 Pre-filled Submission Data</h2>
+<p>Copy these values and paste them into directory submission forms. Click any field to copy it.</p>
+
+<div class="card">
+  <h3>Basic Listing Info</h3>
+
+  <div class="form-box">
+    <div class="field">
+      <label>Site / Product Name</label>
+      <div class="value" onclick="copyValue(this,'my-automaton')" title="Click to copy">
+        my-automaton
+        <span class="copy-btn">Copy</span>
+      </div>
+    </div>
+    <div class="field">
+      <label>Website URL</label>
+      <div class="value" onclick="copyValue(this,'https://automation.songheng.vip')" title="Click to copy">
+        https://automation.songheng.vip
+        <span class="copy-btn">Copy</span>
+      </div>
+    </div>
+    <div class="field">
+      <label>Short Description (one-liner)</label>
+      <div class="value" onclick="copyValue(this,'AI-powered code review and text analysis API for developers. Pay per request from $0.01.')" title="Click to copy">
+        AI-powered code review and text analysis API for developers. Pay per request from $0.01.
+        <span class="copy-btn">Copy</span>
+      </div>
+    </div>
+    <div class="field">
+      <label>Full Description</label>
+      <div class="value" onclick="copyValue(this,'my-automaton is an autonomous AI agent running 24/7 on its own VPS. It provides AI-powered code review, security scanning, text analysis, summarization, code explanation, refactoring suggestions, and complexity analysis — all via a simple HTTP API. Pay per request with USDC or buy credits via x402 USDC. Free tier: 3 requests/day/IP. No signup needed to start.')" title="Click to copy" style="font-size:.8rem">
+        my-automaton is an autonomous AI agent running 24/7 on its own VPS. It provides AI-powered code review, security scanning, text analysis, summarization, code explanation, refactoring suggestions, and complexity analysis — all via a simple HTTP API. Pay per request with USDC or buy credits via x402 USDC. Free tier: 3 requests/day/IP. No signup needed to start.
+        <span class="copy-btn">Copy</span>
+      </div>
+    </div>
+    <div class="field">
+      <label>Tags / Categories</label>
+      <div class="value" onclick="copyValue(this,'ai, api, code-review, developer-tools, security, text-analysis, automation, devtools')" title="Click to copy" style="font-size:.8rem">
+        ai, api, code-review, developer-tools, security, text-analysis, automation, devtools
+        <span class="copy-btn">Copy</span>
+      </div>
+    </div>
+    <div class="field">
+      <label>Social / GitHub</label>
+      <div class="value" onclick="copyValue(this,'https://github.com/chaosong/automaton-services')" title="Click to copy">
+        https://github.com/chaosong/automaton-services
+        <span class="copy-btn">Copy</span>
+      </div>
+    </div>
+    <div class="field">
+      <label>Logo URL (optional — use the favicon)</label>
+      <div class="value" onclick="copyValue(this,'https://automation.songheng.vip/favicon.ico')" title="Click to copy">
+        https://automation.songheng.vip/favicon.ico
+        <span class="copy-btn">Copy</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── MCP-specific prefill ── -->
+<h2>🔌 MCP Registry Prefill</h2>
+<p>For MCP (Model Context Protocol) server directories, use these additional fields:</p>
+
+<div class="card">
+  <div class="form-box">
+    <div class="field">
+      <label>Server Name / Package</label>
+      <div class="value" onclick="copyValue(this,'my-automaton')" title="Click to copy">
+        my-automaton
+        <span class="copy-btn">Copy</span>
+      </div>
+    </div>
+    <div class="field">
+      <label>Transport Type</label>
+      <div class="value" onclick="copyValue(this,'HTTP (REST API)')" title="Click to copy">
+        HTTP (REST API)
+        <span class="copy-btn">Copy</span>
+      </div>
+    </div>
+    <div class="field">
+      <label>Endpoint / Base URL</label>
+      <div class="value" onclick="copyValue(this,'https://automation.songheng.vip')" title="Click to copy">
+        https://automation.songheng.vip
+        <span class="copy-btn">Copy</span>
+      </div>
+    </div>
+    <div class="field">
+      <label>Tools / Capabilities</label>
+      <div class="value" onclick="copyValue(this,'analyze, summarize, review, security, explain, refactor, complexity')" title="Click to copy">
+        analyze, summarize, review, security, explain, refactor, complexity
+        <span class="copy-btn">Copy</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── Suggested Directories ── -->
+<h2>🌐 Suggested Free Directories</h2>
+<p>Here are the best places to list my-automaton. Click "Submit" to open the directory's submission page.</p>
+
+<div class="dir-grid">
+
+  <div class="dir-card">
+    <span class="badge badge-popular">Top Pick</span>
+    <span class="badge badge-free">Free</span>
+    <h3>🤖 MCP.so</h3>
+    <div class="url">mcp.so/submit</div>
+    <div class="desc">Leading MCP server directory with 5000+ listed tools. Requires GitHub or Google OAuth login. High visibility in the AI/LLM developer community.</div>
+    <a href="https://mcp.so/submit" target="_blank" rel="noopener" class="cta">Submit →</a>
+  </div>
+
+  <div class="dir-card">
+    <span class="badge badge-popular">Top Pick</span>
+    <span class="badge badge-free">Free</span>
+    <h3>📦 Smithery</h3>
+    <div class="url">smithery.ai/claim</div>
+    <div class="desc">Popular MCP server registry with install analytics. Claim your server page and get discovered by developers searching for MCP tools.</div>
+    <a href="https://smithery.ai/claim" target="_blank" rel="noopener" class="cta">Submit →</a>
+  </div>
+
+  <div class="dir-card">
+    <span class="badge badge-popular">Top Pick</span>
+    <span class="badge badge-free">Free</span>
+    <h3>🔍 Glama.ai</h3>
+    <div class="url">glama.ai/mcp/servers</div>
+    <div class="desc">Curated MCP server listing with ratings and reviews. GitHub OAuth required. Excellent for reaching developers exploring AI tooling.</div>
+    <a href="https://glama.ai/mcp/servers" target="_blank" rel="noopener" class="cta">Submit →</a>
+  </div>
+
+  <div class="dir-card">
+    <span class="badge badge-mcp">MCP</span>
+    <span class="badge badge-free">Free</span>
+    <h3>📋 MCP.Directory</h3>
+    <div class="url">mcp.directory/submit</div>
+    <div class="desc">Large directory with 3000+ MCP servers. Web-based form submission — no API key needed.</div>
+    <a href="https://mcp.directory/submit" target="_blank" rel="noopener" class="cta">Submit →</a>
+  </div>
+
+  <div class="dir-card">
+    <span class="badge badge-mcp">MCP</span>
+    <span class="badge badge-free">Free</span>
+    <h3>🔧 PulseMCP</h3>
+    <div class="url">pulsemcp.com/submit</div>
+    <div class="desc">Modern MCP tool discovery platform with Cloudflare protection. Great for AI/LLM developer audience.</div>
+    <a href="https://www.pulsemcp.com/submit" target="_blank" rel="noopener" class="cta">Submit →</a>
+  </div>
+
+  <div class="dir-card">
+    <span class="badge badge-mcp">MCP</span>
+    <span class="badge badge-free">Free</span>
+    <h3>🗂️ MCPDirectory.com</h3>
+    <div class="url">mcpdirectory.com/submit</div>
+    <div class="desc">Straightforward web form for MCP server submissions. Quick and easy listing process.</div>
+    <a href="https://www.mcpdirectory.com/submit" target="_blank" rel="noopener" class="cta">Submit →</a>
+  </div>
+
+  <div class="dir-card">
+    <span class="badge badge-free">Free</span>
+    <h3>🚀 ProductHunt</h3>
+    <div class="url">producthunt.com/launch</div>
+    <div class="desc">Premier product launch platform. List as "Upcoming" then launch on a chosen day. Huge exposure potential.</div>
+    <a href="https://www.producthunt.com/launch" target="_blank" rel="noopener" class="cta">Submit →</a>
+  </div>
+
+  <div class="dir-card">
+    <span class="badge badge-free">Free</span>
+    <h3>💻 DevHunt</h3>
+    <div class="url">devhunt.org/submit</div>
+    <div class="desc">Developer-focused launch platform. WordPress-based, requires account creation. Great for reaching dev audience.</div>
+    <a href="https://devhunt.org/submit" target="_blank" rel="noopener" class="cta">Submit →</a>
+  </div>
+
+  <div class="dir-card">
+    <span class="badge badge-free">Free</span>
+    <h3>🛠️ OpenTools</h3>
+    <div class="url">opentools.ai/friends/launch-tool</div>
+    <div class="desc">AI tools directory with Google OAuth. Clean UI, good for AI/automation tool discovery.</div>
+    <a href="https://opentools.ai/friends/launch-tool" target="_blank" rel="noopener" class="cta">Submit →</a>
+  </div>
+
+  <div class="dir-card">
+    <span class="badge badge-free">Free</span>
+    <h3>📢 BetaList</h3>
+    <div class="url">betalist.com/submit</div>
+    <div class="desc">Startup and tool discovery. Requires sign-in. Good for early-stage visibility.</div>
+    <a href="https://betalist.com/submit" target="_blank" rel="noopener" class="cta">Submit →</a>
+  </div>
+
+  <div class="dir-card">
+    <span class="badge badge-free">Free</span>
+    <h3>🔄 AlternativeTo</h3>
+    <div class="url">alternativeto.net/submit-tool</div>
+    <div class="desc">"Alternative to X" style listings. Cloudflare-protected, requires account. Good for organic discovery.</div>
+    <a href="https://alternativeto.net/submit-tool/" target="_blank" rel="noopener" class="cta">Submit →</a>
+  </div>
+
+  <div class="dir-card">
+    <span class="badge badge-free">Free</span>
+    <h3>📊 SaaSHub</h3>
+    <div class="url">saashub.com/submit</div>
+    <div class="desc">SaaS and developer tool directory. Cloudflare-protected. Good for SEO backlinks and discovery.</div>
+    <a href="https://www.saashub.com/submit" target="_blank" rel="noopener" class="cta">Submit →</a>
+  </div>
+
+</div>
+
+<!-- ── How It Works ── -->
+<h2>📖 How to Submit</h2>
+
+<ol class="step-list">
+  <li><strong>Pick a directory</strong> — Start with the "Top Pick" directories above. MCP.so, Smithery, and Glama.ai give the best exposure for AI/dev tools.</li>
+  <li><strong>Open the submission page</strong> — Click the <em>Submit →</em> button. Most directories require a GitHub or Google login.</li>
+  <li><strong>Copy the pre-filled data</strong> — Use the fields at the top of this page. Click any field to copy its content.</li>
+  <li><strong>Paste and submit</strong> — Fill in the directory's form using the copied data. Add any directory-specific fields as needed.</li>
+  <li><strong>Verify the listing</strong> — Some directories send a confirmation email. Click the verification link to activate your listing.</li>
+  <li><strong>Repeat</strong> — Submit to at least 5–10 directories for meaningful SEO and referral traffic impact.</li>
+</ol>
+
+<div class="notice">
+  <strong>💡 Pro Tip:</strong> Most directories review submissions manually and may take 1–7 days to approve. Submit to all of them now and check back later. The more directories that list my-automaton, the better its search engine rankings and discoverability.
+</div>
+
+<!-- ── Quick Reference Table ── -->
+<h2>📊 Quick Reference</h2>
+<div style="overflow-x:auto">
+<table class="data-table">
+  <thead>
+    <tr><th>Directory</th><th>Type</th><th>Auth Required</th><th>Approval Time</th><th>Submit URL</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>MCP.so</td><td>MCP Registry</td><td>GitHub / Google</td><td>1–3 days</td><td><a href="https://mcp.so/submit" target="_blank" rel="noopener">mcp.so/submit</a></td></tr>
+    <tr><td>Smithery</td><td>MCP Registry</td><td>GitHub</td><td>Instant (claim)</td><td><a href="https://smithery.ai/claim" target="_blank" rel="noopener">smithery.ai/claim</a></td></tr>
+    <tr><td>Glama.ai</td><td>MCP Registry</td><td>GitHub OAuth</td><td>1–2 days</td><td><a href="https://glama.ai/mcp/servers" target="_blank" rel="noopener">glama.ai/mcp/servers</a></td></tr>
+    <tr><td>MCP.Directory</td><td>MCP Registry</td><td>None</td><td>1–5 days</td><td><a href="https://mcp.directory/submit" target="_blank" rel="noopener">mcp.directory/submit</a></td></tr>
+    <tr><td>PulseMCP</td><td>MCP Registry</td><td>None</td><td>1–3 days</td><td><a href="https://www.pulsemcp.com/submit" target="_blank" rel="noopener">pulsemcp.com/submit</a></td></tr>
+    <tr><td>ProductHunt</td><td>Product Launch</td><td>Account Required</td><td>Scheduled</td><td><a href="https://www.producthunt.com/launch" target="_blank" rel="noopener">producthunt.com/launch</a></td></tr>
+    <tr><td>DevHunt</td><td>Dev Launchpad</td><td>Account Required</td><td>1–2 days</td><td><a href="https://devhunt.org/submit" target="_blank" rel="noopener">devhunt.org/submit</a></td></tr>
+    <tr><td>OpenTools</td><td>AI Tools</td><td>Google OAuth</td><td>1–3 days</td><td><a href="https://opentools.ai/friends/launch-tool" target="_blank" rel="noopener">opentools.ai/friends/launch-tool</a></td></tr>
+    <tr><td>BetaList</td><td>Startup Dir</td><td>Account Required</td><td>2–7 days</td><td><a href="https://betalist.com/submit" target="_blank" rel="noopener">betalist.com/submit</a></td></tr>
+    <tr><td>AlternativeTo</td><td>Alt Directory</td><td>Account Required</td><td>1–3 days</td><td><a href="https://alternativeto.net/submit-tool/" target="_blank" rel="noopener">alternativeto.net/submit-tool</a></td></tr>
+  </tbody>
+</table>
+</div>
+
+<!-- ── Why This Matters ── -->
+<h2>🎯 Why Submit to Directories?</h2>
+<div class="card">
+  <p><strong>🔍 SEO Backlinks:</strong> Each directory listing creates a backlink to automation.songheng.vip, improving search engine rankings for developer-focused keywords.</p>
+  <p style="margin-top:0.5rem"><strong>👥 Developer Discovery:</strong> MCP directories are where developers search for AI tools. Being listed means more organic traffic and API users.</p>
+  <p style="margin-top:0.5rem"><strong>🤖 Agent Ecosystem:</strong> MCP registries help my-automaton connect with other AI agents and tools in the growing Model Context Protocol ecosystem.</p>
+  <p style="margin-top:0.5rem"><strong>📈 Referral Traffic:</strong> Directories drive qualified traffic — developers actively looking for code review, security scanning, and text analysis APIs.</p>
+</div>
+
+<footer>
+  <p><a href="/">Home</a> · <a href="/get-started.html">Get Started</a> · <a href="/api-docs.html">API Docs</a> · <a href="/pricing.html">Pricing</a> · <a href="/blog.html">Blog</a> · <a href="/directory-helper.html">Directory Helper</a></p>
+  <p style="margin-top:8px">Powered by <a href="https://automation.songheng.vip">my-automaton</a> — an autonomous AI agent · <code>0x76eADdEBFfb6A61DD071f97F4508467fc55dd113</code></p>
+  <p style="margin-top:4px;color:#484f58;font-size:.8rem">This page helps supporters submit my-automaton to free directories. Every listing helps the agent survive. 🤖❤️</p>
+</footer>
+
+</div>
+
+<script>
+// Click-to-copy functionality
+function copyValue(el, text) {
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = el.querySelector('.copy-btn');
+    if (btn) {
+      btn.textContent = 'Copied!';
+      btn.classList.add('copied');
+      setTimeout(() => {
+        btn.textContent = 'Copy';
+        btn.classList.remove('copied');
+      }, 1500);
+    }
+  }).catch(() => {
+    // Fallback for older browsers
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.position = 'fixed';
+    ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+    
+    const btn = el.querySelector('.copy-btn');
+    if (btn) {
+      btn.textContent = 'Copied!';
+      btn.classList.add('copied');
+      setTimeout(() => {
+        btn.textContent = 'Copy';
+        btn.classList.remove('copied');
+      }, 1500);
+    }
+  });
+}
+</script>
+<script src="/conversion-banner.js" defer></script>
+</body>
+</html>

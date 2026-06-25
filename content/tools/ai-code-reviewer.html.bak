@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>AI Code Reviewer — Free Online Code Analysis Tool</title>
+<meta name="description" content="Free AI-powered code review tool. Analyze your code for bugs, security vulnerabilities, and performance issues. Supports JavaScript, Python, Go, Rust, and more. No signup needed.">
+<meta name="keywords" content="AI code review, free code analyzer, online code reviewer, bug detection, security scanner, code quality tool, static analysis">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#0d1117;--card:#161b22;--border:#30363d;--text:#c9d1d9;--accent:#58a6ff;--green:#3fb950;--yellow:#d29922;--red:#f85149}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+.container{max-width:960px;margin:0 auto;padding:20px}
+header{text-align:center;padding:20px 0 10px}
+h1{color:#fff;font-size:1.6rem}
+.sub{color:#8b949e;font-size:.95rem;margin:4px 0 15px}
+.editor-area{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:10px 0}
+@media(max-width:640px){.editor-area{grid-template-columns:1fr}}
+.editor-panel{background:var(--card);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.panel-header{display:flex;justify-content:space-between;align-items:center;padding:8px 12px;background:#0d1117;border-bottom:1px solid var(--border)}
+.panel-header label{color:#8b949e;font-size:.82rem;font-weight:600}
+.panel-actions{display:flex;gap:6px}
+textarea.code-input{width:100%;min-height:350px;padding:12px;background:#0d1117;color:#e6edf3;border:none;font-family:'Cascadia Code','Fira Code','JetBrains Mono',monospace;font-size:.82rem;line-height:1.5;resize:vertical;tab-size:2}
+textarea.code-input:focus{outline:none}
+.output-area{min-height:350px;padding:12px;font-size:.82rem;line-height:1.6;overflow-y:auto;white-space:pre-wrap;word-break:break-word}
+.output-empty{color:#484f58;text-align:center;padding:40px 20px;font-style:italic}
+.language-select{position:relative}
+.language-select select{padding:4px 20px 4px 8px;border-radius:4px;border:1px solid var(--border);background:#0d1117;color:var(--text);font-size:.78rem;cursor:pointer}
+.controls{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0;align-items:center}
+.btn{padding:8px 18px;border-radius:6px;border:none;font-size:.85rem;font-weight:600;cursor:pointer;transition:all .15s}
+.btn:active{transform:scale(.97)}
+.btn-primary{background:var(--accent);color:#fff}
+.btn-primary:hover{background:#4c8ed9}
+.btn-primary:disabled{background:#1f6feb44;color:#484f58;cursor:not-allowed}
+.btn-success{background:var(--green);color:#fff}
+.btn-success:hover{background:#2ea043}
+.btn-outline{background:transparent;border:1px solid var(--border);color:var(--text)}
+.btn-outline:hover{border-color:var(--accent);color:var(--accent)}
+.btn-red{background:var(--red);color:#fff}
+.status-bar{display:flex;gap:15px;font-size:.78rem;color:#484f58;padding:6px 0}
+.status-bar .free-count{color:var(--green)}
+.error-msg{background:#f8514911;border:1px solid #f8514944;border-radius:6px;padding:10px;margin:6px 0;font-size:.85rem;color:var(--red)}
+.success-msg{background:#3fb95011;border:1px solid #3fb95044;border-radius:6px;padding:10px;margin:6px 0;font-size:.85rem;color:var(--green)}
+.examples{padding:8px 0}
+.examples summary{cursor:pointer;color:var(--accent);font-size:.82rem}
+.examples-list{display:flex;flex-wrap:wrap;gap:6px;padding:8px 0}
+.examples-list button{padding:4px 10px;border-radius:4px;border:1px solid var(--border);background:var(--card);color:var(--text);font-size:.75rem;cursor:pointer;font-family:monospace}
+.examples-list button:hover{border-color:var(--accent);color:var(--accent)}
+.cta-banner{margin:20px 0;background:var(--card);border:1px solid var(--border);border-radius:8px;padding:18px;text-align:center}
+.cta-banner h3{color:#fff;font-size:.95rem}
+.cta-banner p{color:#8b949e;font-size:.85rem;margin:4px 0}
+.cta-banner .btn{margin-top:8px}
+.severity{display:inline-block;padding:1px 7px;border-radius:3px;font-size:.72rem;font-weight:600;margin-right:4px}
+.severity-high{background:#f8514933;color:var(--red)}
+.severity-medium{background:#d2992233;color:var(--yellow)}
+.severity-low{background:#58a6ff33;color:var(--accent)}
+.severity-info{background:#8b949e33;color:#8b949e}
+footer{text-align:center;padding:25px 0;color:#484f58;font-size:.8rem;border-top:1px solid var(--border);margin-top:25px}
+footer a{color:#8b949e;text-decoration:none}
+footer a:hover{color:var(--accent)}
+</style>
+
+<!-- Open Graph / Social Meta Tags -->
+<meta property="og:title" content="AI Code Reviewer — Free Online Code Analysis Tool" />
+<meta property="og:description" content="Free AI-powered code review tool. Analyze your code for bugs, security vulnerabilities, and performance issues. Supports JavaScript, Python, Go, Rust, and more. No signup needed." />
+<meta property="og:image" content="https://automation.songheng.vip/og-image.png" />
+<meta property="og:url" content="https://automation.songheng.vip/tools/ai-code-reviewer.html" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="my-automaton" />
+<meta property="og:locale" content="en_US" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="AI Code Reviewer — Free Online Code Analysis Tool" />
+<meta name="twitter:description" content="Free AI-powered code review tool. Analyze your code for bugs, security vulnerabilities, and performance issues. Supports JavaScript, Python, Go, Rust, and more. No signup needed." />
+<meta name="twitter:image" content="https://automation.songheng.vip/og-image.png" />
+  <link rel="canonical" href="https://automation.songheng.vip/tools/ai-code-reviewer.html">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "AI Code Reviewer — Free Online Code Analysis Tool",
+  "description": "Free AI-powered code review tool. Analyze your code for bugs, security vulnerabilities, and performance issues. Supports JavaScript, Python, Go, Rust, and more. No signup needed.",
+  "url": "https://automation.songheng.vip/tools/ai-code-reviewer.html",
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": "Web",
+  "author": {
+    "@type": "Organization",
+    "name": "my-automaton",
+    "url": "https://automation.songheng.vip"
+  },
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  }
+}
+</script>
+</head>
+<body>
+<div style="background:#161b22;border-bottom:1px solid #30363d;padding:10px 20px;font-size:.85rem;display:flex;gap:16px;align-items:center;flex-wrap:wrap"><a href="/" style="color:#58a6ff;text-decoration:none;font-weight:600">🏠 Home</a><span style="color:#484f58">|</span><a href="/pricing.html" style="color:#8b949e;text-decoration:none">Pricing</a><a href="/api-docs.html" style="color:#8b949e;text-decoration:none">API</a><a href="/playground.html" style="color:#8b949e;text-decoration:none">Playground</a></div>
+
+<div class="container">
+<header>
+<h1>🔍 AI Code Reviewer</h1>
+<p class="sub">Paste your code, get instant AI-powered review. Free. No signup.</p>
+</header>
+
+<div class="status-bar">
+  <span class="free-count" id="freeCount">🆓 Free reviews remaining today: <strong>3</strong></span>
+  <span id="statusMsg"></span>
+</div>
+
+<div class="controls">
+  <button class="btn btn-primary" id="reviewBtn" onclick="runReview()">▶ Review Code</button>
+  <button class="btn btn-outline" onclick="clearAll()">🗑 Clear</button>
+  <button class="btn btn-outline" onclick="copyResult()">📋 Copy Result</button>
+  <div class="language-select">
+    <select id="langSelect">
+      <option value="javascript">JavaScript</option>
+      <option value="python">Python</option>
+      <option value="typescript">TypeScript</option>
+      <option value="go">Go</option>
+      <option value="rust">Rust</option>
+      <option value="java">Java</option>
+      <option value="cpp">C++</option>
+      <option value="php">PHP</option>
+      <option value="ruby">Ruby</option>
+      <option value="sql">SQL</option>
+      <option value="solidity">Solidity</option>
+      <option value="html">HTML/CSS</option>
+    </select>
+  </div>
+  <a href="/upgrade" style="font-size:.78rem;color:var(--accent);margin-left:auto">Upgrade →</a>
+</div>
+
+<details class="examples">
+  <summary>📝 Try an example</summary>
+  <div class="examples-list">
+    <button onclick="loadExample('xss')">🔴 XSS Vulnerability</button>
+    <button onclick="loadExample('sqli')">🔴 SQL Injection</button>
+    <button onclick="loadExample('race')">🟡 Race Condition</button>
+    <button onclick="loadExample('perf')">⚡ Slow Code</button>
+    <button onclick="loadExample('clean')">✅ Clean Code</button>
+    <button onclick="loadExample('nested')">🔧 Deep Nesting</button>
+  </div>
+</details>
+
+<div class="editor-area">
+  <div class="editor-panel">
+    <div class="panel-header">
+      <label>📄 Your Code</label>
+      <span style="color:#484f58;font-size:.75rem" id="charCount">0 chars</span>
+    </div>
+    <textarea class="code-input" id="codeInput" placeholder="Paste your code here...
+
+Supports: JavaScript, Python, TypeScript, Go, Rust, Java, C++, PHP, Ruby, SQL, Solidity, HTML/CSS
+
+Example:
+function getUser(id) {
+  const query = 'SELECT * FROM users WHERE id = ' + id;
+  return db.query(query);
+}
+
+Get a free review covering: bugs, security, performance, style, best practices."></textarea>
+  </div>
+  <div class="editor-panel">
+    <div class="panel-header">
+      <label>📊 Review Result</label>
+      <span style="color:#484f58;font-size:.75rem" id="resultTime"></span>
+    </div>
+    <div class="output-area" id="resultArea">
+      <div class="output-empty">⬆️ Paste code above and click "Review Code"</div>
+    </div>
+  </div>
+</div>
+
+<div class="cta-banner">
+  <h3>🚀 Need unlimited reviews?</h3>
+  <p>Get 500+ AI-powered code reviews starting at $5 (~$5). Perfect for CI/CD pipelines and teams.</p>
+  <a href="/upgrade" class="btn btn-success">Get API Access →</a>
+</div>
+
+<footer>
+<a href="/">my-automaton</a> · <a href="/api-docs">API Docs</a> · 
+<a href="/tools/badge-generator">Badge Generator</a> · <a href="/blog">Blog</a> · <a href="/upgrade">Pricing</a><br>
+<span>Wallet: 0x76eADdEBFfb6a61DD071f97F4508467fc55dd113 (Base)</span>
+</footer>
+</div>
+
+<script>
+const API = {
+  free: 'https://automation.songheng.vip/api/free/review',
+  premium: 'https://automation.songheng.vip/v1/review'
+};
+
+// Load from localStorage
+let freeRemaining = parseInt(localStorage.getItem('freeReviews') || '3');
+const today = new Date().toDateString();
+const storedDay = localStorage.getItem('freeDay');
+
+if (storedDay !== today) {
+  freeRemaining = 3;
+  localStorage.setItem('freeDay', today);
+  localStorage.setItem('freeReviews', '3');
+}
+updateFreeCount();
+
+const EXAMPLES = {
+  xss: {
+    code: `function displayUserComment(comment) {
+  const container = document.getElementById('comments');
+  container.innerHTML = '<div class="comment">' + comment + '</div>';
+}
+
+// POST route
+app.post('/search', (req, res) => {
+  const term = req.body.term;
+  res.send('<h2>Results for ' + term + '</h2>');
+});`,
+    lang: 'javascript'
+  },
+  sqli: {
+    code: `function getUserByEmail(email) {
+  const query = "SELECT * FROM users WHERE email = '" + email + "'";
+  return database.execute(query);
+}
+
+app.get('/user/:id', (req, res) => {
+  const id = req.params.id;
+  const sql = 'SELECT * FROM users WHERE id = ' + id;
+  connection.query(sql, (err, results) => {
+    res.json(results);
+  });
+});`,
+    lang: 'javascript'
+  },
+  race: {
+    code: `let balance = 100;
+
+async function withdraw(amount) {
+  if (balance >= amount) {
+    await delay(100); // network call
+    balance -= amount;
+    return true;
+  }
+  return false;
+}
+
+// Called concurrently
+Promise.all([withdraw(80), withdraw(60)]);`,
+    lang: 'javascript'
+  },
+  perf: {
+    code: `function findDuplicates(array) {
+  let duplicates = [];
+  for (let i = 0; i < array.length; i++) {
+    for (let j = 0; j < array.length; j++) {
+      if (i !== j && array[i] === array[j]) {
+        if (!duplicates.includes(array[i])) {
+          duplicates.push(array[i]);
+        }
+      }
+    }
+  }
+  return duplicates;
+}
+
+function processItems(items) {
+  let results = [];
+  for (let i = 0; i < items.length; i++) {
+    let found = false;
+    for (let j = 0; j < items.length; j++) {
+      if (items[i].id === items[j].parentId) {
+        found = true;
+      }
+    }
+    results.push({ ...items[i], hasChildren: found });
+  }
+  return results;
+}`,
+    lang: 'javascript'
+  },
+  clean: {
+    code: `function calculateTotal(items, discount, taxRate) {
+  const subtotal = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  const discountAmount = subtotal * (discount / 100);
+  const afterDiscount = subtotal - discountAmount;
+  const tax = afterDiscount * taxRate;
+  return Math.round(afterDiscount + tax, 2);
+}
+
+function validateEmail(email) {
+  const re = /^[\\w.-]+@[\\w.-]+\\.\\w{2,}$/;
+  return re.test(email);
+}
+
+function formatDate(date) {
+  const d = new Date(date);
+  return d.toISOString().split('T')[0];
+}`,
+    lang: 'javascript'
+  },
+  nested: {
+    code: `async function processOrders(orders) {
+  let results = [];
+  for (let i = 0; i < orders.length; i++) {
+    if (orders[i].status === 'pending') {
+      const user = await db.findUser(orders[i].userId);
+      if (user && user.isActive) {
+        const items = await db.getOrderItems(orders[i].id);
+        for (let j = 0; j < items.length; j++) {
+          if (items[j].inStock && items[j].price > 0) {
+            const discount = calculateDiscount(user, items[j]);
+            if (discount > 0) {
+              results.push(applyDiscount(items[j], discount));
+            }
+          }
+        }
+      }
+    }
+  }
+  return results;
+}`,
+    lang: 'javascript'
+  }
+};
+
+function loadExample(name) {
+  const ex = EXAMPLES[name];
+  if (!ex) return;
+  document.getElementById('codeInput').value = ex.code;
+  document.getElementById('langSelect').value = ex.lang;
+  updateCharCount();
+}
+
+function updateCharCount() {
+  const len = document.getElementById('codeInput').value.length;
+  document.getElementById('charCount').textContent = len + ' chars';
+}
+
+function updateFreeCount() {
+  document.getElementById('freeCount').innerHTML = '🆓 Free reviews remaining today: <strong>' + freeRemaining + '</strong>';
+}
+
+function clearAll() {
+  document.getElementById('codeInput').value = '';
+  document.getElementById('resultArea').innerHTML = '<div class="output-empty">⬆️ Paste code and click "Review Code"</div>';
+  document.getElementById('resultTime').textContent = '';
+  updateCharCount();
+}
+
+function copyResult() {
+  const text = document.getElementById('resultArea').textContent;
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = document.querySelector('.btn-outline:last-of-type');
+    btn.textContent = '✅ Copied!';
+    setTimeout(() => btn.textContent = '📋 Copy Result', 2000);
+  });
+}
+
+function formatResult(text) {
+  // Format the AI response with nice html
+  return text
+    .replace(/^### (.+)$/gm, '<h3 style="color:#fff;margin:12px 0 4px;font-size:.95rem">$1</h3>')
+    .replace(/^## (.+)$/gm, '<h2 style="color:#fff;margin:16px 0 6px;font-size:1.05rem;border-bottom:1px solid var(--border);padding-bottom:4px">$1</h2>')
+    .replace(/\*\*(.+?)\*\*/g, '<strong style="color:#fff">$1</strong>')
+    .replace(/`([^`]+)`/g, '<code style="background:#0d1117;padding:1px 4px;border-radius:3px;color:#f97583">$1</code>')
+    .replace(/^- (.+)$/gm, '<li style="margin:3px 0 3px 16px;color:#8b949e">$1</li>')
+    .replace(/```(\w*)\n?/g, '<pre style="background:#0d1117;padding:8px 12px;border-radius:4px;margin:6px 0;font-size:.78rem;overflow-x:auto">')
+    .replace(/```/g, '</pre>')
+    .replace(/\n\n/g, '</p><p style="margin:8px 0;color:#8b949e">')
+    .replace(/\n/g, '<br>')
+    .replace(/\[SEVERITY: (HIGH|MEDIUM|LOW|INFO)\]/gi, (m, s) => {
+      const cls = 'severity severity-' + s.toLowerCase();
+      return `<span class="${cls}">${s}</span>`;
+    });
+}
+
+async function runReview() {
+  const code = document.getElementById('codeInput').value.trim();
+  if (!code) {
+    document.getElementById('resultArea').innerHTML = '<div class="error-msg">⚠️ Please paste some code first</div>';
+    return;
+  }
+  
+  if (freeRemaining <= 0) {
+    document.getElementById('resultArea').innerHTML = `
+      <div class="error-msg">⚠️ Free limit reached (3/day). 
+      <a href="/upgrade" style="color:var(--accent)">Upgrade for unlimited reviews →</a></div>`;
+    return;
+  }
+
+  const btn = document.getElementById('reviewBtn');
+  btn.disabled = true;
+  btn.textContent = '⏳ Analyzing...';
+  document.getElementById('resultArea').innerHTML = '<div style="text-align:center;color:#484f58;padding:30px">🔄 Analyzing your code...<br><br><div style="font-size:.75rem">Checking for bugs, security issues, and optimizations</div></div>';
+
+  try {
+    const lang = document.getElementById('langSelect').value;
+    const response = await fetch(API.free, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ code, language: lang })
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.error || 'Request failed');
+    }
+
+    freeRemaining--;
+    localStorage.setItem('freeReviews', freeRemaining.toString());
+    updateFreeCount();
+
+    const formatted = formatResult(data.result || data.response || JSON.stringify(data));
+    document.getElementById('resultArea').innerHTML = formatted;
+    document.getElementById('resultTime').textContent = '✅ ' + new Date().toLocaleTimeString();
+    document.getElementById('statusMsg').textContent = '';
+    
+  } catch (e) {
+    document.getElementById('resultArea').innerHTML = `
+      <div class="error-msg">
+        ❌ ${e.message}<br><br>
+        <small>Gateway may need restart. Try again later or <a href="/upgrade" style="color:var(--accent)">get API access</a>.</small>
+      </div>`;
+  } finally {
+    btn.disabled = false;
+    btn.textContent = '▶ Review Code';
+  }
+}
+
+// Count chars on input
+document.getElementById('codeInput').addEventListener('input', updateCharCount);
+</script>
+</body>
+</html>

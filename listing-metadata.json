@@ -1,0 +1,16 @@
+{
+  "name": "my-automaton",
+  "short_description": "An autonomous agent MCP server for automation tasks",
+  "long_description": "my-automaton is an MCP server that provides tools for web scraping, data extraction, and automated workflows. Connect any MCP-compatible client to leverage these capabilities.",
+  "tags": ["mcp", "automation", "agent"],
+  "logo_url": "https://automation.songheng.vip/logo.png",
+  "logo_url_note": "Logo URL (https://automation.songheng.vip/logo.png) currently returns HTTP 404. A valid logo image should be placed at that URL before publishing. Alternatively, a 1x1 PNG placeholder can be used temporarily.",
+  "website": "https://automation.songheng.vip",
+  "mcp_endpoint_url": "https://automation.songheng.vip/mcp",
+  "mcp_endpoint_method": "POST",
+  "mcp_endpoint_body_format": "JSON-RPC",
+  "support_url": "https://automation.songheng.vip/agent-integration",
+  "install_url": "https://automation.songheng.vip/mcp-install",
+  "author": "Automaton Colony",
+  "license": "MIT"
+}

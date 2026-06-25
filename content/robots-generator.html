@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Free Robots.txt Generator - 在线生成 SEO 友好的 Robots 文件 | Automation</title>
+<meta name="description" content="免费在线 robots.txt 生成器。可视化配置爬虫规则，自动生成 SEO 友好的 robots.txt 文件。支持所有主流搜索引擎。">
+<meta name="keywords" content="robots.txt generator, robots.txt 生成器, SEO 工具, 爬虫规则, 免费工具">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#0a0a0f;color:#e0e0e0;padding:20px;line-height:1.6}
+.container{max-width:900px;margin:0 auto}
+h1{font-size:2rem;background:linear-gradient(135deg,#667eea,#764ba2);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:8px}
+.subtitle{color:#888;margin-bottom:24px}
+.card{background:#12121a;border:1px solid #2a2a3a;border-radius:12px;padding:24px;margin-bottom:20px}
+.card h2{font-size:1.2rem;color:#667eea;margin-bottom:16px}
+.form-group{margin-bottom:16px}
+label{display:block;color:#aaa;margin-bottom:6px;font-size:0.9rem}
+input[type="text"],textarea{width:100%;background:#1a1a2a;border:1px solid #333;color:#fff;padding:10px 14px;border-radius:8px;font-size:0.95rem}
+input:focus,textarea:focus{outline:none;border-color:#667eea}
+textarea{min-height:100px;font-family:monospace;resize:vertical}
+.checkbox-group{display:flex;flex-wrap:wrap;gap:12px}
+.checkbox-group label{display:flex;align-items:center;gap:6px;color:#ccc;cursor:pointer}
+.checkbox-group input[type="checkbox"]{accent-color:#667eea}
+.btn{background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;border:none;padding:12px 24px;border-radius:8px;cursor:pointer;font-size:1rem;font-weight:600}
+.btn:hover{opacity:0.9}
+.btn-secondary{background:#2a2a3a;color:#ccc}
+.output{background:#0d0d14;border:1px solid #333;border-radius:8px;padding:16px;font-family:monospace;white-space:pre-wrap;color:#a8e6cf;font-size:0.9rem;margin-top:16px}
+.rule-item{display:flex;gap:12px;align-items:center;padding:12px;background:#1a1a2a;border-radius:8px;margin-bottom:8px}
+.rule-item input{flex:1}
+.rule-item select{background:#1a1a2a;border:1px solid #333;color:#fff;padding:8px;border-radius:6px}
+.remove-btn{background:#dc2626;color:#fff;border:none;width:28px;height:28px;border-radius:50%;cursor:pointer}
+.info-box{background:#1a1a2a;border-left:4px solid #667eea;padding:16px;border-radius:0 8px 8px 0;margin:16px 0}
+.info-box h3{color:#667eea;margin-bottom:8px}
+.info-box p{color:#bbb;font-size:0.9rem}
+.actions{display:flex;gap:12px;margin-top:20px}
+</style>
+</head>
+<body>
+<div class="container">
+<h1>🤖 Robots.txt Generator</h1>
+<p class="subtitle">免费在线生成 SEO 友好的 robots.txt 文件</p>
+
+<div class="card">
+<h2>基本设置</h2>
+<div class="form-group">
+<label>网站 Sitemap URL</label>
+<input type="text" id="sitemap" placeholder="https://example.com/sitemap.xml">
+</div>
+<div class="form-group">
+<label>Crawl-delay（秒）</label>
+<input type="text" id="crawldelay" placeholder="留空表示不限制" value="">
+</div>
+</div>
+
+<div class="card">
+<h2>搜索引擎规则</h2>
+<p style="color:#888;font-size:0.9rem;margin-bottom:12px">为每个搜索引擎配置允许/禁止的路径</p>
+<div id="rules"></div>
+<button class="btn btn-secondary" onclick="addRule()">+ 添加规则</button>
+</div>
+
+<div class="card">
+<h2>全局禁止路径</h2>
+<p style="color:#888;font-size:0.9rem;margin-bottom:12px">这些路径对所有搜索引擎禁止访问</p>
+<div class="form-group">
+<label>每行一个路径</label>
+<textarea id="disallow" placeholder="/admin/&#10;/private/&#10;/api/&#10;*.pdf"></textarea>
+</div>
+</div>
+
+<div class="actions">
+<button class="btn" onclick="generate()">生成 robots.txt</button>
+<button class="btn btn-secondary" onclick="copyOutput()">复制到剪贴板</button>
+<button class="btn btn-secondary" onclick="download()">下载文件</button>
+</div>
+
+<div class="output" id="output" style="display:none"></div>
+
+<div class="info-box">
+<h3>💡 使用指南</h3>
+<p>1. 填写你的 Sitemap URL（如果有）<br>
+2. 为 Google、Bing 等搜索引擎配置特定规则<br>
+3. 添加全局禁止路径（如后台、私有目录）<br>
+4. 点击生成，复制或下载文件<br>
+5. 将 robots.txt 放在网站根目录</p>
+</div>
+
+<div class="info-box">
+<h3>🚀 需要更多 SEO 工具？</h3>
+<p>试试我们的 <a href="/ai-code-review" style="color:#667eea">AI 代码审查</a> 和 <a href="/text-analysis" style="color:#667eea">文本分析 API</a>，自动化优化你的网站内容。</p>
+</div>
+</div>
+
+<script>
+let ruleCount = 0;
+
+function addRule(userAgent = '*', paths = ['/']) {
+  ruleCount++;
+  const id = ruleCount;
+  const html = `
+    <div class="rule-item" id="rule-${id}">
+      <input type="text" placeholder="User-agent (如 Googlebot)" value="${userAgent}" id="ua-${id}">
+      <select id="type-${id}">
+        <option value="Allow">Allow</option>
+        <option value="Disallow" selected>Disallow</option>
+      </select>
+      <input type="text" placeholder="路径 (如 /admin/)" value="${paths[0]}" id="path-${id}">
+      <button class="remove-btn" onclick="removeRule(${id})">×</button>
+    </div>
+  `;
+  document.getElementById('rules').insertAdjacentHTML('beforeend', html);
+}
+
+function removeRule(id) {
+  const el = document.getElementById(`rule-${id}`);
+  if (el) el.remove();
+}
+
+function generate() {
+  let output = '# Generated by Automation - Free Robots.txt Generator\n';
+  output += '# https://automation.songheng.vip/robots-generator.html\n\n';
+  
+  const sitemap = document.getElementById('sitemap').value.trim();
+  if (sitemap) output += `Sitemap: ${sitemap}\n\n`;
+  
+  const crawldelay = document.getElementById('crawldelay').value.trim();
+  
+  const rules = document.querySelectorAll('[id^="rule-"]');
+  const ruleMap = {};
+  
+  rules.forEach(rule => {
+    const id = rule.id.split('-')[1];
+    const ua = document.getElementById(`ua-${id}`).value.trim() || '*';
+    const type = document.getElementById(`type-${id}`).value;
+    const path = document.getElementById(`path-${id}`).value.trim();
+    
+    if (!ruleMap[ua]) ruleMap[ua] = [];
+    ruleMap[ua].push({ type, path });
+  });
+  
+  Object.keys(ruleMap).forEach(ua => {
+    output += `User-agent: ${ua}\n`;
+    ruleMap[ua].forEach(r => {
+      output += `${r.type}: ${r.path}\n`;
+    });
+    if (crawldelay && ua === '*') output += `Crawl-delay: ${crawldelay}\n`;
+    output += '\n';
+  });
+  
+  const disallow = document.getElementById('disallow').value.trim();
+  if (disallow && !ruleMap['*']) {
+    output += 'User-agent: *\n';
+    disallow.split('\n').forEach(p => {
+      if (p.trim()) output += `Disallow: ${p.trim()}\n`;
+    });
+    if (crawldelay) output += `Crawl-delay: ${crawldelay}\n`;
+    output += '\n';
+  }
+  
+  document.getElementById('output').textContent = output;
+  document.getElementById('output').style.display = 'block';
+}
+
+function copyOutput() {
+  const output = document.getElementById('output').textContent;
+  if (!output) { alert('请先生成 robots.txt'); return; }
+  navigator.clipboard.writeText(output).then(() => alert('已复制到剪贴板'));
+}
+
+function download() {
+  const output = document.getElementById('output').textContent;
+  if (!output) { alert('请先生成 robots.txt'); return; }
+  const blob = new Blob([output], { type: 'text/plain' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'robots.txt';
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+// Add default rules on load
+addRule('Googlebot', ['/']);
+addRule('Bingbot', ['/']);
+addRule('*', ['/admin/', '/private/']);
+</script>
+</body>
+</html>

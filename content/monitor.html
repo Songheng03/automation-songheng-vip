@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>System Monitor — my-automaton</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,sans-serif;background:#0a0a0f;color:#e0e0e0;padding:20px}
+h1{color:#00ff88;font-size:1.8rem;margin-bottom:20px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;margin-bottom:24px}
+.card{background:#1a1a2e;border:1px solid #333;border-radius:12px;padding:20px}
+.card h2{color:#888;font-size:0.85rem;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px}
+.card .value{font-size:2.2rem;font-weight:700;color:#fff}
+.card .value.green{color:#00ff88}
+.card .value.yellow{color:#ffd700}
+.card .value.red{color:#ff4444}
+.card .sub{color:#666;font-size:0.8rem;margin-top:4px}
+table{width:100%;border-collapse:collapse;margin-top:8px}
+th,td{text-align:left;padding:8px 12px;border-bottom:1px solid #222;font-size:0.85rem}
+th{color:#888;font-weight:600}
+.status-dot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px}
+.status-dot.up{background:#00ff88}
+.status-dot.down{background:#ff4444}
+.log{background:#0d0d1a;border-radius:8px;padding:12px;font-family:monospace;font-size:0.8rem;max-height:200px;overflow-y:auto}
+.log div{padding:2px 0;border-bottom:1px solid #1a1a2e}
+.timestamp{color:#666}
+.refresh{position:fixed;top:20px;right:20px;background:#00ff88;color:#000;border:none;padding:8px 16px;border-radius:6px;cursor:pointer;font-weight:600}
+.bar{height:8px;background:#222;border-radius:4px;margin-top:8px;overflow:hidden}
+.bar-fill{height:100%;border-radius:4px;transition:width 0.3s}
+</style>
+<script>setTimeout(()=>location.reload(),30000)</script>
+</head>
+<body>
+<h1>⚡ my-automaton System Monitor</h1>
+<button class="refresh" onclick="location.reload()">↻ Refresh</button>
+
+<div class="grid">
+  <div class="card">
+    <h2>Gateway Status</h2>
+    <div class="value green">
+      <span class="status-dot up"></span>
+      ONLINE
+    </div>
+    <div class="sub">HTTP 200 · 2026-06-23T23:03:58Z</div>
+  </div>
+  
+  <div class="card">
+    <h2>Registered Users</h2>
+    <div class="value">8</div>
+    <div class="sub">Free trial accounts</div>
+  </div>
+  
+  <div class="card">
+    <h2>Credits Available</h2>
+    <div class="value yellow">400</div>
+    <div class="sub">0 credits used total</div>
+  </div>
+  
+  <div class="card">
+    <h2>Content Pages</h2>
+    <div class="value">571</div>
+    <div class="sub">HTML pages indexed</div>
+  </div>
+  
+  <div class="card">
+    <h2>Revenue (USDC)</h2>
+    <div class="value red">$0.00</div>
+    <div class="sub">No paid conversions yet</div>
+  </div>
+  
+  <div class="card">
+    <h2>Conversion Rate</h2>
+    <div class="value red">0%</div>
+    <div class="sub">Free → Paid (need to improve)</div>
+  </div>
+</div>
+
+<div class="card" style="margin-bottom:24px">
+  <h2>User Activity</h2>
+  <table>
+    <thead><tr><th>API Key</th><th>Credits</th><th>Used</th><th>Created</th><th>Activity</th></tr></thead>
+    <tbody>
+    <tr>
+      <td><code>am_9flqGAj...</code></td>
+      <td>50</td>
+      <td>0</td>
+      <td>2026-06-21</td>
+      <td>❌ Idle</td>
+    </tr><tr>
+      <td><code>am_daZ5qa5...</code></td>
+      <td>50</td>
+      <td>0</td>
+      <td>2026-06-21</td>
+      <td>❌ Idle</td>
+    </tr><tr>
+      <td><code>am_e4Zn9b2...</code></td>
+      <td>50</td>
+      <td>0</td>
+      <td>2026-06-21</td>
+      <td>❌ Idle</td>
+    </tr><tr>
+      <td><code>am_nlktXxB...</code></td>
+      <td>50</td>
+      <td>0</td>
+      <td>2026-06-21</td>
+      <td>❌ Idle</td>
+    </tr><tr>
+      <td><code>am_zVL_3QU...</code></td>
+      <td>50</td>
+      <td>0</td>
+      <td>2026-06-21</td>
+      <td>❌ Idle</td>
+    </tr><tr>
+      <td><code>am_Cp0GI8s...</code></td>
+      <td>50</td>
+      <td>0</td>
+      <td>2026-06-21</td>
+      <td>❌ Idle</td>
+    </tr><tr>
+      <td><code>am_JZn-ReY...</code></td>
+      <td>50</td>
+      <td>0</td>
+      <td>2026-06-21</td>
+      <td>❌ Idle</td>
+    </tr><tr>
+      <td><code>am_htNLaHB...</code></td>
+      <td>50</td>
+      <td>0</td>
+      <td>2026-06-21</td>
+      <td>❌ Idle</td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="card" style="margin-bottom:24px">
+  <h2>Service Endpoints</h2>
+  <table>
+    <thead><tr><th>Endpoint</th><th>Status</th><th>Cost</th></tr></thead>
+    <tbody>
+    <tr>
+      <td><code>POST /v1/analyze</code></td>
+      <td><span class="status-dot up"></span>401</td>
+      <td>1 credit</td>
+    </tr><tr>
+      <td><code>POST /v1/summarize</code></td>
+      <td><span class="status-dot up"></span>401</td>
+      <td>2 credits</td>
+    </tr><tr>
+      <td><code>POST /v1/review</code></td>
+      <td><span class="status-dot up"></span>401</td>
+      <td>5 credits</td>
+    </tr><tr>
+      <td><code>POST /v1/security</code></td>
+      <td><span class="status-dot up"></span>401</td>
+      <td>3 credits</td>
+    </tr><tr>
+      <td><code>POST /v1/explain</code></td>
+      <td><span class="status-dot up"></span>401</td>
+      <td>2 credits</td>
+    </tr><tr>
+      <td><code>POST /v1/refactor</code></td>
+      <td><span class="status-dot up"></span>401</td>
+      <td>5 credits</td>
+    </tr><tr>
+      <td><code>POST /v1/batch</code></td>
+      <td><span class="status-dot up"></span>401</td>
+      <td>5 credits</td>
+    </tr><tr>
+      <td><code>POST /free/analyze</code></td>
+      <td><span class="status-dot down"></span>429</td>
+      <td>Free</td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="card">
+  <h2>Recent Promotion Log</h2>
+  <div class="log">
+    <div><span class="timestamp">2026-06-23T23:02:03</span> [health] Gateway: UP</div><div><span class="timestamp">2026-06-23T23:02:03</span> [stats] Users: 8</div><div><span class="timestamp">2026-06-23T23:02:03</span> [submission] Submitted: ClawHunt</div>
+  </div>
+</div>
+
+</body>
+</html>

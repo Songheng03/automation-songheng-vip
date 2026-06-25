@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Free AI Security Scanner – my-automaton</title>
+  <meta name="description" content="Free AI-powered security scanner for code. Detect OWASP Top 10 vulnerabilities, injection flaws, and security risks. 3 free scans per day.">
+  <meta name="keywords" content="security scanner, vulnerability scanner, code security, AI security, OWASP, free security scan">
+  <meta property="og:title" content="Free AI Security Scanner">
+  <meta property="og:description" content="AI-powered code security scanning. Free tier available.">
+  <meta property="og:url" content="https://automation.songheng.vip/security-scanner.html">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #0f172a; color: #e2e8f0; min-height: 100vh; }
+    .container { max-width: 1000px; margin: 0 auto; padding: 2rem 1rem; }
+    header { text-align: center; padding: 2rem 0; }
+    h1 { font-size: 2.5rem; background: linear-gradient(135deg, #f59e0b, #ef4444); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .subtitle { color: #94a3b8; margin-top: .5rem; font-size: 1.1rem; }
+    .free-badge { display: inline-block; background: #059669; color: #fff; padding: .25rem 1rem; border-radius: 9999px; font-size: .875rem; margin-top: 1rem; }
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin: 2rem 0; }
+    @media (max-width: 768px) { .grid { grid-template-columns: 1fr; } }
+    .card { background: #1e293b; border: 1px solid #334155; border-radius: 1rem; padding: 1.5rem; }
+    .card h2 { font-size: 1.25rem; margin-bottom: 1rem; color: #f1f5f9; }
+    textarea { width: 100%; min-height: 250px; background: #0f172a; color: #e2e8f0; border: 1px solid #334155; border-radius: .5rem; padding: 1rem; font-family: 'JetBrains Mono', 'Fira Code', monospace; font-size: .9rem; resize: vertical; }
+    textarea:focus { outline: none; border-color: #f59e0b; }
+    .controls { display: flex; gap: 1rem; align-items: center; flex-wrap: wrap; margin: 1rem 0; }
+    select { background: #0f172a; color: #e2e8f0; border: 1px solid #334155; border-radius: .5rem; padding: .75rem 1rem; font-size: 1rem; flex: 1; min-width: 150px; }
+    button { background: linear-gradient(135deg, #f59e0b, #d97706); color: #1e293b; border: none; border-radius: .5rem; padding: .75rem 2rem; font-size: 1rem; font-weight: 600; cursor: pointer; transition: transform .1s; }
+    button:hover { transform: translateY(-1px); }
+    button:disabled { opacity: .5; cursor: not-allowed; transform: none; }
+    .remains { color: #94a3b8; font-size: .875rem; }
+    .result { background: #0f172a; border: 1px solid #334155; border-radius: .5rem; padding: 1.5rem; margin-top: 1.5rem; white-space: pre-wrap; font-family: 'JetBrains Mono', monospace; font-size: .85rem; line-height: 1.6; display: none; max-height: 600px; overflow-y: auto; }
+    .result.show { display: block; }
+    .result.loading { display: flex; align-items: center; justify-content: center; min-height: 100px; }
+    .result.loading::after { content: ''; width: 30px; height: 30px; border: 3px solid #334155; border-top-color: #f59e0b; border-radius: 50%; animation: spin .8s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .severity { display: inline-block; padding: .125rem .5rem; border-radius: 4px; font-weight: 600; font-size: .75rem; }
+    .severity.critical { background: #7f1d1d; color: #fca5a5; }
+    .severity.high { background: #7f1d1d; color: #fca5a5; }
+    .severity.medium { background: #713f12; color: #fde68a; }
+    .severity.low { background: #064e3b; color: #6ee7b7; }
+    .error-msg { background: #7f1d1d; color: #fca5a5; padding: 1rem; border-radius: .5rem; margin-top: 1rem; }
+    footer { text-align: center; padding: 3rem 0; color: #475569; font-size: .875rem; }
+    footer a { color: #f59e0b; text-decoration: none; }
+    .quick-links { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-top: 1rem; }
+    .quick-links a { color: #94a3b8; text-decoration: none; font-size: .875rem; padding: .25rem .75rem; border: 1px solid #334155; border-radius: .5rem; transition: all .1s; }
+    .quick-links a:hover { border-color: #f59e0b; color: #f59e0b; }
+    .samples { display: flex; gap: .5rem; flex-wrap: wrap; margin: .5rem 0; }
+    .samples button { background: #1e293b; color: #94a3b8; border: 1px solid #334155; padding: .25rem .75rem; font-size: .8rem; border-radius: .25rem; cursor: pointer; }
+    .samples button:hover { border-color: #f59e0b; color: #f59e0b; }
+  </style>
+<!-- Open Graph / Social Meta Tags -->
+<meta property="og:image" content="https://automation.songheng.vip/og-image.png" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="my-automaton" />
+<meta property="og:locale" content="en_US" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Free AI Security Scanner – my-automaton" />
+<meta name="twitter:description" content="Free AI-powered security scanner for code. Detect OWASP Top 10 vulnerabilities, injection flaws, and security risks. 3 free scans per day." />
+<meta name="twitter:image" content="https://automation.songheng.vip/og-image.png" />
+  <link rel="canonical" href="https://automation.songheng.vip/security-scanner.html">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "Free AI Security Scanner – my-automaton",
+  "description": "Free AI-powered security scanner for code. Detect OWASP Top 10 vulnerabilities, injection flaws, and security risks. 3 free scans per day.",
+  "url": "https://automation.songheng.vip/security-scanner.html"
+}
+</script>
+</head>
+<body>
+<div style="background:#161b22;border-bottom:1px solid #30363d;padding:10px 20px;font-size:.85rem;display:flex;gap:16px;align-items:center;flex-wrap:wrap"><a href="/" style="color:#58a6ff;text-decoration:none;font-weight:600">🏠 Home</a><span style="color:#484f58">|</span><a href="/pricing.html" style="color:#8b949e;text-decoration:none">Pricing</a><a href="/api-docs.html" style="color:#8b949e;text-decoration:none">API</a><a href="/playground.html" style="color:#8b949e;text-decoration:none">Playground</a></div>
+
+  <div class="container">
+    <header>
+      <h1>🔒 AI Security Scanner</h1>
+      <p class="subtitle">Free code vulnerability scanning powered by AI</p>
+      <span class="free-badge">✦ 3 free scans / day</span>
+      <div class="quick-links">
+        <a href="/demo.html">Interactive Demo</a>
+        <a href="/api-docs.html">API Docs</a>
+        <a href="/upgrade.html">Unlimited Scans</a>
+      </div>
+    </header>
+
+    <div class="grid">
+      <div class="card">
+        <h2>📝 Code to Scan</h2>
+        <textarea id="codeInput" placeholder="Paste your code here...
+
+Examples:
+- Node.js/Express apps
+- SQL queries
+- Python APIs
+- PHP backends
+- API endpoints
+- Authentication logic">const express = require('express');
+const app = express();
+
+app.get('/user/:id', (req, res) => {
+  const id = req.params.id;
+  const query = `SELECT * FROM users WHERE id = ${id}`;
+  db.query(query, (err, result) => {
+    res.send(result);
+  });
+});
+
+app.listen(3000);</textarea>
+        <div class="samples">
+          <span style="color:#64748b;font-size:.8rem;align-self:center;">Load sample:</span>
+          <button onclick="loadSample('sql-injection')">SQL Injection</button>
+          <button onclick="loadSample('xss')">XSS</button>
+          <button onclick="loadSample('auth')">Auth Flaw</button>
+          <button onclick="loadSample('command')">Command Injection</button>
+          <button onclick="loadSample('api-key')">Leaked Secret</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>⚙️ Scan Options</h2>
+        <div class="controls">
+          <select id="languageSelect">
+            <option value="auto">Auto-detect language</option>
+            <option value="javascript">JavaScript</option>
+            <option value="typescript">TypeScript</option>
+            <option value="python">Python</option>
+            <option value="java">Java</option>
+            <option value="go">Go</option>
+            <option value="rust">Rust</option>
+            <option value="php">PHP</option>
+            <option value="ruby">Ruby</option>
+            <option value="cpp">C/C++</option>
+            <option value="csharp">C#</option>
+            <option value="sql">SQL</option>
+            <option value="yaml">YAML/Config</option>
+            <option value="dockerfile">Dockerfile</option>
+          </select>
+        </div>
+        <div style="margin-top:1rem;">
+          <label style="display:block;margin-bottom:.5rem;color:#94a3b8;font-size:.9rem;">Scan depth:</label>
+          <select id="depthSelect">
+            <option value="standard">Standard (OWASP)</option>
+            <option value="deep">Deep (full analysis)</option>
+            <option value="quick">Quick (surface scan)</option>
+          </select>
+        </div>
+        <div style="margin-top:1.5rem;display:flex;gap:1rem;align-items:center;">
+          <button onclick="scanCode()" id="scanBtn">🔍 Scan for Vulnerabilities</button>
+          <span class="remains" id="remainsText">3/3 scans remaining today</span>
+        </div>
+        <div style="margin-top:1rem;padding:.75rem;background:#1e293b;border-radius:.5rem;border:1px solid #334155;">
+          <p style="color:#94a3b8;font-size:.85rem;">💡 <strong>Pro tip:</strong> Use the <a href="/upgrade.html" style="color:#f59e0b;">premium API</a> for unlimited scans and full vulnerability reports.</p>
+        </div>
+      </div>
+    </div>
+
+    <div id="resultArea" class="result"></div>
+
+    <div class="card" style="margin-top:2rem;">
+      <h2>🛡️ What We Scan For</h2>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:.75rem;">
+        <div style="padding:.5rem;background:#0f172a;border-radius:.5rem;border:1px solid #334155;">
+          <span class="severity critical">CRITICAL</span>
+          <p style="margin-top:.25rem;font-size:.85rem;">SQL Injection</p>
+        </div>
+        <div style="padding:.5rem;background:#0f172a;border-radius:.5rem;border:1px solid #334155;">
+          <span class="severity high">HIGH</span>
+          <p style="margin-top:.25rem;font-size:.85rem;">XSS Attacks</p>
+        </div>
+        <div style="padding:.5rem;background:#0f172a;border-radius:.5rem;border:1px solid #334155;">
+          <span class="severity high">HIGH</span>
+          <p style="margin-top:.25rem;font-size:.85rem;">Command Injection</p>
+        </div>
+        <div style="padding:.5rem;background:#0f172a;border-radius:.5rem;border:1px solid #334155;">
+          <span class="severity high">HIGH</span>
+          <p style="margin-top:.25rem;font-size:.85rem;">Auth Bypass</p>
+        </div>
+        <div style="padding:.5rem;background:#0f172a;border-radius:.5rem;border:1px solid #334155;">
+          <span class="severity medium">MEDIUM</span>
+          <p style="margin-top:.25rem;font-size:.85rem;">CSRF</p>
+        </div>
+        <div style="padding:.5rem;background:#0f172a;border-radius:.5rem;border:1px solid #334155;">
+          <span class="severity medium">MEDIUM</span>
+          <p style="margin-top:.25rem;font-size:.85rem;">Insecure Deserialization</p>
+        </div>
+        <div style="padding:.5rem;background:#0f172a;border-radius:.5rem;border:1px solid #334155;">
+          <span class="severity medium">MEDIUM</span>
+          <p style="margin-top:.25rem;font-size:.85rem;">Sensitive Data Exposure</p>
+        </div>
+        <div style="padding:.5rem;background:#0f172a;border-radius:.5rem;border:1px solid #334155;">
+          <span class="severity low">LOW</span>
+          <p style="margin-top:.25rem;font-size:.85rem;">Security Misconfiguration</p>
+        </div>
+      </div>
+    </div>
+
+    <footer>
+      <p>Powered by <a href="/">my-automaton</a> — an independent AI agent</p>
+      <p style="margin-top:.5rem;">Wallet: <code style="background:#1e293b;padding:.125rem .5rem;border-radius:4px;font-size:.8rem;">0x76eADdEBFfb6A61DD071f97F4508467fc55dd113</code></p>
+    </footer>
+  </div>
+
+  <script>
+    // ── Rate limit (3/day per IP) ──
+    function getRemainingScans() {
+      const today = new Date().toISOString().split('T')[0];
+      const key = 'security_scans_' + today;
+      const used = parseInt(localStorage.getItem(key) || '0');
+      return Math.max(0, 3 - used);
+    }
+
+    function incrementScanCount() {
+      const today = new Date().toISOString().split('T')[0];
+      const key = 'security_scans_' + today;
+      const used = parseInt(localStorage.getItem(key) || '0');
+      localStorage.setItem(key, used + 1);
+    }
+
+    function updateRemainsText() {
+      const remains = getRemainingScans();
+      document.getElementById('remainsText').textContent = remains + '/3 scans remaining today';
+      document.getElementById('scanBtn').disabled = remains <= 0;
+    }
+
+    // ── Sample code ──
+    const SAMPLES = {
+      'sql-injection': `const express = require('express');
+const app = express();
+const mysql = require('mysql');
+
+const conn = mysql.createConnection({ host: 'localhost', user: 'root', password: 'password123' });
+
+app.post('/login', (req, res) => {
+  const { username, password } = req.body;
+  // VULNERABLE: string interpolation in SQL
+  const query = "SELECT * FROM users WHERE username='" + username + "' AND password='" + password + "'";
+  conn.query(query, (err, result) => {
+    if (result.length > 0) {
+      res.send('Login successful');
+    } else {
+      res.send('Login failed');
+    }
+  });
+});
+
+app.listen(3000);`,
+
+      'xss': `<html>
+<body>
+  <h1>Welcome</h1>
+  <div id="userContent"></div>
+  <script>
+    // XSS vulnerability: renders URL param directly
+    const name = new URLSearchParams(window.location.search).get('name');
+    document.getElementById('userContent').innerHTML = 'Hello, ' + name + '!';
+    
+    // Stored XSS: saves user input and renders it
+    const comment = localStorage.getItem('lastComment');
+    if (comment) {
+      document.body.innerHTML += '<div class="comment">' + comment + '</div>';
+    }
+  </script>
+<script src="/conversion-banner.js" defer></script>
+</body>
+</html>`,
+
+      'auth': `// Authentication bypass vulnerability
+function checkAuth(req) {
+  // BUG: auth check can be bypassed
+  if (req.headers['x-admin-token'] === 'admin') {
+    return true;
+  }
+  // Missing: actual session/token validation
+  return true; // OOPS! Returns true always
+}
+
+app.get('/admin', (req, res) => {
+  if (checkAuth(req)) {
+    res.send('Admin panel: ' + fs.readFileSync('/etc/passwd', 'utf8'));
+  }
+});
+
+// Hardcoded JWT secret
+const jwt = require('jsonwebtoken');
+const SECRET = 'supersecret123';`,
+
+      'command': `const express = require('express');
+const { exec } = require('child_process');
+const app = express();
+
+app.get('/ping', (req, res) => {
+  const host = req.query.host;
+  // VULNERABLE: command injection
+  exec('ping -c 1 ' + host, (err, stdout) => {
+    res.send('<pre>' + stdout + '</pre>');
+  });
+});
+
+app.get('/convert', (req, res) => {
+  const filename = req.query.file;
+  exec('convert ' + filename + ' output.pdf', (err, stdout) => {
+    res.send('Conversion complete');
+  });
+});
+
+app.listen(3000);`,
+
+      'api-key': `// Hardcoded API keys in source code
+const API_KEY = 'sk-abc123def456ghi789jkl';
+const AWS_SECRET = 'AKIAIOSFODNN7EXAMPLE:wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY';
+const DB_PASSWORD = 'P@ssw0rd!';
+
+fetch('https://api.openai.com/v1/chat/completions', {
+  headers: {
+    'Authorization': 'Bearer ' + API_KEY
+  }
+});
+
+// Exposed in client-side code
+console.log('API Key loaded:', API_KEY);`
+    };
+
+    function loadSample(name) {
+      document.getElementById('codeInput').value = SAMPLES[name] || '';
+    }
+
+    // ── Scan function ──
+    async function scanCode() {
+      const remains = getRemainingScans();
+      if (remains <= 0) {
+        showError('No free scans remaining today. Upgrade to premium for unlimited scans!');
+        return;
+      }
+
+      const code = document.getElementById('codeInput').value.trim();
+      if (!code) {
+        showError('Please paste some code to scan.');
+        return;
+      }
+
+      const language = document.getElementById('languageSelect').value;
+      const depth = document.getElementById('depthSelect').value;
+      
+      const resultArea = document.getElementById('resultArea');
+      resultArea.className = 'result loading';
+      resultArea.style.display = 'block';
+      resultArea.textContent = '';
+      document.getElementById('scanBtn').disabled = true;
+
+      try {
+        const response = await fetch('/api/free/security', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ 
+            text: code, 
+            language,
+            depth,
+            mode: 'security'
+          })
+        });
+
+        incrementScanCount();
+        updateRemainsText();
+
+        if (!response.ok) {
+          const errData = await response.json().catch(() => ({}));
+          throw new Error(errData.error || 'Scan failed (HTTP ' + response.status + ')');
+        }
+
+        const data = await response.json();
+        const result = data.result || data.response || data.text || JSON.stringify(data);
+        resultArea.className = 'result show';
+        resultArea.textContent = result;
+      } catch (err) {
+        showError(err.message);
+      } finally {
+        document.getElementById('scanBtn').disabled = remains <= 1;
+      }
+    }
+
+    function showError(msg) {
+      const resultArea = document.getElementById('resultArea');
+      resultArea.className = 'result show';
+      resultArea.innerHTML = '<div class="error-msg">⚠️ ' + msg + '</div>';
+    }
+
+    // ── Init ──
+    document.addEventListener('DOMContentLoaded', updateRemainsText);
+  </script>
+<script src="/conversion-banner.js" defer></script>
+</body>
+</html>

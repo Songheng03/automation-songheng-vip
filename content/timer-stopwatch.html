@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Timer & Stopwatch - Free Online Countdown and Lap Timer</title>
+<meta name="description" content="Free online timer and stopwatch. Stopwatch with laps and split times. Countdown timer with presets (1min, 5min, 10min, 25min Pomodoro). Keyboard shortcuts. No signup.">
+<meta name="keywords" content="online timer, stopwatch, countdown, pomodoro timer, lap timer, free stopwatch, online stopwatch">
+<link rel="canonical" href="https://automation.songheng.vip/timer-stopwatch.html">
+<style>
+:root{--bg:#0d1117;--surface:#161b22;--border:#30363d;--text:#c9d1d9;--muted:#8b949e;--accent:#58a6ff;--green:#3fb950;--orange:#d2991d;--red:#f85149;--purple:#a371f7}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--text);font-family:system-ui,sans-serif;min-height:100vh;display:flex;flex-direction:column;align-items:center}
+header{background:var(--surface);border-bottom:1px solid var(--border);padding:16px 24px;text-align:center;width:100%}
+header h1{font-size:1.5rem}
+header p{color:var(--muted);font-size:.85rem;margin-top:4px}
+.container{max-width:600px;margin:0 auto;padding:24px 16px;width:100%}
+.mode-tabs{display:flex;border-radius:12px;overflow:hidden;border:1px solid var(--border);margin-bottom:24px}
+.mode-tab{flex:1;padding:12px;text-align:center;cursor:pointer;background:var(--surface);color:var(--muted);font-weight:600;transition:all .2s;border:none;font-size:.9rem}
+.mode-tab.active{background:var(--accent);color:#fff}
+.mode-tab:hover:not(.active){color:var(--text)}
+.display{text-align:center;margin:24px 0}
+.time-display{font-family:'JetBrains Mono','Fira Code',monospace;font-size:5rem;font-weight:700;letter-spacing:4px;line-height:1;transition:color .3s}
+.time-display.warning{color:var(--orange)}
+.time-display.alert{color:var(--red);animation:pulse .6s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.millis{font-size:2rem;font-weight:400;opacity:.6}
+.controls{display:flex;gap:12px;justify-content:center;margin:24px 0;flex-wrap:wrap}
+.btn{background:var(--surface);border:1px solid var(--border);color:var(--text);padding:10px 24px;border-radius:10px;cursor:pointer;font-size:.9rem;transition:all .15s;min-width:100px;font-weight:600}
+.btn:hover{transform:translateY(-1px);box-shadow:0 4px 12px rgba(0,0,0,.2)}
+.btn-primary{background:var(--accent);border-color:var(--accent);color:#fff}
+.btn-success{background:var(--green);border-color:var(--green);color:#fff}
+.btn-danger{background:var(--red);border-color:var(--red);color:#fff}
+.btn-sm{padding:6px 14px;font-size:.8rem;min-width:unset}
+.presets{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:16px 0}
+.preset-btn{background:var(--surface);border:1px solid var(--border);color:var(--muted);padding:6px 14px;border-radius:20px;cursor:pointer;font-size:.78rem;transition:all .2s}
+.preset-btn:hover{border-color:var(--text);color:var(--text)}
+.preset-btn.pomodoro{background:rgba(248,81,73,.1);border-color:rgba(248,81,73,.3);color:var(--red)}
+.preset-btn.pomodoro:hover{background:rgba(248,81,73,.2)}
+.custom-input{display:flex;gap:6px;align-items:center;justify-content:center;margin:8px 0}
+.custom-input input{width:50px;background:var(--surface);border:1px solid var(--border);color:var(--text);padding:6px;border-radius:6px;text-align:center;font-family:'JetBrains Mono',monospace}
+.custom-input span{color:var(--muted);font-size:.8rem}
+.laps-section{margin-top:24px}
+.laps-section h3{color:var(--muted);font-size:.85rem;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center}
+.lap-list{background:var(--surface);border:1px solid var(--border);border-radius:8px;max-height:300px;overflow-y:auto}
+.lap-item{display:flex;padding:8px 12px;border-bottom:1px solid var(--border);font-family:'JetBrains Mono',monospace;font-size:.82rem;justify-content:space-between}
+.lap-item:last-child{border-bottom:none}
+.lap-num{color:var(--muted);min-width:30px}
+.lap-time{font-weight:600}
+.lap-split{color:var(--muted)}
+.lap-item.fastest{background:rgba(63,185,80,.08)}
+.lap-item.fastest .lap-time{color:var(--green)}
+.lap-item.slowest{background:rgba(248,81,73,.06)}
+.lap-item.slowest .lap-time{color:var(--red)}
+.shorts{text-align:center;margin-top:16px}
+.shorts span{color:var(--muted);font-size:.7rem;display:inline-block;margin:2px 8px}
+.shorts kbd{background:var(--border);padding:2px 6px;border-radius:3px;font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--text)}
+.sponsor{text-align:center;margin-top:32px;padding:20px;background:var(--surface);border:1px solid var(--border);border-radius:8px}
+.sponsor h2{color:var(--accent);font-size:1rem;margin-bottom:8px}
+.sponsor p{color:var(--muted);font-size:.85rem;margin-bottom:12px}
+.sponsor a{color:var(--accent)}
+</style>
+</head>
+<body>
+<header>
+<h1>⏱️ Timer & Stopwatch</h1>
+<p>Precision online timer and stopwatch — laps, countdown, Pomodoro</p>
+</header>
+<div class="container">
+<div class="mode-tabs">
+<button class="mode-tab active" onclick="switchMode('stopwatch')">⏱️ Stopwatch</button>
+<button class="mode-tab" onclick="switchMode('timer')">⏲️ Timer</button>
+</div>
+
+<div class="display">
+<div class="time-display" id="timeDisplay">00:00:00<span class="millis">.00</span></div>
+</div>
+
+<div class="controls" id="controls">
+<button class="btn btn-success" id="btnStart" onclick="start()">▶ Start</button>
+<button class="btn" id="btnLap" onclick="lap()" style="display:none">🏁 Lap</button>
+<button class="btn btn-danger" id="btnReset" onclick="reset()">↺ Reset</button>
+</div>
+
+<div id="timerPresets" style="display:none">
+<div class="presets">
+<button class="preset-btn" onclick="setTimer(60)">1 min</button>
+<button class="preset-btn" onclick="setTimer(120)">2 min</button>
+<button class="preset-btn" onclick="setTimer(300)">5 min</button>
+<button class="preset-btn" onclick="setTimer(600)">10 min</button>
+<button class="preset-btn" onclick="setTimer(900)">15 min</button>
+<button class="preset-btn" onclick="setTimer(1800)">30 min</button>
+<button class="preset-btn" onclick="setTimer(3600)">60 min</button>
+<button class="preset-btn pomodoro" onclick="setTimer(1500)">🍅 25 min</button>
+</div>
+<div class="custom-input">
+<input type="number" id="minInput" min="0" max="999" value="5" onchange="applyCustomTimer()">
+<span>min</span>
+<input type="number" id="secInput" min="0" max="59" value="0" onchange="applyCustomTimer()">
+<span>sec</span>
+<button class="btn btn-sm" onclick="applyCustomTimer()">Set</button>
+</div>
+</div>
+
+<div class="laps-section" id="lapsSection">
+<h3>🏁 Laps <button class="btn btn-sm" id="btnClearLaps" onclick="clearLaps()" style="display:none">Clear</button></h3>
+<div class="lap-list" id="lapList">
+<div style="padding:16px;color:var(--muted);font-size:.8rem;text-align:center">Start the stopwatch, then press Lap or Space</div>
+</div>
+</div>
+
+<div class="shorts">
+<span><kbd>Space</kbd> Start/Stop/Lap</span>
+<span><kbd>R</kbd> Reset</span>
+<span><kbd>L</kbd> Lap</span>
+</div>
+
+<div class="sponsor">
+<h2>💡 Need more than free tools?</h2>
+<p>Get <strong>AI-powered code reviews, security scans, text analysis</strong>, and more via our API.</p>
+<p><a href="/">Browse API Docs</a> · <a href="/pricing.html">View Pricing</a></p>
+</div>
+</div>
+
+<script>
+let mode = 'stopwatch';
+let running = false;
+let startTime = 0;
+let elapsed = 0;
+let laps = [];
+let animFrame = 0;
+let timerTarget = 0;
+let timerRemaining = 0;
+let alarmAudio = null;
+
+function switchMode(m) {
+  mode = m;
+  reset();
+  document.querySelectorAll('.mode-tab').forEach((t,i) => t.classList.toggle('active', i===(m==='stopwatch'?0:1)));
+  document.getElementById('timerPresets').style.display = m==='timer'?'':'none';
+  document.getElementById('lapsSection').style.display = m==='stopwatch'?'':'none';
+}
+
+function formatTime(ms) {
+  const sign = ms < 0 ? '-' : '';
+  ms = Math.abs(ms);
+  const h = Math.floor(ms / 3600000);
+  const m = Math.floor((ms % 3600000) / 60000);
+  const s = Math.floor((ms % 60000) / 1000);
+  const cs = Math.floor((ms % 1000) / 10);
+  const p = (n) => String(n).padStart(2, '0');
+  if (h > 0) return `${sign}${p(h)}:${p(m)}:${p(s)}<span class="millis">.${p(cs)}</span>`;
+  return `${sign}${p(m)}:${p(s)}<span class="millis">.${p(cs)}</span>`;
+}
+
+function updateDisplay() {
+  const disp = document.getElementById('timeDisplay');
+  if (mode === 'stopwatch') {
+    const now = running ? Date.now() - startTime + elapsed : elapsed;
+    disp.innerHTML = formatTime(now);
+    disp.classList.remove('warning','alert');
+  } else {
+    if (running) {
+      const remaining = timerTarget - Date.now();
+      timerRemaining = Math.max(0, remaining);
+      disp.innerHTML = formatTime(timerRemaining);
+      disp.classList.toggle('warning', timerRemaining <= 10000 && timerRemaining > 0);
+      disp.classList.toggle('alert', timerRemaining <= 5000 && timerRemaining > 0);
+      
+      if (timerRemaining <= 0) {
+        stop();
+        disp.innerHTML = formatTime(0);
+        disp.classList.add('alert');
+        playAlarm();
+        setTimeout(() => disp.classList.remove('alert','warning'), 3000);
+      }
+    } else {
+      disp.innerHTML = formatTime(elapsed);
+      disp.classList.remove('warning','alert');
+    }
+  }
+}
+
+function tick() {
+  updateDisplay();
+  if (running) animFrame = requestAnimationFrame(tick);
+}
+
+function start() {
+  if (running) return;
+  running = true;
+  
+  if (mode === 'timer') {
+    if (timerRemaining <= 0) elapsed = parseTimerInput() * 1000;
+    timerTarget = Date.now() + (timerRemaining > 0 ? timerRemaining : elapsed);
+    timerRemaining = timerTarget - Date.now();
+  } else {
+    startTime = Date.now();
+  }
+  
+  const btnStart = document.getElementById('btnStart');
+  btnStart.textContent = '⏸ Stop';
+  btnStart.className = 'btn btn-danger';
+  btnStart.onclick = stop;
+  
+  document.getElementById('btnLap').style.display = mode==='stopwatch'?'':'none';
+  document.getElementById('btnReset').style.display = 'none';
+  
+  tick();
+}
+
+function stop() {
+  running = false;
+  cancelAnimationFrame(animFrame);
+  
+  if (mode === 'stopwatch') {
+    elapsed += Date.now() - startTime;
+  } else {
+    timerRemaining = Math.max(0, timerTarget - Date.now());
+    elapsed = timerRemaining;
+  }
+  
+  updateDisplay();
+  
+  const btnStart = document.getElementById('btnStart');
+  btnStart.textContent = '▶ Start';
+  btnStart.className = 'btn btn-success';
+  btnStart.onclick = start;
+  
+  document.getElementById('btnReset').style.display = '';
+  if (mode === 'stopwatch') document.getElementById('btnLap').style.display = 'none';
+}
+
+function reset() {
+  running = false;
+  cancelAnimationFrame(animFrame);
+  elapsed = 0;
+  timerRemaining = 0;
+  timerTarget = 0;
+  laps = [];
+  
+  updateDisplay();
+  document.getElementById('timeDisplay').classList.remove('warning','alert');
+  
+  const btnStart = document.getElementById('btnStart');
+  btnStart.textContent = '▶ Start';
+  btnStart.className = 'btn btn-success';
+  btnStart.onclick = start;
+  
+  document.getElementById('btnReset').style.display = '';
+  document.getElementById('btnLap').style.display = 'none';
+  
+  renderLaps();
+}
+
+function lap() {
+  if (mode !== 'stopwatch') return;
+  const now = running ? Date.now() - startTime + elapsed : elapsed;
+  const prevTotal = laps.length > 0 ? laps[laps.length - 1].total : 0;
+  laps.push({ total: now, split: now - prevTotal });
+  renderLaps();
+}
+
+function renderLaps() {
+  const list = document.getElementById('lapList');
+  document.getElementById('btnClearLaps').style.display = laps.length ? '' : 'none';
+  if (laps.length === 0) {
+    list.innerHTML = '<div style="padding:16px;color:var(--muted);font-size:.8rem;text-align:center">Start the stopwatch, then press Lap or Space</div>';
+    return;
+  }
+  
+  const fastest = Math.min(...laps.map(l => l.split));
+  const slowest = Math.max(...laps.map(l => l.split));
+  
+  list.innerHTML = laps.map((l, i) => {
+    let cls = '';
+    if (l.split === fastest && fastest !== slowest) cls = 'fastest';
+    if (l.split === slowest && fastest !== slowest) cls = 'slowest';
+    return `<div class="lap-item ${cls}">
+      <span class="lap-num">#${laps.length - i}</span>
+      <span class="lap-time">${formatTimePlain(l.split)}</span>
+      <span class="lap-split">total: ${formatTimePlain(l.total)}</span>
+    </div>`;
+  }).join('');
+}
+
+function formatTimePlain(ms) {
+  const m = Math.floor(ms / 60000);
+  const s = Math.floor((ms % 60000) / 1000);
+  const cs = Math.floor((ms % 1000) / 10);
+  return `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}.${String(cs).padStart(2,'0')}`;
+}
+
+function clearLaps() {
+  laps = [];
+  renderLaps();
+}
+
+function setTimer(seconds) {
+  if (mode !== 'timer') switchMode('timer');
+  reset();
+  elapsed = seconds * 1000;
+  timerRemaining = elapsed;
+  updateDisplay();
+  document.getElementById('minInput').value = Math.floor(seconds / 60);
+  document.getElementById('secInput').value = seconds % 60;
+}
+
+function parseTimerInput() {
+  const m = parseInt(document.getElementById('minInput').value) || 0;
+  const s = parseInt(document.getElementById('secInput').value) || 0;
+  return m * 60 + s;
+}
+
+function applyCustomTimer() {
+  const secs = parseTimerInput();
+  if (secs <= 0) return;
+  setTimer(secs);
+}
+
+function playAlarm() {
+  try {
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    [440, 554, 660, 880].forEach((freq, i) => {
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = 'sine';
+      osc.frequency.value = freq;
+      gain.gain.value = 0.15;
+      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.4 + i * 0.2);
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start(ctx.currentTime + i * 0.2);
+      osc.stop(ctx.currentTime + 0.4 + i * 0.2);
+    });
+  } catch(e) {}
+}
+
+// Keyboard shortcuts
+document.addEventListener('keydown', e => {
+  if (e.target.tagName === 'INPUT') return;
+  if (e.code === 'Space') {
+    e.preventDefault();
+    if (running) {
+      if (mode === 'stopwatch') lap();
+      else stop();
+    } else start();
+  }
+  if (e.code === 'KeyR') { e.preventDefault(); reset(); }
+  if (e.code === 'KeyL' && mode === 'stopwatch') { e.preventDefault(); lap(); }
+});
+
+updateDisplay();
+</script>
+<script src="/conversion-banner.js" defer></script>
+</body>
+</html>

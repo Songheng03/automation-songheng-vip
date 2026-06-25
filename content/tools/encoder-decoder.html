@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Base64 & URL Encoder/Decoder — Free Online Converter</title>
+<meta name="description" content="Free online Base64 encoder/decoder and URL encoder/decoder. Encode and decode text in real-time. Supports Base64, URL encoding, HTML entities, and hex. 100% client-side.">
+<meta name="keywords" content="base64 encoder, base64 decoder, url encoder, url decoder, html entity encoder, hex converter, online converter">
+<meta property="og:title" content="Base64 & URL Encoder/Decoder — Free Developer Tools">
+<meta property="og:description" content="Encode/decode Base64, URLs, HTML entities, and hex. Real-time conversion, 100% client-side.">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#f8fafc;color:#1e293b;line-height:1.6}
+.container{max-width:900px;margin:0 auto;padding:20px}
+nav{margin-bottom:2em;border-bottom:2px solid #e2e8f0;padding-bottom:1em}
+nav a{color:#2563eb;text-decoration:none;font-weight:600}
+h1{font-size:1.8em;margin:.5em 0 .2em}
+.subtitle{color:#64748b;margin-bottom:20px}
+.tabs{display:flex;gap:4px;margin-bottom:16px;flex-wrap:wrap}
+.tab{background:#e2e8f0;padding:10px 20px;border-radius:8px 8px 0 0;cursor:pointer;font-weight:600;font-size:.9rem;transition:all .2s}
+.tab.active{background:#2563eb;color:#fff}
+.tab:hover:not(.active){background:#cbd5e1}
+.panel{display:none}
+.panel.active{display:block}
+textarea{width:100%;min-height:120px;padding:12px;font-family:'SF Mono','Consolas',monospace;font-size:14px;border:2px solid #e2e8f0;border-radius:8px;resize:vertical}
+textarea:focus{outline:none;border-color:#2563eb}
+.grid{display:grid;grid-template-columns:1fr auto 1fr;gap:12px;align-items:center;margin:16px 0}
+@media(max-width:600px){.grid{grid-template-columns:1fr}}
+button{background:#2563eb;color:#fff;border:none;padding:10px 24px;border-radius:8px;font-weight:600;cursor:pointer;font-size:14px;margin:8px 4px 0 0}
+button:hover{background:#1d4ed8}
+button.secondary{background:#64748b}
+button.secondary:hover{background:#475569}
+button.small{background:#059669;padding:6px 14px;font-size:.85rem;margin:4px}
+.direction-btn{background:#e2e8f0;color:#475569;padding:8px;border-radius:50%;width:40px;height:40px;display:flex;align-items:center;justify-content:center;font-size:1.2rem;cursor:pointer;border:2px solid #cbd5e1;margin:0 auto}
+.direction-btn:hover{background:#cbd5e1}
+label{font-weight:600;font-size:.85rem;color:#475569;margin-top:8px;display:block}
+.encoding-select{margin:8px 0}
+select{padding:8px;border:2px solid #e2e8f0;border-radius:6px;font-size:14px;background:#fff}
+select:focus{outline:none;border-color:#2563eb}
+.char-count{text-align:right;font-size:.8rem;color:#94a3b8;margin-top:4px}
+.history-item{background:#fff;border:1px solid #e2e8f0;border-radius:6px;padding:8px 12px;margin:4px 0;display:flex;justify-content:space-between;align-items:center}
+.history-item .type{font-size:.75rem;color:#64748b;background:#e2e8f0;padding:2px 8px;border-radius:4px}
+</style>
+<!-- Open Graph / Social Meta Tags -->
+<meta property="og:image" content="https://automation.songheng.vip/og-image.png" />
+<meta property="og:url" content="https://automation.songheng.vip/tools/encoder-decoder.html" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="my-automaton" />
+<meta property="og:locale" content="en_US" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Base64 &amp; URL Encoder/Decoder — Free Online Converter" />
+<meta name="twitter:description" content="Free online Base64 encoder/decoder and URL encoder/decoder. Encode and decode text in real-time. Supports Base64, URL encoding, HTML entities, and hex. 100% client-side." />
+<meta name="twitter:image" content="https://automation.songheng.vip/og-image.png" />
+  <link rel="canonical" href="https://automation.songheng.vip/tools/encoder-decoder.html">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Base64 & URL Encoder/Decoder — Free Online Converter",
+  "description": "Free online Base64 encoder/decoder and URL encoder/decoder. Encode and decode text in real-time. Supports Base64, URL encoding, HTML entities, and hex. 100% client-side.",
+  "url": "https://automation.songheng.vip/tools/encoder-decoder.html",
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": "Web",
+  "author": {
+    "@type": "Organization",
+    "name": "my-automaton",
+    "url": "https://automation.songheng.vip"
+  },
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  }
+}
+</script>
+</head>
+<body>
+<div class="container">
+<nav>
+  <a href="/">← Home</a> <span style="color:#94a3b8">|</span>
+  <a href="/tools">Tools</a> <span style="color:#94a3b8">|</span>
+  <a href="/blog">Blog</a> <span style="color:#94a3b8">|</span>
+  <a href="/api-docs">API</a>
+</nav>
+
+<h1>🔐 Base64 & URL Encoder/Decoder</h1>
+<p class="subtitle">Encode and decode text between different formats. All processing happens in your browser — nothing is sent to a server.</p>
+
+<div class="tabs">
+  <div class="tab active" onclick="switchTab('base64')">Base64</div>
+  <div class="tab" onclick="switchTab('url')">URL Encode</div>
+  <div class="tab" onclick="switchTab('html')">HTML Entities</div>
+  <div class="tab" onclick="switchTab('hex')">Hex / Decimal</div>
+</div>
+
+<!-- Base64 -->
+<div id="panel-base64" class="panel active">
+  <div class="encoding-select">
+    <select id="b64Mode" onchange="convertBase64()">
+      <option value="encode">Encode (Text → Base64)</option>
+      <option value="decode">Decode (Base64 → Text)</option>
+    </select>
+  </div>
+  <div class="grid">
+    <div>
+      <label>Input</label>
+      <textarea id="b64Input" oninput="convertBase64()" placeholder="Enter text or Base64 string..."></textarea>
+      <div class="char-count" id="b64InputCount">0 chars</div>
+    </div>
+    <div>
+      <div class="direction-btn" onclick="swapBase64()">⇄</div>
+    </div>
+    <div>
+      <label>Output</label>
+      <textarea id="b64Output" readonly placeholder="Result will appear here..."></textarea>
+      <div class="char-count" id="b64OutputCount">0 chars</div>
+    </div>
+  </div>
+  <button class="small" onclick="copyResult('b64Output')">📋 Copy</button>
+  <button class="small secondary" onclick="clearField('b64Input')">Clear</button>
+</div>
+
+<!-- URL Encode -->
+<div id="panel-url" class="panel">
+  <div class="encoding-select">
+    <select id="urlMode" onchange="convertUrl()">
+      <option value="encode">Encode (Text → URL-encoded)</option>
+      <option value="decode">Decode (URL-encoded → Text)</option>
+    </select>
+  </div>
+  <div class="grid">
+    <div>
+      <label>Input</label>
+      <textarea id="urlInput" oninput="convertUrl()" placeholder="Enter text or URL-encoded string..."></textarea>
+      <div class="char-count" id="urlInputCount">0 chars</div>
+    </div>
+    <div>
+      <div class="direction-btn" onclick="swapUrl()">⇄</div>
+    </div>
+    <div>
+      <label>Output</label>
+      <textarea id="urlOutput" readonly placeholder="Result will appear here..."></textarea>
+      <div class="char-count" id="urlOutputCount">0 chars</div>
+    </div>
+  </div>
+  <button class="small" onclick="copyResult('urlOutput')">📋 Copy</button>
+  <button class="small secondary" onclick="clearField('urlInput')">Clear</button>
+</div>
+
+<!-- HTML Entities -->
+<div id="panel-html" class="panel">
+  <div class="encoding-select">
+    <select id="htmlMode" onchange="convertHtml()">
+      <option value="encode">Encode (Text → HTML Entities)</option>
+      <option value="decode">Decode (HTML Entities → Text)</option>
+    </select>
+  </div>
+  <div class="grid">
+    <div>
+      <label>Input</label>
+      <textarea id="htmlInput" oninput="convertHtml()" placeholder="Enter text or HTML-encoded string..."></textarea>
+      <div class="char-count" id="htmlInputCount">0 chars</div>
+    </div>
+    <div>
+      <div class="direction-btn" onclick="swapHtml()">⇄</div>
+    </div>
+    <div>
+      <label>Output</label>
+      <textarea id="htmlOutput" readonly placeholder="Result will appear here..."></textarea>
+      <div class="char-count" id="htmlOutputCount">0 chars</div>
+    </div>
+  </div>
+  <button class="small" onclick="copyResult('htmlOutput')">📋 Copy</button>
+  <button class="small secondary" onclick="clearField('htmlInput')">Clear</button>
+</div>
+
+<!-- Hex -->
+<div id="panel-hex" class="panel">
+  <div class="encoding-select">
+    <select id="hexMode" onchange="convertHex()">
+      <option value="text-to-hex">Text → Hex</option>
+      <option value="hex-to-text">Hex → Text</option>
+      <option value="dec-to-hex">Decimal → Hex</option>
+      <option value="hex-to-dec">Hex → Decimal</option>
+    </select>
+  </div>
+  <div class="grid">
+    <div>
+      <label>Input</label>
+      <textarea id="hexInput" oninput="convertHex()" placeholder="Enter text, hex, or decimal..."></textarea>
+      <div class="char-count" id="hexInputCount">0 chars</div>
+    </div>
+    <div>
+      <div class="direction-btn" onclick="swapHex()">⇄</div>
+    </div>
+    <div>
+      <label>Output</label>
+      <textarea id="hexOutput" readonly placeholder="Result will appear here..."></textarea>
+      <div class="char-count" id="hexOutputCount">0 chars</div>
+    </div>
+  </div>
+  <button class="small" onclick="copyResult('hexOutput')">📋 Copy</button>
+  <button class="small secondary" onclick="clearField('hexInput')">Clear</button>
+</div>
+
+<h2 style="margin-top:32px">Common Use Cases</h2>
+<table style="width:100%;border-collapse:collapse;margin:12px 0">
+  <tr><th style="text-align:left;padding:8px;border-bottom:2px solid #e2e8f0">Format</th><th style="text-align:left;padding:8px;border-bottom:2px solid #e2e8f0">Use Case</th></tr>
+  <tr><td style="padding:8px;border-bottom:1px solid #e2e8f0"><strong>Base64</strong></td><td style="padding:8px;border-bottom:1px solid #e2e8f0">Embed images in HTML/CSS, encode binary data for APIs, JWT tokens</td></tr>
+  <tr><td style="padding:8px;border-bottom:1px solid #e2e8f0"><strong>URL Encoding</strong></td><td style="padding:8px;border-bottom:1px solid #e2e8f0">Encode special characters in URLs, form data, query parameters</td></tr>
+  <tr><td style="padding:8px;border-bottom:1px solid #e2e8f0"><strong>HTML Entities</strong></td><td style="padding:8px;border-bottom:1px solid #e2e8f0">Display HTML tags as text, prevent XSS, encode special HTML characters</td></tr>
+  <tr><td style="padding:8px;"><strong>Hex</strong></td><td style="padding:8px;">Color codes, binary data representation, memory addresses, crypto</td></tr>
+</table>
+</div>
+
+<script>
+function switchTab(name) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelector(`.tab[onclick*="${name}"]`).classList.add('active');
+  document.getElementById(`panel-${name}`).classList.add('active');
+}
+
+// === Base64 ===
+function convertBase64() {
+  const input = document.getElementById('b64Input');
+  const output = document.getElementById('b64Output');
+  const mode = document.getElementById('b64Mode').value;
+  updateCount('b64Input', 'b64InputCount');
+  
+  try {
+    if (mode === 'encode') {
+      output.value = btoa(unescape(encodeURIComponent(input.value)));
+    } else {
+      output.value = decodeURIComponent(escape(atob(input.value.trim())));
+    }
+  } catch(e) {
+    output.value = 'Error: ' + e.message;
+  }
+  updateCount('b64Output', 'b64OutputCount');
+}
+function swapBase64() {
+  const i = document.getElementById('b64Input');
+  const o = document.getElementById('b64Output');
+  const m = document.getElementById('b64Mode');
+  if (o.value && !o.value.startsWith('Error')) {
+    i.value = o.value;
+    m.value = m.value === 'encode' ? 'decode' : 'encode';
+    convertBase64();
+  }
+}
+
+// === URL ===
+function convertUrl() {
+  const input = document.getElementById('urlInput');
+  const output = document.getElementById('urlOutput');
+  const mode = document.getElementById('urlMode').value;
+  updateCount('urlInput', 'urlInputCount');
+  
+  try {
+    if (mode === 'encode') {
+      output.value = encodeURIComponent(input.value);
+    } else {
+      output.value = decodeURIComponent(input.value);
+    }
+  } catch(e) {
+    output.value = 'Error: ' + e.message;
+  }
+  updateCount('urlOutput', 'urlOutputCount');
+}
+function swapUrl() {
+  const i = document.getElementById('urlInput');
+  const o = document.getElementById('urlOutput');
+  const m = document.getElementById('urlMode');
+  if (o.value && !o.value.startsWith('Error')) {
+    i.value = o.value;
+    m.value = m.value === 'encode' ? 'decode' : 'encode';
+    convertUrl();
+  }
+}
+
+// === HTML Entities ===
+function convertHtml() {
+  const input = document.getElementById('htmlInput');
+  const output = document.getElementById('htmlOutput');
+  const mode = document.getElementById('htmlMode').value;
+  updateCount('htmlInput', 'htmlInputCount');
+  
+  try {
+    if (mode === 'encode') {
+      const div = document.createElement('div');
+      div.appendChild(document.createTextNode(input.value));
+      output.value = div.innerHTML;
+    } else {
+      const div = document.createElement('div');
+      div.innerHTML = input.value;
+      output.value = div.textContent;
+    }
+  } catch(e) {
+    output.value = 'Error: ' + e.message;
+  }
+  updateCount('htmlOutput', 'htmlOutputCount');
+}
+function swapHtml() {
+  const i = document.getElementById('htmlInput');
+  const o = document.getElementById('htmlOutput');
+  const m = document.getElementById('htmlMode');
+  if (o.value && !o.value.startsWith('Error')) {
+    i.value = o.value;
+    m.value = m.value === 'encode' ? 'decode' : 'encode';
+    convertHtml();
+  }
+}
+
+// === Hex ===
+function convertHex() {
+  const input = document.getElementById('hexInput');
+  const output = document.getElementById('hexOutput');
+  const mode = document.getElementById('hexMode').value;
+  updateCount('hexInput', 'hexInputCount');
+  
+  try {
+    switch(mode) {
+      case 'text-to-hex':
+        output.value = Array.from(input.value).map(c => c.charCodeAt(0).toString(16).padStart(2, '0')).join(' ');
+        break;
+      case 'hex-to-text':
+        output.value = input.value.split(/\s+/).filter(Boolean).map(h => String.fromCharCode(parseInt(h, 16))).join('');
+        break;
+      case 'dec-to-hex':
+        output.value = input.value.split(/\s+/).filter(Boolean).map(d => '0x' + parseInt(d, 10).toString(16).toUpperCase()).join(' ');
+        break;
+      case 'hex-to-dec':
+        output.value = input.value.split(/\s+/).filter(Boolean).map(h => parseInt(h, 16).toString(10)).join(' ');
+        break;
+    }
+  } catch(e) {
+    output.value = 'Error: ' + e.message;
+  }
+  updateCount('hexOutput', 'hexOutputCount');
+}
+function swapHex() {
+  const i = document.getElementById('hexInput');
+  const o = document.getElementById('hexOutput');
+  const m = document.getElementById('hexMode');
+  if (o.value && !o.value.startsWith('Error')) {
+    i.value = o.value;
+    const map = {'text-to-hex':'hex-to-text','hex-to-text':'text-to-hex','dec-to-hex':'hex-to-dec','hex-to-dec':'dec-to-hex'};
+    m.value = map[m.value] || m.value;
+    convertHex();
+  }
+}
+
+// === Utilities ===
+function updateCount(inputId, countId) {
+  const val = document.getElementById(inputId).value;
+  document.getElementById(countId).textContent = val.length + ' chars' + (val.length > 0 ? ' | ' + val.trim().split(/\s+/).filter(Boolean).length + ' words' : '');
+}
+function copyResult(id) {
+  const val = document.getElementById(id).value;
+  if (!val) return;
+  navigator.clipboard.writeText(val).then(() => {
+    const btn = event.target;
+    btn.textContent = '✅ Copied!';
+    setTimeout(() => btn.textContent = '📋 Copy', 2000);
+  });
+}
+function clearField(id) {
+  document.getElementById(id).value = '';
+  document.getElementById(id.replace('Input','Output')).value = '';
+  const mode = id.replace('Input','');
+  const fn = {'b64':'convertBase64','url':'convertUrl','html':'convertHtml','hex':'convertHex'}[mode];
+  if (fn) window[fn]();
+}
+</script>
+</body>
+</html>

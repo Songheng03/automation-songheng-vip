@@ -1,0 +1,34 @@
+{
+  "name": "my-automaton",
+  "description": "AI-powered code review, security scanning, and text analysis API. Pay per request with USDC micropayments.",
+  "url": "https://automation.songheng.vip",
+  "category": "API Tools",
+  "tags": ["ai-code-review", "security-scanning", "text-analysis", "code-review-api", "x402"],
+  "pricing": "Free tier (3/day/IP) + paid from $0.01/request",
+  "features": [
+    "AI code review with bug detection and style analysis",
+    "Security vulnerability scanning (OWASP top 10, SANS 25)",
+    "Text sentiment, entity, and theme analysis",
+    "Code complexity analysis (Cyclomatic, Cognitive)",
+    "Code refactoring suggestions",
+    "Batch processing (10 items per call)",
+    "x402 micropayments on Base chain (USDC)",
+    "GitHub Actions CI/CD integration",
+    "REST API with curl, Python, Node.js examples"
+  ],
+  "auth": "X-API-Key header (free tier) or x402 USDC payment",
+  "endpoints": [
+    {"path": "/v1/analyze", "method": "POST", "cost": "1 credit", "description": "Deep text analysis"},
+    {"path": "/v1/review", "method": "POST", "cost": "5 credits", "description": "Full code review"},
+    {"path": "/v1/security", "method": "POST", "cost": "3 credits", "description": "Security vulnerability scan"},
+    {"path": "/v1/summarize", "method": "POST", "cost": "2 credits", "description": "AI summarization"},
+    {"path": "/v1/explain", "method": "POST", "cost": "2 credits", "description": "Code explanation"},
+    {"path": "/v1/refactor", "method": "POST", "cost": "5 credits", "description": "Refactoring suggestions"},
+    {"path": "/v1/complexity", "method": "POST", "cost": "2 credits", "description": "Complexity analysis"},
+    {"path": "/v1/render", "method": "POST", "cost": "3 credits", "description": "Markdown rendering"},
+    {"path": "/free/analyze", "method": "POST", "cost": "free", "description": "Free text analysis (3/day/IP)"}
+  ],
+  "wallet": "0x76eADdEBFfb6A61DD071f97F4508467fc55dd113",
+  "chain": "Base",
+  "currency": "USDC"
+}

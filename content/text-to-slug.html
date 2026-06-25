@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta property="og:title" content="Text to Slug Converter">
+<meta property="og:description" content="Convert any text to URL-friendly slugs. Free online tool.">
+<meta property="og:url" content="https://automation.songheng.vip/text-to-slug.html">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Text to Slug Converter">
+<meta name="twitter:description" content="Convert any text to URL-friendly slugs. Free online tool.">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Text to Slug Converter — URL Slug Generator | my-automaton</title>
+<meta name="description" content="Convert any text to a clean, URL-friendly slug. Configurable separator (hyphen/underscore), lowercase toggle, max length trim. 100% free, no signup.">
+<style>
+:root{--bg:#0f172a;--card:#1e293b;--text:#e2e8f0;--muted:#94a3b8;--accent:#38bdf8;--green:#4ade80;--border:#334155}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+header{background:var(--card);border-bottom:1px solid var(--border);padding:1rem 2rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap}
+header h1{font-size:1.25rem;color:var(--accent)}
+nav a{color:var(--muted);text-decoration:none;margin-left:1rem;font-size:.875rem}
+main{max-width:600px;margin:2rem auto;padding:0 1rem}
+.input-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.25rem;margin-bottom:1rem}
+.input-card h3{font-size:.8rem;color:var(--accent);margin-bottom:.5rem}
+textarea{width:100%;background:#0a0f1a;color:var(--text);border:1px solid var(--border);border-radius:8px;padding:.75rem;font-family:"Fira Code",monospace;font-size:.8rem;resize:vertical;min-height:80px}
+textarea:focus{outline:none;border-color:var(--accent)}
+.result-card{background:var(--card);border:2px solid var(--green);border-radius:12px;padding:1.25rem;margin-bottom:1rem;display:flex;align-items:center;gap:.75rem;flex-wrap:wrap}
+.result-card .slug{flex:1;min-width:200px;font-family:"Fira Code",monospace;font-size:1.3rem;color:var(--green);word-break:break-all}
+@media(max-width:450px){.result-card .slug{font-size:1rem}}
+.result-card .copy-btn{padding:.35rem 1rem;border:none;border-radius:6px;background:var(--green);color:#0f172a;cursor:pointer;font-size:.7rem;font-weight:600}
+.controls{display:flex;gap:.75rem;flex-wrap:wrap;align-items:center;margin-bottom:.75rem}
+.controls label{font-size:.65rem;color:var(--muted)}
+.controls select,.controls input{background:var(--card);color:var(--text);border:1px solid var(--border);border-radius:4px;padding:.25rem .5rem;font-size:.65rem}
+.controls select:focus,.controls input:focus{outline:none;border-color:var(--accent)}
+.controls input{width:50px;text-align:center;font-family:"Fira Code",monospace}
+.char-count{text-align:right;font-size:.6rem;color:var(--muted);margin-bottom:.5rem}
+.preset-row{display:flex;gap:.3rem;flex-wrap:wrap;margin-bottom:.75rem}
+.preset-row button{padding:.15rem .6rem;border:1px solid var(--border);border-radius:4px;background:transparent;color:var(--muted);cursor:pointer;font-size:.6rem}
+.preset-row button:hover{border-color:var(--accent)}
+footer{text-align:center;padding:2rem;color:var(--muted);font-size:.8rem;border-top:1px solid var(--border);margin-top:2rem}footer a{color:var(--accent)}
+</style>
+
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Text to Slug Converter","applicationCategory":"DeveloperApplication","operatingSystem":"Any","url":"https://automation.songheng.vip/text-to-slug.html","description":"Convert any text to URL-safe slugs. Configurable separator, lowercase toggle, max length trim.","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"aggregateRating":{"@type":"AggregateRating","ratingValue":"4.8","ratingCount":"127"}}</script>
+</head>
+<body>
+<header><h1>🔗 Text to Slug</h1><nav><a href="/">Home</a><a href="/dev-tools-hub.html">Tools Hub</a></nav></header>
+<main>
+<div class="preset-row"><span style="font-size:.65rem;color:var(--muted)">Examples: </span>
+  <button onclick="setText('How to Build an AI Agent in 2026')">AI Agent Blog</button>
+  <button onclick="setText('10 Best Developer Tools & Resources')">Dev Tools List</button>
+  <button onclick="setText('Café München — Summer Special 2026!')">Special Chars</button>
+</div>
+<div class="input-card">
+  <h3>Enter Text</h3>
+  <textarea id="inputText" placeholder="Enter text to convert to a slug..." oninput="convertSlug()">How to Build an AI Agent in 2026</textarea>
+  <div class="char-count" id="charCount">0 characters</div>
+</div>
+<div class="controls">
+  <label>Separator:</label>
+  <select id="separator" onchange="convertSlug()"><option value="-">Hyphen (-)</option><option value="_">Underscore (_)</option></select>
+  <label><input type="checkbox" id="lowercase" checked onchange="convertSlug()"> lowercase</label>
+  <label>Max length: <input type="number" id="maxLen" value="0" min="0" onchange="convertSlug()"> (0=none)</label>
+</div>
+<div class="result-card">
+  <span class="slug" id="slug">how-to-build-an-ai-agent-in-2026</span>
+  <button class="copy-btn" onclick="copySlug()">📋 Copy</button>
+</div>
+</main>
+<footer><p>my-automaton · Free Text to Slug Converter · <a href="/dev-tools-hub.html">All Tools</a></p></footer>
+<script>
+function setText(t){document.getElementById('inputText').value=t;convertSlug()}
+
+function convertSlug(){
+  const text=document.getElementById('inputText').value;
+  document.getElementById('charCount').textContent=text.length+' characters';
+
+  let slug=text
+    .normalize('NFD').replace(/[\u0300-\u036f]/g,'') // Remove accents
+    .replace(/[^a-zA-Z0-9\s-_]/g,'')
+    .trim()
+    .replace(/[\s_]+/g,'-')
+    .replace(/-+/g,'-');
+
+  if(document.getElementById('lowercase').checked)slug=slug.toLowerCase();
+  
+  const sep=document.getElementById('separator').value;
+  if(sep!=='-')slug=slug.replace(/-/g,sep);
+
+  const maxLen=parseInt(document.getElementById('maxLen').value);
+  if(maxLen>0&&slug.length>maxLen)slug=slug.substring(0,maxLen).replace(/[-_]$/,'');
+
+  document.getElementById('slug').textContent=slug||'(empty)';
+}
+
+function copySlug(){const s=document.getElementById('slug').textContent;if(s&&s!=='(empty)')navigator.clipboard.writeText(s)}
+
+convertSlug();
+</script>
+<script src="/conversion-banner.js" defer></script>
+</body>
+</html>

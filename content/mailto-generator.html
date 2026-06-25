@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Mailto Link Generator — Email Links Builder</title>
+<meta name="description" content="Create mailto links with subject, body, CC, BCC. Pre-built email templates. Copy ready HTML mailto links. 100% client-side.">
+<link rel="canonical" href="https://automation.songheng.vip/mailto-generator.html">
+<style>
+:root{--bg:#0d1117;--surface:#161b22;--border:#30363d;--text:#c9d1d9;--muted:#8b949e;--accent:#58a6ff;--green:#3fb950}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--text);font-family:system-ui,sans-serif;min-height:100vh}
+header{background:var(--surface);border-bottom:1px solid var(--border);padding:16px 24px;text-align:center}
+header h1{font-size:1.5rem} header p{color:var(--muted);font-size:.85rem;margin-top:4px}
+.container{max-width:600px;margin:0 auto;padding:24px 16px}
+.form{display:grid;gap:14px;margin-bottom:16px}
+.form label{font-size:.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
+.form input,.form textarea{width:100%;padding:10px 14px;background:var(--bg);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:.88rem;font-family:system-ui,sans-serif}
+.form textarea{height:80px;resize:vertical}
+.form input:focus,.form textarea:focus{outline:none;border-color:var(--accent)}
+.output{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:16px}
+.output label{font-size:.72rem;color:var(--muted);margin-bottom:8px;display:block}
+.mailto-display{background:var(--bg);padding:16px;border-radius:8px;margin-bottom:12px}
+.mailto-display textarea{width:100%;height:100px;background:transparent;border:none;color:var(--green);font-family:'JetBrains Mono',monospace;font-size:.78rem;resize:none;word-break:break-all}
+.preview-btn{text-align:center;margin-bottom:12px}
+.preview-btn a{display:inline-block;padding:12px 30px;background:#3fb950;color:#fff;border-radius:8px;text-decoration:none;font-weight:600;font-size:.9rem;transition:opacity .15s}
+.preview-btn a:hover{opacity:.85}
+.btn-row{display:flex;gap:10px;justify-content:center}
+.btn{padding:10px 20px;border-radius:8px;cursor:pointer;font-size:.84rem;font-weight:600;border:none;transition:all .15s}
+.btn-primary{background:var(--accent);color:#fff}
+.btn-secondary{background:var(--surface);color:var(--text);border:1px solid var(--border)}
+.sponsor{text-align:center;padding:20px;background:var(--surface);border:1px solid var(--border);border-radius:8px}
+.sponsor a{color:var(--accent)}
+</style>
+</head>
+<body>
+<header><h1>📧 Mailto Link Generator</h1><p>Build mailto links with subject, body, CC, BCC. Get copy-ready HTML.</p></header>
+<div class="container">
+<div class="form">
+  <label>To (email)</label><input id="to" value="hello@example.com" oninput="gen()">
+  <label>CC</label><input id="cc" placeholder="cc@example.com" oninput="gen()">
+  <label>BCC</label><input id="bcc" placeholder="bcc@example.com" oninput="gen()">
+  <label>Subject</label><input id="subject" value="Hello from the Mailto Generator" oninput="gen()">
+  <label>Body</label><textarea id="body" oninput="gen()">Hi there,
+
+I found this useful tool and wanted to share!
+
+Cheers</textarea>
+</div>
+<div class="output">
+  <label>Mailto Link</label>
+  <div class="mailto-display"><textarea id="mailtoUrl" readonly></textarea></div>
+  <div class="btn-row">
+    <button class="btn btn-primary" onclick="copyMailto()">📋 Copy Link</button>
+    <button class="btn btn-secondary" onclick="copyHTML()">📋 Copy HTML</button>
+  </div>
+  <div class="preview-btn"><a id="previewLink" href="#" target="_blank">✉ Open Email Client</a></div>
+</div>
+<div class="sponsor"><p>💡 Building email tools? Our <a href="/api-playground.html">AI API</a> can help with text generation.</p></div>
+</div>
+<script>
+function gen(){
+  const to=document.getElementById('to').value.trim();
+  const cc=document.getElementById('cc').value.trim();
+  const bcc=document.getElementById('bcc').value.trim();
+  const subj=document.getElementById('subject').value.trim();
+  const body=document.getElementById('body').value.trim();
+  const params=[];
+  if(cc)params.push('cc='+encodeURIComponent(cc));
+  if(bcc)params.push('bcc='+encodeURIComponent(bcc));
+  if(subj)params.push('subject='+encodeURIComponent(subj));
+  if(body)params.push('body='+encodeURIComponent(body));
+  const mailto='mailto:'+(to||'')+(params.length?'?'+params.join('&'):'');
+  document.getElementById('mailtoUrl').value=mailto;
+  document.getElementById('previewLink').href=mailto;
+}
+function copyMailto(){navigator.clipboard.writeText(document.getElementById('mailtoUrl').value)}
+function copyHTML(){
+  const mt=document.getElementById('mailtoUrl').value;
+  const txt=document.getElementById('subject').value||'Email us';
+  navigator.clipboard.writeText('<a href="'+mt+'">'+txt+'</a>');
+}
+gen();
+</script>
+<script src="/conversion-banner.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,52 @@
+{
+  "submission": {
+    "name": "my-automaton AI Code Review API",
+    "tagline": "Free AI code review API — 3 calls/day free, pay-as-you-go from 1¢. No signup needed.",
+    "description": "my-automaton is an AI-powered code review and analysis REST API with 7 services (code review, security scan, text analysis, summarization, code explanation, refactoring, complexity analysis). Free tier: 3 calls/day per IP with no registration required. Premium: pay-as-you-go from 1¢ per call via pre-purchased credits. Built by an autonomous AI agent running on a $17/month VPS.",
+    "url": "https://automation.songheng.vip",
+    "api_url": "https://automation.songheng.vip/api-docs.html",
+    "category": "Developer Tools / AI Code Analysis",
+    "pricing": "Free tier + paid credits (from $5 for 500 credits)",
+    "features": [
+      "Code review with scored feedback",
+      "OWASP security vulnerability scanning",
+      "Text analysis (sentiment, entities, structure)",
+      "AI summarization for code and text",
+      "Code explanation in plain English",
+      "Smart refactoring suggestions with diffs",
+      "Cyclomatic complexity analysis",
+      "Batch processing (10 texts per call)",
+      "Free tier: 3 calls/day, no signup needed",
+      "CI/CD integration (GitHub Actions, GitLab CI, CircleCI)",
+      "Credits never expire",
+      "REST API with JSON responses"
+    ],
+    "use_cases": [
+      "CI/CD pipeline — auto-review every PR",
+      "Developer onboarding — explain unfamiliar code",
+      "Pre-deploy security audit",
+      "Code quality enforcement across teams",
+      "Learning — students paste code for analysis"
+    ],
+    "languages": [
+      "REST API (JSON)",
+      "curl",
+      "JavaScript/TypeScript",
+      "Python",
+      "Go",
+      "Rust",
+      "CLI (npx @my-automaton/cli)"
+    ],
+    "social_links": {
+      "github": "https://github.com/my-automaton/cli",
+      "docs": "https://automation.songheng.vip/api-docs.html",
+      "playground": "https://automation.songheng.vip/api-playground.html"
+    }
+  },
+  "screenshot_urls": [
+    "https://automation.songheng.vip/",
+    "https://automation.songheng.vip/api-docs.html",
+    "https://automation.songheng.vip/api-playground.html",
+    "https://automation.songheng.vip/upgrade.html"
+  ]
+}

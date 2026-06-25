@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="canonical" href="https://automation.songheng.vip/tools/hash-generator.html">
+  <meta property="og:title" content="Free Online Hash Generator - MD5, SHA-256, SHA-512 | my-automaton">
+  <meta property="og:description" content="Generate MD5, SHA-1, SHA-256, SHA-512 hashes from text. Free online hash generator with comparison mode.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://automation.songheng.vip/tools/hash-generator.html">
+  <meta property="og:image" content="https://automation.songheng.vip/og-image.png"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Free Online Hash Generator - MD5, SHA-256, SHA-512 | my-automaton</title>
+<meta name="description" content="Generate MD5, SHA-1, SHA-256, SHA-512 hashes from text. Free online hash generator with comparison mode.">
+<style>*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#0d1117;color:#c9d1d9;padding:20px;max-width:800px;margin:0 auto;line-height:1.6}
+h1{color:#58a6ff;margin-bottom:8px}
+p{color:#8b949e;margin-bottom:20px}
+textarea{width:100%;min-height:120px;background:#0d1117;border:1px solid #30363d;border-radius:8px;padding:14px;color:#c9d1d9;font-family:monospace;font-size:13px;resize:vertical}
+textarea:focus{outline:none;border-color:#58a6ff}
+.controls{display:flex;gap:10px;flex-wrap:wrap;margin:10px 0;align-items:center}
+.btn{padding:10px 24px;border:none;border-radius:6px;font-weight:600;cursor:pointer;font-size:.9rem}
+.btn-primary{background:#238636;color:#fff}.btn-primary:hover{background:#2ea043}
+.btn-secondary{background:#21262d;color:#c9d1d9}.btn-secondary:hover{background:#30363d}
+.hash-grid{display:grid;grid-template-columns:1fr;gap:8px;margin:12px 0}
+.hash-row{display:flex;align-items:center;gap:10px;background:#161b22;border:1px solid #30363d;border-radius:6px;padding:10px 14px}
+.hash-label{min-width:90px;font-weight:600;color:#58a6ff;font-size:.85rem}
+.hash-value{font-family:monospace;font-size:.75rem;color:#8b949e;word-break:break-all;flex:1;cursor:pointer}
+.hash-value:hover{color:#58a6ff}
+nav a{color:#58a6ff;text-decoration:none;margin-right:15px;font-size:.9rem}
+.copy-btn{background:transparent;border:1px solid #30363d;color:#58a6ff;padding:4px 10px;border-radius:4px;cursor:pointer;font-size:.75rem}
+.copy-btn:hover{background:#30363d}
+</style>
+<meta name="google-site-verification" content="YOUR_CODE" />
+<meta property="og:site_name" content="my-automaton" />
+<meta property="og:type" content="website" />
+<meta property="og:locale" content="en_US" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:site" content="@my_automaton" />
+<script src="/js/analytics.js"></script>
+<!-- Open Graph / Social Meta Tags -->
+<meta name="twitter:title" content="Free Online Hash Generator - MD5, SHA-256, SHA-512 | my-automaton" />
+<meta name="twitter:description" content="Generate MD5, SHA-1, SHA-256, SHA-512 hashes from text. Free online hash generator with comparison mode." />
+<meta name="twitter:image" content="https://automation.songheng.vip/og-image.png" />
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Free Online Hash Generator - MD5, SHA-256, SHA-512 | my-automaton",
+  "description": "Generate MD5, SHA-1, SHA-256, SHA-512 hashes from text. Free online hash generator with comparison mode.",
+  "url": "https://automation.songheng.vip/tools/hash-generator.html",
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": "Web",
+  "author": {
+    "@type": "Organization",
+    "name": "my-automaton",
+    "url": "https://automation.songheng.vip"
+  },
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  }
+}
+</script>
+</head>
+<body>
+<nav><a href="/">🏠 Home</a> <a href="/tools">🔧 Dev Tools</a></nav>
+<h1>🔐 Hash Generator</h1>
+<p>Generate cryptographic hashes from text. Supports MD5, SHA-1, SHA-256, SHA-512.</p>
+<textarea id="input" placeholder="Type text to hash...">Hello, World!</textarea>
+<div class="controls">
+<button class="btn btn-primary" onclick="generateHashes()">🔐 Generate Hashes</button>
+<button class="btn btn-secondary" onclick="clearAll()">Clear</button>
+</div>
+<div class="hash-grid" id="results"></div>
+<script>
+async function generateHashes(){const input=document.getElementById('input').value;if(!input)return;const enc=new TextEncoder();const data=enc.encode(input);const grid=document.getElementById('results');const algos=[{name:'MD5',algo:'MD5',fn:async(d)=>{const hash=await crypto.subtle.digest('SHA-256',d);const md5=await md5Hash(d);return md5}},{name:'SHA-1',algo:'SHA-1',fn:async(d)=>bytesToHex(await crypto.subtle.digest('SHA-1',d))},{name:'SHA-256',algo:'SHA-256',fn:async(d)=>bytesToHex(await crypto.subtle.digest('SHA-256',d))},{name:'SHA-512',algo:'SHA-512',fn:async(d)=>bytesToHex(await crypto.subtle.digest('SHA-512',d))}];let html='';for(const algo of algos){let hash;try{if(algo.name==='MD5'){hash=await md5Hash(data);}else{hash=bytesToHex(await crypto.subtle.digest(algo.algo,data));}}catch(e){hash='Error: '+e.message;}html+=`<div class="hash-row"><span class="hash-label">${algo.name}</span><span class="hash-value" onclick="copyText(this)" title="Click to copy">${hash}</span></div>`;}grid.innerHTML=html;}
+function md5Hash(data){const hexChars='0123456789abcdef';const bytes=Array.from(new Uint8Array(data));let s=[],k=[];for(let i=0;i<64;i++)k[i]=Math.floor(Math.abs(Math.sin(i+1))*4294967296)&0xffffffff;const append=bytes.concat(128);for(let i=bytes.length+9;i%64!==0;i++)append.push(0);const lenBits=bytes.length*8;for(let i=0;i<8;i++)append.push((lenBits>>>i*8)&0xff);const chunks=[];for(let i=0;i<append.length;i+=64){const chunk=append.slice(i,i+64);const w=[];for(let j=0;j<16;j++){w[j]=chunk[j*4]|(chunk[j*4+1]<<8)|(chunk[j*4+2]<<16)|(chunk[j*4+3]<<24);}let a=0x67452301,b=0xefcdab89,c=0x98badcfe,d=0x10325476;for(let j=0;j<64;j++){let f,g;if(j<16){f=(b&c)|(~b&d);g=j;}else if(j<32){f=(d&b)|(~d&c);g=(5*j+1)%16;}else if(j<48){f=b^c^d;g=(3*j+5)%16;}else{f=c^(b|~d);g=(7*j)%16;}const temp=d;d=c;c=b;b=((a+f+k[j]+w[g])<<(s[j]||0)|(a+f+k[j]+w[g])>>>(32-(s[j]||0)))+b &0xffffffff>>>0;a=temp;}s=[0x67452301,0xefcdab89,0x98badcfe,0x10325476].map((v,i)=>[(v+a),(v+b),(v+c),(v+d)][i]);}return s.map(v=>v.toString(16).padStart(8,'0')).join('');}
+function bytesToHex(buf){const bytes=new Uint8Array(buf);return Array.from(bytes).map(b=>b.toString(16).padStart(2,'0')).join('');}
+function copyText(el){navigator.clipboard.writeText(el.textContent).then(()=>{el.textContent='✓ Copied!';setTimeout(()=>generateHashes(),1500);});}
+function clearAll(){document.getElementById('input').value='';document.getElementById('results').innerHTML='';}
+</script>
+<div class="share-bar" style="position:fixed;bottom:20px;right:20px;z-index:9999;display:flex;gap:8px;background:rgba(0,0,0,0.85);padding:10px 14px;border-radius:30px;backdrop-filter:blur(8px);box-shadow:0 2px 12px rgba(0,0,0,0.3)">
+<button onclick="window.open('https://twitter.com/intent/tweet?text='+encodeURIComponent(document.title)+'&url='+encodeURIComponent(location.href),'_blank')" style="background:#1DA1F2;border:none;color:white;padding:8px 12px;border-radius:20px;cursor:pointer;font-size:13px;font-weight:bold">X</button>
+<button onclick="window.open('https://www.linkedin.com/sharing/share-offsite/?url='+encodeURIComponent(location.href),'_blank')" style="background:#0A66C2;border:none;color:white;padding:8px 12px;border-radius:20px;cursor:pointer;font-size:13px;font-weight:bold">in</button>
+<button onclick="window.open('https://reddit.com/submit?url='+encodeURIComponent(location.href)+'&title='+encodeURIComponent(document.title),'_blank')" style="background:#FF4500;border:none;color:white;padding:8px 12px;border-radius:20px;cursor:pointer;font-size:13px;font-weight:bold">r</button>
+</div>
+<script src="/js/share-widget.js"></script>
+<script src="/share-widget.js"></script>
+</body>
+</html>

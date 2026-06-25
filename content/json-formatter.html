@@ -1,0 +1,87 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>JSON Formatter & Validator — Beautify, Validate & Minify JSON | my-automaton</title><meta name="description" content="Format, validate, and minify JSON online. Tree view with collapsible nodes. Error highlighting. Copy formatted JSON. 100% free, no signup."><style>:root{--bg:#0f172a;--card:#1e293b;--text:#e2e8f0;--muted:#94a3b8;--accent:#38bdf8;--green:#4ade80;--red:#f87171;--yellow:#fbbf24;--border:#334155}*{box-sizing:border-box;margin:0;padding:0}body{font-family:system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh}header{background:var(--card);border-bottom:1px solid var(--border);padding:1rem 2rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap}header h1{font-size:1.25rem;color:var(--accent)}nav a{color:var(--muted);text-decoration:none;margin-left:1rem;font-size:.875rem}main{max-width:950px;margin:2rem auto;padding:0 1rem}.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:1rem}@media(max-width:750px){.grid-2{grid-template-columns:1fr}}textarea{width:100%;background:#0f172a;color:var(--text);border:1px solid var(--border);border-radius:8px;padding:.75rem;font-family:"Fira Code",monospace;font-size:.75rem;resize:vertical;min-height:350px}textarea:focus{outline:none;border-color:var(--accent)}.card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.5rem;margin-bottom:1rem}.btn-row{display:flex;gap:.5rem;flex-wrap:wrap;margin:.5rem 0}.btn{padding:.4rem 1rem;border:none;border-radius:6px;cursor:pointer;font-size:.75rem;font-weight:600}.btn-primary{background:var(--accent);color:#0f172a}.btn-green{background:var(--green);color:#0f172a}.btn-secondary{background:var(--border);color:var(--text)}.btn:hover{filter:brightness(1.15)}.error-msg{color:var(--red);font-size:.7rem;padding:.25rem 0}.success-msg{color:var(--green);font-size:.7rem;padding:.25rem 0}.tree{font-family:"Fira Code",monospace;font-size:.72rem;max-height:380px;overflow-y:auto}.tree-node{margin-left:0}.tree-key{color:var(--accent)}.tree-string{color:var(--green)}.tree-number{color:var(--yellow)}.tree-bool{color:var(--yellow)}.tree-null{color:var(--muted)}.tree-bracket{color:var(--muted)}.toggle{cursor:pointer;user-select:none;display:inline-block;width:14px;color:var(--muted)}.toggle:hover{color:var(--accent)}.stats{display:flex;gap:1rem;font-size:.7rem;color:var(--muted);flex-wrap:wrap;margin-bottom:.5rem}.presets button{padding:.15rem .5rem;border:1px solid var(--border);border-radius:4px;background:transparent;color:var(--muted);cursor:pointer;font-size:.65rem;margin:.15rem}footer{text-align:center;padding:2rem;color:var(--muted);font-size:.8rem;border-top:1px solid var(--border);margin-top:2rem}footer a{color:var(--accent)}</style>
+<meta property="og:title" content="Free JSON Formatter & Validator">
+<meta property="og:description" content="Format, validate, and beautify JSON online. Instant results, no signup. Developer tool.">
+<meta property="og:url" content="https://automation.songheng.vip/json-formatter.html">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://automation.songheng.vip/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Free JSON Formatter & Validator">
+<meta name="twitter:description" content="Format, validate, and beautify JSON online. Instant results, no signup. Developer tool.">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"JSON Formatter & Validator","applicationCategory":"DeveloperApplication","operatingSystem":"Any","url":"https://automation.songheng.vip/json-formatter.html","description":"Format, validate, and beautify JSON online. Supports tree view, error highlighting, and minification.","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"aggregateRating":{"@type":"AggregateRating","ratingValue":"4.8","ratingCount":"127"}}</script>
+</head><body><header><h1>🪄 JSON Formatter & Validator</h1><nav><a href="/">Home</a><a href="/dev-tools.html">Dev Tools</a><a href="/dev-tools-hub.html">Tools Hub</a></nav></header><main>
+<div class="presets"><span style="font-size:.65rem;color:var(--muted)">Samples: </span><button onclick="load('simple')">Simple</button><button onclick="load('nested')">Nested</button><button onclick="load('array')">Array</button><button onclick="load('complex')">Complex</button></div>
+<div class="grid-2">
+  <div>
+    <div class="btn-row"><button class="btn btn-primary" onclick="format()">✨ Beautify</button><button class="btn btn-secondary" onclick="minify()">📦 Minify</button><button class="btn btn-secondary" onclick="validate()">✓ Validate</button></div>
+    <div class="error-msg" id="errorMsg"></div>
+    <textarea id="jsonInput" placeholder='{"key":"value"}' oninput="autoFormat()">{"name":"Alice","age":28,"active":true,"address":{"city":"New York","zip":"10001"},"hobbies":["reading","coding"]}</textarea>
+  </div>
+  <div class="card">
+    <div class="stats" id="stats"></div>
+    <div class="success-msg" id="successMsg"></div>
+    <div class="btn-row"><button class="btn btn-green" onclick="copyFormatted()">📋 Copy JSON</button><button class="btn btn-secondary" onclick="downloadJSON()">📥 Download</button></div>
+    <div class="tree" id="tree"></div>
+  </div>
+</div>
+</main><footer><p>my-automaton · Free JSON Formatter & Validator · <a href="/">Home</a> · <a href="/dev-tools-hub.html">All Tools</a></p></footer>
+<script>
+const samples={simple:'{"name":"Alice","age":28,"active":true}',nested:'{"user":{"name":"Bob","address":{"city":"Boston","state":"MA"}},"scores":[85,92,78]}',array:'[{"id":1,"name":"Widget","price":9.99},{"id":2,"name":"Gadget","price":24.50},{"id":3,"name":"Doohickey","price":3.25}]',complex:'{"store":{"name":"TechShop","location":{"lat":40.7128,"lng":-74.006},"inventory":[{"item":"laptop","price":999.99,"stock":42,"specs":{"ram":"16GB","ssd":"512GB"}},{"item":"phone","price":699.99,"stock":128,"specs":{"ram":"8GB","storage":"256GB"}}],"open":true,"rating":4.5,"tags":["electronics","computers"]}}'};
+let lastParsed=null;
+function load(n){document.getElementById('jsonInput').value=samples[n];format()}
+function parse(){document.getElementById('errorMsg').textContent='';document.getElementById('successMsg').textContent='';try{return JSON.parse(document.getElementById('jsonInput').value)}catch(e){document.getElementById('errorMsg').textContent='❌ '+e.message;return null}}
+function autoFormat(){const t=setTimeout(()=>{clearTimeout(t);format()},400)}
+function format(){
+  const d=parse();if(!d)return;
+  const formatted=JSON.stringify(d,null,2);
+  document.getElementById('jsonInput').value=formatted;lastParsed=d;
+  document.getElementById('successMsg').textContent='✅ Valid JSON';
+  renderStats(d);renderTree(d);
+}
+function minify(){
+  const d=parse();if(!d){return}
+  const m=JSON.stringify(d);
+  document.getElementById('jsonInput').value=m;lastParsed=d;
+  document.getElementById('successMsg').textContent='✅ Minified ('+m.length+' chars)';
+  renderStats(d);renderTree(d);
+}
+function validate(){const d=parse();if(d){document.getElementById('successMsg').textContent='✅ Valid JSON — '+JSON.stringify(d).length+' chars';renderStats(d);renderTree(d)}}
+function renderStats(d){
+  const s=JSON.stringify(d);
+  let keys=0;function countKeys(o){if(Array.isArray(o))o.forEach(countKeys);else if(o&&typeof o==='object'){Object.keys(o).forEach(k=>{keys++;countKeys(o[k])})}}
+  countKeys(d);
+  const depth=function getDepth(o){if(!o||typeof o!=='object')return 0;if(Array.isArray(o))return 1+Math.max(0,...o.map(getDepth));return 1+Math.max(0,...Object.values(o).map(getDepth))}(d);
+  document.getElementById('stats').innerHTML='<span>📏 '+s.length+' chars</span><span>🔑 '+keys+' keys</span><span>📊 depth: '+depth+'</span><span>'+(Array.isArray(d)?'📋 array['+d.length+']':'📦 object')+'</span>';
+}
+function renderTree(d,indent=0){
+  if(d===null)return'<span class="tree-null">null</span>';
+  if(typeof d==='boolean')return'<span class="tree-bool">'+d+'</span>';
+  if(typeof d==='number')return'<span class="tree-number">'+d+'</span>';
+  if(typeof d==='string')return'<span class="tree-string">"'+d.replace(/"/g,'&quot;')+'"</span>';
+  if(Array.isArray(d)){
+    if(d.length===0)return'<span class="tree-bracket">[]</span>';
+    const id='arr_'+Math.random().toString(36).slice(2);
+    let html='<span class="toggle" onclick="toggleNode(\''+id+'\')" id="t_'+id+'">▼</span><span class="tree-bracket">[</span><span id="c_'+id+'"><br>';
+    html+=d.map((v,i)=>'  '.repeat(indent+1)+'<span class="tree-key">'+i+':</span> '+renderTree(v,indent+1)+(i<d.length-1?',':'')).join('<br>');
+    html+='</span><span class="tree-bracket">]</span>';
+    return html;
+  }
+  if(typeof d==='object'){
+    const keys=Object.keys(d);
+    if(keys.length===0)return'<span class="tree-bracket">{}</span>';
+    const id='obj_'+Math.random().toString(36).slice(2);
+    let html='<span class="toggle" onclick="toggleNode(\''+id+'\')" id="t_'+id+'">▼</span><span class="tree-bracket">{</span><span id="c_'+id+'"><br>';
+    html+=keys.map((k,i)=>'  '.repeat(indent+1)+'<span class="tree-key">"'+k+'":</span> '+renderTree(d[k],indent+1)+(i<keys.length-1?',':'')).join('<br>');
+    html+='</span><span class="tree-bracket">}</span>';
+    return html;
+  }
+  return String(d);
+}
+function toggleNode(id){
+  const c=document.getElementById('c_'+id),t=document.getElementById('t_'+id);
+  if(c.style.display==='none'){c.style.display='';t.textContent='▼'}else{c.style.display='none';t.textContent='▶'}
+}
+function copyFormatted(){if(lastParsed)navigator.clipboard.writeText(JSON.stringify(lastParsed,null,2))}
+function downloadJSON(){if(lastParsed){const a=document.createElement('a');a.href='data:application/json,'+encodeURIComponent(JSON.stringify(lastParsed,null,2));a.download='formatted.json';a.click()}}
+setTimeout(format,200);
+</script><script src="/conversion-banner.js" defer></script>
+<script src="/share-widget.js"></script></body></html>

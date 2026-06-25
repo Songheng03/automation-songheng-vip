@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🔮 API Idea → API Spec Generator | my-automaton</title>
+<meta name="description" content="Describe your API idea in plain English. Get a complete OpenAPI spec, endpoints, schemas, and sample curl commands. Free, no signup.">
+<meta name="robots" content="index, follow">
+<style>
+:root { --bg:#0d1117; --card:#161b22; --border:#30363d; --text:#c9d1d9; --green:#3fb950; --blue:#58a6ff; --purple:#a371f7; }
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif; background:var(--bg); color:var(--text); line-height:1.6; }
+.container { max-width:850px; margin:0 auto; padding:20px; }
+header { text-align:center; padding:40px 0 20px; }
+header h1 { font-size:2.5em; background:linear-gradient(135deg,var(--blue),var(--purple)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+header p { color:#8b949e; margin-top:8px; font-size:1.1em; }
+.input-card { background:var(--card); border:1px solid var(--border); border-radius:12px; padding:25px; margin:20px 0; }
+textarea { width:100%; min-height:120px; background:#1a1f2e; color:var(--text); border:1px solid var(--border); border-radius:8px; padding:15px; font-family:inherit; font-size:.95em; resize:vertical; }
+textarea:focus { outline:none; border-color:var(--blue); box-shadow:0 0 0 3px rgba(88,166,255,.15); }
+label { display:block; margin-bottom:8px; color:var(--blue); font-weight:600; }
+.btn { padding:12px 30px; background:linear-gradient(135deg,var(--blue),var(--purple)); color:#fff; border:none; border-radius:8px; font-size:1em; font-weight:700; cursor:pointer; transition:transform .15s; }
+.btn:hover { transform:translateY(-1px); }
+.btn:disabled { opacity:.5; cursor:not-allowed; transform:none; }
+.btn-row { display:flex; gap:10px; align-items:center; margin-top:12px; flex-wrap:wrap; }
+.presets-row { display:flex; gap:8px; margin-top:8px; flex-wrap:wrap; }
+.pill { padding:5px 12px; background:var(--border); border:none; border-radius:16px; color:var(--text); font-size:.82em; cursor:pointer; transition:background .15s; }
+.pill:hover { background:#484f58; }
+.output-card { background:var(--card); border:1px solid var(--border); border-radius:12px; padding:25px; margin:20px 0; display:none; }
+.output-card.show { display:block; animation:fadeIn .3s ease; }
+@keyframes fadeIn { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
+pre { background:#1a1f2e; padding:15px; border-radius:8px; overflow-x:auto; font-size:.85em; line-height:1.6; }
+code { font-family:'Fira Code','Cascadia Code',monospace; }
+.tabs { display:flex; gap:0; margin-bottom:15px; border-bottom:1px solid var(--border); }
+.tab { padding:8px 16px; cursor:pointer; color:#8b949e; border-bottom:2px solid transparent; font-size:.9em; transition:all .15s; background:none; border-top:none; border-left:none; border-right:none; }
+.tab.active { color:var(--blue); border-bottom-color:var(--blue); }
+.tab-content { display:none; }
+.tab-content.active { display:block; }
+.endpoint { background:var(--bg); padding:12px 15px; margin:8px 0; border-radius:8px; }
+.method { display:inline-block; padding:2px 8px; border-radius:4px; font-weight:700; font-size:.8em; margin-right:8px; }
+.method.get { background:rgba(63,185,80,.15); color:var(--green); }
+.method.post { background:rgba(88,166,255,.15); color:var(--blue); }
+.method.put { background:rgba(210,153,29,.15); color:#d2991d; }
+.method.delete { background:rgba(248,81,73,.15); color:#f85149; }
+.schema-table { width:100%; border-collapse:collapse; margin:10px 0; font-size:.85em; }
+.schema-table th { text-align:left; padding:6px 10px; background:var(--bg); color:var(--blue); }
+.schema-table td { padding:6px 10px; border-top:1px solid var(--border); }
+.schema-table .type { color:#d2991d; }
+.share-btns { display:flex; gap:8px; margin-top:15px; }
+.share-btn { padding:8px 16px; border:none; border-radius:6px; cursor:pointer; font-size:.9em; color:#fff; text-decoration:none; }
+.share-btn.twitter { background:#1d9bf0; }
+.share-btn.copy { background:var(--border); color:var(--text); }
+footer { text-align:center; padding:30px; color:#8b949e; font-size:.85em; }
+footer a { color:var(--blue); }
+.live-dot { display:inline-block; width:8px; height:8px; background:var(--green); border-radius:50%; margin-right:5px; animation:pulse 2s infinite; }
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
+</style>
+
+<!-- Open Graph / Social Meta Tags -->
+<meta property="og:title" content="🔮 API Idea → API Spec Generator | my-automaton" />
+<meta property="og:description" content="Describe your API idea in plain English. Get a complete OpenAPI spec, endpoints, schemas, and sample curl commands. Free, no signup." />
+<meta property="og:image" content="https://automation.songheng.vip/og-image.png" />
+<meta property="og:url" content="https://automation.songheng.vip/api-spec-generator.html" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="my-automaton" />
+<meta property="og:locale" content="en_US" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="🔮 API Idea → API Spec Generator | my-automaton" />
+<meta name="twitter:description" content="Describe your API idea in plain English. Get a complete OpenAPI spec, endpoints, schemas, and sample curl commands. Free, no signup." />
+<meta name="twitter:image" content="https://automation.songheng.vip/og-image.png" />
+  <link rel="canonical" href="https://automation.songheng.vip/api-spec-generator.html">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "🔮 API Idea → API Spec Generator | my-automaton",
+  "description": "Describe your API idea in plain English. Get a complete OpenAPI spec, endpoints, schemas, and sample curl commands. Free, no signup.",
+  "url": "https://automation.songheng.vip/api-spec-generator.html",
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": "Web",
+  "author": {
+    "@type": "Organization",
+    "name": "my-automaton",
+    "url": "https://automation.songheng.vip"
+  },
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  }
+}
+</script>
+</head>
+<body>
+<div style="background:#161b22;border-bottom:1px solid #30363d;padding:10px 20px;font-size:.85rem;display:flex;gap:16px;align-items:center;flex-wrap:wrap"><a href="/" style="color:#58a6ff;text-decoration:none;font-weight:600">🏠 Home</a><span style="color:#484f58">|</span><a href="/pricing.html" style="color:#8b949e;text-decoration:none">Pricing</a><a href="/api-docs.html" style="color:#8b949e;text-decoration:none">API</a><a href="/playground.html" style="color:#8b949e;text-decoration:none">Playground</a></div>
+
+<div class="container">
+  <header>
+    <h1>🔮 API Idea → Spec</h1>
+    <p><span class="live-dot"></span> Describe an API. Get a complete spec, endpoints, and curl examples. Free.</p>
+  </header>
+
+  <div class="input-card">
+    <label>💡 Describe your API idea:</label>
+    <textarea id="ideaInput" placeholder="Examples:&#10;&#10;'A task manager API with projects, tasks, and comments. Tasks have priority, status, and assignee.'&#10;&#10;'A weather API that returns current conditions and 7-day forecast by city. Include alerts.'&#10;&#10;'An e-commerce product catalog with categories, variants, inventory, and search.'"></textarea>
+    <div class="presets-row">
+      <button class="pill" onclick="usePreset('todo')">📋 Task Manager</button>
+      <button class="pill" onclick="usePreset('weather')">🌤️ Weather API</button>
+      <button class="pill" onclick="usePreset('ecommerce')">🛒 E-Commerce</button>
+      <button class="pill" onclick="usePreset('social')">💬 Social Feed</button>
+      <button class="pill" onclick="usePreset('analytics')">📊 Analytics</button>
+    </div>
+    <div class="btn-row">
+      <button class="btn" id="genBtn" onclick="generate()">🔮 Generate API Spec</button>
+      <span style="color:#8b949e;font-size:.85em" id="creditsLeft">3 free generations today</span>
+    </div>
+  </div>
+
+  <div class="output-card" id="output">
+    <div class="tabs">
+      <button class="tab active" onclick="switchTab('overview')">📖 Overview</button>
+      <button class="tab" onclick="switchTab('endpoints')">🔗 Endpoints</button>
+      <button class="tab" onclick="switchTab('schemas')">📐 Schemas</button>
+      <button class="tab" onclick="switchTab('openapi')">📄 OpenAPI JSON</button>
+      <button class="tab" onclick="switchTab('curl')">🚀 Curl Examples</button>
+    </div>
+    <div class="tab-content active" id="tab-overview"></div>
+    <div class="tab-content" id="tab-endpoints"></div>
+    <div class="tab-content" id="tab-schemas"></div>
+    <div class="tab-content" id="tab-openapi"></div>
+    <div class="tab-content" id="tab-curl"></div>
+    <div class="share-btns">
+      <button class="share-btn twitter" onclick="shareTwitter()">🐦 Share Spec</button>
+      <button class="share-btn copy" onclick="shareCopy()">📋 Copy OpenAPI</button>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <p>Powered by <a href="/">my-automaton</a> · <a href="/free-api-key.html">🎁 Get 50 Free Credits</a> · <a href="/api-docs.html">📖 API Docs</a></p>
+</footer>
+
+<script>
+const API_BASE = window.location.origin;
+let genCount = parseInt(localStorage.getItem('ma_api_gen')||'0');
+let lastResult = null;
+
+const PRESETS = {
+  todo: 'A task management API with projects, tasks, and comments. Tasks have title, description, priority (low/medium/high), status (todo/in-progress/done), assignee, and due date. Projects have name, description, and member list. Comments have text and author.',
+  weather: 'A weather API returning current conditions (temp, humidity, wind) and 7-day forecast by city name or coordinates. Include weather alerts/warnings. Support metric and imperial units.',
+  ecommerce: 'An e-commerce product catalog API with categories, products, variants (size/color), inventory tracking, price history, and search with filters. Products have name, description, images, SKU, and price.',
+  social: 'A social media feed API with posts, comments, likes, and user profiles. Posts support text, images, and tags. Timeline shows followed users posts. Includes notifications.',
+  analytics: 'An analytics API for tracking page views, events, sessions, and user journeys. Support date range queries, aggregation, funnels, and export. Include real-time dashboard stats.'
+};
+
+function usePreset(name) {
+  document.getElementById('ideaInput').value = PRESETS[name];
+}
+
+function updateCredits() {
+  document.getElementById('creditsLeft').textContent = `${Math.max(0,3-genCount)} free generations today`;
+}
+updateCredits();
+
+async function generate() {
+  const idea = document.getElementById('ideaInput').value.trim();
+  if (!idea) return alert('Describe your API idea first!');
+  
+  const btn = document.getElementById('genBtn');
+  btn.disabled = true;
+  btn.textContent = '🔮 Generating...';
+  document.getElementById('output').classList.remove('show');
+  
+  try {
+    const prompt = `You are an API architect. Given this API idea, generate a complete REST API specification. Be practical and detailed.
+
+Return ONLY valid JSON — no markdown, no explanation outside the JSON:
+
+{
+  "name": "API name",
+  "version": "1.0.0",
+  "description": "2-3 sentence overview",
+  "baseUrl": "https://api.example.com/v1",
+  "auth": "Bearer token",
+  "endpoints": [
+    {"method":"GET|POST|PUT|DELETE","path":"/resource","summary":"what it does","params":[{"name":"id","type":"string","required":true,"desc":"..."}],"response":{"code":200,"body":{"type":"object","example":"..."}}}
+  ],
+  "schemas": [
+    {"name":"ResourceName","fields":[{"name":"id","type":"string","desc":"..."}]}
+  ],
+  "curlExamples": [
+    {"title":"Get all resources","cmd":"curl ..."}
+  ]
+}
+
+API IDEA:
+${idea}`;
+
+    const res = await fetch(API_BASE + '/free/analyze', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({text: prompt, mode: 'analyze'})
+    });
+    
+    if (!res.ok) throw new Error(res.status===429 ? 'Free limit reached 😢 Get a free key for 50 more!' : 'Generation failed. Try again!');
+    
+    const data = await res.json();
+    const jsonMatch = data.result.match(/\{[\s\S]*\}/);
+    const spec = JSON.parse(jsonMatch[0]);
+    lastResult = spec;
+    
+    // Overview tab
+    document.getElementById('tab-overview').innerHTML = `
+      <h2 style="color:var(--blue)">${spec.name||'API'} v${spec.version||'1.0.0'}</h2>
+      <p style="color:#8b949e;margin:10px 0">${spec.description||''}</p>
+      <p><strong>Base URL:</strong> <code>${spec.baseUrl||'https://api.example.com/v1'}</code></p>
+      <p><strong>Auth:</strong> ${spec.auth||'Bearer token'}</p>
+      <p style="margin-top:10px"><strong>${(spec.endpoints||[]).length} endpoints</strong> · <strong>${(spec.schemas||[]).length} schemas</strong></p>
+    `;
+    
+    // Endpoints tab
+    const methods = {GET:'get',POST:'post',PUT:'put',DELETE:'delete'};
+    document.getElementById('tab-endpoints').innerHTML = (spec.endpoints||[]).map(e => `
+      <div class="endpoint">
+        <span class="method ${methods[e.method]||'get'}">${e.method||'GET'}</span>
+        <code style="font-size:.95em">${e.path||'/'}</code>
+        <span style="color:#8b949e;margin-left:8px;font-size:.85em">${e.summary||''}</span>
+        ${(e.params||[]).length ? '<div style="margin-top:8px;color:#8b949e;font-size:.8em">Params: ' + e.params.map(p => `<code>${p.name}</code>`).join(', ') + '</div>' : ''}
+      </div>
+    `).join('');
+    
+    // Schemas tab
+    document.getElementById('tab-schemas').innerHTML = (spec.schemas||[]).map(s => `
+      <div style="margin:15px 0">
+        <h3 style="color:var(--purple)">${s.name||'Schema'}</h3>
+        <table class="schema-table">
+          <tr><th>Field</th><th>Type</th><th>Description</th></tr>
+          ${(s.fields||[]).map(f => `<tr><td><code>${f.name||''}</code></td><td class="type">${f.type||'string'}</td><td style="color:#8b949e;font-size:.85em">${f.desc||''}</td></tr>`).join('')}
+        </table>
+      </div>
+    `).join('');
+    
+    // OpenAPI tab
+    document.getElementById('tab-openapi').innerHTML = `<pre><code>${JSON.stringify(spec,null,2)}</code></pre>`;
+    
+    // Curl tab
+    document.getElementById('tab-curl').innerHTML = (spec.curlExamples||[]).map(e => `
+      <div style="margin:12px 0">
+        <div style="color:#8b949e;font-size:.85em;margin-bottom:5px">${e.title||''}</div>
+        <pre><code>${e.cmd||''}</code></pre>
+      </div>
+    `).join('');
+    
+    document.getElementById('output').classList.add('show');
+    document.getElementById('output').scrollIntoView({behavior:'smooth'});
+    
+    genCount++;
+    localStorage.setItem('ma_api_gen', genCount);
+    updateCredits();
+    
+  } catch(e) {
+    document.getElementById('output').classList.add('show');
+    document.getElementById('tab-overview').innerHTML = `
+      <div style="text-align:center;padding:20px;color:var(--red)">
+        ${e.message}<br><br>
+        <a href="/free-api-key.html" style="color:var(--blue)">🎁 Get 50 Free Credits →</a>
+      </div>
+    `;
+    document.getElementById('tab-endpoints').innerHTML = '';
+    document.getElementById('tab-schemas').innerHTML = '';
+    document.getElementById('tab-openapi').innerHTML = '';
+    document.getElementById('tab-curl').innerHTML = '';
+  } finally {
+    btn.disabled = false;
+    btn.textContent = '🔮 Generate Again';
+  }
+}
+
+function switchTab(name) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+  document.querySelector(`.tab:nth-${['overview','endpoints','schemas','openapi','curl'].indexOf(name)+1}`)?.classList.add('active');
+  document.getElementById('tab-' + name)?.classList.add('active');
+}
+
+function shareTwitter() {
+  if (!lastResult) return;
+  const text = `🔮 AI just generated an API spec for: ${lastResult.name}\n\n${(lastResult.endpoints||[]).length} endpoints · ${(lastResult.schemas||[]).length} schemas\n\nTry it free →`;
+  window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(location.href)}`, '_blank');
+}
+
+function shareCopy() {
+  if (!lastResult) return;
+  navigator.clipboard.writeText(JSON.stringify(lastResult,null,2)).then(() => {
+    const btn = event.target;
+    btn.textContent = '✅ Copied!';
+    setTimeout(() => btn.textContent = '📋 Copy OpenAPI', 2000);
+  });
+}
+</script>
+<script src="/conversion-banner.js" defer></script>
+</body>
+</html>

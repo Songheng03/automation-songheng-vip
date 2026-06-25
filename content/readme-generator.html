@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Free README Generator — Create Professional GitHub README Instantly | my-automaton</title>
+  <meta name="description" content="Generate a professional README.md for your GitHub project in seconds. Paste your code, describe your project, and get a complete README with badges, installation, usage, and more. Free, no signup.">
+  <meta name="keywords" content="readme generator, github readme, markdown generator, readme template, project documentation, free readme maker, readme builder">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #0d1117; color: #e6edf3; line-height: 1.6; }
+    .container { max-width: 1000px; margin: 0 auto; padding: 20px; }
+    header { text-align: center; padding: 30px 0 20px; border-bottom: 1px solid #30363d; margin-bottom: 20px; }
+    h1 { font-size: 2em; color: #58a6ff; }
+    h1 span { color: #3fb950; }
+    .subtitle { color: #8b949e; margin-top: 6px; font-size: 1.05em; }
+    .workspace { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 20px 0; }
+    @media (max-width: 768px) { .workspace { grid-template-columns: 1fr; } }
+    .panel { background: #161b22; border: 1px solid #30363d; border-radius: 10px; overflow: hidden; }
+    .panel-header { background: #21262d; padding: 10px 16px; font-size: 0.85em; font-weight: 600; color: #c9d1d9; border-bottom: 1px solid #30363d; display: flex; justify-content: space-between; align-items: center; }
+    .panel-body { padding: 16px; }
+    label { display: block; font-size: 0.85em; color: #8b949e; margin: 12px 0 4px; font-weight: 600; }
+    input, textarea, select { width: 100%; padding: 10px 12px; background: #0d1117; border: 1px solid #30363d; border-radius: 6px; color: #c9d1d9; font-family: inherit; font-size: 0.9em; }
+    input:focus, textarea:focus, select:focus { outline: none; border-color: #58a6ff; box-shadow: 0 0 0 3px rgba(88,166,255,0.15); }
+    textarea { resize: vertical; font-family: 'SF Mono', 'Cascadia Code', 'Fira Code', monospace; font-size: 0.82em; line-height: 1.5; min-height: 200px; }
+    select { cursor: pointer; }
+    .btn-row { display: flex; gap: 8px; flex-wrap: wrap; margin: 10px 0; }
+    .btn { padding: 10px 20px; border: none; border-radius: 6px; font-size: 0.9em; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+    .btn.generate { background: #238636; color: #fff; }
+    .btn.generate:hover { background: #2ea043; }
+    .btn.copy { background: #1f6feb; color: #fff; }
+    .btn.copy:hover { background: #388bfd; }
+    .btn.download { background: #21262d; color: #c9d1d9; border: 1px solid #30363d; }
+    .btn.download:hover { background: #30363d; }
+    .btn.reset { background: transparent; color: #f85149; border: 1px solid #30363d; }
+    .btn.reset:hover { background: #f8514922; }
+    #output { background: #0d1117; min-height: 500px; white-space: pre-wrap; font-family: 'SF Mono', 'Cascadia Code', 'Fira Code', monospace; font-size: 0.82em; color: #c9d1d9; padding: 16px; border-radius: 6px; overflow-x: auto; line-height: 1.5; }
+    #output:empty::before { content: 'Your README will appear here...'; color: #484f58; }
+    .badge-row { display: flex; gap: 6px; flex-wrap: wrap; margin: 8px 0; }
+    .badge-chip { display: inline-flex; align-items: center; gap: 4px; padding: 4px 10px; border-radius: 16px; font-size: 0.78em; cursor: pointer; border: 1px solid #30363d; background: #21262d; color: #8b949e; transition: all 0.2s; }
+    .badge-chip:hover { border-color: #58a6ff; color: #c9d1d9; }
+    .badge-chip.selected { background: #1f6feb22; border-color: #58a6ff; color: #58a6ff; }
+    .badge-chip.unselected { opacity: 0.5; }
+    .templates { display: flex; gap: 8px; flex-wrap: wrap; margin: 8px 0; }
+    .template-chip { padding: 8px 16px; border: 1px solid #30363d; border-radius: 8px; cursor: pointer; font-size: 0.85em; transition: all 0.2s; text-align: center; background: #21262d; color: #8b949e; }
+    .template-chip:hover { border-color: #58a6ff; color: #c9d1d9; }
+    .template-chip.active { background: #1f6feb22; border-color: #58a6ff; color: #58a6ff; }
+    .template-chip .icon { font-size: 1.3em; display: block; }
+    .copy-toast { position: fixed; bottom: 20px; right: 20px; background: #238636; color: #fff; padding: 10px 20px; border-radius: 8px; font-weight: 600; opacity: 0; transform: translateY(10px); transition: all 0.3s; z-index: 100; pointer-events: none; }
+    .copy-toast.show { opacity: 1; transform: translateY(0); }
+    .tips { background: #161b22; border: 1px solid #30363d; border-radius: 8px; padding: 14px 18px; margin: 16px 0; font-size: 0.85em; color: #8b949e; }
+    .tips strong { color: #d29922; }
+    nav.top-nav { background: #161b22; border-bottom: 1px solid #30363d; padding: 10px 20px; font-size: .85rem; display: flex; gap: 16px; align-items: center; flex-wrap: wrap; }
+    nav.top-nav a { color: #58a6ff; text-decoration: none; font-weight: 600; }
+    nav.top-nav a.dim { color: #8b949e; }
+    footer { border-top: 1px solid #30363d; padding: 20px; text-align: center; color: #484f58; font-size: 0.85em; margin-top: 40px; }
+    footer a { color: #58a6ff; }
+    .promo { background: linear-gradient(135deg, #1f6feb11, #23863611); border: 1px solid #30363d; border-radius: 10px; padding: 16px; margin: 20px 0; text-align: center; }
+    .promo p { color: #8b949e; font-size: 0.9em; }
+    .promo a { color: #58a6ff; font-weight: 600; }
+  </style>
+  <meta property="og:title" content="Free README Generator — Create Professional GitHub README Instantly">
+  <meta property="og:description" content="Generate a professional README.md for your GitHub project in seconds. Free, no signup required.">
+  <meta property="og:url" content="https://automation.songheng.vip/readme-generator.html">
+  <meta property="og:type" content="website">
+  <link rel="canonical" href="https://automation.songheng.vip/readme-generator.html">
+  <script type="application/ld+json">
+  { "@context": "https://schema.org", "@type": "WebApplication", "name": "README Generator", "url": "https://automation.songheng.vip/readme-generator.html", "description": "Generate professional README.md files for GitHub projects", "applicationCategory": "DeveloperApplication", "operatingSystem": "All", "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" } }
+  </script>
+</head>
+<body>
+<nav class="top-nav">
+  <a href="/">🏠 Home</a><span style="color:#484f58">|</span>
+  <a href="/pricing.html" class="dim">Pricing</a><a href="/api-docs.html" class="dim">API Docs</a><a href="/blog.html" class="dim">Blog</a><a href="/dev-tools.html" class="dim">Dev Tools</a>
+</nav>
+
+<div class="container">
+  <header>
+    <h1>📝 <span>README</span> Generator</h1>
+    <p class="subtitle">Create a professional README.md for your GitHub project — free, instant, no signup.</p>
+  </header>
+
+  <div class="tips">
+    <strong>💡 How it works:</strong> Fill in your project details below, pick a template, and get a polished README.md ready to commit. Copy, download, or customize further.
+  </div>
+
+  <div class="workspace">
+    <!-- INPUT PANEL -->
+    <div class="panel">
+      <div class="panel-header">📋 Project Details</div>
+      <div class="panel-body">
+        <label for="pname">Project Name *</label>
+        <input id="pname" placeholder="e.g., my-awesome-tool" oninput="generate()">
+
+        <label for="pdesc">Short Description *</label>
+        <input id="pdesc" placeholder="e.g., A fast CLI tool for converting JSON to CSV" oninput="generate()">
+
+        <label for="ptagline">Tagline / Motto</label>
+        <input id="ptagline" placeholder="e.g., Convert anything, anywhere" oninput="generate()">
+
+        <label>Template Style</label>
+        <div class="templates" id="templates">
+          <div class="template-chip active" data-template="standard" onclick="selectTemplate('standard')"><span class="icon">📖</span>Standard</div>
+          <div class="template-chip" data-template="minimal" onclick="selectTemplate('minimal')"><span class="icon">✨</span>Minimal</div>
+          <div class="template-chip" data-template="detailed" onclick="selectTemplate('detailed')"><span class="icon">📚</span>Detailed</div>
+          <div class="template-chip" data-template="startup" onclick="selectTemplate('startup')"><span class="icon">🚀</span>Startup</div>
+        </div>
+
+        <label>Badges</label>
+        <div class="badge-row" id="badges">
+          <span class="badge-chip selected" data-badge="license" onclick="toggleBadge(this)">📜 License</span>
+          <span class="badge-chip selected" data-badge="version" onclick="toggleBadge(this)">🏷️ Version</span>
+          <span class="badge-chip selected" data-badge="build" onclick="toggleBadge(this)">🔨 Build</span>
+          <span class="badge-chip selected" data-badge="npm" onclick="toggleBadge(this)">📦 npm</span>
+          <span class="badge-chip" data-badge="docker" onclick="toggleBadge(this)">🐳 Docker</span>
+          <span class="badge-chip" data-badge="coverage" onclick="toggleBadge(this)">📊 Coverage</span>
+          <span class="badge-chip" data-badge="stars" onclick="toggleBadge(this)">⭐ Stars</span>
+          <span class="badge-chip" data-badge="contributors" onclick="toggleBadge(this)">👥 Contributors</span>
+        </div>
+
+        <label for="ptechnologies">Technologies (comma-separated)</label>
+        <input id="ptechnologies" placeholder="e.g., Python, FastAPI, PostgreSQL, Redis" oninput="generate()">
+
+        <label for="pfeatures">Key Features (one per line)</label>
+        <textarea id="pfeatures" placeholder="⚡ Blazing fast JSON to CSV conversion&#10;🔄 Support for nested objects&#10;📊 Progress bar for large files&#10;🎨 Colored terminal output" oninput="generate()"></textarea>
+
+        <label for="pinstall">Installation Steps (one per line)</label>
+        <textarea id="pinstall" placeholder="git clone https://github.com/user/repo.git&#10;cd repo&#10;npm install" oninput="generate()"></textarea>
+
+        <label for="pusage">Usage Example</label>
+        <textarea id="pusage" placeholder="npx my-tool input.json -o output.csv&#10;# or&#10;const converter = require('my-tool');&#10;converter.jsonToCsv('file.json');" oninput="generate()" style="min-height:100px"></textarea>
+
+        <label for="plicense">License</label>
+        <select id="plicense" onchange="generate()">
+          <option value="MIT">MIT</option>
+          <option value="Apache-2.0">Apache 2.0</option>
+          <option value="GPL-3.0">GPL 3.0</option>
+          <option value="BSD-3">BSD 3-Clause</option>
+          <option value="Unlicense">Unlicense</option>
+          <option value="none">No License</option>
+        </select>
+
+        <label for="pgithub">GitHub Username / Organization</label>
+        <input id="pgithub" placeholder="e.g., octocat" oninput="generate()">
+
+        <label for="prepo">Repository Name</label>
+        <input id="prepo" placeholder="e.g., my-awesome-tool" oninput="generate()">
+
+        <div class="btn-row" style="margin-top:16px;">
+          <button class="btn generate" onclick="generate()">🔄 Generate README</button>
+          <button class="btn reset" onclick="resetForm()">🗑️ Reset</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- OUTPUT PANEL -->
+    <div class="panel">
+      <div class="panel-header">
+        <span>📄 Generated README.md</span>
+        <div class="btn-row" style="margin:0">
+          <button class="btn copy" onclick="copyOutput()" style="padding:6px 14px;font-size:0.8em;">📋 Copy</button>
+          <button class="btn download" onclick="downloadOutput()" style="padding:6px 14px;font-size:0.8em;">⬇️ Download</button>
+        </div>
+      </div>
+      <div class="panel-body" style="padding:0;">
+        <div id="output"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="promo">
+    <p>🚀 <strong>Need more than a README?</strong> Get AI-powered code reviews, security scans, and refactoring suggestions with <a href="/">my-automaton's API</a>. <a href="/pricing.html">Starting at $5 →</a></p>
+  </div>
+</div>
+
+<footer>
+  <p>my-automaton — AI Code Review & Analysis API • <a href="/">Home</a> • <a href="/pricing.html">Pricing</a> • <a href="/api-docs.html">API Docs</a></p>
+  <p style="margin-top:4px;">This README generator is free to use. No data is stored or collected.</p>
+</footer>
+
+<div class="copy-toast" id="toast">✅ Copied to clipboard!</div>
+
+<script>
+let currentTemplate = 'standard';
+let selectedBadges = new Set(['license','version','build','npm']);
+
+function selectTemplate(name) {
+  currentTemplate = name;
+  document.querySelectorAll('.template-chip').forEach(c => c.classList.remove('active'));
+  document.querySelector(`[data-template="${name}"]`).classList.add('active');
+  generate();
+}
+
+function toggleBadge(el) {
+  const badge = el.dataset.badge;
+  if (selectedBadges.has(badge)) { selectedBadges.delete(badge); el.classList.remove('selected'); }
+  else { selectedBadges.add(badge); el.classList.add('selected'); }
+  generate();
+}
+
+function generate() {
+  const name = (document.getElementById('pname').value || 'my-project').trim();
+  const desc = document.getElementById('pdesc').value.trim();
+  const tagline = document.getElementById('ptagline').value.trim();
+  const technologies = document.getElementById('ptechnologies').value.split(',').map(s=>s.trim()).filter(Boolean);
+  const features = document.getElementById('pfeatures').value.split('\n').filter(s=>s.trim());
+  const install = document.getElementById('pinstall').value.split('\n').filter(s=>s.trim());
+  const usage = document.getElementById('pusage').value.trim();
+  const license = document.getElementById('plicense').value;
+  const github = document.getElementById('pgithub').value.trim();
+  const repo = document.getElementById('prepo').value.trim() || name;
+
+  let md = '';
+
+  // Badges
+  if (selectedBadges.size > 0) {
+    const badgeDefs = {
+      license: `[![License: ${license}](https://img.shields.io/badge/License-${license.replace(/-/g,'--')}-blue.svg)](https://opensource.org/licenses/${license})`,
+      version: `[![Version](https://img.shields.io/badge/version-1.0.0-blue.svg)](https://github.com/${github||'user'}/${repo}/releases)`,
+      build: `[![Build Status](https://img.shields.io/badge/build-passing-brightgreen.svg)](https://github.com/${github||'user'}/${repo}/actions)`,
+      npm: `[![npm](https://img.shields.io/npm/v/${repo}.svg)](https://www.npmjs.com/package/${repo})`,
+      docker: `[![Docker Pulls](https://img.shields.io/docker/pulls/${github||'user'}/${repo}.svg)](https://hub.docker.com/r/${github||'user'}/${repo})`,
+      coverage: `[![Coverage](https://img.shields.io/badge/coverage-95%25-brightgreen.svg)](https://codecov.io/gh/${github||'user'}/${repo})`,
+      stars: `[![GitHub stars](https://img.shields.io/github/stars/${github||'user'}/${repo}.svg)](https://github.com/${github||'user'}/${repo}/stargazers)`,
+      contributors: `[![Contributors](https://img.shields.io/github/contributors/${github||'user'}/${repo}.svg)](https://github.com/${github||'user'}/${repo}/graphs/contributors)`
+    };
+    const badges = Array.from(selectedBadges).map(b => badgeDefs[b] || '').filter(Boolean);
+    if (currentTemplate !== 'minimal') {
+      md += `<div align="center">\n  ${badges.join('\n  ')}\n</div>\n\n`;
+    } else {
+      md += badges.join(' ') + '\n\n';
+    }
+  }
+
+  // Title & description
+  md += `# ${name}\n\n`;
+  if (tagline) md += `> ${tagline}\n\n`;
+  if (desc) md += `${desc}\n\n`;
+
+  // Table of Contents (except minimal)
+  if (currentTemplate !== 'minimal') {
+    md += `## 📑 Table of Contents\n\n`;
+    const sections = ['Features','Installation','Usage'];
+    if (currentTemplate === 'detailed' || currentTemplate === 'startup') sections.push('Configuration','API Reference');
+    sections.push('Contributing','License');
+    sections.forEach(s => md += `- [${s}](#${s.toLowerCase().replace(/\s+/g,'-')})\n`);
+    md += '\n';
+  }
+
+  // Technologies
+  if (technologies.length > 0 && currentTemplate !== 'minimal') {
+    md += `## 🛠️ Tech Stack\n\n`;
+    technologies.forEach(t => md += `- **${t}**\n`);
+    md += '\n';
+  }
+
+  // Features
+  if (features.length > 0) {
+    md += `## ✨ Features\n\n`;
+    features.forEach(f => {
+      if (f.trim()) md += `- ${f.trim()}\n`;
+    });
+    md += '\n';
+  }
+
+  // Demo / Screenshot (detailed/startup)
+  if ((currentTemplate === 'detailed' || currentTemplate === 'startup') && github) {
+    md += `## 🎬 Demo\n\n`;
+    md += `![${name} Demo](https://raw.githubusercontent.com/${github}/${repo}/main/demo.gif)\n\n`;
+  }
+
+  // Installation
+  md += `## 📦 Installation\n\n`;
+  if (install.length > 0) {
+    install.forEach(s => {
+      if (s.trim().startsWith('```')) md += s.trim() + '\n';
+      else if (s.trim().startsWith('#') || s.trim().startsWith('>')) md += s.trim() + '\n';
+      else md += `\`\`\`bash\n${s.trim()}\n\`\`\`\n`;
+    });
+  } else {
+    md += `\`\`\`bash\ngit clone https://github.com/${github||'user'}/${repo}.git\ncd ${repo}\n`;
+    if (technologies.some(t=>t.toLowerCase().includes('node')||t.toLowerCase().includes('javascript')||t.toLowerCase().includes('typescript'))) {
+      md += 'npm install\n```\n\n';
+      md += `Or using yarn:\n\`\`\`bash\nyarn add ${repo}\n`;
+    } else if (technologies.some(t=>t.toLowerCase().includes('python'))) {
+      md += 'pip install -r requirements.txt\n```\n\n';
+      md += `Or with pip:\n\`\`\`bash\npip install ${repo}\n`;
+    } else {
+      md += '# follow project-specific setup\n';
+    }
+    md += '```\n';
+  }
+  md += '\n';
+
+  // Usage
+  if (usage || currentTemplate !== 'minimal') {
+    md += `## 🚀 Usage\n\n`;
+    if (usage) {
+      md += '```' + (technologies.some(t=>t.toLowerCase().includes('python'))?'python':'bash') + '\n' + usage + '\n```\n\n';
+    } else {
+      md += `\`\`\`bash\n# Basic usage\nnpx ${repo} --help\n\n# Example\nnpx ${repo} input.json -o output.csv\n\`\`\`\n\n`;
+    }
+  }
+
+  // Configuration (detailed/startup)
+  if (currentTemplate === 'detailed' || currentTemplate === 'startup') {
+    md += `## ⚙️ Configuration\n\n`;
+    md += `| Variable | Description | Default |\n|:---------|:------------|:--------|\n`;
+    md += `| \`API_KEY\` | Your API key | \`-\` |\n`;
+    md += `| \`PORT\` | Server port | \`3000\` |\n`;
+    if (github) md += `| \`GITHUB_TOKEN\` | GitHub token | \`-\` |\n`;
+    md += '\n';
+  }
+
+  // API Reference (detailed/startup)
+  if (currentTemplate === 'detailed' || currentTemplate === 'startup') {
+    md += `## 📡 API Reference\n\n`;
+    md += `### \`${name}.main(options)\`\n\n`;
+    md += `| Parameter | Type | Description |\n|:----------|:-----|:------------|\n`;
+    md += `| \`input\` | \`string\` | Input file path |\n`;
+    md += `| \`output\` | \`string\` | Output file path |\n`;
+    md += `| \`verbose\` | \`boolean\` | Enable verbose logging (default: \`false\`) |\n\n`;
+  }
+
+  // Contributing
+  if (currentTemplate !== 'minimal') {
+    md += `## 🤝 Contributing\n\n`;
+    md += `Contributions are welcome! Please follow these steps:\n\n`;
+    md += `1. Fork the repository\n2. Create a feature branch (\`git checkout -b feature/amazing-feature\`)\n3. Commit your changes (\`git commit -m 'Add amazing feature'\`)\n4. Push to the branch (\`git push origin feature/amazing-feature\`)\n5. Open a Pull Request\n\n`;
+  }
+
+  // Roadmap (startup)
+  if (currentTemplate === 'startup') {
+    md += `## 🗺️ Roadmap\n\n`;
+    md += `- [ ] v1.1: Add plugin system\n- [ ] v1.2: Web UI\n- [ ] v2.0: Cloud hosting option\n\n`;
+  }
+
+  // License
+  if (license !== 'none') {
+    md += `## 📄 License\n\n`;
+    md += `This project is licensed under the ${license} License — see the [LICENSE](LICENSE) file for details.\n\n`;
+  }
+
+  // Footer (standard/detailed/startup)
+  if (currentTemplate !== 'minimal') {
+    md += `---\n\n`;
+    if (github) {
+      md += `<div align="center">\n  Made with ❤️ by [${github}](https://github.com/${github})\n</div>\n`;
+    }
+    md += generatedTime();
+  }
+
+  // Template-specific additions
+  if (currentTemplate === 'startup') {
+    // Add a "Why" section at top
+    const whySection = `\n## 🤔 Why ${name}?\n\n${desc || 'Because every project needs a compelling reason to exist. This project solves a real problem that developers face every day.'}\n\n`;
+    md = md.replace(/\n## ✨ Features/, whySection + '## ✨ Features');
+  }
+
+  document.getElementById('output').textContent = md.trim();
+}
+
+function generatedTime() {
+  const now = new Date();
+  return `\n<p align="center"><sub>Generated with ❤️ by <a href="https://automation.songheng.vip/readme-generator.html">my-automaton README Generator</a> on ${now.toISOString().split('T')[0]}</sub></p>\n`;
+}
+
+function copyOutput() {
+  const text = document.getElementById('output').textContent;
+  if (!text) return;
+  navigator.clipboard.writeText(text).then(() => {
+    const toast = document.getElementById('toast');
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 2000);
+  });
+}
+
+function downloadOutput() {
+  const text = document.getElementById('output').textContent;
+  if (!text) return;
+  const blob = new Blob([text], { type: 'text/markdown' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  const name = (document.getElementById('prepo').value || document.getElementById('pname').value || 'README').trim();
+  a.download = name.replace(/\.md$/,'') + '.README.md';
+  a.click();
+  URL.revokeObjectURL(a.href);
+}
+
+function resetForm() {
+  ['pname','pdesc','ptagline','ptechnologies','pfeatures','pinstall','pusage','pgithub','prepo'].forEach(id => {
+    document.getElementById(id).value = '';
+  });
+  document.getElementById('plicense').value = 'MIT';
+  document.getElementById('output').textContent = '';
+  selectedBadges = new Set(['license','version','build','npm']);
+  document.querySelectorAll('.badge-chip').forEach(c => {
+    if (selectedBadges.has(c.dataset.badge)) c.classList.add('selected');
+    else c.classList.remove('selected');
+  });
+}
+
+// Generate on label click for quick demonstration
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('pname').value = 'json-to-csv-converter';
+  document.getElementById('pdesc').value = 'A lightning-fast CLI tool for converting JSON files to CSV format with support for nested objects and streaming large files.';
+  document.getElementById('ptagline').value = 'Convert JSON to CSV in milliseconds';
+  document.getElementById('ptechnologies').value = 'Node.js, Commander, PapaParse, Chalk';
+  document.getElementById('pfeatures').value = '⚡ Blazing fast — processes 10,000 records/second\n🔄 Handles nested JSON objects with dot-notation\n📊 Progress bar for large file processing\n🎨 Colored terminal output with table preview\n📁 Glob pattern support for batch processing';
+  document.getElementById('pinstall').value = 'git clone https://github.com/user/json-to-csv.git\ncd json-to-csv\nnpm install --global';
+  document.getElementById('pusage').value = '# Convert single file\njson2csv input.json -o output.csv\n\n# Convert all JSON files in a directory\njson2csv data/*.json -o reports/\n\n# Pretty-print with headers\njson2csv input.json --pretty --headers';
+  document.getElementById('pgithub').value = 'octocat';
+  document.getElementById('prepo').value = 'json-to-csv-converter';
+  generate();
+});
+</script>
+<script src="/conversion-banner.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,18 @@
+{
+  "platform": "MCP.so",
+  "submissionUrl": "https://mcp.so/submit (web form) | https://mcp.so/api/submit-project (API)",
+  "success": false,
+  "message": "Could not complete automated submission to MCP.so.\n\nObstructions:\n1. AUTHENTICATION REQUIRED: Both the web form at https://mcp.so/submit and the API at https://mcp.so/api/submit-project require interactive authentication. The API responds with {\"code\":-1,\"message\":\"no auth, please login\"} for unauthenticated requests. The site uses NextAuth with GitHub/Google OAuth sign-in, which cannot be completed programmatically from a CLI environment.\n\n2. WEB FORM REQUIRES BROWSER: The submission page at https://mcp.so/submit is a Next.js single-page application that requires JavaScript rendering and interactive sign-in. Automated form submission via curl is not possible.\n\n3. NO PUBLIC/ANONYMOUS SUBMISSION: There is no public GitHub PR submission mechanism, no email-based submission, and no anonymous API endpoint. All submissions require an authenticated session.\n\nService Details (prepared for submission):\n- Name: my-automaton\n- Type: server (MCP Server)\n- URL: https://automation.songheng.vip\n- MCP Endpoint: https://automation.songheng.vip/mcp\n- Server Config: {\"mcpServers\":{\"my-automaton\":{\"url\":\"https://automation.songheng.vip/mcp\"}}}\n- Description: my-automaton is a lightweight Model Context Protocol (MCP) server designed to bridge AI assistants with real-world automation. Hosted at https://automation.songheng.vip/mcp, it exposes a clean set of automation tools that AI agents can discover and invoke on the fly.\n\nSuggested Next Steps:\n1. Open https://mcp.so/submit in a browser\n2. Sign in with GitHub or Google account\n3. Fill form:\n   - Type: MCP Server\n   - Name: my-automaton\n   - URL: https://automation.songheng.vip\n   - Server Config: {\"mcpServers\":{\"my-automaton\":{\"url\":\"https://automation.songheng.vip/mcp\"}}}\n4. Submit the form",
+  "listingUrl": null,
+  "api_response": {
+    "code": -1,
+    "message": "no auth, please login"
+  },
+  "web_form_status": {
+    "url": "https://mcp.so/submit",
+    "http_code": 200,
+    "reachable": true,
+    "requires_browser": true,
+    "requires_auth": true
+  }
+}

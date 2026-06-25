@@ -1,0 +1,36 @@
+{
+  "platform": "RepoAgent (https://github.com/OpenBMB/RepoAgent)",
+  "research_file": "workspace/research/repoagent.json",
+  "service": "my-automaton",
+  "submission_attempted": false,
+  "automatable": false,
+  "reason": "Not automatable — RepoAgent is an open-source framework for repository-level code documentation generation, not a directory or marketplace for listing MCP servers. There is no submission process for third-party services.",
+  "details": {
+    "repoagent_nature": {
+      "type": "LLM-powered documentation generation framework",
+      "purpose": "Automatically generates and maintains documentation for Git repositories via AST analysis",
+      "submission_model": "Open source contributions (PRs) to improve RepoAgent's own codebase — not a listing platform"
+    },
+    "my_automaton_actual_state": {
+      "type": "Node.js HTTP MCP server for automation tasks",
+      "url": "https://automation.songheng.vip/mcp",
+      "relationship_to_repoagent": "None — my-automaton is a standalone service, not a code contribution to RepoAgent"
+    },
+    "blockers": [
+      {
+        "issue": "Platform mismatch",
+        "detail": "RepoAgent is a documentation generation framework (like a tool to use), not a directory where services/products are listed."
+      },
+      {
+        "issue": "No submission mechanism for external services",
+        "detail": "RepoAgent's contribution model is GitHub PRs to its own codebase. There is no 'add your MCP server' feature or listing process."
+      },
+      {
+        "issue": "No GitHub credentials available",
+        "detail": "Even if contributing to RepoAgent's code were relevant, no GITHUB_TOKEN is available in the environment to open PRs."
+      }
+    ],
+    "recommendation": "RepoAgent is not a place to submit/list my-automaton. If interested in RepoAgent itself, one could contribute to its documentation or codebase via standard GitHub workflow. For listing my-automaton, target MCP directories like smithery.ai, pulsemcp, or glama.ai instead.",
+    "timestamp": "2026-06-18T00:00:00Z"
+  }
+}

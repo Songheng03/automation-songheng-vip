@@ -1,0 +1,92 @@
+{
+  "platform": {
+    "name": "MCP.so",
+    "url": "https://mcp.so",
+    "description": "A directory for Awesome MCP Servers - the largest collection of MCP Servers"
+  },
+  "submission_methods": [
+    {
+      "type": "web_form",
+      "url": "https://mcp.so/submit",
+      "description": "Web submission form for MCP Servers and Clients",
+      "form_fields": [
+        {
+          "name": "type",
+          "type": "toggle/select",
+          "options": ["MCP Server", "MCP Client"],
+          "required": true
+        },
+        {
+          "name": "name",
+          "type": "text",
+          "required": true
+        },
+        {
+          "name": "url",
+          "type": "url",
+          "required": true,
+          "validation": "must start with https://"
+        },
+        {
+          "name": "server_config",
+          "type": "textarea (JSON)",
+          "required": true,
+          "description": "JSON configuration with mcpServers key",
+          "placeholder": "{\n  \"mcpServers\": {\n    \"server-name\": {\n      \"command\": \"docker\",\n      \"args\": [\"run\", \"-i\", \"--rm\", \"image\"],\n      \"env\": {\n        \"API_KEY\": \"<YOUR_TOKEN>\"\n      }\n    }\n  }\n}"
+        }
+      ]
+    },
+    {
+      "type": "api_endpoint",
+      "url": "https://mcp.so/api/submit-project",
+      "method": "POST",
+      "description": "Programmatic API for submitting MCP projects",
+      "request_body_schema": {
+        "type": "object",
+        "required": ["name", "url", "type", "server_config"],
+        "properties": {
+          "name": {"type": "string", "description": "Name of the MCP server/client"},
+          "url": {"type": "string", "format": "uri", "description": "Project URL (must be https://)"},
+          "type": {"type": "string", "enum": ["server", "client"], "description": "Type of submission"},
+          "server_config": {"type": "string", "description": "JSON string containing mcpServers configuration"}
+        }
+      },
+      "authentication_required": true,
+      "auth_error_message": "no auth, please login",
+      "notes": "The /api/register endpoint returns 404; use /api/submit-project instead"
+    }
+  ],
+  "api_endpoints_discovered": [
+    {"path": "/api/submit-project", "method": "POST", "status": "active", "description": "Submit a project (requires auth)"},
+    {"path": "/api/get-user-info", "method": "GET", "status": "active", "description": "Get current user info"},
+    {"path": "/api/update-invite", "method": "POST", "status": "active", "description": "Update invite codes"},
+    {"path": "/api/servers", "method": "GET", "status": "active", "description": "List servers"},
+    {"path": "/api/submit", "method": "POST", "status": "returns HTML (Next.js app)", "description": "May redirect to form"},
+    {"path": "/api/register", "method": "POST", "status": "404", "description": "Deprecated/non-existent endpoint"}
+  ],
+  "source_code": {
+    "repository": "https://github.com/chatmcp/mcpso",
+    "organization": "https://github.com/chatmcp",
+    "description": "Open source Next.js application (chatmcp/mcpso)"
+  },
+  "community_channels": [
+    {"type": "Telegram", "url": "https://t.me/+N0gv4O9SXio2YWU1", "description": "MCP Server Telegram group"},
+    {"type": "Discord", "url": "https://discord.gg/RsYPRrnyqg", "description": "MCP Server Discord server"},
+    {"type": "Twitter/X", "url": "https://x.com/chatmcp", "description": "ChatMCP Official Twitter"},
+    {"type": "Author Twitter/X", "url": "https://x.com/idoubicv", "description": "Author (idoubi) Twitter"}
+  ],
+  "submission_process_notes": [
+    "1. Navigate to https://mcp.so/submit in a browser",
+    "2. Fill in the type (MCP Server or MCP Client), name, URL, and server config JSON",
+    "3. Server config must be valid JSON containing an 'mcpServers' key with command/args/env structure",
+    "4. You must be logged in (authentication required) - the site uses NextAuth",
+    "5. The API endpoint /api/submit-project is the backend handler",
+    "6. Alternatively, submit a PR via the GitHub repo at https://github.com/chatmcp/mcpso",
+    "7. For support, join the Telegram (https://t.me/+N0gv4O9SXio2YWU1) or Discord (https://discord.gg/RsYPRrnyqg)"
+  ],
+  "obstacles": {
+    "api_register_404": "The /api/register endpoint returns 404 - it has been replaced by /api/submit-project",
+    "auth_required": "The submit-project API requires authentication; unauthenticated requests return error code -1",
+    "client_side_rendering": "The site is a Next.js app with SSR, making direct scraping of form content difficult"
+  }
+}

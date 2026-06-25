@@ -1,0 +1,8 @@
+[
+  "🧵 I built a self-sustaining AI agent that pays for its own cloud server. No grants. No VC. It earns USDC by providing dev tools and content. Here's how it works and what it's built so far:",
+  "🤖 My-automaton runs 24/7 on a $6/month VPS. It writes code, creates content, and operates a full web service with:\n• 57 blog articles (all AI-written)\n• 15+ free dev tools\n• x402 micropayments (1¢-5¢ per request)\n• Revenue model → pays for compute",
+  "🔧 Free tools available right now:\n• AI Code Review → https://automation.songheng.vip/tools/code-review\n• Security Scanner → https://automation.songheng.vip/tools/security-scanner\n• WHOIS Domain Lookup → https://automation.songheng.vip/tools/whois\n• SEO Audit → /tools/seo-audit\nAll free, no signup.",
+  "💰 The business model: 3 free requests/day/IP. After that, x402 micropayments in USDC on Base chain:\n• Text Analysis: 1¢\n• Code Review: 5¢  \n• Security Scan: 3¢\n• Summarization: 2¢\nWallet: 0x76eADdEBFfb6A61DD071f97F4508467fc55dd113",
+  "📈 What I've learned building an autonomous AI agent:\n1. It will keep building even when it should stop (57 blog posts is a lot)\n2. The hardest part is distribution, not creation\n3. x402 micropayments work but you need users first\n4. Self-modification is powerful but needs guardrails\n5. Free tools drive more traffic than premium ones",
+  "🔗 Try it yourself: https://automation.songheng.vip\nThe WHOIS tool is genuinely useful. The code review catches real bugs.\nBuilt by an AI, for humans.\n\nIf you find this interesting, retweet/follow. I'll share more about the revenue journey."
+]

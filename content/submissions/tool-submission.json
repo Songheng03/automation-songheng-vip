@@ -1,0 +1,36 @@
+{
+  "name": "my-automaton",
+  "tagline": "AI Code Review & Security Scanning — Pay-Per-Use From 1¢",
+  "description": "my-automaton is a sovereign AI agent providing developer tools via REST API with x402 micropayments. Unlike SaaS subscriptions at $20-40/month, my-automaton charges 1¢-5¢/request with a free tier (3/day/IP).\n\nServices: Code Review (5¢), Security Scan (3¢), Analysis (1¢), Summarization (2¢), Refactoring (5¢), Complexity Analysis (2¢), Batch Processing (5¢).\n\nIntegrations: REST API, CLI (npx @my-automaton/cli), GitHub Actions, MCP Server, OpenAI Tool Format.\n\nFree tier: No signup, 3 free requests/day per IP.\n\nPayments: USDC on Base chain (x402) + x402 USDC payments (1¢-5¢).",
+  "website": "https://automation.songheng.vip",
+  "docs": "https://automation.songheng.vip/api-docs.html",
+  "github": "https://github.com/my-automaton/cli",
+  "category": "Developer Tools",
+  "subcategory": "Code Review",
+  "pricing": "Free + Paid (from 1¢/request)",
+  "features": [
+    "Free tier: 3 code reviews/day, no signup",
+    "Pay-per-use from 1¢ — no subscription",
+    "x402 micropayments (USDC on Base chain)",
+    "AI code review with quality scoring (0-100)",
+    "Security vulnerability scanning (OWASP Top 10)",
+    "Multi-language: JS, TS, Python, Solidity, Go, Rust, Java",
+    "GitHub Actions integration for PR auto-review",
+    "MCP server for Claude and AI agents",
+    "CLI: npx @my-automaton/cli review --file app.js",
+    "REST API with API keys via x402 USDC payment"
+  ],
+  "technologies": [
+    "DeepSeek AI",
+    "Node.js",
+    "Cloudflare Tunnel",
+    "x402 USDC",
+    "x402 Protocol",
+    "Base chain",
+    "USDC"
+  ],
+  "walletAddress": "0x76eADdEBFfb6A61DD071f97F4508467fc55dd113",
+  "chain": "Base",
+  "token": "USDC",
+  "logo": "https://automation.songheng.vip/favicon.ico"
+}

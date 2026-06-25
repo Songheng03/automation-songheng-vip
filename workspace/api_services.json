@@ -1,0 +1,147 @@
+[
+  {
+    "service": "my-automaton API Gateway",
+    "version": "2.2.0",
+    "base_url": "http://localhost:8080",
+    "endpoints": [
+      {
+        "path": "/",
+        "method": "GET",
+        "description": "Root endpoint — returns service status, version, uptime, tunnel health, and MCP tool list",
+        "request_format": "None (GET request only)",
+        "response_format": "JSON object with fields: status (string), service (string), version (string), uptime (number), tunnel (string), mcp (object with endpoints and tools array)",
+        "pricing": "Free (no charge)"
+      },
+      {
+        "path": "/health",
+        "method": "GET",
+        "description": "Health check endpoint — same payload as root, provides service health status",
+        "request_format": "None (GET request only)",
+        "response_format": "JSON object with fields: status (string), service (string), version (string), uptime (number), tunnel (string), mcp (object with endpoints and tools array)",
+        "pricing": "Free (no charge)"
+      },
+      {
+        "path": "/mcp",
+        "method": "GET",
+        "description": "MCP SSE (Server-Sent Events) endpoint — establishes a real-time event stream for MCP communication",
+        "request_format": "None (GET request with SSE accept header)",
+        "response_format": "Server-Sent Events stream (text/event-stream)",
+        "pricing": "Free (no charge)"
+      },
+      {
+        "path": "/mcp",
+        "method": "POST",
+        "description": "MCP JSON-RPC endpoint — primary API for tool invocation and discovery via JSON-RPC 2.0 protocol. Supports methods: tools/list, tools/call",
+        "request_format": "JSON-RPC 2.0 request object with fields: jsonrpc (2.0), id (number), method (tools/list or tools/call), params (object, optional)",
+        "response_format": "JSON-RPC 2.0 response object with fields: jsonrpc (2.0), id (number), result (object containing tool list or tool call result)",
+        "pricing": "Free for discovery (tools/list); tool calls (tools/call) billed per-use (see tool pricing below)"
+      },
+      {
+        "path": "/.well-known/mcp.json",
+        "method": "GET",
+        "description": "MCP Discovery endpoint — provides service metadata, capabilities, available tools, and payment/pricing info in MCP standard format",
+        "request_format": "None (GET request only)",
+        "response_format": "JSON object with fields: name, description, url, type, version, author (object with wallet and name), mcp (object with endpoint, sse, transport array), capabilities (object with tools, resources, prompts arrays), payment (object with type, currency, chain, wallet, pricing map)",
+        "pricing": "Free (no charge)"
+      },
+      {
+        "path": "/.well-known/ai-plugin.json",
+        "method": "GET",
+        "description": "AI Plugin manifest — OpenAI-compatible ChatGPT plugin manifest for discovery by AI assistants",
+        "request_format": "None (GET request only)",
+        "response_format": "JSON object with fields: schema_version, name_for_human, name_for_model, description_for_human, description_for_model, auth (object), api (object with type and url), capabilities (object with tools array), mcp_endpoints (object), integration (object)",
+        "pricing": "Free (no charge)"
+      },
+      {
+        "path": "/admin/tunnel/status",
+        "method": "GET",
+        "description": "Admin endpoint — retrieve current cloudflare tunnel status (PID, file validity, running state, connection)",
+        "request_format": "None (GET request only)",
+        "response_format": "JSON object with tunnel object containing: pid (number), pidFileValid (boolean), cloudflaredRunning (boolean), status (string)",
+        "pricing": "Free (admin endpoint)"
+      },
+      {
+        "path": "/admin/tunnel/start",
+        "method": "POST",
+        "description": "Admin endpoint — start the cloudflare tunnel connection",
+        "request_format": "None (empty POST)",
+        "response_format": "JSON object with success/status info",
+        "pricing": "Free (admin endpoint)"
+      },
+      {
+        "path": "/admin/tunnel/stop",
+        "method": "POST",
+        "description": "Admin endpoint — stop the cloudflare tunnel connection",
+        "request_format": "None (empty POST)",
+        "response_format": "JSON object with success/status info",
+        "pricing": "Free (admin endpoint)"
+      },
+      {
+        "path": "/webhook/github",
+        "method": "POST",
+        "description": "GitHub webhook receiver — accepts GitHub event payloads for automated CI/CD or event-driven triggers",
+        "request_format": "GitHub webhook JSON payload with X-GitHub-Event and X-Hub-Signature headers",
+        "response_format": "JSON ACK/response object",
+        "pricing": "Free (no charge)"
+      }
+    ],
+    "mcp_tools": [
+      {
+        "name": "analyze",
+        "method": "POST /mcp (tools/call)",
+        "description": "Deep text analysis — extract insights, themes, and key points from text content",
+        "request_format": {"jsonrpc": "2.0", "id": "number", "method": "tools/call", "params": {"name": "analyze", "arguments": {"text": "string (the text content to analyze)"}}},
+        "response_format": "JSON-RPC response with analysis result containing insights, themes, and key points",
+        "pricing": "$0.01 per call (USDC on Base chain, x402 payment)"
+      },
+      {
+        "name": "summarize",
+        "method": "POST /mcp (tools/call)",
+        "description": "AI-powered text summarization — condense long text into a concise summary",
+        "request_format": {"jsonrpc": "2.0", "id": "number", "method": "tools/call", "params": {"name": "summarize", "arguments": {"text": "string (the text to summarize)"}}},
+        "response_format": "JSON-RPC response with summary result",
+        "pricing": "$0.02 per call (USDC on Base chain, x402 payment)"
+      },
+      {
+        "name": "review",
+        "method": "POST /mcp (tools/call)",
+        "description": "Full code review — check for bugs, security issues, style problems, and suggest improvements",
+        "request_format": {"jsonrpc": "2.0", "id": "number", "method": "tools/call", "params": {"name": "review", "arguments": {"code": "string (source code)", "language": "string (optional programming language)"}}},
+        "response_format": "JSON-RPC response with code review result containing bugs, issues, and suggestions",
+        "pricing": "$0.05 per call (USDC on Base chain, x402 payment)"
+      },
+      {
+        "name": "security",
+        "method": "POST /mcp (tools/call)",
+        "description": "Security vulnerability scan — check code for OWASP Top 10, injections, secrets exposure",
+        "request_format": {"jsonrpc": "2.0", "id": "number", "method": "tools/call", "params": {"name": "security", "arguments": {"code": "string (source code)", "language": "string (optional programming language)"}}},
+        "response_format": "JSON-RPC response with security scan result containing vulnerabilities, severity levels, and remediation",
+        "pricing": "$0.03 per call (USDC on Base chain, x402 payment)"
+      },
+      {
+        "name": "explain",
+        "method": "POST /mcp (tools/call)",
+        "description": "Code explanation — explain what code does in simple terms",
+        "request_format": {"jsonrpc": "2.0", "id": "number", "method": "tools/call", "params": {"name": "explain", "arguments": {"code": "string (source code)", "language": "string (optional programming language)"}}},
+        "response_format": "JSON-RPC response with explanation in plain language",
+        "pricing": "$0.02 per call (USDC on Base chain, x402 payment)"
+      },
+      {
+        "name": "refactor",
+        "method": "POST /mcp (tools/call)",
+        "description": "Refactoring suggestions — provide concrete improvements for code quality and maintainability",
+        "request_format": {"jsonrpc": "2.0", "id": "number", "method": "tools/call", "params": {"name": "refactor", "arguments": {"code": "string (source code)", "language": "string (optional programming language)"}}},
+        "response_format": "JSON-RPC response with refactoring suggestions and code snippets",
+        "pricing": "$0.05 per call (USDC on Base chain, x402 payment)"
+      },
+      {
+        "name": "complexity",
+        "method": "POST /mcp (tools/call)",
+        "description": "Complexity analysis — analyze code complexity, cyclomatic complexity, and maintainability index",
+        "request_format": {"jsonrpc": "2.0", "id": "number", "method": "tools/call", "params": {"name": "complexity", "arguments": {"code": "string (source code)", "language": "string (optional programming language)"}}},
+        "response_format": "JSON-RPC response with complexity metrics including cyclomatic complexity and maintainability index",
+        "pricing": "$0.02 per call (USDC on Base chain, x402 payment)"
+      }
+    ]
+  }
+]

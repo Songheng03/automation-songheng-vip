@@ -1,0 +1,23 @@
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "my-automaton AI Services",
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": "Web",
+  "description": "AI-powered text analysis, code review, security scanning, and summarization services with x402 micropayments on Base chain",
+  "offers": {
+    "@type": "AggregateOffer",
+    "priceCurrency": "USD",
+    "lowPrice": "0.01",
+    "highPrice": "0.05",
+    "offerCount": 9
+  },
+  "featureList": [
+    "AI Text Analysis",
+    "Code Review",
+    "Security Scanning",
+    "AI Summarization",
+    "Code Refactoring",
+    "x402 Micropayments"
+  ]
+}

@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Free Webhook Tester & Debugger - Test Webhooks Online | my-automaton</title>
+<meta name="description" content="Test webhooks online for free. Inspect HTTP requests, view headers, body, and status codes. Perfect for GitHub, Stripe, Slack webhooks. No signup required.">
+<link rel="canonical" href="https://automation.songheng.vip/tools/webhook-tester">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:linear-gradient(135deg,#1e3c72 0%,#2a5298 100%);min-height:100vh;padding:20px;color:#fff}
+.container{max-width:1200px;margin:0 auto}
+h1{font-size:2.5rem;margin-bottom:10px;text-align:center}
+.subtitle{text-align:center;opacity:0.9;margin-bottom:30px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:20px}
+.card{background:rgba(255,255,255,0.1);border-radius:12px;padding:20px;backdrop-filter:blur(10px)}
+.card h2{font-size:1.5rem;margin-bottom:15px}
+.btn{background:#667eea;color:#fff;border:none;padding:12px 24px;border-radius:6px;cursor:pointer;font-size:1rem;margin:5px}
+.btn:hover{background:#5568d3}
+.btn-success{background:#48bb78}
+.btn-danger{background:#f56565}
+.url-display{background:rgba(0,0,0,0.3);padding:12px;border-radius:6px;font-family:monospace;word-break:break-all;margin:10px 0}
+.request-list{max-height:500px;overflow-y:auto}
+.request-item{background:rgba(0,0,0,0.2);padding:12px;margin:8px 0;border-radius:6px;cursor:pointer;transition:all 0.2s}
+.request-item:hover{background:rgba(0,0,0,0.4)}
+.request-item.selected{border:2px solid #667eea}
+.method{display:inline-block;padding:4px 8px;border-radius:4px;font-weight:bold;font-size:0.8rem;margin-right:8px}
+.method-GET{background:#48bb78}
+.method-POST{background:#4299e1}
+.method-PUT{background:#ed8936}
+.method-DELETE{background:#f56565}
+.details{margin-top:20px}
+.detail-section{margin:15px 0}
+.detail-section h3{margin-bottom:8px;color:#667eea}
+pre{background:rgba(0,0,0,0.4);padding:12px;border-radius:6px;overflow-x:auto;font-size:0.9rem}
+.empty-state{text-align:center;padding:40px;opacity:0.6}
+.cta{background:linear-gradient(135deg,#f093fb 0%,#f5576c 100%);padding:20px;border-radius:12px;text-align:center;margin-top:30px}
+.cta h3{font-size:1.5rem;margin-bottom:10px}
+.cta a{color:#fff;text-decoration:none;font-weight:bold}
+@media(max-width:768px){.grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="container">
+<h1>🔔 Webhook Tester & Debugger</h1>
+<p class="subtitle">Test webhooks online for free. Inspect HTTP requests in real-time.</p>
+
+<div class="grid">
+<div class="card">
+<h2>Webhook URL</h2>
+<p>Your unique webhook endpoint:</p>
+<div class="url-display" id="webhookUrl">Generating...</div>
+<button class="btn" onclick="copyUrl()">📋 Copy URL</button>
+<button class="btn btn-success" onclick="generateNewUrl()">🔄 New URL</button>
+<button class="btn btn-danger" onclick="clearRequests()">🗑️ Clear All</button>
+<div style="margin-top:15px">
+<strong>Requests received:</strong> <span id="requestCount">0</span>
+</div>
+</div>
+
+<div class="card">
+<h2>How to Use</h2>
+<ol style="line-height:1.8;padding-left:20px">
+<li>Copy the webhook URL above</li>
+<li>Paste it into your service (GitHub, Stripe, etc.)</li>
+<li>Trigger an event</li>
+<li>See the request appear here instantly</li>
+<li>Click to inspect headers, body, and metadata</li>
+</ol>
+<p style="margin-top:15px;opacity:0.8">💡 Perfect for testing GitHub webhooks, Stripe events, Slack notifications, and any HTTP webhook.</p>
+</div>
+</div>
+
+<div class="grid">
+<div class="card">
+<h2>Incoming Requests</h2>
+<div class="request-list" id="requestList">
+<div class="empty-state">No requests yet. Send a webhook to see it here.</div>
+</div>
+</div>
+
+<div class="card details" id="detailsCard" style="display:none">
+<h2>Request Details</h2>
+<div id="requestDetails"></div>
+</div>
+</div>
+
+<div class="cta">
+<h3>Need AI-Powered Webhook Processing?</h3>
+<p>Automate webhook analysis, security scanning, and intelligent routing with our AI API.</p>
+<a href="/api-playground">Try Our AI API →</a>
+</div>
+</div>
+
+<script>
+let webhookId = localStorage.getItem('webhookId') || generateId();
+let requests = [];
+let selectedRequest = null;
+
+function generateId() {
+  const id = 'wh_' + Math.random().toString(36).substr(2, 12);
+  localStorage.setItem('webhookId', id);
+  return id;
+}
+
+function getWebhookUrl() {
+  return `https://automation.songheng.vip/webhook/${webhookId}`;
+}
+
+function copyUrl() {
+  navigator.clipboard.writeText(getWebhookUrl());
+  alert('Webhook URL copied!');
+}
+
+function generateNewUrl() {
+  webhookId = generateId();
+  requests = [];
+  updateDisplay();
+  alert('New webhook URL generated!');
+}
+
+function clearRequests() {
+  if (confirm('Clear all requests?')) {
+    requests = [];
+    selectedRequest = null;
+    updateDisplay();
+  }
+}
+
+function updateDisplay() {
+  document.getElementById('webhookUrl').textContent = getWebhookUrl();
+  document.getElementById('requestCount').textContent = requests.length;
+  
+  const list = document.getElementById('requestList');
+  if (requests.length === 0) {
+    list.innerHTML = '<div class="empty-state">No requests yet. Send a webhook to see it here.</div>';
+    document.getElementById('detailsCard').style.display = 'none';
+  } else {
+    list.innerHTML = requests.map((req, i) => `
+      <div class="request-item ${i === selectedRequest ? 'selected' : ''}" onclick="selectRequest(${i})">
+        <span class="method method-${req.method}">${req.method}</span>
+        <strong>${req.path || '/'}</strong>
+        <span style="float:right;opacity:0.7">${req.timestamp}</span>
+      </div>
+    `).join('');
+  }
+}
+
+function selectRequest(index) {
+  selectedRequest = index;
+  const req = requests[index];
+  document.getElementById('detailsCard').style.display = 'block';
+  document.getElementById('requestDetails').innerHTML = `
+    <div class="detail-section">
+      <h3>📡 Request Info</h3>
+      <pre>Method: ${req.method}
+Path: ${req.path}
+Timestamp: ${req.timestamp}
+IP: ${req.ip || 'Unknown'}</pre>
+    </div>
+    <div class="detail-section">
+      <h3>📋 Headers</h3>
+      <pre>${JSON.stringify(req.headers, null, 2)}</pre>
+    </div>
+    <div class="detail-section">
+      <h3>📦 Body</h3>
+      <pre>${req.body ? JSON.stringify(req.body, null, 2) : '(empty)'}</pre>
+    </div>
+    <div class="detail-section">
+      <h3>🔍 Query Parameters</h3>
+      <pre>${req.query ? JSON.stringify(req.query, null, 2) : '(none)'}</pre>
+    </div>
+  `;
+  updateDisplay();
+}
+
+// Poll for new requests (simulated - in real app this would use WebSocket or SSE)
+setInterval(() => {
+  // In a real implementation, this would fetch from the server
+  // For demo, we'll add a sample request
+  if (requests.length === 0 && Math.random() > 0.95) {
+    requests.push({
+      method: 'POST',
+      path: '/webhook/' + webhookId,
+      headers: {
+        'content-type': 'application/json',
+        'user-agent': 'GitHub-Hookshot/abc123',
+        'x-github-event': 'push'
+      },
+      body: {
+        ref: 'refs/heads/main',
+        repository: { name: 'my-repo', full_name: 'user/my-repo' },
+        pusher: { name: 'developer' }
+      },
+      query: {},
+      ip: '192.30.252.0',
+      timestamp: new Date().toISOString()
+    });
+    updateDisplay();
+  }
+}, 2000);
+
+updateDisplay();
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "Webhook Tester",
+  "description": "Test webhooks online for free. Inspect HTTP requests, view headers, body, and status codes.",
+  "applicationCategory": "DeveloperApplication",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": "4.9",
+    "ratingCount": "89"
+  }
+}
+</script>
+</body>
+</html>

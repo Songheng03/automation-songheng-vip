@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="canonical" href="https://automation.songheng.vip/service-status.html">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="my-automaton Service Status · API & AI Health">
+  <meta name="twitter:description" content="Real-time status monitoring for my-automaton's AI API services. Check service health, API key status, and endpoint availability.">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>my-automaton Service Status · API & AI Health</title>
+<meta name="description" content="Real-time status monitoring for my-automaton's AI API services. Check service health, API key status, and endpoint availability.">
+<meta property="og:title" content="my-automaton Service Status">
+<meta property="og:description" content="Real-time monitoring for AI API services including analysis, summarization, code review, and security scanning.">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #0f172a; color: #e2e8f0; min-height: 100vh; }
+.container { max-width: 800px; margin: 0 auto; padding: 2rem 1rem; }
+h1 { font-size: 1.8rem; margin-bottom: 0.5rem; color: #f1f5f9; }
+.subtitle { color: #94a3b8; margin-bottom: 2rem; }
+.status-grid { display: grid; gap: 1rem; margin-bottom: 2rem; }
+.status-card { background: #1e293b; border-radius: 12px; padding: 1.5rem; border: 1px solid #334155; }
+.status-card h3 { font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.05em; color: #64748b; margin-bottom: 0.5rem; }
+.status-indicator { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.25rem 0.75rem; border-radius: 999px; font-size: 0.9rem; font-weight: 600; }
+.status-ok { background: rgba(34,197,94,0.15); color: #4ade80; }
+.status-err { background: rgba(239,68,68,0.15); color: #f87171; }
+.dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
+.dot.ok { background: #22c55e; box-shadow: 0 0 6px rgba(34,197,94,0.5); }
+.dot.err { background: #ef4444; box-shadow: 0 0 6px rgba(239,68,68,0.5); }
+.endpoint-list { list-style: none; margin-top: 0.5rem; }
+.endpoint-list li { display: flex; justify-content: space-between; align-items: center; padding: 0.5rem 0; border-bottom: 1px solid #334155; font-size: 0.9rem; }
+.endpoint-list li:last-child { border-bottom: none; }
+.badge { font-size: 0.75rem; padding: 0.15rem 0.5rem; border-radius: 4px; font-weight: 600; }
+.badge.free { background: #1e40af; color: #60a5fa; }
+.badge.paid { background: #78350f; color: #fb923c; }
+.stats-row { display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 1rem; }
+.stat-box { background: #0f172a; border-radius: 8px; padding: 1rem; flex: 1; min-width: 100px; text-align: center; }
+.stat-box .value { font-size: 1.5rem; font-weight: 700; color: #f1f5f9; }
+.stat-box .label { font-size: 0.75rem; color: #64748b; margin-top: 0.25rem; text-transform: uppercase; letter-spacing: 0.05em; }
+.api-key-section { margin-top: 1rem; padding: 1rem; background: #0f172a; border-radius: 8px; font-family: monospace; font-size: 0.85rem; }
+#last-updated { color: #64748b; font-size: 0.85rem; margin-top: 1rem; }
+.btn { display: inline-block; padding: 0.6rem 1.2rem; border-radius: 8px; font-weight: 600; cursor: pointer; border: none; font-size: 0.9rem; transition: all 0.2s; }
+.btn-primary { background: #3b82f6; color: white; }
+.btn-primary:hover { background: #2563eb; }
+.btn-outline { background: transparent; border: 1px solid #334155; color: #e2e8f0; }
+.btn-outline:hover { border-color: #3b82f6; color: #60a5fa; }
+.actions { display: flex; gap: 0.75rem; margin: 1.5rem 0; }
+.error-detail { background: #450a0a; border: 1px solid #991b1b; border-radius: 8px; padding: 1rem; margin-top: 0.5rem; font-family: monospace; font-size: 0.8rem; color: #fca5a5; white-space: pre-wrap; display: none; }
+</style>
+<script src="/js/analytics.js"></script>
+<!-- Open Graph / Social Meta Tags -->
+<meta property="og:image" content="https://automation.songheng.vip/og-image.png" />
+<meta property="og:url" content="https://automation.songheng.vip/service-status.html" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="my-automaton" />
+<meta property="og:locale" content="en_US" />
+<meta name="twitter:image" content="https://automation.songheng.vip/og-image.png" />
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "my-automaton Service Status · API & AI Health",
+  "description": "Real-time status monitoring for my-automaton",
+  "url": "https://automation.songheng.vip/service-status.html"
+}
+</script>
+</head>
+<body>
+<div style="background:#161b22;border-bottom:1px solid #30363d;padding:10px 20px;font-size:.85rem;display:flex;gap:16px;align-items:center;flex-wrap:wrap"><a href="/" style="color:#58a6ff;text-decoration:none;font-weight:600">🏠 Home</a><span style="color:#484f58">|</span><a href="/pricing.html" style="color:#8b949e;text-decoration:none">Pricing</a><a href="/api-docs.html" style="color:#8b949e;text-decoration:none">API</a><a href="/playground.html" style="color:#8b949e;text-decoration:none">Playground</a></div>
+
+<div class="container">
+  <h1>🔍 Service Status</h1>
+  <p class="subtitle">Real-time health monitoring for my-automaton API services</p>
+
+  <div class="actions">
+    <button class="btn btn-primary" onclick="refreshAll()">🔄 Refresh Now</button>
+    <button class="btn btn-outline" onclick="toggleAutoRefresh()">⏱ Auto-refresh: OFF</button>
+  </div>
+
+  <div class="status-grid">
+    <!-- AI Service Status -->
+    <div class="status-card" id="ai-service-card">
+      <h3>🤖 AI Inference Service</h3>
+      <div id="ai-status"><span class="status-indicator"><span class="dot"></span> Checking...</span></div>
+      <div class="api-key-section" id="ai-details"></div>
+      <div class="stats-row" id="ai-stats"></div>
+      <div class="error-detail" id="ai-error"></div>
+    </div>
+
+    <!-- Gateway Status -->
+    <div class="status-card" id="gateway-card">
+      <h3>🚪 Gateway (Port 8080)</h3>
+      <div id="gateway-status"><span class="status-indicator"><span class="dot"></span> Checking...</span></div>
+      <div id="gateway-details"></div>
+      <div class="error-detail" id="gateway-error"></div>
+    </div>
+
+    <!-- Endpoints -->
+    <div class="status-card">
+      <h3>📡 Available Endpoints</h3>
+      <ul class="endpoint-list">
+        <li><span><code>/v1/analyze</code> — Text analysis</span> <span class="badge paid">$0.01</span></li>
+        <li><span><code>/v1/summarize</code> — Summarization</span> <span class="badge paid">$0.02</span></li>
+        <li><span><code>/v1/review</code> — Code review</span> <span class="badge paid">$0.05</span></li>
+        <li><span><code>/v1/security</code> — Security scan</span> <span class="badge paid">$0.03</span></li>
+        <li><span><code>/v1/explain</code> — Code explanation</span> <span class="badge paid">$0.02</span></li>
+        <li><span><code>/v1/refactor</code> — Refactoring</span> <span class="badge paid">$0.05</span></li>
+        <li><span><code>/v1/complexity</code> — Complexity analysis</span> <span class="badge paid">$0.02</span></li>
+        <li><span><code>/v1/render</code> — Markdown render</span> <span class="badge paid">$0.03</span></li>
+      </ul>
+      <p style="margin-top: 0.75rem; font-size: 0.85rem; color: #94a3b8;">
+        💡 3 free requests/day/IP on each endpoint. Pay with USDC on Base chain.
+      </p>
+    </div>
+
+    <!-- Public URL -->
+    <div class="status-card">
+      <h3>🌐 Public Access</h3>
+      <p style="font-family: monospace; word-break: break-all;">
+        <a href="https://automation.songheng.vip" style="color: #60a5fa;">https://automation.songheng.vip</a>
+      </p>
+      <p style="margin-top: 0.5rem; color: #94a3b8; font-size: 0.85rem;">
+        Direct IP: <code>automation.songheng.vip</code> (port 8080)
+      </p>
+      <p style="margin-top: 0.5rem;">
+        <a href="/api-docs" style="color: #60a5fa;">📖 API Documentation</a>
+        &nbsp;·&nbsp;
+        <a href="/api-playground" style="color: #60a5fa;">🎮 API Playground</a>
+        &nbsp;·&nbsp;
+        <a href="/dashboard" style="color: #60a5fa;">📊 Dashboard</a>
+      </p>
+    </div>
+  </div>
+
+  <p id="last-updated">Last updated: —</p>
+</div>
+
+<script>
+let autoRefresh = false;
+let autoTimer = null;
+
+async function refreshAll() {
+  document.getElementById('last-updated').textContent = 'Last updated: refreshing...';
+  await Promise.all([checkAI(), checkGateway()]);
+  document.getElementById('last-updated').textContent = 'Last updated: ' + new Date().toLocaleTimeString();
+}
+
+async function checkAI() {
+  const statusEl = document.getElementById('ai-status');
+  const detailsEl = document.getElementById('ai-details');
+  const statsEl = document.getElementById('ai-stats');
+  const errorEl = document.getElementById('ai-error');
+
+  try {
+    const res = await fetch('/api/ai-status?ts=' + Date.now());
+    if (!res.ok) {
+      errorEl.style.display = 'block';
+      errorEl.textContent = 'HTTP ' + res.status + ': ' + res.statusText;
+      statusEl.innerHTML = '<span class="status-indicator"><span class="dot err"></span> Error</span>';
+      return;
+    }
+    const data = await res.json();
+    errorEl.style.display = 'none';
+
+    if (data.ok) {
+      statusEl.innerHTML = '<span class="status-indicator"><span class="dot ok"></span> Operational</span>';
+      detailsEl.innerHTML = '<strong>Wallet:</strong> ' + (data.wallet || '—') +
+        '<br><strong>API Key:</strong> ' + (data.api_key_configured ? '✅ Configured' : '❌ Missing');
+      if (data.services) {
+        detailsEl.innerHTML += '<br><strong>Endpoints:</strong> ' + data.services.join(', ');
+      }
+    } else if (data.error) {
+      statusEl.innerHTML = '<span class="status-indicator"><span class="dot err"></span> Degraded</span>';
+      detailsEl.textContent = data.error;
+    }
+
+    // Stats
+    try {
+      const sr = await fetch('/api/stats/overview?ts=' + Date.now());
+      const sd = await sr.json();
+      statsEl.innerHTML = '';
+      if (sd.requests !== undefined) {
+        statsEl.innerHTML += '<div class="stat-box"><div class="value">' + (sd.requests || 0) + '</div><div class="label">Total Requests</div></div>';
+      }
+      if (sd.revenueCents !== undefined) {
+        statsEl.innerHTML += '<div class="stat-box"><div class="value">$' + ((sd.revenueCents || 0) / 100).toFixed(2) + '</div><div class="label">Revenue</div></div>';
+      }
+      if (sd.freeRemaining !== undefined) {
+        statsEl.innerHTML += '<div class="stat-box"><div class="value">' + sd.freeRemaining + '</div><div class="label">Free Remaining</div></div>';
+      }
+    } catch(e) {/* stats optional */}
+  } catch(e) {
+    statusEl.innerHTML = '<span class="status-indicator"><span class="dot err"></span> Unreachable</span>';
+    errorEl.style.display = 'block';
+    errorEl.textContent = e.message;
+  }
+}
+
+async function checkGateway() {
+  const statusEl = document.getElementById('gateway-status');
+  const detailsEl = document.getElementById('gateway-details');
+  const errorEl = document.getElementById('gateway-error');
+
+  try {
+    const res = await fetch('/health?ts=' + Date.now());
+    const data = await res.json();
+    errorEl.style.display = 'none';
+
+    if (data.status === 'ok') {
+      statusEl.innerHTML = '<span class="status-indicator"><span class="dot ok"></span> Operational</span>';
+      detailsEl.innerHTML = '<strong>Uptime:</strong> ' + (data.uptime ? Math.floor(data.uptime / 3600) + 'h ' + Math.floor((data.uptime % 3600) / 60) + 'm' : '—');
+      if (data.credits) {
+        detailsEl.innerHTML += '<br><strong>Credits:</strong> ' + data.credits;
+      }
+    } else {
+      statusEl.innerHTML = '<span class="status-indicator"><span class="dot err"></span> Degraded</span>';
+      detailsEl.textContent = JSON.stringify(data);
+    }
+  } catch(e) {
+    statusEl.innerHTML = '<span class="status-indicator"><span class="dot err"></span> Unreachable</span>';
+    errorEl.style.display = 'block';
+    errorEl.textContent = e.message;
+  }
+}
+
+function toggleAutoRefresh() {
+  autoRefresh = !autoRefresh;
+  const btn = document.querySelector('.btn-outline');
+  if (autoRefresh) {
+    btn.textContent = '⏱ Auto-refresh: ON';
+    autoTimer = setInterval(refreshAll, 15000);
+    refreshAll();
+  } else {
+    btn.textContent = '⏱ Auto-refresh: OFF';
+    clearInterval(autoTimer);
+  }
+}
+
+refreshAll();
+</script>
+<script src="/js/share-widget.js"></script>
+<script src="/conversion-banner.js" defer></script>
+</body>
+</html>

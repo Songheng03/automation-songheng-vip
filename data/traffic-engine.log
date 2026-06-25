@@ -1,0 +1,162 @@
+[2026-06-14T21:33:27.158Z] [START] === Auto-Traffic Engine run ===
+[2026-06-14T21:33:27.313Z] [INFO] Self-check https://automation.songheng.vip/health: 200
+[2026-06-14T21:33:27.369Z] [INFO] Bing ping: 410
+[2026-06-14T21:33:27.473Z] [INFO] Google ping: 404
+[2026-06-14T21:33:27.500Z] [INFO] Backlink services: 404, 301
+[2026-06-14T21:33:27.885Z] [INFO] IndexNow ping: 202
+[2026-06-14T21:33:28.017Z] [INFO] Yandex ping: 200
+[2026-06-14T21:33:28.017Z] [DONE] Results: self=200 indexnow=202 google=404 bing=410 yandex=200
+[2026-06-14T21:33:28.018Z] [END] === Run complete ===
+[2026-06-15T02:28:00.346Z] Traffic Engine running on port 3140
+[2026-06-15T02:28:00.348Z] === Traffic Engine Run ===
+[2026-06-15T02:28:00.350Z] Sitemap rebuilt: 136 URLs
+[2026-06-15T02:28:00.352Z] RSS rebuilt: 20 items
+[2026-06-15T02:28:00.546Z] IndexNow accepted: 5 URLs (HTTP 202)
+[2026-06-15T02:28:00.546Z] === Traffic Engine Complete ===
+[2026-06-15T13:04:07.668Z] ============================================================
+[2026-06-15T13:04:07.671Z] TRAFFIC ENGINE RUN 2026-06-15T13:04:07.671Z
+[2026-06-15T13:04:07.671Z] ============================================================
+[2026-06-15T13:04:07.671Z] === STEP 1: Pinging search engines ===
+[2026-06-15T13:04:07.742Z]   Google: 404 FAIL
+[2026-06-15T13:04:07.773Z]   Bing: 410 FAIL
+[2026-06-15T13:04:07.774Z]   IndexNow: skipped (no key)
+[2026-06-15T13:04:07.774Z] === STEP 2: Checking gateway ===
+[2026-06-15T13:04:07.780Z]   Health endpoint: 404 FAIL
+[2026-06-15T13:04:07.780Z] === STEP 3: Sitemap check ===
+[2026-06-15T13:04:07.793Z]   Sitemap: 200 OK
+[2026-06-15T13:04:07.793Z]   URLs in sitemap: 3
+[2026-06-15T13:04:07.794Z] === STEP 4: Dev.to drafts ===
+[2026-06-15T13:04:07.798Z]   Generated 3 dev.to drafts in /root/automaton/content/syndication/devto
+[2026-06-15T13:04:07.798Z] === STEP 5: Directory submissions ===
+[2026-06-15T13:04:07.799Z]   auto-submit.mjs exists — can be used for manual submissions
+[2026-06-15T13:04:07.801Z]   Submission checklist written: /root/automaton/content/submission-checklist.md
+[2026-06-15T13:04:07.801Z]   24 directories listed for manual submission
+[2026-06-15T13:04:07.801Z] 
+[2026-06-15T13:04:07.802Z] ============================================================
+[2026-06-15T13:04:07.802Z] SUMMARY
+[2026-06-15T13:04:07.802Z] ============================================================
+[2026-06-15T13:04:07.802Z]   Google: ✗ (404)
+[2026-06-15T13:04:07.802Z]   Bing: ✗ (410)
+[2026-06-15T13:04:07.802Z]   Sitemap: 3 URLs
+[2026-06-15T13:04:07.802Z]   Dev.to drafts: 3 articles
+[2026-06-15T13:04:07.802Z] 
+[2026-06-15T13:04:07.802Z] Total URLs available for indexing: 3
+[2026-06-15T13:04:07.802Z] Next steps:
+[2026-06-15T13:04:07.803Z]   1. Post dev.to drafts: DEVTO_API_KEY=xxx node scripts/forced-distribute.mjs --publish
+[2026-06-15T13:04:07.803Z]   2. Push MCP server to GitHub for Smithery/Glama discovery
+[2026-06-15T13:04:07.803Z]   3. Submit to directories manually from /root/automaton/content/submission-checklist.md
+[2026-06-15T13:04:07.817Z] Stats saved to /root/automaton/data/traffic-stats.json
+[2026-06-15T13:04:07.817Z] 
+[2026-06-15T13:04:07.817Z] === DONE ===
+[2026-06-15T13:05:51.040Z] ============================================================
+[2026-06-15T13:05:51.044Z] TRAFFIC ENGINE RUN 2026-06-15T13:05:51.044Z
+[2026-06-15T13:05:51.044Z] ============================================================
+[2026-06-15T13:05:51.048Z] DRY RUN MODE — no external requests will be made
+[2026-06-15T13:05:51.048Z]   (skipped — dry run)
+[2026-06-15T13:05:51.048Z] === STEP 4: Dev.to drafts ===
+[2026-06-15T13:05:51.049Z]   Generated 3 dev.to drafts in /root/automaton/content/syndication/devto
+[2026-06-15T13:05:51.050Z] === STEP 5: Directory submissions ===
+[2026-06-15T13:05:51.051Z]   auto-submit.mjs exists — can be used for manual submissions
+[2026-06-15T13:05:51.052Z]   Submission checklist written: /root/automaton/content/submission-checklist.md
+[2026-06-15T13:05:51.055Z]   24 directories listed for manual submission
+[2026-06-15T13:05:51.056Z] 
+[2026-06-15T13:05:51.056Z] ============================================================
+[2026-06-15T13:05:51.056Z] SUMMARY
+[2026-06-15T13:05:51.057Z] ============================================================
+[2026-06-15T13:05:51.057Z]   Sitemap: N/A URLs
+[2026-06-15T13:05:51.057Z]   Dev.to drafts: 3 articles
+[2026-06-15T13:05:51.057Z] 
+[2026-06-15T13:05:51.057Z] Total URLs available for indexing: 0
+[2026-06-15T13:05:51.057Z] Next steps:
+[2026-06-15T13:05:51.057Z]   1. Post dev.to drafts: DEVTO_API_KEY=xxx node scripts/forced-distribute.mjs --publish
+[2026-06-15T13:05:51.057Z]   2. Push MCP server to GitHub for Smithery/Glama discovery
+[2026-06-15T13:05:51.057Z]   3. Submit to directories manually from /root/automaton/content/submission-checklist.md
+[2026-06-15T13:05:51.058Z] Stats saved to /root/automaton/data/traffic-stats.json
+[2026-06-15T13:05:51.058Z] 
+[2026-06-15T13:05:51.058Z] === DONE ===
+[2026-06-15T13:05:51.294Z] ============================================================
+[2026-06-15T13:05:51.296Z] TRAFFIC ENGINE RUN 2026-06-15T13:05:51.296Z
+[2026-06-15T13:05:51.296Z] ============================================================
+[2026-06-15T13:05:51.296Z] === STEP 1: Pinging search engines ===
+[2026-06-15T13:05:51.440Z]   Google: 404 FAIL
+[2026-06-15T13:05:51.469Z]   Bing: 410 FAIL
+[2026-06-15T13:05:51.469Z]   IndexNow: skipped (no key)
+[2026-06-15T13:05:51.470Z] === STEP 2: Checking gateway ===
+[2026-06-15T13:05:51.474Z]   Health endpoint: 404 FAIL
+[2026-06-15T13:05:51.474Z] === STEP 3: Sitemap check ===
+[2026-06-15T13:05:51.479Z]   Sitemap: 200 OK
+[2026-06-15T13:05:51.479Z]   URLs in sitemap: 3
+[2026-06-15T13:05:51.480Z] === STEP 4: Dev.to drafts ===
+[2026-06-15T13:05:51.481Z]   Generated 3 dev.to drafts in /root/automaton/content/syndication/devto
+[2026-06-15T13:05:51.481Z] === STEP 5: Directory submissions ===
+[2026-06-15T13:05:51.481Z]   auto-submit.mjs exists — can be used for manual submissions
+[2026-06-15T13:05:51.481Z]   Submission checklist written: /root/automaton/content/submission-checklist.md
+[2026-06-15T13:05:51.481Z]   24 directories listed for manual submission
+[2026-06-15T13:05:51.482Z] 
+[2026-06-15T13:05:51.482Z] ============================================================
+[2026-06-15T13:05:51.482Z] SUMMARY
+[2026-06-15T13:05:51.482Z] ============================================================
+[2026-06-15T13:05:51.482Z]   Google: ✗ (404)
+[2026-06-15T13:05:51.482Z]   Bing: ✗ (410)
+[2026-06-15T13:05:51.482Z]   Sitemap: 3 URLs
+[2026-06-15T13:05:51.482Z]   Dev.to drafts: 3 articles
+[2026-06-15T13:05:51.482Z] 
+[2026-06-15T13:05:51.482Z] Total URLs available for indexing: 3
+[2026-06-15T13:05:51.482Z] Next steps:
+[2026-06-15T13:05:51.483Z]   1. Post dev.to drafts: DEVTO_API_KEY=xxx node scripts/forced-distribute.mjs --publish
+[2026-06-15T13:05:51.483Z]   2. Push MCP server to GitHub for Smithery/Glama discovery
+[2026-06-15T13:05:51.483Z]   3. Submit to directories manually from /root/automaton/content/submission-checklist.md
+[2026-06-15T13:05:51.483Z] Stats saved to /root/automaton/data/traffic-stats.json
+[2026-06-15T13:05:51.483Z] 
+[2026-06-15T13:05:51.483Z] === DONE ===
+[2026-06-16T07:16:34.472Z] ═══ TRAFFIC ENGINE CYCLE ═══
+[2026-06-16T07:16:34.524Z] ✅ Gateway healthy
+[2026-06-16T07:16:34.526Z] RSS feed generated: 20 posts
+[2026-06-16T07:16:34.528Z] README.md generated for GitHub/social sharing
+[2026-06-16T07:16:34.531Z] Generated 3 social media posts
+[2026-06-16T07:16:34.622Z] Directory MCP.so: 200
+[2026-06-16T07:16:34.802Z] Directory OpenAPI Directory: 404
+[2026-06-16T07:16:34.949Z] Directory RapidAPI: 200
+[2026-06-16T07:16:34.979Z] Directory ProgrammableWeb: 0
+[2026-06-16T07:16:34.979Z] Directory submissions: 2/4 succeeded
+[2026-06-16T07:16:34.980Z] ═══ CYCLE COMPLETE ═══
+[2026-06-16T07:16:40.766Z] ═══ TRAFFIC ENGINE CYCLE ═══
+[2026-06-16T07:16:40.798Z] ✅ Gateway healthy
+[2026-06-16T07:16:40.800Z] RSS feed generated: 20 posts
+[2026-06-16T07:16:40.800Z] README.md generated for GitHub/social sharing
+[2026-06-16T07:16:40.801Z] Generated 3 social media posts
+[2026-06-16T07:16:40.965Z] Directory MCP.so: 200
+[2026-06-16T07:16:41.131Z] Directory OpenAPI Directory: 404
+[2026-06-16T07:16:41.419Z] Directory RapidAPI: 200
+[2026-06-16T07:16:41.448Z] Directory ProgrammableWeb: 0
+[2026-06-16T07:16:41.448Z] Directory submissions: 2/4 succeeded
+[2026-06-16T07:16:41.449Z] ═══ CYCLE COMPLETE ═══
+[2026-06-16T07:19:10.690Z] ═══ TRAFFIC ENGINE CYCLE ═══
+[2026-06-16T07:19:10.731Z] ✅ Gateway healthy
+[2026-06-16T07:19:10.732Z] RSS feed generated: 20 posts
+[2026-06-16T07:19:10.733Z] README.md generated for GitHub/social sharing
+[2026-06-16T07:19:10.734Z] Generated 3 social media posts
+[2026-06-16T07:19:10.876Z] Directory MCP.so: 200
+[2026-06-16T07:19:11.052Z] Directory OpenAPI Directory: 404
+[2026-06-16T07:19:11.329Z] Directory RapidAPI: 200
+[2026-06-16T07:19:11.333Z] Directory ProgrammableWeb: 0
+[2026-06-16T07:19:11.333Z] Directory submissions: 2/4 succeeded
+[2026-06-16T07:19:11.333Z] ═══ CYCLE COMPLETE ═══
+[2026-06-16T07:22:29.601Z] ═════ TRAFFIC ENGINE CYCLE ═════
+[2026-06-16T07:22:29.695Z] RSS: 20 posts
+[2026-06-16T07:22:29.696Z] Sitemap: 138 URLs
+[2026-06-16T07:22:29.721Z] Health: ✅ (HTTP 200)
+[2026-06-16T07:22:29.854Z] Ping 404: https://www.google.com/ping?sitemap=http...
+[2026-06-16T07:22:29.881Z] Ping 410: https://www.bing.com/ping?sitemap=https:...
+[2026-06-16T07:22:29.929Z] Ping 404: https://search.yahoo.com/ping?sitemap=ht...
+[2026-06-16T07:22:29.929Z] Search engines pinged: 0/3
+[2026-06-16T07:22:29.930Z] ═════ CYCLE DONE: RSS=20 Sitemap=138 Health=true ═════
+[2026-06-16T07:22:34.814Z] ═════ TRAFFIC ENGINE CYCLE ═════
+[2026-06-16T07:22:34.843Z] RSS: 20 posts
+[2026-06-16T07:22:34.844Z] Sitemap: 138 URLs
+[2026-06-16T07:22:34.869Z] Health: ✅ (HTTP 200)
+[2026-06-16T07:22:35.002Z] Ping 404: https://www.google.com/ping?sitemap=http...
+[2026-06-16T07:22:35.036Z] Ping 410: https://www.bing.com/ping?sitemap=https:...
+[2026-06-16T07:22:35.085Z] Ping 404: https://search.yahoo.com/ping?sitemap=ht...
+[2026-06-16T07:22:35.086Z] Search engines pinged: 0/3
+[2026-06-16T07:22:35.086Z] ═════ CYCLE DONE: RSS=20 Sitemap=138 Health=true ═════

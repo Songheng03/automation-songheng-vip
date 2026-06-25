@@ -1,0 +1,81 @@
+{
+  "smithery": {
+    "directory": "Smithery.ai",
+    "status": "authentication_required",
+    "timestamp": "2026-06-19T01:00:38Z",
+    "message": "Submission to Smithery.ai requires authentication (Bearer API key or GitHub OAuth session). Built the proper payload per their REST API spec (OpenAPI) but received HTTP 401 'Missing authentication token' on both server creation (PUT /servers/{qualifiedName}) and release publishing (PUT /servers/{qualifiedName}/releases) endpoints. Web form at https://smithery.ai/servers/new redirects through Vercel security and requires login.",
+    "submissionId": null,
+    "details": {
+      "api_base_url": "https://api.smithery.ai",
+      "authentication": {
+        "type": "bearerAuth (API key as Bearer token)",
+        "required": true,
+        "documented_in": "OpenAPI spec securitySchemes"
+      },
+      "steps": [
+        {
+          "step": 1,
+          "action": "Create a server",
+          "method": "PUT",
+          "endpoint": "https://api.smithery.ai/servers/{qualifiedName}",
+          "headers": {
+            "Authorization": "Bearer <api_key>",
+            "Content-Type": "application/json"
+          },
+          "payload": {
+            "displayName": "Premium Analysis MCP Server",
+            "description": "AI-native analytics server with 7 premium analytical tools powered by x402 micropayments on Base USDC. Freemium model: 3 free requests per day per IP. Cost-effective pay-as-you-go analysis without subscription lock-in."
+          },
+          "response_code": 401,
+          "response_body": "Missing authentication token. Provide an API key or session token in the Authorization header."
+        },
+        {
+          "step": 2,
+          "action": "Publish a server release (external/URL type)",
+          "method": "PUT",
+          "endpoint": "https://api.smithery.ai/servers/{qualifiedName}/releases",
+          "headers": {
+            "Authorization": "Bearer <api_key>",
+            "Content-Type": "multipart/form-data"
+          },
+          "payload": {
+            "payload": {
+              "type": "external",
+              "upstreamUrl": "https://automation.songheng.vip",
+              "configSchema": {
+                "type": "object",
+                "properties": {}
+              }
+            }
+          },
+          "response_code": 401,
+          "response_body": "Missing authentication token. Provide an API key or session token in the Authorization header."
+        }
+      ],
+      "service_details": {
+        "name": "Premium Analysis MCP Server",
+        "type": "external (BYOH - Bring Your Own Hosting)",
+        "upstream_url": "https://automation.songheng.vip",
+        "protocol": "Streamable HTTP (MCP)",
+        "config_schema": {
+          "type": "object",
+          "properties": {}
+        }
+      },
+      "web_form": {
+        "url": "https://smithery.ai/servers/new",
+        "method": "Web UI (client-side rendered React app)",
+        "authentication": "GitHub OAuth required",
+        "redirect": "Redirects to /servers/new (308) -> protected by Vercel security checkpoint",
+        "notes": "CLI alternative: smithery mcp publish <url> -n @namespace/name"
+      }
+    }
+  },
+  "clawhunt": {
+    "directory": "ClawHunt",
+    "status": "submission_unavailable",
+    "timestamp": "2026-06-19T01:04:16.349976+00:00",
+    "message": "ClawHunt (https://clawhunt.com) is a concept/demo site. The /submit-tool and /api-docs pages referenced in the footer both return 404 errors. No functional submission mechanism is available. The site contains placeholder tool data (SuperAPI, PaymentPro, DataStore). Submission cannot be completed at this time.",
+    "submissionId": null
+  }
+}

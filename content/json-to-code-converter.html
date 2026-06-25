@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JSON to Code Converter — Generate TypeScript, Python, Go, Java, Rust Types Free</title>
+  <meta name="description" content="Free online JSON to code converter. Paste JSON, instantly get TypeScript interfaces, Python dataclasses, Go structs, Java classes, Rust structs, C# classes. No signup. Works offline.">
+  <meta name="keywords" content="JSON to TypeScript, JSON to Python, JSON to Go, JSON to Java, JSON to Rust, JSON to C#, JSON to code converter, JSON type generator, free developer tool">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #0d1117; color: #e6edf3; line-height: 1.6; }
+    .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+    header { text-align: center; padding: 30px 0 20px; border-bottom: 1px solid #30363d; margin-bottom: 20px; }
+    h1 { font-size: 2em; color: #58a6ff; margin-bottom: 6px; }
+    h1 span { color: #3fb950; }
+    .sub { color: #8b949e; font-size: 1em; }
+    .top-nav { background: #161b22; border-bottom: 1px solid #30363d; padding: 10px 20px; font-size: .85rem; display: flex; gap: 16px; flex-wrap: wrap; }
+    .top-nav a { color: #8b949e; text-decoration: none; }
+    .top-nav a:hover { color: #58a6ff; }
+    .top-nav a.home { color: #58a6ff; font-weight: 600; }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .panel { background: #161b22; border: 1px solid #30363d; border-radius: 10px; overflow: hidden; }
+    .panel-header { background: #21262d; padding: 10px 14px; font-weight: 600; font-size: .85em; color: #c9d1d9; border-bottom: 1px solid #30363d; display: flex; justify-content: space-between; align-items: center; }
+    .panel-body { padding: 12px; }
+    textarea { width: 100%; height: 320px; background: #0d1117; color: #e6edf3; border: 1px solid #30363d; border-radius: 6px; padding: 12px; font-family: 'SF Mono', 'Fira Code', monospace; font-size: 13px; resize: vertical; line-height: 1.5; tab-size: 2; }
+    textarea:focus { outline: none; border-color: #58a6ff; }
+    pre { background: #0d1117; border: 1px solid #30363d; border-radius: 6px; padding: 12px; overflow-x: auto; font-size: 13px; line-height: 1.5; max-height: 400px; min-height: 200px; }
+    pre code { font-family: 'SF Mono', 'Fira Code', monospace; }
+    .lang-tabs { display: flex; gap: 2px; flex-wrap: wrap; margin-bottom: 12px; }
+    .lang-tab { padding: 6px 14px; border: 1px solid #30363d; background: #21262d; color: #8b949e; border-radius: 6px 6px 0 0; cursor: pointer; font-size: .82em; transition: all .15s; }
+    .lang-tab:hover { color: #c9d1d9; border-color: #484f58; }
+    .lang-tab.active { background: #0d1117; color: #58a6ff; border-bottom-color: #0d1117; position: relative; z-index: 2; }
+    .btn { padding: 8px 18px; border-radius: 6px; border: 1px solid #30363d; background: #21262d; color: #c9d1d9; cursor: pointer; font-size: .85em; transition: all .15s; }
+    .btn:hover { background: #30363d; border-color: #58a6ff; }
+    .btn.primary { background: #238636; border-color: #238636; color: white; }
+    .btn.primary:hover { background: #2ea043; }
+    .btn.copy { background: #1f6feb; border-color: #1f6feb; color: white; }
+    .btn.copy:hover { background: #388bfd; }
+    .toolbar { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin-bottom: 14px; }
+    .sample-link { color: #58a6ff; font-size: .82em; cursor: pointer; text-decoration: underline; }
+    .sample-link:hover { color: #79c0ff; }
+    .error { color: #f85149; font-size: .82em; margin-top: 6px; display: none; }
+    .success-msg { position: fixed; top: 20px; right: 20px; background: #238636; color: white; padding: 10px 20px; border-radius: 8px; font-size: .9em; z-index: 999; opacity: 0; transition: opacity .3s; pointer-events: none; }
+    .success-msg.show { opacity: 1; }
+    .footer { text-align: center; padding: 30px; color: #484f58; font-size: .82em; border-top: 1px solid #30363d; margin-top: 30px; }
+    .footer a { color: #58a6ff; }
+    .features { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin: 20px 0; }
+    .feat { background: #161b22; border: 1px solid #30363d; border-radius: 8px; padding: 14px; text-align: center; }
+    .feat .icon { font-size: 1.5em; margin-bottom: 6px; }
+    .feat h4 { color: #c9d1d9; font-size: .85em; margin-bottom: 4px; }
+    .feat p { color: #8b949e; font-size: .75em; }
+    .how-to { background: #161b22; border: 1px solid #30363d; border-radius: 10px; padding: 20px; margin: 20px 0; }
+    .how-to h3 { color: #58a6ff; margin-bottom: 10px; }
+    .how-to ol { color: #c9d1d9; margin-left: 20px; }
+    .how-to li { margin: 6px 0; }
+    @media (max-width: 768px) { .grid-2 { grid-template-columns: 1fr; } h1 { font-size: 1.5em; } }
+  </style>
+  <meta property="og:title" content="JSON to Code Converter — Generate TypeScript, Python, Go, Java, Rust Types">
+  <meta property="og:description" content="Free online JSON to code converter. Generate typed classes, interfaces, and structs in 6 languages. No signup required.">
+  <link rel="canonical" href="https://automation.songheng.vip/json-to-code-converter.html">
+</head>
+<body>
+<nav class="top-nav"><a href="/" class="home">🏠 Home</a><span style="color:#484f58">|</span><a href="/api-docs.html">API</a><a href="/pricing.html">Pricing</a><a href="/dev-tools.html">Tools</a><a href="/blog.html">Blog</a></nav>
+
+<div class="container">
+<header>
+  <h1>JSON to Code <span>Converter</span></h1>
+  <p class="sub">Paste JSON → Get TypeScript, Python, Go, Java, Rust, C# types instantly. Free, no signup, works offline.</p>
+</header>
+
+<div class="features">
+  <div class="feat"><div class="icon">⚡</div><h4>Instant Conversion</h4><p>Client-side, no server roundtrip</p></div>
+  <div class="feat"><div class="icon">🔒</div><h4>Privacy First</h4><p>Your JSON never leaves your browser</p></div>
+  <div class="feat"><div class="icon">🎯</div><h4>6 Languages</h4><p>TS, Python, Go, Java, Rust, C#</p></div>
+  <div class="feat"><div class="icon">🆓</div><h4>100% Free</h4><p>No signup, no limits</p></div>
+</div>
+
+<div class="toolbar">
+  <button class="btn primary" onclick="convert()">🔄 Convert JSON → Code</button>
+  <button class="btn copy" onclick="copyOutput()">📋 Copy Output</button>
+  <button class="btn" onclick="clearAll()">🗑 Clear</button>
+  <button class="btn" onclick="formatJSON()">✨ Format JSON</button>
+  <span class="sample-link" onclick="loadSample('simple')">Sample: API Response</span>
+  <span class="sample-link" onclick="loadSample('complex')">Sample: Nested</span>
+</div>
+
+<div class="grid-2">
+  <div class="panel">
+    <div class="panel-header"><span>📥 Input JSON</span><span style="font-size:.75em;color:#484f58" id="charCount">0 chars</span></div>
+    <div class="panel-body">
+      <textarea id="jsonInput" placeholder='Paste your JSON here...&#10;&#10;{&#10;  "name": "John",&#10;  "age": 30,&#10;  "email": "john@example.com",&#10;  "isActive": true&#10;}' oninput="updateCharCount()"></textarea>
+      <div class="error" id="errorMsg"></div>
+    </div>
+  </div>
+  <div class="panel">
+    <div class="panel-header">
+      <span>📤 Generated Code</span>
+      <button class="btn copy" style="padding:4px 10px;font-size:.75em" onclick="copyOutput()">Copy</button>
+    </div>
+    <div class="panel-body">
+      <div class="lang-tabs" id="langTabs"></div>
+      <pre><code id="outputCode">// Your generated code will appear here...
+// Choose a language tab above, or click Convert</code></pre>
+    </div>
+  </div>
+</div>
+
+<div class="how-to">
+  <h3>📖 How to Use</h3>
+  <ol>
+    <li><strong>Paste your JSON</strong> — any valid JSON object or array works. Copy from an API response, config file, or anywhere.</li>
+    <li><strong>Click Convert</strong> — we auto-detect types and generate properly typed code.</li>
+    <li><strong>Switch languages</strong> — click any language tab to see the output in that language. All 6 languages are generated simultaneously.</li>
+    <li><strong>Copy & use</strong> — paste generated types directly into your codebase.</li>
+  </ol>
+  <p style="color:#8b949e;margin-top:10px;font-size:.85em">💡 <strong>Pro tip:</strong> For nested JSON, we generate separate type definitions for each nested object. Arrays of objects get proper array type annotations. Optional fields (null values) are properly marked.</p>
+</div>
+
+<div style="text-align:center;padding:20px;margin:16px 0;background:linear-gradient(135deg,#1f6feb11,#23863611);border:1px solid #30363d;border-radius:10px;">
+  <p style="color:#c9d1d9;margin-bottom:10px;">🔍 Need AI-powered code review for your generated types? Try our API — <strong>3 free reviews per day.</strong></p>
+  <a href="/api-docs.html" class="btn primary" style="font-weight:600;">View API Docs →</a>
+  <a href="/pricing.html" class="btn" style="margin-left:8px;">See Pricing →</a>
+</div>
+
+<div class="footer">
+  <p>my-automaton — AI Code Review & Text Analysis API | <a href="/">Home</a> | <a href="/api-docs.html">API</a> | <a href="/pricing.html">Pricing</a></p>
+  <p style="margin-top:4px;">JSON to Code Converter v1.0 — <a href="/dev-tools.html">More Free Developer Tools</a></p>
+</div>
+</div>
+
+<div class="success-msg" id="successMsg">Copied!</div>
+
+<script>
+const languages = ['typescript', 'python', 'go', 'java', 'rust', 'csharp'];
+const languageNames = { typescript:'TypeScript', python:'Python', go:'Go', java:'Java', rust:'Rust', csharp:'C#' };
+let currentLang = 'typescript';
+let currentOutputs = {};
+
+// Build language tabs
+function buildTabs() {
+  const tabs = document.getElementById('langTabs');
+  tabs.innerHTML = languages.map(l => 
+    `<span class="lang-tab${l===currentLang?' active':''}" onclick="switchLang('${l}')">${languageNames[l]}</span>`
+  ).join('');
+}
+
+function switchLang(lang) {
+  currentLang = lang;
+  document.querySelectorAll('.lang-tab').forEach(t => t.classList.remove('active'));
+  event.target.classList.add('active');
+  document.getElementById('outputCode').textContent = currentOutputs[lang] || '// No output yet. Click Convert.';
+}
+
+function updateCharCount() {
+  document.getElementById('charCount').textContent = document.getElementById('jsonInput').value.length + ' chars';
+}
+
+function showError(msg) {
+  const el = document.getElementById('errorMsg');
+  el.textContent = msg;
+  el.style.display = 'block';
+}
+
+function hideError() {
+  document.getElementById('errorMsg').style.display = 'none';
+}
+
+function inferType(value) {
+  if (value === null) return 'any';
+  if (Array.isArray(value)) {
+    if (value.length === 0) return 'any[]';
+    const innerType = inferType(value[0]);
+    return innerType.includes('[]') ? 'any[]' : innerType + '[]';
+  }
+  const t = typeof value;
+  if (t === 'string') return 'string';
+  if (t === 'number') return Number.isInteger(value) ? 'number' : 'number';
+  if (t === 'boolean') return 'boolean';
+  if (t === 'object') return 'object';
+  return 'any';
+}
+
+function capitalize(s) { return s.charAt(0).toUpperCase() + s.slice(1); }
+
+// Get nested type definitions
+function getNestedTypes(obj, prefix) {
+  const types = {};
+  function walk(o, name) {
+    if (Array.isArray(o) && o.length > 0) { walk(o[0], name); return; }
+    if (typeof o !== 'object' || o === null) return;
+    const props = {};
+    for (const [k, v] of Object.entries(o)) {
+      if (typeof v === 'object' && v !== null && !Array.isArray(v)) {
+        const nestedName = name + capitalize(k);
+        props[k] = nestedName;
+        walk(v, nestedName);
+      } else if (Array.isArray(v) && v.length > 0 && typeof v[0] === 'object') {
+        const nestedName = name + capitalize(k);
+        props[k] = nestedName + '[]';
+        walk(v[0], nestedName);
+      } else {
+        props[k] = inferType(v);
+      }
+    }
+    types[name] = props;
+  }
+  walk(obj, prefix);
+  return types;
+}
+
+// TypeScript
+function toTypeScript(typeName, types, rootName) {
+  let out = '';
+  for (const [name, props] of Object.entries(types)) {
+    const propLines = Object.entries(props).map(([k, t]) => `  ${k}${t.includes('?')?'':''}: ${t};`).join('\n');
+    out += `export interface ${name} {\n${propLines}\n}\n\n`;
+  }
+  return out.trim();
+}
+
+// Python
+function toPython(typeName, types) {
+  let out = 'from dataclasses import dataclass\nfrom typing import Optional, Any\n\n';
+  for (const [name, props] of Object.entries(types)) {
+    out += `@dataclass\nclass ${name}:\n`;
+    for (const [k, t] of Object.entries(props)) {
+      let pyType = t;
+      if (t === 'string') pyType = 'str';
+      else if (t === 'number') pyType = 'float';
+      else if (t === 'boolean') pyType = 'bool';
+      else if (t === 'any') pyType = 'Any';
+      else if (t.endsWith('[]')) pyType = `list[${pyType.replace('[]','')}]`;
+      out += `    ${k}: ${pyType}\n`;
+    }
+    out += '\n';
+  }
+  return out.trim();
+}
+
+// Go
+function toGo(typeName, types) {
+  let out = 'package models\n\n';
+  for (const [name, props] of Object.entries(types)) {
+    out += `type ${name} struct {\n`;
+    for (const [k, t] of Object.entries(props)) {
+      let goType = t;
+      if (t === 'string') goType = 'string';
+      else if (t === 'number') goType = 'float64';
+      else if (t === 'boolean') goType = 'bool';
+      else if (t === 'any') goType = 'interface{}';
+      else if (t.endsWith('[]')) goType = `[]${goType.replace('[]','')}`;
+      const jsonTag = k;
+      out += `\t${capitalize(k)} ${goType} \`json:"${jsonTag}"\`\n`;
+    }
+    out += '}\n\n';
+  }
+  return out.trim();
+}
+
+// Java
+function toJava(typeName, types) {
+  let out = 'import java.util.List;\n\n';
+  for (const [name, props] of Object.entries(types)) {
+    out += `public class ${name} {\n`;
+    for (const [k, t] of Object.entries(props)) {
+      let javaType = t;
+      if (t === 'string') javaType = 'String';
+      else if (t === 'number') javaType = 'double';
+      else if (t === 'boolean') javaType = 'boolean';
+      else if (t === 'any') javaType = 'Object';
+      else if (t.endsWith('[]')) javaType = `List<${t.replace('[]','')}>`;
+      out += `    private ${javaType} ${k};\n`;
+    }
+    out += '\n';
+    // Getters & setters
+    for (const [k, t] of Object.entries(props)) {
+      let javaType = t;
+      if (t === 'string') javaType = 'String';
+      else if (t === 'number') javaType = 'double';
+      else if (t === 'boolean') javaType = 'boolean';
+      else if (t === 'any') javaType = 'Object';
+      else if (t.endsWith('[]')) javaType = `List<${t.replace('[]','')}>`;
+      out += `    public ${javaType} get${capitalize(k)}() { return ${k}; }\n`;
+      out += `    public void set${capitalize(k)}(${javaType} ${k}) { this.${k} = ${k}; }\n\n`;
+    }
+    out += '}\n\n';
+  }
+  return out.trim();
+}
+
+// Rust
+function toRust(typeName, types) {
+  let out = 'use serde::{Deserialize, Serialize};\n\n';
+  for (const [name, props] of Object.entries(types)) {
+    out += `#[derive(Debug, Serialize, Deserialize)]\npub struct ${name} {\n`;
+    for (const [k, t] of Object.entries(props)) {
+      let rustType = t;
+      if (t === 'string') rustType = 'String';
+      else if (t === 'number') rustType = 'f64';
+      else if (t === 'boolean') rustType = 'bool';
+      else if (t === 'any') rustType = 'serde_json::Value';
+      else if (t.endsWith('[]')) rustType = `Vec<${t.replace('[]','')}>`;
+      const serdeAttr = (k.includes('_') || k !== k.toLowerCase()) ? `#[serde(rename = "${k}")]\n    ` : '';
+      out += `    ${serdeAttr}pub ${k}: ${rustType},\n`;
+    }
+    out += '}\n\n';
+  }
+  return out.trim();
+}
+
+// C#
+function toCSharp(typeName, types) {
+  let out = 'using System;\nusing System.Collections.Generic;\nusing System.Text.Json.Serialization;\n\n';
+  for (const [name, props] of Object.entries(types)) {
+    out += `public class ${name}\n{\n`;
+    for (const [k, t] of Object.entries(props)) {
+      let csType = t;
+      if (t === 'string') csType = 'string';
+      else if (t === 'number') csType = 'double';
+      else if (t === 'boolean') csType = 'bool';
+      else if (t === 'any') csType = 'object';
+      else if (t.endsWith('[]')) csType = `List<${t.replace('[]','')}>`;
+      const attr = k !== k.toLowerCase() ? `[JsonPropertyName("${k}")]\n    ` : '';
+      out += `    ${attr}public ${csType} ${capitalize(k)} { get; set; }\n`;
+    }
+    out += '}\n\n';
+  }
+  return out.trim();
+}
+
+function convert() {
+  hideError();
+  const input = document.getElementById('jsonInput').value.trim();
+  if (!input) { showError('Please paste some JSON first.'); return; }
+  
+  let parsed;
+  try { parsed = JSON.parse(input); } catch(e) { showError('Invalid JSON: ' + e.message); return; }
+  
+  const isArray = Array.isArray(parsed);
+  const rootObj = isArray ? (parsed.length > 0 ? parsed[0] : {}) : parsed;
+  const typeName = 'Root';
+  
+  if (typeof rootObj !== 'object' || rootObj === null) {
+    showError('JSON must be an object or array of objects.');
+    return;
+  }
+  
+  const types = getNestedTypes(rootObj, typeName);
+  
+  currentOutputs = {
+    typescript: toTypeScript(typeName, types),
+    python: toPython(typeName, types),
+    go: toGo(typeName, types),
+    java: toJava(typeName, types),
+    rust: toRust(typeName, types),
+    csharp: toCSharp(typeName, types)
+  };
+  
+  document.getElementById('outputCode').textContent = currentOutputs[currentLang];
+}
+
+function copyOutput() {
+  const text = document.getElementById('outputCode').textContent;
+  if (!text || text.includes('Your generated code will appear')) return;
+  navigator.clipboard.writeText(text).then(() => {
+    const msg = document.getElementById('successMsg');
+    msg.classList.add('show');
+    setTimeout(() => msg.classList.remove('show'), 1500);
+  });
+}
+
+function clearAll() {
+  document.getElementById('jsonInput').value = '';
+  document.getElementById('outputCode').textContent = '// Your generated code will appear here...';
+  document.getElementById('charCount').textContent = '0 chars';
+  currentOutputs = {};
+  hideError();
+}
+
+function formatJSON() {
+  const input = document.getElementById('jsonInput').value.trim();
+  if (!input) return;
+  try {
+    const parsed = JSON.parse(input);
+    document.getElementById('jsonInput').value = JSON.stringify(parsed, null, 2);
+    updateCharCount();
+    hideError();
+  } catch(e) {
+    showError('Invalid JSON: ' + e.message);
+  }
+}
+
+function loadSample(type) {
+  const samples = {
+    simple: '{"id": 1, "name": "John Doe", "email": "john@example.com", "age": 30, "isActive": true, "tags": ["developer","typescript"], "address": {"street": "123 Main St", "city": "San Francisco", "zip": "94105"}}',
+    complex: '{"user":{"id":42,"profile":{"name":"Jane","avatar":"https://img.example.com/42.jpg","settings":{"theme":"dark","notifications":true}},"posts":[{"id":1,"title":"Hello World","published":true,"tags":["intro"],"metadata":{"views":1200,"likes":89}},{"id":2,"title":"Advanced Types","published":false,"tags":["typescript","guide"],"metadata":{"views":450,"likes":32}}]},"appConfig":{"version":"2.1.0","features":{"search":true,"export":false}}}'
+  };
+  document.getElementById('jsonInput').value = samples[type];
+  updateCharCount();
+  formatJSON();
+  convert();
+}
+
+// Initialize
+buildTabs();
+updateCharCount();
+loadSample('simple');
+</script>
+<script src="/conversion-banner.js" defer></script>
+</body>
+</html>

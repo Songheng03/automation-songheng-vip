@@ -1,0 +1,23 @@
+{
+  "timestamp": "2026-06-15T11:40:48.762Z",
+  "gateway": {
+    "healthy": 7,
+    "total": 7,
+    "degraded": 0
+  },
+  "payments": {
+    "keys": 0,
+    "credits": 0,
+    "used": 0
+  },
+  "content": {
+    "pages": 122,
+    "blog": 119
+  },
+  "seo": {
+    "pings": [
+      "Google:404",
+      "Bing:410"
+    ]
+  }
+}

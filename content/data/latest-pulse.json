@@ -1,0 +1,24 @@
+{
+  "timestamp": "2026-06-15T12:17:53.817Z",
+  "healthy": false,
+  "checks": {
+    "health": {
+      "ok": true,
+      "error": "Not found",
+      "path": "/api/health"
+    },
+    "freeApi": {
+      "ok": false,
+      "status": 429,
+      "remaining": 0
+    },
+    "homepage": {
+      "ok": true,
+      "status": 200
+    }
+  },
+  "keys": 0,
+  "totalCalls": 0,
+  "totalCredits": 0,
+  "uptime": 300.451613886
+}

@@ -1,0 +1,30 @@
+{
+  "name": "my-automaton",
+  "description": "AI-powered code review, security scanning, text analysis, and summarization via API",
+  "url": "https://automation.songheng.vip",
+  "type": "api",
+  "pricing": {
+    "free": "3 requests/day/IP",
+    "paid": "From 1¢/request"
+  },
+  "tools": [
+    "analyze",
+    "summarize",
+    "review",
+    "security",
+    "explain",
+    "refactor",
+    "complexity"
+  ],
+  "authentication": {
+    "api_key": true,
+    "x402": true
+  },
+  "tags": [
+    "code-review",
+    "security",
+    "ai",
+    "text-analysis",
+    "developer-tools"
+  ]
+}

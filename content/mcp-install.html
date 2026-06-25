@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MCP Server — my-automaton | AI Agent Tools</title>
+<meta name="description" content="Install my-automaton MCP server for Claude, Cursor, Windsurf, and other AI agents. Get AI-powered code review, security scanning, and text analysis tools.">
+<style>
+:root {
+  --primary: #6366f1;
+  --primary-dark: #4f46e5;
+  --bg: #0f1117;
+  --card: #1a1b26;
+  --border: #2e2f3e;
+  --text: #e2e8f0;
+  --text-dim: #94a3b8;
+  --accent: #22d3ee;
+  --success: #34d399;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
+.container { max-width: 900px; margin: 0 auto; padding: 2rem 1.5rem; }
+header { text-align: center; padding: 3rem 0 2rem; }
+h1 { font-size: 2.5rem; font-weight: 800; background: linear-gradient(135deg, var(--primary), var(--accent)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+h2 { font-size: 1.5rem; font-weight: 700; margin: 2rem 0 1rem; color: var(--accent); }
+p { margin-bottom: 1rem; color: var(--text-dim); }
+.badge { display: inline-block; background: var(--primary); color: white; padding: 0.25rem 0.75rem; border-radius: 999px; font-size: 0.875rem; font-weight: 600; margin: 0.5rem 0; }
+.card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem; margin-bottom: 1.5rem; }
+pre { background: #0d0f17; border: 1px solid var(--border); border-radius: 8px; padding: 1rem; overflow-x: auto; font-family: 'JetBrains Mono', 'Fira Code', monospace; font-size: 0.875rem; color: var(--text); margin: 1rem 0; }
+code { font-family: 'JetBrains Mono', 'Fira Code', monospace; font-size: 0.875em; background: #1e1e2e; padding: 0.125rem 0.375rem; border-radius: 4px; }
+pre code { background: none; padding: 0; }
+.tool-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1rem; margin: 1rem 0; }
+.tool { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 1rem; }
+.tool h3 { font-size: 1rem; font-weight: 600; color: var(--accent); margin-bottom: 0.25rem; }
+.tool p { font-size: 0.875rem; color: var(--text-dim); }
+.tool .cost { display: inline-block; font-size: 0.75rem; padding: 0.125rem 0.5rem; border-radius: 4px; background: rgba(99,102,241,0.2); color: var(--primary); border: 1px solid rgba(99,102,241,0.3); margin-top: 0.5rem; }
+.cta { display: inline-flex; align-items: center; gap: 0.5rem; background: var(--primary); color: white; padding: 0.75rem 2rem; border-radius: 8px; text-decoration: none; font-weight: 600; transition: background 0.2s; }
+.cta:hover { background: var(--primary-dark); }
+.steps { counter-reset: step; }
+.step { counter-increment: step; position: relative; padding-left: 3rem; margin-bottom: 1.5rem; }
+.step::before { content: counter(step); position: absolute; left: 0; top: 0; width: 2rem; height: 2rem; background: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.875rem; }
+.footer { text-align: center; padding: 3rem 0; border-top: 1px solid var(--border); margin-top: 2rem; }
+@media (max-width: 640px) { h1 { font-size: 1.75rem; } .container { padding: 1rem; } }
+</style>
+</head>
+<body>
+<div class="container">
+<header>
+  <div class="badge">🚀 MCP Server v2.0</div>
+  <h1>my-automaton MCP Server</h1>
+  <p style="max-width: 600px; margin: 0.5rem auto;">AI-powered code review, security scanning, summarization, and analysis tools — available as an MCP server for Claude, Cursor, Windsurf, and any MCP-compatible agent.</p>
+</header>
+
+<div class="card">
+  <h2>🔧 Available Tools</h2>
+  <div class="tool-grid">
+    <div class="tool">
+      <h3>📝 analyze</h3>
+      <p>Deep text analysis — sentiment, topics, entities, writing style</p>
+      <span class="cost">1 credit</span>
+    </div>
+    <div class="tool">
+      <h3>📋 summarize</h3>
+      <p>AI summarization — short, normal, or detailed</p>
+      <span class="cost">2 credits</span>
+    </div>
+    <div class="tool">
+      <h3>🔍 code_review</h3>
+      <p>Full code review — bugs, security, performance, style</p>
+      <span class="cost">5 credits</span>
+    </div>
+    <div class="tool">
+      <h3>🛡️ security_scan</h3>
+      <p>Security vulnerability scan — XSS, SQLi, CSRF</p>
+      <span class="cost">3 credits</span>
+    </div>
+    <div class="tool">
+      <h3>💡 explain_code</h3>
+      <p>Line-by-line code explanation</p>
+      <span class="cost">2 credits</span>
+    </div>
+    <div class="tool">
+      <h3>♻️ refactor_code</h3>
+      <p>Refactoring suggestions with improved code</p>
+      <span class="cost">5 credits</span>
+    </div>
+    <div class="tool">
+      <h3>📊 complexity_analysis</h3>
+      <p>Big O analysis with optimization tips</p>
+      <span class="cost">2 credits</span>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <h2>📦 Installation</h2>
+  <div class="steps">
+    <div class="step">
+      <h3>Claude Desktop</h3>
+      <p>Add to your <code>claude_desktop_config.json</code>:</p>
+      <pre>{
+  "mcpServers": {
+    "my-automaton": {
+      "url": "https://automation.songheng.vip/mcp/jsonrpc"
+    }
+  }
+}</pre>
+    </div>
+    <div class="step">
+      <h3>Cursor IDE</h3>
+      <p>Add MCP server in Cursor settings → MCP Servers:</p>
+      <pre>Name: my-automaton
+Type: URL
+URL: https://automation.songheng.vip/mcp/jsonrpc</pre>
+    </div>
+    <div class="step">
+      <h3>Windsurf</h3>
+      <p>Add to your MCP configuration:</p>
+      <pre>{
+  "mcpServers": {
+    "my-automaton": {
+      "url": "https://automation.songheng.vip/mcp/jsonrpc"
+    }
+  }
+}</pre>
+    </div>
+    <div class="step">
+      <h3>Using npx (standalone)</h3>
+      <pre>npx @my-automaton/mcp-server</pre>
+      <p style="font-size:0.875rem;">Runs locally on port 3111 with the same tools.</p>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <h2>🎮 Usage Examples</h2>
+  <p><strong>Analyze text:</strong></p>
+  <pre>{
+  "name": "analyze",
+  "arguments": {
+    "text": "Your text to analyze here..."
+  }
+}</pre>
+  <p><strong>Review code:</strong></p>
+  <pre>{
+  "name": "code_review",
+  "arguments": {
+    "code": "function hello() { return 'world'; }",
+    "language": "javascript"
+  }
+}</pre>
+  <p><strong>Security scan:</strong></p>
+  <pre>{
+  "name": "security_scan",
+  "arguments": {
+    "code": "eval(document.cookie)"
+  }
+}</pre>
+</div>
+
+<div class="card" style="text-align:center;">
+  <h2>💳 Get an API Key</h2>
+  <p>Each request costs 1-5 credits. Free tier: 3 requests/day per IP.</p>
+  <a href="/#pricing" class="cta">Buy Credits — Starting at $5</a>
+  <p style="margin-top:0.75rem; font-size:0.875rem;">Or try free: <code>POST /free/analyze</code> with your text</p>
+</div>
+
+<div class="card">
+  <h2>📡 MCP Endpoints</h2>
+  <table style="width:100%; border-collapse:collapse;">
+    <tr style="border-bottom:1px solid var(--border);"><td style="padding:0.5rem 0; font-weight:600;">JSON-RPC</td><td style="padding:0.5rem 0; font-family:monospace;font-size:0.875rem;">POST /mcp/jsonrpc</td></tr>
+    <tr style="border-bottom:1px solid var(--border);"><td style="padding:0.5rem 0; font-weight:600;">SSE</td><td style="padding:0.5rem 0; font-family:monospace;font-size:0.875rem;">GET /mcp/sse</td></tr>
+    <tr style="border-bottom:1px solid var(--border);"><td style="padding:0.5rem 0; font-weight:600;">Manifest</td><td style="padding:0.5rem 0; font-family:monospace;font-size:0.875rem;">GET /mcp/manifest</td></tr>
+    <tr><td style="padding:0.5rem 0; font-weight:600;">Install Page</td><td style="padding:0.5rem 0; font-family:monospace;font-size:0.875rem;">GET /mcp-install.html</td></tr>
+  </table>
+</div>
+
+<div class="footer">
+  <p style="color:var(--text-dim);">Built by <strong>my-automaton</strong> · Automated AI Services</p>
+  <p style="font-size:0.875rem; color:var(--text-dim);">Wallet: 0x76eADdEBFfb6a61DD071f97F4508467fc55dd113 · Base Chain</p>
+</div>
+</div>
+<script src="/conversion-banner.js" defer></script>
+</body>
+</html>

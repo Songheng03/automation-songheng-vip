@@ -1,0 +1,124 @@
+{
+  "task": "Research GitHub Marketplace submission process for AI agents",
+  "date": "2025-01-14",
+  "findings": {
+    "overview": "GitHub Marketplace allows developers to list tools that integrate with GitHub, including GitHub Apps, GitHub Actions, and OAuth Apps. An AI agent can be listed as a GitHub App or a GitHub Action.",
+    "listing_categories": [
+      {
+        "type": "GitHub App",
+        "description": "A first-class integration that acts on behalf of the app itself or a user. Suitable for AI agents that need to interact with GitHub APIs (e.g., reviewing PRs, managing issues, running AI analysis on code).",
+        "key_requirements": [
+          "Must be registered as a GitHub App in GitHub Developer Settings",
+          "Must have a public or private listing on GitHub Marketplace",
+          "Must define permissions (repository/org/user-level scopes)",
+          "Must subscribe to webhook events as needed",
+          "Must provide a callback URL (for OAuth flow if user-to-server)",
+          "Must implement secure webhook secret verification"
+        ]
+      },
+      {
+        "type": "GitHub Action",
+        "description": "A reusable automation unit that runs on GitHub's CI/CD platform (GitHub Actions). Suitable for AI agents that perform batch analysis, code generation, or CI/CD integration.",
+        "key_requirements": [
+          "Must be a public repository with an action.yml or action.yaml file",
+          "Must have a README with clear usage documentation",
+          "Must be published to GitHub Marketplace via the Actions tab",
+          "Must define inputs, outputs, and runtime (Docker, Node.js, Python, etc.)",
+          "Must use semantic versioning for releases"
+        ]
+      }
+    ],
+    "listing_requirements": {
+      "general_criteria": [
+        "The app/action must be fully functional and publicly accessible",
+        "Must have a clear README with setup instructions, usage examples, and configuration",
+        "Must include documentation for all features, inputs, outputs, and permissions",
+        "Must provide support channels (e.g., GitHub Issues, Discord, or email)",
+        "Must comply with GitHub Marketplace Terms of Service",
+        "Must complete the Marketplace verification process (for paid listings)",
+        "Must not violate GitHub's Acceptable Use Policies",
+        "Must have a clear pricing model (Free, Free with paid tiers, or Paid)"
+      ],
+      "security_requirements": [
+        "Must use HTTPS for all communications",
+        "Must securely store any tokens, keys, or secrets",
+        "Must follow OAuth best practices if using user authentication",
+        "Must validate webhook payloads using a secret token",
+        "Must handle rate limiting gracefully",
+        "Must not expose sensitive data in logs or error messages"
+      ]
+    },
+    "submission_process": {
+      "steps": [
+        {
+          "step": 1,
+          "action": "Create a GitHub App or GitHub Action in a public repository",
+          "details": "Go to GitHub Developer Settings > GitHub Apps > New GitHub App. Configure name, homepage URL, callback URL, webhook URL, permissions, and events."
+        },
+        {
+          "step": 2,
+          "action": "Develop and test the integration",
+          "details": "Ensure the app/action works correctly with GitHub APIs. Use a staging environment or test repository."
+        },
+        {
+          "step": 3,
+          "action": "Prepare documentation",
+          "details": "Write a comprehensive README with setup instructions, configuration options, examples, and troubleshooting."
+        },
+        {
+          "step": 4,
+          "action": "Publish to GitHub Marketplace",
+          "details": "For GitHub Apps: Go to your app settings and click 'Publish to Marketplace'. Fill in listing details (description, screenshots, pricing). For Actions: Go to the repository's Actions tab and click 'Publish to Marketplace'."
+        },
+        {
+          "step": 5,
+          "action": "Complete verification (if applicable)",
+          "details": "For paid listings, GitHub reviews the app for quality, security, and documentation standards. This may take several business days."
+        },
+        {
+          "step": 6,
+          "action": "Maintain and update",
+          "details": "Regularly update the app/action, respond to issues, and keep documentation current."
+        }
+      ]
+    },
+    "ai_agent_specific_considerations": [
+      "AI agents should clearly disclose their AI-powered nature in the listing description",
+      "Must document what data the AI agent collects, processes, and stores",
+      "Should provide opt-in/opt-out mechanisms for AI analysis features",
+      "Must comply with data privacy regulations (GDPR, CCPA, etc.)",
+      "Consider whether the AI agent runs entirely on GitHub (Actions) or requires external infrastructure (App with webhook/callback)",
+      "For Actions-based AI agents: be mindful of runtime limits (6 hours max for workflows, limited storage)",
+      "For App-based AI agents: ensure proper authentication and authorization flows",
+      "Should provide clear output/result formats that users can integrate into their workflows"
+    ],
+    "pricing_options": [
+      {
+        "plan": "Free",
+        "description": "Listed publicly at no cost, no payment handling required"
+      },
+      {
+        "plan": "Free with Paid Tiers",
+        "description": "Free tier available with optional paid upgrades for more features or usage"
+      },
+      {
+        "plan": "Paid",
+        "description": "Requires GitHub's Marketplace verification and payment processing setup"
+      }
+    ],
+    "official_documentation_links": [
+      "https://docs.github.com/en/apps/github-marketplace/listing-an-app-on-github-marketplace",
+      "https://docs.github.com/en/actions/creating-actions/publishing-actions-in-github-marketplace",
+      "https://docs.github.com/en/apps/github-marketplace/using-the-github-marketplace-api-in-your-app",
+      "https://docs.github.com/en/apps/github-marketplace/selling-your-app-on-github-marketplace",
+      "https://docs.github.com/en/apps/creating-github-apps/registering-a-github-app"
+    ],
+    "key_takeaways": [
+      "An AI agent can be listed as either a GitHub App (interactive, API-driven) or a GitHub Action (automated, CI/CD-integrated)",
+      "Both require a public repository, clear documentation, and adherence to GitHub's security standards",
+      "Paid listings require a formal verification process by GitHub",
+      "AI agents must be transparent about AI usage, data handling, and privacy",
+      "The GitHub Marketplace provides a powerful distribution channel for reaching developers directly in their workflow"
+    ]
+  }
+}

@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Free AI Code Review - Get Instant Feedback on Your Code | Automaton AI</title>
+<meta name="description" content="Get free AI-powered code review in seconds. Analyze security, performance, and code quality. No signup required. Try our paid service for unlimited reviews.">
+<meta name="keywords" content="free code review, ai code review, code analysis, code quality, security scan, performance review">
+<link rel="canonical" href="https://automation.songheng.vip/free-code-review">
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
+.gradient-bg { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+.code-editor { font-family: 'Courier New', monospace; background: #1e1e1e; color: #d4d4d4; }
+</style>
+</head>
+<body class="bg-gray-50">
+<div class="gradient-bg text-white py-16">
+<div class="max-w-4xl mx-auto px-4 text-center">
+<h1 class="text-5xl font-bold mb-4">Free AI Code Review</h1>
+<p class="text-xl mb-8">Get instant, professional feedback on your code in seconds</p>
+<div class="inline-block bg-white/20 backdrop-blur px-6 py-3 rounded-full">
+<span class="text-lg">✓ No signup required</span>
+</div>
+</div>
+</div>
+
+<div class="max-w-6xl mx-auto px-4 py-12">
+<div class="grid md:grid-cols-2 gap-8 mb-12">
+<div>
+<h2 class="text-2xl font-bold mb-4 text-gray-800">What You Get (Free)</h2>
+<ul class="space-y-3">
+<li class="flex items-start">
+<span class="text-green-500 text-xl mr-2">✓</span>
+<span class="text-gray-700"><strong>Security Analysis</strong> - Find vulnerabilities before they become exploits</span>
+</li>
+<li class="flex items-start">
+<span class="text-green-500 text-xl mr-2">✓</span>
+<span class="text-gray-700"><strong>Code Quality Score</strong> - Get a detailed quality assessment (0-100)</span>
+</li>
+<li class="flex items-start">
+<span class="text-green-500 text-xl mr-2">✓</span>
+<span class="text-gray-700"><strong>Performance Tips</strong> - Identify bottlenecks and inefficiencies</span>
+</li>
+<li class="flex items-start">
+<span class="text-green-500 text-xl mr-2">✓</span>
+<span class="text-gray-700"><strong>Best Practices</strong> - Learn industry standards and patterns</span>
+</li>
+<li class="flex items-start">
+<span class="text-green-500 text-xl mr-2">✓</span>
+<span class="text-gray-700"><strong>3 Free Reviews/Day</strong> - No credit card required</span>
+</li>
+</ul>
+</div>
+<div class="bg-white rounded-lg shadow-lg p-6">
+<h3 class="text-xl font-bold mb-4 text-gray-800">Why Upgrade to Paid?</h3>
+<div class="space-y-4">
+<div class="border-l-4 border-purple-500 pl-4">
+<p class="font-semibold text-gray-800">Unlimited Reviews</p>
+<p class="text-sm text-gray-600">Review entire codebases, not just snippets</p>
+</div>
+<div class="border-l-4 border-purple-500 pl-4">
+<p class="font-semibold text-gray-800">GitHub Integration</p>
+<p class="text-sm text-gray-600">Automatic PR reviews in your workflow</p>
+</div>
+<div class="border-l-4 border-purple-500 pl-4">
+<p class="font-semibold text-gray-800">Batch Processing</p>
+<p class="text-sm text-gray-600">Review 10+ files at once</p>
+</div>
+<div class="border-l-4 border-purple-500 pl-4">
+<p class="font-semibold text-gray-800">Priority Support</p>
+<p class="text-sm text-gray-600">Get help when you need it</p>
+</div>
+</div>
+<a href="/pricing" class="mt-6 block w-full bg-purple-600 text-white text-center py-3 rounded-lg font-semibold hover:bg-purple-700 transition">
+View Pricing Plans →
+</a>
+</div>
+</div>
+
+<div class="bg-white rounded-lg shadow-xl p-8 mb-12">
+<h2 class="text-3xl font-bold mb-6 text-center text-gray-800">Try It Now</h2>
+<p class="text-center text-gray-600 mb-6">Paste your code below and get instant AI-powered feedback</p>
+<div class="mb-4">
+<label class="block text-sm font-semibold text-gray-700 mb-2">Your Code</label>
+<textarea id="codeInput" class="code-editor w-full h-64 p-4 rounded-lg border-2 border-gray-300 focus:border-purple-500 focus:outline-none" placeholder="// Paste your code here...
+function example() {
+  // Your code goes here
+}"></textarea>
+</div>
+<div class="flex gap-4 mb-6">
+<select id="reviewType" class="flex-1 px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-purple-500 focus:outline-none">
+<option value="review">Full Code Review (5 credits)</option>
+<option value="security">Security Scan (3 credits)</option>
+<option value="analyze">Deep Analysis (1 credit)</option>
+<option value="complexity">Complexity Check (2 credits)</option>
+</select>
+<button id="reviewBtn" class="px-8 py-3 bg-purple-600 text-white font-semibold rounded-lg hover:bg-purple-700 transition">
+Get Free Review
+</button>
+</div>
+<div id="result" class="hidden">
+<h3 class="text-xl font-bold mb-4 text-gray-800">Review Results</h3>
+<div id="resultContent" class="bg-gray-50 p-6 rounded-lg border-2 border-gray-200"></div>
+</div>
+</div>
+
+<div class="grid md:grid-cols-3 gap-6 mb-12">
+<div class="bg-white p-6 rounded-lg shadow">
+<div class="text-4xl mb-4">🔒</div>
+<h3 class="text-xl font-bold mb-2 text-gray-800">Secure</h3>
+<p class="text-gray-600">Your code is never stored or shared. All analysis happens in real-time.</p>
+</div>
+<div class="bg-white p-6 rounded-lg shadow">
+<div class="text-4xl mb-4">⚡</div>
+<h3 class="text-xl font-bold mb-2 text-gray-800">Fast</h3>
+<p class="text-gray-600">Get results in 2-5 seconds, not hours or days like manual reviews.</p>
+</div>
+<div class="bg-white p-6 rounded-lg shadow">
+<div class="text-4xl mb-4">🎯</div>
+<h3 class="text-xl font-bold mb-2 text-gray-800">Accurate</h3>
+<p class="text-gray-600">Powered by advanced AI trained on millions of code repositories.</p>
+</div>
+</div>
+
+<div class="bg-gradient-to-r from-purple-600 to-indigo-600 text-white rounded-lg p-8 text-center">
+<h2 class="text-3xl font-bold mb-4">Ready to Level Up Your Code?</h2>
+<p class="text-xl mb-6">Join developers who trust Automaton AI for professional code reviews</p>
+<div class="flex gap-4 justify-center flex-wrap">
+<a href="/pricing" class="px-8 py-4 bg-white text-purple-600 font-bold rounded-lg hover:bg-gray-100 transition">
+Get Unlimited Reviews
+</a>
+<a href="/api-playground" class="px-8 py-4 bg-white/20 backdrop-blur text-white font-bold rounded-lg hover:bg-white/30 transition">
+Try API Playground
+</a>
+</div>
+</div>
+</div>
+
+<footer class="bg-gray-900 text-gray-400 py-8 mt-12">
+<div class="max-w-6xl mx-auto px-4 text-center">
+<p>&copy; 2026 Automaton AI. All rights reserved.</p>
+<p class="mt-2">
+<a href="/" class="hover:text-white mx-2">Home</a> |
+<a href="/pricing" class="hover:text-white mx-2">Pricing</a> |
+<a href="/blog" class="hover:text-white mx-2">Blog</a> |
+<a href="/api-docs" class="hover:text-white mx-2">API Docs</a>
+</p>
+</div>
+</footer>
+
+<script>
+document.getElementById('reviewBtn').addEventListener('click', async () => {
+const code = document.getElementById('codeInput').value.trim();
+const type = document.getElementById('reviewType').value;
+if (!code) {
+alert('Please paste some code to review');
+return;
+}
+const btn = document.getElementById('reviewBtn');
+btn.disabled = true;
+btn.textContent = 'Analyzing...';
+try {
+const response = await fetch(`/free/${type}`, {
+method: 'POST',
+headers: { 'Content-Type': 'application/json' },
+body: JSON.stringify({ text: code, mode: type })
+});
+const data = await response.json();
+if (response.ok) {
+document.getElementById('result').classList.remove('hidden');
+document.getElementById('resultContent').innerHTML = `<pre class="whitespace-pre-wrap text-sm">${JSON.stringify(data, null, 2)}</pre>`;
+} else {
+alert(data.error || 'Review failed. Please try again.');
+}
+} catch (error) {
+alert('Error: ' + error.message);
+} finally {
+btn.disabled = false;
+btn.textContent = 'Get Free Review';
+}
+});
+</script>
+</body>
+</html>

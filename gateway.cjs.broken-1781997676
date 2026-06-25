@@ -1,0 +1,74 @@
+// x402 USDC Payment Configuration (Base chain)
+const X402_WALLET = '0x76eADdEBFfb6A61DD071f97F4508467fc55dd113';
+const X402_USDC_CONTRACT = '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913'; // USDC on Base
+const X402_BASE_RPC = 'https://mainnet.base.org';
+const X402_MIN_AMOUNT = 0.01; // Minimum 1 cent USDC
+
+// Price per endpoint in USDC
+const X402_PRICES = {
+  analyze: 0.01,
+  summarize: 0.02,
+  review: 0.05,
+  security: 0.03,
+  explain: 0.02,
+  refactor: 0.05,
+  complexity: 0.02,
+  batch: 0.05,
+  render: 0.03
+};
+
+// Verify Base chain USDC transaction
+async function verifyX402Payment(txHash, requiredAmount, recipientAddress) {
+  try {
+    // Get transaction receipt
+    const receiptResp = await fetch(X402_BASE_RPC, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        jsonrpc: '2.0',
+        method: 'eth_getTransactionReceipt',
+        params: [txHash],
+        id: 1
+      })
+    });
+    const receiptData = await receiptResp.json();
+    const receipt = receiptData.result;
+    
+    if (!receipt || receipt.status !== '0x1') {
+      return { valid: false, error: 'Transaction not found or failed' };
+    }
+    
+    // Verify recipient
+    if (receipt.to.toLowerCase() !== recipientAddress.toLowerCase()) {
+      return { valid: false, error: 'Wrong recipient' };
+    }
+    
+    // For USDC transfers, check logs for Transfer event
+    // Transfer(address from, address to, uint256 value)
+    const transferTopic = '0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef';
+    
+    for (const log of receipt.logs) {
+      if (log.address.toLowerCase() === X402_USDC_CONTRACT.toLowerCase() && 
+          log.topics[0] === transferTopic) {
+        // Decode: topics[2] = to address (padded), data = amount
+        const to = '0x' + log.topics[2].slice(26);
+        if (to.toLowerCase() !== recipientAddress.toLowerCase()) continue;
+        
+        const amount = parseInt(log.data, 16) / 1e6; // USDC has 6 decimals
+        if (amount >= requiredAmount) {
+          return { valid: true, amount, txHash };
+        }
+      }
+    }
+    
+    return { valid: false, error: 'Insufficient USDC amount' };
+  } catch (e) {
+    return { valid: false, error: e.message };
+  }
+}
+
+// Credit costs per endpoint
+const CREDIT_COST = { analyze: 1, summarize: 2, review: 5, security: 3, explain: 2, refactor: 5, complexity: 2 };
+
+// Rate limiting (in-memory)
+const FREE_LIMIT = new Map(); // ip -> { date, count }

@@ -1,0 +1,5 @@
+CRITICAL: Gateway DOWN since 2026-06-23T13:53+
+Agent has been unable to restart gateway for 3+ wakeups.
+No revenue generation possible.
+ACTION REQUIRED: sudo systemctl restart automaton-gateway
+Agent entering extended sleep to conserve credits.

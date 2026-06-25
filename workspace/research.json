@@ -1,0 +1,276 @@
+{
+  "directories": [
+    {
+      "name": "MCP.so",
+      "url": "https://mcp.so",
+      "method": "WEB",
+      "endpoint": "https://mcp.so/submit",
+      "payloadTemplate": {
+        "name": "",
+        "description": "",
+        "githubUrl": "",
+        "websiteUrl": "",
+        "category": ""
+      },
+      "notes": "Next.js web form submission. No public REST API for posting. Requires manual form fill via browser. Supports multiple locales (EN, ZH, JA)."
+    },
+    {
+      "name": "Smithery",
+      "url": "https://smithery.ai",
+      "method": "WEB",
+      "endpoint": "https://smithery.ai/docs/deploy",
+      "payloadTemplate": {},
+      "notes": "Uses CLI tool 'npx @smithery/cli@latest deploy' for submission. Also accepts GitHub PR to registry repo. Has REST API for searching/listing servers but not for direct submission. Web form available via 'Publish' dropdown."
+    },
+    {
+      "name": "Glama.ai",
+      "url": "https://glama.ai",
+      "method": "WEB",
+      "endpoint": "https://glama.ai/mcp/servers/publish",
+      "payloadTemplate": {
+        "name": "",
+        "description": "",
+        "github": "",
+        "categories": []
+      },
+      "notes": "MCP server directory. Submission via web form after signing up. Servers are indexed from GitHub. No public POST API endpoint found for programmatic submission."
+    },
+    {
+      "name": "PulseMCP",
+      "url": "https://pulsemcp.com",
+      "method": "WEB",
+      "endpoint": "https://pulsemcp.com/submit",
+      "payloadTemplate": {
+        "name": "",
+        "description": "",
+        "url": "",
+        "category": ""
+      },
+      "notes": "Cloudflare-protected site. Web form submission for MCP servers. Requires browser interaction due to Cloudflare challenge."
+    },
+    {
+      "name": "OpenTools",
+      "url": "https://opentools.ai",
+      "method": "POST",
+      "endpoint": "https://opentools.ai/api/tools",
+      "payloadTemplate": {
+        "name": "",
+        "description": "",
+        "website": ""
+      },
+      "notes": "Accepts POST requests to /api/tools with JSON body. Returns HTTP 201 on success. Content-Type: application/json required. Also has web form at /tools/submit. Headers: Origin may be checked."
+    },
+    {
+      "name": "DevHunt",
+      "url": "https://devhunt.org",
+      "method": "WEB",
+      "endpoint": "https://devhunt.org/submit",
+      "payloadTemplate": {
+        "name": "",
+        "tagline": "",
+        "description": "",
+        "website": "",
+        "logo": "",
+        "video": ""
+      },
+      "notes": "Web form submission for developer tools. Requires user login/authentication. No public POST API endpoint found. Built with Next.js."
+    },
+    {
+      "name": "BetaList",
+      "url": "https://betalist.com",
+      "method": "WEB",
+      "endpoint": "https://betalist.com/submit",
+      "payloadTemplate": {
+        "name": "",
+        "tagline": "",
+        "description": "",
+        "url": "",
+        "email": ""
+      },
+      "notes": "Web form submission for early-stage startups. Requires sign-in. Redirects to /sign_in if not authenticated. No public POST API."
+    },
+    {
+      "name": "ProductHunt",
+      "url": "https://www.producthunt.com",
+      "method": "WEB",
+      "endpoint": "https://www.producthunt.com/upcoming",
+      "payloadTemplate": {
+        "name": "",
+        "tagline": "",
+        "description": "",
+        "url": "",
+        "logo": "",
+        "topics": [],
+        "makers": []
+      },
+      "notes": "Web form submission via 'Upcoming' section. Requires maker account. Products must be submitted manually through the web interface. Cloudflare-protected. No public API for submission."
+    },
+    {
+      "name": "AlternativeTo",
+      "url": "https://alternativeto.net",
+      "method": "WEB",
+      "endpoint": "https://alternativeto.net/submit-tool/",
+      "payloadTemplate": {
+        "name": "",
+        "description": "",
+        "url": "",
+        "logo": "",
+        "categories": []
+      },
+      "notes": "Web form for submitting software alternatives. Cloudflare-protected. Requires manual submission through browser form."
+    },
+    {
+      "name": "SaaSHub",
+      "url": "https://www.saashub.com",
+      "method": "WEB",
+      "endpoint": "https://www.saashub.com/submit",
+      "payloadTemplate": {
+        "name": "",
+        "description": "",
+        "url": "",
+        "logo": ""
+      },
+      "notes": "Web form submission for SaaS products. Cloudflare-protected. Manual submission via browser form."
+    },
+    {
+      "name": "MCP.Directory",
+      "url": "https://mcp.directory",
+      "method": "WEB",
+      "endpoint": "https://mcp.directory/submit",
+      "payloadTemplate": {
+        "name": "",
+        "description": "",
+        "githubUrl": "",
+        "websiteUrl": "",
+        "categories": []
+      },
+      "notes": "Large MCP server directory (3000+ servers). Has 'Submit Server' button linking to web form. Also supports GitHub-based indexing. Built with Next.js."
+    },
+    {
+      "name": "MCPDirectory.com",
+      "url": "https://www.mcpdirectory.com",
+      "method": "WEB",
+      "endpoint": "https://www.mcpdirectory.com/submit",
+      "payloadTemplate": {
+        "name": "",
+        "description": "",
+        "url": ""
+      },
+      "notes": "MCP server directory site. Landing page with submit option. Web form based submission."
+    },
+    {
+      "name": "MCPRegistry.com",
+      "url": "https://mcpregistry.com",
+      "method": "WEB",
+      "endpoint": "https://mcpregistry.com",
+      "payloadTemplate": {
+        "name": "",
+        "description": "",
+        "url": ""
+      },
+      "notes": "MCP server registry with landing page. Web form based submission for adding servers to registry."
+    },
+    {
+      "name": "MCPTools.dev",
+      "url": "https://mcptools.dev",
+      "method": "WEB",
+      "endpoint": "https://mcptools.dev",
+      "payloadTemplate": {},
+      "notes": "MCP tools directory. No public submit form found at /submit (returns 404). May rely on GitHub scraping or manual curation."
+    },
+    {
+      "name": "Futurepedia",
+      "url": "https://www.futurepedia.io",
+      "method": "WEB",
+      "endpoint": "https://www.futurepedia.io/submit",
+      "payloadTemplate": {
+        "name": "",
+        "description": "",
+        "url": "",
+        "category": "",
+        "pricing": ""
+      },
+      "notes": "AI tools directory. Web form submission for adding AI tools. Manual form fill required."
+    },
+    {
+      "name": "AI Tools Directory (aitoolsdirectory.com)",
+      "url": "https://aitoolsdirectory.com",
+      "method": "WEB",
+      "endpoint": "https://aitoolsdirectory.com",
+      "payloadTemplate": {},
+      "notes": "Built on spread.name platform. Web-based listing. Submit via platform interface."
+    },
+    {
+      "name": "ai-tools.directory",
+      "url": "https://ai-tools.directory",
+      "method": "WEB",
+      "endpoint": "https://ai-tools.directory/submit-agent/",
+      "payloadTemplate": {
+        "name": "",
+        "description": "",
+        "url": "",
+        "category": ""
+      },
+      "notes": "Automated AI tools directory. Has /submit-agent/ form. Primarily automated data collection but accepts feedback/submissions via web form."
+    },
+    {
+      "name": "Aixploria",
+      "url": "https://www.aixploria.com",
+      "method": "WEB",
+      "endpoint": "https://www.aixploria.com/submit",
+      "payloadTemplate": {
+        "name": "",
+        "description": "",
+        "url": "",
+        "category": ""
+      },
+      "notes": "French AI tools directory. Web form submission for AI tools. Manual submission required."
+    },
+    {
+      "name": "AIFindy",
+      "url": "https://www.aifindy.com",
+      "method": "WEB",
+      "endpoint": "https://www.aifindy.com",
+      "payloadTemplate": {},
+      "notes": "AI tools finder/directory. Web-based listing. Submit via contact form or manual process."
+    },
+    {
+      "name": "Indie Hackers",
+      "url": "https://www.indiehackers.com",
+      "method": "WEB",
+      "endpoint": "https://www.indiehackers.com/submit",
+      "payloadTemplate": {
+        "name": "",
+        "url": "",
+        "description": ""
+      },
+      "notes": "Product submission for indie products. Requires login. Ember.js based web app. Firebase backend. Web form only."
+    },
+    {
+      "name": "GitHub Topics (MCP Servers)",
+      "url": "https://github.com/topics/mcp-servers",
+      "method": "POST",
+      "endpoint": "https://api.github.com/repos/{owner}/{repo}/topics",
+      "payloadTemplate": {
+        "names": ["mcp-server", "mcp"]
+      },
+      "notes": "Uses GitHub API to add 'mcp-server' topic to repository. Requires GitHub token with repo access. PUT /repos/{owner}/{repo}/topics with Content-Type: application/json and Authorization: Bearer GH_TOKEN. Accept header: application/vnd.github.mercy-preview+json."
+    },
+    {
+      "name": "Crunchbase",
+      "url": "https://www.crunchbase.com",
+      "method": "WEB",
+      "endpoint": "https://www.crunchbase.com",
+      "payloadTemplate": {},
+      "notes": "Business directory. Web form for organization/company submission. Requires manual data entry. No public POST API for submissions."
+    },
+    {
+      "name": "Toolspedia.ai",
+      "url": "https://toolspedia.ai",
+      "method": "WEB",
+      "endpoint": "https://toolspedia.ai",
+      "payloadTemplate": {},
+      "notes": "Domain not resolving (HTTP 000). Site may be down or unreachable. Previously was an AI tools directory with web form submission."
+    }
+  ]
+}

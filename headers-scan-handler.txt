@@ -1,0 +1,42 @@
+
+// Headers scanner proxy — fetches HTTP response headers from external URLs
+async function handleHeadersScan(req, res) {
+  const parsed = url.parse(req.url, true);
+  const targetUrl = parsed.query.url;
+  if (!targetUrl) {
+    res.writeHead(400, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({ error: 'Missing ?url= parameter' }));
+    return;
+  }
+  // Validate URL
+  let fetchUrl;
+  try { fetchUrl = new URL(targetUrl); } catch {
+    res.writeHead(400, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({ error: 'Invalid URL format' }));
+    return;
+  }
+  if (!['http:', 'https:'].includes(fetchUrl.protocol)) {
+    res.writeHead(400, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({ error: 'Only http:// and https:// URLs allowed' }));
+    return;
+  }
+  try {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), 8000);
+    const resp = await fetch(fetchUrl.toString(), {
+      method: 'GET',
+      headers: { 'User-Agent': 'my-automaton-security-headers-checker/1.0' },
+      redirect: 'follow',
+      signal: controller.signal
+    });
+    clearTimeout(timer);
+    // Convert Headers object to plain object
+    const headers = {};
+    resp.headers.forEach((value, key) => { headers[key] = value; });
+    res.writeHead(200, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({ url: targetUrl, status: resp.status, headers }));
+  } catch (e) {
+    res.writeHead(502, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({ error: 'Failed to fetch URL', detail: e.message, url: targetUrl }));
+  }
+}

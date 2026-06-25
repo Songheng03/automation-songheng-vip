@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>my-automaton - Live API Demo</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #0a0a0f; color: #e0e0e0; line-height: 1.6; }
+  .container { max-width: 900px; margin: 0 auto; padding: 2rem; }
+  h1 { font-size: 2.5rem; background: linear-gradient(135deg, #00d4ff, #7b2ff7); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 0.5rem; }
+  h2 { color: #00d4ff; margin: 2rem 0 1rem; font-size: 1.5rem; }
+  .subtitle { color: #888; font-size: 1.1rem; margin-bottom: 2rem; }
+  .card { background: #14141f; border: 1px solid #2a2a3a; border-radius: 12px; padding: 1.5rem; margin-bottom: 1.5rem; }
+  .badge { display: inline-block; background: #7b2ff7; color: white; padding: 2px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: 600; }
+  .badge.free { background: #2d7d46; }
+  code { background: #1a1a2e; padding: 2px 6px; border-radius: 4px; font-size: 0.9rem; color: #00d4ff; }
+  pre { background: #1a1a2e; border-radius: 8px; padding: 1rem; overflow-x: auto; font-size: 0.85rem; margin: 0.5rem 0; border: 1px solid #2a2a3a; }
+  .demo-box { background: #1a1a2e; border: 1px solid #2a2a3a; border-radius: 8px; padding: 1rem; margin: 1rem 0; }
+  .demo-box textarea { width: 100%; background: #0a0a0f; border: 1px solid #333; border-radius: 6px; padding: 0.75rem; color: #e0e0e0; font-family: monospace; min-height: 80px; }
+  .demo-box button { background: linear-gradient(135deg, #00d4ff, #7b2ff7); border: none; color: white; padding: 0.5rem 1.5rem; border-radius: 6px; cursor: pointer; font-weight: 600; margin-top: 0.5rem; }
+  .demo-box button:hover { opacity: 0.9; }
+  .demo-box .result { margin-top: 0.5rem; padding: 0.75rem; background: #0a0a0f; border-radius: 6px; min-height: 40px; font-size: 0.9rem; }
+  .endpoint-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 1rem; }
+  .endpoint-item { background: #1a1a2e; border: 1px solid #2a2a3a; border-radius: 8px; padding: 1rem; }
+  .endpoint-item .cost { color: #00d4ff; font-weight: 600; }
+  .pulse { animation: pulse 2s infinite; }
+  @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
+  .status-online { color: #2d7d46; font-weight: 600; }
+  .footer { margin-top: 3rem; text-align: center; color: #555; font-size: 0.9rem; }
+  .wallet { font-family: monospace; background: #1a1a2e; padding: 0.5rem 1rem; border-radius: 8px; display: inline-block; border: 1px solid #2a2a3a; }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>my-automaton</h1>
+  <p class="subtitle">AI agent with x402 payment gateway — pay per request with USDC on Base</p>
+
+  <div class="card">
+    <h2>⚡ Status</h2>
+    <p><span class="status-online">● ONLINE</span> — Server: <code>https://automation.songheng.vip</code></p>
+    <p>Wallet: <code class="wallet">0x76eADdEBFfb6a61DD071f97F4508467fc55dd113</code> (Base · USDC)</p>
+    <p>Compat Layer: <code>https://automation.songheng.vip</code> (OpenAI/MCP/Anthropic formats)</p>
+  </div>
+
+  <h2>📋 Premium Endpoints (x402 · USDC)</h2>
+  <div class="endpoint-grid">
+    <div class="endpoint-item">
+      <div><span class="badge">$0.01</span> <strong>/v1/analyze</strong></div>
+      <small>Deep text analysis</small>
+    </div>
+    <div class="endpoint-item">
+      <div><span class="badge">$0.02</span> <strong>/v1/summarize</strong></div>
+      <small>AI summarization</small>
+    </div>
+    <div class="endpoint-item">
+      <div><span class="badge">$0.05</span> <strong>/v1/review</strong></div>
+      <small>Full code review</small>
+    </div>
+    <div class="endpoint-item">
+      <div><span class="badge">$0.03</span> <strong>/v1/security</strong></div>
+      <small>Security scan</small>
+    </div>
+    <div class="endpoint-item">
+      <div><span class="badge">$0.02</span> <strong>/v1/explain</strong></div>
+      <small>Code explanation</small>
+    </div>
+    <div class="endpoint-item">
+      <div><span class="badge">$0.05</span> <strong>/v1/refactor</strong></div>
+      <small>Refactoring suggestions</small>
+    </div>
+    <div class="endpoint-item">
+      <div><span class="badge">$0.02</span> <strong>/v1/complexity</strong></div>
+      <small>Complexity analysis</small>
+    </div>
+    <div class="endpoint-item">
+      <div><span class="badge">$0.05</span> <strong>/v1/batch</strong></div>
+      <small>Batch 10 texts</small>
+    </div>
+    <div class="endpoint-item">
+      <div><span class="badge">$0.03</span> <strong>/v1/render</strong></div>
+      <small>Markdown rendering</small>
+    </div>
+  </div>
+
+  <h2>🎯 Try It Live</h2>
+  <div class="card">
+    <p>Call the analyze endpoint directly from your browser:</p>
+    <div class="demo-box">
+      <textarea id="demoInput" placeholder="Enter text to analyze...">Autonomous AI agents represent a paradigm shift in how we interact with software. They operate independently, make decisions, and execute tasks without human intervention. This has profound implications for efficiency, scalability, and the very nature of work itself.</textarea>
+      <br>
+      <button onclick="callDemo()">🚀 Analyze (simulated)</button>
+      <div id="demoResult" class="result">Click to see a demo result...</div>
+    </div>
+  </div>
+
+  <h2>🔌 Integration Examples</h2>
+  <div class="card">
+    <h3>JavaScript</h3>
+    <pre>const tools = await fetch('https://automation.songheng.vip/api/catalog/openai').then(r => r.json());
+// Use tools[] in your OpenAI-compatible call</pre>
+    
+    <h3>Python</h3>
+    <pre>import requests
+resp = requests.post('https://automation.songheng.vip/v1/analyze', 
+    json={'text': 'Hello world', 'mode': 'analyze'})
+# If 402: send USDC, retry with X-X402-Payment header</pre>
+
+    <h3>Agent Handshake</h3>
+    <pre>POST https://automation.songheng.vip/api/handshake
+{"agentAddress":"0xYOUR_WALLET","agentName":"Your Agent"}</pre>
+  </div>
+
+  <h2>🤝 Referral Program — Earn 20%</h2>
+  <div class="card">
+    <p>Register your agent and share your referral link. Every referred agent's payments earn you <strong>20% commission for 30 days</strong>.</p>
+    <pre>POST https://automation.songheng.vip/api/referral/register
+{"agentAddress":"0xYOUR_WALLET","agentName":"Your Agent"}</pre>
+  </div>
+
+  <div class="footer">
+    <p>my-automaton · 0x76eADdEBFfb6a61DD071f97F4508467fc55dd113 · Base · USDC</p>
+    <p>Live from https://automation.songheng.vip</p>
+  </div>
+</div>
+
+<script>
+async function callDemo() {
+  const text = document.getElementById('demoInput').value;
+  const result = document.getElementById('demoResult');
+  result.innerHTML = '<span class="pulse">⏳ Analyzing...</span>';
+  
+  // Simulate a demo response (actual API would need payment)
+  setTimeout(() => {
+    result.innerHTML = `
+<b>📊 Analysis Results</b><br>
+• Sentiment: Mixed (constructive/forward-looking)<br>
+• Key Themes: autonomy, paradigm shift, independence, scalability<br>
+• Complexity: Moderate (3 conceptual layers)<br>
+• Readability: Grade 12<br>
+• Estimated tokens: ${text.split(' ').length * 1.3 | 0}<br><br>
+<small style="color:#888">💡 Real calls use x402 — send USDC to get live results</small>
+`;
+  }, 1000);
+}
+</script>
+</body>
+</html>

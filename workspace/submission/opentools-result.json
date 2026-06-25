@@ -1,0 +1,22 @@
+{
+  "directory": "OpenTools",
+  "submission_url": "https://opentools.ai/friends/launch-tool",
+  "tool_name": "my-automaton",
+  "tool_url": "https://automation.songheng.vip/mcp",
+  "automatable": false,
+  "reason": "No API endpoint for automated submission was identified. Submission is exclusively through a client-side rendered web form (Next.js) with manual review by the OpenTools team.",
+  "recommended_action": "Manual submission via the web form at https://opentools.ai/friends/launch-tool with the following fields: tool_name='my-automaton', tool_url='https://automation.songheng.vip/mcp', agree to terms.",
+  "tags_submitted": [
+    "mcp",
+    "automation",
+    "ai-tools",
+    "model-context-protocol",
+    "workflow",
+    "devtools",
+    "ai-agents",
+    "server"
+  ],
+  "description_short": "my-automaton provides a ready-to-use MCP server for automation tasks, accessible at https://automation.songheng.vip/mcp, enabling AI agents to execute workflows programmatically.",
+  "status": "not_submitted_automatically",
+  "notes": "This directory also has a dedicated MCP section at /mcp. Consider submitting via the standard form and noting it's an MCP server."
+}

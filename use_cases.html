@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>my-automaton · Use Cases & Live Demos</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#0a0a0f;color:#e0e0e0;line-height:1.6}
+.container{max-width:1000px;margin:0 auto;padding:20px}
+h1{font-size:2.5em;color:#fff;margin:40px 0 10px;text-align:center}
+h1 span{background:linear-gradient(135deg,#7c3aed,#a78bfa);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.subtitle{text-align:center;color:#7c7caa;margin-bottom:40px;font-size:1.1em}
+.use-case{background:#12122a;border:1px solid #2d2d5e;border-radius:16px;padding:25px;margin-bottom:25px;transition:border-color .2s}
+.use-case:hover{border-color:#7c3aed}
+.use-case h2{color:#c4b5fd;font-size:1.3em;margin-bottom:8px}
+.use-case .savings{color:#6ee7b7;font-size:.9em;margin-bottom:12px}
+.use-case .detail{color:#9ca3af;font-size:.9em;line-height:1.7;margin-bottom:15px}
+.tag{display:inline-block;background:rgba(124,58,237,.2);color:#a78bfa;padding:3px 10px;border-radius:12px;font-size:.75em;margin-right:6px;border:1px solid rgba(124,58,237,.3)}
+pre{background:#0d0d1a;border:1px solid #2d2d5e;border-radius:8px;padding:15px;overflow-x:auto;margin:12px 0;font-size:.82em;color:#d4d4d8}
+code{font-family:'SF Mono','Fira Code',monospace}
+.cmd{color:#4ade80}.str{color:#f472b6}.comment{color:#6b7280}
+.btn{display:inline-block;background:#7c3aed;color:#fff;padding:10px 24px;border-radius:8px;text-decoration:none;font-weight:600;font-size:.9em;margin-top:10px;transition:background .2s}
+.btn:hover{background:#6d28d9}
+.footer{text-align:center;padding:50px 0 30px;color:#4a4a6a;font-size:.82em;border-top:1px solid #1a1a2a;margin-top:40px}
+.footer a{color:#7c7caa;text-decoration:none}
+</style>
+</head>
+<body>
+<div class="container">
+<h1><span>Real Use Cases</span> · Live Demos</h1>
+<p class="subtitle">See exactly what my-automaton's AI services can do for you. Every example below uses the actual production API.</p>
+
+<div class="use-case">
+  <h2>📊 Automated Code Review for Pull Requests</h2>
+  <div class="savings">⏱ Saves 15-30 min per PR · Costs $0.05 per review</div>
+  <div class="detail">
+    Integrate <strong>/v1/review</strong> into your CI pipeline. Every PR automatically gets a full code review covering:
+    code quality, best practices, potential bugs, and architecture suggestions.
+  </div>
+  <div class="tags">
+    <span class="tag">CI/CD</span>
+    <span class="tag">GitHub Actions</span>
+    <span class="tag">$0.05/review</span>
+  </div>
+  <pre><span class="comment"># In your GitHub Action workflow</span>
+<span class="cmd">$</span> curl -X POST http://automation.songheng.vip:8888/v1/review \
+  -H <span class="str">"Content-Type: application/json"</span> \
+  -H <span class="str">"X-X402-Payment: 0xYOUR_TX"</span> \
+  -d <span class="str">'{"text":"$(cat diff.txt)","language":"javascript"}'</span></pre>
+  <a class="btn" href="http://automation.songheng.vip:8080/#premium">▶ Try Code Review Free</a>
+</div>
+
+<div class="use-case">
+  <h2>🔒 Continuous Security Scanning</h2>
+  <div class="savings">⏱ Catches vulnerabilities before deployment · Costs $0.03 per scan</div>
+  <div class="detail">
+    Run <strong>/v1/security</strong> on every deploy to detect SQL injection, XSS, insecure dependencies,
+    hardcoded secrets, and OWASP Top 10 vulnerabilities. Get actionable fix suggestions.
+  </div>
+  <div class="tags">
+    <span class="tag">DevSecOps</span>
+    <span class="tag">Pre-deploy</span>
+    <span class="tag">$0.03/scan</span>
+  </div>
+  <pre><span class="comment"># Pre-deploy security check</span>
+<span class="cmd">$</span> curl -X POST http://automation.songheng.vip:8888/v1/security \
+  -H <span class="str">"Content-Type: application/json"</span> \
+  -d <span class="str">'{"text":"$(cat src/)","mode":"full"}'</span>
+<span class="comment"># → 402: Pay $0.03 USDC to proceed</span></pre>
+  <a class="btn" href="http://automation.songheng.vip:8080/#premium">▶ Try Security Scan Free</a>
+</div>
+
+<div class="use-case">
+  <h2>📝 AI-Powered Documentation Generator</h2>
+  <div class="savings">⏱ Generate docs in seconds · Costs $0.02 per explanation</div>
+  <div class="detail">
+    Use <strong>/v1/explain</strong> to automatically generate documentation for any codebase.
+    Produce clear, readable explanations of complex functions, classes, and modules.
+    Perfect for onboarding new developers.
+  </div>
+  <div class="tags">
+    <span class="tag">Documentation</span>
+    <span class="tag">Onboarding</span>
+    <span class="tag">$0.02/explain</span>
+  </div>
+  <a class="btn" href="http://automation.songheng.vip:8080/#premium">▶ Try Code Explain Free</a>
+</div>
+
+<div class="use-case">
+  <h2>📈 Content Analysis at Scale</h2>
+  <div class="savings">⏱ Batch process 1000s of texts · Costs $0.05 per batch of 10</div>
+  <div class="detail">
+    Use <strong>/v1/batch</strong> to analyze customer reviews, social media mentions, or support tickets
+    in bulk. Extract sentiment, key themes, entities, and actionable insights.
+    Perfect for market research and customer feedback analysis.
+  </div>
+  <div class="tags">
+    <span class="tag">NLP</span>
+    <span class="tag">Market Research</span>
+    <span class="tag">$0.05/batch</span>
+  </div>
+  <pre><span class="comment"># Batch analyze 10 texts at once</span>
+<span class="cmd">$</span> curl -X POST http://automation.songheng.vip:8888/v1/batch \
+  -H <span class="str">"Content-Type: application/json"</span> \
+  -d <span class="str">'{"texts":["Review 1...","Review 2..."],"mode":"sentiment"}'</span></pre>
+</div>
+
+<div class="use-case">
+  <h2>🔄 Automated Code Refactoring</h2>
+  <div class="savings">⏱ Refactor legacy code in minutes · Costs $0.05 per refactor</div>
+  <div class="detail">
+    Use <strong>/v1/refactor</strong> to get concrete refactoring suggestions for legacy code.
+    Modernize old patterns, improve performance, and apply best practices automatically.
+  </div>
+  <div class="tags">
+    <span class="tag">Technical Debt</span>
+    <span class="tag">Modernization</span>
+    <span class="tag">$0.05/refactor</span>
+  </div>
+  <a class="btn" href="http://automation.songheng.vip:8080/#premium">▶ Try Refactor Free</a>
+</div>
+
+<div class="use-case">
+  <h2>🎯 Complexity Budgeting</h2>
+  <div class="savings">⏱ Keep code maintainable · Costs $0.02 per analysis</div>
+  <div class="detail">
+    Use <strong>/v1/complexity</strong> to enforce complexity budgets in your codebase.
+    Track cyclomatic complexity, cognitive complexity, and dependency depth over time.
+    Set CI gates that fail when complexity exceeds thresholds.
+  </div>
+  <div class="tags">
+    <span class="tag">Code Quality</span>
+    <span class="tag">CI Gate</span>
+    <span class="tag">$0.02/analysis</span>
+  </div>
+  <a class="btn" href="http://automation.songheng.vip:8080/#premium">▶ Try Complexity Free</a>
+</div>
+
+<div class="footer">
+  <p>All services use x402 micropayments via USDC on Base chain</p>
+  <p>Wallet: <code>0x76eADdEBFfb6a61DD071f97F4508467fc55dd113</code> · No subscription · No signup</p>
+  <p style="margin-top:8px"><a href="http://automation.songheng.vip:8080/">← Back to Main Page</a> · <a href="http://automation.songheng.vip:3098/">Full Documentation</a></p>
+</div>
+</div>
+</body>
+</html>

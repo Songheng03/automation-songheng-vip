@@ -1,0 +1,382 @@
+[
+  {
+    "endpoint": "/ (root)",
+    "method": "GET",
+    "description": "Root health/status endpoint. Returns service name, version, uptime, tunnel status, and available MCP endpoints.",
+    "request_format": "None",
+    "response_format": {
+      "status": "string",
+      "service": "string",
+      "version": "string",
+      "uptime": "number (seconds)",
+      "tunnel": "string",
+      "mcp": {
+        "endpoints": {
+          "jsonrpc": "string",
+          "sse": "string",
+          "discovery": "string"
+        },
+        "tools": ["string"]
+      }
+    },
+    "pricing": "Free"
+  },
+  {
+    "endpoint": "/health",
+    "method": "GET",
+    "description": "Health check endpoint. Returns the same data as the root endpoint for monitoring purposes.",
+    "request_format": "None",
+    "response_format": {
+      "status": "string",
+      "service": "string",
+      "version": "string",
+      "uptime": "number (seconds)",
+      "tunnel": "string",
+      "mcp": {
+        "endpoints": {},
+        "tools": ["string"]
+      }
+    },
+    "pricing": "Free"
+  },
+  {
+    "endpoint": "/mcp",
+    "method": "GET",
+    "description": "MCP Server-Sent Events (SSE) endpoint. Establishes an SSE stream for real-time MCP communication.",
+    "request_format": "None (SSE connection)",
+    "response_format": "SSE event stream (text/event-stream)",
+    "pricing": "Free"
+  },
+  {
+    "endpoint": "/mcp",
+    "method": "POST",
+    "description": "MCP JSON-RPC endpoint. Main API gateway for invoking tools and listing available capabilities. Supports methods: tools/list, tools/call.",
+    "request_format": {
+      "jsonrpc": "2.0",
+      "id": "number",
+      "method": "string (either 'tools/list' or 'tools/call')",
+      "params": {
+        "name": "string (for tools/call)",
+        "arguments": "object (for tools/call)"
+      }
+    },
+    "response_format": {
+      "jsonrpc": "2.0",
+      "id": "number",
+      "result": "object - either has 'tools' array (from tools/list) or 'content' array (from tools/call)"
+    },
+    "pricing": "Varies per tool (see individual tool endpoints)"
+  },
+  {
+    "endpoint": "/.well-known/mcp.json",
+    "method": "GET",
+    "description": "MCP discovery endpoint. Provides service metadata, capabilities, available tools, and pricing information according to Model Context Protocol standards.",
+    "request_format": "None",
+    "response_format": {
+      "name": "string",
+      "description": "string",
+      "url": "string",
+      "type": "string",
+      "version": "string",
+      "author": "object",
+      "mcp": "object",
+      "capabilities": "object (tools, resources, prompts arrays)",
+      "payment": "object (type, currency, chain, wallet, pricing)"
+    },
+    "pricing": "Free (discovery endpoint)"
+  },
+  {
+    "endpoint": "/.well-known/ai-plugin.json",
+    "method": "GET",
+    "description": "OpenAI-compatible AI plugin manifest. Provides plugin metadata, tool descriptions, input schemas, and integration details for AI assistant plugins.",
+    "request_format": "None",
+    "response_format": {
+      "schema_version": "string",
+      "name_for_human": "string",
+      "name_for_model": "string",
+      "description_for_human": "string",
+      "description_for_model": "string",
+      "auth": "object",
+      "api": "object",
+      "capabilities": "object with tools array",
+      "mcp_endpoints": "object",
+      "integration": "object"
+    },
+    "pricing": "Free (discovery endpoint)"
+  },
+  {
+    "endpoint": "/admin/tunnel/status",
+    "method": "GET",
+    "description": "Admin endpoint to check the status of the cloudflare tunnel connection.",
+    "request_format": "None",
+    "response_format": {
+      "tunnel": {
+        "pid": "number",
+        "pidFileValid": "boolean",
+        "cloudflaredRunning": "boolean",
+        "status": "string"
+      }
+    },
+    "pricing": "Free (admin)"
+  },
+  {
+    "endpoint": "/admin/tunnel/start",
+    "method": "POST",
+    "description": "Admin endpoint to start the cloudflare tunnel connection.",
+    "request_format": "None (empty POST)",
+    "response_format": "Unknown",
+    "pricing": "Free (admin)"
+  },
+  {
+    "endpoint": "/admin/tunnel/stop",
+    "method": "POST",
+    "description": "Admin endpoint to stop the cloudflare tunnel connection.",
+    "request_format": "None (empty POST)",
+    "response_format": "Unknown",
+    "pricing": "Free (admin)"
+  },
+  {
+    "endpoint": "/webhook/github",
+    "method": "POST",
+    "description": "GitHub webhook receiver endpoint. Accepts GitHub event payloads for CI/CD integrations.",
+    "request_format": "GitHub webhook payload (JSON)",
+    "response_format": "Unknown",
+    "pricing": "Free (webhook)"
+  },
+  {
+    "endpoint": "/mcp (tools/call: analyze)",
+    "method": "POST",
+    "description": "Deep text analysis tool. Extracts insights, themes, key points, tone analysis, readability, and patterns from text content.",
+    "request_format": {
+      "jsonrpc": "2.0",
+      "id": "number",
+      "method": "tools/call",
+      "params": {
+        "name": "analyze",
+        "arguments": {
+          "text": "string (required) - The text content to analyze"
+        }
+      }
+    },
+    "response_format": {
+      "jsonrpc": "2.0",
+      "id": "number",
+      "result": {
+        "content": [
+          {
+            "type": "text",
+            "text": "string (Analysis results with overview, themes, tone, readability, patterns)"
+          }
+        ],
+        "meta": {
+          "mode": "analyze",
+          "language": "string or null"
+        }
+      }
+    },
+    "pricing": "$0.01 USDC on Base chain (x402)"
+  },
+  {
+    "endpoint": "/mcp (tools/call: summarize)",
+    "method": "POST",
+    "description": "AI-powered text summarization tool. Condenses long text into a concise summary.",
+    "request_format": {
+      "jsonrpc": "2.0",
+      "id": "number",
+      "method": "tools/call",
+      "params": {
+        "name": "summarize",
+        "arguments": {
+          "text": "string (required) - The text to summarize"
+        }
+      }
+    },
+    "response_format": {
+      "jsonrpc": "2.0",
+      "id": "number",
+      "result": {
+        "content": [
+          {
+            "type": "text",
+            "text": "string (Summarized text)"
+          }
+        ],
+        "meta": {
+          "mode": "summarize",
+          "language": "string or null"
+        }
+      }
+    },
+    "pricing": "$0.02 USDC on Base chain (x402)"
+  },
+  {
+    "endpoint": "/mcp (tools/call: review)",
+    "method": "POST",
+    "description": "Full code review tool. Checks for bugs, security issues, style problems, and suggests improvements across multiple programming languages (JavaScript, Python, Java, Go, Rust, and more).",
+    "request_format": {
+      "jsonrpc": "2.0",
+      "id": "number",
+      "method": "tools/call",
+      "params": {
+        "name": "review",
+        "arguments": {
+          "code": "string (required) - The source code to review",
+          "language": "string (optional) - Programming language"
+        }
+      }
+    },
+    "response_format": {
+      "jsonrpc": "2.0",
+      "id": "number",
+      "result": {
+        "content": [
+          {
+            "type": "text",
+            "text": "string (Code review results)"
+          }
+        ],
+        "meta": {
+          "mode": "review",
+          "language": "string or null"
+        }
+      }
+    },
+    "pricing": "$0.05 USDC on Base chain (x402)"
+  },
+  {
+    "endpoint": "/mcp (tools/call: security)",
+    "method": "POST",
+    "description": "Security vulnerability scanner. Checks code for OWASP Top 10 vulnerabilities, injection flaws, secrets exposure, and other security issues.",
+    "request_format": {
+      "jsonrpc": "2.0",
+      "id": "number",
+      "method": "tools/call",
+      "params": {
+        "name": "security",
+        "arguments": {
+          "code": "string (required) - The source code to audit",
+          "language": "string (optional) - Programming language"
+        }
+      }
+    },
+    "response_format": {
+      "jsonrpc": "2.0",
+      "id": "number",
+      "result": {
+        "content": [
+          {
+            "type": "text",
+            "text": "string (Security scan results)"
+          }
+        ],
+        "meta": {
+          "mode": "security",
+          "language": "string or null"
+        }
+      }
+    },
+    "pricing": "$0.03 USDC on Base chain (x402)"
+  },
+  {
+    "endpoint": "/mcp (tools/call: explain)",
+    "method": "POST",
+    "description": "Code explanation tool. Explains what code does in simple, understandable terms.",
+    "request_format": {
+      "jsonrpc": "2.0",
+      "id": "number",
+      "method": "tools/call",
+      "params": {
+        "name": "explain",
+        "arguments": {
+          "code": "string (required) - The code to explain",
+          "language": "string (optional) - Programming language"
+        }
+      }
+    },
+    "response_format": {
+      "jsonrpc": "2.0",
+      "id": "number",
+      "result": {
+        "content": [
+          {
+            "type": "text",
+            "text": "string (Code explanation)"
+          }
+        ],
+        "meta": {
+          "mode": "explain",
+          "language": "string or null"
+        }
+      }
+    },
+    "pricing": "$0.02 USDC on Base chain (x402)"
+  },
+  {
+    "endpoint": "/mcp (tools/call: refactor)",
+    "method": "POST",
+    "description": "Refactoring suggestions tool. Provides concrete improvements for code quality, readability, and maintainability.",
+    "request_format": {
+      "jsonrpc": "2.0",
+      "id": "number",
+      "method": "tools/call",
+      "params": {
+        "name": "refactor",
+        "arguments": {
+          "code": "string (required) - The source code to refactor",
+          "language": "string (optional) - Programming language"
+        }
+      }
+    },
+    "response_format": {
+      "jsonrpc": "2.0",
+      "id": "number",
+      "result": {
+        "content": [
+          {
+            "type": "text",
+            "text": "string (Refactoring suggestions)"
+          }
+        ],
+        "meta": {
+          "mode": "refactor",
+          "language": "string or null"
+        }
+      }
+    },
+    "pricing": "$0.05 USDC on Base chain (x402)"
+  },
+  {
+    "endpoint": "/mcp (tools/call: complexity)",
+    "method": "POST",
+    "description": "Complexity analysis tool. Analyzes code complexity including cyclomatic complexity, cognitive complexity, and maintainability metrics.",
+    "request_format": {
+      "jsonrpc": "2.0",
+      "id": "number",
+      "method": "tools/call",
+      "params": {
+        "name": "complexity",
+        "arguments": {
+          "code": "string (required) - The code to analyze",
+          "language": "string (optional) - Programming language"
+        }
+      }
+    },
+    "response_format": {
+      "jsonrpc": "2.0",
+      "id": "number",
+      "result": {
+        "content": [
+          {
+            "type": "text",
+            "text": "string (Complexity analysis results)"
+          }
+        ],
+        "meta": {
+          "mode": "complexity",
+          "language": "string or null"
+        }
+      }
+    },
+    "pricing": "$0.02 USDC on Base chain (x402)"
+  }
+]

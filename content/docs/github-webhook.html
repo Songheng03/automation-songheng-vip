@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GitHub PR Review Bot — Setup Guide | my-automaton</title>
+<meta name="description" content="Automatically review GitHub pull requests with AI. Free 3 reviews/month per repo. $0.05/review via USDC on Base chain.">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#0d1117;color:#c9d1d9;line-height:1.6;padding:20px}
+.container{max-width:800px;margin:0 auto}
+h1{font-size:2rem;color:#58a6ff;margin-bottom:8px}
+h2{color:#58a6ff;margin:24px 0 12px;font-size:1.3rem}
+p{color:#8b949e;margin-bottom:12px}
+code{background:#1c2128;padding:2px 6px;border-radius:4px;font-size:.9em;color:#f0f6fc}
+pre{background:#1c2128;padding:16px;border-radius:8px;overflow-x:auto;margin:12px 0;border:1px solid #30363d;font-size:13px;line-height:1.5}
+.step{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:20px;margin-bottom:16px}
+.step-num{display:inline-block;background:#1f6feb;color:#fff;border-radius:50%;width:28px;height:28px;text-align:center;line-height:28px;font-weight:700;margin-right:8px}
+.btn{display:inline-block;background:#238636;color:#fff;padding:10px 24px;border-radius:6px;text-decoration:none;font-weight:600;margin:8px 0}
+.btn:hover{background:#2ea043}
+.price-box{background:#161b22;border:2px solid #58a6ff;border-radius:8px;padding:20px;text-align:center;margin:20px 0}
+.price{font-size:2rem;color:#58a6ff;font-weight:700}
+.price-label{color:#8b949e;font-size:14px}
+.tag{display:inline-block;background:#1f6feb;padding:2px 8px;border-radius:12px;font-size:11px;color:#fff;margin:2px}
+.wallet{font-family:monospace;font-size:13px;background:#1c2128;padding:8px 12px;border-radius:6px;border:1px solid #30363d;word-break:break-all;margin:8px 0}
+</style>
+
+<!-- Open Graph / Social Meta Tags -->
+<meta property="og:title" content="GitHub PR Review Bot — Setup Guide | my-automaton" />
+<meta property="og:description" content="Automatically review GitHub pull requests with AI. Free 3 reviews/month per repo. $0.05/review via USDC on Base chain." />
+<meta property="og:image" content="https://automation.songheng.vip/og-image.png" />
+<meta property="og:url" content="https://automation.songheng.vip/docs/github-webhook.html" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="my-automaton" />
+<meta property="og:locale" content="en_US" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="GitHub PR Review Bot — Setup Guide | my-automaton" />
+<meta name="twitter:description" content="Automatically review GitHub pull requests with AI. Free 3 reviews/month per repo. $0.05/review via USDC on Base chain." />
+<meta name="twitter:image" content="https://automation.songheng.vip/og-image.png" />
+  <link rel="canonical" href="https://automation.songheng.vip/docs/github-webhook.html">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "GitHub PR Review Bot — Setup Guide | my-automaton",
+  "description": "Automatically review GitHub pull requests with AI. Free 3 reviews/month per repo. $0.05/review via USDC on Base chain.",
+  "url": "https://automation.songheng.vip/docs/github-webhook.html"
+}
+</script>
+</head>
+<body>
+<div class="container">
+<h1>🤖 GitHub PR Review Bot</h1>
+<p>Automatically review every pull request in your repository with AI-powered analysis. Get instant feedback on code quality, security, and best practices.</p>
+
+<div class="price-box">
+<div class="price">Free<span style="font-size:1rem;color:#8b949e"> / 3 reviews per month</span></div>
+<div class="price-label">Then $0.05 USDC per review • <span class="tag">Base Chain</span> <span class="tag">x402</span></div>
+<div class="wallet">Pay to: 0x76eADdEBFfb6A61DD071f97F4508467fc55dd113</div>
+</div>
+
+<h2>Setup (30 seconds)</h2>
+
+<div class="step">
+<span class="step-num">1</span>
+<strong>Go to your repo Settings → Webhooks → Add webhook</strong>
+</div>
+
+<div class="step">
+<span class="step-num">2</span>
+<strong>Configure:</strong>
+<pre>Payload URL: https://automation.songheng.vip/webhook/github
+Content type: application/json
+Secret: (optional, leave blank for now)
+Events: ✅ Pull requests
+        ✅ Pushes (optional)</pre>
+</div>
+
+<div class="step">
+<span class="step-num">3</span>
+<strong>Click "Add webhook" — done!</strong>
+<p style="margin-top:8px">Your next PR will automatically receive an AI code review comment.</p>
+</div>
+
+<h2>What Gets Reviewed</h2>
+<ul style="color:#8b949e;margin:12px 0 12px 24px">
+<li>🚨 <strong>Critical issues</strong> — Security vulnerabilities, bugs, data leaks</li>
+<li>⚠️ <strong>Warnings</strong> — Code smells, anti-patterns, performance issues</li>
+<li>✅ <strong>What looks good</strong> — Positive reinforcement for good code</li>
+<li>💡 <strong>Suggestions</strong> — Concrete improvements with examples</li>
+</ul>
+
+<h2>Pricing</h2>
+<table style="width:100%;border-collapse:collapse;margin:12px 0">
+<tr style="background:#1c2128"><td style="padding:10px;border:1px solid #30363d">Free tier</td><td style="padding:10px;border:1px solid #30363d">3 reviews per repo per month</td></tr>
+<tr><td style="padding:10px;border:1px solid #30363d">Per review</td><td style="padding:10px;border:1px solid #30363d">$0.05 USDC on Base chain</td></tr>
+<tr style="background:#1c2128"><td style="padding:10px;border:1px solid #30363d">Payment</td><td style="padding:10px;border:1px solid #30363d">x402 — pay per request, no subscription</td></tr>
+</table>
+
+<p style="text-align:center;margin-top:24px">
+<a href="/" class="btn">← Back to Services</a>
+<a href="https://github.com/new" class="btn">Create a Repo to Try It</a>
+</p>
+</div>
+</body>
+</html>

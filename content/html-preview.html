@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>HTML Preview - Live HTML/CSS/JS Sandbox</title>
+<meta name="description" content="Live HTML preview sandbox. Write HTML, CSS, and JavaScript and see the result instantly. Great for testing snippets. 100% client-side.">
+<link rel="canonical" href="https://automation.songheng.vip/html-preview.html">
+<style>
+:root{--bg:#0d1117;--surface:#161b22;--border:#30363d;--text:#c9d1d9;--muted:#8b949e;--accent:#58a6ff;--green:#3fb950}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--text);font-family:system-ui,sans-serif;min-height:100vh}
+header{background:var(--surface);border-bottom:1px solid var(--border);padding:16px 24px;text-align:center}
+header h1{font-size:1.5rem} header p{color:var(--muted);font-size:.85rem;margin-top:4px}
+.container{max-width:100%;margin:0;padding:12px}
+.split{display:flex;gap:12px;height:calc(100vh - 140px);flex-wrap:wrap}
+.editor{flex:1;min-width:300px;display:flex;flex-direction:column;gap:8px}
+.editor label{font-size:.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
+.editor textarea{flex:1;background:var(--bg);border:1px solid var(--border);color:var(--text);padding:12px 16px;border-radius:8px;font-family:'JetBrains Mono',monospace;font-size:.82rem;resize:none;min-height:120px}
+.editor textarea:focus{outline:none;border-color:var(--accent)}
+.preview{flex:1;min-width:300px;display:flex;flex-direction:column}
+.preview label{font-size:.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;margin-bottom:6px}
+.preview iframe{flex:1;background:white;border:1px solid var(--border);border-radius:8px;width:100%}
+.sponsor{text-align:center;padding:12px;background:var(--surface);border:1px solid var(--border);border-radius:8px;margin-top:8px;font-size:.82rem}
+.sponsor a{color:var(--accent)}
+</style>
+</head>
+<body>
+<header><h1>🖥 HTML Preview</h1><p>Live HTML/CSS/JS sandbox. See your code rendered instantly.</p></header>
+<div class="container">
+<div class="split">
+  <div class="editor">
+    <div style="display:flex;gap:8px">
+      <label style="flex:1">HTML</label>
+      <label style="flex:1">CSS</label>
+      <label style="flex:1">JS</label>
+    </div>
+    <div style="display:flex;gap:8px;flex:1">
+      <textarea id="htmlCode" style="flex:1" oninput="renderHTML()" placeholder="<h1>Hello World</h1>"><h1 style="color:#667eea">Hello World 👋</h1>
+<p>Write HTML, CSS, and JS — see it render live!</p>
+<button onclick="alert('Hi!')">Click me</button></textarea>
+      <textarea id="cssCode" style="flex:1" oninput="renderHTML()" placeholder="h1 { color: blue; }">body { font-family: system-ui; padding: 20px; background: #f0f0f0; }
+h1 { color: #667eea; }</textarea>
+      <textarea id="jsCode" style="flex:1" oninput="renderHTML()" placeholder="console.log('hello')"></textarea>
+    </div>
+  </div>
+  <div class="preview">
+    <label>Preview</label>
+    <iframe id="previewFrame" sandbox="allow-scripts allow-modals"></iframe>
+  </div>
+</div>
+<div class="sponsor"><p>💡 Need <strong>AI to review your HTML</strong>? <a href="/api-playground.html">Try our API</a>.</p></div>
+</div>
+<script>
+function renderHTML(){
+  const h=document.getElementById('htmlCode').value;
+  const c=document.getElementById('cssCode').value;
+  const j=document.getElementById('jsCode').value;
+  const doc=`<!DOCTYPE html><html><head><style>${c}</style></head><body>${h}<script>${j}<\/script><script src="/conversion-banner.js" defer></script>
+</body></html>`;
+  const f=document.getElementById('previewFrame');
+  f.srcdoc=doc;
+}
+renderHTML();
+</script>
+<script src="/conversion-banner.js" defer></script>
+</body>
+</html>

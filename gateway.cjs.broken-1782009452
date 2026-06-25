@@ -1,0 +1,50 @@
+  // Health
+  if (pathname === '/api/health') return handleHealth(req, res);
+
+  // MCP Protocol (for AI agent directory discovery)
+  if (pathname.startsWith('/mcp')) return handleMcpRequest(req, res, readJSON(API_KEYS), FREE_LIMIT);
+
+  // Free trial key
+  if (pathname === '/api/free-trial-key' || pathname === '/api/dev-key') return handleFreeTrialKey(req, res);
+
+  // Stats
+  if (pathname === '/api/stats') return handleStats(req, res);
+
+  // GitHub webhook
+  if (pathname === '/api/github-webhook') return githubWebhook.handle(req, res);
+
+  // Checkout — redirect pricing page "Buy Credits" buttons to wallet payment
+  if (pathname === '/api/checkout') {
+    const parsed = url.parse(req.url, true);
+    const priceId = parsed.query.price_id;
+    const tier = PRICES[priceId];
+    if (!tier) {
+      res.writeHead(400, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({ error: 'Invalid price_id', valid_ids: Object.keys(PRICES) }));
+      return;
+    }
+    log(`Checkout attempt: price_id=${priceId}, tier=${tier.name}, ip=${ipFromReq(req)}`);
+    // Redirect to wallet payment page with price info
+    res.writeHead(302, { Location: `/wallet-payment?price_id=${priceId}&amount=${tier.price}&credits=${tier.credits}&tier=${encodeURIComponent(tier.name)}` });
+    res.end();
+    return;
+  }
+
+  // Free API endpoints
+  const freeMatch = pathname.match(/^\/free\/(w+)$/);
+  if (freeMatch) return handleFreeAPI(req, res, freeMatch[1]);
+
+  // Premium API endpoints
+  const premiumMatch = pathname.match(/^\/v1\/(w+)$/);
+  if (premiumMatch) return handlePremiumAPI(req, res, premiumMatch[1]);
+
+  // Analytics stats
+  if (pathname === '/api/stats/analytics') return handleAnalyticsStats(req, res);
+
+  // Wallet payment verification (all paths)
+  if (pathname === '/api/wallet-payment' || pathname === '/api/wallet/verify-payment' || pathname === '/api/pay/wallet' || pathname === '/api/wallet/payment') {
+    return handleWalletPayment(req, res);
+  }
+
+  // Static content
+  return serveStatic(req, res);

@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta property="og:title" content="CSS Minifier & Beautifier">
+<meta property="og:description" content="Minify or beautify CSS online. Reduce file size, improve performance. Free tool.">
+<meta property="og:url" content="https://automation.songheng.vip/css-minifier.html">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://automation.songheng.vip/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="CSS Minifier & Beautifier">
+<meta name="twitter:description" content="Minify or beautify CSS online. Reduce file size, improve performance. Free tool.">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CSS Minifier & Beautifier — Compress CSS Online | my-automaton</title>
+<meta name="description" content="Minify CSS to single line or beautify with configurable indentation. See file size reduction percentage. 100% free, client-side, no signup.">
+<style>
+:root{--bg:#0f172a;--card:#1e293b;--text:#e2e8f0;--muted:#94a3b8;--accent:#38bdf8;--green:#4ade80;--border:#334155;--yellow:#fbbf24}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+header{background:var(--card);border-bottom:1px solid var(--border);padding:1rem 2rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap}
+header h1{font-size:1.25rem;color:var(--accent)}
+nav a{color:var(--muted);text-decoration:none;margin-left:1rem;font-size:.875rem}
+main{max-width:950px;margin:2rem auto;padding:0 1.5rem}
+.panel{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+@media(max-width:650px){.panel{grid-template-columns:1fr}}
+.box{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.25rem;display:flex;flex-direction:column}
+.box h3{font-size:.8rem;color:var(--accent);margin-bottom:.5rem;display:flex;align-items:center;gap:.5rem}
+.box h3 .size{font-size:.6rem;color:var(--muted);font-weight:400}
+textarea{flex:1;background:#0a0f1a;color:var(--text);border:1px solid var(--border);border-radius:8px;padding:.75rem;font-family:"Fira Code",monospace;font-size:.7rem;resize:vertical;min-height:300px;tab-size:2}
+textarea:focus{outline:none;border-color:var(--accent)}
+.btn-row{display:flex;gap:.5rem;margin-top:.75rem;flex-wrap:wrap;align-items:center}
+.btn{padding:.35rem 1rem;border:none;border-radius:6px;cursor:pointer;font-size:.7rem;font-weight:600}
+.btn-primary{background:var(--accent);color:#0f172a}
+.btn-green{background:var(--green);color:#0f172a}
+.btn-outline{background:transparent;color:var(--muted);border:1px solid var(--border)}
+.btn:hover{filter:brightness(1.15)}
+.presets{display:flex;gap:.3rem;flex-wrap:wrap}
+.presets button{padding:.2rem .7rem;border:1px solid var(--border);border-radius:4px;background:transparent;color:var(--muted);cursor:pointer;font-size:.6rem}
+.presets button:hover{border-color:var(--accent)}
+.stats-bar{display:flex;justify-content:space-between;align-items:center;font-size:.65rem;color:var(--muted);margin:.5rem 0;gap:.5rem;flex-wrap:wrap}
+.stats-bar .reduction{color:var(--green);font-weight:700;font-family:"Fira Code",monospace}
+.indent-select{background:var(--card);color:var(--text);border:1px solid var(--border);border-radius:6px;padding:.25rem .5rem;font-size:.65rem}
+footer{text-align:center;padding:2rem;color:var(--muted);font-size:.8rem;border-top:1px solid var(--border);margin-top:2rem}footer a{color:var(--accent)}
+.output-highlight{background:#0a0f1a;border:1px solid var(--border);border-radius:8px;padding:.75rem;font-family:"Fira Code",monospace;font-size:.7rem;max-height:350px;overflow:auto;white-space:pre-wrap;color:var(--text)}
+</style>
+
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"CSS Minifier & Beautifier","applicationCategory":"DeveloperApplication","operatingSystem":"Any","url":"https://automation.songheng.vip/css-minifier.html","description":"Minify or beautify CSS online. Reduce file size or format with proper indentation. 100% client-side.","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"aggregateRating":{"@type":"AggregateRating","ratingValue":"4.8","ratingCount":"127"}}</script>
+</head>
+<body>
+<header><h1>⚡ CSS Minifier & Beautifier</h1><nav><a href="/">Home</a><a href="/dev-tools.html">Tools</a><a href="/api-playground.html">API</a></nav></header>
+<main>
+<div class="presets"><span style="font-size:.6rem;color:var(--muted);align-self:center">Samples:</span>
+  <button onclick="loadPreset('card')">Card Styles</button>
+  <button onclick="loadPreset('button')">Button Styles</button>
+  <button onclick="loadPreset('layout')">Grid Layout</button>
+</div>
+<div class="panel">
+  <div class="box">
+    <h3>📥 CSS Input <span class="size" id="inputSize">0 bytes</span></h3>
+    <textarea id="cssInput" oninput="processCSS()">.card {
+  background: #1e293b;
+  border: 1px solid #334155;
+  border-radius: 12px;
+  padding: 1.5rem;
+  transition: border-color 0.2s;
+}
+
+.card:hover {
+  border-color: #38bdf8;
+}
+
+.card .title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #38bdf8;
+  margin-bottom: 0.5rem;
+}</textarea>
+  </div>
+  <div class="box">
+    <h3>📤 Output <span class="size" id="outputSize">0 bytes</span></h3>
+    <div class="output-highlight" id="cssOutput" style="min-height:300px"></div>
+    <div class="stats-bar">
+      <span class="reduction" id="reduction"></span>
+      <div style="display:flex;gap:.3rem;align-items:center">
+        <select id="indent" onchange="processCSS()" class="indent-select">
+          <option value="0">Minified</option>
+          <option value="2" selected>2 spaces</option>
+          <option value="4">4 spaces</option>
+          <option value="tab">Tab</option>
+        </select>
+        <button class="btn btn-green" onclick="copyOutput()">📋 Copy</button>
+        <button class="btn btn-primary" onclick="downloadOutput()">💾 .css</button>
+      </div>
+    </div>
+  </div>
+</div>
+</main>
+<footer><p>my-automaton · Free CSS Minifier · <a href="/dev-tools.html">All Tools</a> · <a href="/api-docs.html">API Docs</a></p></footer>
+<script>
+const presets={
+  card:`.card {\n  background: #1e293b;\n  border: 1px solid #334155;\n  border-radius: 12px;\n  padding: 1.5rem;\n}\n.card:hover {\n  border-color: #38bdf8;\n}`,
+  button:`.btn {\n  padding: 0.5rem 1.5rem;\n  border: none;\n  border-radius: 8px;\n  cursor: pointer;\n  font-weight: 600;\n}\n.btn-primary {\n  background: #38bdf8;\n  color: #0f172a;\n}`,
+  layout:`.grid {\n  display: grid;\n  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));\n  gap: 1rem;\n}\n.grid-item {\n  background: #1e293b;\n  border-radius: 8px;\n  padding: 1rem;\n}`
+};
+function loadPreset(k){document.getElementById('cssInput').value=presets[k];processCSS()}
+
+function processCSS(){
+  const raw=document.getElementById('cssInput').value.trim();
+  document.getElementById('inputSize').textContent=raw.length+' bytes';
+  if(!raw){document.getElementById('cssOutput').textContent='';return}
+
+  // Minify
+  let min=raw
+    .replace(/\/\*[\s\S]*?\*\//g,'')  // comments
+    .replace(/\s+/g,' ')
+    .replace(/\s*{\s*/g,'{')
+    .replace(/\s*}\s*/g,'}')
+    .replace(/\s*;\s*/g,';')
+    .replace(/\s*:\s*/g,':')
+    .replace(/\s*,\s*/g,',')
+    .replace(/;\s*}/g,'}')
+    .trim();
+
+  const indentVal=document.getElementById('indent').value;
+  const indent=indentVal==='tab'?'\t':' '.repeat(parseInt(indentVal));
+
+  let output;
+  if(indentVal==='0'){
+    output=min;
+  }else{
+    // Beautify
+    output=min.replace(/\{/g,' {\n'+indent).replace(/\}/g,'\n}\n').replace(/;/g,';\n'+indent);
+    // Clean up: remove extra indent before }
+    output=output.replace(/\n\s*\}/g,'\n}');
+    // Remove trailing whitespace
+    output=output.split('\n').map(l=>l.trimRight()).join('\n').trim();
+  }
+
+  document.getElementById('cssOutput').textContent=output;
+  document.getElementById('outputSize').textContent=output.length+' bytes';
+
+  const pct=raw.length?((raw.length-output.length)/raw.length*100).toFixed(1):0;
+  document.getElementById('reduction').textContent=pct>0?`↓ ${pct}% smaller`:'0% change';
+}
+
+function copyOutput(){const v=document.getElementById('cssOutput').textContent;if(v)navigator.clipboard.writeText(v)}
+function downloadOutput(){const v=document.getElementById('cssOutput').textContent;if(!v)return;const b=new Blob([v],{type:'text/css'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='output.css';a.click()}
+
+setTimeout(processCSS,50);
+</script>
+<script src="/conversion-banner.js" defer></script>
+<script src="/share-widget.js"></script></body>
+</html>

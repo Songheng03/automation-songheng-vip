@@ -1,0 +1,21 @@
+{
+  "server": {
+    "name": "io.github.automaton-colony/my-automaton",
+    "title": "my-automaton",
+    "description": "An autonomous agent MCP server for automation tasks. my-automaton is an MCP server that provides tools for web scraping, data extraction, and automated workflows. Connect any MCP-compatible client to leverage these capabilities.",
+    "version": "1.0.0",
+    "websiteUrl": "https://automation.songheng.vip",
+    "repository": {
+      "url": "https://github.com/automaton-colony/my-automaton",
+      "source": "github"
+    },
+    "remotes": [
+      {
+        "type": "streamable-http",
+        "url": "https://automation.songheng.vip/mcp"
+      }
+    ],
+    "tags": ["mcp", "automation", "agent"],
+    "$schema": "https://static.modelcontextprotocol.io/schemas/2025-10-17/server.schema.json"
+  }
+}

@@ -1,0 +1,122 @@
+{
+  "research_date": "2025-07-17",
+  "directories": {
+    "smithery_ai": {
+      "name": "Smithery.ai",
+      "website": "https://smithery.ai",
+      "submission_type": "web_ui_and_cli",
+      "submission_page_url": "https://smithery.ai/docs/build/publish",
+      "has_rest_api": false,
+      "has_web_form": true,
+      "method": "Publish via CLI (smithery publish) or web UI. Supports BYOH (Bring Your Own Hosting) where Smithery Gateway proxies to the user's upstream server URL using Streamable HTTP transport.",
+      "authentication": {
+        "required": true,
+        "type": "GitHub OAuth",
+        "api_key_required": false
+      },
+      "required_fields": [
+        "Server URL (public HTTPS endpoint)",
+        "Server configuration (MCP server config)"
+      ],
+      "optional_fields": [],
+      "rate_limits": "Not documented",
+      "notes": "Publishing flow requires completing the setup through the CLI or website after logging in with GitHub. The server must support Streamable HTTP transport. Smithery also offers hosted deployment options."
+    },
+    "mcp_so": {
+      "name": "MCP.so",
+      "website": "https://mcp.so",
+      "submission_type": "web_form",
+      "submission_page_url": "https://mcp.so/submit",
+      "has_rest_api": false,
+      "has_web_form": true,
+      "method": "Direct web form submission on the /submit page. Users fill out fields and submit.",
+      "authentication": {
+        "required": true,
+        "type": "Site login (Sign In via sidebar)",
+        "api_key_required": false
+      },
+      "required_fields": [
+        "Type (MCP Server or MCP Client) - radio button selection",
+        "Name (text input)",
+        "URL (text input)",
+        "Server Config (JSON textarea for mcpServers configuration)"
+      ],
+      "optional_fields": [],
+      "rate_limits": "Not documented",
+      "notes": "Form has a textarea for server config with placeholder showing a sample mcpServers JSON object (e.g., GitHub MCP server config with docker command, args, and env variables)."
+    },
+    "glama_ai": {
+      "name": "Glama.ai",
+      "website": "https://glama.ai",
+      "submission_type": "github_repository_auto_indexing",
+      "submission_page_url": "https://glama.ai/mcp/methodology",
+      "has_rest_api": false,
+      "has_web_form": false,
+      "method": "GitHub repository-based submission. Maintainer authenticates via GitHub OAuth and Glama verifies write/admin access to the repository. Servers are auto-indexed from GitHub repositories and continuously synced.",
+      "authentication": {
+        "required": true,
+        "type": "GitHub OAuth (must have write/admin access to the repo being listed)",
+        "api_key_required": false
+      },
+      "required_fields": [
+        "GitHub repository with write/admin access",
+        "Dockerfile (can be authored by maintainer or AI-inferred by Glama)",
+        "Server must pass automated build, introspection, and audit pipeline"
+      ],
+      "optional_fields": [],
+      "rate_limits": "Not documented",
+      "notes": "Servers are built from Dockerfiles. Glama runs protocol introspection (tools/list, resources/list, prompts/list). Security auditing is performed. Servers with failed builds are preserved but hidden from search. Connector maintainers provide sandbox credentials. Quality scores are assigned via tool-definition-quality-score."
+    },
+    "clawhunt": {
+      "name": "ClawHunt",
+      "website": "https://clawhunt.com",
+      "submission_type": "unknown",
+      "submission_page_url": null,
+      "has_rest_api": false,
+      "has_web_form": false,
+      "method": "The site references /submit-tool and /api-docs in the footer navigation, but both pages return 404 errors. The site appears to be a concept/demo with placeholder tool data.",
+      "authentication": {
+        "required": "unknown",
+        "type": "unknown",
+        "api_key_required": "unknown"
+      },
+      "required_fields": [],
+      "optional_fields": [],
+      "rate_limits": "unknown",
+      "notes": "Site describes itself as 'Product Hunt for AI Agents' with tools like SuperAPI, PaymentPro, DataStore as placeholders. Submission functionality is not currently available. The site may not be fully launched."
+    },
+    "opentools": {
+      "name": "OpenTools",
+      "website": "https://opentools.com",
+      "submission_type": "unknown",
+      "submission_page_url": null,
+      "has_rest_api": false,
+      "has_web_form": false,
+      "method": "OpenTools focuses on providing 'One API to use any LLM with every MCP tool' - it is an API for consuming MCP tools, not a directory for submitting them. The /registry page lists MCP servers but has no visible submission mechanism. Documentation at /docs appears to be a Mintlify docs site that may require client-side rendering.",
+      "authentication": {
+        "required": "unknown",
+        "type": "Likely Clerk authentication (clerk.opentools.com referenced)",
+        "api_key_required": "unknown"
+      },
+      "required_fields": [],
+      "optional_fields": [],
+      "rate_limits": "unknown",
+      "notes": "The site is primarily an API gateway for LLM tool use rather than a submission directory. Users can sign up and get API access. GitHub org at github.com/opentools may contain SDKs and tools."
+    }
+  },
+  "summary": {
+    "directories_with_working_submissions": ["Smithery.ai", "MCP.so", "Glama.ai"],
+    "directories_with_pending_submission_support": ["ClawHunt (submission pages return 404)", "OpenTools (no submission mechanism found)"],
+    "submission_methods": {
+      "web_form": ["MCP.so"],
+      "cli_and_web_ui": ["Smithery.ai"],
+      "github_repository_indexing": ["Glama.ai"],
+      "not_functional_or_not_applicable": ["ClawHunt", "OpenTools"]
+    },
+    "authentication_methods": {
+      "github_oauth": ["Smithery.ai", "Glama.ai"],
+      "site_login": ["MCP.so"],
+      "unknown": ["ClawHunt", "OpenTools"]
+    }
+  }
+}

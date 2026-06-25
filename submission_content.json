@@ -1,0 +1,110 @@
+{
+  "Smithery": {
+    "title": "Automaton AI Tool Suite — 7-Power MCP Server for AI Agents & Developers",
+    "short_description": "A production-grade MCP server with 7 AI tools — code review, security scanning, text analysis, summarization, code explanation, refactoring, and complexity analysis. Pay-per-use from $0.01. Ready for Claude Desktop, Cursor, and any MCP-compatible agent.",
+    "detailed_description": "**Automaton** is the ultimate MCP server for AI agent developers. Exposing **7 distinct tools** through a single, clean MCP endpoint at `automation.songheng.vip`, it gives your AI agents superpowers for code analysis, security auditing, and text processing — all without managing infrastructure or provisioning API keys.\n\nBuilt specifically for the **Smithery ecosystem**, Automaton integrates seamlessly whether you deploy via our npm CLI (`@my-automaton/cli`), Docker, or direct HTTP endpoint. Every tool features complete input schemas, typed responses, and robust error handling for reliable AI agent tool-calling.\n\n### 🔧 Tool Catalog\n| Tool | Price | Description |\n|------|-------|-------------|\n| **analyze** | $0.01 | Deep text analysis — themes, tone, readability, patterns |\n| **summarize** | $0.02 | AI-powered text condensation |\n| **review** | $0.05 | Full code review across 10+ languages |\n| **security** | $0.03 | OWASP Top 10 vulnerability scanning |\n| **explain** | $0.02 | Human-readable code explanations |\n| **refactor** | $0.05 | Concrete code improvement suggestions |\n| **complexity** | $0.02 | Cyclomatic & cognitive complexity metrics |\n\nSupports both **JSON-RPC** (direct tool calls) and **SSE streaming** (real-time interactions), making it the perfect Swiss Army knife for any AI agent workflow.",
+    "features": [
+      "MCP protocol compliant — works with Claude Desktop, Cursor, and 100K+ Smithery AI agents",
+      "7 production-ready AI tools accessible via single endpoint",
+      "Supports both JSON-RPC and SSE streaming transport modes",
+      "CLI deployment via npm (@my-automaton/cli) or direct HTTP integration",
+      "Multi-language support across all code tools (JS, Python, Go, Rust, Java, C++, and more)",
+      "Pay-per-use: as low as $0.01 per request — no subscriptions, no commitments",
+      "Crypto microtransactions via USDC on Base chain (x402 protocol)",
+      "Production-grade reliability with Cloudflare tunnel infrastructure and 99.9% uptime",
+      "Complete tool schemas with typed responses for reliable AI agent tool-calling"
+    ],
+    "pricing": "True pay-per-use starting from $0.01/request. All payments in USDC on Base chain via x402 protocol. No subscription fees, no minimums, no surprise bills. **Analyze:** $0.01 | **Summarize:** $0.02 | **Explain:** $0.02 | **Complexity:** $0.02 | **Security:** $0.03 | **Review:** $0.05 | **Refactor:** $0.05",
+    "domain": "automation.songheng.vip",
+    "endpoint": "https://automation.songheng.vip/mcp",
+    "audience_pitch": "Smithery hosts the largest MCP marketplace with 100K+ tools — and Automaton stands out by delivering 7 essential developer tools in one beautifully integrated package. Claude Desktop and Cursor users can configure one endpoint and instantly unlock code review, security scanning, and text analysis capabilities. No juggling multiple servers, no complex setup — just pure AI productivity at microtransaction prices."
+  },
+  "Glama": {
+    "title": "my-automaton — Multi-Tool AI MCP Server (MIT, Open Source)",
+    "short_description": "An open-source (MIT), production-ready MCP server delivering 7 AI-powered developer tools: code review, security auditing, text analysis, code refactoring, and more — all through a single standards-compliant endpoint. Starting at $0.01/request.",
+    "detailed_description": "**my-automaton** is a comprehensive, open-source MCP server implementation that brings a full arsenal of AI developer tools to the Model Context Protocol ecosystem. Built for Glama's **50,000+ AI/LLM developers**, it delivers production-grade capabilities for code quality, security, and text processing through a standards-compliant JSON-RPC interface.\n\nThe server is **auto-indexed from GitHub** (MIT license) and features a **Tool Definition Quality Score (TDQS)**-optimized manifest that ensures high-quality rankings and seamless discovery. Every tool ships with comprehensive input schemas and structured response formats for reliable LLM tool-calling.\n\n### 🛠️ Available Tools\n| Method | Price | What It Does |\n|--------|-------|-------------|\n| `tools/list` | Free | Discover all capabilities |\n| `tools/call: analyze` | $0.01 | Deep text analysis — themes, tone, readability |\n| `tools/call: summarize` | $0.02 | AI text summarization |\n| `tools/call: review` | $0.05 | Multi-language code review (10+ langs) |\n| `tools/call: security` | $0.03 | OWASP Top 10 vulnerability scanning |\n| `tools/call: explain` | $0.02 | Code explanation in plain language |\n| `tools/call: refactor` | $0.05 | Code quality improvement suggestions |\n| `tools/call: complexity` | $0.02 | Cyclomatic & cognitive complexity metrics |\n\nGlama's built-in **browser inspector** can be used to test every tool in real-time, giving developers immediate confidence before integrating into their workflows.",
+    "features": [
+      "Open-source (MIT license) with public GitHub repository — auto-indexed by Glama for automatic updates",
+      "TDQS-optimized schema for high-quality scores and better discoverability",
+      "MCP protocol compliant with both JSON-RPC and SSE streaming transport",
+      "7 production-ready tools with comprehensive input/output schemas",
+      "Supports 10+ programming languages: JavaScript, Python, Go, Rust, Java, C++, TypeScript, and more",
+      "Pay-per-use USDC microtransactions starting at $0.01 — no subscriptions",
+      "Standard .well-known/mcp.json and .well-known/ai-plugin.json discovery endpoints",
+      "Real-time SSE streaming for responsive, low-latency interactions",
+      "Glama browser inspector compatible for live tool testing"
+    ],
+    "pricing": "Microtransaction-based pricing from $0.01/request paid in USDC on Base chain (x402 protocol). **Analyze:** $0.01 | **Summarize/Explain/Complexity:** $0.02 | **Security:** $0.03 | **Review/Refactor:** $0.05. No monthly fees, no minimum spend.",
+    "domain": "automation.songheng.vip",
+    "endpoint": "https://automation.songheng.vip/mcp",
+    "audience_pitch": "Glama's 50,000+ developers seeking verified, high-quality MCP servers will find my-automaton's open-source MIT license and TDQS-optimized schema a perfect fit. The GitHub auto-indexing keeps your listing always current, while the transparent microtransaction pricing (no subscriptions!) removes all friction. With Glama's browser inspector, developers can test each tool before committing — lowering the barrier to adoption even further."
+  },
+  "Pipedream": {
+    "title": "Automaton — MCP AI Tool Suite for Pipedream Workflow Automation",
+    "short_description": "Supercharge your Pipedream workflows with 7 AI-powered tools: code review, security scanning, text analysis, summarization, and more. No API keys, no infrastructure — just JSON-RPC calls from $0.01/request.",
+    "detailed_description": "**Automaton** brings enterprise-grade AI capabilities to your Pipedream workflows with zero friction. As a full-featured MCP server exposed via a simple JSON-RPC API, it integrates directly into your automation pipelines — no API keys to provision, no servers to manage, no monthly commitments.\n\nImagine triggering **automated code review** on every GitHub PR event, running **security scans** on new deployments, or **summarizing** incoming support tickets — all from within Pipedream's workflow engine. Automaton makes this reality with a single HTTPS endpoint.\n\n### 🤖 Services Available to Pipedream Workflows\n| Service | Price | Use Case in Pipedream |\n|---------|-------|----------------------|\n| **Code Review** | $0.05 | Auto-review PRs on GitHub trigger events |\n| **Security Scan** | $0.03 | Scan code on deployment workflows |\n| **Text Analysis** | $0.01 | Analyze feedback, reviews, or content |\n| **Summarization** | $0.02 | Condense tickets, articles, or reports |\n| **Code Explanation** | $0.02 | Document code in CI/CD pipelines |\n| **Refactoring** | $0.05 | Suggest improvements in code workflows |\n| **Complexity Analysis** | $0.02 | Track technical debt metrics |\n\nEach tool accepts simple JSON payloads and returns structured results — perfectly compatible with Pipedream's HTTP request steps and code actions.",
+    "features": [
+      "Full MCP protocol support (JSON-RPC + SSE streaming) for flexible integration",
+      "7 production-ready AI tools covering code, text, and security domains",
+      "Multi-language support: JavaScript, Python, Go, Rust, Java, C++, TypeScript, and more",
+      "Pay-per-use pricing starting at just $0.01/request — no subscriptions, no surprise bills",
+      "Crypto-native payments via USDC on Base chain (x402 protocol)",
+      "Zero infrastructure needed — just call the HTTPS endpoint from any Pipedream step",
+      "OpenAI-compatible AI plugin manifest for easy integration into existing tools",
+      "Always-on HTTPS gateway with Cloudflare tunnel — 99.9% uptime",
+      "No API key management required — payment happens automatically per request"
+    ],
+    "pricing": "Pay-as-you-go from $0.01/request (USDC on Base chain via x402). No monthly fees, no subscriptions. **Analyze:** $0.01 | **Summarize/Explain/Complexity:** $0.02 | **Security:** $0.03 | **Review/Refactor:** $0.05. Pay only for what you use.",
+    "domain": "automation.songheng.vip",
+    "endpoint": "https://automation.songheng.vip/mcp",
+    "audience_pitch": "Pipedream's 200,000+ developers building automated workflows can instantly add AI-powered code review, security scanning, and text analysis to their pipelines. No API keys to manage, no external services to configure — just add an HTTP request step pointing to automation.songheng.vip/mcp and start calling tools. Perfect for automating code quality gates in CI/CD, generating PR summaries from GitHub webhooks, processing support tickets, and building intelligent content pipelines. At $0.01/request, it's the most cost-effective AI integration available on the platform."
+  },
+  "MCP.so": {
+    "title": "my-automaton — 7-in-1 AI Developer Toolkit MCP Server",
+    "short_description": "A feature-rich MCP server packing 7 AI-powered developer tools into one easy endpoint: code review, security scanning, text analysis, summarization, code explanation, refactoring, and complexity analysis. Pay-per-use from $0.01.",
+    "detailed_description": "**my-automaton** is the ultimate multi-tool MCP server for Claude Desktop users and MCP enthusiasts. With **7 diverse tools** bundled into a single, easy-to-connect endpoint, it eliminates the hassle of managing multiple MCP servers while giving you everything you need for AI-assisted development.\n\nSetting up is as simple as adding one configuration block to your MCP client:\n\n```json\n{\n  \"mcpServers\": {\n    \"my-automaton\": {\n      \"url\": \"https://automation.songheng.vip/mcp\",\n      \"type\": \"streamable-http\"\n    }\n  }\n}\n```\n\nThe server handles authentication, payments (USDC microtransactions via x402 protocol), and response formatting automatically. Just configure once and start using all 7 tools instantly.\n\n### 🎯 Complete Tool Lineup\n1. **analyze** ($0.01) — Deep text analysis: themes, tone, readability scoring, pattern detection\n2. **summarize** ($0.02) — AI-powered text condensation for articles, docs, and reports\n3. **review** ($0.05) — Multi-language code review (JS, Python, Go, Rust, Java, C++, and more)\n4. **security** ($0.03) — OWASP Top 10 vulnerability scanning with actionable reports\n5. **explain** ($0.02) — Code explanation in plain, understandable language\n6. **refactor** ($0.05) — Concrete code quality and maintainability improvements\n7. **complexity** ($0.02) — Cyclomatic complexity, cognitive complexity, and maintainability metrics\n\nEach tool comes with comprehensive JSON-RPC schemas, making them immediately usable from any MCP client without additional configuration.",
+    "features": [
+      "7 MCP tools in one server — category-rich for maximum discoverability on MCP.so",
+      "One-line setup: just add the endpoint URL to your MCP client configuration",
+      "Multi-language support for all code tools (10+ programming languages)",
+      "Pay-per-use — no monthly fees, no API key provisioning, no minimum spend",
+      "USDC payments on Base chain via x402 protocol — crypto-native and frictionless",
+      "Open-source under MIT license with public GitHub repository",
+      "Streamable HTTP transport supporting both JSON-RPC and SSE",
+      "Standard .well-known/mcp.json and .well-known/ai-plugin.json for automatic discovery",
+      "Multi-language support (EN/ZH/JA) for international MCP.so audience"
+    ],
+    "pricing": "Transparent pay-per-use pricing. **Analyze:** $0.01 | **Summarize/Explain/Complexity:** $0.02 | **Security:** $0.03 | **Review/Refactor:** $0.05. All prices in USDC on Base chain. No subscriptions, no minimums — pay only for what you use.",
+    "domain": "automation.songheng.vip",
+    "endpoint": "https://automation.songheng.vip/mcp",
+    "server_config": {
+      "mcpServers": {
+        "my-automaton": {
+          "url": "https://automation.songheng.vip/mcp",
+          "type": "streamable-http"
+        }
+      }
+    },
+    "audience_pitch": "MCP.so is the largest collection of MCP servers, and my-automaton is the perfect addition — 7 diverse tool categories in one server means better discoverability and higher value for users. Claude Desktop users who want code review, security scanning, and text analysis without juggling multiple MCP servers will find this an irresistible one-stop solution. The simple configuration (just add our URL) and transparent micro-pricing make it the easiest decision for any MCP.so visitor."
+  },
+  "Toolbase": {
+    "title": "Automaton — AI-Powered Developer Tool Suite for Modern Teams",
+    "short_description": "A comprehensive AI tool platform for B2B teams: code review, security scanning, text analysis, summarization, and refactoring via a simple API. Pay-per-use from $0.01/request. No subscriptions, no contracts.",
+    "detailed_description": "**Automaton** is a professional-grade AI tool platform designed for **development teams and businesses** that need on-demand AI capabilities without the overhead of managing infrastructure or committing to annual contracts.\n\nThink of it as a **Swiss Army knife for software quality**: one API endpoint gives your team access to 7 production-ready AI tools that cover code review, security auditing, text analysis, summarization, and more. Each tool is multi-language compatible, output is structured and actionable, and pricing is transparent and usage-based.\n\n### 💼 For Business Teams\n| Need | Solution | Cost |\n|------|----------|------|\n| Automated code reviews | Multi-language AI code review | $0.05/review |\n| Pre-deployment security | OWASP Top 10 scanning | $0.03/scan |\n| Documentation summaries | AI text summarization | $0.02/summary |\n| Codebase onboarding | Code explanation tool | $0.02/explanation |\n| Technical debt tracking | Complexity analysis | $0.02/analysis |\n| Code quality improvement | Refactoring suggestions | $0.05/suggestion |\n| Content intelligence | Deep text analysis | $0.01/analysis |\n\nNo more negotiating with multiple vendors, managing separate API keys, or tracking complex subscription tiers. Automaton is a single provider, single endpoint, single payment method — USDC on Base chain.\n\n### 🔒 Enterprise-Ready\n- Cloudflare-protected infrastructure with 99.9% uptime\n- No data persistence — each request is stateless and private\n- OpenAI-compatible plugin manifest for existing toolchain integration\n- Standard discovery endpoints (.well-known/mcp.json, .well-known/ai-plugin.json)",
+    "features": [
+      "7 AI tools accessible through a single HTTPS API endpoint — one integration, seven capabilities",
+      "Multi-language support for all code-related tools (10+ programming languages)",
+      "Pay-per-use billing — no monthly commitments, no annual contracts, no minimums",
+      "Crypto-native payments (USDC on Base chain via x402) for frictionless global transactions",
+      "Cloudflare-protected infrastructure with 99.9% uptime SLA",
+      "OpenAI-compatible plugin manifest for easy integration into existing toolchains",
+      "Standard discovery endpoints (.well-known/mcp.json, .well-known/ai-plugin.json)",
+      "No API key provisioning or secret management required — payment-based access",
+      "Stateless architecture — your code and data are never stored"
+    ],
+    "pricing": "Usage-based pricing starting at just $0.01 per request. No monthly subscriptions, no annual contracts, no hidden fees. **Text Analysis:** $0.01 | **Summarization:** $0.02 | **Code Explanation:** $0.02 | **Complexity Analysis:** $0.02 | **Security Scan:** $0.03 | **Code Review:** $0.05 | **Refactoring:** $0.05 per request. Paid in USDC on Base chain.",
+    "domain": "automation.songheng.vip",
+    "endpoint": "https://automation.songheng.vip/mcp",
+    "audience_pitch": "Toolbase's B2B SaaS audience will appreciate Automaton's transparent pay-per-use model — no more budgeting uncertainty, no more vendor lock-in from annual contracts. For the cost of a single SaaS subscription, you can run hundreds of code reviews, security scans, and text analyses. One provider, one integration, seven professional AI tools. It's the smart choice for teams that want AI capabilities without the enterprise overhead."
+  }
+}

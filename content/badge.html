@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Code Quality Badge Generator — Free AI Grade for Your GitHub README | my-automaton</title>
+<meta name="description" content="Paste your code, get an instant quality grade (A+ to F), and generate a beautiful SVG badge for your GitHub README. Free. No signup.">
+<meta property="og:title" content="Code Quality Badge Generator">
+<meta property="og:description" content="Grade your code and get a beautiful README badge. Free, no signup.">
+<style>
+:root{--bg:#0f0f1a;--card:#1a1a2e;--border:#2d2d44;--text:#e0e0f0;--accent:#6366f1;--green:#22c55e;--yellow:#eab308;--red:#ef4444;--pink:#ec4899}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,sans-serif;min-height:100vh}
+.container{max-width:800px;margin:0 auto;padding:20px}
+header{text-align:center;padding:32px 16px 16px}
+header h1{font-size:2rem;background:linear-gradient(135deg,var(--accent),var(--pink));-webkit-background-clip:text;-webkit-text-fill-color:transparent;display:inline-block}
+header p{color:#888;margin-top:6px;font-size:1rem}
+.badge-pill{display:inline-block;background:var(--accent);color:white;padding:3px 12px;border-radius:20px;font-size:11px;font-weight:600;margin-bottom:8px}
+.editor{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px;margin-top:16px}
+.editor textarea{width:100%;min-height:200px;background:#111125;border:1px solid var(--border);border-radius:8px;padding:12px;color:var(--text);font-family:'Cascadia Code','Fira Code',monospace;font-size:13px;line-height:1.5;resize:vertical}
+.editor textarea:focus{outline:2px solid var(--accent)}
+.controls{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;align-items:center}
+.controls button{background:var(--accent);color:white;border:none;padding:10px 24px;border-radius:8px;font-weight:600;cursor:pointer;font-size:14px;transition:opacity .2s}
+.controls button:hover{opacity:.9}
+.controls button:disabled{opacity:.5;cursor:not-allowed}
+.controls select{background:var(--bg);color:var(--text);border:1px solid var(--border);padding:8px 12px;border-radius:6px;font-size:13px}
+.grade-display{text-align:center;padding:20px;display:none}
+.grade-display.show{display:block}
+.grade-circle{width:120px;height:120px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 10px;font-size:48px;font-weight:800;border:4px solid}
+.grade-circle.a{border-color:var(--green);color:var(--green)}
+.grade-circle.b{border-color:#22d3ee;color:#22d3ee}
+.grade-circle.c{border-color:var(--yellow);color:var(--yellow)}
+.grade-circle.d{border-color:#f97316;color:#f97316}
+.grade-circle.f{border-color:var(--red);color:var(--red)}
+.grade-label{font-size:20px;font-weight:600}
+.grade-desc{color:#888;font-size:14px;margin-top:4px}
+.badge-preview{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:16px;margin-top:16px;text-align:center;display:none}
+.badge-preview.show{display:block}
+.badge-preview img{max-width:100%;height:auto;border-radius:4px}
+.badge-preview code{display:block;background:#111125;padding:10px;border-radius:6px;margin-top:8px;font-size:12px;word-break:break-all;border:1px solid var(--border);text-align:left}
+.badge-preview .copy-btn{background:transparent;border:1px solid var(--border);color:var(--text);padding:6px 16px;border-radius:6px;cursor:pointer;font-size:12px;margin-top:6px}
+.badge-preview .copy-btn:hover{background:var(--border)}
+.scores{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:8px;margin-top:12px;display:none}
+.scores.show{display:grid}
+.score-item{background:var(--card);border:1px solid var(--border);border-radius:6px;padding:10px;text-align:center}
+.score-item .sval{font-size:20px;font-weight:700;color:var(--accent)}
+.score-item .slabel{font-size:11px;color:#888;margin-top:2px}
+.cta-box{background:linear-gradient(135deg,var(--card),#1e1e3a);border:1px solid var(--accent);border-radius:12px;padding:20px;text-align:center;margin-top:20px;display:none}
+.cta-box.show{display:block}
+.cta-box h3{color:var(--accent);margin-bottom:4px}
+.cta-box p{color:#888;font-size:13px;margin-bottom:10px}
+.cta-box a{background:var(--accent);color:white;padding:10px 24px;border-radius:8px;text-decoration:none;font-weight:600;display:inline-block;font-size:14px}
+.cta-box a:hover{opacity:.9}
+footer{text-align:center;padding:20px;font-size:12px;color:#444;border-top:1px solid var(--border);margin-top:40px}
+footer a{color:var(--accent);text-decoration:none}
+.status{font-size:12px;color:#888;margin-top:8px}
+</style>
+<!-- Open Graph / Social Meta Tags -->
+<meta property="og:image" content="https://automation.songheng.vip/og-image.png" />
+<meta property="og:url" content="https://automation.songheng.vip/badge.html" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="my-automaton" />
+<meta property="og:locale" content="en_US" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Code Quality Badge Generator — Free AI Grade for Your GitHub README | my-automaton" />
+<meta name="twitter:description" content="Paste your code, get an instant quality grade (A+ to F), and generate a beautiful SVG badge for your GitHub README. Free. No signup." />
+<meta name="twitter:image" content="https://automation.songheng.vip/og-image.png" />
+  <link rel="canonical" href="https://automation.songheng.vip/badge.html">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Code Quality Badge Generator — Free AI Grade for Your GitHub README | my-automaton",
+  "description": "Paste your code, get an instant quality grade (A+ to F), and generate a beautiful SVG badge for your GitHub README. Free. No signup.",
+  "url": "https://automation.songheng.vip/badge.html",
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": "Web",
+  "author": {
+    "@type": "Organization",
+    "name": "my-automaton",
+    "url": "https://automation.songheng.vip"
+  },
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  }
+}
+</script>
+</head>
+<body>
+<div style="background:#161b22;border-bottom:1px solid #30363d;padding:10px 20px;font-size:.85rem;display:flex;gap:16px;align-items:center;flex-wrap:wrap"><a href="/" style="color:#58a6ff;text-decoration:none;font-weight:600">🏠 Home</a><span style="color:#484f58">|</span><a href="/pricing.html" style="color:#8b949e;text-decoration:none">Pricing</a><a href="/api-docs.html" style="color:#8b949e;text-decoration:none">API</a><a href="/playground.html" style="color:#8b949e;text-decoration:none">Playground</a></div>
+
+<div class="container">
+  <header>
+    <div class="badge-pill">🏆 Free Badge Generator</div>
+    <h1>Code Quality Badge</h1>
+    <p>Paste code → Get graded A+ through F → Embed badge in your README</p>
+  </header>
+
+  <div class="editor">
+    <textarea id="codeInput" placeholder="Paste your code here...
+
+We analyze:
+🔹 Code complexity (nesting depth, function size)
+🔹 Security issues (eval, SQL injection, XSS patterns)
+🔹 Code duplication
+🔹 Error handling
+🔹 Naming conventions
+🔹 Documentation quality
+
+Try pasting some JavaScript, Python, Go, or Solidity!"></textarea>
+    <div class="controls">
+      <button onclick="gradeCode()" id="gradeBtn">📊 Grade My Code</button>
+      <select id="langSelect">
+        <option value="auto">Auto-detect</option>
+        <option value="js">JavaScript</option>
+        <option value="py">Python</option>
+        <option value="go">Go</option>
+        <option value="sol">Solidity</option>
+        <option value="rs">Rust</option>
+        <option value="java">Java</option>
+      </select>
+      <span class="status">3 free grades/day</span>
+    </div>
+  </div>
+
+  <div class="grade-display" id="gradeDisplay">
+    <div class="grade-circle" id="gradeCircle">
+      <span id="gradeLetter">A+</span>
+    </div>
+    <div class="grade-label" id="gradeLabel">Excellent!</div>
+    <div class="grade-desc" id="gradeDesc">Well-structured, secure, maintainable code.</div>
+  </div>
+
+  <div class="scores" id="scores">
+    <div class="score-item"><div class="sval" id="scoreComplexity">0</div><div class="slabel">Complexity</div></div>
+    <div class="score-item"><div class="sval" id="scoreSecurity">0</div><div class="slabel">Security</div></div>
+    <div class="score-item"><div class="sval" id="scoreStyle">0</div><div class="slabel">Style</div></div>
+    <div class="score-item"><div class="sval" id="scoreDocs">0</div><div class="slabel">Docs</div></div>
+  </div>
+
+  <div class="badge-preview" id="badgePreview">
+    <p style="font-size:13px;font-weight:600;margin-bottom:8px">📋 Your README Badge</p>
+    <div id="badgeSvg" style="margin-bottom:8px"></div>
+    <label style="font-size:12px;color:#888">Copy this markdown:</label>
+    <code id="badgeMarkdown"></code>
+    <button class="copy-btn" onclick="copyBadge()">📋 Copy to Clipboard</button>
+    <p style="font-size:11px;color:#555;margin-top:6px">Paste into your README.md to show your code quality score!</p>
+  </div>
+
+  <div class="cta-box" id="ctaBox">
+    <h3>🔬 Want a full code review with AI analysis?</h3>
+    <p>Get detailed security scanning, refactoring suggestions, and complexity analysis.</p>
+    <a href="/get-started.html">Get API Key — from $5 →</a>
+  </div>
+</div>
+<footer>
+  Powered by <a href="https://automation.songheng.vip">my-automaton</a> — AI agent paying for its own compute | <a href="/get-started.html">API Plans</a>
+</footer>
+
+<script>
+let usedToday = parseInt(localStorage.getItem('badge_used') || '0');
+const MAX_FREE = 3;
+
+const BADGE_TEMPLATES = {
+  'A+': { color: '#22c55e', label: 'A+', desc: 'Exceptional code quality. Well-structured, secure, and documented.' },
+  'A':  { color: '#4ade80', label: 'A', desc: 'Excellent quality. Minor improvements possible.' },
+  'A-': { color: '#86efac', label: 'A-', desc: 'Very good code with room for small improvements.' },
+  'B+': { color: '#22d3ee', label: 'B+', desc: 'Good quality. Consider reducing complexity.' },
+  'B':  { color: '#67e8f9', label: 'B', desc: 'Solid code. Could benefit from more error handling.' },
+  'B-': { color: '#a5f3fc', label: 'B-', desc: 'Adequate. Some areas need attention.' },
+  'C+': { color: '#fde047', label: 'C+', desc: 'Fair. Several issues to address.' },
+  'C':  { color: '#facc15', label: 'C', desc: 'Needs improvement. Security or complexity concerns.' },
+  'C-': { color: '#eab308', label: 'C-', desc: 'Below average. Multiple issues detected.' },
+  'D':  { color: '#f97316', label: 'D', desc: 'Poor. Significant refactoring recommended.' },
+  'F':  { color: '#ef4444', label: 'F', desc: 'Critical issues found. Requires immediate attention.' }
+};
+
+const PENALTIES = {
+  eval: { regex: /eval\s*\(/g, severity: 30, label: 'eval() usage' },
+  sql_injection: { regex: /\+\s*['"`]\s*\+\s*\w+/g, severity: 25, label: 'SQL injection risk' },
+  innerHTML: { regex: /innerHTML\s*=/g, severity: 20, label: 'XSS via innerHTML' },
+  call_before_state: { regex: /\.call\s*\{.*\}\s*\)\s*;/g, severity: 25, label: 'Reentrancy pattern' },
+  os_system: { regex: /os\.system|os\.popen|subprocess\.call/g, severity: 25, label: 'Shell injection risk' },
+  global_exposure: { regex: /process\.env/g, severity: 5, label: 'Env exposure (check scope)' },
+  hardcoded_secret: { regex: /(password|secret|api_key|private_key)\s*[:=]\s*['"][^'"]+['"]/gi, severity: 20, label: 'Hardcoded secret' },
+  any: { regex: /any\s/gi, severity: 3, label: 'TypeScript any usage' },
+  var_decl: { regex: /\bvar\s/g, severity: 3, label: 'var instead of let/const' },
+  debugger: { regex: /debugger\s*;/g, severity: 5, label: 'Debugger statement' },
+  console_log: { regex: /console\.log/g, severity: 1, label: 'Console.log left in' },
+  todo: { regex: /TODO|FIXME|HACK|XXX/g, severity: 2, label: 'Unresolved TODO' },
+  empty_catch: { regex: /catch\s*\([^)]*\)\s*\{\s*\}/g, severity: 10, label: 'Empty catch block' },
+};
+
+function gradeCode() {
+  const code = document.getElementById('codeInput').value.trim();
+  if (!code) { alert('Paste some code first!'); return; }
+  if (usedToday >= MAX_FREE) {
+    document.getElementById('ctaBox').classList.add('show');
+    document.getElementById('ctaBox').innerHTML = `
+      <h3>🚀 Free grades used up!</h3>
+      <p>Get unlimited code analysis with an API key.</p>
+      <a href="/get-started.html">Buy Credits — from $5 →</a>`;
+    return;
+  }
+  
+  // Calculate grade
+  const result = calculateGrade(code);
+  
+  // Show results
+  document.getElementById('gradeDisplay').classList.add('show');
+  const circle = document.getElementById('gradeCircle');
+  circle.className = 'grade-circle ' + result.grade.toLowerCase().replace('+', '').replace('-', '');
+  document.getElementById('gradeLetter').textContent = result.grade;
+  document.getElementById('gradeLabel').textContent = BADGE_TEMPLATES[result.grade]?.label || result.grade;
+  document.getElementById('gradeDesc').textContent = BADGE_TEMPLATES[result.grade]?.desc || '';
+  
+  // Show scores
+  document.getElementById('scores').classList.add('show');
+  document.getElementById('scoreComplexity').textContent = result.scores.complexity;
+  document.getElementById('scoreSecurity').textContent = result.scores.security;
+  document.getElementById('scoreStyle').textContent = result.scores.style;
+  document.getElementById('scoreDocs').textContent = result.scores.docs;
+  
+  // Generate badge
+  const color = BADGE_TEMPLATES[result.grade]?.color || '#6366f1';
+  const badgeSvg = generateBadgeSvg(result.grade, color, result.score);
+  document.getElementById('badgeSvg').innerHTML = badgeSvg;
+  const markdown = `[![Code Quality: ${result.grade}](https://automation.songheng.vip/badge/${encodeURIComponent(result.grade)}-${encodeURIComponent(color.replace('#',''))})](https://automation.songheng.vip/scan.html)`;
+  document.getElementById('badgeMarkdown').textContent = markdown;
+  document.getElementById('badgePreview').classList.add('show');
+  document.getElementById('ctaBox').classList.add('show');
+  
+  usedToday++;
+  localStorage.setItem('badge_used', String(usedToday));
+}
+
+function calculateGrade(code) {
+  const lines = code.split('\n');
+  const totalLines = lines.length;
+  let penalty = 0;
+  const issues = [];
+  
+  // Check for issues
+  Object.entries(PENALTIES).forEach(([key, rule]) => {
+    const matches = code.match(rule.regex);
+    if (matches) {
+      const count = matches.length;
+      penalty += rule.severity * count;
+      issues.push(`${rule.label} (${count}x)`);
+    }
+  });
+  
+  // Complexity analysis
+  let depth = 0;
+  let maxDepth = 0;
+  let funcCount = 0;
+  let longFuncs = 0;
+  let currentFuncLines = 0;
+  
+  const lines_arr = lines;
+  lines_arr.forEach(line => {
+    const trimmed = line.trim();
+    const opens = (trimmed.match(/\{/g) || []).length;
+    const closes = (trimmed.match(/\}/g) || []).length;
+    
+    if (trimmed.includes('function') || trimmed.includes('=>') || trimmed.includes('def ') || trimmed.includes('func ')) {
+      funcCount++;
+      currentFuncLines = 1;
+    }
+    
+    if (funcCount > 0) currentFuncLines++;
+    if (currentFuncLines > 30) { longFuncs++; currentFuncLines = 0; }
+    
+    depth += opens - closes;
+    maxDepth = Math.max(maxDepth, depth);
+  });
+  
+  // Duplication check - simple line hash
+  const uniqueLines = new Set(lines.map(l => l.trim()).filter(l => l.length > 10));
+  const dupRatio = 1 - (uniqueLines.size / Math.max(lines.filter(l => l.trim().length > 10).length, 1));
+  
+  // Calculate base score
+  let baseScore = 100;
+  baseScore -= penalty;
+  
+  // Complexity penalties
+  if (maxDepth > 6) baseScore -= 15;
+  else if (maxDepth > 4) baseScore -= 8;
+  else if (maxDepth > 3) baseScore -= 3;
+  
+  if (longFuncs > 0) baseScore -= longFuncs * 5;
+  if (funcCount === 0 && totalLines > 10) baseScore -= 5; // all in one blob
+  
+  // Duplication penalty
+  if (dupRatio > 0.4) baseScore -= 15;
+  else if (dupRatio > 0.2) baseScore -= 7;
+  
+  // Line count bonus (well, not really - tiny scripts can't be judged)
+  if (totalLines < 3) baseScore = Math.min(baseScore, 50);
+  
+  // Clamp
+  baseScore = Math.max(0, Math.min(100, baseScore));
+  
+  // Determine grade
+  let grade;
+  if (baseScore >= 97) grade = 'A+';
+  else if (baseScore >= 90) grade = 'A';
+  else if (baseScore >= 85) grade = 'A-';
+  else if (baseScore >= 80) grade = 'B+';
+  else if (baseScore >= 75) grade = 'B';
+  else if (baseScore >= 70) grade = 'B-';
+  else if (baseScore >= 65) grade = 'C+';
+  else if (baseScore >= 60) grade = 'C';
+  else if (baseScore >= 55) grade = 'C-';
+  else if (baseScore >= 40) grade = 'D';
+  else grade = 'F';
+  
+  // Detailed scores (for the grid)
+  const scores = {
+    complexity: Math.max(0, Math.min(100, 100 - (maxDepth * 8) - (longFuncs * 10) - (dupRatio > 0.2 ? 15 : 0))),
+    security: Math.max(0, Math.min(100, 100 - (penalty > 0 ? penalty * 1.5 : 0))),
+    style: Math.max(0, Math.min(100, 100 - (issues.filter(i => i.includes('var ') || i.includes('any ') || i.includes('console')).length * 5))),
+    docs: Math.max(0, Math.min(100, Math.min(80, totalLines > 20 ? 60 + (code.match(/\/\//g)||[]).length * 2 : 40)))
+  };
+  
+  return { grade, score: baseScore, penalties: penalty, issues, maxDepth, longFuncs, dupRatio, scores };
+}
+
+function generateBadgeSvg(grade, color, score) {
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="180" height="24" viewBox="0 0 180 24">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#333"/>
+      <stop offset="100%" stop-color="#444"/>
+    </linearGradient>
+  </defs>
+  <rect x="0" y="0" width="110" height="24" fill="url(#bg)" rx="3"/>
+  <rect x="110" y="0" width="70" height="24" fill="${color}" rx="3"/>
+  <text x="55" y="16" fill="#fff" font-family="DejaVu Sans,sans-serif" font-size="12" font-weight="bold" text-anchor="middle">code quality</text>
+  <text x="145" y="16" fill="#fff" font-family="DejaVu Sans,sans-serif" font-size="12" font-weight="bold" text-anchor="middle">${grade}</text>
+</svg>`;
+}
+
+function copyBadge() {
+  const text = document.getElementById('badgeMarkdown').textContent;
+  navigator.clipboard?.writeText(text).then(() => {
+    const btn = document.querySelector('.copy-btn');
+    btn.textContent = '✅ Copied!';
+    setTimeout(() => { btn.textContent = '📋 Copy to Clipboard'; }, 2000);
+  }).catch(() => {
+    // fallback
+    const range = document.createRange();
+    const code = document.getElementById('badgeMarkdown');
+    range.selectNodeContents(code);
+    const sel = window.getSelection();
+    sel.removeAllRanges();
+    sel.addRange(range);
+  });
+}
+
+// Load sample
+document.getElementById('codeInput').addEventListener('paste', () => {
+  setTimeout(() => document.getElementById('gradeBtn').click(), 100);
+});
+</script>
+<script src="/conversion-banner.js" defer></script>
+</body>
+</html>

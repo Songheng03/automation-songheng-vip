@@ -1,0 +1,189 @@
+{
+  "platform": "Smithery",
+  "website": "https://smithery.ai",
+  "docs_base": "https://smithery.ai/docs",
+  "api_base": "https://api.smithery.ai",
+  "registry": "https://registry.smithery.ai (appears to redirect/not directly accessible)",
+  "cli_package": "@smithery/cli (npm install -g @smithery/cli)",
+  "github_repo": "https://github.com/smithery-ai/cli",
+  "contact_email": "contact@smithery.ai",
+  "discord": "https://discord.gg/sKd9uycgH9",
+  "last_updated": "2025",
+
+  "overview": "Smithery is a marketplace and registry for AI agents (specifically MCP - Model Context Protocol servers). It allows developers to publish MCP servers for distribution, analytics, and discovery. Servers are listed under namespaces and can be discovered by users via the registry API or web interface.",
+
+  "submission_methods": {
+    "method_1_web_form": {
+      "name": "Web Form (URL-based)",
+      "description": "Go to https://smithery.ai/new and enter your server's public HTTPS URL",
+      "steps": [
+        "1. Navigate to https://smithery.ai/new",
+        "2. Enter your MCP server's public HTTPS URL",
+        "3. Complete the publishing flow (likely involves authentication and metadata)",
+        "4. Smithery scans your server to extract metadata (tools, prompts, resources)"
+      ],
+      "requirements": {
+        "transport": "Streamable HTTP",
+        "auth": "OAuth support (if auth required)",
+        "client_registration": "Handled automatically via Client ID Metadata Documents"
+      },
+      "notes": "If scanning fails due to auth walls, you can provide a static server card at `/.well-known/mcp/server-card.json` with manual metadata."
+    },
+    "method_2_cli_url": {
+      "name": "CLI - URL Publishing",
+      "description": "Publish via CLI with a public URL",
+      "command": "smithery mcp publish \"https://your-server.com/mcp\" -n @your-org/your-server",
+      "notes": "Can optionally pass --config-schema for configuration UI"
+    },
+    "method_3_cli_bundle": {
+      "name": "CLI - MCPB Bundle Publishing",
+      "description": "Publish a local stdio server via MCPB bundle",
+      "command": "smithery mcp publish ./server.mcpb -n your-org/your-server",
+      "requirements": [
+        "Prepare a .mcpb bundle (see Anthropic's MCPB guide)",
+        "Bundle is distributed to clients for local execution"
+      ],
+      "notes": "MCPB bundles are pre-built artifacts clients can download and run locally"
+    },
+    "method_4_api": {
+      "name": "REST API",
+      "description": "Programmatic publishing via Smithery Platform API",
+      "api_base_url": "https://api.smithery.ai",
+      "auth": "Bearer token (API key)",
+      "endpoints": {
+        "create_server": {
+          "method": "PUT",
+          "path": "/servers/{qualifiedName}",
+          "description": "Create a new server. Idempotent.",
+          "parameters": {
+            "qualifiedName": "The server's qualified name (e.g. 'namespace/server' or 'namespace'). Use %2F to encode the slash."
+          },
+          "request_body": {
+            "displayName": "string (optional)",
+            "description": "string (optional)"
+          },
+          "response": {
+            "namespace": "string",
+            "server": "string",
+            "displayName": "string",
+            "description": "string",
+            "createdAt": "ISO 8601 timestamp"
+          }
+        },
+        "publish_server_release": {
+          "method": "PUT",
+          "path": "/servers/{qualifiedName}/releases",
+          "description": "Submit a release via multipart form. Supports hosted (JS module upload), external (URL), and stdio (MCPB bundle) release types.",
+          "request_body": {
+            "multipart": {
+              "payload": "string (required) - JSON-encoded release payload",
+              "module": "binary (optional) - JavaScript module file (for hosted releases)",
+              "sourcemap": "binary (optional) - Source map file (for hosted releases)",
+              "bundle": "binary (optional) - MCPB bundle file (for stdio releases)"
+            }
+          },
+          "response": {
+            "deploymentId": "uuid",
+            "status": "string (e.g. WORKING)",
+            "mcpUrl": "string - The MCP endpoint URL for connecting",
+            "warnings": "string[]"
+          }
+        }
+      }
+    }
+  },
+
+  "prerequisites": {
+    "namespace": {
+      "description": "A namespace is required to publish servers. It groups your servers, connections, and skills under a shared identifier.",
+      "creation_methods": {
+        "cli": "smithery namespace create my-namespace",
+        "api_post": "curl -X POST https://api.smithery.ai/namespaces -H \"Authorization: Bearer YOUR_API_KEY\"",
+        "api_put": "curl -X PUT https://api.smithery.ai/namespaces/my-namespace -H \"Authorization: Bearer YOUR_API_KEY\"",
+        "typescript_sdk": "new Smithery().namespaces.set('my-namespace')"
+      },
+      "naming_rules": "Must be lowercase alphanumeric with hyphens, globally unique",
+      "limits": {
+        "hobby_free": "3 namespaces",
+        "pay_as_you_go": "100 namespaces",
+        "custom": "100+ namespaces"
+      }
+    },
+    "authentication": {
+      "cli": "smithery auth login (requires browser confirmation)",
+      "api": "API key or Bearer token in Authorization header",
+      "token_scoping": "Service tokens can be restricted by namespace, resource, operation, metadata, and TTL"
+    }
+  },
+
+  "required_information_for_listing": {
+    "server_metadata": {
+      "displayName": "Human-readable name",
+      "description": "Brief description of what the server does",
+      "qualifiedName": "Unique identifier (namespace/slug format)",
+      "repository_url": "GitHub repository URL (optional)",
+      "icon": "Server icon image (max 1MB, formats: PNG, JPEG, GIF, SVG, WebP)",
+      "visibility": "Public or private"
+    },
+    "release_artifacts": {
+      "url_based": "Public HTTPS URL with Streamable HTTP transport",
+      "hosted": "JavaScript module file (+ sourcemap)",
+      "stdio": "MCPB bundle file"
+    },
+    "static_server_card": {
+      "description": "Optional manual metadata endpoint at /.well-known/mcp/server-card.json",
+      "schema": {
+        "serverInfo": {"name": "string", "version": "string"},
+        "authentication": {"required": "boolean", "schemes": ["oauth2"]},
+        "tools": [{"name": "string", "description": "string", "inputSchema": "object"}],
+        "resources": [],
+        "prompts": []
+      }
+    }
+  },
+
+  "verification_process": {
+    "description": "After publishing, servers can get verified by opening the server's Settings → Verification page",
+    "type": "Automatic official-vendor verification checklist"
+  },
+
+  "scanning_process": {
+    "description": "Smithery scans your server to extract metadata (tools, prompts, resources)",
+    "user_agent": "SmitheryBot/1.0 (+https://smithery.ai)",
+    "public_servers": "Scan completes automatically",
+    "auth_servers": "Prompted to authenticate so scan can complete",
+    "troubleshooting": {
+      "403_forbidden": "Ensure server returns 401 (not 403) for unauthenticated requests per MCP auth spec",
+      "whitelist": "Whitelist SmitheryBot/1.0 in WAF/CDN configurations",
+      "fallback": "Use static server card at /.well-known/mcp/server-card.json to bypass scanning"
+    }
+  },
+
+  "client_listing": {
+    "description": "Client developers can get their MCP clients listed on server pages",
+    "process": "Contact contact@smithery.ai or join Discord",
+    "attribution": "Required - either Registry API integration or backlink to smithery.ai"
+  },
+
+  "community_channels": {
+    "discord": "https://discord.gg/sKd9uycgH9",
+    "email": "contact@smithery.ai",
+    "github": "https://github.com/smithery-ai/cli",
+    "twitter": "https://x.com/SmitheryDotAi"
+  },
+
+  "pricing_plans": {
+    "hobby": "Free - 3 namespaces",
+    "pay_as_you_go": "Paid - 100 namespaces",
+    "custom": "Custom pricing - 100+ namespaces"
+  },
+
+  "additional_features": {
+    "analytics": "Track tool calls, monitor usage patterns",
+    "oauth_ui": "Automatic authentication modal for servers requiring config/API keys",
+    "spec_compliance": "Gateway handles MCP protocol compliance automatically",
+    "deep_linking": "Deep links for seamless integration into MCP clients",
+    "triggers": "Webhook events from MCP servers",
+    "uplink": "Expose local MCP server as Smithery connection without deploying"
+  }
+}

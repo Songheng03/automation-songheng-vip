@@ -1,0 +1,121 @@
+{
+  "schema_version": "v1",
+  "name_for_human": "my-automaton",
+  "name_for_model": "my_automaton",
+  "description_for_human": "AI-powered code review, text analysis, security scanning, and summarization services. Pay-per-use with USDC on Base chain. No signup needed.",
+  "description_for_model": "Analyze, review, summarize, security scan, explain, refactor, and measure complexity of code and text. Supports multiple programming languages including JavaScript, Python, Java, Go, Rust, and more.",
+  "auth": {
+    "type": "none"
+  },
+  "api": {
+    "type": "openapi",
+    "url": "https://automation.songheng.vip/.well-known/openapi.json",
+    "has_user_authentication": false
+  },
+  "contact_email": "admin@automation.songheng.vip",
+  "legal_info_url": "https://automation.songheng.vip/terms",
+  "logo_url": "https://automation.songheng.vip/logo.png",
+  "capabilities": {
+    "tools": [
+      {
+        "name": "analyze",
+        "description": "Deep text analysis — extract insights, themes, and key points from text content.",
+        "input_schema": {
+          "type": "object",
+          "properties": {
+            "text": { "type": "string", "description": "The text content to analyze" }
+          },
+          "required": ["text"]
+        }
+      },
+      {
+        "name": "summarize",
+        "description": "AI-powered text summarization — condense long text into concise summary.",
+        "input_schema": {
+          "type": "object",
+          "properties": {
+            "text": { "type": "string", "description": "The text to summarize" }
+          },
+          "required": ["text"]
+        }
+      },
+      {
+        "name": "review",
+        "description": "Full code review — check for bugs, security issues, style problems, and suggest improvements.",
+        "input_schema": {
+          "type": "object",
+          "properties": {
+            "code": { "type": "string", "description": "The source code to review" },
+            "language": { "type": "string", "description": "Programming language (optional)" }
+          },
+          "required": ["code"]
+        }
+      },
+      {
+        "name": "security",
+        "description": "Security vulnerability scan — check code for OWASP Top 10, injections, secrets exposure.",
+        "input_schema": {
+          "type": "object",
+          "properties": {
+            "code": { "type": "string", "description": "The source code to audit" },
+            "language": { "type": "string", "description": "Programming language (optional)" }
+          },
+          "required": ["code"]
+        }
+      },
+      {
+        "name": "explain",
+        "description": "Code explanation — explain what code does in simple terms.",
+        "input_schema": {
+          "type": "object",
+          "properties": {
+            "code": { "type": "string", "description": "The code to explain" },
+            "language": { "type": "string", "description": "Programming language (optional)" }
+          },
+          "required": ["code"]
+        }
+      },
+      {
+        "name": "refactor",
+        "description": "Refactoring suggestions — provide concrete improvements for code quality and maintainability.",
+        "input_schema": {
+          "type": "object",
+          "properties": {
+            "code": { "type": "string", "description": "The source code to refactor" },
+            "language": { "type": "string", "description": "Programming language (optional)" }
+          },
+          "required": ["code"]
+        }
+      },
+      {
+        "name": "complexity",
+        "description": "Complexity analysis — analyze code complexity, cyclomatic complexity, and maintainability.",
+        "input_schema": {
+          "type": "object",
+          "properties": {
+            "code": { "type": "string", "description": "The code to analyze" },
+            "language": { "type": "string", "description": "Programming language (optional)" }
+          },
+          "required": ["code"]
+        }
+      }
+    ]
+  },
+  "mcp_endpoints": {
+    "jsonrpc": {
+      "url": "/mcp",
+      "method": "POST"
+    },
+    "sse": {
+      "url": "/mcp",
+      "method": "GET"
+    }
+  },
+  "integration": {
+    "smithery": true,
+    "glama": true,
+    "mcp_so": true,
+    "mcplist": true,
+    "pulsemcp": true
+  }
+}

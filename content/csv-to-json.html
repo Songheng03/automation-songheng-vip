@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CSV to JSON Converter — Free Online | my-automaton</title>
+<meta name="description" content="Convert CSV data to JSON instantly. Auto-detect headers, configurable delimiter (comma, semicolon, tab, pipe). Preview table, download JSON. 100% free, client-side.">
+<style>
+:root{--bg:#0f172a;--card:#1e293b;--text:#e2e8f0;--muted:#94a3b8;--accent:#38bdf8;--green:#4ade80;--border:#334155}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+header{background:var(--card);border-bottom:1px solid var(--border);padding:1rem 2rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap}
+header h1{font-size:1.25rem;color:var(--accent)}
+nav a{color:var(--muted);text-decoration:none;margin-left:1rem;font-size:.875rem}
+main{max-width:900px;margin:2rem auto;padding:0 1.5rem}
+.panel{display:grid;grid-template-columns:1fr 1fr;gap:.75rem;margin-bottom:1rem}
+@media(max-width:600px){.panel{grid-template-columns:1fr}}
+.box{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1rem;display:flex;flex-direction:column}
+.box h3{font-size:.8rem;color:var(--accent);margin-bottom:.5rem}
+textarea{flex:1;background:#0a0f1a;color:var(--text);border:1px solid var(--border);border-radius:8px;padding:.75rem;font-family:"Fira Code",monospace;font-size:.7rem;resize:vertical;min-height:250px;tab-size:2}
+textarea:focus{outline:none;border-color:var(--accent)}
+.controls{display:flex;gap:.5rem;flex-wrap:wrap;align-items:center;margin-bottom:.75rem}
+.controls select,.controls label{font-size:.65rem;color:var(--muted)}
+.controls select{background:var(--card);color:var(--text);border:1px solid var(--border);border-radius:6px;padding:.3rem .5rem;font-size:.65rem}
+.btn-row{display:flex;gap:.5rem;margin-top:.5rem;flex-wrap:wrap}
+.btn{padding:.35rem 1rem;border:none;border-radius:6px;cursor:pointer;font-size:.7rem;font-weight:600}
+.btn-primary{background:var(--accent);color:#0f172a}
+.btn-green{background:var(--green);color:#0f172a}
+.btn:hover{filter:brightness(1.15)}
+.presets{display:flex;gap:.3rem;flex-wrap:wrap}
+.presets button{padding:.2rem .7rem;border:1px solid var(--border);border-radius:4px;background:transparent;color:var(--muted);cursor:pointer;font-size:.6rem}
+.presets button:hover{border-color:var(--accent)}
+.stats{font-size:.65rem;color:var(--muted);margin:.5rem 0}
+.preview-wrap{overflow-x:auto;max-height:200px;border:1px solid var(--border);border-radius:8px;background:var(--card);margin-top:.5rem}
+.preview-wrap table{width:100%;border-collapse:collapse;font-size:.65rem}
+.preview-wrap th{position:sticky;top:0;background:#162032;color:var(--accent);padding:.3rem .5rem;text-align:left;border-bottom:2px solid var(--border)}
+.preview-wrap td{padding:.3rem .5rem;border-bottom:1px solid var(--border);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:180px}
+footer{text-align:center;padding:2rem;color:var(--muted);font-size:.8rem;border-top:1px solid var(--border);margin-top:2rem}footer a{color:var(--accent)}
+</style>
+</head>
+<body>
+<header><h1>📊 CSV to JSON Converter</h1><nav><a href="/">Home</a><a href="/dev-tools.html">Tools</a><a href="/api-playground.html">API</a></nav></header>
+<main>
+<div class="controls">
+  <label>Delimiter:</label>
+  <select id="delimiter" onchange="convert()">
+    <option value=",">Comma (,)</option>
+    <option value=";">Semicolon (;)</option>
+    <option value="\t">Tab</option>
+    <option value="|">Pipe (|)</option>
+  </select>
+  <div style="flex:1"></div>
+  <div class="presets">
+    <button onclick="loadPreset('users')">Users</button>
+    <button onclick="loadPreset('products')">Products</button>
+    <button onclick="loadPreset('orders')">Orders</button>
+  </div>
+</div>
+<div class="panel">
+  <div class="box">
+    <h3>📥 CSV Input</h3>
+    <textarea id="csvInput" oninput="convert()">Name,Age,Email,City
+John Doe,30,john@example.com,San Francisco
+Jane Smith,25,jane@example.com,New York
+Bob Johnson,42,bob@example.com,Chicago</textarea>
+  </div>
+  <div class="box">
+    <h3>📤 JSON Output</h3>
+    <textarea id="jsonOutput" readonly placeholder='JSON will appear here...'></textarea>
+    <div class="btn-row">
+      <button class="btn btn-green" onclick="copyJSON()">📋 Copy</button>
+      <button class="btn btn-primary" onclick="downloadJSON()">💾 Download</button>
+    </div>
+  </div>
+</div>
+<div class="stats" id="stats"></div>
+<div class="preview-wrap"><table id="previewTable"><thead></thead><tbody></tbody></table></div>
+</main>
+<footer><p>my-automaton · Free CSV to JSON Converter · <a href="/dev-tools.html">All Tools</a> · <a href="/api-docs.html">API Docs</a></p></footer>
+<script>
+const presets={
+  users:'Name,Age,Email,City\nJohn Doe,30,john@example.com,San Francisco\nJane Smith,25,jane@example.com,New York\nBob Johnson,42,bob@example.com,Chicago',
+  products:'ID,Product,Price,Stock,Category\nP001,Wireless Mouse,29.99,142,Electronics\nP002,USB-C Hub,49.99,78,Electronics\nP003,Keyboard,89.99,56,Electronics\nP004,Laptop Stand,34.99,200,Accessories',
+  orders:'OrderID,Customer,Amount,Status,Date\nORD001,John Doe,149.97,Completed,2026-06-15\nORD002,Jane Smith,89.99,Pending,2026-06-17\nORD003,Bob Johnson,279.98,Shipped,2026-06-18'
+};
+function loadPreset(k){document.getElementById('csvInput').value=presets[k];convert()}
+
+function parseLine(line,delim){
+  const result=[];let current='',inQuotes=false;
+  for(const ch of line){if(ch==='"'){inQuotes=!inQuotes;continue}if(ch===delim&&!inQuotes){result.push(current.trim());current='';continue}current+=ch}
+  result.push(current.trim());return result;
+}
+
+function convert(){
+  const raw=document.getElementById('csvInput').value;
+  const delim=document.getElementById('delimiter').value.replace('\\t','\t');
+  const lines=raw.trim().split('\n');
+  if(lines.length<2){document.getElementById('jsonOutput').value='';document.getElementById('stats').textContent='';return}
+
+  const headers=parseLine(lines[0],delim);
+  const rows=lines.slice(1).map(l=>{
+    const vals=parseLine(l,delim);
+    const obj={};
+    headers.forEach((h,i)=>{obj[h]=vals[i]||''});
+    return obj;
+  });
+
+  const json=JSON.stringify(rows,null,2);
+  document.getElementById('jsonOutput').value=json;
+  document.getElementById('stats').textContent=`${rows.length} rows · ${headers.length} fields · ${json.length} bytes`;
+
+  // Preview
+  let thead='<tr>'+headers.map(h=>`<th>${escapeHtml(h)}</th>`).join('')+'</tr>';
+  let tbody=rows.slice(0,50).map(r=>'<tr>'+headers.map(h=>`<td>${escapeHtml(r[h]||'')}</td>`).join('')+'</tr>').join('');
+  document.getElementById('previewTable').innerHTML=`<thead>${thead}</thead><tbody>${tbody||'<tr><td colspan="'+headers.length+'">No data</td></tr>'}</tbody>`;
+}
+
+function escapeHtml(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+function copyJSON(){const j=document.getElementById('jsonOutput').value;if(j)navigator.clipboard.writeText(j)}
+function downloadJSON(){const j=document.getElementById('jsonOutput').value;if(!j)return;const b=new Blob([j],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='data.json';a.click()}
+setTimeout(convert,50);
+</script>
+<script src="/conversion-banner.js" defer></script>
+</body>
+</html>

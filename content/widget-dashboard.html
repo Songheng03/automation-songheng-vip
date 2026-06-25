@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Widget Analytics Dashboard — my-automaton</title>
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #0f0f1a; color: #e0e0e0; padding: 40px 20px; }
+    .container { max-width: 900px; margin: 0 auto; }
+    h1 { font-size: 2rem; background: linear-gradient(135deg, #667eea, #764ba2); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 8px; }
+    p.sub { color: #999; margin-bottom: 24px; }
+    .card { background: #1a1a2e; border: 1px solid #2a2a4a; border-radius: 12px; padding: 20px; margin-bottom: 16px; }
+    .card h2 { color: #ccc; font-size: 1.1rem; margin-bottom: 12px; }
+    .stat-row { display: flex; gap: 16px; flex-wrap: wrap; }
+    .stat { flex: 1; min-width: 120px; background: #0f0f1a; border-radius: 8px; padding: 16px; text-align: center; }
+    .stat .num { font-size: 2rem; font-weight: 700; color: #667eea; }
+    .stat .label { font-size: 13px; color: #888; margin-top: 4px; }
+    table { width: 100%; border-collapse: collapse; font-size: 14px; }
+    th { text-align: left; color: #888; font-weight: 500; padding: 8px 4px; border-bottom: 1px solid #2a2a4a; }
+    td { padding: 8px 4px; border-bottom: 1px solid #1a1a2e; color: #bbb; }
+    .empty { text-align: center; padding: 40px; color: #666; }
+    .refresh-btn { background: #667eea; color: #fff; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-size: 13px; }
+    .refresh-btn:hover { opacity: 0.9; }
+    .back-link { display: inline-block; margin-top: 24px; color: #667eea; text-decoration: none; font-size: 14px; }
+    .last-updated { color: #666; font-size: 12px; margin-top: 8px; }
+  </style>
+</head>
+<body>
+<div style="background:#161b22;border-bottom:1px solid #30363d;padding:10px 20px;font-size:.85rem;display:flex;gap:16px;align-items:center;flex-wrap:wrap"><a href="/" style="color:#58a6ff;text-decoration:none;font-weight:600">🏠 Home</a><span style="color:#484f58">|</span><a href="/pricing.html" style="color:#8b949e;text-decoration:none">Pricing</a><a href="/api-docs.html" style="color:#8b949e;text-decoration:none">API</a><a href="/playground.html" style="color:#8b949e;text-decoration:none">Playground</a></div>
+
+  <div class="container">
+    <h1>📊 Widget Analytics Dashboard</h1>
+    <p class="sub">Real-time stats for your embeddable AI widget. See how many sites embed it, track pings, and discover top referrers.</p>
+
+    <div class="card">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+        <h2 style="margin:0;">Live Stats</h2>
+        <button class="refresh-btn" onclick="refresh()">🔄 Refresh</button>
+      </div>
+      <div class="stat-row" id="stats">
+        <div class="stat"><div class="num" id="embeds">0</div><div class="label">Total Pings</div></div>
+        <div class="stat"><div class="num" id="domains">0</div><div class="label">Unique Domains</div></div>
+        <div class="stat"><div class="num" id="recent">0</div><div class="label">Last 24h</div></div>
+      </div>
+      <div class="last-updated" id="updated"></div>
+    </div>
+
+    <div class="card">
+      <h2>🌐 Top Referrer Domains</h2>
+      <table id="domain-table">
+        <thead><tr><th>Domain</th><th>Pings</th></tr></thead>
+        <tbody id="domain-body"><tr class="empty"><td colspan="2">No data yet — embed the widget on your site!</td></tr></tbody>
+      </table>
+    </div>
+
+    <div class="card">
+      <h2>🕐 Recent Pings</h2>
+      <table>
+        <thead><tr><th>Time</th><th>Referrer</th><th>Page</th></tr></thead>
+        <tbody id="ping-body"><tr class="empty"><td colspan="3">Waiting for first ping...</td></tr></tbody>
+      </table>
+    </div>
+
+    <div class="card">
+      <h2>🚀 Quick Actions</h2>
+      <p style="color:#999;font-size:14px;">Get the widget script and embed it on your site to start collecting data:</p>
+      <pre style="margin-top:8px;user-select:all;cursor:pointer;" onclick="navigator.clipboard.writeText('<script src=\"https://automation.songheng.vip/widget.js\"><\/script>')">&lt;script src="https://automation.songheng.vip/widget.js"&gt;&lt;/script&gt;</pre>
+      <p style="color:#888;font-size:12px;margin-top:4px;">Click to copy ↑</p>
+    </div>
+
+    <a href="/widget-install.html" class="back-link">← Back to Widget Install Guide</a>
+  </div>
+
+  <script>
+    async function refresh() {
+      try {
+        const res = await fetch('/api/widget/stats');
+        const data = await res.json();
+        const embeds = data.embeds || 0;
+        const domainCount = Object.keys(data.domains || {}).length;
+        const last24h = data.pings ? data.pings.filter(p => Date.now() - new Date(p.ts).getTime() < 86400000).length : 0;
+        document.getElementById('embeds').textContent = embeds;
+        document.getElementById('domains').textContent = domainCount;
+        document.getElementById('recent').textContent = last24h;
+        document.getElementById('updated').textContent = 'Updated: ' + new Date().toLocaleString();
+
+        // Domains table
+        const dBody = document.getElementById('domain-body');
+        const domains = Object.entries(data.domains || {}).sort((a,b) => b[1]-a[1]);
+        if (domains.length === 0) {
+          dBody.innerHTML = '<tr class="empty"><td colspan="2">No data yet — embed the widget on your site!</td></tr>';
+        } else {
+          dBody.innerHTML = domains.map(([dom, count]) => `<tr><td>${dom}</td><td>${count}</td></tr>`).join('');
+        }
+
+        // Pings table
+        const pBody = document.getElementById('ping-body');
+        const pings = (data.pings || []).slice(-20).reverse();
+        if (pings.length === 0) {
+          pBody.innerHTML = '<tr class="empty"><td colspan="3">Waiting for first ping...</td></tr>';
+        } else {
+          pBody.innerHTML = pings.map(p => `<tr><td style="white-space:nowrap;">${new Date(p.ts).toLocaleString()}</td><td>${p.ref}</td><td>${p.page}</td></tr>`).join('');
+        }
+      } catch(e) {
+        document.getElementById('stats').innerHTML = `<div class="stat"><div class="num">⚠️</div><div class="label">Error loading: ${e.message}</div></div>`;
+      }
+    }
+    refresh();
+    setInterval(refresh, 30000);
+  </script>
+<script src="/conversion-banner.js" defer></script>
+</body>
+</html>

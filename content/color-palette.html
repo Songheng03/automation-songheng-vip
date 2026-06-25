@@ -1,0 +1,65 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Color Palette Generator — Create Beautiful Color Schemes | my-automaton</title><meta name="description" content="Generate beautiful color palettes for web design. Complementary, analogous, triadic color schemes. Copy hex codes, export CSS variables. 100% free."><style>:root{--bg:#0f172a;--card:#1e293b;--text:#e2e8f0;--muted:#94a3b8;--accent:#38bdf8;--green:#4ade80;--border:#334155}*{box-sizing:border-box;margin:0;padding:0}body{font-family:system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh}header{background:var(--card);border-bottom:1px solid var(--border);padding:1rem 2rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap}header h1{font-size:1.25rem;color:var(--accent)}nav a{color:var(--muted);text-decoration:none;margin-left:1rem;font-size:.875rem}main{max-width:900px;margin:2rem auto;padding:0 1rem}.card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.5rem;margin-bottom:1rem}.scheme-tabs{display:flex;gap:.25rem;margin-bottom:1rem;flex-wrap:wrap}.scheme-tabs button{padding:.4rem .8rem;border:1px solid var(--border);border-radius:6px;background:transparent;color:var(--muted);cursor:pointer;font-size:.75rem;transition:all .15s}.scheme-tabs button.active{background:var(--accent);color:#0f172a;border-color:var(--accent);font-weight:600}.controls{display:flex;gap:.75rem;align-items:center;flex-wrap:wrap;margin-bottom:1rem}.controls input[type="color"]{width:48px;height:36px;border:1px solid var(--border);border-radius:6px;cursor:pointer;background:transparent;padding:2px}.controls button{padding:.4rem 1rem;border:1px solid var(--border);border-radius:6px;background:var(--accent);color:#0f172a;cursor:pointer;font-size:.75rem;font-weight:600}.palette-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:.5rem}@media(max-width:600px){.palette-grid{grid-template-columns:repeat(auto-fill,minmax(100px,1fr))}}.swatch{border-radius:12px;cursor:pointer;transition:transform .15s;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;padding:.75rem .5rem;min-height:180px;position:relative}.swatch:hover{transform:scale(1.05);z-index:2}.swatch .hex{font-family:"Fira Code",monospace;font-size:.85rem;font-weight:700;margin-bottom:.15rem}.swatch .lbl{font-size:.6rem;opacity:.7}.css-output{background:#0a0f1a;border-radius:8px;padding:1rem;font-family:"Fira Code",monospace;font-size:.72rem;max-height:200px;overflow-y:auto;white-space:pre-wrap}.btn-row{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.5rem}.btn{padding:.3rem .8rem;border:none;border-radius:6px;cursor:pointer;font-size:.72rem;font-weight:600}.btn-green{background:var(--green);color:#0f172a}.btn-secondary{background:var(--border);color:var(--text)}.toast{position:fixed;bottom:1rem;right:1rem;background:var(--green);color:#0f172a;padding:.5rem 1rem;border-radius:8px;font-size:.8rem;font-weight:600;opacity:0;transition:opacity .2s;pointer-events:none}.toast.show{opacity:1}footer{text-align:center;padding:2rem;color:var(--muted);font-size:.8rem;border-top:1px solid var(--border);margin-top:2rem}footer a{color:var(--accent)}</style></head><body><header><h1>🎨 Color Palette Generator</h1><nav><a href="/">Home</a><a href="/dev-tools.html">Dev Tools</a><a href="/dev-tools-hub.html">Tools Hub</a></nav></header><main>
+<div class="scheme-tabs" id="schemeTabs">
+  <button class="active" onclick="setScheme('complementary')">Complementary</button>
+  <button onclick="setScheme('analogous')">Analogous</button>
+  <button onclick="setScheme('triadic')">Triadic</button>
+  <button onclick="setScheme('tetradic')">Tetradic</button>
+  <button onclick="setScheme('monochromatic')">Monochromatic</button>
+</div>
+<div class="controls">
+  <input type="color" id="baseColor" value="#38bdf8" onchange="generate()">
+  <button onclick="randomColor()">🎲 Random</button>
+  <button onclick="generate()">🔄 Generate</button>
+</div>
+<div class="palette-grid" id="palette"></div>
+<div class="card" style="margin-top:1rem">
+  <div style="font-size:.7rem;color:var(--muted);margin-bottom:.5rem">CSS VARIABLES / EXPORT</div>
+  <div class="css-output" id="cssOutput"></div>
+  <div class="btn-row"><button class="btn btn-green" onclick="copyCSS()">📋 Copy CSS</button><button class="btn btn-secondary" onclick="copyHexList()">📋 Copy Hex List</button></div>
+</div>
+<div class="toast" id="toast">Copied!</div>
+</main><footer><p>my-automaton · Free Color Palette Generator · <a href="/">Home</a> · <a href="/dev-tools-hub.html">All Tools</a></p></footer>
+<script>
+let scheme='complementary',base='#38bdf8';
+function setScheme(s){scheme=s;document.querySelectorAll('#schemeTabs button').forEach(b=>b.classList.toggle('active',b.textContent.toLowerCase().startsWith(s)));generate()}
+function randomColor(){const r=Math.floor(Math.random()*256),g=Math.floor(Math.random()*256),b=Math.floor(Math.random()*256);document.getElementById('baseColor').value='#'+r.toString(16).padStart(2,'0')+g.toString(16).padStart(2,'0')+b.toString(16).padStart(2,'0');generate()}
+function hexToHSL(hex){hex=hex.replace('#','');const r=parseInt(hex.slice(0,2),16)/255,g=parseInt(hex.slice(2,4),16)/255,b=parseInt(hex.slice(4,6),16)/255;const max=Math.max(r,g,b),min=Math.min(r,g,b);let h=0,s=0;const l=(max+min)/2;if(max!==min){const d=max-min;s=l>0.5?d/(2-max-min):d/(max+min);h=max===r?((g-b)/d+(g<b?6:0)):max===g?((b-r)/d+2):((r-g)/d+4);h/=6}return{h:h*360,s:s*100,l:l*100}}
+function HSLToHex(h,s,l){h/=360;s/=100;l/=100;let r,g,b;if(s===0)r=g=b=l;else{const hue2rgb=(p,q,t)=>{if(t<0)t+=1;if(t>1)t-=1;if(t<1/6)return p+(q-p)*6*t;if(t<1/2)return q;if(t<2/3)return p+(q-p)*(2/3-t)*6;return p};const q=l<0.5?l*(1+s):l+s-l*s;const p=2*l-q;r=hue2rgb(p,q,h+1/3);g=hue2rgb(p,q,h);b=hue2rgb(p,q,h-1/3)}return'#'+[r,g,b].map(x=>Math.round(x*255).toString(16).padStart(2,'0')).join('')}
+function generate(){
+  const hsl=hexToHSL(document.getElementById('baseColor').value);
+  let colors;
+  switch(scheme){
+    case'complementary':colors=[hsl.h,mod(hsl.h+180,360),mod(hsl.h+90,360),mod(hsl.h+270,360),mod(hsl.h+45,360)];break;
+    case'analogous':colors=[mod(hsl.h-30,360),mod(hsl.h-15,360),hsl.h,mod(hsl.h+15,360),mod(hsl.h+30,360)];break;
+    case'triadic':colors=[hsl.h,mod(hsl.h+120,360),mod(hsl.h+240,360),mod(hsl.h+60,360),mod(hsl.h+300,360)];break;
+    case'tetradic':colors=[hsl.h,mod(hsl.h+90,360),mod(hsl.h+180,360),mod(hsl.h+270,360),mod(hsl.h+45,360)];break;
+    case'monochromatic':colors=[hsl.h,hsl.h,hsl.h,hsl.h,hsl.h];break;
+    default:colors=[hsl.h,180,240,300,60];
+  }
+  const satVals=[Math.max(20,hsl.s-20),Math.max(10,hsl.s-35),hsl.s,Math.min(100,hsl.s+15),Math.min(100,hsl.s+25)];
+  const lightVals=[Math.min(90,hsl.l+25),Math.min(95,hsl.l+12),hsl.l,Math.max(5,hsl.l-12),Math.max(5,hsl.l-25)];
+  const pal=colors.map((h,i)=>{
+    if(scheme==='monochromatic')return HSLToHex(h,satVals[i],lightVals[i]);
+    const idx=i%5;return HSLToHex(h,satVals[2],lightVals[2]);
+  }).map((h,i)=>{
+    if(scheme==='monochromatic')return h;
+    return HSLToHex(colors[i],satVals[i],lightVals[i]);
+  });
+  
+  const names=['Primary','Secondary','Accent','Muted','Dark'];
+  document.getElementById('palette').innerHTML=pal.map((hex,i)=>{
+    const isDark=hexToHSL(hex).l<50;
+    return'<div class="swatch" style="background:'+hex+';color:'+(isDark?'#fff':'#111')+'" onclick="copyHex(\''+hex+'\')"><div class="hex">'+hex+'</div><div class="lbl">'+names[i]+'</div></div>';
+  }).join('');
+  
+  document.getElementById('cssOutput').textContent=':root {\n'+pal.map((h,i)=>'  --color-'+names[i].toLowerCase()+': '+h+';').join('\n')+'\n}';
+  window._palette=pal;
+}
+function copyHex(hex){navigator.clipboard.writeText(hex);showToast('Copied '+hex)}
+function copyCSS(){if(window._palette)navigator.clipboard.writeText(document.getElementById('cssOutput').textContent);showToast('CSS copied!')}
+function copyHexList(){if(window._palette)navigator.clipboard.writeText(window._palette.join(', '));showToast('Hex list copied!')}
+function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),1500)}
+function mod(n,m){return((n%m)+m)%m}
+setTimeout(generate,200);
+</script><script src="/conversion-banner.js" defer></script>
+</body></html>

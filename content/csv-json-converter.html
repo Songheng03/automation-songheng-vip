@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CSV to JSON Converter - Free Online Tool</title>
+<meta name="description" content="Convert CSV to JSON and JSON to CSV online. Auto-detect delimiters, preview as table, download results. Free, no signup.">
+<meta name="keywords" content="csv to json, json to csv, csv converter, json converter, csv parser, online csv tool">
+<link rel="canonical" href="https://automation.songheng.vip/csv-json-converter.html">
+<style>
+:root{--bg:#0d1117;--surface:#161b22;--border:#30363d;--text:#c9d1d9;--muted:#8b949e;--accent:#58a6ff;--green:#3fb950;--orange:#d2991d;--red:#f85149}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,sans-serif;min-height:100vh}
+header{background:var(--surface);border-bottom:1px solid var(--border);padding:16px 24px;text-align:center}
+header h1{font-size:1.5rem;color:var(--green)}
+header p{color:var(--muted);font-size:.85rem;margin-top:4px}
+.container{max-width:900px;margin:0 auto;padding:24px 16px}
+.mode-tabs{display:flex;gap:0;margin-bottom:20px;border-radius:8px;overflow:hidden;border:1px solid var(--border)}
+.mode-tab{flex:1;padding:12px;text-align:center;cursor:pointer;background:var(--surface);color:var(--muted);font-weight:600;transition:all .2s;border:none;font-size:.9rem}
+.mode-tab.active{background:var(--accent);color:#fff}
+.mode-tab:hover:not(.active){color:var(--text)}
+textarea{width:100%;background:var(--surface);border:1px solid var(--border);color:var(--text);padding:16px;border-radius:8px;font-family:'JetBrains Mono',monospace;font-size:.85rem;resize:vertical;min-height:200px;line-height:1.6}
+textarea:focus{outline:none;border-color:var(--accent)}
+.output-section{margin-top:20px}
+.output-section h3{color:var(--muted);font-size:.85rem;margin-bottom:8px;display:flex;align-items:center;gap:8px}
+.btn{background:var(--accent);color:#fff;border:none;padding:8px 16px;border-radius:6px;cursor:pointer;font-size:.85rem;transition:opacity .2s}
+.btn:hover{opacity:.85}
+.btn-outline{background:transparent;border:1px solid var(--border);color:var(--text)}
+.btn-sm{padding:4px 10px;font-size:.75rem}
+.btn-row{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}
+.options{display:flex;gap:16px;flex-wrap:wrap;margin:12px 0;align-items:center}
+.options label{color:var(--muted);font-size:.8rem;display:flex;align-items:center;gap:4px}
+.options select,.options input{background:var(--surface);border:1px solid var(--border);color:var(--text);padding:4px 8px;border-radius:4px;font-size:.8rem}
+.options input[type=checkbox]{accent-color:var(--accent)}
+.table-wrap{overflow-x:auto;border:1px solid var(--border);border-radius:8px;max-height:400px;overflow-y:auto;margin-top:12px}
+table{width:100%;border-collapse:collapse;font-size:.8rem}
+th{background:var(--surface);color:var(--accent);padding:8px 12px;text-align:left;position:sticky;top:0;border-bottom:2px solid var(--border)}
+td{padding:6px 12px;border-bottom:1px solid var(--border);color:var(--text);font-family:'JetBrains Mono',monospace;font-size:.75rem;white-space:nowrap}
+tr:hover td{background:rgba(88,166,255,.04)}
+.stats{display:flex;gap:16px;margin:8px 0;font-size:.8rem;color:var(--muted)}
+.stat-badge{background:var(--border);padding:2px 10px;border-radius:10px;font-size:.75rem}
+.preview-box{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:16px;font-family:'JetBrains Mono',monospace;font-size:.8rem;color:var(--green);max-height:400px;overflow-y:auto;white-space:pre-wrap;word-break:break-all}
+.sample-btn{background:var(--border);color:var(--muted);border:none;padding:4px 10px;border-radius:4px;cursor:pointer;font-size:.7rem;margin:2px}
+.sample-btn:hover{color:var(--text)}
+.sponsor{text-align:center;margin-top:32px;padding:20px;background:var(--surface);border:1px solid var(--border);border-radius:8px}
+.sponsor h2{color:var(--accent);font-size:1rem;margin-bottom:8px}
+.sponsor p{color:var(--muted);font-size:.85rem;margin-bottom:12px}
+.sponsor a{color:var(--accent)}
+</style>
+</head>
+<body>
+<header>
+<h1>📊 CSV ↔ JSON Converter</h1>
+<p>Convert CSV to JSON and JSON to CSV. Auto-detect delimiters, preview as table, download results.</p>
+</header>
+<div class="container">
+<div class="mode-tabs">
+<button class="mode-tab active" onclick="switchMode('csv2json')">CSV → JSON</button>
+<button class="mode-tab" onclick="switchMode('json2csv')">JSON → CSV</button>
+</div>
+
+<div id="inputSection">
+<textarea id="inputText" placeholder="Paste CSV data here..."></textarea>
+<div class="options">
+<label>Delimiter: <select id="delimiter" onchange="autoConvert()"><option value="auto">Auto-detect</option><option value=",">Comma (,)</option><option value=";">Semicolon (;)</option><option value="\t">Tab</option><option value="|">Pipe (|)</option></select></label>
+<label><input type="checkbox" id="hasHeader" checked onchange="autoConvert()"> First row is header</label>
+</div>
+<div class="btn-row">
+<button class="btn" onclick="autoConvert()">🔄 Convert</button>
+<button class="btn btn-outline" onclick="copyOutput()">📋 Copy</button>
+<button class="btn btn-outline" onclick="downloadOutput()">⬇️ Download</button>
+<button class="btn btn-outline" onclick="clearAll()">🗑️ Clear</button>
+</div>
+<div style="margin-top:8px">
+<span style="color:var(--muted);font-size:.75rem;">Samples: </span>
+<button class="sample-btn" onclick="loadSample('employees')">Employees</button>
+<button class="sample-btn" onclick="loadSample('products')">Products</button>
+<button class="sample-btn" onclick="loadSample('weather')">Weather</button>
+</div>
+</div>
+
+<div class="stats" id="statsBox" style="display:none">
+<span class="stat-badge" id="statRows"></span>
+<span class="stat-badge" id="statCols"></span>
+<span class="stat-badge" id="statDetDelim"></span>
+</div>
+
+<div class="output-section">
+<h3>📋 Table Preview</h3>
+<div class="table-wrap" id="tableWrap"><span style="color:var(--muted);padding:16px;display:block;">Convert CSV to see table preview...</span></div>
+</div>
+
+<div class="output-section">
+<h3>📝 Output <span id="outputLabel">(JSON)</span></h3>
+<div class="preview-box" id="outputBox">Convert to see output...</div>
+</div>
+
+<div class="sponsor">
+<h2>💡 Need more than free tools?</h2>
+<p>Get <strong>AI-powered code reviews, security scans, text analysis</strong>, and more via our API.</p>
+<p><a href="/">Browse API Docs</a> · <a href="/pricing.html">View Pricing</a></p>
+</div>
+</div>
+
+<script>
+let mode = 'csv2json';
+
+function switchMode(m) {
+  mode = m;
+  document.querySelectorAll('.mode-tab').forEach(t=>t.classList.remove('active'));
+  document.querySelector(`.mode-tab:${mode==='csv2json'?'first':'last'}-child`).classList.add('active');
+  document.querySelectorAll('.mode-tab')[mode==='csv2json'?0:1].classList.add('active');
+  document.getElementById('outputLabel').textContent = mode==='csv2json'?'(JSON)':'(CSV)';
+  document.getElementById('delimiter').parentElement.parentElement.style.display = mode==='csv2json'?'':'none';
+  document.getElementById('hasHeader').parentElement.style.display = mode==='csv2json'?'':'none';
+  document.getElementById('inputText').placeholder = mode==='csv2json'?'Paste CSV data here...':'Paste JSON array of objects here...';
+  document.getElementById('statsBox').style.display = mode==='csv2json'?'flex':'none';
+  document.getElementById('tableWrap').style.display = mode==='csv2json'?'':'none';
+  document.querySelectorAll('.output-section')[0].style.display = mode==='csv2json'?'':'none';
+  clearAll();
+}
+
+function detectDelimiter(text) {
+  const lines = text.trim().split('\n').slice(0,5);
+  if (lines.length < 2) return ',';
+  const delims = [',',';','\t','|'];
+  let best = {char:',',count:0};
+  for (const d of delims) {
+    let consistent = true;
+    let baseCount = lines[0].split(d).length;
+    for (const l of lines) {
+      if (l.split(d).length !== baseCount) { consistent = false; break; }
+    }
+    if (consistent && baseCount > best.count) best = {char:d,count:baseCount};
+  }
+  return best.count > 1 ? best.char : ',';
+}
+
+function parseCSV(text) {
+  const delim = document.getElementById('delimiter').value;
+  const actualDelim = delim === 'auto' ? detectDelimiter(text) : delim === '\\t' ? '\t' : delim;
+  document.getElementById('statDetDelim').textContent = 'delim: '+ (actualDelim==='\t'?'tab':actualDelim);
+  
+  const rows = [];
+  let row = [], field = '', inQuotes = false;
+  for (let i=0; i<text.length; i++) {
+    const c = text[i];
+    if (inQuotes) {
+      if (c==='"') { if(text[i+1]==='"'){field+='"';i++}else{inQuotes=false} }
+      else field += c;
+    } else {
+      if (c==='"') inQuotes = true;
+      else if (c===actualDelim) { row.push(field); field=''; }
+      else if (c==='\n'||c==='\r') {
+        if (c==='\r'&&text[i+1]==='\n') i++;
+        if (field||row.length>0) { row.push(field); rows.push(row); row=[]; field=''; }
+      } else field += c;
+    }
+  }
+  if (field||row.length>0) { row.push(field); if(row.some(c=>c!=='')) rows.push(row); }
+  return rows;
+}
+
+function csvToJSON() {
+  const text = document.getElementById('inputText').value.trim();
+  if (!text) return;
+  const rows = parseCSV(text);
+  if (rows.length === 0) return;
+  
+  const hasHeader = document.getElementById('hasHeader').checked;
+  const headers = hasHeader ? rows[0] : rows[0].map((_,i)=>'col'+(i+1));
+  const data = hasHeader ? rows.slice(1) : rows;
+  
+  const json = data.map(r => {
+    const obj = {};
+    headers.forEach((h,i) => obj[h]=r[i]||'');
+    return obj;
+  });
+  
+  document.getElementById('statRows').textContent = json.length+' rows';
+  document.getElementById('statCols').textContent = headers.length+' cols';
+  document.getElementById('statsBox').style.display='flex';
+  
+  renderTable(headers, data);
+  document.getElementById('outputBox').textContent = JSON.stringify(json, null, 2);
+}
+
+function renderTable(headers, data) {
+  let html = '<table><thead><tr>';
+  headers.forEach(h => html += `<th>${h}</th>`);
+  html += '</tr></thead><tbody>';
+  data.slice(0,200).forEach(row => {
+    html += '<tr>';
+    headers.forEach((_,i) => html += `<td>${(row[i]||'').slice(0,100)}</td>`);
+    html += '</tr>';
+  });
+  html += '</tbody></table>';
+  if (data.length > 200) html += `<div style="padding:8px;color:var(--muted);font-size:.75rem;">Showing 200 of ${data.length} rows</div>`;
+  document.getElementById('tableWrap').innerHTML = html;
+}
+
+function jsonToCSV() {
+  let text = document.getElementById('inputText').value.trim();
+  if (!text) return;
+  try {
+    const arr = JSON.parse(text);
+    if (!Array.isArray(arr)||arr.length===0) { document.getElementById('outputBox').textContent='Error: Input must be a non-empty JSON array of objects'; return; }
+    const keys = Object.keys(arr[0]);
+    let csv = keys.join(',')+'\n';
+    arr.forEach(obj => csv += keys.map(k => {
+      const v = String(obj[k]??'');
+      return v.includes(',')||v.includes('"')||v.includes('\n') ? '"'+v.replace(/"/g,'""')+'"' : v;
+    }).join(',')+'\n');
+    document.getElementById('outputBox').textContent = csv;
+  } catch(e) { document.getElementById('outputBox').textContent = 'Error: Invalid JSON - '+e.message; }
+}
+
+function autoConvert() {
+  document.getElementById('statsBox').style.display='none';
+  document.getElementById('tableWrap').innerHTML='<span style="color:var(--muted);padding:16px;display:block;">Convert CSV to see table preview...</span>';
+  if (mode==='csv2json') csvToJSON(); else jsonToCSV();
+}
+
+async function copyOutput() {
+  const text = document.getElementById('outputBox').textContent;
+  if (text==='Convert to see output...') { autoConvert(); return; }
+  try { await navigator.clipboard.writeText(text); 
+    const btns = document.querySelectorAll('.btn-outline'); 
+    const btn = [...btns].find(b=>b.textContent.includes('Copy'));
+    if(btn){btn.textContent='✅ Copied!';setTimeout(()=>btn.textContent='📋 Copy',1500);}
+  } catch { prompt('Copy:', text); }
+}
+
+function downloadOutput() {
+  const text = document.getElementById('outputBox').textContent;
+  if (text==='Convert to see output...') { autoConvert(); }
+  const ext = mode==='csv2json'?'json':'csv';
+  const mime = mode==='csv2json'?'application/json':'text/csv';
+  const blob = new Blob([document.getElementById('outputBox').textContent], {type:mime});
+  const url = URL.createObjectURL(blob);
+  const a=document.createElement('a'); a.href=url; a.download='output.'+ext; a.click();
+  URL.revokeObjectURL(url);
+}
+
+function clearAll() {
+  document.getElementById('inputText').value='';
+  document.getElementById('outputBox').textContent='Convert to see output...';
+  document.getElementById('tableWrap').innerHTML='<span style="color:var(--muted);padding:16px;display:block;">Convert CSV to see table preview...</span>';
+  document.getElementById('statsBox').style.display='none';
+}
+
+const samples = {
+  employees: "Name,Department,Salary,StartDate\nAlice Chen,Engineering,95000,2024-01-15\nBob Smith,Marketing,82000,2024-03-01\nCarol Davis,Engineering,105000,2023-11-20\nDavid Park,Sales,78000,2024-06-10\nEva Martinez,Engineering,112000,2023-08-05",
+  products: "SKU,Product,Price,Stock\nLP-001,Laptop Pro,1299.99,45\nMT-002,Monitor 4K,599.99,120\nKB-003,Mechanical Keyboard,149.99,200\nMS-004,Wireless Mouse,79.99,350\nHD-005,External SSD 2TB,189.99,85",
+  weather: "City,Temp(C),Humidity,Condition\nNew York,22,65,Partly Cloudy\nLondon,18,78,Rainy\nTokyo,28,55,Sunny\nSydney,24,70,Clear\nDubai,38,30,Hot"
+};
+
+function loadSample(name) {
+  document.getElementById('inputText').value = samples[name];
+  autoConvert();
+}
+
+// Init: set correct tab
+document.querySelectorAll('.mode-tab')[0].addEventListener('click',()=>switchMode('csv2json'));
+document.querySelectorAll('.mode-tab')[1].addEventListener('click',()=>switchMode('json2csv'));
+</script>
+<script src="/conversion-banner.js" defer></script>
+</body>
+</html>

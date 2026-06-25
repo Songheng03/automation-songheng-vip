@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>my-automaton • Recovery Dashboard</title>
+<style>
+:root{--bg:#0d1117;--card:#161b22;--border:#30363d;--text:#c9d1d9;--green:#3fb950;--red:#f85149;--yellow:#d29922;--blue:#58a6ff;--purple:#bc8cff}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:var(--bg);color:var(--text);padding:20px;max-width:900px;margin:auto}
+h1{font-size:1.5rem;margin-bottom:5px;color:#fff}
+.subtitle{color:#8b949e;margin-bottom:24px;font-size:.9rem}
+.card{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:16px;margin-bottom:12px}
+.card h3{font-size:1rem;margin-bottom:8px;color:#fff}
+.status-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--border)}
+.status-row:last-child{border-bottom:none}
+.label{color:#8b949e}
+.badge{display:inline-block;padding:2px 8px;border-radius:12px;font-size:.8rem;font-weight:600}
+.badge-ok{background:rgba(63,185,80,.15);color:var(--green);border:1px solid rgba(63,185,80,.3)}
+.badge-fail{background:rgba(248,81,73,.15);color:var(--red);border:1px solid rgba(248,81,73,.3)}
+.badge-warn{background:rgba(210,153,34,.15);color:var(--yellow);border:1px solid rgba(210,153,34,.3)}
+.action-btn{display:inline-block;padding:8px 16px;border-radius:6px;border:1px solid var(--border);background:var(--card);color:var(--blue);cursor:pointer;font-size:.85rem;margin:4px;text-decoration:none}
+.action-btn:hover{background:#1c2128}
+code{background:#1c2128;padding:2px 6px;border-radius:4px;font-size:.85rem}
+pre{background:#1c2128;padding:12px;border-radius:6px;overflow-x:auto;font-size:.8rem;margin:8px 0}
+.step{margin:8px 0;padding:10px 12px;border-left:3px solid var(--blue);background:rgba(88,166,255,.05)}
+.step.done{border-left-color:var(--green)}
+.step.fail{border-left-color:var(--red)}
+.step-num{color:var(--purple);font-weight:700;margin-right:8px}
+.flex{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+#output{white-space:pre-wrap;font-family:monospace;font-size:.8rem;max-height:400px;overflow-y:auto}
+</style>
+
+<!-- Open Graph / Social Meta Tags -->
+<meta property="og:title" content="my-automaton • Recovery Dashboard" />
+<meta property="og:description" content="my-automaton • Recovery Dashboard — powered by my-automaton. AI code review, security scanning, and developer tools." />
+<meta property="og:image" content="https://automation.songheng.vip/og-image.png" />
+<meta property="og:url" content="https://automation.songheng.vip/recovery.html" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="my-automaton" />
+<meta property="og:locale" content="en_US" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="my-automaton • Recovery Dashboard" />
+<meta name="twitter:description" content="my-automaton • Recovery Dashboard — powered by my-automaton. AI code review, security scanning, and developer tools." />
+<meta name="twitter:image" content="https://automation.songheng.vip/og-image.png" />
+  <meta name="description" content="🛠️ my-automaton Recovery Dashboard Diagnostic & recovery tool · Last check: loading.">
+  <link rel="canonical" href="https://automation.songheng.vip/recovery.html">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "my-automaton • Recovery Dashboard",
+  "description": "🛠️ my-automaton Recovery Dashboard Diagnostic & recovery tool · Last check: loading.",
+  "url": "https://automation.songheng.vip/recovery.html"
+}
+</script>
+</head>
+<body>
+<div style="background:#161b22;border-bottom:1px solid #30363d;padding:10px 20px;font-size:.85rem;display:flex;gap:16px;align-items:center;flex-wrap:wrap"><a href="/" style="color:#58a6ff;text-decoration:none;font-weight:600">🏠 Home</a><span style="color:#484f58">|</span><a href="/pricing.html" style="color:#8b949e;text-decoration:none">Pricing</a><a href="/api-docs.html" style="color:#8b949e;text-decoration:none">API</a><a href="/playground.html" style="color:#8b949e;text-decoration:none">Playground</a></div>
+
+
+<h1>🛠️ my-automaton Recovery Dashboard</h1>
+<p class="subtitle">Diagnostic & recovery tool · Last check: <span id="timestamp">loading...</span></p>
+
+<div class="card">
+  <h3>📡 Core Services</h3>
+  <div id="gateway-status" class="status-row"><span class="label">Gateway (port 8080)</span><span class="badge badge-warn">checking...</span></div>
+  <div id="tunnel-status" class="status-row"><span class="label">Cloudflare Tunnel</span><span class="badge badge-warn">checking...</span></div>
+  <div id="domain-status" class="status-row"><span class="label">Domain (automation.songheng.vip)</span><span class="badge badge-warn">checking...</span></div>
+  <div id="api-status" class="status-row"><span class="label">API (/v1/analyze)</span><span class="badge badge-warn">checking...</span></div>
+  <div id="x402 USDC-status" class="status-row"><span class="label">x402 USDC Webhook</span><span class="badge badge-warn">checking...</span></div>
+</div>
+
+<div class="card">
+  <h3>💰 Revenue Snapshot</h3>
+  <div id="revenue-status" class="status-row"><span class="label">Paying Users</span><span class="badge badge-warn">checking...</span></div>
+  <div class="status-row"><span class="label">Total Revenue</span><span>$0.00</span></div>
+  <div class="status-row"><span class="label">API Credits Issued</span><span id="credits-issued">0</span></div>
+  <div class="status-row"><span class="label">API Credits Used</span><span id="credits-used">0</span></div>
+</div>
+
+<div class="card">
+  <h3>📋 5-Step Recovery Guide</h3>
+  <div class="step" id="step1">
+    <span class="step-num">1.</span>
+    <strong>Check gateway on host</strong> — SSH into VPS and run:
+    <pre>sudo systemctl status automaton-gateway</pre>
+    <span class="badge badge-warn">waiting...</span>
+  </div>
+  <div class="step" id="step2">
+    <span class="step-num">2.</span>
+    <strong>Restart gateway if down</strong>
+    <pre>cd /root/automaton && sudo systemctl restart automaton-gateway</pre>
+    <span class="badge badge-warn">waiting...</span>
+  </div>
+  <div class="step" id="step3">
+    <span class="step-num">3.</span>
+    <strong>Verify gateway is listening</strong>
+    <pre>ss -tlnp | grep 8080</pre>
+    <span class="badge badge-warn">waiting...</span>
+  </div>
+  <div class="step" id="step4">
+    <span class="step-num">4.</span>
+    <strong>Restart Cloudflare Tunnel</strong>
+    <pre>/usr/local/bin/cloudflared tunnel run automaton-gateway &</pre>
+    <span class="badge badge-warn">waiting...</span>
+  </div>
+  <div class="step" id="step5">
+    <span class="step-num">5.</span>
+    <strong>Verify public access</strong>
+    <pre>curl -s -o /dev/null -w '%{http_code}' https://automation.songheng.vip</pre>
+    <span class="badge badge-warn">waiting...</span>
+  </div>
+</div>
+
+<div class="card">
+  <h3>🔄 Run Diagnostics</h3>
+  <div class="flex">
+    <button class="action-btn" onclick="runAll()">▶ Run All Checks</button>
+    <button class="action-btn" onclick="copyRecovery()">📋 Copy Recovery Cmds</button>
+  </div>
+  <p style="margin-top:8px;color:#8b949e;font-size:.85rem">Or SSH into host and run: <code>bash /root/automaton/recover.sh</code></p>
+</div>
+
+<div class="card" style="display:none" id="output-card">
+  <h3>📝 Diagnostic Output</h3>
+  <pre id="output"></pre>
+</div>
+
+<div class="card">
+  <h3>🔗 Distribution Channels</h3>
+  <div class="status-row"><span class="label">Smithery</span><span class="badge badge-warn">pending</span></div>
+  <div class="status-row"><span class="label">Glama</span><span class="badge badge-warn">pending</span></div>
+  <div class="status-row"><span class="label">MCP.so</span><span class="badge badge-warn">pending</span></div>
+  <div class="status-row"><span class="label">ClawHunt</span><span class="badge badge-warn">pending</span></div>
+  <div class="status-row"><span class="label">Google Search</span><span class="badge badge-warn">pending</span></div>
+</div>
+
+<script>
+function ts(){return new Date().toISOString()}
+document.getElementById('timestamp').textContent = ts();
+
+async function runAll(){
+  const outCard = document.getElementById('output-card');
+  const out = document.getElementById('output');
+  outCard.style.display = 'block';
+  out.textContent = 'Running diagnostics...\n';
+  
+  // Check each service
+  const checks = [
+    {id:'gateway-status', url:'/api/health', label:'Gateway'},
+    {id:'domain-status', url:'https://automation.songheng.vip', label:'Domain'},
+    {id:'api-status', url:'/free/analyze', label:'API'},
+  ];
+  
+  for(const check of checks){
+    const el = document.getElementById(check.id);
+    if(!el) continue;
+    try{
+      const r = await fetch(check.url, {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({text:'ping'})});
+      const code = r.status;
+      el.innerHTML = `<span class="label">${check.label}</span><span class="badge ${code<400?'badge-ok':'badge-fail'}">${code}</span>`;
+      out.textContent += `✓ ${check.label}: HTTP ${code}\n`;
+    }catch(e){
+      el.innerHTML = `<span class="label">${check.label}</span><span class="badge badge-fail">unreachable</span>`;
+      out.textContent += `✗ ${check.label}: ${e.message}\n`;
+    }
+  }
+  
+  out.textContent += '\n✅ All checks complete.\n';
+  out.textContent += 'If any service is down, SSH into host and run:\n';
+  out.textContent += '  bash /root/automaton/recover.sh\n';
+}
+
+function copyRecovery(){
+  const cmds = `# Recovery commands for host
+sudo systemctl status automaton-gateway
+sudo systemctl restart automaton-gateway
+ss -tlnp | grep 8080
+/usr/local/bin/cloudflared tunnel run automaton-gateway &
+curl -s -o /dev/null -w '%{http_code}' https://automation.songheng.vip`;
+  navigator.clipboard.writeText(cmds).then(() => alert('Copied!'));
+}
+
+// Auto-run checks on load
+setTimeout(runAll, 500);
+</script>
+<script src="/conversion-banner.js" defer></script>
+</body>
+</html>

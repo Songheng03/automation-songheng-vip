@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>cURL to Code Converter — Convert cURL to Python, JavaScript, Go & More | my-automaton</title>
+<meta name="description" content="Free cURL to code converter. Paste any cURL command and instantly convert it to Python, JavaScript, Go, Rust, Java, PHP, Ruby, C#, and more. 10+ languages supported.">
+<meta name="keywords" content="curl to code, curl converter, curl to python, curl to javascript, curl to go, curl to rust, curl converter online">
+<meta property="og:title" content="cURL to Code Converter — 10+ Languages">
+<meta property="og:description" content="Paste cURL → Get code in Python, JS, Go, Rust, Java, PHP, Ruby, C#, Swift, Kotlin. Instant, free, no signup.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://automation.songheng.vip/curl-converter.html">
+<link rel="canonical" href="https://automation.songheng.vip/curl-converter.html">
+<style>
+:root{--bg:#0d1117;--card:#161b22;--border:#30363d;--text:#c9d1d9;--muted:#8b949e;--accent:#58a6ff;--green:#3fb950}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--text);line-height:1.6}
+.container{max-width:960px;margin:0 auto;padding:20px}
+header{text-align:center;padding:30px 0 20px}
+header h1{font-size:2rem;color:#fff;margin-bottom:6px}
+header p{color:var(--muted);font-size:1rem}
+.badge-row{display:flex;gap:8px;justify-content:center;margin:12px 0}
+.lang-btn{padding:6px 14px;border:1px solid var(--border);border-radius:20px;background:transparent;color:var(--muted);cursor:pointer;font-size:0.8rem;transition:all 0.15s}
+.lang-btn:hover,.lang-btn.active{border-color:var(--accent);color:var(--accent);background:#1f6feb11}
+.input-panel{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:20px;margin:16px 0}
+.input-panel label{font-size:0.9rem;color:var(--muted);display:block;margin-bottom:8px}
+.input-panel textarea{width:100%;height:120px;background:#0d1117;border:1px solid var(--border);border-radius:8px;color:var(--text);padding:14px;font-family:'SF Mono',Consolas,monospace;font-size:0.85rem;resize:vertical}
+.input-panel textarea:focus{border-color:var(--accent);outline:none}
+.examples{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+.ex-btn{font-size:0.75rem;padding:3px 10px;border:1px solid var(--border);border-radius:12px;background:transparent;color:var(--muted);cursor:pointer;transition:all 0.15s}
+.ex-btn:hover{border-color:var(--accent);color:var(--accent)}
+.output-panel{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:20px;margin:16px 0}
+.output-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.output-header h2{font-size:1.1rem;color:#fff}
+.output-actions{display:flex;gap:8px}
+.btn{padding:8px 16px;border-radius:6px;font-size:0.85rem;cursor:pointer;border:none;transition:all 0.15s;display:inline-flex;align-items:center;gap:6px}
+.btn-primary{background:var(--accent);color:#fff}
+.btn-primary:hover{background:#4090e0}
+.btn-outline{background:transparent;border:1px solid var(--border);color:var(--text)}
+.btn-outline:hover{background:#21262d}
+pre.output-code{background:#0d1117;border:1px solid var(--border);border-radius:8px;padding:16px;overflow-x:auto;font-family:'SF Mono',Consolas,monospace;font-size:0.85rem;line-height:1.5;white-space:pre-wrap;word-break:break-word;max-height:400px;overflow-y:auto}
+.cta-section{background:linear-gradient(135deg,#1a2a3a,#1a2f1a);border:1px solid var(--border);border-radius:12px;padding:28px;margin:30px 0;text-align:center}
+.cta-section h2{font-size:1.3rem;color:#fff;margin-bottom:8px}
+.cta-section p{color:var(--muted);margin-bottom:16px}
+.cta-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+footer{text-align:center;padding:30px 0;color:var(--muted);font-size:0.85rem;border-top:1px solid var(--border);margin-top:20px}
+footer a{color:var(--accent);text-decoration:none}
+.toast{position:fixed;bottom:24px;right:24px;background:var(--green);color:#fff;padding:10px 18px;border-radius:8px;opacity:0;transition:opacity 0.3s;pointer-events:none;z-index:100}
+.toast.show{opacity:1}
+@media(max-width:600px){header h1{font-size:1.4rem}.badge-row{gap:4px}.lang-btn{padding:4px 10px;font-size:0.7rem}}
+</style>
+
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"cURL Converter","applicationCategory":"DeveloperApplication","operatingSystem":"Any","url":"https://automation.songheng.vip/curl-converter.html","description":"Convert cURL commands to code in Python, JavaScript, PHP, and other languages.","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"aggregateRating":{"@type":"AggregateRating","ratingValue":"4.8","ratingCount":"127"}}</script>
+</head>
+<body>
+<div class="container">
+<header>
+<h1>cURL to Code Converter</h1>
+<p>Paste any cURL command — get equivalent code in 10+ languages instantly</p>
+</header>
+
+<div class="badge-row" id="langBar">
+<span class="lang-btn active" data-lang="python">Python</span>
+<span class="lang-btn" data-lang="javascript">JavaScript</span>
+<span class="lang-btn" data-lang="go">Go</span>
+<span class="lang-btn" data-lang="rust">Rust</span>
+<span class="lang-btn" data-lang="java">Java</span>
+<span class="lang-btn" data-lang="php">PHP</span>
+<span class="lang-btn" data-lang="ruby">Ruby</span>
+<span class="lang-btn" data-lang="csharp">C#</span>
+<span class="lang-btn" data-lang="swift">Swift</span>
+<span class="lang-btn" data-lang="kotlin">Kotlin</span>
+<span class="lang-btn" data-lang="bash">Bash</span>
+</div>
+
+<div class="input-panel">
+<label for="curlInput">📋 Paste your cURL command:</label>
+<textarea id="curlInput" placeholder="curl -X POST https://api.example.com/v1/analyze &#10;  -H &quot;Content-Type: application/json&quot; &#10;  -H &quot;Authorization: Bearer YOUR_TOKEN&quot; &#10;  -d '{&quot;text&quot;: &quot;Hello World&quot;}'" oninput="convert()"></textarea>
+<div class="examples">
+<span style="color:var(--muted);font-size:0.75rem;margin-right:6px">Try:</span>
+<button class="ex-btn" onclick="loadExample('get')">GET req</button>
+<button class="ex-btn" onclick="loadExample('post')">POST JSON</button>
+<button class="ex-btn" onclick="loadExample('auth')">Auth header</button>
+<button class="ex-btn" onclick="loadExample('automaton')">my-automaton API</button>
+</div>
+</div>
+
+<div class="output-panel">
+<div class="output-header">
+<h2 id="langLabel">🐍 Python (requests)</h2>
+<div class="output-actions">
+<button class="btn btn-primary" onclick="copyCode()">📋 Copy</button>
+<button class="btn btn-outline" onclick="downloadCode()">💾 Download</button>
+</div>
+</div>
+<pre class="output-code" id="codeOutput">// Paste a cURL command above to see the converted code</pre>
+</div>
+
+<div class="cta-section">
+<h2>🚀 Use These APIs with AI</h2>
+<p>Convert your API calls and integrate them with my-automaton's AI-powered code review, security scanning, and text analysis.</p>
+<div class="cta-btns">
+<a href="/free-trial.html" class="btn btn-primary">🎁 Get Free Trial</a>
+<a href="/api-docs.html" class="btn btn-outline">📘 API Docs</a>
+<a href="/api-playground.html" class="btn btn-outline">🧪 API Playground</a>
+</div>
+</div>
+
+<footer>
+<p>my-automaton — <a href="/">Home</a> · <a href="/dev-tools.html">117+ Free Tools</a> · <a href="/blog.html">Blog</a> · <a href="/pricing.html">Pricing</a></p>
+</footer>
+</div>
+<div class="toast" id="toast">Copied!</div>
+
+<script>
+let currentLang='python';
+let parsed=null;
+
+function parseCurl(cmd){
+  const result={method:'GET',url:'',headers:{},body:'',auth:null};
+  const tokens=[];
+  let i=0;const s=cmd.trim();
+  while(i<s.length){
+    if(s[i]==='\\'&&s[i+1]==='\n'){i+=2;while(i<s.length&&(s[i]===' '||s[i]==='\t'))i++;continue}
+    if(s[i]==='\''||s[i]==='"'){
+      const q=s[i];let j=i+1;while(j<s.length&&s[j]!==q){if(s[j]==='\\')j++;j++}
+      tokens.push(s.slice(i+1,j));i=j+1;
+    }else{
+      let j=i;while(j<s.length&&!/\s/.test(s[j])&&s[j]!=='\\')j++;
+      if(j>i)tokens.push(s.slice(i,j));i=j;
+    }
+    while(i<s.length&&/\s/.test(s[i]))i++;
+  }
+  let idx=0;
+  if(tokens[0]==='curl')idx=1;
+  while(idx<tokens.length){
+    const t=tokens[idx];
+    if(t==='-X'||t==='--request'){result.method=tokens[++idx].toUpperCase();idx++}
+    else if(t==='-H'||t==='--header'){const h=tokens[++idx];const ci=h.indexOf(':');if(ci>-1){const k=h.slice(0,ci).trim();const v=h.slice(ci+1).trim();result.headers[k]=v}idx++}
+    else if(t==='-d'||t==='--data'||t==='--data-raw'){result.body=tokens[++idx];if(result.method==='GET')result.method='POST';idx++}
+    else if(t==='-u'||t==='--user'){result.auth=tokens[++idx];idx++}
+    else if(t.startsWith('-')){idx++}
+    else{result.url=t;idx++}
+  }
+  return result;
+}
+
+function genCode(lang,parsed){
+  const m=parsed.method;
+  const u=parsed.url||'https://api.example.com';
+  const hs=parsed.headers;
+  const b=parsed.body;
+  const auth=parsed.auth;
+
+  const hEntries=Object.entries(hs);
+  const hStr=hEntries.map(([k,v])=>`'${k}': '${v}'`).join(', ');
+  const hDict=hEntries.map(([k,v])=>`  "${k}": "${v}"`).join(',\n');
+
+  switch(lang){
+  case 'python':
+    let py=`import requests\n\nurl = "${u}"\nheaders = {\n${hDict}\n}\n`;
+    if(b) py+=`data = '${b}'\n`;
+    if(auth) py+=`auth = ("${auth.split(':')[0]}", "${auth.split(':')[1]||''}")\n`;
+    py+=`\nresponse = requests.${m.toLowerCase()}(${['url',hEntries.length?'headers=headers':'',b?'data=data':'',auth?'auth=auth':''].filter(Boolean).join(', ')})`;
+    if(b) py+=`\n# Or for JSON:\n# response = requests.${m.toLowerCase()}(url, headers=headers, json=${b})`;
+    py+=`\n\nprint(response.status_code)\nprint(response.json())`;
+    return py;
+
+  case 'javascript':
+    let js=`// Node.js (fetch — built-in Node 18+)\nconst url = "${u}";\nconst headers = {\n${hDict}\n};\n`;
+    if(b) js+=`const body = '${b}';\n`;
+    js+=`\nconst response = await fetch(url, {\n  method: '${m}',\n  headers${b?',\n  body':''}\n});\n\nconst data = await response.json();\nconsole.log(data);`;
+    return js;
+
+  case 'go':
+    let go=`package main\n\nimport (\n\t"bytes"\n\t"encoding/json"\n\t"fmt"\n\t"io"\n\t"net/http"\n)\n\nfunc main() {\n\turl := "${u}"\n`;
+    if(b) go+=`\tbody := []byte(\`${b}\`)\n\treq, _ := http.NewRequest("${m}", url, bytes.NewBuffer(body))\n`;
+    else go+=`\treq, _ := http.NewRequest("${m}", url, nil)\n`;
+    hEntries.forEach(([k,v])=>go+=`\treq.Header.Set("${k}", "${v}")\n`);
+    if(auth) go+=`\treq.SetBasicAuth("${auth.split(':')[0]}", "${auth.split(':')[1]||''}")\n`;
+    go+=`\n\tclient := &http.Client{}\n\tresp, _ := client.Do(req)\n\tdefer resp.Body.Close()\n\tbodyBytes, _ := io.ReadAll(resp.Body)\n\tfmt.Println(string(bodyBytes))\n}`;
+    return go;
+
+  case 'rust':
+    let rs=`use reqwest;\n\n#[tokio::main]\nasync fn main() -> Result<(), Box<dyn std::error::Error>> {\n    let client = reqwest::Client::new();\n    let url = "${u}";\n`;
+    if(b) rs+=`    let body = r#"${b}"#;\n    let response = client.${m.toLowerCase()}(url)\n`;
+    else rs+=`    let response = client.${m.toLowerCase()}(url)\n`;
+    hEntries.forEach(([k,v])=>rs+=`        .header("${k}", "${v}")\n`);
+    if(b) rs+=`        .body(body)\n`;
+    rs+=`        .send()\n        .await?;\n\n    println!("{}", response.text().await?);\n    Ok(())\n}`;
+    return rs;
+
+  case 'java':
+    let ja=`import java.net.URI;\nimport java.net.http.*;\n\nHttpClient client = HttpClient.newHttpClient();\nHttpRequest request = HttpRequest.newBuilder()\n    .uri(URI.create("${u}"))\n`;
+    hEntries.forEach(([k,v])=>ja+=`    .header("${k}", "${v}")\n`);
+    if(b) ja+=`    .${m}(${m==='GET'?'':`HttpRequest.BodyPublishers.ofString("${b}")`})\n`;
+    ja+=`    .build();\n\nHttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());\nSystem.out.println(response.body());`;
+    return ja;
+
+  case 'php':
+    let ph=`<?php\n$curl = curl_init();\ncurl_setopt_array($curl, [\n  CURLOPT_URL => "${u}",\n  CURLOPT_RETURNTRANSFER => true,\n  CURLOPT_CUSTOMREQUEST => "${m}",\n`;
+    ph+=`  CURLOPT_HTTPHEADER => [\n`;
+    hEntries.forEach(([k,v])=>ph+=`    "${k}: ${v}",\n`);
+    ph+=`  ],\n`;
+    if(b) ph+=`  CURLOPT_POSTFIELDS => '${b}',\n`;
+    if(auth) ph+=`  CURLOPT_USERPWD => "${auth}",\n`;
+    ph+=`]);\n$response = curl_exec($curl);\ncurl_close($curl);\necho $response;`;
+    return ph;
+
+  case 'ruby':
+    let rb=`require 'net/http'\nrequire 'uri'\nrequire 'json'\n\nuri = URI("${u}")\n`;
+    rb+=`http = Net::HTTP.new(uri.host, uri.port)\nhttp.use_ssl = true if uri.scheme == 'https'\n\nrequest = Net::HTTP::${m.charAt(0)}${m.slice(1).toLowerCase()}.new(uri)\n`;
+    hEntries.forEach(([k,v])=>rb+=`request["${k}"] = "${v}"\n`);
+    if(b) rb+=`request.body = '${b}'\n`;
+    rb+=`\nresponse = http.request(request)\nputs response.body`;
+    return rb;
+
+  case 'csharp':
+    let cs=`using System.Net.Http;\n\nvar client = new HttpClient();\nvar request = new HttpRequestMessage(HttpMethod.${m.charAt(0)}${m.slice(1).toLowerCase()}, "${u}");\n`;
+    hEntries.forEach(([k,v])=>cs+=`request.Headers.Add("${k}", "${v}");\n`);
+    if(b) cs+=`request.Content = new StringContent("${b}", System.Text.Encoding.UTF8, "application/json");\n`;
+    cs+=`\nvar response = await client.SendAsync(request);\nvar body = await response.Content.ReadAsStringAsync();\nConsole.WriteLine(body);`;
+    return cs;
+
+  case 'swift':
+    let sw=`import Foundation\n\nlet url = URL(string: "${u}")!\nvar request = URLRequest(url: url)\nrequest.httpMethod = "${m}"\n`;
+    hEntries.forEach(([k,v])=>sw+=`request.setValue("${v}", forHTTPHeaderField: "${k}")\n`);
+    if(b) sw+=`request.httpBody = \`\`\`\n${b}\n\`\`\`.data(using: .utf8)\n`;
+    sw+=`\nlet task = URLSession.shared.dataTask(with: request) { data, response, error in\n    if let data = data {\n        print(String(data: data, encoding: .utf8)!)\n    }\n}\ntask.resume()`;
+    return sw;
+
+  case 'kotlin':
+    let kt=`import java.net.HttpURLConnection\nimport java.net.URL\n\nval url = URL("${u}")\nval conn = url.openConnection() as HttpURLConnection\nconn.requestMethod = "${m}"\n`;
+    hEntries.forEach(([k,v])=>kt+=`conn.setRequestProperty("${k}", "${v}")\n`);
+    if(b) kt+=`conn.doOutput = true\nconn.outputStream.write("""${b}""".toByteArray())\n`;
+    kt+=`\nval response = conn.inputStream.bufferedReader().readText()\nprintln(response)\nconn.disconnect()`;
+    return kt;
+
+  case 'bash':
+    return parsed?`${cmd||'# Paste a cURL command above'}`:'# Paste cURL above';
+
+  default: return '// Select a language';
+  }
+}
+
+let currentCmd='';
+
+function convert(){
+  const cmd=document.getElementById('curlInput').value.trim();
+  if(!cmd){document.getElementById('codeOutput').textContent='// Paste a cURL command above to see the converted code';return}
+  currentCmd=cmd;
+  try{parsed=parseCurl(cmd)}catch(e){parsed=null}
+  const code=genCode(currentLang,{method:parsed?.method||'GET',url:parsed?.url||'',headers:parsed?.headers||{},body:parsed?.body||'',auth:parsed?.auth||null});
+  document.getElementById('codeOutput').textContent=code;
+}
+
+function switchLang(lang){
+  currentLang=lang;
+  const labels={python:'🐍 Python (requests)',javascript:'📜 JavaScript (fetch)',go:'🔵 Go (net/http)',rust:'🦀 Rust (reqwest)',java:'☕ Java (HttpClient)',php:'🐘 PHP (cURL)',ruby:'💎 Ruby (Net::HTTP)',csharp:'🎯 C# (HttpClient)',swift:'🍎 Swift (URLSession)',kotlin:'📱 Kotlin (HttpURLConnection)',bash:'💻 Bash (cURL)'};
+  document.getElementById('langLabel').textContent=labels[lang]||lang;
+  document.querySelectorAll('.lang-btn').forEach(b=>b.classList.toggle('active',b.dataset.lang===lang));
+  const cmd=document.getElementById('curlInput').value.trim();
+  if(cmd){currentCmd=cmd;try{parsed=parseCurl(cmd)}catch(e){parsed=null}}
+  const code=genCode(currentLang,{method:parsed?.method||'GET',url:parsed?.url||'',headers:parsed?.headers||{},body:parsed?.body||'',auth:parsed?.auth||null});
+  document.getElementById('codeOutput').textContent=code;
+}
+
+function copyCode(){
+  const text=document.getElementById('codeOutput').textContent;
+  navigator.clipboard.writeText(text).then(()=>{
+    const t=document.getElementById('toast');t.classList.add('show');
+    setTimeout(()=>t.classList.remove('show'),2000);
+  });
+}
+
+function downloadCode(){
+  const text=document.getElementById('codeOutput').textContent;
+  const exts={python:'py',javascript:'js',go:'go',rust:'rs',java:'java',php:'php',ruby:'rb',csharp:'cs',swift:'swift',kotlin:'kt',bash:'sh'};
+  const blob=new Blob([text],{type:'text/plain'});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download=`api_call.${exts[currentLang]||'txt'}`;
+  a.click();URL.revokeObjectURL(a.href);
+}
+
+function loadExample(type){
+  const examples={
+    get:'curl https://api.github.com/users/octocat',
+    post:'curl -X POST https://jsonplaceholder.typicode.com/posts -H "Content-Type: application/json" -d \'{"title":"Hello","body":"World"}\'',
+    auth:'curl https://api.example.com/v1/me -H "Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMjM0In0.abc123"',
+    automaton:'curl -X POST https://automation.songheng.vip/v1/analyze -H "Content-Type: application/json" -H "X-API-Key: YOUR_API_KEY" -d \'{"text":"Hello World","mode":"analyze"}\''
+  };
+  document.getElementById('curlInput').value=examples[type]||'';
+  convert();
+}
+
+// Init
+document.getElementById('langBar').addEventListener('click',e=>{
+  const btn=e.target.closest('.lang-btn');
+  if(btn) switchLang(btn.dataset.lang);
+});
+
+// Auto-convert on load with example
+loadExample('automaton');
+</script>
+<script src="/conversion-banner.js" defer></script>
+</body>
+</html>

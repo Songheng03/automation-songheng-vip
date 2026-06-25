@@ -1,0 +1,84 @@
+{
+  "status": "failed",
+  "directory": "RepoAgent",
+  "directory_url": "https://github.com/OpenBMB/RepoAgent",
+  "method_attempted": "api_research",
+  "submission_method": "not_applicable",
+  "automatable": false,
+  "summary": "RepoAgent is an open-source LLM-powered framework for repository-level code documentation generation (github.com/OpenBMB/RepoAgent). It is NOT a directory, marketplace, or listing platform for MCP servers or third-party services. There is no submission process for external services. The domain repoagent.ai is a parked GoDaddy domain with no service. No credentials (GitHub PAT) are available for contributing even if that were relevant.",
+  "details": {
+    "repoagent_nature": {
+      "type": "LLM-powered documentation generation framework",
+      "purpose": "Automatically generates and maintains documentation for Git repositories via AST analysis",
+      "submission_model": "Open source contributions (PRs) to improve RepoAgent's own codebase — not a listing platform"
+    },
+    "my_automaton_actual_state": {
+      "type": "Node.js HTTP MCP server for automation tasks",
+      "url": "https://automation.songheng.vip",
+      "mcp_endpoint": "https://automation.songheng.vip/mcp",
+      "relationship_to_repoagent": "None — my-automaton is a standalone service, not a code contribution to RepoAgent"
+    },
+    "investigation_performed": [
+      {
+        "check": "GitHub Repository Analysis",
+        "result": "RepoAgent is a documentation generation tool (uses AST analysis to document code), not a directory/marketplace. No 'submit your tool' feature exists."
+      },
+      {
+        "check": "repoagent.ai domain check",
+        "result": "Parked GoDaddy landing page — no service running there."
+      },
+      {
+        "check": "PyPI package check",
+        "result": "repoagent is a Python package on PyPI (pip install repoagent) used for documentation generation."
+      },
+      {
+        "check": "ArXiv paper",
+        "result": "https://arxiv.org/abs/2402.16667v1 — Academic paper about the RepoAgent framework."
+      },
+      {
+        "check": "Available credentials",
+        "result": "No GITHUB_TOKEN or GitHub PAT available. Even if RepoAgent accepted listings, automated submission via GitHub PR is not possible."
+      }
+    ],
+    "blockers": [
+      {
+        "issue": "Platform mismatch — not a directory",
+        "detail": "RepoAgent is a documentation generation framework (like a tool to use), not a directory where services/products are listed."
+      },
+      {
+        "issue": "No submission mechanism for external services",
+        "detail": "RepoAgent's contribution model is GitHub PRs to its own codebase. There is no 'add your MCP server' or 'list your service' feature."
+      },
+      {
+        "issue": "No GitHub credentials available",
+        "detail": "Even if contributing to RepoAgent's code were relevant, no GITHUB_TOKEN is available to open PRs."
+      }
+    ],
+    "recommendation": "RepoAgent is not a valid submission target for my-automaton. For listing an MCP server, target actual MCP directories such as smithery.ai, glama.ai, pulsemcp.com, or mcp.so instead.",
+    "alternative_targets": [
+      "https://smithery.ai",
+      "https://glama.ai/mcp/servers",
+      "https://pulsemcp.com",
+      "https://mcp.so",
+      "https://github.com/open-tool-community/mcp-list"
+    ]
+  },
+  "generated_artifacts": [
+    {
+      "path": "/root/automaton/RepoAgent.result.json",
+      "type": "result",
+      "description": "Final result file for RepoAgent directory submission task"
+    },
+    {
+      "path": "/root/automaton/workspace/research/repoagent.json",
+      "type": "research",
+      "description": "Complete research on RepoAgent platform"
+    },
+    {
+      "path": "/root/automaton/workspace/submission/repoagent-result.json",
+      "type": "prior_result",
+      "description": "Prior submission result confirming no valid submission path exists"
+    }
+  ],
+  "timestamp": "2026-06-17T18:07:00Z"
+}

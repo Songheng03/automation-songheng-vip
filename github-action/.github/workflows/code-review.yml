@@ -1,0 +1,21 @@
+name: AI Code Review
+on:
+  pull_request:
+    types: [opened, synchronize]
+  issue_comment:
+    types: [created]
+
+jobs:
+  code-review:
+    if: github.event_name == 'pull_request' || (github.event_name == 'issue_comment' && contains(github.event.comment.body, '/review'))
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: AI Code Review
+        uses: chaosong/my-automaton-review@v1
+        with:
+          api-key: ${{ secrets.MY_AUTOMATON_API_KEY }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          review-level: standard
+          security-scan: true

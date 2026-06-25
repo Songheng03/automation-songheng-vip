@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Git Commands Cheatsheet — Interactive Reference</title>
+<meta name="description" content="Complete interactive Git commands cheatsheet. Searchable, categorized, with copy-to-clipboard. Master Git branching, merging, rebasing, and more. 100% client-side.">
+<link rel="canonical" href="https://automation.songheng.vip/git-cheatsheet.html">
+<style>
+:root{--bg:#0d1117;--surface:#161b22;--border:#30363d;--text:#c9d1d9;--muted:#8b949e;--accent:#58a6ff;--green:#3fb950;--orange:#d2991d;--red:#f85149}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--text);font-family:system-ui,sans-serif;min-height:100vh}
+header{background:var(--surface);border-bottom:1px solid var(--border);padding:16px 24px;text-align:center}
+header h1{font-size:1.5rem} header p{color:var(--muted);font-size:.85rem;margin-top:4px}
+.container{max-width:860px;margin:0 auto;padding:24px 16px}
+.search{width:100%;padding:12px 16px;background:var(--bg);border:1px solid var(--border);border-radius:10px;color:var(--text);font-size:.92rem;margin-bottom:20px}
+.search:focus{outline:none;border-color:var(--accent)}
+.tags{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+.tag{padding:6px 14px;border-radius:20px;border:1px solid var(--border);background:var(--surface);color:var(--muted);cursor:pointer;font-size:.75rem;transition:all .15s}
+.tag.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+.cmd-grid{display:flex;flex-direction:column;gap:6px}
+.cmd-row{display:flex;align-items:center;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:10px 16px;gap:12px}
+.cmd-row code{background:var(--bg);color:var(--green);padding:6px 12px;border-radius:6px;font-family:'JetBrains Mono',monospace;font-size:.8rem;flex:1;white-space:nowrap;overflow-x:auto}
+.cmd-row .desc{font-size:.78rem;color:var(--muted);min-width:140px}
+.cmd-row button{background:transparent;border:1px solid var(--border);color:var(--muted);padding:4px 10px;border-radius:6px;cursor:pointer;font-size:.7rem}
+.cmd-row button:hover{color:var(--accent);border-color:var(--accent)}
+.sponsor{text-align:center;padding:20px;background:var(--surface);border:1px solid var(--border);border-radius:8px}
+.sponsor a{color:var(--accent)}
+</style>
+</head>
+<body>
+<header><h1>📘 Git Commands Cheatsheet</h1><p>Interactive reference for Git commands — search, copy, learn.</p></header>
+<div class="container">
+<input class="search" id="search" placeholder="Search commands... (e.g., branch, merge, rebase)" oninput="render()">
+<div class="tags" id="tags"></div>
+<div class="cmd-grid" id="cmdGrid"></div>
+<div class="sponsor"><p>💡 <strong>Need AI code review?</strong> <a href="/api-playground.html">Try our API</a>.</p></div>
+</div>
+<script>
+const cmds=[
+  ['Setup','git init','Initialize a new repository'],
+  ['Setup','git clone <url>','Clone a repository'],
+  ['Setup','git config user.name "Name"','Set commit author name'],
+  ['Daily','git status','Show working tree status'],
+  ['Daily','git add <file>','Stage file for commit'],
+  ['Daily','git add .','Stage all changes'],
+  ['Daily','git commit -m "msg"','Commit staged changes'],
+  ['Daily','git push','Push commits to remote'],
+  ['Daily','git pull','Pull changes from remote'],
+  ['Daily','git log --oneline','View commit history'],
+  ['Daily','git diff','Show unstaged changes'],
+  ['Branch','git branch','List branches'],
+  ['Branch','git branch <name>','Create a branch'],
+  ['Branch','git checkout <name>','Switch to branch'],
+  ['Branch','git checkout -b <name>','Create and switch'],
+  ['Branch','git merge <branch>','Merge branch into current'],
+  ['Branch','git branch -d <name>','Delete branch'],
+  ['Undo','git reset <file>','Unstage file'],
+  ['Undo','git reset --hard','Discard all changes (caution!)'],
+  ['Undo','git revert <commit>','Revert a commit safely'],
+  ['Undo','git stash','Stash uncommitted changes'],
+  ['Undo','git stash pop','Restore stashed changes'],
+  ['Remote','git remote -v','List remotes'],
+  ['Remote','git remote add origin <url>','Add remote'],
+  ['Remote','git fetch','Fetch from remote'],
+  ['Advanced','git rebase <branch>','Rebase onto branch'],
+  ['Advanced','git cherry-pick <hash>','Apply a specific commit'],
+  ['Advanced','git bisect','Binary search for bugs'],
+  ['Advanced','git tag v1.0','Create a tag'],
+];
+let activeTag='All';
+function render(){
+  const q=document.getElementById('search').value.toLowerCase();
+  const filtered=cmds.filter(([cat,cmd,desc])=>(activeTag==='All'||cat===activeTag)&&(!q||cmd.toLowerCase().includes(q)||desc.toLowerCase().includes(q)||cat.toLowerCase().includes(q)));
+  document.getElementById('cmdGrid').innerHTML=filtered.map(([cat,cmd,desc])=>`<div class="cmd-row"><code>${esc(cmd)}</code><span class="desc">${desc}</span><span style="font-size:.65rem;color:var(--muted)">${cat}</span><button onclick="cp(event,'${esc(cmd)}')">Copy</button></div>`).join('')||'<p style="text-align:center;color:var(--muted);padding:40px">No commands found.</p>';
+}
+function esc(s){return s.replace(/'/g,"\\'")}
+function cp(e,cmd){navigator.clipboard.writeText(cmd);const b=e.target;b.textContent='✓';setTimeout(()=>b.textContent='Copy',1000)}
+function switchTag(t){activeTag=t;document.querySelectorAll('.tag').forEach(el=>el.classList.toggle('active',el.textContent===t));render()}
+const cats=['All',...new Set(cmds.map(([c])=>c))];
+document.getElementById('tags').innerHTML=cats.map(c=>`<button class="tag${c==='All'?' active':''}" onclick="switchTag('${c}')">${c}</button>`).join('');
+render();
+</script>
+<script src="/conversion-banner.js" defer></script>
+</body>
+</html>

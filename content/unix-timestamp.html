@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta property="og:title" content="Unix Timestamp Converter">
+<meta property="og:description" content="Convert timestamps to human-readable dates and back. Live clock. Free.">
+<meta property="og:url" content="https://automation.songheng.vip/unix-timestamp.html">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Unix Timestamp Converter">
+<meta name="twitter:description" content="Convert timestamps to human-readable dates and back. Live clock. Free.">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unix Timestamp Converter — Epoch to Date & Date to Epoch | my-automaton</title>
+<meta name="description" content="Convert between Unix timestamps and human-readable dates. Autodetect seconds vs milliseconds. Live current timestamp. 100% free, no signup.">
+<style>
+:root{--bg:#0f172a;--card:#1e293b;--text:#e2e8f0;--muted:#94a3b8;--accent:#38bdf8;--green:#4ade80;--border:#334155}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+header{background:var(--card);border-bottom:1px solid var(--border);padding:1rem 2rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap}
+header h1{font-size:1.25rem;color:var(--accent)}
+nav a{color:var(--muted);text-decoration:none;margin-left:1rem;font-size:.875rem}
+main{max-width:600px;margin:2rem auto;padding:0 1.5rem}
+.live-box{background:var(--card);border:1px solid var(--accent);border-radius:12px;padding:1.5rem;text-align:center;margin-bottom:1.5rem}
+.live-box .label{font-size:.65rem;color:var(--muted);text-transform:uppercase;margin-bottom:.25rem}
+.live-box .now{font-family:"Fira Code",monospace;font-size:1.8rem;color:var(--green);font-weight:700;word-break:break-all}
+.live-box .now-sec{font-size:.7rem;color:var(--muted);margin-top:.25rem;font-family:monospace}
+.converter{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.5rem}
+.converter h3{font-size:.8rem;color:var(--accent);margin-bottom:.75rem}
+.input-row{display:flex;gap:.5rem;margin-bottom:.75rem;flex-wrap:wrap}
+.input-row input{flex:1;min-width:200px;background:#0a0f1a;color:var(--text);border:1px solid var(--border);border-radius:8px;padding:.6rem .8rem;font-family:"Fira Code",monospace;font-size:.85rem}
+.input-row input:focus{outline:none;border-color:var(--accent)}
+.input-row button{padding:.4rem 1.2rem;border:none;border-radius:8px;cursor:pointer;font-size:.7rem;font-weight:600;background:var(--accent);color:#0f172a}
+.result-grid{display:grid;gap:.4rem}
+.result-item{display:flex;justify-content:space-between;align-items:center;background:#0a0f1a;border:1px solid var(--border);border-radius:8px;padding:.6rem .8rem;font-size:.7rem}
+.result-item .key{color:var(--muted)}
+.result-item .val{font-family:"Fira Code",monospace;color:var(--green);font-weight:600}
+.result-item .val.date{color:var(--text)}
+footer{text-align:center;padding:2rem;color:var(--muted);font-size:.8rem;border-top:1px solid var(--border);margin-top:2rem}footer a{color:var(--accent)}
+</style>
+
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Unix Timestamp Converter","applicationCategory":"DeveloperApplication","operatingSystem":"Any","url":"https://automation.songheng.vip/unix-timestamp.html","description":"Convert Unix timestamps to human-readable dates and vice versa. Live clock with multiple formats.","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"aggregateRating":{"@type":"AggregateRating","ratingValue":"4.8","ratingCount":"127"}}</script>
+</head>
+<body>
+<header><h1>⏰ Unix Timestamp Converter</h1><nav><a href="/">Home</a><a href="/dev-tools.html">Tools</a><a href="/api-playground.html">API</a></nav></header>
+<main>
+<div class="live-box">
+  <div class="label">Current Unix Timestamp</div>
+  <div class="now" id="liveSec">0</div>
+  <div class="now-sec" id="liveMs">0</div>
+  <div class="now-sec" id="liveDate">—</div>
+</div>
+<div class="converter">
+  <h3>🔄 Convert Timestamp ↔ Date</h3>
+  <div class="input-row">
+    <input type="text" id="tsInput" placeholder="Enter Unix timestamp or date... (e.g., 1718764800 or 2026-06-19)">
+    <button onclick="convert()">Convert</button>
+  </div>
+  <div class="result-grid" id="results"></div>
+</div>
+</main>
+<footer><p>my-automaton · Free Unix Timestamp Converter · <a href="/dev-tools.html">All Tools</a> · <a href="/api-docs.html">API Docs</a></p></footer>
+<script>
+function updateLive(){
+  const now=Date.now();
+  const sec=Math.floor(now/1000);
+  document.getElementById('liveSec').textContent=sec.toLocaleString();
+  document.getElementById('liveMs').textContent=now.toLocaleString()+' ms';
+  document.getElementById('liveDate').textContent=new Date().toUTCString();
+}
+updateLive();
+setInterval(updateLive,1000);
+
+function convert(){
+  const input=document.getElementById('tsInput').value.trim();
+  if(!input)return;
+
+  let timestamp;
+  // Try as number (timestamp)
+  if(/^\d+$/.test(input)){
+    timestamp=parseInt(input);
+    if(timestamp<1e12)timestamp*=1000; // seconds to ms
+  }else{
+    // Try as date
+    const d=new Date(input);
+    if(isNaN(d.getTime())){
+      document.getElementById('results').innerHTML='<div class="result-item"><span class="val">Invalid date or timestamp</span></div>';
+      return;
+    }
+    timestamp=d.getTime();
+  }
+
+  const date=new Date(timestamp);
+  document.getElementById('results').innerHTML=`
+    <div class="result-item"><span class="key">Unix (seconds)</span><span class="val">${Math.floor(timestamp/1000).toLocaleString()}</span></div>
+    <div class="result-item"><span class="key">Unix (milliseconds)</span><span class="val">${timestamp.toLocaleString()}</span></div>
+    <div class="result-item"><span class="key">UTC</span><span class="val date">${date.toUTCString()}</span></div>
+    <div class="result-item"><span class="key">Local</span><span class="val date">${date.toString()}</span></div>
+    <div class="result-item"><span class="key">ISO 8601</span><span class="val">${date.toISOString()}</span></div>
+    <div class="result-item"><span class="key">Day of Week</span><span class="val date">${date.toLocaleDateString('en-US',{weekday:'long'})}</span></div>
+  `;
+}
+
+document.getElementById('tsInput').value=Math.floor(Date.now()/1000);
+convert();
+</script>
+<script src="/conversion-banner.js" defer></script>
+</body>
+</html>

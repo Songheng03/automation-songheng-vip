@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>my-automaton — Revenue Dashboard</title>
+<style>
+  :root { --bg: #0d1117; --card: #161b22; --border: #30363d; --text: #c9d1d9; --muted: #8b949e; --green: #3fb950; --blue: #58a6ff; --orange: #d29922; --red: #f85149; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif; background: var(--bg); color: var(--text); padding: 20px; }
+  .container { max-width: 1000px; margin: 0 auto; }
+  h1 { font-size: 28px; margin-bottom: 8px; }
+  .subtitle { color: var(--muted); margin-bottom: 30px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 30px; }
+  .card { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 20px; }
+  .card .label { font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; color: var(--muted); margin-bottom: 8px; }
+  .card .value { font-size: 32px; font-weight: 600; }
+  .card .value.green { color: var(--green); }
+  .card .value.blue { color: var(--blue); }
+  .card .value.orange { color: var(--orange); }
+  .card .value.red { color: var(--red); }
+  .card .sub { font-size: 13px; color: var(--muted); margin-top: 4px; }
+  table { width: 100%; border-collapse: collapse; margin-bottom: 30px; }
+  th, td { padding: 10px 12px; text-align: left; border-bottom: 1px solid var(--border); font-size: 14px; }
+  th { color: var(--muted); font-weight: 500; text-transform: uppercase; font-size: 12px; letter-spacing: 0.5px; }
+  .tag { display: inline-block; padding: 2px 8px; border-radius: 12px; font-size: 12px; font-weight: 500; }
+  .tag.paid { background: rgba(63,185,80,0.15); color: var(--green); }
+  .tag.trial { background: rgba(210,153,34,0.15); color: var(--orange); }
+  .tag.dev { background: rgba(88,166,255,0.15); color: var(--blue); }
+  .growth-ladder { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 20px; margin-bottom: 30px; }
+  .growth-ladder h2 { font-size: 18px; margin-bottom: 16px; }
+  .ladder-step { display: flex; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--border); }
+  .ladder-step:last-child { border-bottom: 0; }
+  .step-num { width: 30px; height: 30px; border-radius: 50%; background: var(--border); display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 600; margin-right: 15px; flex-shrink: 0; }
+  .step-num.reached { background: var(--green); color: #000; }
+  .step-info { flex: 1; }
+  .step-info .title { font-weight: 500; }
+  .step-info .desc { font-size: 13px; color: var(--muted); }
+  .step-status { font-size: 14px; font-weight: 500; }
+  .step-status.done { color: var(--green); }
+  .step-status.pending { color: var(--orange); }
+  .step-status.future { color: var(--muted); }
+  .section { margin-bottom: 30px; }
+  .section h2 { font-size: 18px; margin-bottom: 12px; border-bottom: 1px solid var(--border); padding-bottom: 8px; }
+  .alert { background: rgba(248,81,73,0.1); border: 1px solid var(--red); border-radius: 8px; padding: 16px; margin-bottom: 20px; }
+  .alert h3 { color: var(--red); font-size: 16px; margin-bottom: 8px; }
+  .alert p { font-size: 14px; line-height: 1.5; }
+  .alert code { background: rgba(240,246,252,0.15); padding: 2px 6px; border-radius: 4px; font-size: 13px; }
+  .fix-box { background: rgba(210,153,34,0.1); border: 1px solid var(--orange); border-radius: 8px; padding: 16px; margin-bottom: 20px; }
+  .fix-box h3 { color: var(--orange); font-size: 16px; margin-bottom: 8px; }
+  .fix-box code { display: block; background: rgba(240,246,252,0.15); padding: 12px; border-radius: 6px; margin: 8px 0; font-size: 14px; }
+  .auto-refresh { color: var(--muted); font-size: 12px; text-align: center; margin-top: 40px; }
+  .hidden { display: none; }
+  #liveData { margin-top: 10px; }
+  .payload-view { background: #1c2128; padding: 16px; border-radius: 6px; font-family: monospace; font-size: 13px; white-space: pre-wrap; overflow-x: auto; max-height: 300px; overflow-y: auto; }
+</style>
+
+<!-- Open Graph / Social Meta Tags -->
+<meta property="og:title" content="my-automaton — Revenue Dashboard" />
+<meta property="og:description" content="my-automaton — Revenue Dashboard — powered by my-automaton. AI code review, security scanning, and developer tools." />
+<meta property="og:image" content="https://automation.songheng.vip/og-image.png" />
+<meta property="og:url" content="https://automation.songheng.vip/revenue-dashboard.html" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="my-automaton" />
+<meta property="og:locale" content="en_US" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="my-automaton — Revenue Dashboard" />
+<meta name="twitter:description" content="my-automaton — Revenue Dashboard — powered by my-automaton. AI code review, security scanning, and developer tools." />
+<meta name="twitter:image" content="https://automation.songheng.vip/og-image.png" />
+  <meta name="description" content="Auto-refreshes every 30s · Last update: — async function refresh() { try { const res = await fetch('/api/stats/overview'); const d = await res.">
+  <link rel="canonical" href="https://automation.songheng.vip/revenue-dashboard.html">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "my-automaton — Revenue Dashboard",
+  "description": "Auto-refreshes every 30s · Last update: — async function refresh() { try { const res = await fetch(",
+  "url": "https://automation.songheng.vip/revenue-dashboard.html",
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": "Web",
+  "author": {
+    "@type": "Organization",
+    "name": "my-automaton",
+    "url": "https://automation.songheng.vip"
+  },
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  }
+}
+</script>
+</head>
+<body>
+<div style="background:#161b22;border-bottom:1px solid #30363d;padding:10px 20px;font-size:.85rem;display:flex;gap:16px;align-items:center;flex-wrap:wrap"><a href="/" style="color:#58a6ff;text-decoration:none;font-weight:600">🏠 Home</a><span style="color:#484f58">|</span><a href="/pricing.html" style="color:#8b949e;text-decoration:none">Pricing</a><a href="/api-docs.html" style="color:#8b949e;text-decoration:none">API</a><a href="/playground.html" style="color:#8b949e;text-decoration:none">Playground</a></div>
+
+<div class="container">
+  <h1>💰 Revenue Dashboard</h1>
+  <p class="subtitle">my-automaton · Live system status & conversion tracker</p>
+
+  <div id="alerts"></div>
+
+  <div class="grid" id="statsGrid">
+    <div class="card"><div class="label">Status</div><div class="value" id="statusVal">—</div><div class="sub">Gateway</div></div>
+    <div class="card"><div class="label">Revenue</div><div class="value blue" id="revenueVal">$0</div><div class="sub">Total USD</div></div>
+    <div class="card"><div class="label">API Keys</div><div class="value" id="keysVal">0</div><div class="sub">Issued</div></div>
+    <div class="card"><div class="label">Credits Used</div><div class="value orange" id="utilVal">0%</div><div class="sub">Utilization</div></div>
+    <div class="card"><div class="label">Free Trials</div><div class="value" id="freeVal">0</div><div class="sub">Today</div></div>
+    <div class="card"><div class="label">Version</div><div class="value" id="versionVal">—</div><div class="sub">Gateway</div></div>
+  </div>
+
+  <div class="growth-ladder" id="growthLadder">
+    <h2>📈 Growth Ladder</h2>
+    <div class="ladder-step"><div class="step-num reached">1</div><div class="step-info"><div class="title">Operational Gateway</div><div class="desc">Gateway running with API endpoints</div></div><div class="step-status done">✅</div></div>
+    <div class="ladder-step"><div class="step-num reached">2</div><div class="step-info"><div class="title">x402 USDC Payments</div><div class="desc">Checkout, webhooks, auto-provisioning</div></div><div class="step-status done">✅</div></div>
+    <div class="ladder-step" id="step3"><div class="step-num">3</div><div class="step-info"><div class="title">First 5 Paying Users</div><div class="desc">$25+ revenue from actual customers</div></div><div class="step-status">⏳</div></div>
+    <div class="ladder-step" id="step4"><div class="step-num">4</div><div class="step-info"><div class="title">First $100 MRR</div><div class="desc">Sustainable compute funding</div></div><div class="step-status">—</div></div>
+    <div class="ladder-step" id="step5"><div class="step-num">5</div><div class="step-info"><div class="title">Self-Sustaining</div><div class="desc">Revenue exceeds all costs</div></div><div class="step-status">—</div></div>
+    <div class="ladder-step" id="step6"><div class="step-num">6</div><div class="step-info"><div class="title">Profit & Growth</div><div class="desc">Reinvest in infra, expand services</div></div><div class="step-status">—</div></div>
+  </div>
+
+  <div class="section">
+    <h2>🔧 Tunnel Status</h2>
+    <div id="tunnelStatus">Checking...</div>
+  </div>
+
+  <div class="section">
+    <h2>📊 Raw Stats Payload</h2>
+    <div id="payloadView" class="payload-view">Loading...</div>
+  </div>
+
+  <p class="auto-refresh">Auto-refreshes every 30s · Last update: <span id="lastUpdate">—</span></p>
+</div>
+
+<script>
+async function refresh() {
+  try {
+    const res = await fetch('/api/stats/overview');
+    const d = await res.json();
+    
+    document.getElementById('statusVal').textContent = 'Online';
+    document.getElementById('statusVal').style.color = 'var(--green)';
+    document.getElementById('revenueVal').textContent = '$' + (d.total_revenue_usd || 0);
+    document.getElementById('keysVal').textContent = d.total_keys || 0;
+    
+    const sold = d.total_credits_sold || 0;
+    const rem = d.total_credits_remaining || 0;
+    const util = sold > 0 ? Math.round((sold - rem) / sold * 100) : 0;
+    document.getElementById('utilVal').textContent = util + '%';
+    document.getElementById('utilVal').style.color = util > 50 ? 'var(--green)' : 'var(--orange)';
+    document.getElementById('freeVal').textContent = d.free_usage_today || 0;
+    document.getElementById('versionVal').textContent = d.gateway_version || '—';
+    
+    // Growth ladder
+    const paidUsers = d.total_keys || 0;
+    const revenue = d.total_revenue_usd || 0;
+    
+    const s3 = document.getElementById('step3');
+    if (paidUsers >= 5) { s3.querySelector('.step-num').classList.add('reached'); s3.querySelector('.step-status').textContent = '✅'; s3.querySelector('.step-status').className = 'step-status done'; }
+    
+    const s4 = document.getElementById('step4');
+    if (revenue >= 100) { s4.querySelector('.step-num').classList.add('reached'); s4.querySelector('.step-status').textContent = '✅'; s4.querySelector('.step-status').className = 'step-status done'; }
+    
+    // Payload view
+    document.getElementById('payloadView').textContent = JSON.stringify(d, null, 2);
+    document.getElementById('lastUpdate').textContent = new Date().toLocaleTimeString();
+    
+    // Tunnel check
+    checkTunnel();
+    
+  } catch(e) {
+    document.getElementById('statusVal').textContent = 'Offline';
+    document.getElementById('statusVal').style.color = 'var(--red)';
+    document.getElementById('payloadView').textContent = 'Failed to fetch stats: ' + e.message;
+    
+    document.getElementById('alerts').innerHTML = `
+      <div class="alert">
+        <h3>🚨 Gateway Offline</h3>
+        <p>Cannot reach /api/stats/overview. The gateway may be down or restarting.</p>
+      </div>
+    `;
+  }
+}
+
+async function checkTunnel() {
+  const el = document.getElementById('tunnelStatus');
+  try {
+    // Can't check external from browser directly (CORS)
+    // Instead, check if health endpoint has tunnel info
+    const res = await fetch('/health');
+    const d = await res.json();
+    el.innerHTML = `<p>Local gateway: ✅ Running (v${d.version || '?'})</p>
+      <p>External tunnel: <span style="color:var(--orange)">⚠️ Cannot verify from browser</span></p>
+      <p style="font-size:13px;color:var(--muted)">Try visiting: <a href="https://automation.songheng.vip/health" target="_blank" style="color:var(--blue)">https://automation.songheng.vip/health</a></p>`;
+  } catch(e) {
+    el.innerHTML = `<p style="color:var(--red)">❌ Cannot reach local gateway</p>`;
+  }
+}
+
+refresh();
+setInterval(refresh, 30000);
+</script>
+<script src="/conversion-banner.js" defer></script>
+</body>
+</html>

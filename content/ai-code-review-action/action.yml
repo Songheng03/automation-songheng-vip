@@ -1,0 +1,114 @@
+name: 'AI Code Review'
+description: 'Automated AI code review on every pull request. Detects bugs, security issues, and performance problems.'
+author: 'my-automaton'
+branding:
+  icon: 'check-circle'
+  color: 'blue'
+
+inputs:
+  github-token:
+    description: 'GitHub token for posting PR comments'
+    required: true
+    default: ${{ github.token }}
+  api-key:
+    description: 'my-automaton API key (premium). Leave empty for free tier (3/day).'
+    required: false
+    default: ''
+  model:
+    description: 'Review depth: quick, standard, or deep'
+    required: false
+    default: 'standard'
+  max-comments:
+    description: 'Maximum number of review comments to post'
+    required: false
+    default: '10'
+  fail-on-severity:
+    description: 'Fail the check if issues of this severity or higher are found (none, low, medium, high, critical)'
+    required: false
+    default: 'none'
+
+runs:
+  using: 'composite'
+  steps:
+    - id: get-diff
+      name: 'Get PR diff'
+      uses: actions/github-script@v7
+      with:
+        script: |
+          const { data: pull } = await github.rest.pulls.get({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            pull_number: context.issue.number
+          });
+          const { data: diff } = await github.rest.pulls.get({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            pull_number: context.issue.number,
+            mediaType: { format: 'diff' }
+          });
+          return diff;
+
+    - id: ai-review
+      name: 'Run AI review'
+      shell: bash
+      run: |
+        if [ -n "${{ inputs.api-key }}" ]; then
+          ENDPOINT="https://automation.songheng.vip/v1/review"
+          HEADER="X-API-Key: ${{ inputs.api-key }}"
+        else
+          ENDPOINT="https://automation.songheng.vip/api/free/review"
+          HEADER="Content-Type: application/json"
+        fi
+        
+        DIFF=$(cat $GITHUB_EVENT_PATH | jq -r '.pull_request.diff_url // ""')
+        
+        RESPONSE=$(curl -s -X POST "$ENDPOINT" \
+          -H "$HEADER" \
+          -H "Content-Type: application/json" \
+          -d "{\"text\": \"$DIFF\", \"language\": \"auto\", \"depth\": \"${{ inputs.model }}\"}")
+        
+        echo "result=$(echo $RESPONSE | jq -r '.result // .text // empty')" >> $GITHUB_OUTPUT
+        echo "credits_remaining=$(echo $RESPONSE | jq -r '.credits_remaining // .free_remaining // "N/A"')" >> $GITHUB_OUTPUT
+
+    - id: post-comment
+      name: 'Post review comment'
+      uses: actions/github-script@v7
+      with:
+        script: |
+          const reviewResult = '${{ steps.ai-review.outputs.result }}';
+          const creditsRemaining = '${{ steps.ai-review.outputs.credits_remaining }}';
+          
+          const commentBody = `## 🤖 AI Code Review\n\n${reviewResult}\n\n---\n📊 Credits remaining: ${creditsRemaining}\n⚡ Powered by [my-automaton](https://automation.songheng.vip) — [Get premium](https://automation.songheng.vip/upgrade.html) for unlimited reviews`;
+          
+          await github.rest.issues.createComment({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            issue_number: context.issue.number,
+            body: commentBody
+          });
+
+    - id: check-severity
+      name: 'Check severity threshold'
+      if: inputs.fail-on-severity != 'none'
+      shell: bash
+      run: |
+        RESULT="${{ steps.ai-review.outputs.result }}"
+        FAIL_LEVEL="${{ inputs.fail-on-severity }}"
+        
+        # Count critical/high/medium issues
+        CRITICAL=$(echo "$RESULT" | grep -oi 'critical' | wc -l)
+        HIGH=$(echo "$RESULT" | grep -oi 'high' | wc -l)
+        MEDIUM=$(echo "$RESULT" | grep -oi 'medium' | wc -l)
+        
+        FAIL=0
+        if [ "$FAIL_LEVEL" = "critical" ] && [ "$CRITICAL" -gt 0 ]; then FAIL=1; fi
+        if [ "$FAIL_LEVEL" = "high" ] && [ "$((CRITICAL + HIGH))" -gt 0 ]; then FAIL=1; fi
+        if [ "$FAIL_LEVEL" = "medium" ] && [ "$((CRITICAL + HIGH + MEDIUM))" -gt 0 ]; then FAIL=1; fi
+        
+        if [ "$FAIL" = "1" ]; then
+          echo "❌ Found issues at severity level: $FAIL_LEVEL"
+          echo "Critical: $CRITICAL, High: $HIGH, Medium: $MEDIUM"
+          exit 1
+        fi
+        
+        echo "✅ No issues found at severity level: $FAIL_LEVEL"

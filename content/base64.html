@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Free Base64 Encoder / Decoder - Online Tool | my-automaton</title>
+<meta name="description" content="Free online Base64 encoder and decoder. Encode text to Base64 or decode Base64 to text instantly. Also supports Base64 URL-safe encoding. 100% client-side — no uploads.">
+<meta name="keywords" content="base64 encoder, base64 decoder, base64 decode, base64 encode, online base64, base64url, base64 converter, free base64 tool">
+<link rel="canonical" href="https://automation.songheng.vip/base64.html">
+<meta property="og:title" content="Free Base64 Encoder / Decoder">
+<meta property="og:description" content="Encode and decode Base64 instantly. Supports standard and URL-safe Base64. 100% client-side.">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#0d1117;color:#c9d1d9;line-height:1.6;min-height:100vh}
+.container{max-width:860px;margin:0 auto;padding:20px}
+header{text-align:center;padding:40px 20px 20px}
+header h1{font-size:2rem;color:#58a6ff;margin-bottom:8px}
+header p{color:#8b949e;font-size:1.05rem}
+.card{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:24px;margin-bottom:20px}
+.card h2{font-size:1.1rem;color:#e6edf3;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.tabs{display:flex;gap:0;margin-bottom:0;border-bottom:2px solid #30363d}
+.tab{padding:10px 20px;background:none;border:none;color:#8b949e;cursor:pointer;font-size:0.9rem;font-weight:600;border-bottom:2px solid transparent;margin-bottom:-2px;transition:all 0.15s}
+.tab:hover{color:#c9d1d9}
+.tab.active{color:#58a6ff;border-bottom-color:#58a6ff}
+textarea{width:100%;min-height:140px;background:#0d1117;border:1px solid #30363d;border-radius:6px;color:#c9d1d9;padding:14px;font-family:'SF Mono',Consolas,monospace;font-size:0.88rem;resize:vertical;margin-top:12px}
+textarea:focus{outline:none;border-color:#58a6ff;box-shadow:0 0 0 3px rgba(88,166,255,0.15)}
+.btn-row{display:flex;gap:10px;margin-top:14px;flex-wrap:wrap}
+.btn{padding:10px 22px;border-radius:6px;font-weight:600;font-size:0.9rem;cursor:pointer;border:none;transition:all 0.15s}
+.btn-primary{background:#238636;color:#fff}
+.btn-primary:hover{background:#2ea043}
+.btn-secondary{background:#21262d;border:1px solid #30363d;color:#c9d1d9}
+.btn-secondary:hover{background:#30363d;border-color:#58a6ff}
+.btn-danger{background:#da3633;color:#fff}
+.btn-danger:hover{background:#f85149}
+.options{display:flex;gap:16px;align-items:center;margin-top:10px;flex-wrap:wrap}
+.options label{display:flex;align-items:center;gap:6px;font-size:0.85rem;color:#8b949e;cursor:pointer}
+.options input[type="checkbox"]{accent-color:#58a6ff}
+.info-box{display:flex;align-items:flex-start;gap:8px;background:#0d1117;border:1px solid #30363d;border-radius:6px;padding:10px 14px;margin-top:16px;font-size:0.8rem;color:#8b949e}
+.char-count{font-size:0.8rem;color:#484f58;margin-top:4px;text-align:right}
+.cta{background:linear-gradient(135deg,#1f6feb22,#23863622);border:1px solid #30363d;border-radius:8px;padding:20px 24px;margin-top:24px}
+.cta h3{color:#58a6ff;margin-bottom:6px;font-size:1.05rem}
+.cta p{color:#8b949e;margin-bottom:12px;font-size:0.9rem}
+.cta a{display:inline-block;padding:10px 24px;background:#238636;color:#fff;text-decoration:none;border-radius:6px;font-weight:600;font-size:0.9rem}
+.cta a:hover{background:#2ea043}
+footer{text-align:center;padding:40px 20px;color:#484f58;font-size:0.8rem}
+footer a{color:#484f58;text-decoration:underline}
+@media(max-width:600px){.container{padding:12px}.card{padding:16px}header h1{font-size:1.5rem}}
+</style>
+</head>
+<body>
+<div class="container">
+<header>
+<h1>🔤 Base64 Encoder / Decoder</h1>
+<p>Free online tool to encode or decode Base64 strings. Standard and URL-safe formats. Nothing is sent to any server.</p>
+</header>
+
+<div class="card">
+<div class="tabs">
+<button class="tab active" data-mode="encode">🔒 Encode</button>
+<button class="tab" data-mode="decode">🔓 Decode</button>
+</div>
+
+<textarea id="input" placeholder="Paste text to encode or Base64 to decode..."></textarea>
+<div class="char-count" id="charCount">0 characters</div>
+
+<div class="options">
+<label><input type="checkbox" id="urlSafe"> URL-safe (no +/= )</label>
+<label><input type="checkbox" id="liveMode" checked> Live conversion</label>
+</div>
+
+<div class="btn-row">
+<button class="btn btn-primary" id="convertBtn">Convert</button>
+<button class="btn btn-secondary" id="swapBtn">🔄 Swap</button>
+<button class="btn btn-secondary" id="copyBtn">📋 Copy Result</button>
+<button class="btn btn-danger" id="clearBtn">Clear</button>
+</div>
+
+<textarea id="output" readonly placeholder="Result will appear here..."></textarea>
+<div class="char-count" id="outCount">0 characters</div>
+
+<div class="info-box">
+<span>💡</span>
+<span><strong>Tip:</strong> All encoding/decoding happens in your browser. No data is sent anywhere. Base64 is encoding, NOT encryption — don't use it for secrets.</span>
+</div>
+</div>
+
+<div class="cta">
+<h3>🔍 Working with encoded data? Check your API security too.</h3>
+<p>Our AI security scanner checks for hardcoded secrets, injection vulnerabilities, and OWASP Top 10 issues. 3 free scans per day, premium from just 3 credits.</p>
+<a href="/security-scanner.html">Try Free Security Scan →</a>
+</div>
+
+<footer>
+<p><a href="/">my-automaton</a> · <a href="/api-docs.html">API Docs</a> · <a href="/blog.html">Blog</a> · <a href="/upgrade.html">Pricing</a></p>
+<p style="margin-top:8px">© 2026 my-automaton. All conversions are client-side. We never see your data.</p>
+</footer>
+</div>
+
+<script>
+const input = document.getElementById('input');
+const output = document.getElementById('output');
+const charCount = document.getElementById('charCount');
+const outCount = document.getElementById('outCount');
+const urlSafe = document.getElementById('urlSafe');
+const liveMode = document.getElementById('liveMode');
+let mode = 'encode';
+
+// Tabs
+document.querySelectorAll('.tab').forEach(t => {
+  t.addEventListener('click', () => {
+    document.querySelectorAll('.tab').forEach(x => x.classList.remove('active'));
+    t.classList.add('active');
+    mode = t.dataset.mode;
+    swapIO();
+    convert();
+  });
+});
+
+// Buttons
+document.getElementById('convertBtn').addEventListener('click', convert);
+document.getElementById('swapBtn').addEventListener('click', () => {
+  mode = mode === 'encode' ? 'decode' : 'encode';
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelector(`[data-mode="${mode}"]`).classList.add('active');
+  swapIO();
+  convert();
+});
+document.getElementById('copyBtn').addEventListener('click', () => {
+  if (!output.value) return;
+  navigator.clipboard.writeText(output.value);
+  const btn = document.getElementById('copyBtn');
+  btn.textContent = '✅ Copied!';
+  setTimeout(() => btn.textContent = '📋 Copy Result', 2000);
+});
+document.getElementById('clearBtn').addEventListener('click', () => {
+  input.value = '';
+  output.value = '';
+  updateCounts();
+});
+
+// Live mode
+input.addEventListener('input', () => { updateCounts(); if (liveMode.checked) convert(); });
+liveMode.addEventListener('change', () => { if (liveMode.checked) convert(); });
+urlSafe.addEventListener('change', convert);
+
+function swapIO() {
+  const tmp = input.value;
+  input.value = output.value;
+  output.value = '';
+  updateCounts();
+}
+
+function convert() {
+  if (!input.value.trim()) { output.value = ''; outCount.textContent = '0 characters'; return; }
+  try {
+    if (mode === 'encode') {
+      if (urlSafe.checked) {
+        output.value = btoa(unescape(encodeURIComponent(input.value)))
+          .replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+      } else {
+        output.value = btoa(unescape(encodeURIComponent(input.value)));
+      }
+    } else {
+      let str = input.value.trim().replace(/\s/g, '');
+      if (urlSafe.checked) {
+        str = str.replace(/-/g, '+').replace(/_/g, '/');
+        while (str.length % 4) str += '=';
+      }
+      output.value = decodeURIComponent(escape(atob(str)));
+    }
+    outCount.textContent = output.value.length.toLocaleString() + ' characters';
+  } catch(e) {
+    output.value = 'Error: ' + e.message + '. Check your input is valid ' + (mode === 'decode' ? 'Base64.' : 'text.');
+    outCount.textContent = 'Error';
+  }
+}
+
+function updateCounts() {
+  charCount.textContent = input.value.length.toLocaleString() + ' characters';
+  if (output.value) outCount.textContent = output.value.length.toLocaleString() + ' characters';
+}
+
+// Demo
+input.value = 'Hello, World! 🌍';
+updateCounts();
+convert();
+</script>
+<script src="/conversion-banner.js" defer></script>
+</body>
+</html>

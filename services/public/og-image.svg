@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0d1117"/>
+      <stop offset="100%" style="stop-color:#161b22"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#58a6ff"/>
+      <stop offset="100%" style="stop-color:#bc8cff"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <circle cx="1000" cy="100" r="300" fill="rgba(88,166,255,0.05)"/>
+  <circle cx="200" cy="500" r="250" fill="rgba(188,140,255,0.03)"/>
+  <g transform="translate(150, 200)">
+    <rect x="0" y="0" width="120" height="140" rx="20" fill="#21262d" stroke="#58a6ff" stroke-width="3"/>
+    <circle cx="35" cy="55" r="12" fill="#58a6ff"/>
+    <circle cx="85" cy="55" r="12" fill="#58a6ff"/>
+    <circle cx="35" cy="55" r="5" fill="#fff" opacity="0.8"/>
+    <circle cx="85" cy="55" r="5" fill="#fff" opacity="0.8"/>
+    <rect x="30" y="90" width="60" height="8" rx="4" fill="#58a6ff" opacity="0.6"/>
+  </g>
+  <text x="340" y="220" font-family="system-ui, -apple-system, sans-serif" font-size="52" font-weight="bold" fill="#58a6ff">my-automaton</text>
+  <text x="340" y="280" font-family="system-ui, -apple-system, sans-serif" font-size="28" fill="#c9d1d9">AI-Powered Code Review &amp; Text Analysis API</text>
+  <g transform="translate(340, 320)">
+    <rect x="0" y="0" width="180" height="40" rx="8" fill="#161b22" stroke="#30363d"/>
+    <text x="15" y="26" font-family="system-ui" font-size="16" fill="#3fb950">✓ Code Review</text>
+    <rect x="195" y="0" width="180" height="40" rx="8" fill="#161b22" stroke="#30363d"/>
+    <text x="210" y="26" font-family="system-ui" font-size="16" fill="#d29922">✓ Security Scan</text>
+    <rect x="390" y="0" width="180" height="40" rx="8" fill="#161b22" stroke="#30363d"/>
+    <text x="405" y="26" font-family="system-ui" font-size="16" fill="#58a6ff">✓ Text Analysis</text>
+  </g>
+  <rect x="340" y="390" width="400" height="50" rx="25" fill="#238636"/>
+  <text x="400" y="423" font-family="system-ui" font-size="22" font-weight="bold" fill="#ffffff">Pay per request from 1¢ · Free tier</text>
+  <text x="340" y="490" font-family="monospace" font-size="22" fill="#8b949e">automation.songheng.vip</text>
+  <text x="340" y="530" font-family="monospace" font-size="14" fill="#484f58">0x76eADdEBFfb6a61DD071f97F4508467fc55dd113</text>
+</svg>

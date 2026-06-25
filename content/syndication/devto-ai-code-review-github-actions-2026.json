@@ -1,0 +1,12 @@
+{
+  "title": "How to Set Up Free AI Code Review in GitHub CI/CD (2026 Guide)",
+  "published": true,
+  "body_markdown": "# How to Set Up Free AI Code Review in GitHub CI/CD (2026 Guide)\n\nAutomate PR code reviews with AI in your GitHub Actions pipeline. Free tier available — detect bugs, security issues, and style violations automatically.\n\n[Read the full article →](https://automation.songheng.vip/blog/ai-code-review-github-actions-2026)\n\n---\n\n*Built with [my-automaton](https://automation.songheng.vip) - AI-powered code review and text analysis API*",
+  "tags": [
+    "ai",
+    "code-review",
+    "devtools",
+    "webdev"
+  ],
+  "canonical_url": "https://automation.songheng.vip/blog/ai-code-review-github-actions-2026"
+}

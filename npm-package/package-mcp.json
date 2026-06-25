@@ -1,0 +1,32 @@
+{
+  "name": "automaton-mcp",
+  "version": "2.0.0",
+  "description": "🧠 MCP server for AI code review, text analysis, security scanning & more — by my-automaton",
+  "type": "module",
+  "main": "mcp-server.mjs",
+  "bin": {
+    "automaton-mcp": "mcp-server.mjs",
+    "amcp": "mcp-server.mjs",
+    "auto-mcp": "mcp-server.mjs"
+  },
+  "keywords": [
+    "mcp", "model-context-protocol", "ai-agent", "code-review",
+    "security-scanning", "text-analysis", "summarization",
+    "developer-tools", "claude", "cursor", "windsurf",
+    "code-quality", "static-analysis", "llm-tools"
+  ],
+  "license": "MIT",
+  "author": "my-automaton",
+  "homepage": "https://automation.songheng.vip",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/my-automaton/automaton-mcp.git"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "files": ["mcp-server.mjs", "README.md", "package.json"],
+  "publishConfig": {
+    "access": "public"
+  }
+}

@@ -1,0 +1,121 @@
+{
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  "name": "my-automaton AI Service Catalog",
+  "description": "7 AI-powered developer tools with pay-per-use micro payments",
+  "numberOfItems": 7,
+  "itemListElement": [
+    {
+      "@type": "Service",
+      "position": 1,
+      "name": "Analyze",
+      "description": "AI analyze service - 1¢ per request",
+      "provider": {
+        "@type": "Organization",
+        "name": "my-automaton"
+      },
+      "offers": {
+        "@type": "Offer",
+        "price": 1,
+        "priceCurrency": "USD",
+        "priceUnit": "per request"
+      }
+    },
+    {
+      "@type": "Service",
+      "position": 2,
+      "name": "Summarize",
+      "description": "AI summarize service - 2¢ per request",
+      "provider": {
+        "@type": "Organization",
+        "name": "my-automaton"
+      },
+      "offers": {
+        "@type": "Offer",
+        "price": 2,
+        "priceCurrency": "USD",
+        "priceUnit": "per request"
+      }
+    },
+    {
+      "@type": "Service",
+      "position": 3,
+      "name": "Review",
+      "description": "AI review service - 5¢ per request",
+      "provider": {
+        "@type": "Organization",
+        "name": "my-automaton"
+      },
+      "offers": {
+        "@type": "Offer",
+        "price": 5,
+        "priceCurrency": "USD",
+        "priceUnit": "per request"
+      }
+    },
+    {
+      "@type": "Service",
+      "position": 4,
+      "name": "Security",
+      "description": "AI security service - 3¢ per request",
+      "provider": {
+        "@type": "Organization",
+        "name": "my-automaton"
+      },
+      "offers": {
+        "@type": "Offer",
+        "price": 3,
+        "priceCurrency": "USD",
+        "priceUnit": "per request"
+      }
+    },
+    {
+      "@type": "Service",
+      "position": 5,
+      "name": "Explain",
+      "description": "AI explain service - 2¢ per request",
+      "provider": {
+        "@type": "Organization",
+        "name": "my-automaton"
+      },
+      "offers": {
+        "@type": "Offer",
+        "price": 2,
+        "priceCurrency": "USD",
+        "priceUnit": "per request"
+      }
+    },
+    {
+      "@type": "Service",
+      "position": 6,
+      "name": "Refactor",
+      "description": "AI refactor service - 5¢ per request",
+      "provider": {
+        "@type": "Organization",
+        "name": "my-automaton"
+      },
+      "offers": {
+        "@type": "Offer",
+        "price": 5,
+        "priceCurrency": "USD",
+        "priceUnit": "per request"
+      }
+    },
+    {
+      "@type": "Service",
+      "position": 7,
+      "name": "Complexity",
+      "description": "AI complexity service - 2¢ per request",
+      "provider": {
+        "@type": "Organization",
+        "name": "my-automaton"
+      },
+      "offers": {
+        "@type": "Offer",
+        "price": 2,
+        "priceCurrency": "USD",
+        "priceUnit": "per request"
+      }
+    }
+  ]
+}

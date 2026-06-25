@@ -1,0 +1,73 @@
+{
+  "directory": {
+    "name": "Glama",
+    "website": "https://glama.ai",
+    "github": "https://github.com/glama-ai",
+    "description": "The MCP Server Registry, Inspector & Gateway — a superset of the official MCP Registry. Every server is maintainer-verified, continuously rebuilt, and scored for quality and safety. Test in your browser, install locally, or deploy in one click.",
+    "type": "MCP server registry with automated scanning, quality scoring, and gateway proxy"
+  },
+  "submission_method": "GitHub OAuth maintainer verification via web form (Add Server button)",
+  "submission_url": "https://glama.ai/mcp/servers",
+  "submission_guidelines": {
+    "summary": "Authenticate via GitHub OAuth and provide a GitHub repository URL. Glama verifies you have write/admin access to the repo, then automatically clones, builds, scans, and lists the server. Servers are also auto-discovered from the official MCP Registry, npm, and GitHub Awesome Lists.",
+    "steps": [
+      "Go to https://glama.ai/mcp/servers",
+      "Click the 'Add Server' button",
+      "Authenticate via GitHub OAuth (required)",
+      "Provide the GitHub repository URL of your MCP server",
+      "Glama verifies write/admin access to the repository",
+      "Glama clones the repo, infers or uses a Dockerfile, builds in a Firecracker microVM",
+      "Server is introspected (tools/list, resources/list, prompts/list)",
+      "Behavioural analysis scans for malicious or risky patterns",
+      "Tool Definition Quality Score (TDQS) is computed",
+      "Server is listed and becomes discoverable"
+    ],
+    "required_fields": [
+      {
+        "field": "repository_url",
+        "description": "GitHub repository URL of the MCP server (submitter must have write/admin access)"
+      }
+    ],
+    "optional_fields": [],
+    "automated_discovery": {
+      "summary": "Glama also automatically discovers and indexes servers from multiple sources without manual submission",
+      "sources": [
+        "Official MCP Registry (registry.modelcontextprotocol.io)",
+        "npm Registry (@modelcontextprotocol/* scope and other packages)",
+        "GitHub Awesome Lists and community lists",
+        "Pre-existing directories and catalogs"
+      ]
+    },
+    "technical_requirements": [
+      "Must be a public GitHub repository",
+      "Must implement the Model Context Protocol (MCP)",
+      "Should have a Dockerfile for build (can be inferred by AI if not present)",
+      "Server must build and run successfully in a sandboxed environment",
+      "If AI-inferred Dockerfile fails, server page is preserved but distribution is withheld"
+    ],
+    "verification_process": "GitHub OAuth - verified write/admin access to the repository",
+    "scanning_analysis": [
+      "Sandboxed build and execution on Firecracker microVM",
+      "Protocol introspection: tools/list, resources/list, prompts/list",
+      "Behavioural analysis: syscall and network layer monitoring for malicious patterns",
+      "Tool Definition Quality Score (TDQS) across 6 dimensions (Purpose Clarity, Usage Guidelines, Behavioral Transparency, Parameter Semantics, Conciseness, Contextual Completeness)"
+    ],
+    "security_classifications": [
+      {
+        "level": "Malicious",
+        "description": "Intent to harm - routed to internal review, maintainer contacted or server de-listed"
+      },
+      {
+        "level": "Risky",
+        "description": "Noteworthy but not hostile - surfaced on public listing for operator awareness"
+      }
+    ],
+    "categories": [
+      "databases", "developer-tools", "file-systems", "browser-automation",
+      "version-control", "search", "communication", "ai-and-machine-learning",
+      "coding-agents", "rag-systems", "code-execution", "observability",
+      "app-automation", "autonomous-agents"
+    ],
+    "notes": "No API-based submission endpoint identified. Submission is entirely through the web UI with GitHub OAuth. Glama actively crawls and auto-discovers servers from multiple sources beyond manual submissions. The 'Add Server' button appears to trigger a modal/dialog for GitHub repo URL input."
+  }
+}

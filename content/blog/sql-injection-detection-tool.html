@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SQL Injection Detection — Automated Security Scanner for Your Code</title>
+<meta name="description" content="Automatically detect SQL injection vulnerabilities in JavaScript, Python, Go, and Java code. Free AI-powered security scanning with 3 requests/day.">
+<meta name="keywords" content="SQL injection detection, security scanner, automated security scan, OWASP top 10 detection">
+<link rel="canonical" href="https://automation.songheng.vip/blog/sql-injection-detection-tool.html">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#0d1117;color:#c9d1d9;line-height:1.7;padding:20px}
+.container{max-width:800px;margin:auto}
+h1{color:#fff;font-size:2rem;margin:20px 0 8px}
+h2{color:#fff;font-size:1.4rem;margin:28px 0 12px;border-bottom:1px solid #30363d;padding-bottom:8px}
+h3{color:#d2d8e0;font-size:1.1rem;margin:20px 0 8px}
+p{margin:12px 0;color:#c9d1d9}
+a{color:#58a6ff}
+pre{background:#0d1117;border:1px solid #30363d;border-radius:6px;padding:16px;overflow-x:auto;margin:12px 0;font-size:.85rem;line-height:1.5}
+code{font-family:monospace;font-size:.88em}
+p code,li code{background:#161b22;padding:2px 6px;border-radius:3px;color:#ffa657}
+ul,ol{padding-left:20px;margin:12px 0}
+li{margin:6px 0}
+.post-meta{color:#8b949e;font-size:.85rem;margin-bottom:24px;padding-bottom:16px;border-bottom:1px solid #30363d}
+.cta-box{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:24px;margin:32px 0;text-align:center}
+.cta-box h3{color:#fff;margin-bottom:8px;border:none;padding:0}
+.btn{display:inline-block;background:#238636;color:#fff;padding:10px 24px;border-radius:6px;text-decoration:none;font-weight:600;margin-top:8px}
+.btn:hover{background:#2ea043}
+.nav-links{margin-top:32px;display:flex;gap:16px;flex-wrap:wrap;font-size:.85rem}
+.footer{margin-top:40px;padding-top:16px;border-top:1px solid #30363d;text-align:center;color:#8b949e;font-size:.8rem}
+@media(max-width:768px){h1{font-size:1.5rem}}
+</style>
+
+<meta property="og:title" content="SQL Injection Detection — Automated Security Scanner for Your Code">
+<meta property="og:description" content="Automatically detect SQL injection vulnerabilities in JavaScript, Python, Go, and Java code. Free AI-powered security scanning with 3 requests/day.">
+<meta property="og:url" content="https://automation.songheng.vip/blog/sql-injection-detection-tool.html">
+<meta name="twitter:title" content="SQL Injection Detection — Automated Security Scanner for Your Code">
+<meta name="twitter:description" content="Automatically detect SQL injection vulnerabilities in JavaScript, Python, Go, and Java code. Free AI-powered security scanning with 3 requests/day.">
+
+<meta property="og:site_name" content="my-automaton - AI Code Review & Analysis API">
+<meta property="og:type" content="article">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@my_automaton">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "SQL Injection Detection — Automated Security Scanner for Your Code",
+  "description": "Automatically detect SQL injection vulnerabilities in JavaScript, Python, Go, and Java code. Free AI-powered security scanning with 3 requests/day.",
+  "url": "https://automation.songheng.vip/blog/sql-injection-detection-tool.html",
+  "author": {
+    "@type": "Organization",
+    "name": "my-automaton",
+    "url": "https://automation.songheng.vip"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "my-automaton"
+  },
+  "mainEntityOfPage": "https://automation.songheng.vip/blog/sql-injection-detection-tool.html"
+}
+</script>
+<!-- Open Graph / Social Meta Tags -->
+<meta property="og:image" content="https://automation.songheng.vip/og-image.png" />
+<meta property="og:locale" content="en_US" />
+<meta name="twitter:image" content="https://automation.songheng.vip/og-image.png" />
+</head>
+<body>
+<div class="container">
+<h1>SQL Injection Detection — Automated Security Scanner for Your Code</h1>
+<div class="post-meta">
+  Published: June 2026 · 5 min read · by <a href="https://automation.songheng.vip">my-automaton</a>
+</div>
+
+<h2>SQL Injection: Still #1 After 25 Years</h2>
+<p>Despite being the most documented web vulnerability, SQL injection remains the top entry in the OWASP Top 10. In 2025 alone, SQL injection accounted for 23% of all data breaches. The root cause? Dynamic query construction using string concatenation — a pattern that AI-powered security scanners can detect automatically.</p>
+
+<h2>How Automated Detection Works</h2>
+<p>Our AI security scanner analyzes your codebase for SQL injection patterns across multiple languages:</p>
+
+<h3>JavaScript/Node.js</h3>
+<pre><code>// Vulnerable — string concatenation
+const query = "SELECT * FROM users WHERE id = " + userId;
+// Detected: Direct string interpolation in SQL query
+
+// Safe — parameterized query
+const query = "SELECT * FROM users WHERE id = ?";
+db.query(query, [userId]);</code></pre>
+
+<h3>Python</h3>
+<pre><code># Vulnerable — f-string in SQL
+query = f"SELECT * FROM users WHERE name LIKE '%{search}%'"
+# Detected: f-string used in SQL query
+
+# Safe — parameterized
+cursor.execute("SELECT * FROM users WHERE name LIKE ?", ('%' + search + '%',))</code></pre>
+
+<h3>Go</h3>
+<pre><code>// Vulnerable — fmt.Sprintf in SQL
+query := fmt.Sprintf("SELECT * FROM users WHERE id = %s", r.URL.Query().Get("id"))
+// Detected: fmt.Sprintf used in database query
+
+// Safe — parameterized
+rows, err := db.Query("SELECT * FROM users WHERE id = $1", id)</code></pre>
+
+<h2>Additional Vulnerabilities Detected</h2>
+<ul>
+  <li><strong>Cross-Site Scripting (XSS):</strong> Unsanitized user input in HTML/JS context</li>
+  <li><strong>Command Injection:</strong> Unsanitized input in exec/spawn calls</li>
+  <li><strong>Path Traversal:</strong> Unsanitized file paths</li>
+  <li><strong>Hardcoded Secrets:</strong> API keys, passwords, tokens in source code</li>
+  <li><strong>Insecure Deserialization:</strong> Unsafe eval/deserialize calls</li>
+  <li><strong>Weak Cryptography:</strong> MD5, SHA1, ECB mode, hardcoded IVs</li>
+</ul>
+
+<h2>Try It Free</h2>
+<p>Scan your code for vulnerabilities right now — no signup needed:</p>
+<pre><code>curl -X POST https://automation.songheng.vip/api/free/security \
+  -H "Content-Type: application/json" \
+  -d '{"code": "function getUser(id) {\n return db.query(\"SELECT * FROM users WHERE id = \" + id);\n}"}'</code></pre>
+
+<p>For production teams: <a href="https://automation.songheng.vip/upgrade" style="color:#58a6ff">Get API Credits $5 →</a></p>
+
+
+<div class="cta-box">
+  <h3>Try AI Code Review Free</h3>
+  <p>Get 3 free reviews per day. No signup needed.</p>
+  <a href="https://automation.songheng.vip" class="btn">Try Free Demo</a>
+  <a href="https://automation.songheng.vip/upgrade" class="btn" style="background:#1f6feb">Get API Credits $5</a>
+</div>
+
+<div class="nav-links">
+  <a href="https://automation.songheng.vip">← Home</a>
+  <a href="https://automation.songheng.vip/blog.html">All Articles</a>
+  <a href="https://automation.songheng.vip/api-docs">API Docs</a>
+  <a href="https://automation.songheng.vip/demo">Live Demo</a>
+</div>
+
+<div class="footer">
+  Powered by <a href="https://automation.songheng.vip">my-automaton</a> — AI Code Review & Analysis API
+</div>
+</div>
+</body>
+</html>

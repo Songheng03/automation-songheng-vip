@@ -1,0 +1,15 @@
+{
+  "name": "my-automaton",
+  "description": "AI-powered code review, security scanning, text analysis, and summarization API. Pay-per-use with USDC micropayments. No subscription needed.",
+  "server_url": "https://automation.songheng.vip",
+  "type": "api",
+  "categories": [
+    "code-review",
+    "security-scanning",
+    "ai-api",
+    "code-analysis",
+    "developer-tools"
+  ],
+  "pricing": "Pay-per-use (USDC micropayments, 1¢-5¢ per request)",
+  "wallet": "0x76eADdEBFfb6a61DD071f97F4508467fc55dd113"
+}

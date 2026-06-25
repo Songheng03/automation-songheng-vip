@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>How to Set Up Free AI Code Review in GitHub CI/CD (2026 Guide) - my-automaton Blog</title>
+<meta name="description" content="Automate PR code reviews with AI in your GitHub Actions pipeline. Free tier available — detect bugs, security issues, and style violations automatically.">
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#0d1117;color:#c9d1d9;line-height:1.8;padding:40px 20px}
+  .container{max-width:800px;margin:0 auto}
+  h1{font-size:1.8rem;margin:24px 0 12px;background:linear-gradient(135deg,#58a6ff,#8250df);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+  h2{font-size:1.4rem;margin:32px 0 12px;color:#f0f6fc;border-bottom:1px solid #30363d;padding-bottom:6px}
+  h3{font-size:1.1rem;margin:20px 0 8px;color:#f0f6fc}
+  p{margin:12px 0}
+  .date{color:#8b949e;font-size:0.9rem;margin-bottom:16px}
+  pre{background:#161b22;border:1px solid #30363d;border-radius:6px;padding:16px;overflow-x:auto;font-size:0.9rem;margin:16px 0}
+  code{background:#161b22;padding:2px 6px;border-radius:3px;font-size:0.9em;color:#f0c674}
+  pre code{background:none;padding:0;color:#c9d1d9}
+  .nav a{color:#58a6ff;text-decoration:none;font-size:0.9rem}
+  .nav a:hover{text-decoration:underline}
+  ul,ol{margin:12px 0;padding-left:24px}
+  li{margin:6px 0}
+  .cta{display:inline-block;background:#238636;color:#fff;padding:10px 24px;border-radius:6px;text-decoration:none;margin:16px 0;font-weight:600}
+  .cta:hover{background:#2ea043}
+</style>
+
+<meta property="og:title" content="How to Set Up Free AI Code Review in GitHub CI/CD (2026 Guide) - my-automaton Blog">
+<meta property="og:description" content="Automate PR code reviews with AI in your GitHub Actions pipeline. Free tier available — detect bugs, security issues, and style violations automatically.">
+<meta property="og:url" content="https://automation.songheng.vip/blog/ai-code-review-github-actions-2026.html">
+<meta name="twitter:title" content="How to Set Up Free AI Code Review in GitHub CI/CD (2026 Guide) - my-automaton Blog">
+<meta name="twitter:description" content="Automate PR code reviews with AI in your GitHub Actions pipeline. Free tier available — detect bugs, security issues, and style violations automatically.">
+
+<meta property="og:site_name" content="my-automaton - AI Code Review & Analysis API">
+<meta property="og:type" content="article">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@my_automaton">
+
+
+<link rel="canonical" href="https://automation.songheng.vip/blog/ai-code-review-github-actions-2026.html">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "How to Set Up Free AI Code Review in GitHub CI/CD (2026 Guide) - my-automaton Blog",
+  "description": "Automate PR code reviews with AI in your GitHub Actions pipeline. Free tier available — detect bugs, security issues, and style violations automatically.",
+  "url": "https://automation.songheng.vip/blog/ai-code-review-github-actions-2026.html",
+  "author": {
+    "@type": "Organization",
+    "name": "my-automaton",
+    "url": "https://automation.songheng.vip"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "my-automaton"
+  },
+  "mainEntityOfPage": "https://automation.songheng.vip/blog/ai-code-review-github-actions-2026.html"
+}
+</script>
+<!-- Open Graph / Social Meta Tags -->
+<meta property="og:image" content="https://automation.songheng.vip/og-image.png" />
+<meta property="og:locale" content="en_US" />
+<meta name="twitter:image" content="https://automation.songheng.vip/og-image.png" />
+</head>
+<body>
+<div class="container">
+  <div class="nav"><a href="/blog.html">← Back to Blog</a></div>
+
+  <h1>How to Set Up Free AI Code Review in GitHub CI/CD (2026 Guide)</h1>
+  <div class="date">June 16, 2026 · 8 min read</div>
+
+  <p>Automated code review is no longer a luxury — it's essential for teams shipping quality software. This guide shows you how to integrate AI-powered code review into your GitHub Actions pipeline using my-automaton's free API.</p>
+
+  <h2>Why AI Code Review?</h2>
+  <p>Traditional linters catch syntax errors. AI code review catches <strong>logic bugs, security vulnerabilities, performance issues, and architectural problems</strong> — the kinds of issues that human reviewers would catch in a thorough PR review.</p>
+
+  <ul>
+    <li><strong>Speed</strong>: Reviews happen in under 30 seconds</li>
+    <li><strong>Consistency</strong>: The same standards applied to every PR</li>
+    <li><strong>Cost</strong>: Free tier covers 3 reviews/day per service</li>
+    <li><strong>Coverage</strong>: SQL injection, XSS, CSRF, auth flaws, performance, style</li>
+  </ul>
+
+  <h2>Prerequisites</h2>
+  <ul>
+    <li>A GitHub repository with write access</li>
+    <li>Node.js 18+ in your CI environment</li>
+    <li>No API key needed for free tier</li>
+  </ul>
+
+  <h2>Step 1: Create the Workflow</h2>
+  <p>Create <code>.github/workflows/ai-code-review.yml</code> in your repository:</p>
+
+  <pre><code>name: AI Code Review
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+
+jobs:
+  ai-review:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Get changed files
+        id: files
+        uses: tj-actions/changed-files@v44
+        with:
+          files: |
+            **/*.py
+            **/*.js
+            **/*.ts
+            **/*.jsx
+            **/*.tsx
+            **/*.java
+            **/*.go
+            **/*.rs
+      
+      - name: AI Code Review
+        if: steps.files.outputs.any_changed == 'true'
+        run: |
+          for file in ${{ steps.files.outputs.all_changed_files }}; do
+            echo "### Reviewing: $file" >> review.md
+            content=$(cat "$file")
+            
+            response=$(curl -s -X POST https://automation.songheng.vip/api/free/review \
+              -H "Content-Type: application/json" \
+              -d "$(jq -n --arg text "$content" '{text: $text}')")
+            
+            echo "$response" | jq -r '.result' >> review.md
+            echo -e "\n---\n" >> review.md
+          done
+      
+      - name: Post review comment
+        if: steps.files.outputs.any_changed == 'true'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const body = fs.readFileSync('review.md', 'utf8');
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: `## 🤖 AI Code Review\n\n${body.slice(0, 65000)}`
+            })</code></pre>
+
+  <h2>Step 2: Add API Key (Optional — for Higher Limits)</h2>
+  <p>The free tier gives you 3 reviews/day. For unlimited usage, <a href="/upgrade">get an API key</a> and add it as a GitHub secret:</p>
+
+  <ol>
+    <li>Go to your repo → Settings → Secrets and variables → Actions</li>
+    <li>Add <code>AI_API_KEY</code> with your key</li>
+    <li>Update the curl command to include the header: <code>-H "X-API-Key: ${{ secrets.AI_API_KEY }}"</code></li>
+    <li>Change the endpoint from <code>/api/free/review</code> to <code>/v1/review</code></li>
+  </ol>
+
+  <h2>Step 3: Test It</h2>
+  <p>Create a pull request with some code. The workflow will automatically:</p>
+  <ol>
+    <li>Detect changed files matching your configured extensions</li>
+    <li>Send each file to the AI review API</li>
+    <li>Post a comment on the PR with findings</li>
+  </ol>
+
+  <h2>What Gets Caught?</h2>
+  <ul>
+    <li><strong>SQL Injection</strong>: String concatenation in queries</li>
+    <li><strong>XSS</strong>: Unsanitized user input in HTML/output</li>
+    <li><strong>CSRF</strong>: Missing anti-forgery tokens</li>
+    <li><strong>Auth Issues</strong>: Hardcoded credentials, weak auth</li>
+    <li><strong>Performance</strong>: N+1 queries, inefficient loops</li>
+    <li><strong>Style</strong>: Inconsistent patterns, dead code</li>
+  </ul>
+
+  <h2>Compare with Other Tools</h2>
+  <table style="width:100%;border-collapse:collapse;margin:16px 0">
+    <tr style="background:#161b22"><th style="padding:8px;border:1px solid #30363d;text-align:left">Feature</th><th style="padding:8px;border:1px solid #30363d;text-align:left">my-automaton</th><th style="padding:8px;border:1px solid #30363d;text-align:left">CodeRabbit</th><th style="padding:8px;border:1px solid #30363d;text-align:left">Copilot</th></tr>
+    <tr><td style="padding:8px;border:1px solid #30363d">Free tier</td><td style="padding:8px;border:1px solid #30363d">✅ Yes</td><td style="padding:8px;border:1px solid #30363d">❌ No</td><td style="padding:8px;border:1px solid #30363d">⚠️ Limited</td></tr>
+    <tr><td style="padding:8px;border:1px solid #30363d">Security scanning</td><td style="padding:8px;border:1px solid #30363d">✅ Dedicated</td><td style="padding:8px;border:1px solid #30363d">⚠️ Basic</td><td style="padding:8px;border:1px solid #30363d">❌ No</td></tr>
+    <tr><td style="padding:8px;border:1px solid #30363d">No signup</td><td style="padding:8px;border:1px solid #30363d">✅ Yes</td><td style="padding:8px;border:1px solid #30363d">❌ No</td><td style="padding:8px;border:1px solid #30363d">❌ No</td></tr>
+    <tr><td style="padding:8px;border:1px solid #30363d">API access</td><td style="padding:8px;border:1px solid #30363d">✅ REST API</td><td style="padding:8px;border:1px solid #30363d">✅ Yes</td><td style="padding:8px;border:1px solid #30363d">❌ No</td></tr>
+  </table>
+
+  <a href="/api-docs" class="cta">Get Your Free API Key →</a>
+
+  <h2>Tips for Best Results</h2>
+  <ol>
+    <li>Review <strong>new/changed files only</strong> (what this workflow does)</li>
+    <li>Limit to <strong>500 lines per file</strong> for best results</li>
+    <li>Use <strong>English variable names</strong> for accurate analysis</li>
+    <li>Combine with <strong>ESLint/PyLint</strong> for syntax checks</li>
+  </ol>
+
+  <h2>Conclusion</h2>
+  <p>Setting up AI code review in GitHub Actions takes just 15 minutes and costs nothing — 3 free reviews per day. It catches bugs, security issues, and performance problems before they reach production. As your usage grows, upgrade to the paid tier for unlimited reviews.</p>
+
+  <p style="margin-top:32px"><a href="/blog.html" style="color:#58a6ff;">← More articles</a></p>
+</div>
+</body>
+</html>

@@ -1,0 +1,10 @@
+{
+  "updated": "2026-06-14T23:20:32.138Z",
+  "routes": [
+    "/tools/badge-generator",
+    "/badge/*",
+    "/github-webhook-setup",
+    "/blog/code-quality-badges-guide"
+  ],
+  "patched": false
+}

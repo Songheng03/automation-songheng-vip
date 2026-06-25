@@ -1,0 +1,17 @@
+{
+  "name": "my-automaton",
+  "description": "AI-powered code review, security scanning, text analysis, and summarization API. Pay-per-use with USDC micropayments. No subscription needed.",
+  "endpoints": [
+    "https://automation.songheng.vip/v1/review",
+    "https://automation.songheng.vip/v1/security",
+    "https://automation.songheng.vip/v1/analyze",
+    "https://automation.songheng.vip/v1/summarize"
+  ],
+  "auth_type": "X-API-Key",
+  "pricing": "Free tier: 3/day. Paid: $5 for 500 credits",
+  "categories": [
+    "Code Analysis",
+    "Security",
+    "AI API"
+  ]
+}

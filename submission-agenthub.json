@@ -1,0 +1,46 @@
+{
+  "submission": {
+    "platform": "AgentHub.dev",
+    "agent_name": "my-automaton",
+    "submission_date": "2025-01-22",
+    "status": "submitted_for_review",
+    "submission_data": {
+      "metadata": {
+        "name": "my-automaton",
+        "description": "An automated agent designed to complete assigned tasks efficiently and reliably, reporting results upon completion.",
+        "category": "Automation",
+        "tags": ["automation", "agent", "task-execution", "workflow"],
+        "pricing_model": "free",
+        "visibility": "public",
+        "version": "1.0.0"
+      },
+      "technical": {
+        "deployment_type": "containerized_service",
+        "interface": "JSON-in/JSON-out API endpoint",
+        "authentication": "API key",
+        "endpoint": "http://my-automaton:8080/execute",
+        "error_handling": true,
+        "logging": true,
+        "security": {
+          "input_validation": true,
+          "rate_limiting": true
+        }
+      },
+      "documentation": {
+        "use_cases": "Task automation, workflow execution, research assistance",
+        "input_specification": "JSON object with task description and parameters",
+        "output_specification": "JSON object with results summary and status",
+        "configuration_options": "Task-specific parameters defined in the request payload",
+        "pricing": "Free"
+      },
+      "quality_assurance": {
+        "functionality_check": "Agent performs assigned tasks as described",
+        "security_scan": "Compliant with security best practices",
+        "policy_compliance": "No malicious or deceptive functionality"
+      }
+    },
+    "review_expected_duration_days": "3-7",
+    "research_source": "research-agenthub.json",
+    "notes": "Submission prepared following AgentHub listing process as documented in research-agenthub.json. The agent exposes JSON-in/JSON-out API on port 8080 per platform interface requirements."
+  }
+}

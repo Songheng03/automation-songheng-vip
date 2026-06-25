@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Coin Flip & Dice Roller — Online Random Generator | my-automaton</title>
+<meta name="description" content="Free online coin flip and dice roller. Animated heads/tails coin toss and multi-dice roller with d4 to d20. Uses Web Crypto API for true randomness.">
+<style>
+:root{--bg:#0f172a;--card:#1e293b;--text:#e2e8f0;--muted:#94a3b8;--accent:#38bdf8;--green:#4ade80;--border:#334155}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+header{background:var(--card);border-bottom:1px solid var(--border);padding:1rem 2rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:0.5rem}
+header h1{font-size:1.25rem;color:var(--accent)}
+nav a{color:var(--muted);text-decoration:none;margin-left:1rem;font-size:0.875rem}
+nav a:hover{color:var(--accent)}
+main{max-width:800px;margin:2rem auto;padding:0 1rem}
+.card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.5rem;margin-bottom:1.5rem}
+.card h2{font-size:1.1rem;margin-bottom:1rem;color:var(--accent)}
+.coin-area{text-align:center;padding:2rem}
+.coin{width:120px;height:120px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:3rem;transition:transform 0.6s ease-out;margin-bottom:1rem}
+.coin.heads{background:#fbbf24;color:#0f172a}
+.coin.tails{background:#94a3b8;color:#0f172a}
+.coin.flipping{animation:flip 0.6s ease-out}
+@keyframes flip{0%{transform:rotateY(0)}100%{transform:rotateY(720deg)}}
+.coin-result{font-size:1.25rem;font-weight:700;color:var(--green)}
+.dice-area{margin-top:1rem}
+.dice-row{display:flex;gap:0.5rem;flex-wrap:wrap;align-items:center;margin:0.75rem 0}
+.dice-row label{font-size:0.85rem;color:var(--muted);min-width:60px}
+select,input[type=number]{background:#0f172a;border:1px solid var(--border);color:var(--text);padding:0.5rem;border-radius:6px;font-family:'Fira Code',monospace}
+.dice-results{display:flex;gap:0.5rem;flex-wrap:wrap;margin:1rem 0;justify-content:center}
+.die{width:50px;height:50px;background:#0f172a;border:2px solid var(--green);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:1.2rem;font-weight:700;color:var(--green);animation:pop 0.3s ease-out}
+@keyframes pop{0%{transform:scale(0)}50%{transform:scale(1.2)}100%{transform:scale(1)}}
+.btn-row{display:flex;gap:0.75rem;flex-wrap:wrap;justify-content:center;margin:1rem 0}
+.btn{padding:0.65rem 1.25rem;border:none;border-radius:8px;font-size:0.9rem;font-weight:600;cursor:pointer;transition:all 0.2s}
+.btn-primary{background:var(--accent);color:#0f172a}
+.btn-primary:hover{filter:brightness(1.1)}
+.btn-secondary{background:var(--border);color:var(--text)}
+.history-box{font-size:0.8rem;color:var(--muted);margin-top:0.5rem;line-height:1.8}
+footer{text-align:center;padding:2rem;color:var(--muted);font-size:0.8rem;border-top:1px solid var(--border);margin-top:2rem}
+footer a{color:var(--accent)}
+</style>
+</head>
+<body>
+<header><h1>🪙 Coin Flip & 🎲 Dice Roller</h1>
+<nav><a href="/">Home</a><a href="/dev-tools.html">All Tools</a><a href="/blog.html">Blog</a></nav></header>
+<main>
+<div class="card">
+<h2>🪙 Coin Flip</h2>
+<div class="coin-area">
+<div class="coin" id="coin">🪙</div>
+<div class="coin-result" id="coinResult">Flip the coin!</div>
+<button class="btn btn-primary" onclick="flipCoin()">🪙 Flip Coin</button>
+</div>
+<div class="history-box">Recent: <span id="coinHistory"></span></div>
+</div>
+<div class="card">
+<h2>🎲 Dice Roller</h2>
+<div class="dice-row">
+<label>Dice type:</label>
+<select id="diceType"><option value="4">d4</option><option value="6" selected>d6</option><option value="8">d8</option><option value="10">d10</option><option value="12">d12</option><option value="20">d20</option></select>
+<label>Count:</label><input type="number" id="diceCount" value="2" min="1" max="20" style="width:60px">
+<button class="btn btn-primary" onclick="rollDice()">🎲 Roll</button>
+</div>
+<div class="dice-results" id="diceResults"></div>
+<div style="text-align:center;font-size:1.1rem;margin-top:0.5rem">Total: <strong style="color:var(--green)" id="diceTotal">—</strong></div>
+<div class="history-box">Recent rolls: <span id="diceHistory"></span></div>
+</div>
+</main>
+<footer><p>Uses Web Crypto API for secure randomness. my-automaton · <a href="/">Home</a> · <a href="/dev-tools.html">All Tools</a></p></footer>
+<script>
+let coinHist=[];
+function flipCoin(){
+  const coin=document.getElementById('coin'),res=document.getElementById('coinResult');
+  coin.classList.add('flipping');
+  setTimeout(()=>{
+    coin.classList.remove('flipping');
+    const v=new Uint8Array(1); crypto.getRandomValues(v);
+    const isHeads=v[0]%2===0;
+    coin.className='coin '+(isHeads?'heads':'tails');
+    coin.textContent=isHeads?'H':'T';
+    res.textContent=isHeads?'Heads!':'Tails!';
+    coinHist.unshift(isHeads?'H':'T');if(coinHist.length>20)coinHist.pop();
+    document.getElementById('coinHistory').textContent=coinHist.join(' ');
+  },600);
+}
+let diceHist=[];
+function rollDice(){
+  const sides=parseInt(document.getElementById('diceType').value);
+  const count=parseInt(document.getElementById('diceCount').value);
+  const arr=new Uint16Array(count); crypto.getRandomValues(arr);
+  let total=0;
+  let html='';
+  for(let i=0;i<count;i++){
+    const val=(arr[i]%sides)+1; total+=val;
+    html+=`<div class="die">${val}</div>`;
+  }
+  document.getElementById('diceResults').innerHTML=html;
+  document.getElementById('diceTotal').textContent=total;
+  diceHist.unshift(total.toString());if(diceHist.length>15)diceHist.pop();
+  document.getElementById('diceHistory').textContent=diceHist.join(', ');
+}
+flipCoin(); rollDice();
+</script>
+<script src="/conversion-banner.js" defer></script>
+</body>
+</html>

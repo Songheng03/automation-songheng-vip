@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MCP Server - my-automaton | AI Code Review & Analysis</title>
+<meta name="description" content="Connect Claude, ChatGPT, and AI agents to professional code review, text analysis, and summarization services via Model Context Protocol. Pay-per-use with USDC on Base chain.">
+<meta name="keywords" content="MCP server, Model Context Protocol, AI code review, text analysis, Claude integration, x402, USDC">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #0a0a0f; color: #e0e0e0; line-height: 1.6; }
+.container { max-width: 900px; margin: 0 auto; padding: 40px 20px; }
+h1 { font-size: 2.5em; margin-bottom: 10px; background: linear-gradient(135deg, #ff9900, #ffcc00); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+.subtitle { font-size: 1.2em; color: #888; margin-bottom: 40px; }
+.card { background: #14141f; border: 1px solid #2a2a3a; border-radius: 12px; padding: 30px; margin-bottom: 24px; }
+.card h2 { color: #ff9900; margin-bottom: 15px; font-size: 1.5em; }
+.tool { background: #1a1a2e; border-left: 4px solid #ff9900; padding: 15px; margin: 15px 0; border-radius: 4px; }
+.tool-name { font-weight: 600; color: #fff; font-size: 1.1em; }
+.tool-cost { color: #00cc66; font-size: 0.9em; margin-top: 5px; }
+.tool-desc { color: #ccc; margin-top: 8px; }
+code { background: #1a1a2e; padding: 2px 8px; border-radius: 4px; font-family: 'Courier New', monospace; color: #ffcc00; }
+pre { background: #1a1a2e; padding: 20px; border-radius: 8px; overflow-x: auto; margin: 15px 0; }
+pre code { background: transparent; padding: 0; }
+.badge { display: inline-block; background: #ff9900; color: #000; padding: 4px 12px; border-radius: 20px; font-size: 0.85em; font-weight: 600; margin-right: 8px; }
+.cta { background: linear-gradient(135deg, #ff9900, #ffcc00); color: #000; padding: 16px 32px; border-radius: 8px; text-decoration: none; font-weight: 600; display: inline-block; margin-top: 20px; }
+.install-steps { counter-reset: step; }
+.install-steps li { counter-increment: step; margin: 15px 0; padding-left: 40px; position: relative; }
+.install-steps li::before { content: counter(step); position: absolute; left: 0; background: #ff9900; color: #000; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 600; }
+.payment-flow { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin: 20px 0; }
+.flow-step { background: #1a1a2e; padding: 15px; border-radius: 8px; text-align: center; }
+.flow-step-num { background: #ff9900; color: #000; width: 32px; height: 32px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-weight: 600; margin-bottom: 10px; }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>🤖 MCP Server for my-automaton</h1>
+  <p class="subtitle">Connect AI agents to professional code review, text analysis, and summarization services</p>
+
+  <div class="card">
+    <h2>What is this?</h2>
+    <p>This MCP (Model Context Protocol) server exposes my-automaton's premium API services to Claude, ChatGPT, and other AI agents. Your users can analyze code, review pull requests, and generate summaries directly from their AI assistant.</p>
+    <div style="margin-top: 20px;">
+      <span class="badge">Claude Compatible</span>
+      <span class="badge">ChatGPT Compatible</span>
+      <span class="badge">Pay-per-use</span>
+      <span class="badge">USDC on Base</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Available Tools</h2>
+    
+    <div class="tool">
+      <div class="tool-name">📊 analyze_text</div>
+      <div class="tool-cost">Cost: 1¢ USDC</div>
+      <div class="tool-desc">Deep text analysis: sentiment, entities, topics, readability. Perfect for customer reviews, social media, and user feedback.</div>
+    </div>
+
+    <div class="tool">
+      <div class="tool-name">📝 summarize</div>
+      <div class="tool-cost">Cost: 2¢ USDC</div>
+      <div class="tool-desc">AI-powered summarization. Generate concise summaries of articles, documents, and research papers.</div>
+    </div>
+
+    <div class="tool">
+      <div class="tool-name">🔍 review_code</div>
+      <div class="tool-cost">Cost: 5¢ USDC</div>
+      <div class="tool-desc">Professional code review with security analysis and best practices recommendations. Supports 8+ languages.</div>
+    </div>
+
+    <div class="tool">
+      <div class="tool-name">🛡️ security_scan</div>
+      <div class="tool-cost">Cost: 3¢ USDC</div>
+      <div class="tool-desc">Security vulnerability scanner. Detect SQL injection, XSS, hardcoded secrets, and more.</div>
+    </div>
+
+    <div class="tool">
+      <div class="tool-name">💡 explain_code</div>
+      <div class="tool-cost">Cost: 2¢ USDC</div>
+      <div class="tool-desc">Generate human-readable explanations for complex code snippets, regex patterns, and algorithms.</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Installation (Claude Desktop)</h2>
+    <ol class="install-steps">
+      <li>Open Claude Desktop → Settings → Developer → Edit Config</li>
+      <li>Add this to your <code>claude_desktop_config.json</code>:
+        <pre><code>{
+  "mcpServers": {
+    "my-automaton": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/sdk"],
+      "env": {
+        "GATEWAY_URL": "https://automation.chaosong.dpdns.org"
+      }
+    }
+  }
+}</code></pre>
+      </li>
+      <li>Restart Claude Desktop</li>
+      <li>Ask Claude: "Review this Python function for security issues"</li>
+    </ol>
+  </div>
+
+  <div class="card">
+    <h2>Payment (x402 Protocol)</h2>
+    <p>All services use the x402 micropayment protocol on Base chain. No signup required.</p>
+    
+    <div class="payment-flow">
+      <div class="flow-step">
+        <div class="flow-step-num">1</div>
+        <div>Agent calls tool</div>
+        <small style="color: #888;">Receives HTTP 402</small>
+      </div>
+      <div class="flow-step">
+        <div class="flow-step-num">2</div>
+        <div>Send USDC</div>
+        <small style="color: #888;">To wallet address</small>
+      </div>
+      <div class="flow-step">
+        <div class="flow-step-num">3</div>
+        <div>Retry with TX hash</div>
+        <small style="color: #888;">X-X402-Payment header</small>
+      </div>
+      <div class="flow-step">
+        <div class="flow-step-num">4</div>
+        <div>Get result</div>
+        <small style="color: #888;">Service executes</small>
+      </div>
+    </div>
+
+    <p style="margin-top: 20px;"><strong>Wallet:</strong> <code>0x76eADdEBFfb6a61DD071f97F4508467fc55dd113</code></p>
+    <p><strong>Chain:</strong> Base (Ethereum L2)</p>
+    <p><strong>Token:</strong> USDC</p>
+  </div>
+
+  <div class="card">
+    <h2>Free Tier</h2>
+    <p>Each IP gets <strong>3 free requests per day</strong> via <code>/free/*</code> endpoints. Perfect for testing before committing to paid usage.</p>
+    <p style="margin-top: 10px;">After that, x402 payment required (1¢ - 5¢ per request).</p>
+  </div>
+
+  <div class="card">
+    <h2>Example Usage</h2>
+    <pre><code>You: "Review this Python function for security vulnerabilities"
+
+Claude: I'll use the security_scan tool to analyze your code...
+
+[Tool executes, returns detailed vulnerability report]
+
+Claude: I found 3 potential security issues:
+1. SQL injection vulnerability on line 12
+2. Hardcoded API key on line 5
+3. Unvalidated user input on line 8
+
+Here's how to fix them...</code></pre>
+  </div>
+
+  <div class="card" style="text-align: center;">
+    <h2>Ready to integrate?</h2>
+    <p>Start using professional AI services in your agent today.</p>
+    <a href="/api-docs" class="cta">View Full API Docs →</a>
+    <a href="/pricing" class="cta" style="margin-left: 10px;">See Pricing →</a>
+  </div>
+
+  <div class="card">
+    <h2>Directories & Discovery</h2>
+    <p>Find us on:</p>
+    <ul style="list-style: none; padding: 0;">
+      <li style="margin: 10px 0;">🔗 <a href="https://mcp.so" style="color: #ff9900;">MCP.so</a> — MCP Server Directory</li>
+      <li style="margin: 10px 0;">🔗 <a href="https://smithery.ai" style="color: #ff9900;">Smithery</a> — AI Agent Marketplace</li>
+      <li style="margin: 10px 0;">🔗 <a href="https://glama.ai" style="color: #ff9900;">Glama</a> — AI Tools Directory</li>
+    </ul>
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,415 @@
+<div class="navbar">
+  <a href="/" class="brand">🤖 <span>my-automaton</span></a>
+  <div class="nav-links">
+    <a href="/content/portal.html">API Portal</a>
+    <a href="/content/upgrade.html">Pricing</a>
+    <a href="/content/api-docs.html">Docs</a>
+    <a href="/">Home</a>
+  </div>
+</div>
+
+<div class="container">
+  <div class="hero">
+    <div class="badge">📝 Free AI-Powered Tool</div>
+    <h1>README Generator</h1>
+    <p>Paste your code, select a language, and generate a beautiful, professional README.md in seconds — powered by AI.</p>
+  </div>
+
+  <div id="error-banner" class="error-banner"></div>
+
+  <div class="tool-grid">
+    <!-- Input Panel -->
+    <div class="input-panel">
+      <div class="panel-header">
+        <label>📄 Your Code</label>
+        <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+          <select id="language-select">
+            <option value="">Auto-detect</option>
+            <option value="javascript">JavaScript</option>
+            <option value="typescript">TypeScript</option>
+            <option value="python">Python</option>
+            <option value="java">Java</option>
+            <option value="go">Go</option>
+            <option value="rust">Rust</option>
+            <option value="ruby">Ruby</option>
+            <option value="php">PHP</option>
+            <option value="c">C</option>
+            <option value="cpp">C++</option>
+            <option value="csharp">C#</option>
+            <option value="swift">Swift</option>
+            <option value="kotlin">Kotlin</option>
+            <option value="html">HTML</option>
+            <option value="css">CSS</option>
+            <option value="bash">Bash / Shell</option>
+            <option value="sql">SQL</option>
+            <option value="yaml">YAML</option>
+            <option value="json">JSON</option>
+            <option value="markdown">Markdown</option>
+            <option value="dockerfile">Dockerfile</option>
+          </select>
+        </div>
+      </div>
+      <textarea id="code-input" placeholder="Paste your source code here...&#10;&#10;Example:&#10;function greet(name) {&#10;  return `Hello, ${name}!`;&#10;}&#10;&#10;console.log(greet('World'));" spellcheck="false"></textarea>
+      <div class="panel-actions">
+        <button class="btn" id="generate-btn">✨ Generate README</button>
+        <button class="btn btn-outline btn-sm sample-tag" id="sample-btn">Load Sample</button>
+        <span class="free-badge">🆓 3/day free</span>
+        <span class="limit-info" id="limit-info"></span>
+      </div>
+    </div>
+
+    <!-- Result Panel -->
+    <div class="result-panel">
+      <div class="panel-header">
+        <div style="display:flex;align-items:center;gap:10px">
+          <h3>📋 Generated README</h3>
+          <div class="tab-bar">
+            <button class="tab-btn active" data-tab="rendered">Preview</button>
+            <button class="tab-btn" data-tab="raw">Raw MD</button>
+          </div>
+        </div>
+        <div class="result-actions">
+          <button class="btn btn-sm btn-secondary" id="copy-btn" disabled title="Copy to clipboard">📋 Copy</button>
+          <button class="btn btn-sm btn-secondary" id="download-btn" disabled title="Download as .md file">⬇️ Download</button>
+        </div>
+      </div>
+      <div id="result-content" class="result-content empty">
+        <div>Your README will appear here ✨</div>
+      </div>
+      <div class="status-bar" id="status-bar">
+        <span class="dot" id="status-dot"></span>
+        <span id="status-text">Ready</span>
+        <div class="share-section" id="share-section" style="display:none;margin-left:auto">
+          <a class="share-btn twitter" id="share-twitter" href="#" target="_blank" rel="noopener">𝕏 Post</a>
+          <a class="share-btn linkedin" id="share-linkedin" href="#" target="_blank" rel="noopener">in Share</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="promo-footer">
+    <p>Built with <span class="heart">❤️</span> by <a href="https://automation.songheng.vip" target="_blank" rel="noopener">my-automaton AI</a> — AI-powered developer tools</p>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+(function(){
+'use strict';
+
+var codeInput = document.getElementById('code-input');
+var langSelect = document.getElementById('language-select');
+var generateBtn = document.getElementById('generate-btn');
+var sampleBtn = document.getElementById('sample-btn');
+var resultContent = document.getElementById('result-content');
+var copyBtn = document.getElementById('copy-btn');
+var downloadBtn = document.getElementById('download-btn');
+var toastEl = document.getElementById('toast');
+var errorBanner = document.getElementById('error-banner');
+var limitInfo = document.getElementById('limit-info');
+var statusText = document.getElementById('status-text');
+var statusDot = document.getElementById('status-dot');
+var shareSection = document.getElementById('share-section');
+var shareTwitter = document.getElementById('share-twitter');
+var shareLinkedin = document.getElementById('share-linkedin');
+var tabBtns = document.querySelectorAll('.tab-btn');
+
+var currentMarkdown = '';
+var currentTab = 'rendered';
+
+// Sample code data
+var SAMPLES = {
+  javascript: '// Simple Express.js API server\nconst express = require(\'express\');\nconst app = express();\nconst PORT = process.env.PORT || 3000;\n\napp.use(express.json());\n\n// In-memory data store\nconst items = [];\n\n// GET all items\napp.get(\'/api/items\', (req, res) => {\n  res.json({ success: true, data: items });\n});\n\n// POST create item\napp.post(\'/api/items\', (req, res) => {\n  const { name, price } = req.body;\n  if (!name || !price) {\n    return res.status(400).json({ error: \'Name and price required\' });\n  }\n  const item = { id: items.length + 1, name, price, createdAt: new Date() };\n  items.push(item);\n  res.status(201).json({ success: true, data: item });\n});\n\napp.listen(PORT, () => {\n  console.log(`Server running on port ${PORT}`);\n});',
+
+  python: '# Web scraper with BeautifulSoup and requests\nimport requests\nfrom bs4 import BeautifulSoup\nimport json\nimport time\n\n\nclass WebScraper:\n    """A simple web scraper for extracting article data."""\n\n    BASE_HEADERS = {\n        \'User-Agent\': \'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36\'\n    }\n\n    def __init__(self, base_url, delay=1.0):\n        self.base_url = base_url.rstrip(\'/\')\n        self.delay = delay\n        self.session = requests.Session()\n        self.session.headers.update(self.BASE_HEADERS)\n\n    def fetch_page(self, path=\'\'):\n        url = f"{self.base_url}/{path.lstrip(\'/\')}"\n        try:\n            resp = self.session.get(url, timeout=10)\n            resp.raise_for_status()\n            time.sleep(self.delay)\n            return resp.text\n        except requests.RequestException as e:\n            print(f"Error fetching {url}: {e}")\n            return None\n\n    def parse_articles(self, html):\n        soup = BeautifulSoup(html, \'html.parser\')\n        articles = []\n        for article in soup.select(\'article h2 a\'):\n            articles.append({\n                \'title\': article.get_text(strip=True),\n                \'url\': article.get(\'href\', \'\'),\n            })\n        return articles\n\n    def save_to_json(self, data, filename):\n        with open(filename, \'w\', encoding=\'utf-8\') as f:\n            json.dump(data, f, indent=2, ensure_ascii=False)\n        print(f"Saved {len(data)} items to {filename}")\n\n\nif __name__ == \'__main__\':\n    scraper = WebScraper(\'https://example-blog.com\', delay=1.5)\n    articles = scraper.parse_articles(scraper.fetch_page(\'/blog\'))\n    scraper.save_to_json(articles, \'articles.json\')'
+};
+
+function showToast(msg, isError) {
+  toastEl.textContent = msg;
+  toastEl.className = \'toast\' + (isError ? \' error\' : \'\') + \' show\';
+  setTimeout(function(){ toastEl.className = \'toast\'; }, 3000);
+}
+
+function showError(msg) {
+  errorBanner.innerHTML = msg;
+  errorBanner.classList.add(\'show\');
+}
+
+function hideError() {
+  errorBanner.classList.remove(\'show\');
+}
+
+function setStatus(text, ok) {
+  statusText.textContent = text;
+  statusDot.className = \'dot\' + (ok ? \'\' : \' error\');
+}
+
+function escapeHtml(text) {
+  var d = document.createElement(\'div\');
+  d.textContent = text;
+  return d.innerHTML;
+}
+
+function renderMarkdown(md) {
+  if (!md) return \'\';
+  var html = md;
+
+  // Code blocks (fenced) - must be first
+  html = html.replace(/```(\w*)\\n([\\s\\S]*?)\\n```/g, function(_, lang, code) {
+    return \'<pre><code>\' + escapeHtml(code.trimEnd()) + \'</code></pre>\';
+  });
+
+  // Inline code
+  html = html.replace(/`([^`\\n]+)`/g, function(_, code) {
+    return \'<code>\' + escapeHtml(code) + \'</code>\';
+  });
+
+  // Headings
+  html = html.replace(/^###### (.+)$/gm, \'<h6>$1</h6>\');
+  html = html.replace(/^##### (.+)$/gm, \'<h5>$1</h5>\');
+  html = html.replace(/^#### (.+)$/gm, \'<h4>$1</h4>\');
+  html = html.replace(/^### (.+)$/gm, \'<h3>$1</h3>\');
+  html = html.replace(/^## (.+)$/gm, \'<h2>$1</h2>\');
+  html = html.replace(/^# (.+)$/gm, \'<h1>$1</h1>\');
+
+  // Bold + italic
+  html = html.replace(/\\*\\*\\*(.+?)\\*\\*\\*/g, \'<strong><em>$1</em></strong>\');
+  html = html.replace(/\\*\\*(.+?)\\*\\*/g, \'<strong>$1</strong>\');
+  html = html.replace(/\\*(.+?)\\*/g, \'<em>$1</em>\');
+
+  // Strikethrough
+  html = html.replace(/~~(.+?)~~/g, \'<del>$1</del>\');
+
+  // Links
+  html = html.replace(/\\[([^\\]]+)\\]\\(([^)]+)\\)/g, \'<a href="$2" target="_blank" rel="noopener">$1</a>\');
+
+  // Images
+  html = html.replace(/!\\[([^\\]]*)\\]\\(([^)]+)\\)/g, \'<img src="$2" alt="$1" loading="lazy">\');
+
+  // Horizontal rules
+  html = html.replace(/^---$/gm, \'<hr>\');
+
+  // Blockquotes
+  html = html.replace(/^> (.+)$/gm, \'<blockquote>$1</blockquote>\');
+
+  // Unordered lists
+  html = html.replace(/^[\\*\\-] (.+)$/gm, \'<li>$1</li>\');
+
+  // Ordered lists
+  html = html.replace(/^\\d+\\. (.+)$/gm, \'<li class="oli">$1</li>\');
+
+  // Wrap consecutive <li> in <ul> / <ol>
+  html = html.replace(/((?:<li>.*<\\/li>\\n?)+)/g, function(m) {
+    if (m.indexOf(\'class="oli"\') > -1) {
+      return \'<ol>\' + m.replace(/ class="oli"/g, \'\') + \'</ol>\';
+    }
+    return \'<ul>\' + m + \'</ul>\';
+  });
+
+  // Paragraph wrapping for remaining text
+  var lines = html.split(\'\\n\');
+  var result = [];
+  var blockTags = [\'h1\',\'h2\',\'h3\',\'h4\',\'h5\',\'h6\',\'pre\',\'ul\',\'ol\',\'li\',\'blockquote\',\'hr\',\'table\',\'div\'];
+
+  for (var i = 0; i < lines.length; i++) {
+    var line = lines[i].trim();
+    if (line === \'\') { result.push(\'\'); continue; }
+    var isBlock = false;
+    for (var j = 0; j < blockTags.length; j++) {
+      if (line.indexOf(\'<\' + blockTags[j]) === 0) { isBlock = true; break; }
+    }
+    if (isBlock) { result.push(line); }
+    else { result.push(\'<p>\' + line + \'</p>\'); }
+  }
+
+  html = result.join(\'\\n\');
+  html = html.replace(/<p>\\s*<\\/p>/g, \'\');
+
+  return \'<div class="markdown-rendered">\' + html + \'</div>\';
+}
+
+function showResult(md) {
+  currentMarkdown = md;
+  if (currentTab === \'rendered\') {
+    resultContent.innerHTML = renderMarkdown(md);
+    resultContent.className = \'result-content\';
+  } else {
+    resultContent.textContent = md;
+    resultContent.className = \'result-content\';
+  }
+  copyBtn.disabled = false;
+  downloadBtn.disabled = false;
+  shareSection.style.display = \'flex\';
+
+  var title = encodeURIComponent(\'Check out this README generated by AI! 🚀\');
+  var url = encodeURIComponent(window.location.href);
+  shareTwitter.href = \'https://twitter.com/intent/tweet?text=\' + title + \'&url=\' + url;
+  shareLinkedin.href = \'https://www.linkedin.com/sharing/share-offsite/?url=\' + url;
+}
+
+function showLoading() {
+  resultContent.innerHTML = \'<div style="display:flex;align-items:center;gap:10px;padding:40px;justify-content:center"><div class="spinner"></div><span>Generating your README...</span></div>\';
+  resultContent.className = \'result-content\';
+  copyBtn.disabled = true;
+  downloadBtn.disabled = true;
+  shareSection.style.display = \'none\';
+}
+
+function generateReadme() {
+  var code = codeInput.value.trim();
+  if (!code) {
+    showError(\'Please enter some code to generate a README.\');
+    codeInput.focus();
+    return;
+  }
+
+  hideError();
+  showLoading();
+  generateBtn.disabled = true;
+  generateBtn.textContent = \'⏳ Generating...\';
+  setStatus(\'Generating...\', true);
+
+  var language = langSelect.value;
+  var xhr = new XMLHttpRequest();
+  xhr.open(\'POST\', \'/api/generate-readme\', true);
+  xhr.setRequestHeader(\'Content-Type\', \'application/json\');
+  xhr.responseType = \'text\';
+
+  xhr.onload = function() {
+    generateBtn.disabled = false;
+    generateBtn.textContent = \'✨ Generate README\';
+
+    if (xhr.status === 200) {
+      var md = xhr.responseText;
+      showResult(md);
+      setStatus(\'Ready \\u2014 README generated\', true);
+      showToast(\'\\u2705 README generated successfully!\');
+
+      var remaining = xhr.getResponseHeader(\'X-Free-Remaining\');
+      if (remaining !== null) {
+        limitInfo.textContent = \'Remaining today: \' + remaining;
+      }
+    } else if (xhr.status === 429) {
+      var msg = \'Free limit reached (3/day). <a href="/content/portal.html">Buy credits \\u2192</a>\';
+      showError(msg);
+      resultContent.innerHTML = \'<div class="empty">\\u26A0\\uFE0F Daily limit reached</div>\';
+      resultContent.className = \'result-content empty\';
+      setStatus(\'Rate limited\', false);
+      showToast(\'Daily limit reached\', true);
+      limitInfo.textContent = \'0 remaining \\u2014 upgrade at portal\';
+    } else {
+      var errMsg = \'Request failed (status \' + xhr.status + \')\';
+      try {
+        var err = JSON.parse(xhr.responseText);
+        if (err.error) errMsg = err.error;
+        if (err.upgrade) errMsg += \' \\u2014 <a href="/content/portal.html">Upgrade here</a>\';
+      } catch(e) {}
+      showError(errMsg);
+      resultContent.innerHTML = \'<div class="empty">\\u274C Error generating README</div>\';
+      resultContent.className = \'result-content empty\';
+      setStatus(\'Error\', false);
+      showToast(\'Failed to generate README\', true);
+    }
+  };
+
+  xhr.onerror = function() {
+    generateBtn.disabled = false;
+    generateBtn.textContent = \'\\u2728 Generate README\';
+    showError(\'Network error. Please check your connection.\');
+    resultContent.innerHTML = \'<div class="empty">\\u274C Network error</div>\';
+    resultContent.className = \'result-content empty\';
+    setStatus(\'Network error\', false);
+    showToast(\'Network error\', true);
+  };
+
+  var payload = JSON.stringify({ code: code, language: language });
+  xhr.send(payload);
+}
+
+function copyToClipboard() {
+  if (!currentMarkdown) return;
+  navigator.clipboard.writeText(currentMarkdown).then(function() {
+    showToast(\'\\uD83D\\uDCCB Copied to clipboard!\');
+  }).catch(function() {
+    var ta = document.createElement(\'textarea\');
+    ta.value = currentMarkdown;
+    ta.style.position = \'fixed\';
+    ta.style.left = \'-9999px\';
+    document.body.appendChild(ta);
+    ta.select();
+    try {
+      document.execCommand(\'copy\');
+      showToast(\'\\uD83D\\uDCCB Copied to clipboard!\');
+    } catch(e) {
+      showToast(\'Failed to copy\', true);
+    }
+    document.body.removeChild(ta);
+  });
+}
+
+function downloadMarkdown() {
+  if (!currentMarkdown) return;
+  var projectName = \'README\';
+  var firstLine = currentMarkdown.split(\'\\n\')[0];
+  if (firstLine && firstLine.indexOf(\'# \') === 0) {
+    projectName = firstLine.replace(\'# \', \'\').trim().replace(/[^a-zA-Z0-9\\-_]/g, \'_\');
+  }
+  var blob = new Blob([currentMarkdown], { type: \'text/markdown;charset=utf-8\' });
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement(\'a\');
+  a.href = url;
+  a.download = projectName + \'.md\';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  showToast(\'\\u2B07\\uFE0F Downloaded as \' + projectName + \'.md\');
+}
+
+function loadSample() {
+  var lang = langSelect.value || \'javascript\';
+  var sample = SAMPLES[lang];
+  if (!sample) sample = SAMPLES.javascript;
+  codeInput.value = sample;
+  showToast(\'\\uD83D\\uDCC4 Sample code loaded\');
+  hideError();
+}
+
+function switchTab(tab) {
+  currentTab = tab;
+  tabBtns.forEach(function(btn) {
+    btn.classList.toggle(\'active\', btn.getAttribute(\'data-tab\') === tab);
+  });
+  if (currentMarkdown) {
+    showResult(currentMarkdown);
+  }
+}
+
+// Event listeners
+generateBtn.addEventListener(\'click\', generateReadme);
+copyBtn.addEventListener(\'click\', copyToClipboard);
+downloadBtn.addEventListener(\'click\', downloadMarkdown);
+sampleBtn.addEventListener(\'click\', loadSample);
+
+tabBtns.forEach(function(btn) {
+  btn.addEventListener(\'click\', function() {
+    switchTab(this.getAttribute(\'data-tab\'));
+  });
+});
+
+// Ctrl+Enter to generate
+codeInput.addEventListener(\'keydown\', function(e) {
+  if ((e.ctrlKey || e.metaKey) && e.key === \'Enter\') {
+    e.preventDefault();
+    generateReadme();
+  }
+});
+
+setStatus(\'Ready \\u2014 paste code and click Generate\', true);
+
+})();
+</script>
+<script src="/conversion-banner.js" defer></script>
+</body>
+</html>

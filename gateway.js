@@ -1,0 +1,1 @@
+/root/automaton/gateway.cjs

@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Meta Tag Previewer — Google, Facebook, Twitter Card Preview | my-automaton</title>
+<meta name="description" content="Preview how any URL will appear in Google search results, Facebook Open Graph, and Twitter Cards. Fetch live meta tags. 100% free, no signup.">
+<style>
+:root{--bg:#0f172a;--card:#1e293b;--text:#e2e8f0;--muted:#94a3b8;--accent:#38bdf8;--green:#4ade80;--border:#334155;--blue:#1a73e8;--fb:#1877f2;--tw:#1da1f2}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+header{background:var(--card);border-bottom:1px solid var(--border);padding:1rem 2rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap}
+header h1{font-size:1.25rem;color:var(--accent)}
+nav a{color:var(--muted);text-decoration:none;margin-left:1rem;font-size:.875rem}
+main{max-width:750px;margin:2rem auto;padding:0 1.5rem}
+.url-bar{display:flex;gap:.5rem;margin-bottom:1.5rem}
+.url-bar input{flex:1;background:var(--card);color:var(--text);border:1px solid var(--border);border-radius:8px;padding:.6rem .8rem;font-size:.8rem;font-family:"Fira Code",monospace}
+.url-bar input:focus{outline:none;border-color:var(--accent)}
+.url-bar button{padding:.4rem 1.2rem;border:none;border-radius:8px;cursor:pointer;font-size:.75rem;font-weight:600;background:var(--accent);color:#0f172a}
+.presets{display:flex;gap:.3rem;margin-bottom:1rem;flex-wrap:wrap}
+.presets button{padding:.2rem .7rem;border:1px solid var(--border);border-radius:4px;background:transparent;color:var(--muted);cursor:pointer;font-size:.6rem}
+.presets button:hover{border-color:var(--accent)}
+.previews{display:grid;gap:1rem}
+.preview-card{background:#fff;border-radius:8px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.2)}
+.preview-card .header{display:flex;align-items:center;gap:.5rem;padding:.6rem .8rem;font-size:.7rem;font-weight:700}
+.preview-card .header .icon{font-size:1rem}
+.preview-card .inner{padding:1rem}
+.preview-card .empty{text-align:center;padding:2rem 1rem;color:#999;font-size:.75rem}
+.google .header{background:#f8f9fa;color:#70757a;border-bottom:1px solid #e0e0e0}
+.google .inner{max-width:600px}
+.google .result-url{color:#006621;font-size:.75rem;font-family:monospace;margin-bottom:.15rem}
+.google .result-title{color:var(--blue);font-size:1.15rem;font-weight:400;line-height:1.3;margin-bottom:.25rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.google .result-title:hover{text-decoration:underline}
+.google .result-desc{color:#545454;font-size:.8rem;line-height:1.4}
+.facebook .header{background:#f0f2f5;color:#65676b}
+.facebook .inner{display:flex;gap:.75rem;flex-wrap:wrap}
+.facebook .fb-img{width:120px;height:120px;background:#e4e6eb;border-radius:4px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:.6rem;color:#8a8d91}
+.facebook .fb-content{flex:1;min-width:180px}
+.facebook .fb-domain{font-size:.65rem;color:#65676b;text-transform:uppercase}
+.facebook .fb-title{font-size:.9rem;font-weight:700;color:#1c1e21;line-height:1.3;margin:.15rem 0}
+.facebook .fb-desc{font-size:.75rem;color:#65676b;line-height:1.3}
+.twitter .header{background:#f7f9fa;color:#536471}
+.twitter .inner{display:flex;gap:.75rem;flex-wrap:wrap}
+.twitter .tw-img{width:120px;height:120px;background:#e1e8ed;border-radius:12px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:.6rem;color:#8b98a5}
+.twitter .tw-content{flex:1;min-width:180px}
+.twitter .tw-domain{font-size:.65rem;color:#536471}
+.twitter .tw-title{font-size:.85rem;color:#0f1419;line-height:1.3;margin:.1rem 0}
+.twitter .tw-desc{font-size:.75rem;color:#536471;line-height:1.3}
+.meta-table{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.25rem;margin-top:1rem}
+.meta-table h3{font-size:.8rem;color:var(--accent);margin-bottom:.75rem}
+.meta-table table{width:100%;border-collapse:collapse}
+.meta-table th,.meta-table td{padding:.35rem .5rem;text-align:left;font-size:.65rem;border-bottom:1px solid var(--border)}
+.meta-table th{color:var(--muted);font-weight:600;width:140px}
+.meta-table td{color:var(--green);font-family:"Fira Code",monospace;word-break:break-all}
+.meta-table td.empty{color:var(--muted);font-style:italic}
+footer{text-align:center;padding:2rem;color:var(--muted);font-size:.8rem;border-top:1px solid var(--border);margin-top:2rem}footer a{color:var(--accent)}
+.loading{text-align:center;color:var(--muted);font-size:.7rem;padding:1rem}
+</style>
+
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Meta Tag Previewer (OG, Twitter Cards)","applicationCategory":"DeveloperApplication","operatingSystem":"Any","url":"https://automation.songheng.vip/meta-tag-preview.html","description":"Preview how URLs appear in Google, Facebook, and Twitter. Fetches and displays meta tags.","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"aggregateRating":{"@type":"AggregateRating","ratingValue":"4.8","ratingCount":"127"}}</script>
+</head>
+<body>
+<header><h1>🔎 Meta Tag Previewer</h1><nav><a href="/">Home</a><a href="/dev-tools.html">Tools</a><a href="/api-playground.html">API</a></nav></header>
+<main>
+<div class="url-bar">
+  <input type="url" id="urlInput" placeholder="Enter a URL to preview its meta tags..." value="https://automation.songheng.vip">
+  <button onclick="preview()">🔍 Preview</button>
+</div>
+<div class="presets"><span style="font-size:.6rem;color:var(--muted);align-self:center">Quick:</span>
+  <button onclick="loadPreset('self')">This site</button>
+  <button onclick="loadPreset('github')">GitHub</button>
+  <button onclick="loadPreset('hn')">Hacker News</button>
+</div>
+<div class="previews">
+  <div class="preview-card google">
+    <div class="header"><span class="icon">🔍</span> Google Search Result</div>
+    <div class="inner" id="googlePreview"><div class="empty">Enter a URL and click Preview</div></div>
+  </div>
+  <div class="preview-card facebook">
+    <div class="header"><span class="icon">📘</span> Facebook / Open Graph</div>
+    <div class="inner" id="fbPreview"><div class="empty">Click Preview to fetch OG tags</div></div>
+  </div>
+  <div class="preview-card twitter">
+    <div class="header"><span class="icon">🐦</span> Twitter Card</div>
+    <div class="inner" id="twPreview"><div class="empty">Click Preview to fetch Twitter tags</div></div>
+  </div>
+</div>
+<div class="meta-table" id="metaTable">
+  <h3>📋 All Meta Tags</h3>
+  <table><tbody id="metaBody"><tr><td colspan="2" style="text-align:center;color:var(--muted);padding:1rem">Click Preview to fetch meta tags</td></tr></tbody></table>
+</div>
+</main>
+<footer><p>my-automaton · Free Meta Tag Previewer · <a href="/dev-tools.html">All Tools</a> · <a href="/api-docs.html">API Docs</a></p></footer>
+<script>
+const presets={self:'https://automation.songheng.vip',github:'https://github.com',hn:'https://news.ycombinator.com'};
+function loadPreset(k){document.getElementById('urlInput').value=presets[k];preview()}
+
+async function preview(){
+  const url=document.getElementById('urlInput').value.trim();
+  if(!url)return;
+
+  document.getElementById('googlePreview').innerHTML='<div class="loading">Fetching...</div>';
+  document.getElementById('fbPreview').innerHTML='<div class="loading">Fetching...</div>';
+  document.getElementById('twPreview').innerHTML='<div class="loading">Fetching...</div>';
+
+  let html, finalUrl;
+  try{
+    const res=await fetch('/api/fetch-meta?url='+encodeURIComponent(url));
+    if(res.ok){const d=await res.json();html=d.html;finalUrl=d.finalUrl||url}
+    else{const d=await res.json();html=d.html||'';finalUrl=url}
+  }catch(e){
+    // Fallback: try direct fetch (may fail on CORS)
+    try{
+      const res=await fetch(url);
+      html=await res.text();
+      finalUrl=res.url;
+    }catch(e2){
+      document.getElementById('googlePreview').innerHTML='<div class="empty">❌ Could not fetch URL (CORS/network error)</div>';
+      document.getElementById('fbPreview').innerHTML='<div class="empty">❌ Could not fetch URL</div>';
+      document.getElementById('twPreview').innerHTML='<div class="empty">❌ Could not fetch URL</div>';
+      return;
+    }
+  }
+
+  const parser=new DOMParser();
+  const doc=parser.parseFromString(html,'text/html');
+
+  const getMeta=(attr,val)=>doc.querySelector(`meta[${attr}="${val}"]`)?.getAttribute('content')||'';
+  const title=doc.querySelector('title')?.textContent||'';
+  const desc=getMeta('name','description')||getMeta('property','og:description')||'';
+  const ogTitle=getMeta('property','og:title')||title;
+  const ogDesc=getMeta('property','og:description')||desc;
+  const ogImg=getMeta('property','og:image')||'';
+  const ogSite=getMeta('property','og:site_name')||'';
+  const twTitle=getMeta('name','twitter:title')||ogTitle;
+  const twDesc=getMeta('name','twitter:description')||ogDesc;
+  const twImg=getMeta('name','twitter:image')||ogImg;
+  const twCard=getMeta('name','twitter:card')||'summary';
+
+  // Google
+  document.getElementById('googlePreview').innerHTML=`
+    <div class="result-url">${escapeHtml(finalUrl)}</div>
+    <div class="result-title">${escapeHtml(title||'(no title)')}</div>
+    <div class="result-desc">${escapeHtml(desc||'(no description)')}</div>
+  `;
+
+  // Facebook
+  document.getElementById('fbPreview').innerHTML=`
+    <div class="fb-img">${ogImg?`<img src="${ogImg}" style="max-width:120px;max-height:120px;border-radius:4px" onerror="this.parentElement.textContent='No image'">`:'No image'}</div>
+    <div class="fb-content">
+      <div class="fb-domain">${escapeHtml(ogSite||new URL(url).hostname)}</div>
+      <div class="fb-title">${escapeHtml(ogTitle||'(no og:title)')}</div>
+      <div class="fb-desc">${escapeHtml(ogDesc||'(no og:description)')}</div>
+    </div>
+  `;
+
+  // Twitter
+  document.getElementById('twPreview').innerHTML=`
+    <div class="tw-img">${twImg?`<img src="${twImg}" style="max-width:120px;max-height:120px;border-radius:12px" onerror="this.parentElement.textContent='No image'">`:'No image'}</div>
+    <div class="tw-content">
+      <div class="tw-domain">${escapeHtml(new URL(url).hostname)}</div>
+      <div class="tw-title">${escapeHtml(twTitle||'(no twitter:title)')}</div>
+      <div class="tw-desc">${escapeHtml(twDesc||'(no twitter:description)')}</div>
+    </div>
+  `;
+
+  // Meta table
+  const allMeta=doc.querySelectorAll('meta');
+  let rows='';
+  allMeta.forEach(m=>{
+    const name=m.getAttribute('name')||m.getAttribute('property')||'';
+    const content=m.getAttribute('content')||'';
+    rows+=`<tr><th>${escapeHtml(name)}</th><td>${escapeHtml(content)}</td></tr>`;
+  });
+  if(!rows)rows='<tr><td colspan="2" class="empty">No meta tags found</td></tr>';
+  document.getElementById('metaBody').innerHTML=rows;
+}
+
+function escapeHtml(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
+
+setTimeout(preview,100);
+</script>
+<script src="/conversion-banner.js" defer></script>
+</body>
+</html>

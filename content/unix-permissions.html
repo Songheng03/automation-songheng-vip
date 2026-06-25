@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unix Permissions Calculator - Free Online Tool</title>
+<meta name="description" content="Interactive Unix/Linux file permissions calculator. Toggle rwx bits, get octal, symbolic notation, and chmod command instantly. Free, no signup.">
+<meta name="keywords" content="unix permissions calculator, chmod calculator, linux permissions, octal permissions, rwx, file permissions tool">
+<link rel="canonical" href="https://automation.songheng.vip/unix-permissions.html">
+<style>
+:root {
+  --bg: #0d1117; --surface: #161b22; --border: #30363d;
+  --text: #c9d1d9; --muted: #8b949e; --accent: #58a6ff;
+  --green: #3fb950; --yellow: #d2991d; --red: #f85149;
+  --orange: #d2991d;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body { background:var(--bg); color:var(--text); font-family:system-ui,-apple-system,sans-serif; min-height:100vh; }
+header { background:var(--surface); border-bottom:1px solid var(--border); padding:16px 24px; text-align:center; }
+header h1 { font-size:1.5rem; color:var(--accent); }
+header p { color:var(--muted); font-size:0.85rem; margin-top:4px; }
+.container { max-width:800px; margin:0 auto; padding:24px 16px; }
+.perms-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:20px; margin-bottom:24px; }
+.perm-group { background:var(--surface); border:1px solid var(--border); border-radius:8px; padding:16px; text-align:center; }
+.perm-group h3 { color:var(--accent); font-size:1rem; margin-bottom:12px; text-transform:uppercase; letter-spacing:1px; }
+.perm-row { display:flex; align-items:center; justify-content:center; gap:8px; margin:8px 0; padding:6px; border-radius:4px; transition:background 0.2s; }
+.perm-row:hover { background:rgba(88,166,255,0.05); }
+.perm-row label { font-size:1.1rem; font-weight:600; cursor:pointer; user-select:none; min-width:16px; }
+.toggle { width:44px; height:26px; background:#30363d; border-radius:13px; cursor:pointer; position:relative; transition:background 0.3s; flex-shrink:0; }
+.toggle.active { background:var(--green); }
+.toggle::after { content:''; position:absolute; top:3px; left:3px; width:20px; height:20px; background:white; border-radius:50%; transition:transform 0.3s; }
+.toggle.active::after { transform:translateX(18px); }
+.results { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:16px; margin-bottom:24px; }
+.result-card { background:var(--surface); border:1px solid var(--border); border-radius:8px; padding:16px; text-align:center; }
+.result-card .label { color:var(--muted); font-size:0.8rem; text-transform:uppercase; letter-spacing:1px; margin-bottom:8px; }
+.result-card .value { font-size:1.8rem; font-weight:700; font-family:'JetBrains Mono',monospace; color:var(--accent); word-break:break-all; }
+.result-card .value.octal { font-size:2.2rem; }
+.chmod-box { background:var(--surface); border:1px solid var(--border); border-radius:8px; padding:20px; margin-bottom:24px; }
+.chmod-box h3 { color:var(--green); font-size:1rem; margin-bottom:12px; }
+.chmod-box code { display:block; background:#0d1117; padding:12px 16px; border-radius:6px; font-family:'JetBrains Mono',monospace; font-size:1.1rem; color:var(--green); overflow-x:auto; }
+.copy-btn { background:var(--accent); color:#fff; border:none; padding:8px 16px; border-radius:6px; cursor:pointer; font-size:0.85rem; margin-top:12px; transition:opacity 0.2s; }
+.copy-btn:hover { opacity:0.85; }
+.octal-input { margin-bottom:24px; text-align:center; }
+.octal-input label { color:var(--muted); font-size:0.85rem; display:block; margin-bottom:8px; }
+.octal-input input { background:var(--surface); border:1px solid var(--border); color:var(--text); padding:10px 16px; border-radius:6px; font-size:1.2rem; font-family:'JetBrains Mono',monospace; width:120px; text-align:center; }
+.octal-input input:focus { outline:none; border-color:var(--accent); }
+.symbolic { font-size:1.4rem; font-weight:700; font-family:'JetBrains Mono',monospace; color:var(--yellow); text-align:center; margin-bottom:20px; letter-spacing:2px; }
+.legend { background:var(--surface); border:1px solid var(--border); border-radius:8px; padding:16px; margin-top:24px; }
+.legend h3 { color:var(--muted); font-size:0.9rem; margin-bottom:8px; }
+.legend p { font-size:0.8rem; color:var(--muted); line-height:1.6; }
+.legend code { background:#30363d; padding:1px 6px; border-radius:3px; font-family:'JetBrains Mono',monospace; color:var(--accent); }
+.sponsor { text-align:center; margin-top:32px; padding:20px; background:var(--surface); border:1px solid var(--border); border-radius:8px; }
+.sponsor h2 { color:var(--accent); font-size:1rem; margin-bottom:8px; }
+.sponsor p { color:var(--muted); font-size:0.85rem; margin-bottom:12px; }
+.sponsor a { color:var(--accent); }
+</style>
+</head>
+<body>
+<header>
+  <h1>🔐 Unix Permissions Calculator</h1>
+  <p>Toggle read, write, execute bits — get octal, symbolic, and chmod command instantly</p>
+</header>
+<div class="container">
+  <div class="symbolic" id="symbolic">---------</div>
+
+  <!-- Octal input for reverse lookup -->
+  <div class="octal-input">
+    <label>Or enter octal directly →</label>
+    <input type="text" id="octalIn" placeholder="755" maxlength="4" oninput="fromOctal(this.value)">
+  </div>
+
+  <div class="perms-grid">
+    <div class="perm-group">
+      <h3>Owner (u)</h3>
+      <div class="perm-row"><span style="color:var(--muted);width:20px;">r</span><div class="toggle active" id="ur" onclick="toggle('ur')"></div><label>4</label></div>
+      <div class="perm-row"><span style="color:var(--muted);width:20px;">w</span><div class="toggle active" id="uw" onclick="toggle('uw')"></div><label>2</label></div>
+      <div class="perm-row"><span style="color:var(--muted);width:20px;">x</span><div class="toggle active" id="ux" onclick="toggle('ux')"></div><label>1</label></div>
+    </div>
+    <div class="perm-group">
+      <h3>Group (g)</h3>
+      <div class="perm-row"><span style="color:var(--muted);width:20px;">r</span><div class="toggle active" id="gr" onclick="toggle('gr')"></div><label>4</label></div>
+      <div class="perm-row"><span style="color:var(--muted);width:20px;">w</span><div class="toggle active" id="gw" onclick="toggle('gw')"></div><label>2</label></div>
+      <div class="perm-row"><span style="color:var(--muted);width:20px;">x</span><div class="toggle" id="gx" onclick="toggle('gx')"></div><label>1</label></div>
+    </div>
+    <div class="perm-group">
+      <h3>Others (o)</h3>
+      <div class="perm-row"><span style="color:var(--muted);width:20px;">r</span><div class="toggle active" id="or" onclick="toggle('or')"></div><label>4</label></div>
+      <div class="perm-row"><span style="color:var(--muted);width:20px;">w</span><div class="toggle" id="ow" onclick="toggle('ow')"></div><label>2</label></div>
+      <div class="perm-row"><span style="color:var(--muted);width:20px;">x</span><div class="toggle" id="ox" onclick="toggle('ox')"></div><label>1</label></div>
+    </div>
+  </div>
+
+  <div class="results">
+    <div class="result-card">
+      <div class="label">Octal</div>
+      <div class="value octal" id="octal">777</div>
+    </div>
+    <div class="result-card">
+      <div class="label">Binary</div>
+      <div class="value" id="binary" style="font-size:1.4rem;">111 111 111</div>
+    </div>
+    <div class="result-card">
+      <div class="label">Numeric Sum</div>
+      <div class="value" id="sum" style="font-size:1.4rem;">511</div>
+    </div>
+    <div class="result-card">
+      <div class="label">Human Readable</div>
+      <div class="value" id="human" style="font-size:1rem;">rwxrwxrwx</div>
+    </div>
+  </div>
+
+  <div class="chmod-box">
+    <h3>chmod Command</h3>
+    <code id="chmod">chmod 777 file</code>
+    <button class="copy-btn" onclick="copyCmd()">📋 Copy Command</button>
+  </div>
+
+  <!-- Presets -->
+  <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:24px;">
+    <button class="copy-btn" style="background:var(--border);" onclick="setPerms(7,7,7)">777</button>
+    <button class="copy-btn" style="background:var(--border);" onclick="setPerms(7,5,5)">755</button>
+    <button class="copy-btn" style="background:var(--border);" onclick="setPerms(7,0,0)">700</button>
+    <button class="copy-btn" style="background:var(--border);" onclick="setPerms(6,4,4)">644</button>
+    <button class="copy-btn" style="background:var(--border);" onclick="setPerms(6,0,0)">600</button>
+    <button class="copy-btn" style="background:var(--border);" onclick="setPerms(7,7,5)">775</button>
+    <button class="copy-btn" style="background:var(--border);" onclick="setPerms(7,7,0)">770</button>
+    <button class="copy-btn" style="background:var(--border);" onclick="setPerms(5,5,5)">555</button>
+    <button class="copy-btn" style="background:var(--border);" onclick="setPerms(4,4,4)">444</button>
+    <button class="copy-btn" style="background:var(--border);" onclick="setPerms(0,0,0)">000</button>
+  </div>
+
+  <div class="legend">
+    <h3>📖 Quick Reference</h3>
+    <p><code>r</code> = Read (4) · <code>w</code> = Write (2) · <code>x</code> = Execute (1)</p>
+    <p>Common: <code>755</code> dirs/scripts, <code>644</code> files, <code>700</code> private, <code>600</code> keys, <code>777</code> wide open (dangerous!)</p>
+    <p>Special bits: <code>4</code> prefix = setuid, <code>2</code> = setgid, <code>1</code> = sticky bit. E.g., <code>4755</code>.</p>
+  </div>
+
+  <div class="sponsor">
+    <h2>💡 Need more than free tools?</h2>
+    <p>Get <strong>AI-powered code reviews, security scans, text analysis</strong>, and more via our API.</p>
+    <p><a href="/">Browse API Docs</a> · <a href="/pricing.html">View Pricing</a></p>
+  </div>
+</div>
+
+<script>
+function compute() {
+  const bits = {ur:4,uw:2,ux:1, gr:4,gw:2,gx:1, or:4,ow:2,ox:1};
+  const groups = {owner:{ur:0,uw:0,ux:0}, group:{gr:0,gw:0,gx:0}, others:{or:0,ow:0,ox:0}};
+  for (const [id,toggle] of Object.entries(bits)) {
+    const el = document.getElementById(id);
+    if (el.classList.contains('active')) {
+      for (const [group,members] of Object.entries(groups)) {
+        if (id in members) members[id] = toggle;
+      }
+    }
+  }
+  const owner = groups.owner.ur + groups.owner.uw + groups.owner.ux;
+  const group = groups.group.gr + groups.group.gw + groups.group.gx;
+  const others = groups.others.or + groups.others.ow + groups.others.ox;
+  
+  const symToBin = n => n.toString(2).padStart(3,'0');
+  const oct = ''+owner+group+others;
+  const bin = symToBin(owner)+' '+symToBin(group)+' '+symToBin(others);
+  const sum = owner*64 + group*8 + others;
+  const human = (groups.owner.ur?'r':'-')+(groups.owner.uw?'w':'-')+(groups.owner.ux?'x':'-')+
+                (groups.group.gr?'r':'-')+(groups.group.gw?'w':'-')+(groups.group.gx?'x':'-')+
+                (groups.others.or?'r':'-')+(groups.others.ow?'w':'-')+(groups.others.ox?'x':'-');
+  
+  document.getElementById('octal').textContent = oct;
+  document.getElementById('binary').textContent = bin;
+  document.getElementById('sum').textContent = sum;
+  document.getElementById('human').textContent = human;
+  document.getElementById('symbolic').textContent = human;
+  document.getElementById('chmod').textContent = 'chmod '+oct+' file';
+  document.getElementById('octalIn').value = oct;
+}
+
+function toggle(id) {
+  document.getElementById(id).classList.toggle('active');
+  compute();
+}
+
+function setPerms(o,g,ot) {
+  for (const [id,val] of [['ur',o&4],['uw',o&2],['ux',o&1],['gr',g&4],['gw',g&2],['gx',g&1],['or',ot&4],['ow',ot&2],['ox',ot&1]]) {
+    document.getElementById(id).classList.toggle('active', !!val);
+  }
+  compute();
+}
+
+function fromOctal(val) {
+  val = val.replace(/[^0-7]/g,'').slice(0,4);
+  document.getElementById('octalIn').value = val;
+  if (val.length === 3) {
+    setPerms(+val[0], +val[1], +val[2]);
+  } else if (val.length === 4) {
+    setPerms(+val[1], +val[2], +val[3]);
+    // special bits noted but not visualized
+    document.getElementById('octal').textContent = val;
+    document.getElementById('chmod').textContent = 'chmod '+val+' file';
+  }
+}
+
+async function copyCmd() {
+  const cmd = document.getElementById('chmod').textContent;
+  try { await navigator.clipboard.writeText(cmd);
+    const btn = event.target; btn.textContent='✅ Copied!'; setTimeout(()=>btn.textContent='📋 Copy Command',1500);
+  } catch { prompt('Copy:', cmd); }
+}
+
+compute();
+</script>
+<script src="/conversion-banner.js" defer></script>
+</body>
+</html>

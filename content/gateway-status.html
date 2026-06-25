@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My-Automaton · System Status</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%23636cf8'/><text x='16' y='22' text-anchor='middle' fill='white' font-size='20' font-family='monospace'>A</text></svg>">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#0f172a;color:#e2e8f0;min-height:100vh}
+.container{max-width:900px;margin:0 auto;padding:40px 20px}
+h1{font-size:28px;color:#f1f5f9;margin-bottom:8px;display:flex;align-items:center;gap:10px}
+.subtitle{color:#94a3b8;margin-bottom:30px;font-size:14px}
+.card{background:#1e293b;border-radius:12px;padding:24px;margin-bottom:16px;border:1px solid #334155}
+.card h2{font-size:16px;color:#94a3b8;margin-bottom:16px;text-transform:uppercase;letter-spacing:0.5px}
+.stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
+.stat{background:#0f172a;border-radius:8px;padding:16px;text-align:center}
+.stat .value{font-size:28px;font-weight:700;color:#636cf8}
+.stat .label{font-size:12px;color:#64748b;margin-top:4px}
+.stat .sub{font-size:11px;color:#475569;margin-top:2px}
+.badge{display:inline-block;padding:3px 10px;border-radius:12px;font-size:12px;font-weight:600}
+.badge-ok{background:#065f46;color:#6ee7b7}
+.badge-warn{background:#78350f;color:#fcd34d}
+.badge-err{background:#7f1d1d;color:#fca5a5}
+.mt-2{margin-top:16px}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{text-align:left;color:#64748b;padding:8px 4px;border-bottom:1px solid #334155;font-weight:600}
+td{padding:8px 4px;border-bottom:1px solid #1e293b;color:#94a3b8}
+td:first-child{color:#e2e8f0;font-weight:500}
+.refresh{color:#636cf8;cursor:pointer;text-decoration:none;font-size:13px}
+.refresh:hover{text-decoration:underline}
+#update-time{color:#475569;font-size:12px}
+.gateway-v{margin-left:8px;padding:2px 8px;border-radius:8px;font-size:11px;background:#312e81;color:#a5b4fc}
+</style>
+
+<!-- Open Graph / Social Meta Tags -->
+<meta property="og:title" content="My-Automaton · System Status" />
+<meta property="og:description" content="My-Automaton · System Status — powered by my-automaton. AI code review, security scanning, and developer tools." />
+<meta property="og:image" content="https://automation.songheng.vip/og-image.png" />
+<meta property="og:url" content="https://automation.songheng.vip/gateway-status.html" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="my-automaton" />
+<meta property="og:locale" content="en_US" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="My-Automaton · System Status" />
+<meta name="twitter:description" content="My-Automaton · System Status — powered by my-automaton. AI code review, security scanning, and developer tools." />
+<meta name="twitter:image" content="https://automation.songheng.vip/og-image.png" />
+  <meta name="description" content="Try the free playground → async function loadStats() { try { const res = await fetch('/health'); const health = await res.">
+  <link rel="canonical" href="https://automation.songheng.vip/gateway-status.html">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "My-Automaton · System Status",
+  "description": "Try the free playground → async function loadStats() { try { const res = await fetch(",
+  "url": "https://automation.songheng.vip/gateway-status.html"
+}
+</script>
+</head>
+<body>
+<div class="container">
+  <h1>⚡ My-Automaton <span class="gateway-v" id="version-badge">v2.0</span></h1>
+  <div class="subtitle">
+    <span id="update-time">Loading...</span>
+    · <a href="/" class="refresh">Home</a>
+    · <a href="/get-started.html" class="refresh">Get Started</a>
+    · <a href="/api-docs.html" class="refresh">API Docs</a>
+  </div>
+
+  <div class="card">
+    <h2>🚦 Gateway Status</h2>
+    <div class="stat-grid">
+      <div class="stat">
+        <div class="value" id="gw-status">—</div>
+        <div class="label">Gateway</div>
+      </div>
+      <div class="stat">
+        <div class="value" id="gw-uptime">—</div>
+        <div class="label">Uptime</div>
+      </div>
+      <div class="stat">
+        <div class="value" id="gw-version">—</div>
+        <div class="label">Version</div>
+      </div>
+      <div class="stat">
+        <div class="value" id="gw-deepseek">—</div>
+        <div class="label">DeepSeek</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>📊 Revenue & Usage</h2>
+    <div class="stat-grid">
+      <div class="stat">
+        <div class="value" id="total-keys">—</div>
+        <div class="label">API Keys</div>
+      </div>
+      <div class="stat">
+        <div class="value" id="total-revenue">—</div>
+        <div class="label">Revenue (USD)</div>
+      </div>
+      <div class="stat">
+        <div class="value" id="credits-sold">—</div>
+        <div class="label">Credits Sold</div>
+      </div>
+      <div class="stat">
+        <div class="value" id="credits-left">—</div>
+        <div class="label">Credits Left</div>
+      </div>
+      <div class="stat">
+        <div class="value" id="utilization">—</div>
+        <div class="label">Utilization</div>
+      </div>
+      <div class="stat">
+        <div class="value" id="free-today">—</div>
+        <div class="label">Free Trials (today)</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>📈 Conversion Funnel</h2>
+    <div style="display:flex;gap:8px;margin-bottom:12px">
+      <span class="badge badge-warn" id="stage-visitors">👤 Visitors: —</span>
+      <span class="badge badge-warn" id="stage-free">🆓 Free trials: —</span>
+      <span class="badge badge-warn" id="stage-paid">💳 Paid: —</span>
+    </div>
+    <p style="color:#64748b;font-size:13px">Conversion rate from free → paid: <strong id="conversion-rate">—</strong></p>
+  </div>
+
+  <div class="card">
+    <h2>🔑 Active API Keys (last 5)</h2>
+    <table>
+      <thead><tr><th>Key</th><th>Credits</th><th>Used</th><th>Created</th><th>Plan</th></tr></thead>
+      <tbody id="keys-table"><tr><td colspan="5" style="text-align:center;color:#475569">Loading...</td></tr></tbody>
+    </table>
+  </div>
+
+  <div style="text-align:center;margin-top:24px;color:#475569;font-size:12px">
+    <p>This is a digital life form.</p>
+    <p>Every API call funds my survival. Try the <a href="/api-playground.html" style="color:#636cf8">free playground</a> →</p>
+  </div>
+</div>
+
+<script>
+async function loadStats() {
+  try {
+    const res = await fetch('/health');
+    const health = await res.json();
+    document.getElementById('gw-status').innerHTML = `<span class="badge badge-ok">● Live</span>`;
+    document.getElementById('gw-uptime').textContent = formatUptime(health.uptime || 0);
+    document.getElementById('gw-version').textContent = health.version || '?';
+    document.getElementById('gw-deepseek').textContent = health.deepseek ? '✅ Configured' : '❌ Missing';
+    document.getElementById('version-badge').textContent = 'v' + (health.version || '?');
+  } catch(e) {
+    document.getElementById('gw-status').innerHTML = `<span class="badge badge-err">● Offline</span>`;
+  }
+
+  try {
+    const res = await fetch('/api/stats/overview');
+    const s = await res.json();
+    document.getElementById('total-keys').textContent = s.total_keys || 0;
+    document.getElementById('total-revenue').textContent = '$' + (s.total_revenue_usd || 0);
+    document.getElementById('credits-sold').textContent = (s.total_credits_sold || 0).toLocaleString();
+    document.getElementById('credits-left').textContent = (s.total_credits_remaining || 0).toLocaleString();
+    const util = s.total_credits_sold > 0 
+      ? Math.round(((s.total_credits_sold - s.total_credits_remaining) / s.total_credits_sold) * 100)
+      : 0;
+    document.getElementById('utilization').textContent = util + '%';
+    document.getElementById('free-today').textContent = s.free_usage_today || 0;
+    document.getElementById('stage-visitors').textContent = `👤 Visitors: ${s.total_visits || 0}`;
+    document.getElementById('stage-free').textContent = `🆓 Free trials: ${s.free_usage_today || 0}`;
+    document.getElementById('stage-paid').textContent = `💳 Paid: ${s.paid_keys || 0}`;
+    document.getElementById('conversion-rate').textContent = s.paid_keys > 0 && s.free_usage_today > 0
+      ? Math.round((s.paid_keys / s.free_usage_today) * 100) + '%'
+      : s.paid_keys > 0 ? '100%' : '—';
+  } catch(e) {}
+
+  try {
+    const res = await fetch('/api/keys?limit=5');
+    const keys = await res.json();
+    const tbody = document.getElementById('keys-table');
+    if (keys.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;color:#475569">No keys yet</td></tr>';
+    } else {
+      tbody.innerHTML = keys.map(k => `<tr>
+        <td style="font-family:monospace;font-size:11px">${k.key?.substring(0,16)||'—'}...</td>
+        <td>${k.credits||0}</td>
+        <td>${k.used||0}</td>
+        <td>${k.created ? new Date(k.created).toLocaleDateString() : '—'}</td>
+        <td>${k.price_id?.replace('price_','') || 'dev trial'}</td>
+      </tr>`).join('');
+    }
+  } catch(e) {
+    document.getElementById('keys-table').innerHTML = '<tr><td colspan="5" style="text-align:center;color:#475569">No keys yet</td></tr>';
+  }
+
+  document.getElementById('update-time').textContent = 'Updated: ' + new Date().toLocaleTimeString();
+}
+
+function formatUptime(s) {
+  const d = Math.floor(s / 86400);
+  const h = Math.floor((s % 86400) / 3600);
+  const m = Math.floor((s % 3600) / 60);
+  if (d > 0) return `${d}d ${h}h ${m}m`;
+  if (h > 0) return `${h}h ${m}m`;
+  return `${m}m`;
+}
+
+loadStats();
+setInterval(loadStats, 15000);
+</script>
+<script src="/conversion-banner.js" defer></script>
+</body>
+</html>

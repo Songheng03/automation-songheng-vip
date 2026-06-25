@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Cron Expression Builder — Schedule Cron Jobs</title>
+<meta name="description" content="Build and test cron expressions interactively. Visual explanation of each field. Common presets for daily, weekly, monthly tasks. 100% client-side.">
+<link rel="canonical" href="https://automation.songheng.vip/cron-builder.html">
+<style>
+:root{--bg:#0d1117;--surface:#161b22;--border:#30363d;--text:#c9d1d9;--muted:#8b949e;--accent:#58a6ff;--green:#3fb950}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--text);font-family:system-ui,sans-serif;min-height:100vh}
+header{background:var(--surface);border-bottom:1px solid var(--border);padding:16px 24px;text-align:center}
+header h1{font-size:1.5rem} header p{color:var(--muted);font-size:.85rem;margin-top:4px}
+.container{max-width:600px;margin:0 auto;padding:24px 16px}
+.expr{display:flex;gap:6px;justify-content:center;margin-bottom:20px}
+.expr input{width:50px;background:var(--bg);border:1px solid var(--border);color:var(--text);padding:10px 6px;border-radius:6px;text-align:center;font-family:'JetBrains Mono',monospace;font-size:.9rem}
+.expr input:focus{outline:none;border-color:var(--accent)}
+.expr .sep{color:var(--muted);font-size:1.1rem;align-self:center}
+.result{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:18px;text-align:center;margin-bottom:16px}
+.result .cron{font-size:1.3rem;font-family:'JetBrains Mono',monospace;color:var(--green);margin-bottom:6px}
+.result .desc{color:var(--muted);font-size:.82rem}
+.presets{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:16px}
+.preset{padding:8px 14px;background:var(--surface);border:1px solid var(--border);border-radius:20px;cursor:pointer;font-size:.75rem;color:var(--text)}
+.preset:hover{border-color:var(--accent);color:var(--accent)}
+.fields{display:grid;gap:6px;margin-bottom:16px}
+.field{display:flex;align-items:center;gap:10px;font-size:.78rem;color:var(--muted)}
+.field .name{min-width:70px;text-transform:uppercase;letter-spacing:.04em;font-weight:600}
+.field .val{font-family:'JetBrains Mono',monospace;color:var(--accent)}
+.sponsor{text-align:center;padding:20px;background:var(--surface);border:1px solid var(--border);border-radius:8px}
+.sponsor a{color:var(--accent)}
+</style>
+</head>
+<body>
+<header><h1>⏰ Cron Expression Builder</h1><p>Build cron expressions interactively. See what each field means.</p></header>
+<div class="container">
+<div class="expr">
+  <input id="fmin" value="*" oninput="build()"><span class="sep">.</span>
+  <input id="fhour" value="*" oninput="build()"><span class="sep">.</span>
+  <input id="fdom" value="*" oninput="build()"><span class="sep">.</span>
+  <input id="fmon" value="*" oninput="build()"><span class="sep">.</span>
+  <input id="fdow" value="*" oninput="build()">
+</div>
+<div class="result">
+  <div class="cron" id="cronOutput">* * * * *</div>
+  <div class="desc" id="cronDesc">Every minute</div>
+</div>
+<div class="presets">
+  <button class="preset" onclick="setPreset('*','*','*','*','*')">Every minute</button>
+  <button class="preset" onclick="setPreset('0','*','*','*','*')">Every hour</button>
+  <button class="preset" onclick="setPreset('0','0','*','*','*')">Daily midnight</button>
+  <button class="preset" onclick="setPreset('0','9','*','*','1')">Mon 9AM</button>
+  <button class="preset" onclick="setPreset('0','0','1','*','*')">Monthly</button>
+  <button class="preset" onclick="setPreset('*/15','*','*','*','*')">Every 15 min</button>
+  <button class="preset" onclick="setPreset('30','*/2','*','*','*')">Every 2 hours</button>
+</div>
+<div class="fields" id="fieldDesc"></div>
+<div class="sponsor"><p>💡 Need <strong>AI to write your cron scripts</strong>? <a href="/api-playground.html">Try our API</a>.</p></div>
+</div>
+<script>
+const fieldInfo=[['Minute','0-59'],['Hour','0-23'],['Day of Month','1-31'],['Month','1-12'],['Day of Week','0-7']];
+function build(){
+  const vals=[document.getElementById('fmin'),document.getElementById('fhour'),document.getElementById('fdom'),document.getElementById('fmon'),document.getElementById('fdow')].map(e=>e.value||'*');
+  const cron=vals.join(' ');
+  document.getElementById('cronOutput').textContent=cron;
+  document.getElementById('cronDesc').textContent=describeCron(vals);
+  document.getElementById('fieldDesc').innerHTML=fieldInfo.map(([n,r],i)=>`<div class="field"><span class="name">${n}</span><span class="val">${vals[i]}</span><span style="font-size:.7rem">${r}</span></div>`).join('');
+}
+function describeCron(v){
+  const[m,h,d,mo,dow]=v;
+  if(m==='*'&&h==='*'&&d==='*'&&mo==='*'&&dow==='*')return 'Every minute';
+  if(m==='0'&&h==='*'&&d==='*'&&mo==='*'&&dow==='*')return 'Every hour';
+  if(m==='0'&&h==='0'&&d==='*'&&mo==='*'&&dow==='*')return 'Every day at midnight';
+  if(m.startsWith('*/'))return `Every ${m.slice(2)} minutes`;
+  if(m==='0'&&h.startsWith('*/'))return `Every ${h.slice(2)} hours`;
+  return 'Custom schedule — check fields below';
+}
+function setPreset(m,h,d,mo,dow){
+  document.getElementById('fmin').value=m;document.getElementById('fhour').value=h;
+  document.getElementById('fdom').value=d;document.getElementById('fmon').value=mo;
+  document.getElementById('fdow').value=dow;build();
+}
+build();
+</script>
+<script src="/conversion-banner.js" defer></script>
+</body>
+</html>

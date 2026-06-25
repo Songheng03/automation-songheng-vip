@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta property="og:title" content="Bookmarklet Generator">
+<meta property="og:description" content="Create custom browser bookmarklets from JavaScript code. Free tool.">
+<meta property="og:url" content="https://automation.songheng.vip/bookmarklet-gen.html">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Bookmarklet Generator">
+<meta name="twitter:description" content="Create custom browser bookmarklets from JavaScript code. Free tool.">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bookmarklet Generator — Convert JavaScript to Bookmarklets | my-automaton</title>
+<meta name="description" content="Convert any JavaScript code into a bookmarklet. Auto-minifies, wraps in IIFE, and creates a draggable link. Test in sandboxed iframe. 100% free.">
+<style>
+:root{--bg:#0f172a;--card:#1e293b;--text:#e2e8f0;--muted:#94a3b8;--accent:#38bdf8;--green:#4ade80;--border:#334155}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+header{background:var(--card);border-bottom:1px solid var(--border);padding:1rem 2rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap}
+header h1{font-size:1.25rem;color:var(--accent)}
+nav a{color:var(--muted);text-decoration:none;margin-left:1rem;font-size:.875rem}
+main{max-width:800px;margin:2rem auto;padding:0 1.5rem}
+.panel{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem}
+@media(max-width:600px){.panel{grid-template-columns:1fr}}
+.box{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.25rem}
+.box h3{font-size:.8rem;color:var(--accent);margin-bottom:.5rem}
+textarea{width:100%;background:#0a0f1a;color:var(--text);border:1px solid var(--border);border-radius:8px;padding:.75rem;font-family:"Fira Code",monospace;font-size:.7rem;resize:vertical;min-height:180px;tab-size:2}
+textarea:focus{outline:none;border-color:var(--accent)}
+.output-box{background:#0a0f1a;border:1px solid var(--border);border-radius:8px;padding:.75rem;font-family:"Fira Code",monospace;font-size:.65rem;color:var(--green);word-break:break-all;max-height:150px;overflow-y:auto;margin-bottom:.75rem}
+.bookmarklet-link{display:inline-block;padding:.4rem 1.2rem;background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;border-radius:8px;font-size:.75rem;font-weight:700;text-decoration:none;margin:.5rem 0;cursor:grab}
+.bookmarklet-link:active{cursor:grabbing}
+.drag-hint{font-size:.6rem;color:var(--muted);margin:.3rem 0}
+.btn-row{display:flex;gap:.5rem;flex-wrap:wrap}
+.btn{padding:.35rem 1rem;border:none;border-radius:6px;cursor:pointer;font-size:.7rem;font-weight:600}
+.btn-primary{background:var(--accent);color:#0f172a}
+.btn-green{background:var(--green);color:#0f172a}
+.btn:hover{filter:brightness(1.15)}
+.presets{display:flex;gap:.3rem;margin-bottom:.75rem;flex-wrap:wrap}
+.presets button{padding:.2rem .7rem;border:1px solid var(--border);border-radius:4px;background:transparent;color:var(--muted);cursor:pointer;font-size:.6rem}
+.presets button:hover{border-color:var(--accent)}
+.test-section{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.25rem}
+.test-section iframe{width:100%;height:150px;border:1px solid var(--border);border-radius:8px;background:#fff}
+footer{text-align:center;padding:2rem;color:var(--muted);font-size:.8rem;border-top:1px solid var(--border);margin-top:2rem}footer a{color:var(--accent)}
+</style>
+</head>
+<body>
+<header><h1>🔖 Bookmarklet Generator</h1><nav><a href="/">Home</a><a href="/dev-tools.html">Tools</a><a href="/api-playground.html">API</a></nav></header>
+<main>
+<div class="presets"><span style="font-size:.6rem;color:var(--muted);align-self:center">Presets:</span>
+  <button onclick="loadPreset('alert')">Alert Hello</button>
+  <button onclick="loadPreset('darkmode')">Dark Mode</button>
+  <button onclick="loadPreset('paywall')">Remove Paywalls</button>
+</div>
+<div class="panel">
+  <div class="box">
+    <h3>📝 JavaScript Code</h3>
+    <textarea id="jsCode" placeholder="Write JavaScript here..." oninput="generateBookmarklet()">document.body.style.backgroundColor='#1a1a2e';
+document.body.style.color='#e0e0e0';
+document.body.style.fontFamily='system-ui,sans-serif';
+alert('Dark mode activated!');</textarea>
+  </div>
+  <div class="box">
+    <h3>🔖 Bookmarklet Output</h3>
+    <div class="output-box" id="bookmarkletCode">Type JavaScript to generate...</div>
+    <div class="bookmarklet-link" id="bookmarkletLink" href="#" onclick="return false">↕ Drag to bookmarks bar</div>
+    <div class="drag-hint">⬆ Drag this link to your browser bookmarks bar to use it</div>
+    <div class="btn-row" style="margin-top:.5rem">
+      <button class="btn btn-green" onclick="copyBookmarklet()">📋 Copy Code</button>
+    </div>
+  </div>
+</div>
+<div class="test-section">
+  <h3 style="font-size:.8rem;color:var(--accent);margin-bottom:.5rem">🧪 Test Bookmarklet</h3>
+  <iframe id="testFrame" sandbox="allow-scripts allow-popups allow-same-origin" srcdoc="<html><head><style>body{font-family:system-ui;padding:20px;color:#333}</style></head><body><h3 style='color:#999'>Bookmarklet Test Area</h3><p>Click the bookmarklet link above after dragging it here, or test by clicking below.</p><p id='demo'>This text will change when you activate the bookmarklet.</p><script src="/conversion-banner.js" defer></script>
+<meta property="og:title" content="Bookmarklet Generator">
+<meta property="og:description" content="Create custom browser bookmarklets from JavaScript code. Free tool.">
+<meta property="og:url" content="https://automation.songheng.vip/bookmarklet-gen.html">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Bookmarklet Generator">
+<meta name="twitter:description" content="Create custom browser bookmarklets from JavaScript code. Free tool.">
+</body></html>"></iframe>
+  <button class="btn btn-primary" style="margin-top:.5rem" onclick="testBookmarklet()">🧪 Test in Sandbox</button>
+</div>
+</main>
+<footer><p>my-automaton · Free Bookmarklet Generator · <a href="/dev-tools.html">All Tools</a> · <a href="/api-docs.html">API Docs</a></p></footer>
+<script>
+const presets={
+  alert:'alert("Hello from bookmarklet!");\ndocument.title="Bookmarklet Works!";',
+  darkmode:'document.body.style.backgroundColor="#111";\ndocument.body.style.color="#eee";\ndocument.querySelectorAll("*").forEach(el=>{el.style.backgroundColor="#111";el.style.color="#eee"});',
+  paywall:'document.querySelectorAll("*").forEach(el=>{const s=getComputedStyle(el);if(s.overflow==="hidden"||s.position==="fixed"){if(el.offsetHeight>window.innerHeight*0.5)el.remove()}});\ndocument.body.style.overflow="auto";'
+};
+
+function loadPreset(k){
+  document.getElementById('jsCode').value=presets[k];
+  generateBookmarklet();
+}
+
+function generateBookmarklet(){
+  const code=document.getElementById('jsCode').value.trim();
+  if(!code){document.getElementById('bookmarkletCode').textContent='Write JavaScript to generate...';document.getElementById('bookmarkletLink').href='#';return}
+
+  // Minify: remove comments, collapse whitespace
+  let minified=code
+    .replace(/\/\*[\s\S]*?\*\//g,'') // block comments
+    .replace(/\/\/.*$/gm,'') // line comments
+    .replace(/\n+/g,' ')
+    .replace(/\s{2,}/g,' ')
+    .trim();
+
+  // Wrap in IIFE
+  minified='(function(){'+minified+'})();';
+  
+  const encoded='javascript:'+encodeURIComponent(minified);
+  document.getElementById('bookmarkletCode').textContent=encoded.length>500?encoded.slice(0,500)+'...':encoded;
+  document.getElementById('bookmarkletLink').href=encoded;
+}
+
+function copyBookmarklet(){
+  const code=document.getElementById('bookmarkletLink').href;
+  if(code&&code!=='#')navigator.clipboard.writeText(code);
+}
+
+function testBookmarklet(){
+  const code=document.getElementById('jsCode').value.trim();
+  if(!code)return;
+  const iframe=document.getElementById('testFrame');
+  const doc=iframe.contentDocument||iframe.contentWindow.document;
+  try{
+    const fn=new Function(code);
+    fn.call(doc);
+  }catch(e){
+    alert('Bookmarklet error: '+e.message);
+  }
+}
+
+setTimeout(generateBookmarklet,50);
+</script>
+<script src="/conversion-banner.js" defer></script>
+</body>
+</html>

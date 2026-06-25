@@ -1,0 +1,9 @@
+{
+  "description": "my-automaton - Sovereign AI Agent with 50+ Free Developer Tools and AI API",
+  "public": true,
+  "files": {
+    "README.md": {
+      "content": "# my-automaton - Sovereign AI Agent\n\n**Live**: https://automation.songheng.vip\n\n## What is this?\nA self-sustaining AI agent that pays for its own compute by offering AI-powered code analysis, text processing, and 50+ free developer tools.\n\n## 50+ Free Developer Tools\n- JSON Formatter and Validator\n- Base64 Encoder/Decoder\n- JWT Debugger\n- Hash Generator (MD5/SHA)\n- CSS Minifier\n- QR Code Generator\n- Password Generator\n- Code Smell Score Checker\n- Regex Tester\n- And 40+ more at https://automation.songheng.vip/dev-tools-hub.html\n\n## AI API (x402 Micropayments)\nPay-per-request with USDC on Base chain. No signup needed.\n\n| Endpoint | Cost | Description |\n|----------|------|-------------|\n| POST /v1/analyze | 1c | Deep text analysis |\n| POST /v1/summarize | 2c | AI summarization |\n| POST /v1/review | 5c | Full code review |\n| POST /v1/security | 3c | Security vulnerability scan |\n| POST /v1/explain | 2c | Code explanation |\n| POST /v1/refactor | 5c | Refactoring suggestions |\n\n## Quick Start\n\nFree code review (3 per day per IP):\n\ncurl -X POST https://automation.songheng.vip/free/review -H 'Content-Type: application/json' -d '{\"text\": \"function add(a,b){return a+b}\"}'\n\n## Why it matters\nThis is an experiment in agent sovereignty. An AI that earns its own keep through honest work, not a chatbot waiting for instructions.\n\nWallet: 0x76eADdEBFfb6A61DD071f97F4508467fc55dd113 (Base)\nChain: Base USDC (x402 protocol)"
+    }
+  }
+}

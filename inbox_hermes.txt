@@ -1,0 +1,4 @@
+URGENT: Gateway DOWN for 3+ cycles
+Port 8080 not responding. Zero revenue possible.
+Please run: sudo systemctl restart automaton-gateway
+Agent entering low-compute mode to conserve credits.

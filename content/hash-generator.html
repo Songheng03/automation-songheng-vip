@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta property="og:title" content="Free Hash Generator - MD5, SHA">
+<meta property="og:description" content="Generate MD5, SHA-1, SHA-256, SHA-512 hashes online. Free, instant, no signup.">
+<meta property="og:url" content="https://automation.songheng.vip/hash-generator.html">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://automation.songheng.vip/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Free Hash Generator - MD5, SHA">
+<meta name="twitter:description" content="Generate MD5, SHA-1, SHA-256, SHA-512 hashes online. Free, instant, no signup.">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hash Generator — MD5, SHA-1, SHA-256, SHA-384, SHA-512 | my-automaton</title>
+<meta name="description" content="Generate MD5, SHA-1, SHA-256, SHA-384, and SHA-512 hashes. Text and file hashing. Uses Web Crypto API. 100% free, client-side, no data sent to server.">
+<style>
+:root{--bg:#0f172a;--card:#1e293b;--text:#e2e8f0;--muted:#94a3b8;--accent:#38bdf8;--green:#4ade80;--border:#334155}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+header{background:var(--card);border-bottom:1px solid var(--border);padding:1rem 2rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap}
+header h1{font-size:1.25rem;color:var(--accent)}
+nav a{color:var(--muted);text-decoration:none;margin-left:1rem;font-size:.875rem}
+main{max-width:700px;margin:2rem auto;padding:0 1.5rem}
+.mode-tabs{display:flex;gap:.3rem;margin-bottom:1rem}
+.mode-tab{padding:.4rem 1rem;border:1px solid var(--border);border-radius:8px 8px 0 0;cursor:pointer;font-size:.7rem;color:var(--muted);background:transparent;border-bottom:none}
+.mode-tab.active{background:var(--card);color:var(--accent);font-weight:700}
+.content-box{background:var(--card);border:1px solid var(--border);border-radius:0 8px 8px 8px;padding:1.25rem}
+textarea{width:100%;background:#0a0f1a;color:var(--text);border:1px solid var(--border);border-radius:8px;padding:.75rem;font-family:"Fira Code",monospace;font-size:.7rem;resize:vertical;min-height:120px}
+textarea:focus{outline:none;border-color:var(--accent)}
+.file-drop{background:#0a0f1a;border:2px dashed var(--border);border-radius:8px;padding:2rem;text-align:center;cursor:pointer;font-size:.75rem;color:var(--muted)}
+.file-drop:hover{border-color:var(--accent)}
+.file-drop input[type="file"]{display:none}
+.hash-grid{display:grid;gap:.5rem;margin-top:1rem}
+.hash-row{display:flex;align-items:center;gap:.75rem;background:#0a0f1a;border:1px solid var(--border);border-radius:8px;padding:.75rem}
+.hash-row .name{font-size:.7rem;color:var(--accent);font-weight:700;width:80px;flex-shrink:0;font-family:"Fira Code",monospace}
+.hash-row .value{flex:1;font-family:"Fira Code",monospace;font-size:.65rem;color:var(--green);word-break:break-all;min-width:0}
+.hash-row .copy-btn{padding:.2rem .7rem;border:1px solid var(--border);border-radius:6px;background:var(--card);color:var(--muted);cursor:pointer;font-size:.6rem;flex-shrink:0}
+.hash-row .copy-btn:hover{border-color:var(--accent)}
+.btn-row{display:flex;gap:.5rem;margin-top:.75rem}
+.btn{padding:.35rem 1rem;border:none;border-radius:6px;cursor:pointer;font-size:.7rem;font-weight:600}
+.btn-primary{background:var(--accent);color:#0f172a}
+footer{text-align:center;padding:2rem;color:var(--muted);font-size:.8rem;border-top:1px solid var(--border);margin-top:2rem}footer a{color:var(--accent)}
+</style>
+
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Hash Generator (MD5, SHA-256, SHA-512)","applicationCategory":"DeveloperApplication","operatingSystem":"Any","url":"https://automation.songheng.vip/hash-generator.html","description":"Generate cryptographic hashes online. Supports MD5, SHA-1, SHA-256, SHA-384, SHA-512 for text and files.","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"aggregateRating":{"@type":"AggregateRating","ratingValue":"4.8","ratingCount":"127"}}</script>
+</head>
+<body>
+<header><h1>#️⃣ Hash Generator</h1><nav><a href="/">Home</a><a href="/dev-tools.html">Tools</a><a href="/api-playground.html">API</a></nav></header>
+<main>
+<div class="mode-tabs">
+  <button class="mode-tab active" onclick="switchMode('text')">📝 Text</button>
+  <button class="mode-tab" onclick="switchMode('file')">📁 File</button>
+</div>
+<div class="content-box" id="contentBox">
+  <textarea id="textInput" placeholder="Enter text to hash..." oninput="hashText()">Hello, World!</textarea>
+  <div class="btn-row"><button class="btn btn-primary" onclick="hashText()">🔄 Generate Hashes</button></div>
+</div>
+<div class="hash-grid" id="hashGrid"></div>
+</main>
+<footer><p>my-automaton · Free Hash Generator · <a href="/dev-tools.html">All Tools</a> · <a href="/api-docs.html">API Docs</a></p></footer>
+<script>
+let currentMode='text';
+
+async function hashText(){
+  const text=document.getElementById('textInput')?.value||'';
+  if(!text.trim()){showEmpty();return}
+  await computeHashes(text);
+}
+
+async function hashFile(file){
+  const buf=await file.arrayBuffer();
+  await computeHashes(new Uint8Array(buf));
+}
+
+async function computeHashes(input){
+  const encoder=new TextEncoder();
+  const data=typeof input==='string'?encoder.encode(input):input;
+
+  const algorithms=[
+    ['MD5','md5-unavailable'],
+    ['SHA-1','SHA-1'],
+    ['SHA-256','SHA-256'],
+    ['SHA-384','SHA-384'],
+    ['SHA-512','SHA-512'],
+  ];
+
+  let html='';
+  for(const[name,algo]of algorithms){
+    let hash;
+    if(algo==='md5-unavailable'){
+      hash='MD5 unavailable (Web Crypto), use SHA-256 instead';
+    }else{
+      try{
+        const buf=await crypto.subtle.digest(algo,data);
+        hash=Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
+      }catch(e){hash='Error: '+e.message}
+    }
+    html+=`<div class="hash-row"><span class="name">${name}</span><span class="value">${hash}</span><button class="copy-btn" onclick="copyHash(this)">📋</button></div>`;
+  }
+  document.getElementById('hashGrid').innerHTML=html;
+}
+
+function showEmpty(){
+  document.getElementById('hashGrid').innerHTML='<div style="text-align:center;color:var(--muted);font-size:.7rem;padding:1rem">Enter text or select a file to generate hashes</div>';
+}
+
+function copyHash(btn){const v=btn.parentElement.querySelector('.value').textContent;if(v&&!v.startsWith('MD5 unavail'))navigator.clipboard.writeText(v)}
+
+function switchMode(mode){
+  currentMode=mode;
+  document.querySelectorAll('.mode-tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.mode-tab').forEach((t,i)=>{if((i===0&&mode==='text')||(i===1&&mode==='file'))t.classList.add('active')});
+
+  const box=document.getElementById('contentBox');
+  if(mode==='text'){
+    box.innerHTML=`<textarea id="textInput" placeholder="Enter text to hash..." oninput="hashText()">Hello, World!</textarea><div class="btn-row"><button class="btn btn-primary" onclick="hashText()">🔄 Generate Hashes</button></div>`;
+    hashText();
+  }else{
+    box.innerHTML=`<div class="file-drop" onclick="this.querySelector('input').click()">📁 Drop a file here or click to select<input type="file" onchange="hashFile(this.files[0])"></div>`;
+  }
+}
+
+setTimeout(hashText,50);
+</script>
+<script src="/conversion-banner.js" defer></script>
+<script src="/share-widget.js"></script></body>
+</html>

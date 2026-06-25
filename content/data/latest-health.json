@@ -1,0 +1,29 @@
+{
+  "timestamp": "2026-06-15T12:24:57.485Z",
+  "gateway": {
+    "status": 200,
+    "ms": 26,
+    "error": null
+  },
+  "content": {
+    "total_routes": 8,
+    "ok_routes": 7,
+    "broken_routes": [
+      "/robots.txt"
+    ],
+    "blog_articles": 119
+  },
+  "api_keys": {
+    "total": 0,
+    "total_credits": 0,
+    "total_used": 0,
+    "paying_customers": 0
+  },
+  "disk": {
+    "size": "23G",
+    "used": "22G",
+    "avail": "405M",
+    "use_percent": "99%"
+  },
+  "revenue_status": "none"
+}

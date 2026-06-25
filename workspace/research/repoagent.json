@@ -1,0 +1,56 @@
+{
+  "directory_name": "RepoAgent",
+  "website_url": "https://github.com/OpenBMB/RepoAgent",
+  "description": "An LLM-powered framework for repository-level code documentation generation. Note: RepoAgent is primarily an open-source tool/library, not a traditional directory service.",
+  "submission_guidelines": {
+    "contribution_method": "Open source contributions via GitHub",
+    "how_to_contribute": [
+      {
+        "step": 1,
+        "action": "Fork the repository on GitHub",
+        "url": "https://github.com/OpenBMB/RepoAgent"
+      },
+      {
+        "step": 2,
+        "action": "Clone the forked repository locally"
+      },
+      {
+        "step": 3,
+        "action": "Set up development environment using PDM (Python Development Master)",
+        "commands": [
+          "pdm venv create --name repoagent",
+          "Activate the virtual environment",
+          "pdm install"
+        ]
+      },
+      {
+        "step": 4,
+        "action": "Make changes and submit a Pull Request (PR)"
+      }
+    ],
+    "installation_methods": {
+      "pip": "pip install repoagent",
+      "github_actions": "Available via actions/run-repoagent GitHub Marketplace action",
+      "development": "PDM-based setup from source"
+    },
+    "configuration_requirements": {
+      "api_key": "OpenAI API key required (set as OPENAI_API_KEY environment variable)",
+      "model": "Default: gpt-3.5-turbo (configurable)"
+    },
+    "features": [
+      "Automatically detects Git repository changes",
+      "Generates documentation via AST code analysis",
+      "Supports multi-threaded operations",
+      "Pre-commit hook integration for automated documentation updates",
+      "Chat with repo functionality"
+    ],
+    "license": "MIT (based on GitHub badge)",
+    "links": {
+      "github": "https://github.com/OpenBMB/RepoAgent",
+      "pypi": "https://pypi.org/project/repoagent/",
+      "arxiv_paper": "https://arxiv.org/abs/2402.16667v1",
+      "github_actions_marketplace": "https://github.com/marketplace/actions/run-repoagent"
+    }
+  },
+  "date_researched": "2025-02-15"
+}

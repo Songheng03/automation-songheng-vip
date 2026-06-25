@@ -1,0 +1,77 @@
+[
+  {
+    "name": "Smithery",
+    "website": "https://smithery.ai",
+    "type": "MCP server deployment and hosting platform",
+    "submission_method": "CLI-based deployment",
+    "endpoint": "CLI: npx @smithery/cli@latest deploy (docs at https://smithery.ai/docs/deploy)",
+    "method": "CLI (not REST API)",
+    "required_fields": {
+      "cli_command": "npx @smithery/cli@latest deploy [server-directory]",
+      "config": "smithery.yaml in project root"
+    },
+    "authentication": "Requires Smithery API key (generated from Smithery dashboard). Set via SMITHERY_API_KEY env var.",
+    "rate_limits": "Not publicly documented",
+    "public_api": false,
+    "notes": "No direct web API for submissions. Deployment is done via their CLI tool which handles building and publishing. Servers are also auto-indexed from public GitHub repositories."
+  },
+  {
+    "name": "MCP.so",
+    "website": "https://mcp.so",
+    "type": "MCP server directory/index",
+    "submission_method": "Web form",
+    "endpoint": "https://mcp.so/submit",
+    "method": "POST (HTML form submission)",
+    "required_fields": {
+      "name": "Name of the MCP server or client (text input)",
+      "url": "GitHub URL of the MCP server (URL input, placeholder: https://github.com/chatmcp/mcp-server-github)",
+      "type": "Hidden field for type classification",
+      "server_config": "Server configuration (text/config input)"
+    },
+    "authentication": "None required for web form submission",
+    "rate_limits": "Not publicly documented",
+    "public_api": true,
+    "notes": "Publicly accessible submission form. No API key needed. Form requires server name and GitHub repository URL. Also auto-indexes from public GitHub repositories."
+  },
+  {
+    "name": "Glama",
+    "website": "https://glama.ai",
+    "type": "MCP server registry with hosting and gateway",
+    "submission_method": "Automatic GitHub scanning + paid hosting",
+    "endpoint": "No public submission API",
+    "method": "N/A",
+    "required_fields": "N/A (auto-indexed from GitHub)",
+    "authentication": "Requires account (paid, $9-$80/month). API access requires API key for gateway/proxy features.",
+    "rate_limits": "Pro plan: No rate limits on AI credits. 100k logs/month (Starter). Different tiers available.",
+    "public_api": false,
+    "notes": "Glama is a superset of the official MCP Registry. It automatically scans and indexes open-source MCP servers from GitHub. No manual submission API exists. Once indexed, users can host servers on Glama's platform (paid). Servers are scored for quality, license, and maintenance."
+  },
+  {
+    "name": "MCP Get (MCP Package Registry)",
+    "website": "https://mcp-get.com",
+    "type": "MCP package registry",
+    "submission_method": "Web form + public REST API (read-only)",
+    "endpoint": "https://mcp-get.com/api/packages",
+    "method": "GET (public read API)",
+    "required_fields": {
+      "api_response_fields": ["id", "name", "description", "vendor", "sourceUrl", "homepage", "license", "versions", "dependencies", "lastUpdated", "envVars", "createdAt", "runtime", "readme", "totalViews", "uniqueViews", "totalInstalls", "uniqueInstalls", "viewCount", "isNew"]
+    },
+    "authentication": "None required for GET (public read API). Submission via web form likely requires no auth.",
+    "rate_limits": "Not publicly documented",
+    "public_api": true,
+    "notes": "Public REST API at /api/packages returns JSON array of ~16,000 packages. Each package has id, name, description, vendor, sourceUrl, homepage, license, runtime, readme, and usage stats. Also has a web submission form at /submit. The API is read-only (GET only)."
+  },
+  {
+    "name": "OpenTools",
+    "website": "https://opentools.ai",
+    "type": "AI tools directory (includes MCP servers section)",
+    "submission_method": "Web form",
+    "endpoint": "https://opentools.ai/friends/launch-tool",
+    "method": "POST (client-side rendered form)",
+    "required_fields": "Not determinable from server-side rendering (client-rendered form). Likely includes tool name, description, URL, category.",
+    "authentication": "None required for web form submission",
+    "rate_limits": "Not publicly documented",
+    "public_api": false,
+    "notes": "Submit page at /friends/launch-tool. Also has a dedicated MCP server directory at /mcp. The site has 2,500+ AI tools listed including MCP servers. Submission form is client-side rendered (Next.js). No public REST API found. 782K+ monthly visitors."
+  }
+]

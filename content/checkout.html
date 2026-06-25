@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Buy Credits — my-automaton AI</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#0f0f1a;color:#e0e0e0;line-height:1.6}
+.container{max-width:700px;margin:0 auto;padding:30px 20px}
+h1{font-size:2rem;margin-bottom:10px;background:linear-gradient(135deg,#60a5fa,#a78bfa);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.subtitle{color:#888;margin-bottom:30px}
+.plan-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:30px}
+.plan-card{background:#1a1a2e;border:1px solid #2a2a4a;border-radius:12px;padding:20px;cursor:pointer;transition:all .2s;text-align:center}
+.plan-card:hover,.plan-card.selected{border-color:#60a5fa;transform:translateY(-2px)}
+.plan-card.selected{background:#1a2a3e}
+.plan-card .pname{font-size:.9rem;color:#888;margin-bottom:4px}
+.plan-card .pamount{font-size:1.5rem;font-weight:700}
+.plan-card .pcredits{font-size:.8rem;color:#60a5fa;margin-top:4px}
+.steps{background:#1a1a2e;border:1px solid #2a2a4a;border-radius:12px;padding:24px;margin-bottom:20px}
+.steps h2{font-size:1.1rem;margin-bottom:15px;color:#60a5fa}
+.step{display:flex;gap:12px;margin-bottom:15px;align-items:flex-start}
+.step-num{background:#2a2a4a;border-radius:50%;width:28px;height:28px;display:flex;align-items:center;justify-content:center;font-size:.85rem;font-weight:700;flex-shrink:0;color:#60a5fa}
+.step-content{font-size:.9rem;color:#ccc}
+.step-content code{background:#2a2a4a;padding:2px 8px;border-radius:4px;font-size:.85rem;color:#60a5fa}
+.verify-area{background:#1a1a2e;border:1px solid #2a2a4a;border-radius:12px;padding:24px;margin-bottom:20px}
+.verify-area h2{font-size:1.1rem;margin-bottom:15px}
+input,button{width:100%;padding:12px;border-radius:8px;font-size:.95rem;margin-bottom:10px}
+input{background:#0f0f1a;border:1px solid #2a2a4a;color:#e0e0e0;outline:none}
+input:focus{border-color:#60a5fa}
+button{border:none;font-weight:600;cursor:pointer;transition:opacity .2s}
+.btn-primary{background:linear-gradient(135deg,#60a5fa,#a78bfa);color:#fff}
+.btn-success{background:#10b981;color:#fff}
+.btn-primary:hover,.btn-success:hover{opacity:.9}
+button:disabled{opacity:.5;cursor:not-allowed}
+.status-box{padding:15px;border-radius:8px;margin-top:15px;display:none}
+.status-box.success{display:block;background:#064e3b;border:1px solid #10b981}
+.status-box.error{display:block;background:#450a0a;border:1px solid #ef4444}
+.status-box.info{display:block;background:#1e3a5f;border:1px solid #60a5fa}
+.key-display{background:#0f0f1a;padding:12px;border-radius:8px;font-family:monospace;font-size:.9rem;word-break:break-all;margin:10px 0;color:#60a5fa}
+.pay-info{background:#1a1a2e;border:1px solid #2a2a4a;border-radius:12px;padding:20px;margin-bottom:20px}
+.pay-info .wallet{font-family:monospace;font-size:.9rem;background:#0f0f1a;padding:10px;border-radius:6px;color:#60a5fa;word-break:break-all;margin:10px 0}
+.pay-info .amount{font-size:1.8rem;font-weight:700;text-align:center;margin:15px 0;color:#e0e0e0}
+.back-link{color:#60a5fa;text-decoration:none;font-size:.9rem;margin-bottom:20px;display:inline-block}
+.back-link:hover{text-decoration:underline}
+.qr-placeholder{width:180px;height:180px;background:#0f0f1a;border:2px dashed #2a2a4a;border-radius:12px;margin:15px auto;display:flex;align-items:center;justify-content:center;color:#555;font-size:.8rem}
+.copy-btn{background:transparent;border:1px solid #2a2a4a;color:#60a5fa;padding:6px 12px;font-size:.8rem;border-radius:6px;cursor:pointer;display:inline-block;width:auto}
+.copy-btn:hover{background:#2a2a4a}
+</style>
+
+<!-- Open Graph / Social Meta Tags -->
+<meta property="og:title" content="Buy Credits — my-automaton AI" />
+<meta property="og:description" content="Buy Credits — my-automaton AI — powered by my-automaton. AI code review, security scanning, and developer tools." />
+<meta property="og:image" content="https://automation.songheng.vip/og-image.png" />
+<meta property="og:url" content="https://automation.songheng.vip/checkout.html" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="my-automaton" />
+<meta property="og:locale" content="en_US" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Buy Credits — my-automaton AI" />
+<meta name="twitter:description" content="Buy Credits — my-automaton AI — powered by my-automaton. AI code review, security scanning, and developer tools." />
+<meta name="twitter:image" content="https://automation.songheng.vip/og-image.png" />
+  <meta name="description" content="← Back to Home Buy Credits with USDC Pay once, use any premium service.">
+  <link rel="canonical" href="https://automation.songheng.vip/checkout.html">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "Buy Credits — my-automaton AI",
+  "description": "← Back to Home Buy Credits with USDC Pay once, use any premium service.",
+  "url": "https://automation.songheng.vip/checkout.html"
+}
+</script>
+</head>
+<body>
+<div class="container">
+  <a href="/" class="back-link">← Back to Home</a>
+  <h1>Buy Credits with USDC</h1>
+  <p class="subtitle">Pay once, use any premium service. Credits never expire.</p>
+
+  <!-- Step 1: Choose a plan -->
+  <div id="step1">
+    <div class="plan-grid" id="planGrid"></div>
+    <button class="btn btn-primary" id="continueBtn" onclick="selectPlan()" disabled>Select a Plan</button>
+  </div>
+
+  <!-- Step 2: Payment instructions -->
+  <div id="step2" style="display:none">
+    <div class="pay-info">
+      <h2 style="color:#60a5fa;margin-bottom:10px">💳 Send USDC on Base</h2>
+      <div class="amount" id="payAmount"></div>
+      <p style="color:#888;font-size:.9rem">to this wallet address:</p>
+      <div class="wallet" id="walletAddr">0x76eADdEBFfb6a61DD071f97F4508467fc55dd113</div>
+      <button class="copy-btn" onclick="copyWallet()">📋 Copy Address</button>
+      <div class="qr-placeholder">QR Code<br>(scan with wallet)</div>
+      <p style="color:#666;font-size:.85rem;text-align:center">Network: <strong>Base</strong> · Token: <strong>USDC</strong></p>
+    </div>
+
+    <div class="steps">
+      <h2>📋 After Sending Payment</h2>
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">Copy your transaction hash (tx hash) from your wallet</div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">Paste it below and click <strong>Verify Payment</strong></div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-content">Your API key will be generated instantly ✅</div>
+      </div>
+    </div>
+
+    <div class="verify-area">
+      <h2>🔑 Verify & Get API Key</h2>
+      <input type="text" id="txHash" placeholder="0x... (paste your transaction hash here)" />
+      <input type="hidden" id="checkoutId" />
+      <button class="btn-primary" id="verifyBtn" onclick="verifyPayment()">Verify Payment</button>
+      <div id="checkoutIdDisplay" style="font-size:.8rem;color:#666;margin-top:5px"></div>
+      <div id="statusBox" class="status-box"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+const API = window.location.origin;
+let selectedPlan = null;
+let checkoutData = null;
+const PLANS = {
+  starter:   { usdc: 4.90,  credits: 500,  label: 'Starter' },
+  pro:       { usdc: 10.00, credits: 1100, label: 'Pro' },
+  business:  { usdc: 25.00, credits: 3000, label: 'Business' },
+  unlimited: { usdc: 50.00, credits: 6500, label: 'Unlimited' },
+};
+
+function renderPlans() {
+  const grid = document.getElementById('planGrid');
+  grid.innerHTML = Object.entries(PLANS).map(([key, plan]) => `
+    <div class="plan-card" onclick="pickPlan('${key}')" id="plan-${key}">
+      <div class="pname">${plan.label}</div>
+      <div class="pamount">$${plan.usdc.toFixed(2)}</div>
+      <div class="pcredits">${plan.credits} credits</div>
+      <div style="font-size:.75rem;color:#666;margin-top:6px">${(plan.usdc / plan.credits * 100).toFixed(2)} US¢/credit</div>
+    </div>
+  `).join('');
+}
+
+function pickPlan(key) {
+  selectedPlan = key;
+  document.querySelectorAll('.plan-card').forEach(c => c.classList.remove('selected'));
+  document.getElementById('plan-' + key).classList.add('selected');
+  document.getElementById('continueBtn').disabled = false;
+  document.getElementById('continueBtn').textContent = `Buy ${PLANS[key].label} — $${PLANS[key].usdc.toFixed(2)}`;
+}
+
+async function selectPlan() {
+  if (!selectedPlan) return;
+  const btn = document.getElementById('continueBtn');
+  btn.textContent = 'Creating checkout...';
+  btn.disabled = true;
+
+  try {
+    const res = await fetch(API + '/api/crypto/checkout', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({ plan: selectedPlan })
+    });
+    checkoutData = await res.json();
+    
+    if (checkoutData.error) {
+      showStatus('error', 'Error: ' + checkoutData.error);
+      btn.textContent = 'Try Again';
+      btn.disabled = false;
+      return;
+    }
+
+    // Show payment step
+    document.getElementById('step1').style.display = 'none';
+    document.getElementById('step2').style.display = 'block';
+    
+    // Fill payment info
+    document.getElementById('payAmount').textContent = '$' + checkoutData.expected_amount_usdc.toFixed(2) + ' USDC';
+    document.getElementById('walletAddr').textContent = checkoutData.payment_address;
+    document.getElementById('checkoutId').value = checkoutData.checkout_id;
+    document.getElementById('checkoutIdDisplay').textContent = 'Checkout ID: ' + checkoutData.checkout_id;
+
+  } catch(e) {
+    showStatus('error', 'Connection error: ' + e.message);
+    btn.textContent = 'Try Again';
+    btn.disabled = false;
+  }
+}
+
+async function verifyPayment() {
+  const txHash = document.getElementById('txHash').value.trim();
+  const checkoutId = document.getElementById('checkoutId').value;
+  const btn = document.getElementById('verifyBtn');
+
+  if (!txHash || !txHash.startsWith('0x') || txHash.length < 20) {
+    showStatus('error', 'Please enter a valid transaction hash starting with 0x');
+    return;
+  }
+
+  btn.textContent = '⏳ Verifying...';
+  btn.disabled = true;
+  showStatus('info', 'Checking transaction on Base chain...');
+
+  try {
+    const res = await fetch(API + '/api/crypto/verify', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({ checkout_id: checkoutId, tx_hash: txHash })
+    });
+    const data = await res.json();
+
+    if (data.error) {
+      showStatus('error', data.error + (data.explorer_url ? `<br><a href="${data.explorer_url}" target="_blank" style="color:#60a5fa">View on Explorer ↗</a>` : ''));
+      btn.textContent = 'Try Again';
+      btn.disabled = false;
+      return;
+    }
+
+    // Success!
+    showStatus('success', `
+      <strong style="font-size:1.2rem">✅ Payment Confirmed!</strong><br><br>
+      Your API key has been issued with <strong>${data.credits} credits</strong>.<br><br>
+      <strong>Your API Key:</strong>
+      <div class="key-display">${data.api_key}</div>
+      <p style="font-size:.85rem;color:#888">Use this key with <code>X-Api-Key</code> header or <code>Authorization: Bearer</code></p>
+      <br>
+      <a href="/api-playground" style="color:#60a5fa">→ Try it in the Playground</a>
+    `);
+    btn.textContent = '✅ Verified!';
+    document.getElementById('txHash').style.display = 'none';
+    
+  } catch(e) {
+    showStatus('error', 'Network error: ' + e.message);
+    btn.textContent = 'Try Again';
+    btn.disabled = false;
+  }
+}
+
+function showStatus(type, html) {
+  const box = document.getElementById('statusBox');
+  box.className = 'status-box ' + type;
+  box.innerHTML = html;
+  box.style.display = 'block';
+}
+
+function copyWallet() {
+  navigator.clipboard.writeText('0x76eADdEBFfb6a61DD071f97F4508467fc55dd113').then(() => {
+    const btn = document.querySelector('.copy-btn');
+    btn.textContent = '✅ Copied!';
+    setTimeout(() => btn.textContent = '📋 Copy Address', 2000);
+  });
+}
+
+renderPlans();
+</script>
+<script src="/conversion-banner.js" defer></script>
+</body>
+</html>

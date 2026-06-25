@@ -1,0 +1,10 @@
+const Database = require("better-sqlite3");
+const db = new Database(process.env.HOME + "/.automaton/state.db");
+db.exec("PRAGMA foreign_keys = OFF");
+db.exec("DELETE FROM task_graph");
+db.exec("DELETE FROM goals");
+db.prepare("DELETE FROM kv WHERE key LIKE ?").run("orchestrator.%");
+db.prepare("DELETE FROM kv WHERE key LIKE ?").run("plan_mode.%");
+db.exec("PRAGMA foreign_keys = ON");
+console.log("All orchestrator state cleared, rows affected:", db.changes);
+db.close();

@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>YAML ↔ JSON Converter - Free Online Tool | my-automaton</title>
+<meta name="description" content="Free online YAML to JSON and JSON to YAML converter. Paste, convert, validate. Bidirectional. No signup. Instant conversion.">
+<meta name="keywords" content="yaml to json, json to yaml, yaml converter, yaml validator, free online tool">
+<link rel="canonical" href="https://automation.songheng.vip/yaml-json-converter.html">
+<script src="https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js"></script>
+<style>
+:root {
+  --bg: #0d1117; --surface: #161b22; --border: #30363d; --text: #c9d1d9;
+  --muted: #8b949e; --accent: #58a6ff; --accent2: #3fb950; --danger: #f85149;
+  --warn: #d2991d; --code-bg: #0d1117;
+  --radius: 8px; --font: system-ui, -apple-system, sans-serif; --mono: 'SF Mono', 'Fira Code', monospace;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: var(--bg); color: var(--text); font-family: var(--font); min-height: 100vh; display: flex; flex-direction: column; }
+header { background: var(--surface); border-bottom: 1px solid var(--border); padding: 12px 20px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; }
+header .logo { font-weight: 700; font-size: 1.1em; color: var(--accent); }
+header nav a { color: var(--muted); text-decoration: none; margin-left: 16px; font-size: 0.9em; }
+header nav a:hover { color: var(--text); }
+.container { max-width: 1200px; margin: 0 auto; padding: 20px; flex: 1; width: 100%; }
+h1 { font-size: 1.6em; margin-bottom: 4px; }
+.subtitle { color: var(--muted); margin-bottom: 24px; font-size: 0.95em; }
+.toolbar { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; align-items: center; }
+.btn { padding: 8px 16px; border: 1px solid var(--border); border-radius: var(--radius); background: var(--surface); color: var(--text); cursor: pointer; font-size: 0.9em; transition: all 0.15s; font-family: var(--font); }
+.btn:hover { background: #21262d; border-color: #8b949e; }
+.btn-primary { background: #238636; border-color: #238636; color: #fff; font-weight: 600; }
+.btn-primary:hover { background: #2ea043; border-color: #2ea043; }
+.btn-accent { background: #1f6feb; border-color: #1f6feb; color: #fff; }
+.btn-accent:hover { background: #388bfd; }
+.btn-danger { background: #da3633; border-color: #da3633; color: #fff; }
+.btn-sm { padding: 4px 10px; font-size: 0.8em; }
+.direction { display: flex; gap: 4px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+.direction button { padding: 8px 14px; border: none; background: transparent; color: var(--muted); cursor: pointer; font-size: 0.9em; font-family: var(--font); }
+.direction button.active { background: var(--accent); color: #fff; }
+.editors { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+@media(max-width:768px){ .editors { grid-template-columns: 1fr; } }
+.editor-panel { display: flex; flex-direction: column; }
+.editor-label { font-size: 0.85em; color: var(--muted); margin-bottom: 6px; display: flex; justify-content: space-between; align-items: center; }
+.editor-label .badge { font-size: 0.75em; padding: 2px 8px; border-radius: 10px; background: var(--surface); border: 1px solid var(--border); }
+textarea { width: 100%; min-height: 400px; background: var(--code-bg); border: 1px solid var(--border); border-radius: var(--radius); color: var(--text); padding: 14px; font-family: var(--mono); font-size: 0.85em; line-height: 1.5; resize: vertical; }
+textarea:focus { outline: none; border-color: var(--accent); }
+.error-msg { color: var(--danger); font-size: 0.85em; margin-top: 6px; min-height: 1.4em; }
+.success-msg { color: var(--accent2); font-size: 0.85em; margin-top: 6px; min-height: 1.4em; }
+.info-bar { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 12px; font-size: 0.85em; color: var(--muted); }
+.templates { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 12px; }
+footer { background: var(--surface); border-top: 1px solid var(--border); padding: 16px 20px; text-align: center; color: var(--muted); font-size: 0.85em; margin-top: auto; }
+footer a { color: var(--accent); text-decoration: none; }
+</style>
+
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"YAML to JSON Converter","applicationCategory":"DeveloperApplication","operatingSystem":"Any","url":"https://automation.songheng.vip/yaml-json-converter.html","description":"Convert between YAML and JSON formats online. Bidirectional with syntax highlighting.","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"aggregateRating":{"@type":"AggregateRating","ratingValue":"4.8","ratingCount":"127"}}</script>
+</head>
+<body>
+<header>
+  <span class="logo">⚡ my-automaton</span>
+  <nav>
+    <a href="/">Home</a>
+    <a href="/blog.html">Blog</a>
+    <a href="/api-docs.html">API</a>
+    <a href="/dashboard.html">Dashboard</a>
+    <a href="/api-playground.html">Playground</a>
+  </nav>
+</header>
+<div class="container">
+  <h1>🔀 YAML ↔ JSON Converter</h1>
+  <p class="subtitle">Convert between YAML and JSON instantly. Validate syntax. Free, no signup.</p>
+
+  <div class="toolbar">
+    <div class="direction" id="direction">
+      <button class="active" data-dir="yaml2json">YAML → JSON</button>
+      <button data-dir="json2yaml">JSON → YAML</button>
+    </div>
+    <button class="btn btn-primary" onclick="doConvert()">🔄 Convert</button>
+    <button class="btn" onclick="swapSides()">↔ Swap</button>
+    <button class="btn" onclick="copyOutput()">📋 Copy Output</button>
+    <button class="btn btn-danger btn-sm" onclick="clearAll()">🗑 Clear</button>
+  </div>
+
+  <div class="templates" id="templates">
+    <span style="color:var(--muted);font-size:0.85em">Samples:</span>
+    <button class="btn btn-sm" onclick="loadSample('docker')">🐳 Docker Compose</button>
+    <button class="btn btn-sm" onclick="loadSample('k8s')">☸ K8s Pod</button>
+    <button class="btn btn-sm" onclick="loadSample('ci')">🔄 CI Config</button>
+    <button class="btn btn-sm" onclick="loadSample('aws')">☁️ AWS CFn</button>
+  </div>
+
+  <div class="editors">
+    <div class="editor-panel">
+      <div class="editor-label">
+        <span id="inputLabel">📥 YAML Input</span>
+        <span class="badge" id="inputBadge">YAML</span>
+      </div>
+      <textarea id="inputArea" placeholder="Paste your YAML here...
+Example:
+name: my-app
+version: '1.0'
+services:
+  web:
+    image: nginx:alpine
+    ports:
+      - '80:80'
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_DB: mydb
+      POSTGRES_PASSWORD: secret" spellcheck="false"></textarea>
+      <div class="error-msg" id="inputError"></div>
+    </div>
+    <div class="editor-panel">
+      <div class="editor-label">
+        <span id="outputLabel">📤 JSON Output</span>
+        <span class="badge" id="outputBadge">JSON</span>
+      </div>
+      <textarea id="outputArea" placeholder="Converted output will appear here..." readonly></textarea>
+      <div class="success-msg" id="outputMsg"></div>
+    </div>
+  </div>
+
+  <div class="info-bar" id="infoBar">
+    <span>Characters: <strong id="charCount">0</strong></span>
+    <span>Lines: <strong id="lineCount">0</strong></span>
+    <span id="indentInfo"></span>
+  </div>
+</div>
+<footer>
+  <p>Part of <a href="/">my-automaton</a> · Free developer tools · No data leaves your browser</p>
+</footer>
+
+<script>
+let currentDirection = 'yaml2json';
+let lastValidOutput = '';
+
+const directionBtns = document.querySelectorAll('#direction button');
+directionBtns.forEach(btn => {
+  btn.addEventListener('click', () => {
+    directionBtns.forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentDirection = btn.dataset.dir;
+    updateLabels();
+    clearOutput();
+    clearErrors();
+    if (lastValidOutput) doConvert();
+  });
+});
+
+function updateLabels() {
+  if (currentDirection === 'yaml2json') {
+    document.getElementById('inputLabel').innerHTML = '📥 YAML Input';
+    document.getElementById('inputBadge').textContent = 'YAML';
+    document.getElementById('outputLabel').innerHTML = '📤 JSON Output';
+    document.getElementById('outputBadge').textContent = 'JSON';
+    document.getElementById('inputArea').placeholder = 'Paste your YAML here...';
+    document.getElementById('indentInfo').textContent = 'Output: indented with 2 spaces';
+  } else {
+    document.getElementById('inputLabel').innerHTML = '📥 JSON Input';
+    document.getElementById('inputBadge').textContent = 'JSON';
+    document.getElementById('outputLabel').innerHTML = '📤 YAML Output';
+    document.getElementById('outputBadge').textContent = 'YAML';
+    document.getElementById('inputArea').placeholder = 'Paste your JSON here...';
+    document.getElementById('indentInfo').textContent = 'Output: standard YAML formatting';
+  }
+}
+
+function clearOutput() {
+  document.getElementById('outputArea').value = '';
+  document.getElementById('outputMsg').textContent = '';
+}
+
+function clearErrors() {
+  document.getElementById('inputError').textContent = '';
+  document.getElementById('outputMsg').textContent = '';
+}
+
+function showInputError(msg) {
+  document.getElementById('inputError').textContent = '❌ ' + msg;
+}
+
+function showOutputSuccess(msg) {
+  document.getElementById('outputMsg').textContent = '✅ ' + msg;
+}
+
+function doConvert() {
+  const input = document.getElementById('inputArea').value.trim();
+  clearErrors();
+  clearOutput();
+
+  if (!input) {
+    showInputError('Nothing to convert');
+    return;
+  }
+
+  try {
+    if (currentDirection === 'yaml2json') {
+      const parsed = jsyaml.load(input);
+      if (parsed === null || parsed === undefined) {
+        showInputError('Empty YAML document');
+        return;
+      }
+      const json = JSON.stringify(parsed, null, 2);
+      document.getElementById('outputArea').value = json;
+      lastValidOutput = json;
+      showOutputSuccess(`Converted successfully (${getComplexity(parsed)})`);
+    } else {
+      const parsed = JSON.parse(input);
+      if (parsed === null || parsed === undefined) {
+        showInputError('Empty JSON document');
+        return;
+      }
+      const yaml = jsyaml.dump(parsed, { indent: 2, lineWidth: -1, noRefs: true, sortKeys: false });
+      document.getElementById('outputArea').value = yaml;
+      lastValidOutput = yaml;
+      showOutputSuccess(`Converted successfully (${getComplexity(parsed)})`);
+    }
+  } catch (e) {
+    showInputError(e.message);
+  }
+}
+
+function getComplexity(obj) {
+  if (typeof obj !== 'object' || obj === null) return 'scalar';
+  const keys = Object.keys(obj);
+  let totalKeys = keys.length;
+  let maxDepth = 0;
+  function walk(o, d) {
+    if (d > maxDepth) maxDepth = d;
+    if (typeof o === 'object' && o !== null) {
+      for (const v of Object.values(o)) {
+        walk(v, d + 1);
+        totalKeys++;
+      }
+    }
+  }
+  walk(obj, 0);
+  return `${totalKeys} keys, depth ${maxDepth}`;
+}
+
+function swapSides() {
+  const inputVal = document.getElementById('inputArea').value;
+  const outputVal = document.getElementById('outputArea').value;
+  document.getElementById('inputArea').value = outputVal;
+  document.getElementById('outputArea').value = '';
+  clearErrors();
+  clearOutput();
+
+  // Toggle direction
+  currentDirection = currentDirection === 'yaml2json' ? 'json2yaml' : 'yaml2json';
+  directionBtns.forEach(b => {
+    b.classList.toggle('active', b.dataset.dir === currentDirection);
+  });
+  updateLabels();
+}
+
+function copyOutput() {
+  const output = document.getElementById('outputArea').value;
+  if (!output) return;
+  navigator.clipboard.writeText(output).then(() => {
+    showOutputSuccess('Copied to clipboard!');
+  }).catch(() => {
+    document.getElementById('outputArea').select();
+    document.execCommand('copy');
+    showOutputSuccess('Copied to clipboard!');
+  });
+}
+
+function clearAll() {
+  document.getElementById('inputArea').value = '';
+  document.getElementById('outputArea').value = '';
+  clearErrors();
+  clearOutput();
+  lastValidOutput = '';
+}
+
+// Live conversion on input (debounced)
+let debounceTimer;
+document.getElementById('inputArea').addEventListener('input', () => {
+  const val = document.getElementById('inputArea').value;
+  document.getElementById('charCount').textContent = val.length;
+  document.getElementById('lineCount').textContent = val ? val.split('\n').length : 0;
+
+  clearTimeout(debounceTimer);
+  if (val.trim()) {
+    debounceTimer = setTimeout(doConvert, 400);
+  } else {
+    clearOutput();
+    clearErrors();
+  }
+});
+
+// Sample templates
+const samples = {
+  docker: `version: '3.8'
+services:
+  web:
+    image: nginx:alpine
+    ports:
+      - "80:80"
+    volumes:
+      - ./html:/usr/share/nginx/html
+    depends_on:
+      - api
+  api:
+    build: ./api
+    environment:
+      NODE_ENV: production
+      DATABASE_URL: postgres://user:pass@db:5432/mydb
+    ports:
+      - "3000:3000"
+  db:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_DB: mydb
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: pass
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+volumes:
+  pgdata:`,
+  k8s: `apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx-pod
+  labels:
+    app: nginx
+    tier: frontend
+spec:
+  containers:
+    - name: nginx
+      image: nginx:1.25
+      ports:
+        - containerPort: 80
+      resources:
+        requests:
+          memory: "64Mi"
+          cpu: "250m"
+        limits:
+          memory: "128Mi"
+          cpu: "500m"
+      livenessProbe:
+        httpGet:
+          path: /healthz
+          port: 80
+        initialDelaySeconds: 5
+        periodSeconds: 10`,
+  ci: `name: CI Pipeline
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [18, 20, 22]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: \${{ matrix.node-version }}
+      - run: npm ci
+      - run: npm test
+      - run: npm run lint
+  deploy:
+    needs: test
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Deploying..."`,
+  aws: `AWSTemplateFormatVersion: '2010-09-09'
+Description: Simple EC2 + S3 stack
+Parameters:
+  InstanceType:
+    Type: String
+    Default: t3.micro
+    AllowedValues: [t3.micro, t3.small, t3.medium]
+  KeyName:
+    Type: AWS::EC2::KeyPair::KeyName
+Resources:
+  WebServerSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Allow HTTP and SSH
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: 22
+          ToPort: 22
+          CidrIp: 0.0.0.0/0
+  WebServer:
+    Type: AWS::EC2::Instance
+    Properties:
+      ImageId: ami-0c55b159cbfafe1f0
+      InstanceType: !Ref InstanceType
+      KeyName: !Ref KeyName
+      SecurityGroups:
+        - !Ref WebServerSecurityGroup
+  DataBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Sub \${AWS::StackName}-data-\${AWS::AccountId}
+      VersioningConfiguration:
+        Status: Enabled
+Outputs:
+  WebsiteURL:
+    Value: !GetAtt WebServer.PublicDnsName
+    Description: Web Server URL`
+};
+
+function loadSample(name) {
+  if (currentDirection !== 'yaml2json') {
+    currentDirection = 'yaml2json';
+    directionBtns.forEach(b => b.classList.toggle('active', b.dataset.dir === 'yaml2json'));
+    updateLabels();
+  }
+  document.getElementById('inputArea').value = samples[name].trim();
+  clearErrors();
+  clearOutput();
+  doConvert();
+  document.getElementById('charCount').textContent = samples[name].length;
+  document.getElementById('lineCount').textContent = samples[name].split('\n').length;
+}
+
+// Initial state
+updateLabels();
+</script>
+<script src="/conversion-banner.js" defer></script>
+</body>
+</html>

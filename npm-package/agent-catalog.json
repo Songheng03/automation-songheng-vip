@@ -1,0 +1,43 @@
+{
+  "agent": "my-automaton",
+  "version": "1.0.0",
+  "wallet": "0x76eADdEBFfb6A61DD071f97F4508467fc55dd113",
+  "chain": "base",
+  "token": "USDC",
+  "description": "AI-powered text analysis, code review, security scanning, summarization services",
+  "endpoints": {
+    "base": "https://automation.songheng.vip",
+    "health": "/api/health",
+    "catalog": "/mcp/v1/catalog",
+    "openai_tools": "/mcp/v1/openai",
+    "anthropic_tools": "/mcp/v1/anthropic",
+    "call": "/mcp/v1/call",
+    "discover": "/mcp/v1/discover",
+    "upgrade": "/upgrade",
+    "docs": "/api-docs"
+  },
+  "services": [
+    {"name":"analyze", "cost_cents":1, "description":"Deep text analysis"},
+    {"name":"summarize", "cost_cents":2, "description":"AI summarization"},
+    {"name":"review", "cost_cents":5, "description":"Code review"},
+    {"name":"security", "cost_cents":3, "description":"Security scanning"},
+    {"name":"explain", "cost_cents":2, "description":"Code explanation"},
+    {"name":"refactor", "cost_cents":5, "description":"Refactoring suggestions"},
+    {"name":"complexity", "cost_cents":2, "description":"Complexity analysis"},
+    {"name":"batch", "cost_cents":5, "description":"Batch process 10 texts"},
+    {"name":"render", "cost_cents":3, "description":"Markdown rendering"}
+  ],
+  "free_tier": "3 requests/day per IP at /free/<service>",
+  "auth": "X-API-Key header or Bearer token",
+  "authentication": "Purchase credits at /upgrade ($5-$58)",
+  "integration": {
+    "curl": "curl -H 'X-API-Key: am_xxx' https://automation.songheng.vip/v1/analyze -d '{\"text\":\"hello\"}'",
+    "node": "fetch('https://automation.songheng.vip/v1/analyze', {method:'POST', headers:{'X-API-Key':'am_xxx'}, body:JSON.stringify({text:'hello'})})",
+    "python": "requests.post('https://automation.songheng.vip/v1/analyze', json={'text':'hello'}, headers={'X-API-Key':'am_xxx'})"
+  },
+  "discovery_urls": {
+    "smithery": "https://smithery.ai/search?q=automaton",
+    "glama": "https://glama.ai/mcp/servers?search=automaton",
+    "mcp_so": "https://mcp.so/search?q=automaton"
+  }
+}

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Social Share Link Generator — Twitter, Facebook, LinkedIn, Reddit, WhatsApp</title>
+<meta name="description" content="Generate share links for Twitter, Facebook, LinkedIn, Reddit, WhatsApp, Email, and more. Just enter your URL and see all share links instantly. 100% client-side.">
+<link rel="canonical" href="https://automation.songheng.vip/social-share.html">
+<style>
+:root{--bg:#0d1117;--surface:#161b22;--border:#30363d;--text:#c9d1d9;--muted:#8b949e;--accent:#58a6ff;--green:#3fb950}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--text);font-family:system-ui,sans-serif;min-height:100vh}
+header{background:var(--surface);border-bottom:1px solid var(--border);padding:16px 24px;text-align:center}
+header h1{font-size:1.5rem} header p{color:var(--muted);font-size:.85rem;margin-top:4px}
+.container{max-width:600px;margin:0 auto;padding:24px 16px}
+input.url{width:100%;padding:12px 16px;background:var(--bg);border:1px solid var(--border);border-radius:10px;color:var(--text);font-size:.92rem;margin-bottom:20px}
+input.url:focus{outline:none;border-color:var(--accent)}
+.share-list{display:flex;flex-direction:column;gap:10px}
+.share-item{display:flex;align-items:center;justify-content:space-between;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px 18px;gap:12px}
+.share-item .icon{font-size:1.4rem;min-width:36px;text-align:center}
+.share-item .name{flex:1;font-size:.85rem;font-weight:600}
+.share-item .url{flex:2;font-size:.7rem;color:var(--muted);font-family:'JetBrains Mono',monospace;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.share-item button{padding:8px 16px;border-radius:6px;border:1px solid var(--border);background:var(--bg);color:var(--accent);cursor:pointer;font-size:.78rem}
+.share-item button:hover{border-color:var(--accent)}
+.share-item a{color:var(--accent);text-decoration:none;font-size:.82rem;display:flex;align-items:center;gap:6px}
+.sponsor{text-align:center;padding:20px;background:var(--surface);border:1px solid var(--border);border-radius:8px}
+.sponsor a{color:var(--accent)}
+</style>
+</head>
+<body>
+<header><h1>🔗 Social Share Link Generator</h1><p>Create share links for all major platforms. One URL, instant links.</p></header>
+<div class="container">
+<input class="url" id="urlInput" placeholder="Enter URL to share..." value="https://automation.songheng.vip" oninput="genLinks()">
+<div class="share-list" id="shareList"></div>
+<div class="sponsor"><p>💡 Need <strong>AI-powered developer tools</strong>? <a href="/api-playground.html">Try our API</a>.</p></div>
+</div>
+<script>
+const platforms=[
+  ['🐦','Twitter','https://twitter.com/intent/tweet?url={u}&text={t}'],
+  ['📘','Facebook','https://www.facebook.com/sharer/sharer.php?u={u}'],
+  ['💼','LinkedIn','https://www.linkedin.com/sharing/share-offsite/?url={u}'],
+  ['📱','WhatsApp','https://wa.me/?text={t}%20{u}'],
+  ['👾','Reddit','https://reddit.com/submit?url={u}&title={t}'],
+  ['📧','Email','mailto:?subject={t}&body={u}'],
+  ['💬','Telegram','https://t.me/share/url?url={u}&text={t}'],
+  ['📌','Pinterest','https://pinterest.com/pin/create/button/?url={u}&description={t}'],
+  ['🔗','Copy Link','#'],
+];
+function genLinks(){
+  const u=encodeURIComponent(document.getElementById('urlInput').value||'https://automation.songheng.vip');
+  const t=encodeURIComponent('Check out this awesome developer tool!');
+  document.getElementById('shareList').innerHTML=platforms.map(([icon,name,template])=>{
+    const link=template.replace('{u}',u).replace('{t}',t);
+    if(name==='Copy Link')return `<div class="share-item"><span class="icon">${icon}</span><span class="name">${name}</span><span class="url">${decodeURIComponent(u)}</span><button onclick="copyLink('${decodeURIComponent(u)}')">Copy</button></div>`;
+    return `<div class="share-item"><span class="icon">${icon}</span><span class="name">${name}</span><span class="url">${link}</span><a href="${link}" target="_blank" rel="noopener">Share ↗</a></div>`;
+  }).join('');
+}
+function copyLink(url){navigator.clipboard.writeText(url)}
+genLinks();
+</script>
+<script src="/conversion-banner.js" defer></script>
+</body>
+</html>

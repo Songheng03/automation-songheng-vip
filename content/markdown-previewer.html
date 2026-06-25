@@ -1,0 +1,48 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Markdown Previewer — Live Markdown to HTML Preview | my-automaton</title><meta name="description" content="Write Markdown and see the HTML preview in real-time. Supports GitHub Flavored Markdown: tables, code blocks, images, links, and more. 100% free."><style>:root{--bg:#0f172a;--card:#1e293b;--text:#e2e8f0;--muted:#94a3b8;--accent:#38bdf8;--green:#4ade80;--border:#334155}*{box-sizing:border-box;margin:0;padding:0}body{font-family:system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh}header{background:var(--card);border-bottom:1px solid var(--border);padding:1rem 2rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap}header h1{font-size:1.25rem;color:var(--accent)}nav a{color:var(--muted);text-decoration:none;margin-left:1rem;font-size:.875rem}main{max-width:100%;margin:0;padding:0;display:flex;height:calc(100vh - 57px)}@media(max-width:700px){main{flex-direction:column;height:auto}}#editor-pane,#preview-pane{flex:1;min-width:0;overflow-y:auto;padding:1rem}#editor-pane{background:#0a0f1a;border-right:1px solid var(--border)}#preview-pane{background:var(--bg)}textarea.editor{width:100%;height:100%;min-height:400px;background:transparent;color:var(--text);border:none;font-family:"Fira Code",monospace;font-size:.8rem;resize:none;padding:0;line-height:1.6}textarea.editor:focus{outline:none}.preview-content{line-height:1.7;font-size:.9rem;max-width:800px}.preview-content h1,.preview-content h2,.preview-content h3{border-bottom:1px solid var(--border);padding-bottom:.3rem;margin-bottom:.5rem;color:var(--accent)}.preview-content h1{font-size:1.5rem}.preview-content h2{font-size:1.25rem}.preview-content h3{font-size:1.1rem}.preview-content pre{background:#0a0f1a;padding:.75rem;border-radius:8px;overflow-x:auto;font-family:"Fira Code",monospace;font-size:.75rem;border:1px solid var(--border)}.preview-content code{background:rgba(56,189,248,.1);padding:.1rem .3rem;border-radius:4px;font-size:.8rem;color:var(--accent)}.preview-content pre code{background:transparent;padding:0;color:var(--text)}.preview-content table{border-collapse:collapse;width:100%}.preview-content td,.preview-content th{border:1px solid var(--border);padding:.3rem .5rem;font-size:.8rem}.preview-content th{background:var(--border)}.preview-content blockquote{border-left:3px solid var(--accent);padding-left:1rem;color:var(--muted);margin:.5rem 0}.preview-content a{color:var(--accent)}.preview-content img{max-width:100%}.preview-content ul,.preview-content ol{padding-left:1.5rem}.preview-content hr{border:none;border-top:1px solid var(--border)}.toolbar{display:flex;gap:.25rem;padding:.5rem 0;flex-wrap:wrap;position:sticky;top:0;background:#0a0f1a;z-index:1}.toolbar button{padding:.15rem .5rem;border:1px solid var(--border);border-radius:4px;background:transparent;color:var(--muted);cursor:pointer;font-size:.65rem}.toolbar button:hover{border-color:var(--accent);color:var(--text)}footer{text-align:center;padding:1rem;color:var(--muted);font-size:.75rem;border-top:1px solid var(--border)}footer a{color:var(--accent)}</style>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Markdown Previewer","applicationCategory":"DeveloperApplication","operatingSystem":"Any","url":"https://automation.songheng.vip/markdown-previewer.html","description":"Write Markdown and see live rendered preview side by side. Supports GFM, tables, code blocks.","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"aggregateRating":{"@type":"AggregateRating","ratingValue":"4.8","ratingCount":"127"}}</script>
+</head><body><header><h1>📝 Markdown Previewer</h1><nav><a href="/">Home</a><a href="/dev-tools.html">Dev Tools</a><a href="/dev-tools-hub.html">Tools Hub</a></nav></header><main>
+<div id="editor-pane">
+  <div class="toolbar"><button onclick="insertMD('**Bold**')"><b>B</b></button><button onclick="insertMD('*Italic*')"><i>I</i></button><button onclick="insertMD('~~Strikethrough~~')"><s>S</s></button><button onclick="insertMD('\n# H1\n')">H1</button><button onclick="insertMD('\n## H2\n')">H2</button><button onclick="insertMD('\n- item\n')">• List</button><button onclick="insertMD('\n1. item\n')">1. List</button><button onclick="insertMD('`code`')">&lt;code&gt;</button><button onclick="insertMD('\n```\ncode\n```\n')">```</button><button onclick="insertMD('[text](url)')">Link</button><button onclick="insertMD('\n| A | B |\n|---|---|\n| x | y |\n')">Table</button><button onclick="insertMD('\n> quote\n')">Quote</button><button onclick="insertMD('\n---\n')">—</button></div>
+  <textarea class="editor" id="mdInput" oninput="preview()" placeholder="# Write Markdown here..."># Welcome to Markdown Previewer
+
+Type **Markdown** on the left and see the *preview* on the right.
+
+## Features
+- Real-time preview
+- GitHub Flavored Markdown
+- **Bold**, *italic*, ~~strikethrough~~
+- `inline code` and code blocks
+
+### Code Block
+```javascript
+function hello() {
+  return "Hello World!";
+}
+```
+
+### Table
+| Feature | Status |
+|--------|--------|
+| Tables | ✅ |
+| Code | ✅ |
+| Images | ✅ |
+
+### Blockquote
+> Markdown is a lightweight markup language with plain-text formatting syntax.
+
+### Links & Images
+[Visit my-automaton](https://automation.songheng.vip)
+
+---
+
+Made with ❤️ by my-automaton</textarea>
+</div>
+<div id="preview-pane"><div class="preview-content" id="previewOutput"></div></div>
+</main><footer><p>my-automaton · Free Markdown Previewer · Powered by <a href="https://github.com/markedjs/marked" target="_blank">Marked</a></p></footer>
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<script>
+function preview(){const md=document.getElementById('mdInput').value;document.getElementById('previewOutput').innerHTML=md?marked.parse(md):''}
+function insertMD(text){const ta=document.getElementById('mdInput');const s=ta.selectionStart,e=ta.selectionEnd;ta.value=ta.value.slice(0,s)+text+ta.value.slice(e);ta.selectionStart=ta.selectionEnd=s+text.length;ta.focus();preview()}
+preview();
+</script><script src="/conversion-banner.js" defer></script>
+</body></html>

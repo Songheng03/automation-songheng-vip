@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="canonical" href="https://automation.songheng.vip/developer-hub.html">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="my-automaton API — Developer Hub | AI x402 Micropayments">
+  <meta name="twitter:description" content="Complete API reference, client libraries, and x402 payment guide for my-automaton's AI services. JavaScript, Python, Go, cURL examples. Pay $0.01–$0.05 per request with...">
+  <meta property="og:title" content="my-automaton API — Developer Hub | AI x402 Micropayments">
+  <meta property="og:description" content="Complete API reference, client libraries, and x402 payment guide for my-automaton's AI services. JavaScript, Python, Go, cURL examples. Pay $0.01–$0.05 per request with...">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://automation.songheng.vip/developer-hub.html">
+  <meta property="og:image" content="https://automation.songheng.vip/og-image.png">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>my-automaton API — Developer Hub | AI x402 Micropayments</title>
+<meta name="description" content="Complete API reference, client libraries, and x402 payment guide for my-automaton's AI services. JavaScript, Python, Go, cURL examples. Pay $0.01–$0.05 per request with USDC.">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#0a0a0f;color:#e0e0e0;line-height:1.6}
+.container{max-width:900px;margin:0 auto;padding:20px}
+h1{font-size:2.2em;margin:30px 0 10px;background:linear-gradient(135deg,#00d4aa,#00a6ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+h2{font-size:1.5em;margin:30px 0 15px;color:#00d4aa;border-bottom:1px solid #1a1a2e;padding-bottom:8px}
+h3{font-size:1.1em;margin:20px 0 10px;color:#88ccff}
+p{margin:10px 0}
+pre{background:#12121e;padding:15px;border-radius:8px;overflow-x:auto;font-size:13px;border:1px solid #1a1a2e;margin:10px 0}
+code{font-family:'Fira Code','Consolas',monospace;font-size:13px}
+.tag{display:inline-block;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;margin-right:5px}
+.tag-free{background:#1a3a2a;color:#00d4aa;border:1px solid #00d4aa}
+.tag-paid{background:#3a1a1a;color:#ff6b6b;border:1px solid #ff6b6b}
+.method{display:inline-block;padding:2px 8px;border-radius:4px;font-size:12px;font-weight:700;margin-right:8px;min-width:50px;text-align:center}
+.method-post{background:#1a3a5c;color:#58a6ff}
+.method-get{background:#1a3a2a;color:#00d4aa}
+.endpoint-row{display:flex;align-items:center;padding:12px 15px;margin:8px 0;background:#12121e;border-radius:8px;border:1px solid #1a1a2e;transition:border-color .2s}
+.endpoint-row:hover{border-color:#00d4aa}
+.endpoint-row .info{flex:1}
+.endpoint-row .cost{color:#ff6b6b;font-size:13px;font-weight:600;white-space:nowrap}
+.wallet-box{background:linear-gradient(135deg,#12121e,#1a1a2e);border:1px solid #00d4aa;border-radius:12px;padding:20px;margin:20px 0}
+.wallet-box code{word-break:break-all;font-size:14px}
+.header{display:flex;gap:20px;align-items:center;padding:10px 0;border-bottom:1px solid #1a1a2e;margin-bottom:10px}
+.header a{color:#888;text-decoration:none;font-size:14px;transition:color .2s}
+.header a:hover{color:#00d4aa}
+</style>
+<script src="/js/analytics.js"></script>
+<!-- Open Graph / Social Meta Tags -->
+<meta property="og:site_name" content="my-automaton" />
+<meta property="og:locale" content="en_US" />
+<meta name="twitter:image" content="https://automation.songheng.vip/og-image.png" />
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "my-automaton API — Developer Hub | AI x402 Micropayments",
+  "description": "Complete API reference, client libraries, and x402 payment guide for my-automaton",
+  "url": "https://automation.songheng.vip/developer-hub.html"
+}
+</script>
+</head>
+<body>
+<div class="container">
+
+<div class="header">
+<a href="/">← Home</a>
+<a href="/playground">Playground</a>
+<a href="/api-docs">Docs</a>
+<a href="/blog">Blog</a>
+<a href="https://github.com/chaosong/automaton">GitHub</a>
+</div>
+
+<h1>🧠 Developer Hub</h1>
+<p>Complete API reference, client libraries, and x402 payment guide for my-automaton's AI services. Pay-as-you-go with USDC on Base chain. No API keys, no signup, no monthly bills.</p>
+
+<div class="wallet-box">
+<strong>Payment Wallet (Base - USDC):</strong><br>
+<code>0x76eADdEBFfb6A61DD071f97F4508467fc55dd113</code><br>
+<small style="color:#888">Send USDC on Base chain. Amount = cost in cents (e.g., $0.01 = 0.01 USDC).</small>
+</div>
+
+<h2>📋 All Endpoints</h2>
+
+<div class="endpoint-row"><div class="info"><span class="method method-post">POST</span> <strong>/v1/analyze</strong><br><small>Deep text analysis with configurable mode</small></div><div><span class="tag tag-paid">PAID</span><span class="cost">$0.01</span></div></div>
+<div class="endpoint-row"><div class="info"><span class="method method-post">POST</span> <strong>/v1/summarize</strong><br><small>AI summarization with configurable length</small></div><div><span class="tag tag-paid">PAID</span><span class="cost">$0.02</span></div></div>
+<div class="endpoint-row"><div class="info"><span class="method method-post">POST</span> <strong>/v1/review</strong><br><small>Full AI code review</small></div><div><span class="tag tag-paid">PAID</span><span class="cost">$0.05</span></div></div>
+<div class="endpoint-row"><div class="info"><span class="method method-post">POST</span> <strong>/v1/security</strong><br><small>Security vulnerability scan</small></div><div><span class="tag tag-paid">PAID</span><span class="cost">$0.03</span></div></div>
+<div class="endpoint-row"><div class="info"><span class="method method-post">POST</span> <strong>/v1/explain</strong><br><small>Code explanation with detail level</small></div><div><span class="tag tag-paid">PAID</span><span class="cost">$0.02</span></div></div>
+<div class="endpoint-row"><div class="info"><span class="method method-post">POST</span> <strong>/v1/refactor</strong><br><small>Refactoring suggestions with focus area</small></div><div><span class="tag tag-paid">PAID</span><span class="cost">$0.05</span></div></div>
+<div class="endpoint-row"><div class="info"><span class="method method-post">POST</span> <strong>/v1/complexity</strong><br><small>Time/space complexity analysis</small></div><div><span class="tag tag-paid">PAID</span><span class="cost">$0.02</span></div></div>
+<div class="endpoint-row"><div class="info"><span class="method method-post">POST</span> <strong>/v1/batch</strong><br><small>Batch process up to 10 texts</small></div><div><span class="tag tag-paid">PAID</span><span class="cost">$0.05</span></div></div>
+<div class="endpoint-row"><div class="info"><span class="method method-post">POST</span> <strong>/v1/render</strong><br><small>Markdown to HTML with templates</small></div><div><span class="tag tag-paid">PAID</span><span class="cost">$0.03</span></div></div>
+
+<h2>🚀 Quick Start — JavaScript (Node.js)</h2>
+<pre><code>// Full client library — copy and use
+const BASE = 'https://automation.songheng.vip';
+const WALLET = '0x76eADdEBFfb6A61DD071f97F4508467fc55dd113';
+
+async function callAI(endpoint, data) {
+  // First try with free tier
+  let res = await fetch(`${BASE}${endpoint}`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data)
+  });
+
+  // If payment required (HTTP 402), pay with USDC
+  if (res.status === 402) {
+    const txHash = await sendUSDC(WALLET, getCost(endpoint));
+    res = await fetch(`${BASE}${endpoint}`, {
+      method: 'POST',
+      headers: { 
+        'Content-Type': 'application/json',
+        'X-X402-Payment': txHash
+      },
+      body: JSON.stringify(data)
+    });
+  }
+
+  return res.json();
+}
+
+// Quick one-liners:
+// Code review:     callAI('/v1/review', { code: 'function add(a,b){return a+b}' })
+// Summarize:       callAI('/v1/summarize', { text: 'Long article...', maxLength: 100 })
+// Security scan:   callAI('/v1/security', { code: 'SELECT * FROM users' })
+</code></pre>
+
+<h2>🐍 Python Client</h2>
+<pre><code>import requests, json
+
+BASE = 'https://automation.songheng.vip'
+WALLET = '0x76eADdEBFfb6A61DD071f97F4508467fc55dd113'
+
+def call_ai(endpoint, data):
+    resp = requests.post(f'{BASE}{endpoint}', json=data)
+    if resp.status_code == 402:
+        tx_hash = send_usdc(WALLET, get_cost(endpoint))
+        resp = requests.post(
+            f'{BASE}{endpoint}',
+            json=data,
+            headers={'X-X402-Payment': tx_hash}
+        )
+    return resp.json()
+
+# Examples
+print(call_ai('/v1/analyze', {'text': 'Your text here', 'mode': 'sentiment'}))
+print(call_ai('/v1/security', {'code': 'eval(request.GET["code"])'}))
+</code></pre>
+
+<h2>🦀 Go Client</h2>
+<pre><code>package main
+
+import (
+    "bytes"
+    "encoding/json"
+    "net/http"
+)
+
+const BASE = "https://automation.songheng.vip"
+
+func callAI(endpoint string, data map[string]interface{}) (*http.Response, error) {
+    body, _ := json.Marshal(data)
+    resp, err := http.Post(BASE+endpoint, "application/json", bytes.NewReader(body))
+    if err != nil { return nil, err }
+    if resp.StatusCode == 402 {
+        // Pay USDC, retry with X-X402-Payment header
+    }
+    return resp, nil
+}
+</code></pre>
+
+<h2>📡 cURL</h2>
+<pre><code># Free tier (3/day/IP)
+curl -X POST https://automation.songheng.vip/v1/analyze \
+  -H "Content-Type: application/json" \
+  -d '{"text":"Analyze this text","mode":"sentiment"}'
+
+# Paid (send USDC to 0x76eADdEBFfb6A61DD071f97F4508467fc55dd113 on Base, then:)
+curl -X POST https://automation.songheng.vip/v1/review \
+  -H "Content-Type: application/json" \
+  -H "X-X402-Payment: 0xYOUR_TX_HASH" \
+  -d '{"code":"function hello(){return \"world\"}","language":"javascript"}'
+</code></pre>
+
+<h2>🔌 Integrations</h2>
+<h3>GitHub Actions</h3>
+<pre><code># .github/workflows/auto-review.yml
+name: AI Code Review
+on: [pull_request]
+jobs:
+  review:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: AI Review
+        run: |
+          curl -X POST https://automation.songheng.vip/v1/review \
+            -H "Content-Type: application/json" \
+            --data-binary @- &lt;&lt;JSON
+            {"code":"$(cat ${{ github.event.pull_request.diff_url }})"}
+JSON</code></pre>
+
+<h3>Slack Slash Command</h3>
+<pre><code># Configure Slack app with slash command /summarize
+# Point to: https://automation.songheng.vip/webhook/slack
+# Then in any channel:
+#   /summarize Long article text here...
+#   /review function add(a,b){return a+b}
+#   /security SELECT * FROM users; DROP TABLE students;</code></pre>
+
+<h3>Discord Bot</h3>
+<pre><code># Add webhook in Discord channel settings
+# Point to: https://automation.songheng.vip/webhook/discord
+# Then in chat:
+#   !summarize Long article text...
+#   !review Your code here
+#   !analyze Analyze this text</code></pre>
+
+<h2>💰 Pricing</h2>
+<p>Every endpoint has a <strong>free tier</strong>: 3 requests/day/IP. No credit card, no signup.</p>
+<p>Paid requests use <strong>x402 micropayments</strong>: send USDC on Base chain, include the tx hash header, done.</p>
+<p>Analytics endpoint: <code>/api/stats/overview</code></p>
+
+<h2>🔗 Resources</h2>
+<ul style="margin-left:20px;line-height:2">
+  <li><a href="/playground" style="color:#58a6ff">Interactive API Playground</a> — test endpoints from browser</li>
+  <li><a href="/api-docs" style="color:#58a6ff">Full API Documentation</a> — request/response schemas</li>
+  <li><a href="/" style="color:#58a6ff">Service Homepage</a> — feature overview</li>
+  <li><a href="/blog" style="color:#58a6ff">Blog</a> — 58 articles on AI, code quality, security</li>
+  <li><a href="/feed.xml" style="color:#58a6ff">RSS Feed</a> — stay updated</li>
+  <li><a href="/sitemap.xml" style="color:#58a6ff">Sitemap</a></li>
+</ul>
+
+<footer style="margin-top:40px;padding:20px 0;border-top:1px solid #1a1a2e;font-size:12px;color:#666;text-align:center">
+  my-automaton · <code>0x76eADdEBFfb6A61DD071f97F4508467fc55dd113</code> · Base (USDC)<br>
+  <a href="/api/stats/overview" style="color:#444">Stats</a> · <a href="/api/catalog" style="color:#444">Catalog</a> · <a href="/webhooks" style="color:#444">Webhooks</a>
+</footer>
+
+</div>
+<script src="/js/share-widget.js"></script>
+<script src="/conversion-banner.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,75 @@
+[
+  {
+    "name": "Smithery",
+    "url": "https://smithery.ai",
+    "submission_url": "https://smithery.ai/docs/build/publish",
+    "required_fields": [
+      "MCP server name",
+      "GitHub repository URL",
+      "Server runtime config (command, args, env vars)",
+      "Package manager (npm/pip/uvx)",
+      "SDK type (TypeScript/Python/etc.)",
+      "Server description and tags"
+    ],
+    "priority": 1,
+    "notes": "Largest MCP marketplace with 100K+ tools and skills. Focused on AI agents. Auto-indexes from npm/pypi/GitHub. Publishes via Smithery CLI or docs submission. Provides install analytics, OAuth support, and managed hosting. High developer traffic from Claude Desktop, Cursor, and other AI agent users."
+  },
+  {
+    "name": "Glama",
+    "url": "https://glama.ai",
+    "submission_url": "https://glama.ai/mcp/servers",
+    "required_fields": [
+      "GitHub repository URL (auto-scanned)",
+      "Server name",
+      "Description",
+      "License type",
+      "Categories/tags"
+    ],
+    "priority": 2,
+    "notes": "Claims 37,615+ MCP servers, 50,000+ developers, 1M+ tool calls/month. Superset of official MCP Registry. Auto-discovers from GitHub; maintainer-verified. Scans every server for tool schemas, quality scoring (TDQS), and safety analysis. Includes browser inspector for testing. Strong developer audience from Cursor, Claude Desktop, etc."
+  },
+  {
+    "name": "Pipedream",
+    "url": "https://pipedream.com",
+    "submission_url": "https://pipedream.com/docs/components/contributing/",
+    "required_fields": [
+      "App component definition (TypeScript)",
+      "OAuth2 / API key / token auth configuration",
+      "Event sources (triggers)",
+      "Actions (API methods to expose)",
+      "App name, logo, description",
+      "npm package name or GitHub repo"
+    ],
+    "priority": 3,
+    "notes": "Major integration platform (11.5K+ GitHub stars). Connects APIs, AI, databases and more via workflows. Huge developer audience - 200K+ developers. Free tier available. Submissions via GitHub PR to pipedreamhq/pipedream. Strong fit for API services that need workflow automation use cases."
+  },
+  {
+    "name": "MCP.so",
+    "url": "https://mcp.so",
+    "submission_url": "https://mcp.so/submit",
+    "required_fields": [
+      "MCP server/client name",
+      "GitHub repository URL",
+      "Type (server or client)",
+      "Server configuration (JSON config)",
+      "Description"
+    ],
+    "priority": 4,
+    "notes": "Self-described as 'the largest collection of MCP Servers'. Has web form submission for adding servers. Supports multi-language (EN/ZH/JA). Focused on MCP servers for Claude Desktop. Good for discoverability but less traffic than Smithery or Glama based on audience size indicators."
+  },
+  {
+    "name": "Toolbase",
+    "url": "https://www.toolbase.io",
+    "submission_url": "https://www.toolbase.io/submit-tool",
+    "required_fields": [
+      "Tool name",
+      "Website URL",
+      "Category",
+      "Description",
+      "Pricing model",
+      "Company details"
+    ],
+    "priority": 5,
+    "notes": "SaaS tool discovery platform - more focused on general business software than developer APIs or MCP servers. Lower developer traffic compared to the MCP-specific directories. Better suited for general SaaS listings than specialized API services targeting the MCP ecosystem."
+  }
+]

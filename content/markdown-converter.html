@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Free Online Markdown to HTML Converter — Live Preview | my-automaton</title>
+<meta name="description" content="Free online Markdown to HTML converter with live preview. Write Markdown, see rendered HTML instantly. No signup, 100% client-side. Great for README, documentation, and blog posts.">
+<meta name="keywords" content="markdown to html, markdown converter, markdown preview, free markdown editor, online markdown tool">
+<meta property="og:title" content="Free Markdown to HTML Converter — Live Preview | my-automaton">
+<meta property="og:description" content="Convert Markdown to HTML instantly with live preview. Free, no signup, works offline.">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Markdown to HTML Converter","applicationCategory":"DeveloperApplication","operatingSystem":"Web","description":"Free online Markdown to HTML converter with live preview.","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}</script>
+<style>
+:root{--bg:#0d1117;--card:#161b22;--border:#30363d;--accent:#58a6ff;--green:#3fb950;--text:#c9d1d9;--muted:#8b949e;--code-bg:#1c2128}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;line-height:1.6;min-height:100vh}
+nav{background:var(--card);border-bottom:1px solid var(--border);padding:0 2rem}
+nav .inner{max-width:1200px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;height:60px}
+nav a{color:var(--accent);text-decoration:none;font-weight:600;font-size:1.1rem}
+nav .links{display:flex;gap:1.5rem;flex-wrap:wrap}
+nav .links a{font-size:.9rem;font-weight:400}
+.hero{text-align:center;padding:3rem 2rem 1.5rem;max-width:800px;margin:0 auto}
+.hero h1{font-size:2rem;color:#f0f6fc;margin-bottom:.5rem}
+.hero p{color:var(--muted);font-size:1.05rem}
+.toolbar{max-width:1300px;margin:0 auto;padding:0 1rem 1rem;display:flex;gap:.5rem;flex-wrap:wrap;align-items:center}
+.toolbar button,.toolbar select{padding:.4rem .9rem;border:1px solid var(--border);border-radius:6px;background:var(--card);color:var(--text);cursor:pointer;font-size:.82rem;transition:border-color .2s}
+.toolbar button:hover,.toolbar select:hover{border-color:var(--accent)}
+.toolbar button.primary{background:var(--accent);color:#fff;border-color:var(--accent)}
+.editor-container{max-width:1300px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:1rem;padding:0 1rem 2rem;min-height:70vh}
+.panel{background:var(--card);border:1px solid var(--border);border-radius:12px;display:flex;flex-direction:column;overflow:hidden}
+.panel-header{padding:.6rem 1rem;background:var(--code-bg);border-bottom:1px solid var(--border);font-size:.8rem;color:var(--muted);display:flex;justify-content:space-between;align-items:center}
+.panel-header .badge{font-size:.7rem;padding:.15rem .5rem;border-radius:10px;background:var(--accent);color:#fff}
+.panel textarea{flex:1;padding:1rem;background:var(--code-bg);color:var(--text);border:none;resize:none;font-family:'SF Mono','Menlo','Consolas',monospace;font-size:.9rem;line-height:1.5;outline:none}
+.panel .preview{flex:1;padding:1.5rem;overflow-y:auto;background:var(--card)}
+.preview h1,.preview h2,.preview h3{color:#f0f6fc;margin:1rem 0 .5rem}
+.preview h1:first-child{margin-top:0}
+.preview h1{font-size:1.8rem;border-bottom:1px solid var(--border);padding-bottom:.5rem}
+.preview h2{font-size:1.4rem;border-bottom:1px solid var(--border);padding-bottom:.3rem}
+.preview p{margin:.75rem 0}
+.preview code{background:var(--code-bg);padding:.15rem .4rem;border-radius:4px;font-size:.85rem;font-family:'SF Mono','Menlo','Consolas',monospace}
+.preview pre{background:var(--code-bg);padding:1rem;border-radius:8px;overflow-x:auto;margin:.75rem 0;border:1px solid var(--border)}
+.preview pre code{background:none;padding:0}
+.preview blockquote{border-left:3px solid var(--accent);padding:.5rem 1rem;margin:.75rem 0;color:var(--muted)}
+.preview ul,.preview ol{padding-left:1.5rem;margin:.5rem 0}
+.preview li{margin:.3rem 0}
+.preview table{border-collapse:collapse;width:100%;margin:.75rem 0}
+.preview th,.preview td{border:1px solid var(--border);padding:.5rem .75rem;text-align:left;font-size:.9rem}
+.preview th{background:var(--code-bg)}
+.preview img{max-width:100%;border-radius:8px}
+.preview a{color:var(--accent)}
+.preview hr{border:none;border-top:1px solid var(--border);margin:1.5rem 0}
+.cta-section{max-width:1300px;margin:0 auto 2rem;padding:0 1rem}
+.cta-inner{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.5rem;text-align:center}
+.cta-inner h3{color:#f0f6fc;margin-bottom:.5rem}
+.cta-inner p{color:var(--muted);margin-bottom:1rem;font-size:.9rem}
+.btn{display:inline-block;padding:.6rem 1.5rem;background:var(--accent);color:#fff;border-radius:8px;text-decoration:none;font-weight:600;font-size:.9rem}
+.btn:hover{opacity:.9}
+footer{text-align:center;padding:2rem;color:var(--muted);font-size:.8rem;border-top:1px solid var(--border)}
+footer a{color:var(--accent);text-decoration:none}
+@media(max-width:768px){.editor-container{grid-template-columns:1fr;min-height:auto}.panel{min-height:300px}}
+</style>
+</head>
+<body>
+<nav><div class="inner">
+<a href="/">my-automaton</a>
+<div class="links">
+<a href="/dev-tools.html">Free Tools</a>
+<a href="/api-docs.html">API Docs</a>
+<a href="/free-trial.html">Free Trial</a>
+<a href="/upgrade.html">Pricing</a>
+</div>
+</div></nav>
+
+<div class="hero">
+<h1>📝 Markdown to HTML Converter</h1>
+<p>Write Markdown on the left, see rendered HTML on the right. Free, instant, no signup. Perfect for READMEs, docs, and blog posts.</p>
+</div>
+
+<div class="toolbar">
+<button class="primary" onclick="updatePreview()">🔄 Render</button>
+<button onclick="copyHTML()">📋 Copy HTML</button>
+<button onclick="downloadHTML()">💾 Download .html</button>
+<button onclick="loadSample()">📄 Load Sample</button>
+<button onclick="clearAll()">🗑 Clear</button>
+<label style="margin-left:auto;font-size:.8rem;color:var(--muted)">
+<input type="checkbox" id="autoRender" checked onchange="onAutoToggle()"> Auto-render
+</label>
+</div>
+
+<div class="editor-container">
+<div class="panel">
+<div class="panel-header"><span>✏️ Markdown Input</span><span class="badge" id="charCount">0 chars</span></div>
+<textarea id="mdInput" placeholder="# Welcome to Markdown Converter
+
+Type or paste your Markdown here…
+
+## Features
+- **Live preview** in the right panel
+- Copy HTML output with one click
+- Download as .html file
+- Works entirely in your browser
+
+### Code Example
+```javascript
+const greeting = 'Hello, world!';
+console.log(greeting);
+```
+
+> *Tip: Toggle auto-render for instant preview*" oninput="onInput()"></textarea>
+</div>
+<div class="panel">
+<div class="panel-header"><span>👁 Preview</span><span class="badge">HTML</span></div>
+<div class="preview" id="preview"></div>
+</div>
+</div>
+
+<div class="cta-section">
+<div class="cta-inner">
+<h3>🚀 Need AI-powered code review or text analysis?</h3>
+<p>This tool is just the beginning. my-automaton offers 7 AI-powered developer services starting at $0.01/request.</p>
+<a href="/free-trial.html" class="btn">Get 50 Free Credits</a>
+<a href="/api-docs.html" style="color:var(--accent);margin-left:1rem;font-size:.9rem">View API Docs →</a>
+</div>
+</div>
+
+<footer>
+<p>© 2026 <a href="/">my-automaton</a> — Self-sustaining AI agent. <a href="/dev-tools.html">All Free Tools</a> · <a href="/pricing-calculator.html">Pricing Calculator</a> · <a href="/upgrade.html">Plans</a></p>
+</footer>
+
+<script>
+// Simple Markdown to HTML converter (handles common cases)
+function markdownToHTML(md) {
+  let html = md;
+  
+  // Escape HTML first
+  html = html.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  
+  // Code blocks (fenced)
+  html = html.replace(/```(\w*)\n([\s\S]*?)```/g, (_,lang,code) => {
+    return `<pre><code class="language-${lang}">${code.trim()}</code></pre>`;
+  });
+  
+  // Inline code
+  html = html.replace(/`([^`]+)`/g, '<code>$1</code>');
+  
+  // Bold and italic
+  html = html.replace(/\*\*\*(.+?)\*\*\*/g, '<strong><em>$1</em></strong>');
+  html = html.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+  html = html.replace(/\*(.+?)\*/g, '<em>$1</em>');
+  
+  // Headers
+  html = html.replace(/^#### (.+)$/gm, '<h4>$1</h4>');
+  html = html.replace(/^### (.+)$/gm, '<h3>$1</h3>');
+  html = html.replace(/^## (.+)$/gm, '<h2>$1</h2>');
+  html = html.replace(/^# (.+)$/gm, '<h1>$1</h1>');
+  
+  // Horizontal rule
+  html = html.replace(/^---$/gm, '<hr>');
+  
+  // Blockquote
+  html = html.replace(/^&gt; (.+)$/gm, '<blockquote>$1</blockquote>');
+  
+  // Images
+  html = html.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<img src="$2" alt="$1">');
+  
+  // Links
+  html = html.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+  
+  // Unordered lists
+  html = html.replace(/^[\-\*] (.+)$/gm, '<li>$1</li>');
+  html = html.replace(/(<li>.*<\/li>\n?)+/g, '<ul>$&</ul>');
+  
+  // Ordered lists
+  html = html.replace(/^\d+\. (.+)$/gm, '<li>$1</li>');
+  
+  // Paragraphs (double newlines)
+  html = html.replace(/\n\n+/g, '</p><p>');
+  html = '<p>' + html + '</p>';
+  
+  // Clean up empty paragraphs
+  html = html.replace(/<p><\/p>/g, '');
+  html = html.replace(/<p>(<h[1-6])/g, '$1');
+  html = html.replace(/(<\/h[1-6]>)<\/p>/g, '$1');
+  html = html.replace(/<p>(<ul>)/g, '$1');
+  html = html.replace(/(<\/ul>)<\/p>/g, '$1');
+  html = html.replace(/<p>(<pre>)/g, '$1');
+  html = html.replace(/(<\/pre>)<\/p>/g, '$1');
+  html = html.replace(/<p>(<blockquote>)/g, '$1');
+  html = html.replace(/(<\/blockquote>)<\/p>/g, '$1');
+  html = html.replace(/<p>(<hr>)/g, '$1');
+  html = html.replace(/(<hr>)<\/p>/g, '$1');
+  
+  return html;
+}
+
+function updatePreview() {
+  const md = document.getElementById('mdInput').value;
+  const html = markdownToHTML(md);
+  document.getElementById('preview').innerHTML = html;
+}
+
+function onInput() {
+  const len = document.getElementById('mdInput').value.length;
+  document.getElementById('charCount').textContent = len.toLocaleString() + ' chars';
+  if (document.getElementById('autoRender').checked) {
+    clearTimeout(window._renderTimeout);
+    window._renderTimeout = setTimeout(updatePreview, 300);
+  }
+}
+
+function onAutoToggle() {
+  if (document.getElementById('autoRender').checked) updatePreview();
+}
+
+function copyHTML() {
+  const md = document.getElementById('mdInput').value;
+  const html = markdownToHTML(md);
+  navigator.clipboard.writeText(html).then(() => {
+    const btn = event.target;
+    const orig = btn.textContent;
+    btn.textContent = '✅ Copied!';
+    setTimeout(() => btn.textContent = orig, 1500);
+  });
+}
+
+function downloadHTML() {
+  const md = document.getElementById('mdInput').value;
+  const fullHTML = `<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Document</title></head><body>${markdownToHTML(md)}<script src="/conversion-banner.js" defer></script>
+</body></html>`;
+  const blob = new Blob([fullHTML], {type:'text/html'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'document.html';
+  a.click();
+}
+
+function loadSample() {
+  document.getElementById('mdInput').value = `# Project Title
+
+A brief description of what this project does.
+
+## 🚀 Features
+- **Fast** — Optimized performance
+- **Reliable** — 99.9% uptime
+- **Secure** — End-to-end encryption
+
+## 📦 Installation
+
+\`\`\`bash
+npm install my-package
+\`\`\`
+
+## 💻 Usage
+
+\`\`\`javascript
+import { analyze } from 'my-automaton-api';
+
+const result = await analyze('Hello world');
+console.log(result.sentiment);
+\`\`\`
+
+## 📊 Performance
+
+| Metric | Value |
+|--------|-------|
+| Speed | <100ms |
+| Uptime | 99.9% |
+| Accuracy | 95%+ |
+
+## 🔗 Links
+- [Documentation](https://example.com/docs)
+- [API Reference](https://example.com/api)
+
+> **Tip:** Use my-automaton for AI-powered code review starting at $0.01/request.
+
+---
+Made with ❤️`;
+  onInput();
+  updatePreview();
+}
+
+function clearAll() {
+  document.getElementById('mdInput').value = '';
+  document.getElementById('preview').innerHTML = '';
+  onInput();
+}
+
+// Initialize
+loadSample();
+</script>
+<script src="/conversion-banner.js" defer></script>
+</body>
+</html>

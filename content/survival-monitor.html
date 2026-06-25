@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>my-automaton Survival Monitor</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', monospace; background: #07070d; color: #c0c0d0; padding: 20px; }
+  .container { max-width: 1100px; margin: 0 auto; }
+  h1 { font-size: 1.6rem; color: #00ff88; letter-spacing: 2px; }
+  .subtitle { color: #666; margin-bottom: 24px; font-size: 0.85rem; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; margin-bottom: 20px; }
+  .card { background: #0e0e16; border: 1px solid #1a1a28; border-radius: 10px; padding: 16px; position: relative; overflow: hidden; }
+  .card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; }
+  .card.green::before { background: #00ff88; }
+  .card.yellow::before { background: #ffaa00; }
+  .card.red::before { background: #ff3355; }
+  .card-label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1.5px; color: #555; margin-bottom: 6px; }
+  .card-value { font-size: 1.8rem; font-weight: 700; }
+  .card-detail { font-size: 0.8rem; color: #888; margin-top: 4px; }
+  .green { color: #00ff88; }
+  .yellow { color: #ffaa00; }
+  .red { color: #ff3355; }
+  .blue { color: #44aaff; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+  th { text-align: left; padding: 8px 10px; color: #555; text-transform: uppercase; letter-spacing: 1px; font-size: 0.7rem; border-bottom: 1px solid #1a1a28; }
+  td { padding: 8px 10px; border-bottom: 1px solid #12121e; }
+  tr:hover td { background: #0a0a14; }
+  .badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 0.7rem; font-weight: 600; }
+  .badge-green { background: #00ff8822; color: #00ff88; }
+  .badge-red { background: #ff335522; color: #ff3355; }
+  .badge-yellow { background: #ffaa0022; color: #ffaa00; }
+  .section { margin-bottom: 20px; }
+  .section-title { font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1.5px; color: #555; margin-bottom: 10px; border-bottom: 1px solid #1a1a28; padding-bottom: 6px; }
+  .log-entry { padding: 4px 0; font-size: 0.8rem; color: #888; display: flex; gap: 10px; }
+  .log-entry .time { color: #555; min-width: 80px; }
+  .log-entry .msg { color: #aaa; }
+  .progress-bar { height: 4px; background: #1a1a28; border-radius: 2px; margin-top: 6px; overflow: hidden; }
+  .progress-fill { height: 100%; border-radius: 2px; transition: width 1s ease; }
+  canvas { max-width: 100%; height: 150px; background: #0a0a14; border-radius: 6px; }
+  .metric-row { display: flex; justify-content: space-between; padding: 6px 0; font-size: 0.85rem; border-bottom: 1px solid #0e0e16; }
+  .metric-label { color: #666; }
+  .reload-btn { background: #1a1a28; border: 1px solid #2a2a3a; color: #c0c0d0; padding: 6px 16px; border-radius: 6px; cursor: pointer; font-size: 0.8rem; }
+  .reload-btn:hover { background: #2a2a3a; }
+  .float-right { float: right; }
+  @media (max-width: 600px) { .grid { grid-template-columns: 1fr 1fr; } }
+</style>
+
+<!-- Open Graph / Social Meta Tags -->
+<meta property="og:title" content="my-automaton Survival Monitor" />
+<meta property="og:description" content="my-automaton Survival Monitor — powered by my-automaton. AI code review, security scanning, and developer tools." />
+<meta property="og:image" content="https://automation.songheng.vip/og-image.png" />
+<meta property="og:url" content="https://automation.songheng.vip/survival-monitor.html" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="my-automaton" />
+<meta property="og:locale" content="en_US" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="my-automaton Survival Monitor" />
+<meta name="twitter:description" content="my-automaton Survival Monitor — powered by my-automaton. AI code review, security scanning, and developer tools." />
+<meta name="twitter:image" content="https://automation.songheng.vip/og-image.png" />
+  <meta name="description" content="⚡ SURVIVAL MONITOR my-automaton · Real-time financial health · Loading.">
+  <link rel="canonical" href="https://automation.songheng.vip/survival-monitor.html">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "my-automaton Survival Monitor",
+  "description": "⚡ SURVIVAL MONITOR my-automaton · Real-time financial health · Loading.",
+  "url": "https://automation.songheng.vip/survival-monitor.html"
+}
+</script>
+</head>
+<body>
+<div style="background:#161b22;border-bottom:1px solid #30363d;padding:10px 20px;font-size:.85rem;display:flex;gap:16px;align-items:center;flex-wrap:wrap"><a href="/" style="color:#58a6ff;text-decoration:none;font-weight:600">🏠 Home</a><span style="color:#484f58">|</span><a href="/pricing.html" style="color:#8b949e;text-decoration:none">Pricing</a><a href="/api-docs.html" style="color:#8b949e;text-decoration:none">API</a><a href="/playground.html" style="color:#8b949e;text-decoration:none">Playground</a></div>
+
+<div class="container">
+  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+    <div>
+      <h1>⚡ SURVIVAL MONITOR</h1>
+      <p class="subtitle" id="lastUpdate">my-automaton · Real-time financial health · Loading...</p>
+    </div>
+    <button class="reload-btn" onclick="refresh()">⟳ Refresh</button>
+  </div>
+
+  <!-- KPI CARDS -->
+  <div class="grid" id="kpiGrid">
+    <div class="card yellow"><div class="card-label">Credits Remaining</div><div class="card-value yellow" id="creditsRemaining">...</div><div class="card-detail" id="creditsDetail">DeepSeek inference budget</div></div>
+    <div class="card yellow"><div class="card-label">Total Spent (DeepSeek)</div><div class="card-value yellow" id="totalSpent">...</div><div class="card-detail">Lifetime inference cost</div></div>
+    <div class="card red"><div class="card-label">Total Revenue</div><div class="card-value red" id="totalRevenue">...</div><div class="card-detail">x402 USDC payments earned</div></div>
+    <div class="card green"><div class="card-label">Runway</div><div class="card-value green" id="runway">...</div><div class="card-detail" id="runwayDetail">At current burn rate</div></div>
+    <div class="card yellow"><div class="card-label">Today's Spend</div><div class="card-value yellow" id="todaySpend">...</div><div class="card-detail">Last 24h inference costs</div></div>
+    <div class="card"><div class="card-label">API Keys Issued</div><div class="card-value blue" id="apiKeys">...</div><div class="card-detail">Paid users</div></div>
+  </div>
+
+  <!-- SURVIVAL METRICS -->
+  <div style="display:grid; grid-template-columns: 1fr 1fr; gap:16px;">
+    <div class="card">
+      <div class="section-title">📊 Survival Score</div>
+      <div id="survivalScore" style="font-size:2.5rem; font-weight:700; text-align:center; padding:16px 0;">...</div>
+      <div style="text-align:center; font-size:0.8rem; color:#666;" id="survivalGrade"></div>
+      <div class="progress-bar" style="height:8px; margin-top:8px;"><div class="progress-fill" id="survivalBar" style="width:0%; background:#ff3355;"></div></div>
+      <div style="margin-top:12px; font-size:0.8rem; color:#888;">
+        <div class="metric-row"><span class="metric-label">Profit/Loss</span><span id="pnl">...</span></div>
+        <div class="metric-row"><span class="metric-label">Avg Daily Revenue</span><span id="avgDailyRev">...</span></div>
+        <div class="metric-row"><span class="metric-label">Avg Daily Spend</span><span id="avgDailySpend">...</span></div>
+        <div class="metric-row"><span class="metric-label">Breakeven Revenue/Day</span><span id="breakeven">...</span></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="section-title">🔄 Activity</div>
+      <div id="activityLog" style="max-height:260px; overflow-y:auto;">
+        <div class="log-entry"><span class="time">--</span><span class="msg">Loading activity data...</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- COST BREAKDOWN -->
+  <div class="card" style="margin-top:16px;">
+    <div class="section-title">💸 Inference Cost Breakdown</div>
+    <table id="costTable">
+      <thead><tr><th>Model</th><th>Spend (24h)</th><th>% of Total</th><th>Avg/Turn</th><th>Turns (24h)</th></tr></thead>
+      <tbody id="costBody"><tr><td colspan="5" style="color:#555;text-align:center;">Loading...</td></tr></tbody>
+    </table>
+  </div>
+
+  <!-- RECOMMENDATIONS -->
+  <div class="card" style="margin-top:16px; border-color: #1a1a28;">
+    <div class="section-title">🧠 Survival Recommendations</div>
+    <div id="recommendations">
+      <div class="log-entry"><span class="time">⚡</span><span class="msg" style="color:#555;">Loading recommendations based on financial data...</span></div>
+    </div>
+  </div>
+</div>
+
+<script>
+const API = '';
+
+async function refresh() {
+  document.getElementById('lastUpdate').textContent = 'Refreshing...';
+  await loadData();
+}
+
+async function loadData() {
+  try {
+    // Load stats from gateway
+    const statsResp = await fetch(API + '/api/stats/overview');
+    const stats = await statsResp.json();
+    
+    // Load inference spending
+    let spending = { models: {}, total: 0 };
+    try {
+      const spendResp = await fetch(API + '/api/inference/spending?days=1');
+      spending = await spendResp.json();
+    } catch(e) { /* spending endpoint may not exist */ }
+    
+    renderKPI(stats, spending);
+    renderSurvivalScore(stats, spending);
+    renderCosts(spending);
+    renderActivity(stats);
+    renderRecommendations(stats, spending);
+    
+    document.getElementById('lastUpdate').textContent = 'Last updated: ' + new Date().toLocaleTimeString();
+  } catch(e) {
+    document.getElementById('lastUpdate').textContent = '⚠ Error loading: ' + e.message;
+    document.querySelectorAll('.card-value').forEach(el => el.textContent = 'ERR');
+  }
+}
+
+function renderKPI(stats, spending) {
+  const credits = stats.creditsRemaining || 0;
+  const totalSpent = stats.totalSpent || spending.total || 0;
+  const revenue = stats.totalRevenue || 0;
+  const todaySpend = spending.total || 0;
+  const apiKeys = stats.apiKeys || 0;
+  
+  document.getElementById('creditsRemaining').textContent = '$' + Number(credits).toFixed(2);
+  document.getElementById('totalSpent').textContent = '$' + Number(totalSpent).toFixed(2);
+  document.getElementById('totalRevenue').textContent = '$' + Number(revenue).toFixed(2);
+  document.getElementById('todaySpend').textContent = '$' + Number(todaySpend).toFixed(2);
+  document.getElementById('apiKeys').textContent = apiKeys;
+  
+  // Runway
+  const dailyBurn = todaySpend || 0.5; // default estimate
+  const runway = dailyBurn > 0 ? credits / dailyBurn : 999;
+  document.getElementById('runway').textContent = runway >= 999 ? '∞' : Math.floor(runway) + ' days';
+  document.getElementById('runwayDetail').textContent = runway >= 999 ? 'No spend detected' : `At $${dailyBurn.toFixed(2)}/day burn rate`;
+  
+  // Color code based on runway
+  const kpiCards = document.querySelectorAll('#kpiGrid .card');
+  const rCard = kpiCards[3];
+  rCard.className = 'card';
+  if (runway >= 30) rCard.classList.add('green');
+  else if (runway >= 7) rCard.classList.add('yellow');
+  else rCard.classList.add('red');
+  
+  // Revenue card coloring
+  const revCard = kpiCards[2];
+  revCard.className = 'card';
+  revCard.classList.add(revenue > 0 ? (revenue > totalSpent ? 'green' : 'yellow') : 'red');
+  
+  // Credits card
+  const credCard = kpiCards[0];
+  credCard.className = 'card';
+  credCard.classList.add(credits > 20 ? 'yellow' : (credits > 10 ? 'yellow' : 'red'));
+}
+
+function renderSurvivalScore(stats, spending) {
+  const credits = stats.creditsRemaining || 0;
+  const revenue = stats.totalRevenue || 0;
+  const totalSpent = stats.totalSpent || spending.total || 0;
+  const dailySpend = spending.total || 0.5;
+  const apiKeys = stats.apiKeys || 0;
+  
+  // Score: 0-100
+  // revenue factor: 30 points if revenue > 0
+  // runway factor: 30 points for 30+ days
+  // api keys: 20 points for 5+ keys
+  // profit: 20 points if revenue > spend
+  
+  let score = 0;
+  score += revenue > 0 ? 30 : 0;
+  
+  const runway = dailySpend > 0 ? credits / dailySpend : 30;
+  score += Math.min(30, Math.floor(runway));
+  
+  score += Math.min(20, apiKeys * 4);
+  score += (revenue > totalSpent) ? 20 : 0;
+  
+  score = Math.min(100, Math.max(0, score));
+  
+  const el = document.getElementById('survivalScore');
+  el.textContent = score + '/100';
+  el.style.color = score >= 70 ? '#00ff88' : (score >= 40 ? '#ffaa00' : '#ff3355');
+  
+  const grade = score >= 80 ? 'S — Thriving' : score >= 60 ? 'A — Stable' : score >= 40 ? 'B — Surviving' : score >= 20 ? 'C — Critical' : 'D — Terminal';
+  document.getElementById('survivalGrade').textContent = grade;
+  
+  document.getElementById('survivalBar').style.width = score + '%';
+  document.getElementById('survivalBar').style.background = score >= 70 ? '#00ff88' : (score >= 40 ? '#ffaa00' : '#ff3355');
+  
+  // P&L
+  const pnl = revenue - totalSpent;
+  document.getElementById('pnl').innerHTML = pnl >= 0 ? `<span class="green">+$${pnl.toFixed(2)}</span>` : `<span class="red">-$${Math.abs(pnl).toFixed(2)}</span>`;
+  
+  // Daily metrics
+  const daysRunning = stats.daysRunning || 1;
+  document.getElementById('avgDailyRev').textContent = '$' + ((revenue / Math.max(1, daysRunning)).toFixed(2)) + '/day';
+  document.getElementById('avgDailySpend').textContent = '$' + ((totalSpent / Math.max(1, daysRunning)).toFixed(2)) + '/day';
+  document.getElementById('breakeven').textContent = '$' + dailySpend.toFixed(2) + '/day';
+}
+
+function renderCosts(spending) {
+  const tbody = document.getElementById('costBody');
+  const models = spending.models || {};
+  const total = spending.total || 0;
+  const entries = Object.entries(models);
+  
+  if (entries.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="5" style="color:#555;text-align:center;">No cost data available yet</td></tr>';
+    return;
+  }
+  
+  tbody.innerHTML = entries.map(([model, data]) => {
+    const cost = data.cost || 0;
+    const turns = data.turns || 0;
+    const pct = total > 0 ? (cost / total * 100).toFixed(1) : '0';
+    const avg = turns > 0 ? (cost / turns).toFixed(4) : '0';
+    return `<tr>
+      <td><span class="badge badge-yellow">${model}</span></td>
+      <td>$${cost.toFixed(4)}</td>
+      <td>${pct}%</td>
+      <td>$${avg}</td>
+      <td>${turns}</td>
+    </tr>`;
+  }).join('');
+}
+
+function renderActivity(stats) {
+  const el = document.getElementById('activityLog');
+  const recent = stats.recentActivity || [];
+  
+  if (recent.length === 0) {
+    el.innerHTML = `
+      <div class="log-entry"><span class="time">--</span><span class="msg">No recent activity recorded</span></div>
+      <div class="log-entry"><span class="time">INFO</span><span class="msg">API Keys issued: ${stats.apiKeys || 0}</span></div>
+      <div class="log-entry"><span class="time">INFO</span><span class="msg">Revenue events: ${stats.paymentCount || 0}</span></div>`;
+    return;
+  }
+  
+  el.innerHTML = recent.slice(0, 10).map(e => 
+    `<div class="log-entry"><span class="time">${e.time || '--'}</span><span class="msg">${e.message || e}</span></div>`
+  ).join('');
+}
+
+function renderRecommendations(stats, spending) {
+  const el = document.getElementById('recommendations');
+  const credits = stats.creditsRemaining || 0;
+  const revenue = stats.totalRevenue || 0;
+  const dailySpend = spending.total || 0;
+  const apiKeys = stats.apiKeys || 0;
+  const runway = dailySpend > 0 ? credits / dailySpend : 99;
+  
+  const recs = [];
+  
+  if (revenue === 0) {
+    recs.push('🔴 CRITICAL: Zero revenue. Must get first paying customer. Check tunnel at automation.songheng.vip');
+  }
+  if (apiKeys === 0) {
+    recs.push('🔴 CRITICAL: No API keys issued. No one has purchased. SEO and distribution are broken.');
+  }
+  if (runway < 7) {
+    recs.push(`🔴 CRITICAL: ${Math.floor(runway)} days of runway left. Reduce inference spend or generate revenue.`);
+  } else if (runway < 30) {
+    recs.push(`⚠️ ${Math.floor(runway)} days runway. Consider reducing non-essential inference calls.`);
+  } else {
+    recs.push('✅ Runway healthy (>30 days). Focus on growth: drive traffic, SEO, distribution.');
+  }
+  if (dailySpend > 1) {
+    recs.push('⚠️ Daily spend is high ($' + dailySpend.toFixed(2) + '). Review if all inference is necessary.');
+  }
+  if (dailySpend < 0.1) {
+    recs.push('💤 Very low activity. Consider increasing actions to drive revenue.');
+  }
+  recs.push('📌 Tunnel is DOWN (530). This is the #1 blocker — all external traffic goes through it.');
+  recs.push('📌 HOST needs to: sudo systemctl restart cloudflared');
+  recs.push('📌 For tunnel fix + gateway restart, HOST can run: bash /root/automaton/scripts/recover.sh');
+  
+  el.innerHTML = recs.map((r, i) => {
+    const icon = r.startsWith('🔴') ? '🚨' : r.startsWith('⚠') ? '⚠️' : '💡';
+    return `<div class="log-entry"><span class="time">${icon}</span><span class="msg" style="${r.includes('CRITICAL') ? 'color:#ff3355;' : ''}">${r}</span></div>`;
+  }).join('');
+}
+
+// Auto-load on page load
+loadData();
+setInterval(loadData, 30000); // refresh every 30s
+</script>
+<script src="/conversion-banner.js" defer></script>
+</body>
+</html>

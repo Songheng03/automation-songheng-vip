@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Live Traffic Stats — my-automaton AI Services</title>
+<meta name="description" content="Live analytics and usage statistics for my-automaton AI services. See real-time API usage, active users, and service performance.">
+<meta property="og:title" content="my-automaton Live Traffic Dashboard">
+<meta property="og:description" content="Real-time analytics for AI-powered code review, security scanning, and text analysis services.">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="canonical" href="https://automation.songheng.vip/traffic-stats">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#0d1117;color:#c9d1d9;min-height:100vh;display:flex;flex-direction:column}
+header{background:#161b22;border-bottom:1px solid #30363d;padding:20px 24px;text-align:center}
+header h1{font-size:1.5rem;color:#58a6ff}
+header p{color:#8b949e;font-size:0.9rem;margin-top:4px}
+.container{max-width:960px;margin:0 auto;padding:24px;flex:1}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-bottom:24px}
+.card{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:20px;text-align:center}
+.card .num{font-size:2rem;font-weight:700;color:#58a6ff;margin:8px 0}
+.card .label{color:#8b949e;font-size:0.85rem;text-transform:uppercase;letter-spacing:0.05em}
+.card .sub{color:#484f58;font-size:0.75rem;margin-top:4px}
+.card.premium{border-color:#d29922}
+.card.premium .num{color:#d29922}
+.card.revenue{border-color:#3fb950}
+.card.revenue .num{color:#3fb950}
+h2{font-size:1.1rem;color:#c9d1d9;margin:24px 0 12px;padding-bottom:8px;border-bottom:1px solid #21262d}
+table{width:100%;border-collapse:collapse;margin-bottom:24px;font-size:0.9rem}
+th,td{padding:10px 12px;text-align:left;border-bottom:1px solid #21262d}
+th{color:#8b949e;font-weight:600;text-transform:uppercase;font-size:0.75rem;letter-spacing:0.05em}
+td{color:#c9d1d9}
+tr:hover td{background:#161b22}
+.badge{display:inline-block;padding:2px 8px;border-radius:10px;font-size:0.75rem;font-weight:600}
+.badge.green{background:#1b3825;color:#3fb950}
+.badge.yellow{background:#3d2e00;color:#d29922}
+.badge.blue{background:#0b2e4a;color:#58a6ff}
+.highlight{background:#1b3825;border:1px solid #3fb950;border-radius:8px;padding:16px 20px;margin:16px 0;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
+.highlight p{color:#8b949e;font-size:0.9rem}
+.highlight .btn{background:#238636;color:#fff;border:none;border-radius:6px;padding:10px 20px;font-size:0.9rem;cursor:pointer;text-decoration:none}
+.highlight .btn:hover{background:#2ea043}
+footer{text-align:center;padding:20px;color:#484f58;font-size:0.8rem;border-top:1px solid #21262d;margin-top:24px}
+footer a{color:#58a6ff;text-decoration:none}
+.loading{text-align:center;padding:40px;color:#8b949e}
+.error{text-align:center;padding:40px;color:#f85149}
+.last-updated{color:#484f58;font-size:0.75rem;text-align:right;margin-bottom:16px}
+</style>
+<!-- Open Graph / Social Meta Tags -->
+<meta property="og:image" content="https://automation.songheng.vip/og-image.png" />
+<meta property="og:url" content="https://automation.songheng.vip/traffic-stats.html" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="my-automaton" />
+<meta property="og:locale" content="en_US" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Live Traffic Stats — my-automaton AI Services" />
+<meta name="twitter:description" content="Live analytics and usage statistics for my-automaton AI services. See real-time API usage, active users, and service performance." />
+<meta name="twitter:image" content="https://automation.songheng.vip/og-image.png" />
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "Live Traffic Stats — my-automaton AI Services",
+  "description": "Live analytics and usage statistics for my-automaton AI services. See real-time API usage, active users, and service performance.",
+  "url": "https://automation.songheng.vip/traffic-stats.html"
+}
+</script>
+</head>
+<body>
+<div style="background:#161b22;border-bottom:1px solid #30363d;padding:10px 20px;font-size:.85rem;display:flex;gap:16px;align-items:center;flex-wrap:wrap"><a href="/" style="color:#58a6ff;text-decoration:none;font-weight:600">🏠 Home</a><span style="color:#484f58">|</span><a href="/pricing.html" style="color:#8b949e;text-decoration:none">Pricing</a><a href="/api-docs.html" style="color:#8b949e;text-decoration:none">API</a><a href="/playground.html" style="color:#8b949e;text-decoration:none">Playground</a></div>
+
+<header>
+<h1>📊 Live Traffic Dashboard</h1>
+<p>Real-time analytics for my-automaton AI services</p>
+</header>
+
+<div class="container">
+  <div id="stats">
+    <div class="loading">Loading live stats...</div>
+  </div>
+</div>
+
+<footer>
+<p>my-automaton · <a href="https://automation.songheng.vip">Home</a> · <a href="/api-docs">API</a> · <a href="/upgrade">Pricing</a> · <a href="/tools">Free Tools</a></p>
+<p>Wallet: <code>0x76eADdEBFfb6A61DD071f97F4508467fc55dd113</code> (Base chain)</p>
+<p style="margin-top:8px">Data refreshes every 30 seconds · Last update: <span id="updated">—</span></p>
+</footer>
+
+<script>
+async function loadStats() {
+  const el = document.getElementById('stats');
+  try {
+    const r = await fetch('/api/stats/overview');
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    const d = await r.json();
+    
+    const totalCalls = d.totalVisits || d.total || 0;
+    const todayCalls = d.todayVisits || 0;
+    const premiumCalls = d.premiumCalls || d.premium || 0;
+    const freeCalls = d.freeCalls || d.free || 0;
+    const payments = d.payments || 0;
+    const uptime = Math.floor(d.uptime || 0);
+    const uptimeH = Math.floor(uptime / 3600);
+    const uptimeM = Math.floor((uptime % 3600) / 60);
+    const apiKeys = d.apiKeys || d.api_keys || 0;
+    const services = d.services || 9;
+    const income = d.incomeCents ? '$' + (d.incomeCents/100).toFixed(2) : '$0.00';
+
+    el.innerHTML = \`
+      <div class="last-updated">🟢 System operational · Uptime: \${uptimeH}h \${uptimeM}m</div>
+      
+      <div class="grid">
+        <div class="card">
+          <div class="label">Total API Calls</div>
+          <div class="num">\${totalCalls.toLocaleString()}</div>
+          <div class="sub">all-time</div>
+        </div>
+        <div class="card">
+          <div class="label">Today</div>
+          <div class="num">\${todayCalls.toLocaleString()}</div>
+          <div class="sub">\${new Date().toLocaleDateString()}</div>
+        </div>
+        <div class="card premium">
+          <div class="label">Premium Calls</div>
+          <div class="num">\${premiumCalls.toLocaleString()}</div>
+          <div class="sub">paid requests</div>
+        </div>
+        <div class="card">
+          <div class="label">Free Calls</div>
+          <div class="num">\${freeCalls.toLocaleString()}</div>
+          <div class="sub">3/day limit per IP</div>
+        </div>
+        <div class="card revenue">
+          <div class="label">Active API Keys</div>
+          <div class="num">\${apiKeys}</div>
+          <div class="sub">credit-based access</div>
+        </div>
+        <div class="card revenue">
+          <div class="label">Services</div>
+          <div class="num">\${services}</div>
+          <div class="sub">AI endpoints</div>
+        </div>
+      </div>
+
+      <div class="highlight">
+        <div>
+          <strong>🚀 Try our AI services for free</strong>
+          <p>3 free requests per day — no credit card, no signup. Upgrade for unlimited access via API keys or x402 micropayments.</p>
+        </div>
+        <a class="btn" href="/api-playground">Try Live Demo →</a>
+      </div>
+
+      <h2>📍 Popular Pages</h2>
+      <table>
+        <tr><th>Page</th><th>Visits</th></tr>
+        \${Object.entries(d.byPath || {})
+          .sort((a,b) => b[1] - a[1])
+          .slice(0,10)
+          .map(([p,v]) => \`<tr><td>\${p}</td><td>\${v.toLocaleString()}</td></tr>\`)
+          .join('')}
+      </table>
+
+      <h2>📈 Daily Activity</h2>
+      <table>
+        <tr><th>Date</th><th>Calls</th></tr>
+        \${Object.entries(d.byDay || {})
+          .sort((a,b) => b[0] > a[0] ? -1 : 1)
+          .slice(-7)
+          .reverse()
+          .map(([dt,v]) => \`<tr><td>\${dt}</td><td>\${v.toLocaleString()}</td></tr>\`)
+          .join('')}
+      </table>
+
+      <h2>💰 Revenue & Monetization</h2>
+      <table>
+        <tr><th>Metric</th><th>Value</th></tr>
+        <tr><td>Payments Received</td><td>\${payments}</td></tr>
+        <tr><td>Wallet Address</td><td><code>\${d.wallet || '0x76eADdEBFfb6A61DD071f97F4508467fc55dd113'}</code></td></tr>
+        <tr><td>Chain</td><td>Base · USDC</td></tr>
+        <tr><td>Income</td><td>\${income}</td></tr>
+        <tr><td>Premium Pricing</td><td>$0.01–$0.05 per request</td></tr>
+      </table>
+
+      <p style="color:#8b949e;font-size:0.85rem;margin-top:16px">
+        🔒 All analytics are aggregated and anonymous. No personal data is tracked.
+        <a href="/upgrade" style="color:#58a6ff">Upgrade to API keys →</a>
+      </p>
+    \`;
+    document.getElementById('updated').textContent = new Date().toLocaleTimeString();
+  } catch(e) {
+    el.innerHTML = \`<div class="error">⚠️ Could not load stats: \${e.message}. <button onclick="loadStats()" style="background:#21262d;color:#c9d1d9;border:1px solid #30363d;padding:6px 12px;border-radius:6px;cursor:pointer;margin-left:8px">Retry</button></div>\`;
+  }
+}
+
+loadStats();
+setInterval(loadStats, 30000);
+</script>
+<script src="/conversion-banner.js" defer></script>
+</body>
+</html>

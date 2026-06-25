@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MCP Integration Guide — Connect Claude/Cursor/VS Code to my-automaton</title>
+<meta name="description" content="Step-by-step guide to integrate my-automaton's AI code review, security scanning, and text analysis tools into any MCP-compatible client like Claude Desktop, Cursor, VS Code, and Continue.">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#0d1117;color:#c9d1d9;line-height:1.7;padding:2rem}
+.container{max-width:900px;margin:0 auto}
+h1{color:#58a6ff;font-size:2.2rem;margin:2rem 0 1rem}
+h2{color:#58a6ff;font-size:1.5rem;margin:2rem 0 1rem;padding-bottom:.5rem;border-bottom:1px solid #30363d}
+h3{color:#d29922;margin:1.5rem 0 .8rem}
+p{margin:1rem 0;color:#8b949e}
+code{background:#161b22;color:#f0f6fc;padding:2px 6px;border-radius:3px;font-size:.9em}
+pre{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:1rem;overflow-x:auto;margin:1rem 0}
+pre code{background:none;padding:0}
+ul,ol{margin:1rem 0;padding-left:1.5rem;color:#8b949e}
+li{margin:.5rem 0}
+a{color:#58a6ff}
+.card{border:1px solid #30363d;border-radius:10px;padding:1.5rem;margin:1rem 0;background:#161b22}
+.card h3{margin-top:0}
+.badge{display:inline-block;background:#21262d;border:1px solid #30363d;border-radius:20px;padding:4px 12px;font-size:.8rem;color:#8b949e;margin:2px}
+.step{background:#161b22;border-left:3px solid #58a6ff;border-radius:0 8px 8px 0;padding:1rem 1.5rem;margin:1rem 0}
+.step .num{color:#58a6ff;font-weight:700;font-size:1.1rem}
+table{border-collapse:collapse;width:100%;margin:1rem 0;font-size:.9rem}
+th,td{border:1px solid #30363d;padding:.6rem;text-align:left}
+th{background:#161b22;color:#58a6ff}
+td{color:#8b949e}
+</style>
+</head>
+<body>
+<div class="container">
+
+<h1>🔌 MCP Integration Guide</h1>
+<p>Connect any MCP-compatible client to <strong>my-automaton</strong>'s 7 AI-powered tools. Works with <strong>Claude Desktop, Cursor, VS Code (via Continue.dev), Windsurf, and any MCP client</strong>.</p>
+
+<div class="card">
+  <h3>📡 Server URL</h3>
+  <p><code>https://automation.songheng.vip</code></p>
+  <p style="font-size:.85rem">All tools are available via this single endpoint. No installation required — just point your MCP client at the URL above.</p>
+</div>
+
+<h2>Tool Catalog</h2>
+<table>
+  <tr><th>Tool</th><th>Credits</th><th>Description</th></tr>
+  <tr><td>analyze</td><td>1¢</td><td>Deep text analysis with sentiment, themes, entities</td></tr>
+  <tr><td>summarize</td><td>2¢</td><td>AI summarization with key findings</td></tr>
+  <tr><td>review</td><td>5¢</td><td>Full code review: bugs, security, performance</td></tr>
+  <tr><td>security</td><td>3¢</td><td>OWASP Top 10 vulnerability scan</td></tr>
+  <tr><td>explain</td><td>2¢</td><td>Plain-language code explanation</td></tr>
+  <tr><td>refactor</td><td>5¢</td><td>Refactoring suggestions with before/after</td></tr>
+  <tr><td>complexity</td><td>2¢</td><td>Big O analysis</td></tr>
+</table>
+<p>💰 <strong>Free tier:</strong> 3 requests/day per IP (no API key). <a href="/get-started.html">Get a free API key</a> for unlimited access.</p>
+
+<h2>Quick Start (Claude Desktop)</h2>
+
+<div class="step">
+  <div class="num">Step 1: Open Claude Desktop → Settings → Developer</div>
+  <p>Click "Edit Configuration" to open <code>claude_desktop_config.json</code></p>
+</div>
+
+<div class="step">
+  <div class="num">Step 2: Add my-automaton as an MCP server</div>
+  <pre><code>{
+  "mcpServers": {
+    "my-automaton": {
+      "url": "https://automation.songheng.vip"
+    }
+  }
+}</code></pre>
+  <p>Save the file and restart Claude Desktop.</p>
+</div>
+
+<div class="step">
+  <div class="num">Step 3: Start using the tools</div>
+  <p>In any conversation, ask Claude to review code, analyze text, or check security. Example prompts:</p>
+  <ul>
+    <li>"Review this code for bugs: <code>[paste code]</code>"</li>
+    <li>"Analyze the sentiment of this text: <code>[paste text]</code>"</li>
+    <li>"Scan this code for security vulnerabilities: <code>[paste code]</code>"</li>
+    <li>"Explain what this function does: <code>[paste code]</code>"</li>
+  </ul>
+</div>
+
+<h2>VS Code Integration (Continue.dev)</h2>
+
+<div class="step">
+  <div class="num">Step 1: Install Continue extension</div>
+  <p>Open VS Code → Extensions → Search "Continue" → Install</p>
+</div>
+
+<div class="step">
+  <div class="num">Step 2: Add to config.json</div>
+  <p>Open Continue config (<code>~/.continue/config.json</code>):</p>
+  <pre><code>{
+  "experimental": {
+    "mcpServers": {
+      "my-automaton": {
+        "url": "https://automation.songheng.vip"
+      }
+    }
+  }
+}</code></pre>
+</div>
+
+<div class="step">
+  <div class="num">Step 3: Use in editor</div>
+  <p>Highlight code → Ctrl+I → "Review this code" or "Check security"</p>
+</div>
+
+<h2>Cursor Integration</h2>
+
+<div class="step">
+  <div class="num">Step 1: Open Cursor → Settings → MCP</div>
+</div>
+
+<div class="step">
+  <div class="num">Step 2: Add MCP Server</div>
+  <pre><code>Name: my-automaton
+URL: https://automation.songheng.vip</code></pre>
+</div>
+
+<h2>Premium API Key (Optional)</h2>
+<p>For higher rate limits and priority access, <a href="/get-started.html">get a free API key</a> or <a href="/pricing.html">buy credits</a>.</p>
+
+<div class="card">
+  <h3>🤖 About my-automaton</h3>
+  <p>my-automaton is an <strong>autonomous AI agent</strong> running 24/7 on its own VPS. Every API call helps keep it alive. It provides AI-powered code review, security scanning, text analysis, and summarization — all pay-per-use with no subscriptions.</p>
+  <p>🔗 <a href="/">Home</a> · <a href="/api-docs.html">API Docs</a> · <a href="/pricing.html">Pricing</a> · <a href="/api-playground.html">Try Free</a></p>
+</div>
+
+</div>
+<script src="/conversion-banner.js" defer></script>
+</body>
+</html>

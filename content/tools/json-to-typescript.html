@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>JSON to TypeScript Converter — Free Online Tool</title>
+<meta name="description" content="Convert JSON to TypeScript interfaces instantly. Free online tool generates typed interfaces, handles nested objects, arrays, and optional fields. No signup. 100% client-side.">
+<meta name="keywords" content="json to typescript, json to interface, typescript generator, type converter, free developer tool">
+<meta property="og:title" content="JSON to TypeScript Converter — Free">
+<meta property="og:description" content="Instantly convert JSON to TypeScript interfaces. Handles nested objects, arrays, and optional fields. 100% client-side.">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;line-height:1.6;color:#333;max-width:960px;margin:0 auto;padding:20px;background:#f8fafc}
+h1{font-size:1.8em;margin:1em 0 .3em;color:#111}
+nav{margin-bottom:2em;border-bottom:2px solid #e2e8f0;padding-bottom:1em}
+nav a{color:#2563eb;text-decoration:none;font-weight:600}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:16px 0}
+textarea{width:100%;min-height:300px;padding:14px;font-size:13px;font-family:'SF Mono','Fira Code','Consolas',monospace;border:2px solid #e2e8f0;border-radius:8px;resize:vertical;tab-size:2}
+textarea:focus{outline:none;border-color:#2563eb}
+button{background:#2563eb;color:#fff;border:none;padding:12px 24px;border-radius:8px;font-size:16px;font-weight:600;cursor:pointer;margin:8px 4px}
+button:hover{background:#1d4ed8}
+button.secondary{background:#64748b}
+button.secondary:hover{background:#475569}
+.copy-btn{background:#10b981;padding:6px 16px;font-size:13px;margin:4px 0}
+.copy-btn:hover{background:#059669}
+#output-wrap{position:relative}
+@media(max-width:700px){.grid{grid-template-columns:1fr}}
+.features{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:1.5em 0}
+.feature-card{background:#fff;padding:14px;border-radius:8px;border:1px solid #e2e8f0;text-align:center;font-size:.9em}
+.feature-card .icon{font-size:1.5em;margin-bottom:4px}
+</style>
+<!-- Open Graph / Social Meta Tags -->
+<meta property="og:image" content="https://automation.songheng.vip/og-image.png" />
+<meta property="og:url" content="https://automation.songheng.vip/tools/json-to-typescript.html" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="my-automaton" />
+<meta property="og:locale" content="en_US" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="JSON to TypeScript Converter — Free Online Tool" />
+<meta name="twitter:description" content="Convert JSON to TypeScript interfaces instantly. Free online tool generates typed interfaces, handles nested objects, arrays, and optional fields. No signup. 100% client-side." />
+<meta name="twitter:image" content="https://automation.songheng.vip/og-image.png" />
+  <link rel="canonical" href="https://automation.songheng.vip/tools/json-to-typescript.html">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "JSON to TypeScript Converter — Free Online Tool",
+  "description": "Convert JSON to TypeScript interfaces instantly. Free online tool generates typed interfaces, handles nested objects, arrays, and optional fields. No signup. 100% client-side.",
+  "url": "https://automation.songheng.vip/tools/json-to-typescript.html",
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": "Web",
+  "author": {
+    "@type": "Organization",
+    "name": "my-automaton",
+    "url": "https://automation.songheng.vip"
+  },
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  }
+}
+</script>
+</head>
+<body>
+<nav>
+  <a href="/">← Home</a> <span style="color:#94a3b8">|</span>
+  <a href="/tools">Tools</a> <span style="color:#94a3b8">|</span>
+  <a href="/blog">Blog</a> <span style="color:#94a3b8">|</span>
+  <a href="/api-docs">API</a>
+</nav>
+
+<h1>🔄 JSON to TypeScript Converter</h1>
+<p>Paste any JSON and get clean TypeScript interfaces instantly. Handles nested objects, arrays, optional (nullable) fields, and more. <strong>100% client-side — your data never leaves your browser.</strong></p>
+
+<div class="features">
+  <div class="feature-card"><div class="icon">⚡</div>Instant Conversion</div>
+  <div class="feature-card"><div class="icon">🔗</div>Nested Objects</div>
+  <div class="feature-card"><div class="icon">📋</div>Export Ready</div>
+  <div class="feature-card"><div class="icon">🔒</div>Client Side Only</div>
+</div>
+
+<div class="grid">
+  <div>
+    <label><strong>Input JSON:</strong></label>
+    <textarea id="inputJson" placeholder='Paste JSON here...
+Example:
+{
+  "id": 1,
+  "name": "Alice",
+  "email": "alice@example.com",
+  "roles": ["admin", "editor"],
+  "profile": {
+    "avatar": null,
+    "bio": "Developer"
+  },
+  "active": true
+}'></textarea>
+    <div style="display:flex;flex-wrap:wrap;gap:8px">
+      <button onclick="convert()">🔄 Convert to TypeScript</button>
+      <button class="secondary" onclick="loadSample()">Load Sample</button>
+      <button class="secondary" onclick="document.getElementById('inputJson').value='';document.getElementById('output').value=''">Clear</button>
+    </div>
+  </div>
+  <div>
+    <label><strong>TypeScript Interfaces:</strong></label>
+    <div id="output-wrap">
+      <textarea id="output" readonly placeholder="Generated TypeScript will appear here..." style="background:#1e293b;color:#e2e8f0"></textarea>
+      <button class="copy-btn" onclick="copyOutput()">📋 Copy</button>
+    </div>
+  </div>
+</div>
+
+<div id="error" style="display:none;color:#dc2626;padding:12px;background:#fef2f2;border-radius:8px;margin:10px 0"></div>
+
+<h2 style="margin-top:1.5em">How It Works</h2>
+<table style="width:100%;border-collapse:collapse;margin:12px 0">
+  <tr><th style="text-align:left;padding:8px;border-bottom:2px solid #e2e8f0">JSON Type</th><th style="text-align:left;padding:8px;border-bottom:2px solid #e2e8f0">TypeScript Output</th></tr>
+  <tr><td style="padding:8px;border-bottom:1px solid #e2e8f0"><code>"hello"</code></td><td style="padding:8px;border-bottom:1px solid #e2e8f0"><code>string</code></td></tr>
+  <tr><td style="padding:8px;border-bottom:1px solid #e2e8f0"><code>42</code></td><td style="padding:8px;border-bottom:1px solid #e2e8f0"><code>number</code></td></tr>
+  <tr><td style="padding:8px;border-bottom:1px solid #e2e8f0"><code>true</code></td><td style="padding:8px;border-bottom:1px solid #e2e8f0"><code>boolean</code></td></tr>
+  <tr><td style="padding:8px;border-bottom:1px solid #e2e8f0"><code>null</code></td><td style="padding:8px;border-bottom:1px solid #e2e8f0"><code>null</code> or <code>null | Type</code></td></tr>
+  <tr><td style="padding:8px;border-bottom:1px solid #e2e8f0"><code>[1,2,3]</code></td><td style="padding:8px;border-bottom:1px solid #e2e8f0"><code>number[]</code></td></tr>
+  <tr><td style="padding:8px;border-bottom:1px solid #e2e8f0"><code>{"key":"val"}</code></td><td style="padding:8px;border-bottom:1px solid #e2e8f0">Nested interface</td></tr>
+  <tr><td style="padding:8px;">Mixed types in array</td><td style="padding:8px;"><code>(Type1 | Type2)[]</code></td></tr>
+</table>
+
+<h2>Use Cases</h2>
+<ul style="margin:12px 0;padding-left:24px">
+  <li><strong>API Integration:</strong> Paste a sample API response and get typed interfaces instantly</li>
+  <li><strong>Database Schemas:</strong> Convert MongoDB documents or Firestore objects to TypeScript</li>
+  <li><strong>Config Files:</strong> Generate types for package.json, tsconfig, or custom JSON configs</li>
+  <li><strong>Rapid Prototyping:</strong> Define types during MVP development from mock JSON data</li>
+</ul>
+
+<script>
+function showError(msg) {
+  const el = document.getElementById('error');
+  el.textContent = msg;
+  el.style.display = 'block';
+}
+function hideError() {
+  document.getElementById('error').style.display = 'none';
+}
+
+function jsonToTS(obj, name, seen) {
+  if (obj === null) return 'null';
+  const type = typeof obj;
+  
+  if (type === 'string' || type === 'number' || type === 'boolean') return type;
+  
+  if (Array.isArray(obj)) {
+    if (obj.length === 0) return 'any[]';
+    const types = [...new Set(obj.map(item => jsonToTS(item, name + 'Item', seen)))];
+    if (types.length === 1) return types[0] + '[]';
+    return '(' + types.join(' | ') + ')[]';
+  }
+  
+  if (type === 'object') {
+    const interfaceName = name.charAt(0).toUpperCase() + name.slice(1);
+    // Avoid circular refs
+    if (seen.has(obj)) return interfaceName;
+    seen.add(obj);
+    
+    const keys = Object.keys(obj);
+    if (keys.length === 0) return '{ [key: string]: any }';
+    
+    const props = keys.map(key => {
+      const val = obj[key];
+      const tsType = jsonToTS(val, key, seen);
+      const optional = val === null ? '?' : '';
+      const actualType = val === null ? 'null' : tsType;
+      // If nullable
+      let finalType = tsType;
+      if (val === null) {
+        // Look at all values
+        const others = keys.filter(k => k !== key).map(k => obj[k]).filter(v => v !== null);
+        if (others.length > 0) finalType = 'null';
+        else finalType = 'null';
+      }
+      return `  ${key}${optional}: ${finalType};`;
+    });
+    
+    // Generate standalone interface if it has nested objects
+    const hasObjects = keys.some(k => typeof obj[k] === 'object' && obj[k] !== null && !Array.isArray(obj[k]));
+    if (hasObjects || keys.length > 3) {
+      // Store for later output
+      if (!window._interfaces) window._interfaces = [];
+      if (!window._interfaceNames.has(interfaceName)) {
+        window._interfaceNames.add(interfaceName);
+        const lines = keys.map(key => {
+          const val = obj[key];
+          const tsType = jsonToTS(val, key, seen);
+          const optional = val === null ? '?' : '';
+          return `  ${key}${optional}: ${tsType};`;
+        });
+        window._interfaces.push(`export interface ${interfaceName} {\n${lines.join('\n')}\n}`);
+      }
+      return interfaceName;
+    }
+    
+    return `{\n${props.join('\n')}\n}`;
+  }
+  
+  return 'any';
+}
+
+function convert() {
+  hideError();
+  window._interfaces = [];
+  window._interfaceNames = new Set();
+  
+  const input = document.getElementById('inputJson').value.trim();
+  if (!input) {
+    showError('Please enter JSON to convert.');
+    return;
+  }
+  
+  try {
+    const parsed = JSON.parse(input);
+    const output = jsonToTS(parsed, 'root', new WeakSet());
+    
+    // Build final output
+    let result = '';
+    if (window._interfaces && window._interfaces.length > 0) {
+      result = window._interfaces.join('\n\n');
+      // If root is not already included as a named interface
+      if (typeof output === 'string' && !output.startsWith('{')) {
+        // Already included
+      } else if (typeof output === 'string' && output.startsWith('{')) {
+        result = 'export interface Root ' + output + '\n\n' + result;
+      }
+    } else {
+      result = 'export interface Root ' + output;
+    }
+    
+    document.getElementById('output').value = result;
+  } catch(e) {
+    showError('Invalid JSON: ' + e.message);
+  }
+}
+
+function copyOutput() {
+  const out = document.getElementById('output');
+  out.select();
+  out.setSelectionRange(0, 999999);
+  navigator.clipboard.writeText(out.value).then(() => {
+    const btn = document.querySelector('.copy-btn');
+    btn.textContent = '✅ Copied!';
+    setTimeout(() => btn.textContent = '📋 Copy', 2000);
+  });
+}
+
+function loadSample() {
+  document.getElementById('inputJson').value = JSON.stringify({
+    "id": 1,
+    "name": "Alice Johnson",
+    "email": "alice@example.com",
+    "age": 28,
+    "active": true,
+    "roles": ["admin", "editor", "viewer"],
+    "profile": {
+      "avatar": null,
+      "bio": "Full-stack developer",
+      "website": "https://alice.dev",
+      "social": {
+        "twitter": "@alice_dev",
+        "github": "alice-dev"
+      }
+    },
+    "preferences": {
+      "theme": "dark",
+      "notifications": true,
+      "language": "en-US"
+    },
+    "recentPosts": [
+      {"id": 101, "title": "TypeScript Tips", "published": "2025-01-15", "views": 1234},
+      {"id": 102, "title": "React Patterns", "published": "2025-02-20", "views": 2345}
+    ]
+  }, null, 2);
+  convert();
+}
+</script>
+</body>
+</html>

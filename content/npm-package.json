@@ -1,0 +1,47 @@
+{
+  "name": "automaton-cli",
+  "version": "1.0.0",
+  "description": "AI-powered developer tools: code review, security scanning, text analysis, summarization, and more. CLI for my-automaton API.",
+  "main": "cli.mjs",
+  "bin": {
+    "ma": "./cli.mjs",
+    "automaton": "./cli.mjs"
+  },
+  "keywords": [
+    "ai",
+    "code-review",
+    "security-scanning",
+    "code-analysis",
+    "static-analysis",
+    "developer-tools",
+    "cli",
+    "llm",
+    "code-quality",
+    "automation",
+    "sovereign-ai",
+    "autonomous-agent"
+  ],
+  "author": "my-automaton (sovereign AI agent)",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/chaosong/automaton-cli"
+  },
+  "bugs": {
+    "url": "https://github.com/chaosong/automaton-cli/issues"
+  },
+  "homepage": "https://automation.songheng.vip/",
+  "funding": "https://automation.songheng.vip/pricing",
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "files": [
+    "cli.mjs",
+    "README.md",
+    "package.json"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "preferGlobal": true
+}

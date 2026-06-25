@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Meta Tag Generator — SEO & Social Meta Tags</title>
+<meta name="description" content="Generate SEO and Open Graph meta tags for your website. Title, description, OG tags, Twitter cards. Copy-ready HTML. 100% client-side.">
+<link rel="canonical" href="https://automation.songheng.vip/meta-tag-generator.html">
+<style>
+:root{--bg:#0d1117;--surface:#161b22;--border:#30363d;--text:#c9d1d9;--muted:#8b949e;--accent:#58a6ff;--green:#3fb950}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--text);font-family:system-ui,sans-serif;min-height:100vh}
+header{background:var(--surface);border-bottom:1px solid var(--border);padding:16px 24px;text-align:center}
+header h1{font-size:1.5rem} header p{color:var(--muted);font-size:.85rem;margin-top:4px}
+.container{max-width:700px;margin:0 auto;padding:24px 16px}
+.form{display:grid;gap:14px;margin-bottom:20px}
+.form label{font-size:.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
+.form input,.form textarea,.form select{width:100%;padding:10px 14px;background:var(--bg);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:.88rem;font-family:system-ui,sans-serif}
+.form textarea{height:80px;resize:vertical}
+.form input:focus,.form textarea:focus{outline:none;border-color:var(--accent)}
+.output{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:16px}
+.output label{font-size:.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;margin-bottom:8px;display:block}
+.output pre{background:var(--bg);padding:16px;border-radius:8px;overflow-x:auto;font-size:.78rem;font-family:'JetBrains Mono',monospace;color:var(--green);line-height:1.6;white-space:pre-wrap;word-break:break-all}
+.btn-row{display:flex;gap:10px;margin-top:12px;justify-content:center}
+.btn{padding:10px 20px;border-radius:8px;cursor:pointer;font-size:.84rem;font-weight:600;border:none;transition:all .15s}
+.btn:active{transform:scale(.96)}
+.btn-primary{background:var(--accent);color:#fff}
+.btn-secondary{background:var(--surface);color:var(--text);border:1px solid var(--border)}
+.preview{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:16px;margin-bottom:20px}
+.preview .og-box{border-left:4px solid var(--accent);padding-left:14px}
+.preview .og-title{font-size:1rem;color:var(--accent);font-weight:600}
+.preview .og-url{font-size:.72rem;color:var(--muted);margin:2px 0}
+.preview .og-desc{font-size:.82rem;color:var(--muted)}
+.sponsor{text-align:center;padding:20px;background:var(--surface);border:1px solid var(--border);border-radius:8px}
+.sponsor a{color:var(--accent)}
+</style>
+</head>
+<body>
+<header><h1>🏷 Meta Tag Generator</h1><p>Generate SEO, Open Graph, and Twitter Card meta tags for any page.</p></header>
+<div class="container">
+<div class="form">
+  <label>Page Title</label><input id="title" value="My Awesome Website" oninput="gen()">
+  <label>Description</label><textarea id="desc" oninput="gen()">A complete guide to building web apps</textarea>
+  <label>Canonical URL</label><input id="url" value="https://example.com/page" oninput="gen()">
+  <label>Site Name</label><input id="site" value="My Site" oninput="gen()">
+  <label>Image URL</label><input id="img" value="https://example.com/og-image.jpg" oninput="gen()">
+  <label>Twitter Card</label>
+  <select id="twCard" onchange="gen()"><option>summary_large_image</option><option>summary</option></select>
+</div>
+<div class="preview"><label>Google Preview</label>
+  <div class="og-box"><div class="og-title" id="prevTitle">My Awesome Website</div>
+  <div class="og-url" id="prevUrl">https://example.com/page</div>
+  <div class="og-desc" id="prevDesc">A complete guide to building web apps</div></div>
+</div>
+<div class="output"><label>Copy these meta tags into your &lt;head&gt;</label>
+  <pre id="metaOutput"></pre>
+  <div class="btn-row"><button class="btn btn-primary" onclick="copyMeta()">📋 Copy</button></div>
+</div>
+<div class="sponsor"><p>💡 Need <strong>AI to optimize your SEO</strong>? <a href="/api-playground.html">Try our API</a>.</p></div>
+</div>
+<script>
+function gen(){
+  const t=document.getElementById('title').value||'My Page';
+  const d=document.getElementById('desc').value||'';
+  const u=document.getElementById('url').value||'https://example.com';
+  const s=document.getElementById('site').value||'';
+  const i=document.getElementById('img').value||'';
+  const tw=document.getElementById('twCard').value;
+  const meta=`<title>${esc(t)}</title>
+<meta name="description" content="${esc(d)}">
+<link rel="canonical" href="${esc(u)}">
+
+<!-- Open Graph -->
+<meta property="og:title" content="${esc(t)}">
+<meta property="og:description" content="${esc(d)}">
+<meta property="og:url" content="${esc(u)}">
+<meta property="og:type" content="website">
+${s?`<meta property="og:site_name" content="${esc(s)}">\n`:''}${i?`<meta property="og:image" content="${esc(i)}">\n`:''}
+<!-- Twitter Card -->
+<meta name="twitter:card" content="${tw}">
+<meta name="twitter:title" content="${esc(t)}">
+<meta name="twitter:description" content="${esc(d)}">${i?`\n<meta name="twitter:image" content="${esc(i)}">`:''}`;
+  document.getElementById('metaOutput').textContent=meta;
+  document.getElementById('prevTitle').textContent=t;
+  document.getElementById('prevUrl').textContent=u;
+  document.getElementById('prevDesc').textContent=d||'No description';
+}
+function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
+function copyMeta(){navigator.clipboard.writeText(document.getElementById('metaOutput').textContent)}
+gen();
+</script>
+<script src="/conversion-banner.js" defer></script>
+</body>
+</html>

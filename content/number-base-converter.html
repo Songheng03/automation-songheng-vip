@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Number Base Converter — Binary, Hex, Octal, Decimal | my-automaton</title>
+<meta name="description" content="Free number base converter. Convert between binary, hexadecimal, octal, and decimal instantly. Developer tool with live conversion and bit representation.">
+<meta property="og:title" content="Number Base Converter — Binary, Hex, Octal, Decimal">
+<meta property="og:description" content="Convert between binary, hex, octal, and decimal instantly. Free developer tool.">
+<link rel="canonical" href="https://automation.songheng.vip/number-base-converter.html">
+<style>
+:root{--bg:#0d1117;--card:#161b22;--border:#30363d;--text:#c9d1d9;--muted:#8b949e;--accent:#58a6ff;--green:#3fb950}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--text);line-height:1.6}
+.container{max-width:800px;margin:0 auto;padding:20px}
+h1{font-size:1.8rem;text-align:center;margin:20px 0 6px;background:linear-gradient(135deg,var(--accent),#8250df);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.subtitle{text-align:center;color:var(--muted);margin-bottom:24px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:600px){.grid{grid-template-columns:1fr}}
+.field{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:16px}
+.field label{font-size:0.8rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px;display:block}
+.field .prefix{color:var(--accent);font-weight:700;margin-right:4px}
+.field input{width:100%;background:#0d1117;border:1px solid var(--border);border-radius:8px;color:var(--text);padding:12px;font-family:'SF Mono',Consolas,monospace;font-size:1.1rem}
+.field input:focus{border-color:var(--accent);outline:none}
+.info-bar{display:flex;gap:16px;margin:20px 0;flex-wrap:wrap}
+.info-card{flex:1;min-width:140px;background:var(--card);border:1px solid var(--border);border-radius:8px;padding:14px;text-align:center}
+.info-card .val{font-size:1.4rem;font-weight:700;color:var(--accent);font-family:'SF Mono',Consolas,monospace}
+.info-card .lbl{font-size:0.75rem;color:var(--muted);margin-top:4px}
+.cta{background:linear-gradient(135deg,#1a2a3a,#1a2f1a);border:1px solid var(--border);border-radius:12px;padding:24px;margin:24px 0;text-align:center}
+.cta h2{font-size:1.2rem;color:#fff;margin-bottom:8px}
+.cta p{color:var(--muted);margin-bottom:14px;font-size:0.9rem}
+.btn{display:inline-block;padding:8px 18px;border-radius:6px;font-size:0.85rem;text-decoration:none;cursor:pointer;transition:all 0.15s}
+.btn-primary{background:var(--accent);color:#fff;border:none}.btn-primary:hover{background:#4090e0}
+.btn-outline{border:1px solid var(--border);color:var(--text)}.btn-outline:hover{background:#21262d}
+footer{text-align:center;padding:20px 0;color:var(--muted);font-size:0.8rem}
+footer a{color:var(--accent);text-decoration:none}
+</style>
+</head>
+<body>
+<div class="container">
+<h1>Number Base Converter</h1>
+<p class="subtitle">Convert between binary, hexadecimal, octal, and decimal — live</p>
+
+<div class="grid">
+<div class="field">
+<label><span class="prefix">HEX</span> Hexadecimal</label>
+<input id="hex" placeholder="e.g. 7F, FF, 3E8" oninput="fromBase('hex')" spellcheck="false">
+</div>
+<div class="field">
+<label><span class="prefix">DEC</span> Decimal</label>
+<input id="dec" placeholder="e.g. 127, 255, 1000" oninput="fromBase('dec')" spellcheck="false">
+</div>
+<div class="field">
+<label><span class="prefix">BIN</span> Binary</label>
+<input id="bin" placeholder="e.g. 01111111, 11111111" oninput="fromBase('bin')" spellcheck="false">
+</div>
+<div class="field">
+<label><span class="prefix">OCT</span> Octal</label>
+<input id="oct" placeholder="e.g. 177, 377, 1750" oninput="fromBase('oct')" spellcheck="false">
+</div>
+</div>
+
+<div class="info-bar" id="info">
+<div class="info-card"><div class="val" id="bitCount">-</div><div class="lbl">Significant Bits</div></div>
+<div class="info-card"><div class="val" id="byteSize">-</div><div class="lbl">Bytes</div></div>
+<div class="info-card"><div class="val" id="asciiChar">-</div><div class="lbl">ASCII</div></div>
+<div class="info-card"><div class="val" id="ipAddr">-</div><div class="lbl">As IP (LE)</div></div>
+</div>
+
+<div class="cta">
+<h2>🚀 Need AI for your codebase?</h2>
+<p>Try my-automaton's AI-powered code review, security scanning, and text analysis. Free tier — no signup.</p>
+<a href="/free-trial.html" class="btn btn-primary">🎁 Free Trial</a>
+<a href="/dev-tools.html" class="btn btn-outline" style="margin-left:8px">🔧 More Dev Tools</a>
+</div>
+
+<footer><p>my-automaton · <a href="/">Home</a> · <a href="/dev-tools.html">118+ Free Tools</a> · <a href="/pricing.html">Pricing</a></p></footer>
+</div>
+
+<script>
+const inputs={hex:document.getElementById('hex'),dec:document.getElementById('dec'),bin:document.getElementById('bin'),oct:document.getElementById('oct')};
+let updating=false;
+
+function fromBase(src){
+  if(updating)return;updating=true;
+  const raw=inputs[src].value.replace(/\s/g,'');
+  if(!raw){clearAll();updating=false;return}
+  let val;
+  try{
+    switch(src){
+      case 'hex':if(!/^[0-9a-fA-F]+$/.test(raw)){updating=false;return}val=BigInt('0x'+raw);break;
+      case 'dec':if(!/^\d+$/.test(raw)){updating=false;return}val=BigInt(raw);break;
+      case 'bin':if(!/^[01]+$/.test(raw)){updating=false;return}val=BigInt('0b'+raw);break;
+      case 'oct':if(!/^[0-7]+$/.test(raw)){updating=false;return}val=BigInt('0o'+raw);break;
+    }
+  }catch(e){updating=false;return}
+  if(src!=='hex')inputs.hex.value=val.toString(16).toUpperCase();
+  if(src!=='dec')inputs.dec.value=val.toString(10);
+  if(src!=='bin')inputs.bin.value=val.toString(2);
+  if(src!=='oct')inputs.oct.value=val.toString(8);
+  updateInfo(val);
+  updating=false;
+}
+
+function updateInfo(val){
+  const binStr=val.toString(2);
+  document.getElementById('bitCount').textContent=binStr.length;
+  const bytes=Math.ceil(binStr.length/8);
+  document.getElementById('byteSize').textContent=(val===0n?'1':bytes)+(bytes===1?' byte':' bytes');
+  if(val>=0n&&val<=127n){document.getElementById('asciiChar').textContent=String.fromCharCode(Number(val))}else if(val<=0x10FFFFn){try{document.getElementById('asciiChar').textContent=String.fromCodePoint(Number(val))}catch(e){document.getElementById('asciiChar').textContent='(out of range)'}}else{document.getElementById('asciiChar').textContent='(out of range)'}
+  if(val<=0xFFFFFFFFn){const b=[];let v=val;for(let i=0;i<4;i++){b.unshift(Number(v&0xFFn));v>>=8n}document.getElementById('ipAddr').textContent=b.join('.')}else{document.getElementById('ipAddr').textContent='>32-bit'}
+}
+
+function clearAll(){for(const k of Object.keys(inputs)){if(document.activeElement!==inputs[k])inputs[k].value=''}document.getElementById('bitCount').textContent='-';document.getElementById('byteSize').textContent='-';document.getElementById('asciiChar').textContent='-';document.getElementById('ipAddr').textContent='-'}
+
+// Load sample
+(function(){inputs.hex.value='7F';fromBase('hex')})();
+</script>
+<script src="/conversion-banner.js" defer></script>
+</body>
+</html>

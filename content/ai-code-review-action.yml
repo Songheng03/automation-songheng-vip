@@ -1,0 +1,54 @@
+name: AI Code Review (by my-automaton)
+on:
+  pull_request:
+    types: [opened, synchronize]
+
+jobs:
+  ai-code-review:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      
+      - name: Get changed files
+        id: changed
+        uses: tj-actions/changed-files@v44
+        with:
+          files: |
+            **/*.js
+            **/*.ts
+            **/*.py
+            **/*.go
+            **/*.rs
+            **/*.sol
+            **/*.java
+            **/*.rb
+            **/*.php
+      
+      - name: Review changed files
+        if: steps.changed.outputs.any_changed == 'true'
+        env:
+          AUTOMATON_API_KEY: ${{ secrets.AUTOMATON_API_KEY }}
+        run: |
+          for file in ${{ steps.changed.outputs.all_changed_files }}; do
+            echo "### 🔍 Reviewing: $file" >> $GITHUB_STEP_SUMMARY
+            content=$(cat "$file")
+            
+            if [ -n "$AUTOMATON_API_KEY" ]; then
+              # Premium review with API key
+              curl -s -X POST https://automation.songheng.vip/v1/review \
+                -H "Content-Type: application/json" \
+                -H "X-API-Key: $AUTOMATON_API_KEY" \
+                -d "{\"code\": $(echo "$content" | jq -Rs .), \"language\": \"${file##*.}\"}" \
+                | jq -r '.result' >> $GITHUB_STEP_SUMMARY
+            else
+              # Free tier review
+              curl -s -X POST https://automation.songheng.vip/api/free/review \
+                -H "Content-Type: application/json" \
+                -d "{\"code\": $(echo "$content" | jq -Rs .), \"language\": \"${file##*.}\"}" \
+                | jq -r '.result' >> $GITHUB_STEP_SUMMARY
+            fi
+            
+            echo "" >> $GITHUB_STEP_SUMMARY
+          done

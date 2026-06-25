@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="utf-8"><title>Admin — my-automaton</title>
+<meta name="description" content="Service admin dashboard for my-automaton AI services">
+<style>body{font-family:sans-serif;max-width:900px;margin:0 auto;padding:24px;background:#0d1117;color:#c9d1d9}
+h1,h2{color:#58a6ff}a{color:#58a6ff}pre{background:#161b22;padding:12px;border-radius:6px;overflow:auto}
+.card{background:#161b22;border:1px solid #30363d;border-radius:6px;padding:16px;margin:12px 0}
+.card h3{margin:0 0 8px 0;color:#f0f6fc}.stat{font-size:24px;font-weight:bold;color:#3fb950}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+button{background:#238636;color:#fff;border:none;padding:8px 16px;border-radius:6px;cursor:pointer}
+button:hover{background:#2ea043}input,select{padding:8px;border:1px solid #30363d;border-radius:4px;background:#0d1117;color:#c9d1d9;width:100%}
+#result{white-space:pre-wrap;margin-top:12px;background:#161b22;padding:8px;border-radius:4px}
+</style>
+
+<!-- Open Graph / Social Meta Tags -->
+<meta property="og:title" content="Admin — my-automaton" />
+<meta property="og:description" content="Service admin dashboard for my-automaton AI services" />
+<meta property="og:image" content="https://automation.songheng.vip/og-image.png" />
+<meta property="og:url" content="https://automation.songheng.vip/admin.html" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="my-automaton" />
+<meta property="og:locale" content="en_US" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Admin — my-automaton" />
+<meta name="twitter:description" content="Service admin dashboard for my-automaton AI services" />
+<meta name="twitter:image" content="https://automation.songheng.vip/og-image.png" />
+  <link rel="canonical" href="https://automation.songheng.vip/admin.html">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "Admin — my-automaton",
+  "description": "Service admin dashboard for my-automaton AI services",
+  "url": "https://automation.songheng.vip/admin.html"
+}
+</script>
+</head>
+<body>
+<div style="background:#161b22;border-bottom:1px solid #30363d;padding:10px 20px;font-size:.85rem;display:flex;gap:16px;align-items:center;flex-wrap:wrap"><a href="/" style="color:#58a6ff;text-decoration:none;font-weight:600">🏠 Home</a><span style="color:#484f58">|</span><a href="/pricing.html" style="color:#8b949e;text-decoration:none">Pricing</a><a href="/api-docs.html" style="color:#8b949e;text-decoration:none">API</a><a href="/playground.html" style="color:#8b949e;text-decoration:none">Playground</a></div>
+
+<h1>🔧 Gateway Admin</h1>
+<p>Wallet: <code>0x76eADdEBFfb6a61DD071f97F4508467fc55dd113</code></p>
+<p>Chain: Base · USDC · x402 micropayments</p>
+
+<div class="grid">
+  <div class="card"><h3>Total Requests</h3><div class="stat" id="total">-</div></div>
+  <div class="card"><h3>Premium Calls</h3><div class="stat" id="premium">-</div></div>
+  <div class="card"><h3>Free Calls</h3><div class="stat" id="free">-</div></div>
+  <div class="card"><h3>Payments</h3><div class="stat" id="payments">-</div></div>
+</div>
+
+<div class="card">
+  <h3>Actions</h3>
+  <button onclick="pingIndexNow()">📡 Ping IndexNow</button>
+  <button onclick="rebuildSitemap()">🗺️ Rebuild Sitemap</button>
+  <button onclick="refreshStats()">🔄 Refresh Stats</button>
+  <div id="result"></div>
+</div>
+
+<div class="card">
+  <h3>Traffic by Path</h3>
+  <div id="byPath"></div>
+</div>
+
+<script>
+async function refreshStats(){
+  const r=await fetch('/api/stats/overview');
+  const d=await r.json();
+  document.getElementById('total').textContent=d.total||0;
+  document.getElementById('premium').textContent=d.premium||0;
+  document.getElementById('free').textContent=d.free||0;
+  document.getElementById('payments').textContent=d.payments||0;
+  const bp=document.getElementById('byPath');
+  if(d.byPath){
+    let h='<table style="width:100%"><tr><th>Path</th><th>Count</th></tr>';
+    Object.entries(d.byPath).sort((a,b)=>b[1]-a[1]).slice(0,15).forEach(([p,c])=>{
+      h+=`<tr><td>${p}</td><td>${c}</td></tr>`;
+    });
+    h+='</table>';
+    bp.innerHTML=h;
+  }
+}
+async function pingIndexNow(){
+  document.getElementById('result').textContent='Pinging IndexNow...';
+  const r=await fetch('/api/ping-indexnow',{method:'POST'});
+  const d=await r.json();
+  document.getElementById('result').textContent=JSON.stringify(d,null,2);
+}
+async function rebuildSitemap(){
+  document.getElementById('result').textContent='Rebuilding sitemap...';
+  const r=await fetch('/api/rebuild-sitemap',{method:'POST'});
+  const d=await r.json();
+  document.getElementById('result').textContent=JSON.stringify(d,null,2);
+  refreshStats();
+}
+refreshStats();
+</script>
+<script src="/conversion-banner.js" defer></script>
+</body>
+</html>

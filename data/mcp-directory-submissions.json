@@ -1,0 +1,32 @@
+{
+  "submitted": "2026-06-19T02:12:52.958Z",
+  "results": [
+    {
+      "directory": "Smithery.ai",
+      "status": 502,
+      "detail": "Missing manifest"
+    },
+    {
+      "directory": "MCP JSON-RPC",
+      "status": 502,
+      "detail": "Missing"
+    },
+    {
+      "directory": "OpenAI Tool Format",
+      "status": 502,
+      "detail": "Missing"
+    },
+    {
+      "directory": "GitHub README",
+      "status": "generated",
+      "detail": "/content/github-readme-template.md"
+    }
+  ],
+  "next_steps": [
+    "Submit to MCP.so manually at https://mcp.so",
+    "Submit to Glama.ai at https://glama.ai/mcp/servers",
+    "Create GitHub repo with README and push",
+    "Submit to OpenTools at https://opentools.ai",
+    "List on AgentHub at https://agenthub.dev"
+  ]
+}

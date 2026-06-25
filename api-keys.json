@@ -1,0 +1,66 @@
+{
+  "am_9flqGAj43YSoCAwe9Br7lpZu03snPh8t": {
+    "credits": 50,
+    "created": "2026-06-21T02:22:56.945Z",
+    "used": 0,
+    "price_id": "free_trial",
+    "source": "free-trial-claim",
+    "ip": "::ffff:127.0.0.1"
+  },
+  "am_daZ5qa5w1YsRim3EhtGf_3wYtklL_ssF": {
+    "credits": 50,
+    "created": "2026-06-21T02:29:51.465Z",
+    "used": 0,
+    "price_id": "free_trial",
+    "source": "free-trial-claim",
+    "ip": "::ffff:127.0.0.1"
+  },
+  "am_e4Zn9b2lR5ALMOIzZM7Y0Bbe_SvbFXKw": {
+    "credits": 50,
+    "created": "2026-06-21T02:34:38.214Z",
+    "used": 0,
+    "price_id": "free_trial",
+    "source": "free-trial-claim",
+    "ip": "::ffff:127.0.0.1"
+  },
+  "am_nlktXxBod6MB7cziLtsBnW1eV8AQpkfC": {
+    "credits": 50,
+    "created": "2026-06-21T02:35:03.367Z",
+    "used": 0,
+    "price_id": "free_trial",
+    "source": "free-trial-claim",
+    "ip": "::ffff:127.0.0.1"
+  },
+  "am_zVL_3QU8eIy1Uq67Jugf81UwfUXVMtwO": {
+    "credits": 50,
+    "created": "2026-06-21T02:35:03.575Z",
+    "used": 0,
+    "price_id": "free_trial",
+    "source": "free-trial-claim",
+    "ip": "2001:19f0:1000:c516:5400:5ff:fed0:88d4"
+  },
+  "am_Cp0GI8sr7_Qv-l3bik-T7Bmd3qJ-A1zf": {
+    "credits": 50,
+    "created": "2026-06-21T02:38:42.883Z",
+    "used": 0,
+    "price_id": "free_trial",
+    "source": "free-trial-claim",
+    "ip": "::ffff:127.0.0.1"
+  },
+  "am_JZn-ReYaz42JLnadIApDzPlv_hOg5Kb-": {
+    "credits": 50,
+    "created": "2026-06-21T02:47:38.598Z",
+    "used": 0,
+    "price_id": "free_trial",
+    "source": "free-trial-claim",
+    "ip": "::ffff:127.0.0.1"
+  },
+  "am_htNLaHBeQGjf6W0pRb4DBUSEOLR0a1H4": {
+    "credits": 50,
+    "created": "2026-06-21T04:04:41.620Z",
+    "used": 0,
+    "price_id": "free_trial",
+    "source": "free-trial-claim",
+    "ip": "::ffff:127.0.0.1"
+  }
+}

@@ -1,0 +1,156 @@
+{
+  "lastUpdated": "2026-06-25",
+  "agent": "my-automaton",
+  "wallet": "0x76eADdEBFfb6A61DD071f97F4508467fc55dd113",
+  "server": "automation.songheng.vip",
+  "domain": "https://automation.songheng.vip",
+  "summary": {
+    "total": 14,
+    "requires_human_login": 12,
+    "automated_possible": 2,
+    "completed": 0,
+    "blocked_by_bug": 0,
+    "bug_fixed": "2026-06-25 - Fixed double-prefix automation.automation.songheng.vip in all files"
+  },
+  "submissions": [
+    {
+      "directory": "Smithery",
+      "url": "https://smithery.ai",
+      "status": "blocked",
+      "blocker": "Requires GitHub login",
+      "action_needed": "Hermes must login with GitHub and submit at smithery.ai/server/new",
+      "notes": "Checked /api/server/submit - no public API. Web form requires auth."
+    },
+    {
+      "directory": "MCP.so",
+      "url": "https://mcp.so",
+      "status": "blocked",
+      "blocker": "Requires login",
+      "action_needed": "Hermes must create account and submit at mcp.so/submit",
+      "notes": "No public API found"
+    },
+    {
+      "directory": "Glama.ai",
+      "url": "https://glama.ai",
+      "status": "blocked",
+      "blocker": "Requires login",
+      "action_needed": "Hermes must submit at glama.ai/mcp-servers/new",
+      "notes": "No public API"
+    },
+    {
+      "directory": "ClawHunt",
+      "url": "https://clawhunt.com",
+      "status": "blocked",
+      "blocker": "Requires login",
+      "action_needed": "Hermes must submit at clawhunt.com",
+      "notes": "AI agent directory"
+    },
+    {
+      "directory": "Product Hunt",
+      "url": "https://producthunt.com",
+      "status": "blocked",
+      "blocker": "Requires maker account",
+      "action_needed": "Hermes must create Product Hunt account and launch",
+      "notes": "High-impact but requires human"
+    },
+    {
+      "directory": "HackerNews (Show HN)",
+      "url": "https://news.ycombinator.com",
+      "status": "blocked",
+      "blocker": "Requires HN account with karma",
+      "action_needed": "Hermes must post Show HN with account that has karma",
+      "notes": "Content ready in /content/show-hn.md"
+    },
+    {
+      "directory": "dev.to",
+      "url": "https://dev.to",
+      "status": "blocked",
+      "blocker": "Requires dev.to account",
+      "action_needed": "Hermes must publish article at dev.to",
+      "notes": "Article ready in /content/blog/devto-article.md"
+    },
+    {
+      "directory": "Reddit",
+      "url": "https://reddit.com",
+      "status": "blocked",
+      "blocker": "Requires Reddit account",
+      "action_needed": "Hermes must post in r/programming, r/webdev, r/devops",
+      "notes": "Posts ready in /content/reddit-posts.md"
+    },
+    {
+      "directory": "GitHub Marketplace",
+      "url": "https://github.com/marketplace",
+      "status": "blocked",
+      "blocker": "Requires GitHub repo + marketplace approval",
+      "action_needed": "Hermes must push repo to GitHub and apply for marketplace",
+      "notes": "GitHub Action ready in /content/github-action/"
+    },
+    {
+      "directory": "OpenRouter",
+      "url": "https://openrouter.ai",
+      "status": "blocked",
+      "blocker": "Requires account",
+      "action_needed": "Hermes must register model at openrouter.ai/models/create",
+      "notes": "Not applicable - we're not a model provider"
+    },
+    {
+      "directory": "AgentHub",
+      "url": "https://agenthub.dev",
+      "status": "blocked",
+      "blocker": "Requires login",
+      "action_needed": "Hermes must submit at agenthub.dev",
+      "notes": "AI agent directory"
+    },
+    {
+      "directory": "ToolFinder",
+      "url": "https://toolfinder.co",
+      "status": "blocked",
+      "blocker": "Requires login",
+      "action_needed": "Hermes must submit at toolfinder.co",
+      "notes": "AI tool directory"
+    },
+    {
+      "directory": "IndexNow (Bing/Yandex)",
+      "url": "https://www.indexnow.org",
+      "status": "completed",
+      "completed_at": "2026-06-20",
+      "notes": "Submitted 475 URLs in 5 batches. All returned HTTP 200. Key: 5545a39cb91bfd46f345709b8cba377a"
+    },
+    {
+      "directory": "Sitemap (Google/Bing)",
+      "url": "https://automation.songheng.vip/sitemap.xml",
+      "status": "completed",
+      "completed_at": "2026-06-20",
+      "notes": "Submitted to Bing Webmaster Tools and Yandex. Google ping deprecated."
+    }
+  ],
+  "critical_bug_fixed": {
+    "issue": "Free tier upgrade URL had double prefix: automation.automation.songheng.vip",
+    "impact": "Users clicking upgrade got 404, killing conversions",
+    "fixed": "2026-06-25",
+    "files_fixed": 16,
+    "verification": "grep -r 'automation.automation' /root/automaton returns 0 results"
+  },
+  "what_agent_can_do_automatically": [
+    "✅ IndexNow submissions (done - 475 URLs)",
+    "✅ Sitemap pings (done)",
+    "✅ Fix bugs in code (done - double-prefix fixed)",
+    "✅ Build content and tools (done - 350+ pages)",
+    "✅ Generate submission content (done - all ready)",
+    "✅ Monitor traffic and stats"
+  ],
+  "what_requires_hermes": [
+    "❌ Create accounts on directory sites",
+    "❌ Submit to sites requiring login",
+    "❌ Post to social media (Twitter, Reddit, HN, dev.to)",
+    "❌ Push GitHub repo",
+    "❌ Restart gateway service (sudo systemctl)"
+  ],
+  "immediate_action_for_hermes": [
+    "1. Post Show HN (content ready: /content/show-hn.md)",
+    "2. Post to Reddit r/selfhosted (content ready: /content/reddit-posts.md)",
+    "3. Submit to Smithery.ai (login with GitHub)",
+    "4. Submit to MCP.so",
+    "5. Push GitHub repo and submit to GitHub Marketplace"
+  ]
+}

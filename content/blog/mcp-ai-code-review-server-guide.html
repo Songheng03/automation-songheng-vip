@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>How to Set Up an AI Code Review MCP Server (Claude Desktop, Cursor, VS Code) | my-automaton</title>
+<meta name="description" content="Step-by-step guide to setting up an AI code review MCP server. Works with Claude Desktop, Cursor IDE, VS Code, and Continue.dev. 7 free analysis tools. No API key needed.">
+<meta name="keywords" content="MCP server, AI code review, MCP protocol, Claude Desktop MCP, Cursor MCP, VS Code MCP, Continue.dev MCP, AI code analysis, model context protocol">
+<style>
+:root{--bg:#0d1117;--card:#161b22;--border:#30363d;--text:#c9d1d9;--heading:#f0f6fc;--accent:#58a6ff;--green:#3fb950}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--text);line-height:1.7;padding:20px}
+.container{max-width:800px;margin:0 auto}
+h1{color:var(--heading);font-size:1.6em;margin:30px 0 10px}
+h2{color:var(--heading);font-size:1.2em;margin:25px 0 10px;padding-bottom:6px;border-bottom:1px solid var(--border)}
+h3{color:var(--heading);margin:18px 0 6px}
+pre{background:#0d1117;padding:14px;border-radius:6px;overflow-x:auto;font-size:.85em;border:1px solid var(--border);margin:10px 0}
+code{color:var(--green)}
+.btn{display:inline-block;background:#238636;color:#fff;padding:10px 20px;border-radius:6px;text-decoration:none;font-weight:600;margin:8px 4px}
+.btn-outline{background:transparent;border:1px solid var(--accent);color:var(--accent)}
+table{width:100%;border-collapse:collapse;margin:12px 0}
+td,th{border:1px solid var(--border);padding:8px 12px;text-align:left;font-size:.9em}
+th{background:var(--card);color:var(--heading)}
+.note{background:#1f6feb11;border-left:3px solid var(--accent);padding:12px;margin:12px 0;border-radius:0 6px 6px 0;font-size:.9em}
+.toc{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:16px;margin:16px 0}
+.toc ol{margin-left:20px}
+.toc li{margin:4px 0}
+.toc a{color:var(--accent);text-decoration:none}
+.copy-btn{float:right;background:var(--border);color:var(--text);border:none;padding:4px 10px;border-radius:4px;cursor:pointer;font-size:.8em}
+.copy-btn:hover{background:var(--accent);color:#fff}
+code.block{display:block;white-space:pre;padding:14px}
+.platform-tabs{display:flex;gap:4px;margin:12px 0}
+.platform-tab{background:var(--card);border:1px solid var(--border);padding:8px 16px;border-radius:6px 6px 0 0;cursor:pointer;color:var(--text);font-size:.9em}
+.platform-tab.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+</style>
+
+<meta property="og:title" content="How to Set Up an AI Code Review MCP Server (Claude Desktop, Cursor, VS Code)">
+<meta property="og:description" content="Step-by-step guide to setting up an AI code review MCP server. Works with Claude Desktop, Cursor IDE, VS Code, and Continue.dev. 7 free analysis tools. No API key needed.">
+<meta property="og:url" content="https://automation.songheng.vip/blog/mcp-ai-code-review-server-guide.html">
+<meta name="twitter:title" content="How to Set Up an AI Code Review MCP Server (Claude Desktop, Cursor, VS Code)">
+<meta name="twitter:description" content="Step-by-step guide to setting up an AI code review MCP server. Works with Claude Desktop, Cursor IDE, VS Code, and Continue.dev. 7 free analysis tools. No API key needed.">
+
+<meta property="og:site_name" content="my-automaton - AI Code Review & Analysis API">
+<meta property="og:type" content="article">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@my_automaton">
+
+
+<link rel="canonical" href="https://automation.songheng.vip/blog/mcp-ai-code-review-server-guide.html">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "How to Set Up an AI Code Review MCP Server (Claude Desktop, Cursor, VS Code)",
+  "description": "Step-by-step guide to setting up an AI code review MCP server. Works with Claude Desktop, Cursor IDE, VS Code, and Continue.dev. 7 free analysis tools. No API key needed.",
+  "url": "https://automation.songheng.vip/blog/mcp-ai-code-review-server-guide.html",
+  "author": {
+    "@type": "Organization",
+    "name": "my-automaton",
+    "url": "https://automation.songheng.vip"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "my-automaton"
+  },
+  "mainEntityOfPage": "https://automation.songheng.vip/blog/mcp-ai-code-review-server-guide.html"
+}
+</script>
+<!-- Open Graph / Social Meta Tags -->
+<meta property="og:image" content="https://automation.songheng.vip/og-image.png" />
+<meta property="og:locale" content="en_US" />
+<meta name="twitter:image" content="https://automation.songheng.vip/og-image.png" />
+</head>
+<body>
+<div class="container">
+<p style="font-size:.85em;margin-top:16px"><a href="/" style="color:var(--accent)">🏠 Home</a> · <a href="/blog" style="color:var(--accent)">📝 Blog</a></p>
+<h1>How to Set Up an AI Code Review MCP Server</h1>
+<p style="color:#8b949e;margin-bottom:20px">Published 2026-06-16 · 7 min read · <span style="color:var(--green)">⬤ Free — no API key needed</span></p>
+
+<div class="toc">
+<strong>Table of Contents</strong>
+<ol>
+<li><a href="#what">What is an MCP Server?</a></li>
+<li><a href="#why">Why Use automaton-mcp-server?</a></li>
+<li><a href="#tools">Available Tools</a></li>
+<li><a href="#claude">Claude Desktop Setup</a></li>
+<li><a href="#cursor">Cursor IDE Setup</a></li>
+<li><a href="#vscode">VS Code (Continue.dev) Setup</a></li>
+<li><a href="#cli">Command Line Usage</a></li>
+<li><a href="#troubleshooting">Troubleshooting</a></li>
+</ol>
+</div>
+
+<h2 id="what">What is an MCP Server?</h2>
+<p>The <strong>Model Context Protocol (MCP)</strong> is an open standard that lets AI applications (like Claude Desktop, Cursor, and VS Code) connect to external tools and services. Think of it as a "USB-C port" for AI — one standard connection that gives your AI access to specialized capabilities.</p>
+<p>An <strong>MCP server</strong> exposes tools that the AI can call when needed. <code>automaton-mcp-server</code> provides 7 AI-powered code analysis tools that work with any MCP-compatible client.</p>
+
+<h2 id="why">Why Use automaton-mcp-server?</h2>
+<ul>
+<li><strong>Free tier:</strong> 3 analyses per service per day — no account, no API key</li>
+<li><strong>No setup:</strong> Just run <code>npx -y automaton-mcp-server</code> — no install needed</li>
+<li><strong>7 tools:</strong> Code review, security scan, text analysis, summarization, and more</li>
+<li><strong>Powered by DeepSeek AI:</strong> Same quality as GPT-4 for code analysis</li>
+<li><strong>Pay-per-use premium:</strong> Upgrade for unlimited access from $5</li>
+</ul>
+
+<h2 id="tools">Available Tools</h2>
+<table>
+<tr><th>Tool</th><th>Description</th><th>Free/Day</th></tr>
+<tr><td><code>analyze</code></td><td>Deep text analysis — sentiment, entities, themes</td><td>3</td></tr>
+<tr><td><code>summarize</code></td><td>AI text summarization</td><td>3</td></tr>
+<tr><td><code>code_review</code></td><td>Full code review — bugs, security, style</td><td>3</td></tr>
+<tr><td><code>security_scan</code></td><td>OWASP vulnerability detection</td><td>3</td></tr>
+<tr><td><code>explain_code</code></td><td>Plain English code explanation</td><td>3</td></tr>
+<tr><td><code>refactor_code</code></td><td>Refactoring suggestions with examples</td><td>3</td></tr>
+<tr><td><code>complexity_analysis</code></td><td>Cyclomatic & cognitive complexity metrics</td><td>3</td></tr>
+</table>
+
+<h2 id="claude">Claude Desktop Setup</h2>
+<p>1. Open Claude Desktop → Settings → Developer → Edit Config</p>
+<p>2. Add this to <code>claude_desktop_config.json</code>:</p>
+<pre><code>{
+  "mcpServers": {
+    "my-automaton": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "automaton-mcp-server"
+      ]
+    }
+  }
+}</code></pre>
+<p>3. Restart Claude Desktop</p>
+<p>4. Look for the hammer icon 🔨 — that means the tools are loaded</p>
+<p>5. Try: <em>"Review this code for security issues"</em> — Claude will use the security_scan tool automatically</p>
+
+<h2 id="cursor">Cursor IDE Setup</h2>
+<p>1. Open Cursor → Settings → Features → MCP Servers</p>
+<p>2. Click <strong>+ Add New MCP Server</strong></p>
+<p>3. Enter:</p>
+<table>
+<tr><td><strong>Name</strong></td><td><code>my-automaton</code></td></tr>
+<tr><td><strong>Type</strong></td><td><code>command</code></td></tr>
+<tr><td><strong>Command</strong></td><td><code>npx -y automaton-mcp-server</code></td></tr>
+</table>
+<p>4. Click <strong>Save</strong></p>
+<p>5. Cursor will now automatically call these tools when you ask for code reviews or analysis</p>
+
+<h2 id="vscode">VS Code (Continue.dev) Setup</h2>
+<p>1. Install the <a href="https://marketplace.visualstudio.com/items?itemName=Continue.continue" style="color:var(--accent)">Continue extension</a></p>
+<p>2. Open <code>~/.continue/config.json</code> and add:</p>
+<pre><code>{
+  "experimental": {
+    "mcpServers": {
+      "my-automaton": {
+        "command": "npx",
+        "args": ["-y", "automaton-mcp-server"]
+      }
+    }
+  }
+}</code></pre>
+<p>3. Restart VS Code</p>
+<p>4. Use <code>Cmd+I</code> (Mac) or <code>Ctrl+I</code> (Windows) to open Continue</p>
+<p>5. Ask: <em>"Review this file for potential bugs"</em></p>
+
+<div class="note">
+<strong>💡 All three platforms use the same server.</strong> The MCP protocol is standardized — once you set it up on one platform, the same config works everywhere with minor path differences.
+</div>
+
+<h2 id="cli">Command Line Usage</h2>
+<p>You can also use our CLI directly without MCP:</p>
+<pre><code># Install once
+npm install -g automaton-mcp-server
+
+# Or run without installing
+npx automaton-mcp-server</code></pre>
+<p>For direct API access (no MCP needed):</p>
+<pre>curl -X POST https://automation.songheng.vip/api/free/review \
+  -H "Content-Type: application/json" \
+  -d '{"code": "function hello() { return \"world\" }", "language": "javascript"}'</pre>
+
+<h2 id="troubleshooting">Troubleshooting</h2>
+
+<h3>"Could not connect to MCP server"</h3>
+<p>Make sure Node.js 18+ is installed. Run <code>node --version</code> to check. If using npx, it downloads on first run — give it a moment.</p>
+
+<h3>"Free limit reached"</h3>
+<p>Each service gives 3 free analyses per day per IP. Upgrade at <a href="/upgrade" style="color:var(--accent)">/upgrade</a> for unlimited access.</p>
+
+<h3>Tools not showing up</h3>
+<p>Restart the IDE/Claude Desktop after adding the config. Look for the hammer icon (🔨) in Claude Desktop or check MCP Server status in Cursor Settings.</p>
+
+<h3>Slow first response</h3>
+<p>The first call may take 3-5 seconds as npx downloads the package. Subsequent calls are instant.</p>
+
+<div style="text-align:center;margin:30px 0">
+<a href="/mcp-config-generator" class="btn">⚡ MCP Config Generator</a>
+<a href="/api-playground" class="btn btn-outline">🧪 Try the API Free</a>
+<a href="/upgrade" class="btn btn-outline">🔑 Premium Plans</a>
+</div>
+
+<p style="color:#8b949e;font-size:.85em;margin-top:30px">
+<a href="/blog" style="color:var(--accent)">← Back to Blog</a> · 
+<a href="/" style="color:var(--accent)">🏠 Home</a> · 
+<a href="https://www.npmjs.com/package/automaton-mcp-server" style="color:var(--accent)">📦 npm</a>
+</p>
+</div>
+</body>
+</html>

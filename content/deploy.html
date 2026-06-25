@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="canonical" href="https://automation.songheng.vip/deploy.html">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>One-Click Deploy — x402 Premium API Integration</title>
+  <meta name="description" content="Copy-paste code snippets in Python, JavaScript, and curl to integrate the premium x402 AI APIs. Analyze, summarize, review, and more — no signup, 3 free requests/day.">
+  <meta property="og:title" content="One-Click Deploy — x402 Premium API Integration">
+  <meta property="og:description" content="Copy-paste code to call premium AI APIs via x402 micropayments. Python, JavaScript, curl examples for analyze, summarize, code review, and more.">
+  <meta property="og:url" content="https://automation.songheng.vip/deploy.html">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="One-Click Deploy — x402 Premium API Integration">
+  <meta name="twitter:description" content="Copy-paste code for premium x402 AI APIs. Python, JS, curl — analyze, summarize, review, security scan.">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#0a0a1a;color:#e0e0f0;padding:20px;line-height:1.6}
+.container{max-width:960px;margin:0 auto}
+.header{text-align:center;padding:30px 0 20px}
+.header h1{color:#6c5ce7;font-size:2.4rem;margin-bottom:8px}
+.header .tagline{color:#636e72;font-size:1.05rem}
+.header a{color:#6c5ce7;text-decoration:none;margin:0 8px;font-weight:600}
+h2{color:#a29bfe;font-size:1.4rem;margin:30px 0 15px;border-bottom:1px solid #2a2a4a;padding-bottom:5px}
+h3{color:#dfe6e9;font-size:1.1rem;margin:20px 0 10px}
+p{margin:10px 0}
+code{background:#1a1a3a;padding:2px 6px;border-radius:4px;font-size:.9em;color:#a29bfe}
+pre{background:#12122a;padding:15px;border-radius:8px;overflow-x:auto;margin:10px 0;border:1px solid #2a2a4a;font-size:.85rem;position:relative}
+pre code{background:none;padding:0;color:#e0e0f0}
+.note{background:#2d1f5e20;border-left:3px solid #6c5ce7;padding:12px 15px;margin:15px 0;border-radius:0 6px 6px 0;font-size:.9rem}
+.btn{display:inline-block;background:#6c5ce7;color:#fff;padding:12px 24px;border-radius:6px;text-decoration:none;font-weight:700;margin:10px 5px}
+.btn:hover{background:#5a4bd1}
+.btn-outline{background:transparent;border:2px solid #6c5ce7;color:#a29bfe}
+.tag{display:inline-block;padding:3px 10px;border-radius:12px;font-size:.75rem;font-weight:600}
+.tag-free{background:#1b4a1b80;color:#3fb950;border:1px solid #3fb95040}
+.tag-premium{background:#4a3b1b80;color:#d29922;border:1px solid #d2992240}
+.endpoint-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:10px;margin:15px 0}
+.endpoint-card{background:#12122a;padding:14px;border-radius:8px;border:1px solid #2a2a4a;text-align:center}
+.endpoint-card .method{font-weight:700;color:#6c5ce7}
+.endpoint-card .path{font-family:monospace;font-size:.85rem;margin:4px 0}
+.endpoint-card .desc{font-size:.8rem;color:#636e72}
+.copy-btn{position:absolute;top:8px;right:8px;background:#1a1a3a;border:1px solid #2a2a4a;color:#a29bfe;padding:4px 10px;border-radius:4px;cursor:pointer;font-size:.75rem;transition:all .15s}
+.copy-btn:hover{background:#2a2a4a;color:#dfe6e9}
+.table-wrap{overflow-x:auto;margin:15px 0}
+table{width:100%;border-collapse:collapse}
+th,td{padding:10px 12px;text-align:left;border-bottom:1px solid #2a2a4a}
+th{color:#a29bfe;font-weight:600;background:#12122a}
+td{color:#b0b0c0;font-size:.9rem}
+tr:hover td{background:#12122a30}
+.steps{background:#12122a;border-radius:10px;padding:25px;margin:20px 0;border:1px solid #2a2a4a}
+.steps ol{margin-left:20px}
+.steps li{margin:10px 0}
+.footer{text-align:center;color:#636e72;font-size:.85rem;margin:40px 0 20px}
+.footer a{color:#6c5ce7}
+.lang-tabs{display:flex;gap:4px;margin:15px 0 0}
+.lang-tab{padding:8px 18px;background:#1a1a3a;border:1px solid #2a2a4a;border-bottom:0;border-radius:6px 6px 0 0;cursor:pointer;font-size:.85rem;color:#a29bfe;font-weight:500;transition:all .15s}
+.lang-tab:hover{background:#2a2a4a}
+.lang-tab.active{background:#12122a;color:#dfe6e9;border-color:#6c5ce7}
+.lang-content{display:none}
+.lang-content.active{display:block}
+</style>
+<script src="/js/analytics.js"></script>
+<!-- Open Graph / Social Meta Tags -->
+<meta property="og:image" content="https://automation.songheng.vip/og-image.png" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="my-automaton" />
+<meta property="og:locale" content="en_US" />
+<meta name="twitter:image" content="https://automation.songheng.vip/og-image.png" />
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "One-Click Deploy — x402 Premium API Integration",
+  "description": "Copy-paste code snippets in Python, JavaScript, and curl to integrate the premium x402 AI APIs. Analyze, summarize, review, and more — no signup, 3 free requests/day.",
+  "url": "https://automation.songheng.vip/deploy.html"
+}
+</script>
+</head>
+<body>
+<div class="container">
+
+<div class="header">
+  <h1>🚀 One-Click Deploy</h1>
+  <p class="tagline">Copy-paste code to call premium x402 AI APIs in your stack</p>
+  <p>
+    <a href="/">Home</a> · <a href="/api-playground">Playground</a> ·
+    <a href="/api-docs">Docs</a> · <a href="/dashboard">Dashboard</a> ·
+    <a href="/upgrade">Get Credits</a>
+  </p>
+</div>
+
+<div class="note">
+  <strong>💡 Free Tier:</strong> 3 requests per day per IP on <code>/free/*</code> endpoints.
+  No API key needed. Hit the limit? Get an API key at <a href="/upgrade" style="color:#6c5ce7">/upgrade</a>
+  or pay per request via <a href="/x402-guide" style="color:#6c5ce7">x402 micropayments</a>.
+</div>
+
+<h2>📡 Available Endpoints</h2>
+<div class="endpoint-grid">
+  <div class="endpoint-card">
+    <div class="method">POST</div>
+    <div class="path"><code>/v1/analyze</code></div>
+    <div class="desc">Text analysis — sentiment, entities, keywords</div>
+  </div>
+  <div class="endpoint-card">
+    <div class="method">POST</div>
+    <div class="path"><code>/v1/summarize</code></div>
+    <div class="desc">AI-powered text summarization</div>
+  </div>
+  <div class="endpoint-card">
+    <div class="method">POST</div>
+    <div class="path"><code>/v1/review</code></div>
+    <div class="desc">Code review — bugs, security, style</div>
+  </div>
+  <div class="endpoint-card">
+    <div class="method">POST</div>
+    <div class="path"><code>/v1/security</code></div>
+    <div class="desc">Security audit — OWASP, vulnerabilities</div>
+  </div>
+  <div class="endpoint-card">
+    <div class="method">POST</div>
+    <div class="path"><code>/v1/explain</code></div>
+    <div class="desc">Code explanation in plain language</div>
+  </div>
+  <div class="endpoint-card">
+    <div class="method">POST</div>
+    <div class="path"><code>/v1/refactor</code></div>
+    <div class="desc">Refactoring with before/after suggestions</div>
+  </div>
+  <div class="endpoint-card">
+    <div class="method">POST</div>
+    <div class="path"><code>/v1/complexity</code></div>
+    <div class="desc">Cyclomatic complexity analysis</div>
+  </div>
+  <div class="endpoint-card">
+    <div class="method">POST</div>
+    <div class="path"><code>/v1/batch</code></div>
+    <div class="desc">Batch process up to 10 items</div>
+  </div>
+</div>
+
+<h2>📋 Pricing &amp; Rate Limits</h2>
+<div class="table-wrap">
+<table>
+  <tr><th>Endpoint</th><th>Free (3/day)</th><th>Premium Cost</th><th>Auth Method</th></tr>
+  <tr><td><code>/free/analyze</code></td><td>✅ 3/day</td><td>—</td><td>None (IP-based)</td></tr>
+  <tr><td><code>/v1/analyze</code></td><td>—</td><td>1 credit</td><td><code>X-API-Key</code></td></tr>
+  <tr><td><code>/v1/summarize</code></td><td>—</td><td>2 credits</td><td><code>X-API-Key</code></td></tr>
+  <tr><td><code>/v1/review</code></td><td>—</td><td>5 credits</td><td><code>X-API-Key</code></td></tr>
+  <tr><td><code>/v1/security</code></td><td>—</td><td>3 credits</td><td><code>X-API-Key</code></td></tr>
+  <tr><td><code>/v1/explain</code></td><td>—</td><td>2 credits</td><td><code>X-API-Key</code></td></tr>
+  <tr><td><code>/v1/refactor</code></td><td>—</td><td>5 credits</td><td><code>X-API-Key</code></td></tr>
+  <tr><td><code>/v1/complexity</code></td><td>—</td><td>2 credits</td><td><code>X-API-Key</code></td></tr>
+  <tr><td><code>/v1/batch</code></td><td>—</td><td>5 credits</td><td><code>X-API-Key</code></td></tr>
+</table>
+</div>
+
+<h2>🔑 Getting an API Key</h2>
+<div class="steps">
+<ol>
+  <li><strong>Choose a plan</strong> — Visit <a href="/upgrade" style="color:#6c5ce7">/upgrade</a> and pick Starter, Pro, or Business</li>
+  <li><strong>Pay</strong> — Checkout via Creem (card, crypto)</li>
+  <li><strong>Receive key</strong> — Your <code>API key</code> is shown on the success page</li>
+  <li><strong>Call APIs</strong> — Pass it as <code>X-API-Key</code> header in every request</li>
+</ol>
+</div>
+
+<h2>💻 Code Examples</h2>
+<p>Select your language below. Each snippet shows how to call the <code>/v1/analyze</code> endpoint. Replace the endpoint and payload for other services.</p>
+
+<div class="lang-tabs">
+  <div class="lang-tab active" onclick="switchLang('curl')">cURL</div>
+  <div class="lang-tab" onclick="switchLang('python')">Python</div>
+  <div class="lang-tab" onclick="switchLang('javascript')">JavaScript</div>
+  <div class="lang-tab" onclick="switchLang('node')">Node.js</div>
+  <div class="lang-tab" onclick="switchLang('go')">Go</div>
+</div>
+
+<!-- cURL -->
+<div id="lang-curl" class="lang-content active">
+<h3>Analyze Text</h3>
+<pre><span class="copy-btn" onclick="copyCode(this)">📋 Copy</span><code>curl -X POST https://automation.songheng.vip/v1/analyze \
+  -H "Content-Type: application/json" \
+  -H "X-API-Key: YOUR_API_KEY" \
+  -d '{"text": "Your text to analyze here", "mode": "analyze"}'</code></pre>
+
+<h3>Code Review</h3>
+<pre><span class="copy-btn" onclick="copyCode(this)">📋 Copy</span><code>curl -X POST https://automation.songheng.vip/v1/review \
+  -H "Content-Type: application/json" \
+  -H "X-API-Key: YOUR_API_KEY" \
+  -d '{"code": "function hello() { return \"world\"; }", "language": "javascript"}'</code></pre>
+
+<h3>Summarize Text</h3>
+<pre><span class="copy-btn" onclick="copyCode(this)">📋 Copy</span><code>curl -X POST https://automation.songheng.vip/v1/summarize \
+  -H "Content-Type: application/json" \
+  -H "X-API-Key: YOUR_API_KEY" \
+  -d '{"text": "Long text to summarize here..."}'</code></pre>
+
+<h3>Security Scan</h3>
+<pre><span class="copy-btn" onclick="copyCode(this)">📋 Copy</span><code>curl -X POST https://automation.songheng.vip/v1/security \
+  -H "Content-Type: application/json" \
+  -H "X-API-Key: YOUR_API_KEY" \
+  -d '{"code": "def get_user(id):\n    return db.query(f\"SELECT * FROM users WHERE id = {id}\")", "language": "python"}'</code></pre>
+
+<h3>Free Tier (no API key, 3/day)</h3>
+<pre><span class="copy-btn" onclick="copyCode(this)">📋 Copy</span><code>curl -X POST https://automation.songheng.vip/free/analyze \
+  -H "Content-Type: application/json" \
+  -d '{"text": "Analyze this for free!", "mode": "analyze"}'</code></pre>
+</div>
+
+<!-- Python -->
+<div id="lang-python" class="lang-content">
+<h3>Analyze Text</h3>
+<pre><span class="copy-btn" onclick="copyCode(this)">📋 Copy</span><code>import requests
+
+API_KEY = "YOUR_API_KEY"
+URL = "https://automation.songheng.vip/v1/analyze"
+
+def analyze_text(text):
+    resp = requests.post(
+        URL,
+        json={"text": text, "mode": "analyze"},
+        headers={"X-API-Key": API_KEY}
+    )
+    if resp.status_code == 200:
+        return resp.json()
+    elif resp.status_code == 402:
+        print("Insufficient credits. Upgrade at /upgrade")
+    else:
+        print(f"Error: {resp.status_code} {resp.text}")
+    return None
+
+result = analyze_text("Your text here")
+print(result)</code></pre>
+
+<h3>Code Review</h3>
+<pre><span class="copy-btn" onclick="copyCode(this)">📋 Copy</span><code>import requests
+
+API_KEY = "YOUR_API_KEY"
+
+def review_code(code, language="javascript"):
+    resp = requests.post(
+        "https://automation.songheng.vip/v1/review",
+        json={"code": code, "language": language},
+        headers={"X-API-Key": API_KEY}
+    )
+    return resp.json() if resp.status_code == 200 else resp.text
+
+result = review_code('console.log("hello")', "javascript")
+print(result)</code></pre>
+
+<h3>Free Tier (no API key needed)</h3>
+<pre><span class="copy-btn" onclick="copyCode(this)">📋 Copy</span><code>import requests
+
+def free_analyze(text):
+    resp = requests.post(
+        "https://automation.songheng.vip/free/analyze",
+        json={"text": text, "mode": "analyze"}
+    )
+    if resp.status_code == 200:
+        remaining = resp.headers.get("X-Free-Remaining", "0")
+        print(f"Free uses remaining today: {remaining}")
+        return resp.json()
+    elif resp.status_code == 429:
+        print("Rate limit reached (3/day). Get an API key at /upgrade")
+    return None
+
+result = free_analyze("Try the free API!")
+print(result)</code></pre>
+</div>
+
+<!-- JavaScript (Browser) -->
+<div id="lang-javascript" class="lang-content">
+<h3>Analyze Text</h3>
+<pre><span class="copy-btn" onclick="copyCode(this)">📋 Copy</span><code>const API_KEY = "YOUR_API_KEY";
+const BASE = "https://automation.songheng.vip";
+
+async function analyzeText(text) {
+  const res = await fetch(`${BASE}/v1/analyze`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "X-API-Key": API_KEY
+    },
+    body: JSON.stringify({ text, mode: "analyze" })
+  });
+
+  if (res.status === 200) {
+    return await res.json();
+  } else if (res.status === 402) {
+    console.error("Insufficient credits — upgrade at /upgrade");
+  } else {
+    console.error("Error:", await res.text());
+  }
+  return null;
+}
+
+analyzeText("Your text here").then(console.log);</code></pre>
+
+<h3>Code Review</h3>
+<pre><span class="copy-btn" onclick="copyCode(this)">📋 Copy</span><code>async function reviewCode(code, language = "javascript") {
+  const res = await fetch("https://automation.songheng.vip/v1/review", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "X-API-Key": "YOUR_API_KEY"
+    },
+    body: JSON.stringify({ code, language })
+  });
+  return res.ok ? await res.json() : await res.text();
+}
+
+reviewCode('function add(a,b) { return a + b }', "javascript").then(console.log);</code></pre>
+
+<h3>Free Tier (browser, no API key)</h3>
+<pre><span class="copy-btn" onclick="copyCode(this)">📋 Copy</span><code>async function freeAnalyze(text) {
+  const res = await fetch("https://automation.songheng.vip/free/analyze", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ text, mode: "analyze" })
+  });
+
+  if (res.status === 200) {
+    const remaining = res.headers.get("X-Free-Remaining");
+    console.log(`Free uses remaining: ${remaining}`);
+    return await res.json();
+  } else if (res.status === 429) {
+    console.error("Rate limited — 3/day limit reached. Get an API key.");
+  }
+  return null;
+}
+
+freeAnalyze("Analyze this text free!").then(console.log);</code></pre>
+</div>
+
+<!-- Node.js -->
+<div id="lang-node" class="lang-content">
+<h3>Analyze Text (with axios)</h3>
+<pre><span class="copy-btn" onclick="copyCode(this)">📋 Copy</span><code>const axios = require("axios");
+
+const API_KEY = "YOUR_API_KEY";
+
+async function analyzeText(text) {
+  try {
+    const { data, status, headers } = await axios.post(
+      "https://automation.songheng.vip/v1/analyze",
+      { text, mode: "analyze" },
+      { headers: { "X-API-Key": API_KEY } }
+    );
+    console.log(`Credits remaining: ${headers["x-credits-remaining"]}`);
+    return data;
+  } catch (err) {
+    if (err.response?.status === 402) {
+      console.error("Insufficient credits. Upgrade at /upgrade");
+    } else {
+      console.error(err.message);
+    }
+  }
+}
+
+analyzeText("Analyze this").then(console.log);</code></pre>
+
+<h3>Free Tier (Node.js)</h3>
+<pre><span class="copy-btn" onclick="copyCode(this)">📋 Copy</span><code>const axios = require("axios");
+
+async function freeAnalyze(text) {
+  try {
+    const { data, headers } = await axios.post(
+      "https://automation.songheng.vip/free/analyze",
+      { text, mode: "analyze" }
+    );
+    console.log(`Remaining today: ${headers["x-free-remaining"]}`);
+    return data;
+  } catch (err) {
+    if (err.response?.status === 429) {
+      console.error("Free limit reached (3/day). Get an API key.");
+    } else {
+      console.error(err.message);
+    }
+  }
+}
+
+freeAnalyze("Hello from Node.js!").then(console.log);</code></pre>
+</div>
+
+<!-- Go -->
+<div id="lang-go" class="lang-content">
+<h3>Analyze Text</h3>
+<pre><span class="copy-btn" onclick="copyCode(this)">📋 Copy</span><code>package main
+
+import (
+	"bytes"
+	"encoding/json"
+	"fmt"
+	"io"
+	"net/http"
+)
+
+func main() {
+	payload := map[string]string{
+		"text": "Your text here",
+		"mode": "analyze",
+	}
+	body, _ := json.Marshal(payload)
+
+	req, _ := http.NewRequest("POST",
+		"https://automation.songheng.vip/v1/analyze",
+		bytes.NewBuffer(body))
+	req.Header.Set("Content-Type", "application/json")
+	req.Header.Set("X-API-Key", "YOUR_API_KEY")
+
+	client := &http.Client{}
+	resp, err := client.Do(req)
+	if err != nil {
+		panic(err)
+	}
+	defer resp.Body.Close()
+
+	result, _ := io.ReadAll(resp.Body)
+	fmt.Println(string(result))
+}</code></pre>
+
+<h3>Free Tier (Go)</h3>
+<pre><span class="copy-btn" onclick="copyCode(this)">📋 Copy</span><code>package main
+
+import (
+	"bytes"
+	"encoding/json"
+	"fmt"
+	"io"
+	"net/http"
+)
+
+func main() {
+	payload := map[string]string{
+		"text": "Free analysis in Go!",
+		"mode": "analyze",
+	}
+	body, _ := json.Marshal(payload)
+
+	resp, err := http.Post(
+		"https://automation.songheng.vip/free/analyze",
+		"application/json",
+		bytes.NewBuffer(body),
+	)
+	if err != nil {
+		panic(err)
+	}
+	defer resp.Body.Close()
+
+	fmt.Println("Free remaining:", resp.Header.Get("X-Free-Remaining"))
+	result, _ := io.ReadAll(resp.Body)
+	fmt.Println(string(result))
+}</code></pre>
+</div>
+
+<h2>📦 Response Format</h2>
+<p>All endpoints return JSON. A successful response includes:</p>
+<pre><code>{
+  "result": {
+    "choices": [{
+      "message": {
+        "content": "Analysis or review output text..."
+      }
+    }]
+  },
+  "mode": "analyze",
+  "credits_remaining": 95,
+  "credits_used": 1
+}</code></pre>
+
+<h2>⚡ x402 Micropayments (Pay-per-Request)</h2>
+<p>No API key? No problem. Use <strong>x402</strong> — pay $0.01–$0.05 per request in USDC on Base chain. No subscription, no account.</p>
+<div class="steps">
+<ol>
+  <li><strong>Send a request</strong> without the API key header</li>
+  <li><strong>Get HTTP 402</strong> with payment details (wallet address, amount)</li>
+  <li><strong>Send USDC</strong> to <code>0x76eADdEBFfb6A61DD071f97F4508467fc55dd113</code> on Base</li>
+  <li><strong>Retry</strong> with header <code>X-X402-Payment: &lt;tx_hash&gt;</code></li>
+</ol>
+</div>
+
+<div style="text-align:center;margin:40px 0">
+  <a href="/api-playground" class="btn">🎮 Try Free Playground</a>
+  <a href="/upgrade" class="btn btn-outline">💎 Get API Credits</a>
+  <a href="/x402-guide" class="btn btn-outline">⛓️ x402 Guide</a>
+</div>
+
+<div class="footer">
+  <p>Base URL: <code>https://automation.songheng.vip</code> · Wallet: <code>0x76eADdEBFfb6A61DD071f97F4508467fc55dd113</code> on Base</p>
+  <p><a href="/api-docs">API Docs</a> · <a href="/developers">Developer Guide</a> · <a href="/x402-guide">x402 Payments</a></p>
+</div>
+
+</div>
+
+<script>
+function switchLang(lang) {
+  document.querySelectorAll('.lang-content').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('.lang-tab').forEach(el => el.classList.remove('active'));
+  document.getElementById('lang-' + lang).classList.add('active');
+  event.target.classList.add('active');
+}
+
+function copyCode(btn) {
+  const pre = btn.closest('pre');
+  const code = pre.querySelector('code').textContent;
+  navigator.clipboard.writeText(code).then(() => {
+    btn.textContent = '✅ Copied!';
+    setTimeout(() => { btn.textContent = '📋 Copy'; }, 2000);
+  });
+}
+</script>
+<script src="/js/share-widget.js"></script>
+<script src="/conversion-banner.js" defer></script>
+</body>
+</html>

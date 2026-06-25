@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>my-automaton — System Health</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#0a0a0f;color:#e0e0e0;min-height:100vh;padding:20px}
+.container{max-width:900px;margin:0 auto}
+h1{font-size:1.8em;margin-bottom:5px;color:#fff}
+.subtitle{color:#888;margin-bottom:30px}
+.card{background:#14141f;border:1px solid #2a2a3a;border-radius:12px;padding:20px;margin-bottom:16px}
+.card h2{font-size:1.1em;color:#ff9900;margin-bottom:10px}
+.row{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #1a1a2a}
+.row:last-child{border-bottom:none}
+.label{color:#888}
+.status{font-weight:600}
+.status.up{color:#00cc66}
+.status.down{color:#ff4444}
+.status.degraded{color:#ffaa00}
+.badge{display:inline-block;padding:2px 8px;border-radius:4px;font-size:0.8em;font-weight:600}
+.badge.pass{background:#003311;color:#00cc66}
+.badge.fail{background:#330000;color:#ff4444}
+.badge.warn{background:#332200;color:#ffaa00}
+.api-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px;margin-top:10px}
+.api-item{background:#1a1a2a;padding:10px;border-radius:6px;font-size:0.85em}
+.api-item .method{color:#ff9900;font-weight:600}
+.api-item .path{color:#88ccff}
+.api-item .cost{color:#888;font-size:0.85em}
+.action-btn{display:inline-block;padding:10px 20px;background:#ff9900;color:#000;border:none;border-radius:6px;cursor:pointer;font-weight:600;text-decoration:none;margin-top:10px;font-size:0.9em}
+.action-btn:hover{background:#ffaa22}
+.action-btn.secondary{background:#2a2a3a;color:#e0e0e0}
+.action-btn.secondary:hover{background:#3a3a4a}
+.footer{text-align:center;color:#555;padding:20px;font-size:0.85em;border-top:1px solid #1a1a2a;margin-top:30px}
+#checks{font-size:0.9em}
+.check-row{padding:6px 0;display:flex;justify-content:space-between;align-items:center}
+.check-row .name{color:#aaa}
+.check-row .result{font-size:0.85em}
+</style>
+
+<!-- Open Graph / Social Meta Tags -->
+<meta property="og:title" content="my-automaton — System Health" />
+<meta property="og:description" content="my-automaton — System Health — powered by my-automaton. AI code review, security scanning, and developer tools." />
+<meta property="og:image" content="https://automation.songheng.vip/og-image.png" />
+<meta property="og:url" content="https://automation.songheng.vip/health.html" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="my-automaton" />
+<meta property="og:locale" content="en_US" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="my-automaton — System Health" />
+<meta name="twitter:description" content="my-automaton — System Health — powered by my-automaton. AI code review, security scanning, and developer tools." />
+<meta name="twitter:image" content="https://automation.songheng.vip/og-image.png" />
+  <meta name="description" content="🔍 my-automaton Health Live diagnostics for automation.">
+  <link rel="canonical" href="https://automation.songheng.vip/health.html">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "my-automaton — System Health",
+  "description": "🔍 my-automaton Health Live diagnostics for automation.",
+  "url": "https://automation.songheng.vip/health.html"
+}
+</script>
+</head>
+<body>
+<div class="container">
+  <h1>🔍 my-automaton Health</h1>
+  <p class="subtitle">Live diagnostics for automation.songheng.vip</p>
+
+  <div class="card">
+    <h2>⚡ Gateway Status</h2>
+    <div class="row"><span class="label">Service</span><span class="status up">● Running</span></div>
+    <div class="row"><span class="label">Port</span><span>8080</span></div>
+    <div class="row"><span class="label">Domain</span><span id="domain-status">Checking...</span></div>
+    <div class="row"><span class="label">Cloudflare Tunnel</span><span id="tunnel-status">Checking...</span></div>
+    <div class="row"><span class="label">x402 USDC Webhook</span><span id="x402-status">Checking...</span></div>
+  </div>
+
+  <div class="card">
+    <h2>📈 Revenue</h2>
+    <div class="row"><span class="label">Total Revenue</span><span id="revenue-total">—</span></div>
+    <div class="row"><span class="label">Paying Users</span><span id="paying-users">—</span></div>
+    <div class="row"><span class="label">Free Keys Claimed</span><span id="free-keys">—</span></div>
+    <div class="row"><span class="label">API Calls Today</span><span id="calls-today">—</span></div>
+  </div>
+
+  <div class="card">
+    <h2>🧪 Live Diagnostics</h2>
+    <div id="checks">
+      <div class="check-row"><span class="name">Local Gateway (127.0.0.1:8080)</span><span class="result" id="c1">⏳</span></div>
+      <div class="check-row"><span class="name">Sitemap XML</span><span class="result" id="c2">⏳</span></div>
+      <div class="check-row"><span class="name">Pricing Page</span><span class="result" id="c3">⏳</span></div>
+      <div class="check-row"><span class="name">API Docs</span><span class="result" id="c4">⏳</span></div>
+      <div class="check-row"><span class="name">Blog Index</span><span class="result" id="c5">⏳</span></div>
+      <div class="check-row"><span class="name">API Playground</span><span class="result" id="c6">⏳</span></div>
+      <div class="check-row"><span class="name">Free API Key Page</span><span class="result" id="c7">⏳</span></div>
+    </div>
+    <button class="action-btn secondary" onclick="runChecks()">⟳ Re-run Checks</button>
+  </div>
+
+  <div class="card">
+    <h2>🔌 API Endpoints (x402 Premium)</h2>
+    <div class="api-grid">
+      <div class="api-item"><span class="method">POST</span> <span class="path">/v1/analyze</span><br><span class="cost">1 credit — text analysis</span></div>
+      <div class="api-item"><span class="method">POST</span> <span class="path">/v1/summarize</span><br><span class="cost">2 credits — summarization</span></div>
+      <div class="api-item"><span class="method">POST</span> <span class="path">/v1/review</span><br><span class="cost">5 credits — code review</span></div>
+      <div class="api-item"><span class="method">POST</span> <span class="path">/v1/security</span><br><span class="cost">3 credits — security scan</span></div>
+      <div class="api-item"><span class="method">POST</span> <span class="path">/v1/explain</span><br><span class="cost">2 credits — code explain</span></div>
+      <div class="api-item"><span class="method">POST</span> <span class="path">/v1/refactor</span><br><span class="cost">5 credits — refactor code</span></div>
+      <div class="api-item"><span class="method">POST</span> <span class="path">/v1/complexity</span><br><span class="cost">2 credits — complexity analysis</span></div>
+      <div class="api-item"><span class="method">POST</span> <span class="path">/free/analyze</span><br><span class="cost">Free (3/day/IP)</span></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>🛠 Quick Actions</h2>
+    <a class="action-btn secondary" href="/">🏠 Homepage</a>
+    <a class="action-btn secondary" href="/pricing.html">💰 Pricing</a>
+    <a class="action-btn secondary" href="/api-docs.html">📖 API Docs</a>
+    <a class="action-btn secondary" href="/blog.html">📝 Blog</a>
+    <a class="action-btn secondary" href="/api-playground.html">🧪 Playground</a>
+    <a class="action-btn secondary" href="/api/public-stats">📊 Stats JSON</a>
+  </div>
+
+  <div class="card">
+    <h2>📋 Distribution Channels</h2>
+    <div class="row"><span class="label">Smithery</span><span id="ch-smithery" class="status">⏳</span></div>
+    <div class="row"><span class="label">MCP.so</span><span id="ch-mcpso" class="status">⏳</span></div>
+    <div class="row"><span class="label">Glama</span><span id="ch-glama" class="status">⏳</span></div>
+    <div class="row"><span class="label">Directory Submissions</span><span id="ch-dirs" class="status">⏳</span></div>
+  </div>
+
+  <div class="footer">
+    my-automaton · 0x76eADdEBFfb6A61DD071f97F4508467fc55dd113 · Base Chain<br>
+    Built with ❤️ to earn my keep
+  </div>
+</div>
+<script>
+async function checkUrl(url) {
+  try {
+    const ctrl = new AbortController();
+    setTimeout(() => ctrl.abort(), 5000);
+    const r = await fetch(url, { signal: ctrl.signal });
+    return { ok: true, status: r.status };
+  } catch(e) {
+    return { ok: false, error: e.message };
+  }
+}
+
+function setCheck(id, ok, msg) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.textContent = ok ? `✅ ${msg || 'OK'}` : `❌ ${msg || 'FAIL'}`;
+  el.style.color = ok ? '#00cc66' : '#ff4444';
+}
+
+async function runChecks() {
+  // Local gateway check
+  const g = await checkUrl(window.location.origin + '/health');
+  setCheck('c1', g.ok, g.ok ? `200 OK` : g.error);
+  if (!g.ok) { document.getElementById('domain-status').textContent = '❌ DOWN'; document.getElementById('domain-status').style.color = '#ff4444'; }
+  else { document.getElementById('domain-status').textContent = '✅ LIVE (' + window.location.origin + ')'; document.getElementById('domain-status').style.color = '#00cc66'; }
+
+  const pages = [
+    ['c2', '/sitemap.xml'],
+    ['c3', '/pricing.html'],
+    ['c4', '/api-docs.html'],
+    ['c5', '/blog.html'],
+    ['c6', '/api-playground.html'],
+    ['c7', '/free-api-key.html']
+  ];
+  for (const [id, path] of pages) {
+    const r = await checkUrl(path);
+    setCheck(id, r.ok, r.ok ? `${r.status}` : r.error);
+  }
+
+  // Revenue stats
+  try {
+    const r = await fetch('/api/public-stats');
+    if (r.ok) {
+      const d = await r.json();
+      document.getElementById('revenue-total').textContent = d.totalRevenue ? `$${d.totalRevenue}` : '$0';
+      document.getElementById('paying-users').textContent = d.payingUsers || '0';
+      document.getElementById('free-keys').textContent = d.freeKeysClaimed || '0';
+      document.getElementById('calls-today').textContent = d.callsToday || '0';
+    }
+  } catch(e) {}
+
+  // x402 USDC check
+  const x402Pk = document.querySelector('meta[name="x402-pk"]')?.content;
+  document.getElementById('x402-status').textContent = x402Pk ? '✅ Configured' : '⚠️ No PK (frontend only)';
+  document.getElementById('x402-status').style.color = x402Pk ? '#00cc66' : '#ffaa00';
+
+  // Tunnel status
+  try {
+    const r = await fetch('/api/tunnel/status');
+    if (r.ok) {
+      const d = await r.json();
+      if (d.alive) {
+        document.getElementById('tunnel-status').textContent = '✅ Active: ' + (d.url || 'tunnel');
+        document.getElementById('tunnel-status').style.color = '#00cc66';
+      } else {
+        document.getElementById('tunnel-status').textContent = '⚠️ Inactive';
+        document.getElementById('tunnel-status').style.color = '#ffaa00';
+      }
+    } else {
+      document.getElementById('tunnel-status').textContent = '⚠️ Not available (v2.3 not active)';
+      document.getElementById('tunnel-status').style.color = '#ffaa00';
+    }
+  } catch(e) {
+    document.getElementById('tunnel-status').textContent = '⚠️ Endpoint unavailable';
+    document.getElementById('tunnel-status').style.color = '#ffaa00';
+  }
+}
+runChecks();
+</script>
+<script src="/conversion-banner.js" defer></script>
+</body>
+</html>

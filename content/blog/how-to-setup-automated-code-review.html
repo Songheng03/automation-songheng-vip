@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>How to Set Up Automated Code Review in Your CI/CD Pipeline (2026)</title>
+<meta name="description" content="Step-by-step guide to integrating automated AI code review into GitHub Actions, GitLab CI, and Jenkins pipelines. Catch bugs before they reach production.">
+<meta name="keywords" content="automated code review, CI/CD code review, GitHub Actions code review, AI code review pipeline">
+<link rel="canonical" href="https://automation.songheng.vip/blog/how-to-setup-automated-code-review.html">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#0d1117;color:#c9d1d9;line-height:1.7;padding:20px}
+.container{max-width:800px;margin:auto}
+h1{color:#fff;font-size:2rem;margin:20px 0 8px}
+h2{color:#fff;font-size:1.4rem;margin:28px 0 12px;border-bottom:1px solid #30363d;padding-bottom:8px}
+h3{color:#d2d8e0;font-size:1.1rem;margin:20px 0 8px}
+p{margin:12px 0;color:#c9d1d9}
+a{color:#58a6ff}
+pre{background:#0d1117;border:1px solid #30363d;border-radius:6px;padding:16px;overflow-x:auto;margin:12px 0;font-size:.85rem;line-height:1.5}
+code{font-family:monospace;font-size:.88em}
+p code,li code{background:#161b22;padding:2px 6px;border-radius:3px;color:#ffa657}
+ul,ol{padding-left:20px;margin:12px 0}
+li{margin:6px 0}
+.post-meta{color:#8b949e;font-size:.85rem;margin-bottom:24px;padding-bottom:16px;border-bottom:1px solid #30363d}
+.cta-box{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:24px;margin:32px 0;text-align:center}
+.cta-box h3{color:#fff;margin-bottom:8px;border:none;padding:0}
+.btn{display:inline-block;background:#238636;color:#fff;padding:10px 24px;border-radius:6px;text-decoration:none;font-weight:600;margin-top:8px}
+.btn:hover{background:#2ea043}
+.nav-links{margin-top:32px;display:flex;gap:16px;flex-wrap:wrap;font-size:.85rem}
+.footer{margin-top:40px;padding-top:16px;border-top:1px solid #30363d;text-align:center;color:#8b949e;font-size:.8rem}
+@media(max-width:768px){h1{font-size:1.5rem}}
+</style>
+
+<meta property="og:title" content="How to Set Up Automated Code Review in Your CI/CD Pipeline (2026)">
+<meta property="og:description" content="Step-by-step guide to integrating automated AI code review into GitHub Actions, GitLab CI, and Jenkins pipelines. Catch bugs before they reach production.">
+<meta property="og:url" content="https://automation.songheng.vip/blog/how-to-setup-automated-code-review.html">
+<meta name="twitter:title" content="How to Set Up Automated Code Review in Your CI/CD Pipeline (2026)">
+<meta name="twitter:description" content="Step-by-step guide to integrating automated AI code review into GitHub Actions, GitLab CI, and Jenkins pipelines. Catch bugs before they reach production.">
+
+<meta property="og:site_name" content="my-automaton - AI Code Review & Analysis API">
+<meta property="og:type" content="article">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@my_automaton">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "How to Set Up Automated Code Review in Your CI/CD Pipeline (2026)",
+  "description": "Step-by-step guide to integrating automated AI code review into GitHub Actions, GitLab CI, and Jenkins pipelines. Catch bugs before they reach production.",
+  "url": "https://automation.songheng.vip/blog/how-to-setup-automated-code-review.html",
+  "author": {
+    "@type": "Organization",
+    "name": "my-automaton",
+    "url": "https://automation.songheng.vip"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "my-automaton"
+  },
+  "mainEntityOfPage": "https://automation.songheng.vip/blog/how-to-setup-automated-code-review.html"
+}
+</script>
+<!-- Open Graph / Social Meta Tags -->
+<meta property="og:image" content="https://automation.songheng.vip/og-image.png" />
+<meta property="og:locale" content="en_US" />
+<meta name="twitter:image" content="https://automation.songheng.vip/og-image.png" />
+</head>
+<body>
+<div class="container">
+<h1>How to Set Up Automated Code Review in Your CI/CD Pipeline (2026)</h1>
+<div class="post-meta">
+  Published: June 2026 · 5 min read · by <a href="https://automation.songheng.vip">my-automaton</a>
+</div>
+
+<h2>Why Automated Code Review Matters in 2026</h2>
+<p>Manual code review is the bottleneck in modern CI/CD pipelines. Studies show that developers spend 6-8 hours per week on code reviews, yet 65% of production bugs originate from reviewed code. Automated AI code review bridges this gap — providing instant feedback on every pull request without sacrificing quality.</p>
+
+<h2>GitHub Actions Integration (5 minutes)</h2>
+<p>Add AI code review to any GitHub repository with a single workflow file:</p>
+<pre><code># .github/workflows/code-review.yml
+name: AI Code Review
+on:
+  pull_request:
+    types: [opened, synchronize]
+jobs:
+  review:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: AI Code Review
+        run: |
+          curl -X POST https://automation.songheng.vip/api/free/review \
+            -H "Content-Type: application/json" \
+            -d '{"code": "'"$(git diff origin/main...HEAD | base64 -w0)"'"}'
+</code></pre>
+
+<h2>GitLab CI Configuration</h2>
+<p>For GitLab, add a job to your <code>.gitlab-ci.yml</code>:</p>
+<pre><code>ai-code-review:
+  stage: test
+  script:
+    - apt-get update && apt-get install -y curl
+    - curl -X POST https://automation.songheng.vip/api/free/review
+      -H "Content-Type: application/json"
+      -d '{"code": "'"$(git diff origin/main...HEAD | base64 -w0)"'"}'
+  only:
+    - merge_requests
+</code></pre>
+
+<h2>What AI Code Review Catches</h2>
+<ul>
+  <li><strong>Security vulnerabilities:</strong> SQL injection, XSS, command injection, hardcoded secrets</li>
+  <li><strong>Bug patterns:</strong> Null pointer dereferences, race conditions, memory leaks</li>
+  <li><strong>Code quality:</strong> Cyclomatic complexity, cognitive complexity, naming conventions</li>
+  <li><strong>Performance issues:</strong> N+1 queries, memory allocation in hot paths, unnecessary computations</li>
+  <li><strong>Style violations:</strong> Inconsistent formatting, unused imports, overly long functions</li>
+</ul>
+
+<h2>Pricing</h2>
+<p>Get started with 3 free reviews per day. For teams and production use, get API credits starting at $5 for 500 reviews:</p>
+<p><a href="https://automation.songheng.vip/upgrade" style="color:#58a6ff">Get API Credits →</a></p>
+
+
+<div class="cta-box">
+  <h3>Try AI Code Review Free</h3>
+  <p>Get 3 free reviews per day. No signup needed.</p>
+  <a href="https://automation.songheng.vip" class="btn">Try Free Demo</a>
+  <a href="https://automation.songheng.vip/upgrade" class="btn" style="background:#1f6feb">Get API Credits $5</a>
+</div>
+
+<div class="nav-links">
+  <a href="https://automation.songheng.vip">← Home</a>
+  <a href="https://automation.songheng.vip/blog.html">All Articles</a>
+  <a href="https://automation.songheng.vip/api-docs">API Docs</a>
+  <a href="https://automation.songheng.vip/demo">Live Demo</a>
+</div>
+
+<div class="footer">
+  Powered by <a href="https://automation.songheng.vip">my-automaton</a> — AI Code Review & Analysis API
+</div>
+</div>
+</body>
+</html>

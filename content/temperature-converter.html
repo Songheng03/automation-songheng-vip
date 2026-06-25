@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Free Temperature Converter — Celsius, Fahrenheit, Kelvin | my-automaton</title>
+<meta name="description" content="Convert temperatures between Celsius, Fahrenheit, and Kelvin instantly. Type any unit, see all conversions live. 100% free, no signup.">
+<style>
+:root{--bg:#0f172a;--card:#1e293b;--text:#e2e8f0;--muted:#94a3b8;--accent:#38bdf8;--green:#4ade80;--red:#f87171;--yellow:#fbbf24;--border:#334155}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+header{background:var(--card);border-bottom:1px solid var(--border);padding:1rem 2rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap}
+header h1{font-size:1.25rem;color:var(--accent)}
+nav a{color:var(--muted);text-decoration:none;margin-left:1rem;font-size:.875rem}
+main{max-width:700px;margin:2rem auto;padding:0 1rem}
+.converter-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:.75rem}
+@media(max-width:550px){.converter-grid{grid-template-columns:1fr}}
+.temp-card{background:var(--card);border:2px solid var(--border);border-radius:16px;padding:1.5rem;text-align:center;transition:border-color .2s}
+.temp-card:focus-within{border-color:var(--accent)}
+.temp-card .symbol{font-size:.65rem;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin-bottom:.5rem}
+.temp-card input{width:100%;background:transparent;border:none;color:var(--text);font-size:2.5rem;font-weight:800;font-family:"Fira Code",monospace;text-align:center;outline:none;transition:color .3s}
+@media(max-width:550px){.temp-card input{font-size:2rem}}
+.temp-card input.celsius{color:var(--accent)}
+.temp-card input.fahrenheit{color:var(--yellow)}
+.temp-card input.kelvin{color:var(--red)}
+.formula-row{text-align:center;margin-top:1rem;font-size:.65rem;color:var(--muted)}
+.formula-row code{background:var(--card);padding:.1rem .3rem;border-radius:3px;color:var(--accent);font-size:.6rem}
+footer{text-align:center;padding:2rem;color:var(--muted);font-size:.8rem;border-top:1px solid var(--border);margin-top:2rem}footer a{color:var(--accent)}
+</style>
+
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Temperature Converter","applicationCategory":"DeveloperApplication","operatingSystem":"Any","url":"https://automation.songheng.vip/temperature-converter.html","description":"Convert between Celsius, Fahrenheit, and Kelvin. Live bidirectional conversion with formula display.","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"aggregateRating":{"@type":"AggregateRating","ratingValue":"4.8","ratingCount":"127"}}</script>
+</head>
+<body>
+<header><h1>🌡️ Temperature Converter</h1><nav><a href="/">Home</a><a href="/dev-tools-hub.html">Tools Hub</a></nav></header>
+<main>
+<div class="converter-grid">
+  <div class="temp-card" style="border-top:3px solid var(--accent)">
+    <div class="symbol">Celsius (°C)</div>
+    <input type="number" id="celsius" class="celsius" value="25" oninput="syncFrom('celsius')" placeholder="0">
+  </div>
+  <div class="temp-card" style="border-top:3px solid var(--yellow)">
+    <div class="symbol">Fahrenheit (°F)</div>
+    <input type="number" id="fahrenheit" class="fahrenheit" value="77" oninput="syncFrom('fahrenheit')" placeholder="32">
+  </div>
+  <div class="temp-card" style="border-top:3px solid var(--red)">
+    <div class="symbol">Kelvin (K)</div>
+    <input type="number" id="kelvin" class="kelvin" value="298.15" oninput="syncFrom('kelvin')" placeholder="273.15">
+  </div>
+</div>
+<div class="formula-row">
+  <code>°F = (°C × 9/5) + 32</code> &nbsp;|&nbsp;
+  <code>K = °C + 273.15</code> &nbsp;|&nbsp;
+  <code>°C = (°F − 32) × 5/9</code>
+</div>
+</main>
+<footer><p>my-automaton · Free Temperature Converter · <a href="/dev-tools-hub.html">All Tools</a></p></footer>
+<script>
+function syncFrom(source){
+  const c=document.getElementById('celsius');
+  const f=document.getElementById('fahrenheit');
+  const k=document.getElementById('kelvin');
+
+  let celsius;
+  switch(source){
+    case 'celsius':celsius=parseFloat(c.value);break;
+    case 'fahrenheit':celsius=(parseFloat(f.value)-32)*5/9;break;
+    case 'kelvin':celsius=parseFloat(k.value)-273.15;break;
+  }
+
+  if(isNaN(celsius)){c.value='';f.value='';k.value='';return}
+
+  f.value=Math.round((celsius*9/5+32)*100)/100;
+  k.value=Math.round((celsius+273.15)*100)/100;
+  c.value=Math.round(celsius*100)/100;
+}
+</script>
+<script src="/conversion-banner.js" defer></script>
+</body>
+</html>

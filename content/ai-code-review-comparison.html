@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Code Review Comparison: my-automaton vs GitHub Copilot vs CodeRabbit</title>
+<meta name="description" content="Compare AI code review tools. my-automaton offers pay-per-request pricing (1¢-5¢) vs monthly subscriptions. No vendor lock-in, no seat limits.">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#0d1117;color:#c9d1d9;line-height:1.6}
+.container{max-width:1100px;margin:0 auto;padding:2rem}
+h1{font-size:2.5rem;color:#58a6ff;margin-bottom:1rem;text-align:center}
+.subtitle{text-align:center;color:#8b949e;font-size:1.1rem;margin-bottom:3rem}
+table{width:100%;border-collapse:collapse;margin:2rem 0;background:#161b22;border-radius:12px;overflow:hidden}
+th{background:#21262d;color:#58a6ff;padding:1rem;text-align:left;font-weight:600}
+td{padding:1rem;border-top:1px solid #30363d}
+tr:hover td{background:#1c2128}
+.highlight{background:#238636 !important;color:#fff;font-weight:600}
+.check{color:#3fb950;font-weight:bold}
+.x{color:#f85149;font-weight:bold}
+.pros{margin:2rem 0}
+.pros h2{color:#58a6ff;margin-bottom:1rem}
+.pros ul{list-style:none;padding:0}
+.pros li{padding:.5rem 0;padding-left:2rem;position:relative}
+.pros li:before{content:"✓";position:absolute;left:0;color:#3fb950;font-weight:bold;font-size:1.2rem}
+.cta{text-align:center;margin:3rem 0;padding:2rem;background:#161b22;border:1px solid #30363d;border-radius:12px}
+.cta h2{color:#58a6ff;margin-bottom:1rem}
+.cta p{color:#8b949e;margin-bottom:1.5rem}
+.cta a{display:inline-block;padding:12px 32px;background:#238636;color:#fff;text-decoration:none;border-radius:8px;font-weight:600;margin:.5rem;transition:all .2s}
+.cta a:hover{background:#2ea043;transform:translateY(-2px)}
+.cta a.secondary{background:#30363d}
+.cta a.secondary:hover{background:#484f58}
+.back{text-align:center;margin-top:2rem}
+.back a{color:#58a6ff;text-decoration:none}
+.back a:hover{text-decoration:underline}
+.note{background:#1c2128;border-left:4px solid #58a6ff;padding:1rem;margin:2rem 0;border-radius:4px}
+.note strong{color:#58a6ff}
+</style>
+</head>
+<body>
+<div class="container">
+<h1>AI Code Review Tool Comparison</h1>
+<p class="subtitle">Find the right AI code review tool for your team and budget</p>
+
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>my-automaton</th>
+<th>GitHub Copilot</th>
+<th>CodeRabbit</th>
+<th>Amazon CodeWhisperer</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Pricing Model</strong></td>
+<td class="highlight">Pay-per-request (1¢-5¢)</td>
+<td>$10-19/month per user</td>
+<td>$15-30/month per user</td>
+<td>$19/month per user</td>
+</tr>
+<tr>
+<td><strong>Free Tier</strong></td>
+<td class="highlight">3 requests/day/IP</td>
+<td>Limited (students only)</td>
+<td>14-day trial</td>
+<td>Free for individuals</td>
+</tr>
+<tr>
+<td><strong>Seat Limits</strong></td>
+<td class="highlight">No limits, pay per use</td>
+<td>Per-user licensing</td>
+<td>Per-user licensing</td>
+<td>Per-user licensing</td>
+</tr>
+<tr>
+<td><strong>Code Review</strong></td>
+<td class="check">✓ Full review</td>
+<td class="x">✗ Suggestions only</td>
+<td class="check">✓ Full review</td>
+<td class="x">✗ Suggestions only</td>
+</tr>
+<tr>
+<td><strong>Security Scanning</strong></td>
+<td class="check">✓ Built-in</td>
+<td class="x">✗</td>
+<td class="check">✓</td>
+<td class="x">✗</td>
+</tr>
+<tr>
+<td><strong>GitHub Integration</strong></td>
+<td class="check">✓ GitHub Actions</td>
+<td class="check">✓ Native</td>
+<td class="check">✓ GitHub App</td>
+<td class="check">✓ Plugin</td>
+</tr>
+<tr>
+<td><strong>API Access</strong></td>
+<td class="check">✓ REST API</td>
+<td class="x">✗</td>
+<td class="check">✓ API</td>
+<td class="x">✗</td>
+</tr>
+<tr>
+<td><strong>Self-Hosted Option</strong></td>
+<td class="check">✓ Open source</td>
+<td class="x">✗</td>
+<td class="x">✗</td>
+<td class="x">✗</td>
+</tr>
+<tr>
+<td><strong>Data Privacy</strong></td>
+<td class="highlight">No data retention</td>
+<td>Data used for training</td>
+<td>No retention</td>
+<td>Data used for training</td>
+</tr>
+<tr>
+<td><strong>Cost for 100 PRs (10 files each)</strong></td>
+<td class="highlight">$50 (pay-per-use)</td>
+<td>$1,000+ (10 users × $10/mo × 10 mo)</td>
+<td>$1,500+ (10 users × $15/mo × 10 mo)</td>
+<td>$1,900+ (10 users × $19/mo × 10 mo)</td>
+</tr>
+<tr>
+<td><strong>Best For</strong></td>
+<td class="highlight">Small teams, freelancers, budget-conscious</td>
+<td>Large teams, enterprise</td>
+<td>Teams needing advanced features</td>
+<td>AWS-heavy teams</td>
+</tr>
+</tbody>
+</table>
+
+<div class="note">
+<strong>💡 Key Insight:</strong> Traditional tools charge per user per month, even if you only review a few PRs. my-automaton charges only for actual usage. A team reviewing 100 PRs pays $50 instead of $1,000+.
+</div>
+
+<div class="pros">
+<h2>Why Choose my-automaton?</h2>
+<ul>
+<li><strong>Pay-per-use pricing</strong> — No monthly fees, no seat limits. Pay only for reviews you actually run.</li>
+<li><strong>Free tier included</strong> — 3 free requests per day per IP. Try before you buy.</li>
+<li><strong>Full code review</strong> — Not just autocomplete. Get comprehensive analysis, security scanning, and refactoring suggestions.</li>
+<li><strong>REST API</strong> — Integrate with any CI/CD pipeline. GitHub Actions, Slack, Discord, CLI.</li>
+<li><strong>No vendor lock-in</strong> — Standard API, works with any language, any platform.</li>
+<li><strong>Privacy-first</strong> — Your code is processed in real-time and never stored. No training on your data.</li>
+<li><strong>Transparent pricing</strong> — See exact costs before you commit. No hidden fees, no surprise bills.</li>
+</ul>
+</div>
+
+<div class="pros">
+<h2>When to Choose Alternatives</h2>
+<ul>
+<li><strong>GitHub Copilot</strong> — If you need inline code completion and autocomplete in your IDE, not just PR reviews.</li>
+<li><strong>CodeRabbit</strong> — If you need advanced features like custom rules, compliance checks, or team analytics.</li>
+<li><strong>Amazon CodeWhisperer</strong> — If you're heavily invested in AWS and want tight integration with AWS services.</li>
+</ul>
+</div>
+
+<div class="cta">
+<h2>Try my-automaton Free</h2>
+<p>Get 3 free code reviews per day. No signup required. No credit card.</p>
+<a href="api-playground.html">Try in Playground</a>
+<a href="pricing.html" class="secondary">View Pricing</a>
+<a href="github-actions-integration.html" class="secondary">GitHub Setup</a>
+</div>
+
+<div class="note">
+<strong>💰 Cost Calculator:</strong> A typical team reviewing 20 PRs per week (10 files each) would pay:
+<br>• my-automaton: <strong>$40/month</strong> (800 reviews × 5¢)
+<br>• GitHub Copilot: <strong>$100+/month</strong> (10 users × $10)
+<br>• CodeRabbit: <strong>$150+/month</strong> (10 users × $15)
+<br><br>Save 60-75% with pay-per-use pricing.
+</div>
+
+<div class="back">
+<a href="index.html">← Back to Home</a>
+</div>
+</div>
+<script src="/conversion-banner.js" defer></script>
+</body>
+</html>

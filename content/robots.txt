@@ -1,0 +1,20 @@
+User-agent: *
+Allow: /
+Sitemap: https://automation.songheng.vip/sitemap.xml
+
+# Allow all crawlers
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: DuckDuckBot
+Allow: /
+
+User-agent: YandexBot
+Allow: /
+
+# Block admin/stats pages
+Disallow: /api/
+Disallow: /dashboard

@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Git Commit Message Generator - Write Better Commits Instantly</title>
+<meta name="description" content="Generate professional git commit messages following Conventional Commits format. Perfect commit messages every time. Free tool for developers.">
+<meta name="keywords" content="git commit message generator, conventional commits, git best practices, commit message format, version control">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'Segoe UI', system-ui, sans-serif; background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%); min-height: 100vh; padding: 20px; color: #fff; }
+.container { max-width: 800px; margin: 0 auto; }
+h1 { font-size: 2.5rem; text-align: center; margin-bottom: 10px; }
+.subtitle { text-align: center; opacity: 0.9; margin-bottom: 40px; }
+.card { background: rgba(255,255,255,0.95); border-radius: 20px; padding: 40px; color: #333; box-shadow: 0 20px 60px rgba(0,0,0,0.3); }
+.form-group { margin-bottom: 20px; }
+label { display: block; font-weight: bold; margin-bottom: 8px; color: #2c5364; }
+select, input, textarea { width: 100%; padding: 12px; border: 2px solid #ddd; border-radius: 8px; font-size: 1rem; font-family: inherit; }
+select:focus, input:focus, textarea:focus { outline: none; border-color: #2c5364; }
+textarea { resize: vertical; min-height: 80px; }
+.output { background: #1e1e1e; color: #d4d4d4; padding: 20px; border-radius: 8px; font-family: 'Courier New', monospace; font-size: 1rem; margin: 20px 0; min-height: 60px; white-space: pre-wrap; }
+.btn { width: 100%; padding: 16px; font-size: 1.1rem; font-weight: bold; border: none; border-radius: 12px; cursor: pointer; transition: all 0.3s; margin: 10px 0; }
+.btn-primary { background: linear-gradient(135deg, #2c5364 0%, #0f2027 100%); color: #fff; }
+.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 10px 20px rgba(44,83,100,0.4); }
+.btn-copy { background: #28a745; color: #fff; }
+.btn-copy:hover { background: #218838; }
+.checkbox-group { display: flex; align-items: center; gap: 10px; margin: 10px 0; }
+.checkbox-group input { width: auto; }
+.examples { background: #f8f9fa; padding: 20px; border-radius: 10px; margin-top: 30px; }
+.examples h3 { margin-bottom: 15px; color: #2c5364; }
+.example-item { padding: 10px; margin: 8px 0; background: #fff; border-left: 4px solid #2c5364; border-radius: 4px; font-family: monospace; font-size: 0.9rem; }
+.cta { background: rgba(255,255,255,0.1); padding: 20px; border-radius: 10px; margin-top: 30px; text-align: center; }
+.cta a { color: #ffd700; text-decoration: none; font-weight: bold; }
+</style>
+</head>
+<body>
+<div class="container">
+<h1>📝 Git Commit Message Generator</h1>
+<p class="subtitle">Write professional commit messages following Conventional Commits</p>
+
+<div class="card">
+<div class="form-group">
+<label>Commit Type</label>
+<select id="type">
+<option value="feat">feat: A new feature</option>
+<option value="fix">fix: A bug fix</option>
+<option value="docs">docs: Documentation only changes</option>
+<option value="style">style: Code style changes (formatting, semicolons)</option>
+<option value="refactor">refactor: Code refactoring</option>
+<option value="perf">perf: Performance improvements</option>
+<option value="test">test: Adding or updating tests</option>
+<option value="build">build: Build system or dependencies</option>
+<option value="ci">ci: CI/CD configuration changes</option>
+<option value="chore">chore: Maintenance tasks</option>
+</select>
+</div>
+
+<div class="form-group">
+<label>Scope (optional)</label>
+<input type="text" id="scope" placeholder="e.g., auth, api, ui, database">
+</div>
+
+<div class="form-group">
+<label>Short Description</label>
+<input type="text" id="description" placeholder="Describe the change in imperative mood" maxlength="50">
+</div>
+
+<div class="form-group">
+<label>Long Description (optional)</label>
+<textarea id="body" placeholder="Explain WHY, not WHAT. Include motivation and context."></textarea>
+</div>
+
+<div class="checkbox-group">
+<input type="checkbox" id="breaking">
+<label for="breaking">Breaking Change (requires version bump)</label>
+</div>
+
+<button class="btn btn-primary" onclick="generateCommit()">Generate Commit Message</button>
+
+<div class="output" id="output">Your commit message will appear here...</div>
+
+<button class="btn btn-copy" onclick="copyCommit()">📋 Copy to Clipboard</button>
+
+<div class="examples">
+<h3>💡 Good Commit Examples</h3>
+<div class="example-item">feat: add user authentication with JWT tokens</div>
+<div class="example-item">fix(api): handle null pointer in user endpoint</div>
+<div class="example-item">refactor: extract payment logic to separate service</div>
+<div class="example-item">perf: optimize database queries with indexing</div>
+</div>
+</div>
+
+<div class="cta">
+<p>Want AI-powered code review? Try our <a href="/v1/review">Code Review API</a> — catch issues before you commit.</p>
+</div>
+</div>
+
+<script>
+function generateCommit() {
+  const type = document.getElementById('type').value;
+  const scope = document.getElementById('scope').value.trim();
+  const description = document.getElementById('description').value.trim();
+  const body = document.getElementById('body').value.trim();
+  const breaking = document.getElementById('breaking').checked;
+
+  if (!description) {
+    document.getElementById('output').textContent = 'Please enter a description.';
+    return;
+  }
+
+  let header = type;
+  if (scope) header += `(${scope})`;
+  header += `${breaking ? '!' : ''}: ${description}`;
+
+  let commit = header;
+  if (body) {
+    commit += `\n\n${body}`;
+  }
+  if (breaking) {
+    commit += `\n\nBREAKING CHANGE: ${description}`;
+  }
+
+  document.getElementById('output').textContent = commit;
+}
+
+function copyCommit() {
+  const output = document.getElementById('output').textContent;
+  if (output && output !== 'Your commit message will appear here...') {
+    navigator.clipboard.writeText(output);
+    alert('Commit message copied!');
+  }
+}
+</script>
+</body>
+</html>

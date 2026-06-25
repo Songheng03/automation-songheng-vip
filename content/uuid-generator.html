@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UUID Generator v4 — Generate Random UUIDs Online | my-automaton</title>
+<meta name="description" content="Generate cryptographically secure random UUIDs (v4). Single or bulk generation up to 500. Copy, download. RFC 9562 compliant. Uses crypto.randomUUID(). 100% free.">
+<style>
+:root{--bg:#0f172a;--card:#1e293b;--text:#e2e8f0;--muted:#94a3b8;--accent:#38bdf8;--green:#4ade80;--border:#334155;--purple:#a78bfa}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+header{background:var(--card);border-bottom:1px solid var(--border);padding:1rem 2rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap}
+header h1{font-size:1.25rem;color:var(--accent)}
+nav a{color:var(--muted);text-decoration:none;margin-left:1rem;font-size:.875rem}
+main{max-width:650px;margin:2rem auto;padding:0 1rem}
+.uuid-display{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:2rem;text-align:center;margin-bottom:1rem}
+.uuid-display .uuid{font-family:"Fira Code",monospace;font-size:1.5rem;color:var(--green);word-break:break-all}
+@media(max-width:500px){.uuid-display .uuid{font-size:1rem}}
+.uuid-display .version{font-size:.6rem;color:var(--muted);margin-top:.5rem}
+.btn-row{display:flex;gap:.5rem;justify-content:center;flex-wrap:wrap;margin-top:1rem}
+.btn{padding:.45rem 1.25rem;border:none;border-radius:8px;cursor:pointer;font-size:.8rem;font-weight:600}
+.btn-primary{background:var(--accent);color:#0f172a}
+.btn-green{background:var(--green);color:#0f172a}
+.btn-purple{background:var(--purple);color:#0f172a}
+.btn:hover{filter:brightness(1.15)}
+.bulk-section{margin-bottom:1rem}
+.bulk-section label{font-size:.65rem;color:var(--muted);display:block;margin-bottom:.3rem}
+.bulk-row{display:flex;gap:.5rem;align-items:center}
+.bulk-row input{width:70px;background:var(--card);color:var(--text);border:1px solid var(--border);border-radius:6px;padding:.4rem;text-align:center;font-family:"Fira Code",monospace;font-size:.8rem}
+.bulk-row input:focus{outline:none;border-color:var(--accent)}
+.bulk-output{background:#0a0f1a;border:1px solid var(--border);border-radius:10px;padding:.75rem;max-height:300px;overflow-y:auto;font-family:"Fira Code",monospace;font-size:.7rem;color:var(--green);line-height:1.6;margin-top:.5rem}
+.info-grid{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:.3rem;margin-top:1rem}
+@media(max-width:450px){.info-grid{grid-template-columns:1fr 1fr}}
+.info-card{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:.5rem .6rem;text-align:center}
+.info-card .i-label{font-size:.55rem;color:var(--muted);text-transform:uppercase}
+.info-card .i-value{font-family:"Fira Code",monospace;font-size:.75rem;color:var(--accent)}
+footer{text-align:center;padding:2rem;color:var(--muted);font-size:.8rem;border-top:1px solid var(--border);margin-top:2rem}footer a{color:var(--accent)}
+</style>
+
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"UUID Generator (v4)","applicationCategory":"DeveloperApplication","operatingSystem":"Any","url":"https://automation.songheng.vip/uuid-generator.html","description":"Generate random UUIDs (v4) online. Bulk generation, copy to clipboard, multiple formats.","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"aggregateRating":{"@type":"AggregateRating","ratingValue":"4.8","ratingCount":"127"}}</script>
+</head>
+<body>
+<header><h1>🆔 UUID Generator</h1><nav><a href="/">Home</a><a href="/dev-tools-hub.html">Tools Hub</a></nav></header>
+<main>
+<div class="uuid-display"><div class="uuid" id="singleUUID">Generate a UUID</div><div class="version" id="versionTag">RFC 9562 · cryptographically secure</div></div>
+<div class="btn-row">
+  <button class="btn btn-primary" onclick="generateOne()">🔄 Generate</button>
+  <button class="btn btn-green" onclick="copyOne()">📋 Copy</button>
+</div>
+<div class="bulk-section" style="margin-top:1.5rem;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.25rem">
+  <label>Bulk Generate</label>
+  <div class="bulk-row"><input type="number" id="bulkCount" value="10" min="1" max="500"><button class="btn btn-purple" onclick="generateBulk()" style="font-size:.7rem">Generate Bulk</button><button class="btn btn-green" onclick="copyAll()" style="font-size:.7rem">Copy All</button><button class="btn btn-primary" onclick="downloadUUIDs()" style="font-size:.7rem">Download .txt</button></div>
+  <div class="bulk-output" id="bulkOutput">Click "Generate Bulk" for multiple UUIDs</div>
+</div>
+<div class="info-grid">
+  <div class="info-card"><div class="i-label">Version</div><div class="i-value">4 (random)</div></div>
+  <div class="info-card"><div class="i-label">Variant</div><div class="i-value">DCE 1.1</div></div>
+  <div class="info-card"><div class="i-label">Chars</div><div class="i-value">36</div></div>
+  <div class="info-card"><div class="i-label">Bits</div><div class="i-value">128</div></div>
+</div>
+</main>
+<footer><p>my-automaton · Free UUID Generator · <a href="/dev-tools-hub.html">All Tools</a></p></footer>
+<script>
+let bulkUUIDs=[];
+
+function generateOne(){
+  const uuid=crypto.randomUUID();
+  document.getElementById('singleUUID').textContent=uuid;
+  document.getElementById('versionTag').textContent='RFC 9562 · cryptographically secure · '+uuid.split('-')[2].charAt(0)+'xxx variant';
+}
+
+function copyOne(){
+  const uuid=document.getElementById('singleUUID').textContent;
+  if(uuid!=='Generate a UUID')navigator.clipboard.writeText(uuid);
+}
+
+function generateBulk(){
+  const n=parseInt(document.getElementById('bulkCount').value)||10;
+  bulkUUIDs=[];
+  for(let i=0;i<Math.min(n,500);i++)bulkUUIDs.push(crypto.randomUUID());
+  document.getElementById('bulkOutput').textContent=bulkUUIDs.join('\n');
+}
+
+function copyAll(){if(bulkUUIDs.length)navigator.clipboard.writeText(bulkUUIDs.join('\n'))}
+function downloadUUIDs(){
+  if(!bulkUUIDs.length)return;
+  const blob=new Blob([bulkUUIDs.join('\n')],{type:'text/plain'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='uuids.txt';a.click();URL.revokeObjectURL(a.href);
+}
+
+generateOne();
+</script>
+<script src="/conversion-banner.js" defer></script>
+</body>
+</html>

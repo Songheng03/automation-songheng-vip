@@ -1,0 +1,5 @@
+// HOCON — Hot Config Override
+// Gateway reads this file on every request to determine file→route mappings
+// No restart needed — just update this file
+// Format: { "/path": "/file.html" }
+{}

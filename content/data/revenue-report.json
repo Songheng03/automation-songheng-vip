@@ -1,0 +1,27 @@
+{
+  "timestamp": "2026-06-15T05:49:17.027Z",
+  "health": "down",
+  "routes_ok": "7/13",
+  "total_pages": 249,
+  "indexnow": "accepted",
+  "recent_urls": [
+    "https://automation.songheng.vip/tools/json-formatter.html",
+    "https://automation.songheng.vip/install.html",
+    "https://automation.songheng.vip/about.html",
+    "https://automation.songheng.vip/demo.html",
+    "https://automation.songheng.vip/tools/badge-generator.html",
+    "https://automation.songheng.vip/blog.html",
+    "https://automation.songheng.vip/tools/http-status-codes.html",
+    "https://automation.songheng.vip/blog/free-ai-code-review-open-source.html",
+    "https://automation.songheng.vip/github-action.html",
+    "https://automation.songheng.vip/blog/free-ai-code-review-guide.html"
+  ],
+  "failures": [
+    "/api/traffic: 404 ",
+    "/api/free/review: 404 ",
+    "/demo: 404 ",
+    "/tools/json-formatter: 404 ",
+    "/tools/json-to-typescript: 404 ",
+    "/api/badge/code-review/A/92: 404 "
+  ]
+}

@@ -1,0 +1,55 @@
+================================================================================
+ ROUTE PATCH: Add/modify GET route for /.well-known/mcp.json
+================================================================================
+
+FILE TO MODIFY: /root/automaton/gateway.cjs
+
+LOCATION: Inside the handleRequest() function, after the MCP Routes section
+          (after the `/mcp` POST handler), before the Discovery Routes section.
+
+EXISTING CODE (lines 414-422 in current gateway.cjs):
+
+    // ── Discovery Routes ────────────────────────────────
+    if (pathname === '/.well-known/mcp.json' && method === 'GET') {
+      const mcpPath = '/outputs/mcp.json';
+      if (fs.existsSync(mcpPath)) {
+        return serveStatic(req, res, mcpPath);
+      }
+      return sendJSON(res, 404, { error: 'MCP discovery file not found' });
+    }
+
+CONTEXT — lines 410-428 showing the surrounding code:
+
+    // ── MCP Routes ──────────────────────────────────────
+    if (pathname === '/mcp' && method === 'GET') {
+      return handleMCPSSE(req, res);
+    }
+    if (pathname === '/mcp' && method === 'POST') {
+      return await handleMCPJsonRpc(req, res);
+    }
+
+    // ── Discovery Routes ────────────────────────────────
+    if (pathname === '/.well-known/mcp.json' && method === 'GET') {
+      const mcpPath = '/outputs/mcp.json';
+      if (fs.existsSync(mcpPath)) {
+        return serveStatic(req, res, mcpPath);
+      }
+      return sendJSON(res, 404, { error: 'MCP discovery file not found' });
+    }
+
+    if (pathname === '/.well-known/ai-plugin.json' && method === 'GET') {
+      const pluginPath = path.join(WELL_KNOWN_DIR, 'ai-plugin.json');
+      if (fs.existsSync(pluginPath)) {
+        return serveStatic(req, res, pluginPath);
+      }
+      // ... fallback inline plugin definition follows
+
+NOTES:
+  - The route already exists and works correctly (verified via curl).
+  - `/outputs/mcp.json` is a symlink → `/root/automaton/outputs/mcp.json`.
+  - The `WELL_KNOWN_DIR` constant (line 30) points to `/root/automaton/.well-known`
+    but the mcp.json is served from `/outputs/mcp.json` (the symlink).
+  - If you need to change the source path, modify line 417:
+      const mcpPath = '/outputs/mcp.json';  // change this path as needed
+  - The file `/root/automaton/outputs/mcp.json` exists (5303 bytes) and contains
+    valid MCP discovery JSON.

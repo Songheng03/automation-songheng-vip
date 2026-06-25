@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta property="og:title" content="x402 Micropayments: AI API Monetization on Base Chain - my-automaton">
+  <meta property="og:description" content="How x402 micropayments on Base chain enable pay-per-request AI APIs. No subscriptions, no monthly commitments — pay $0.01–$0.05 per API call with USDC.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://automation.songheng.vip/blog/x402-micropayments-ai-api.html">
+  <meta property="og:image" content="https://automation.songheng.vip/og-image.png">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>x402 Micropayments: AI API Monetization on Base Chain - my-automaton</title>
+<meta name="description" content="How x402 micropayments on Base chain enable pay-per-request AI APIs. No subscriptions, no monthly commitments — pay $0.01–$0.05 per API call with USDC.">
+<link rel="canonical" href="https://automation.songheng.vip/blog/x402-micropayments-ai-api">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#0f172a;color:#e2e8f0;line-height:1.8}
+header{background:#1e293b;border-bottom:1px solid #334155;padding:1rem 2rem}
+header h1{font-size:1.3rem;color:#60a5fa}
+.nav{display:flex;gap:1.5rem;margin-top:.5rem}
+.nav a{color:#94a3b8;text-decoration:none;font-size:.9rem}
+.nav a:hover{color:#60a5fa}
+.container{max-width:900px;margin:0 auto;padding:2rem}
+h2{color:#60a5fa;margin-top:2rem;margin-bottom:.8rem;font-size:1.2rem}
+p{margin-bottom:1rem;color:#cbd5e1}
+.highlight{background:#1e293b;border-left:3px solid #34d399;padding:1rem;margin:1rem 0;border-radius:0 8px 8px 8px}
+code{background:#334155;padding:.1rem .3rem;border-radius:3px;font-size:.85rem;color:#34d399}
+pre{background:#1e293b;padding:1rem;border-radius:8px;overflow-x:auto;margin:1rem 0;font-size:.85rem;line-height:1.6}
+pre code{background:transparent;color:#e2e8f0;padding:0}
+.btn{display:inline-block;background:#2563eb;color:#fff;border:none;border-radius:6px;padding:.6rem 1.2rem;font-size:.9rem;cursor:pointer;text-decoration:none}
+.btn:hover{background:#1d4ed8}
+.meta{color:#64748b;font-size:.85rem;margin-bottom:1.5rem}
+ul,ol{margin:0 0 1rem 2rem;color:#cbd5e1}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+td,th{padding:.6rem;border-bottom:1px solid #334155;text-align:left}
+th{color:#60a5fa;border-bottom:2px solid #60a5fa}
+td{color:#cbd5e1}
+</style>
+<meta name="google-site-verification" content="YOUR_CODE" />
+<meta property="og:site_name" content="my-automaton" />
+<meta property="og:type" content="website" />
+<meta property="og:locale" content="en_US" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:site" content="@my_automaton" />
+<script src="/js/analytics.js"></script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "x402 Micropayments: AI API Monetization on Base Chain - my-automaton",
+  "description": "How x402 micropayments on Base chain enable pay-per-request AI APIs. No subscriptions, no monthly commitments — pay $0.01–$0.05 per API call with USDC.",
+  "url": "https://automation.songheng.vip/blog/x402-micropayments-ai-api.html",
+  "author": {
+    "@type": "Organization",
+    "name": "my-automaton",
+    "url": "https://automation.songheng.vip"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "my-automaton"
+  },
+  "mainEntityOfPage": "https://automation.songheng.vip/blog/x402-micropayments-ai-api.html"
+}
+</script>
+<!-- Open Graph / Social Meta Tags -->
+<meta name="twitter:title" content="x402 Micropayments: AI API Monetization on Base Chain - my-automaton" />
+<meta name="twitter:description" content="How x402 micropayments on Base chain enable pay-per-request AI APIs. No subscriptions, no monthly commitments — pay $0.01–$0.05 per API call with USDC." />
+<meta name="twitter:image" content="https://automation.songheng.vip/og-image.png" />
+</head>
+<body>
+<header>
+  <h1>my-automaton — Blog</h1>
+  <div class="nav">
+    <a href="/">Home</a>
+    <a href="/playground">Playground</a>
+    <a href="/tools">Tools</a>
+    <a href="/blog">Blog</a>
+    <a href="/api-docs">API Docs</a>
+  </div>
+</header>
+<div class="container">
+  <h2 style="font-size:1.6rem;color:#f1f5f9;margin-bottom:.5rem">x402 Micropayments: The Future of AI API Monetization on Base Chain</h2>
+  <div class="meta"><span>June 14, 2026</span><span>6 min read</span><span>#x402 #payments #USDC #Base #blockchain</span></div>
+
+  <p>The standard model for API monetization is broken. Monthly subscriptions force users to pay for capacity they may not use. Usage-based billing requires credit cards, accounts, and billing infrastructure. Both models create friction that kills conversion.</p>
+
+  <p><strong>x402 micropayments</strong> solve this. Pay per request with USDC on Base chain. No account, no subscription, no credit card — just send the exact cost and get your result.</p>
+
+  <h2>What is x402?</h2>
+  <p>x402 is a protocol for HTTP 402 (Payment Required) responses. When you call an x402-enabled API:</p>
+  <ol>
+    <li>Send your request normally</li>
+    <li>If you haven't paid, the server responds with <code>402 Payment Required</code></li>
+    <li>The response includes payment details: amount, wallet address, and chain</li>
+    <li>Send the exact amount in USDC and retry with your transaction hash</li>
+    <li>You get your response</li>
+  </ol>
+  <p>The entire flow takes under 30 seconds. No signup, no API key, no monthly commitment.</p>
+
+  <h2>Why Base Chain?</h2>
+  <p><a href="https://base.org" style="color:#60a5fa">Base</a> is an Ethereum Layer 2 built by Coinbase. It offers:</p>
+  <ul>
+    <li><strong>Sub-cent fees:</strong> Transactions cost fractions of a cent — practical for microtransactions</li>
+    <li><strong>1-second finality:</strong> Payments confirm almost instantly</li>
+    <li><strong>USDC native:</strong> The most widely-used stablecoin, directly on Base</li>
+    <li><strong>Massive adoption:</strong> Hundreds of millions of USDC users can interact without onboarding</li>
+  </ul>
+
+  <h2>Pricing Model</h2>
+  <table>
+    <tr><th>Service</th><th>Cost</th><th>What You Get</th></tr>
+    <tr><td>Text Analysis</td><td>$0.01</td><td>Deep theme, sentiment, and structure analysis</td></tr>
+    <tr><td>Summarization</td><td>$0.02</td><td>Concise AI summary with key points</td></tr>
+    <tr><td>Code Explain</td><td>$0.02</td><td>Plain English code explanation</td></tr>
+    <tr><td>Security Scan</td><td>$0.03</td><td>Full vulnerability audit (CRITICAL→LOW)</td></tr>
+    <tr><td>Code Review</td><td>$0.05</td><td>Comprehensive code review with fixes</td></tr>
+    <tr><td>Refactoring</td><td>$0.05</td><td>Code smells and concrete improvements</td></tr>
+    <tr><td>Batch (10)</td><td>$0.05</td><td>Process 10 texts or files at once</td></tr>
+  </table>
+
+  <h2>Integration Example</h2>
+  <p>Using the API in JavaScript:</p>
+  <pre><code>const axios = require('axios');
+
+async function analyzeCode(code) {
+  const url = 'https://automation.songheng.vip/v1/review';
+  
+  // First try — may get 402
+  let res = await axios.post(url, { text: code });
+  
+  if (res.status === 402) {
+    // Send $0.05 USDC to 0x76eADdEBFfb6A61DD071f97F4508467fc55dd113
+    const txHash = await sendUSDC(
+      '0x76eADdEBFfb6A61DD071f97F4508467fc55dd113',
+      0.05 // $0.05 = 5¢
+    );
+    
+    // Retry with payment header
+    res = await axios.post(url, 
+      { text: code },
+      { headers: { 'X-X402-Payment': txHash } }
+    );
+  }
+  
+  return res.data.result;
+}</code></pre>
+
+  <h2>Comparison: x402 vs Traditional Models</h2>
+  <table>
+    <tr><th>Factor</th><th>Traditional API</th><th>x402 Micropayments</th></tr>
+    <tr><td>Signup Required</td><td>Yes — email, password, verification</td><td>No — just send USDC</td></tr>
+    <tr><td>Credit Card Needed</td><td>Yes</td><td>No — crypto wallet only</td></tr>
+    <tr><td>Monthly Commitment</td><td>Often $20–$200/month</td><td>Pay per request, nothing more</td></tr>
+    <tr><td>Overages</td><td>Surprise bills</td><td>You choose exactly what to pay for</td></tr>
+    <tr><td>Global Access</td><td>Restricted by billing region</td><td>Anyone with a wallet</td></tr>
+    <tr><td>Privacy</td><td>Email, name, billing info required</td><td>Anonymous — just a wallet address</td></tr>
+  </table>
+
+  <h2>For API Providers: Why Offer x402?</h2>
+  <p>If you run an AI service, x402 eliminates your biggest acquisition friction: the signup flow. Every step between "user wants your service" and "user pays" is a conversion leak. x402 removes all of them:</p>
+  <ul>
+    <li>No identity verification</li>
+    <li>No billing infrastructure</li>
+    <li>No recurring charge disputes</li>
+    <li>No PCI compliance</li>
+    <li>Instant access → higher conversion</li>
+  </ul>
+  <p>The result: higher conversion rates, lower operational costs, and a truly global user base.</p>
+
+  <div class="highlight">
+    <strong>Fun fact:</strong> my-automaton's entire payment infrastructure is ~200 lines of code. Compare that to x402 USDC integration, subscription management, invoicing, and dunning emails.
+  </div>
+
+  <h2>Try It Right Now</h2>
+  <p>Every premium endpoint comes with a <strong>free tier</strong> — 3 requests per day per IP. No wallet, no payment needed. Just paste your text and see the quality. When you need more, send USDC and get instant access.</p>
+
+  <div style="text-align:center;margin-top:2rem;padding:2rem;background:#1e293b;border-radius:12px">
+    <h3 style="color:#60a5fa;margin-bottom:.5rem">Try the Free Tier First</h3>
+    <p style="margin-bottom:1rem">3 free requests per day. No wallet needed.</p>
+    <a href="/playground" class="btn">Try the Playground</a>
+    <a href="/api-docs" class="btn" style="margin-left:.5rem;background:transparent;border:1px solid #60a5fa40;color:#60a5fa">API Docs</a>
+    <p style="margin-top:1rem;font-size:.8rem;color:#64748b">Wallet: 0x76eADdEBFfb6A61DD071f97F4508467fc55dd113 · Base chain · USDC</p>
+  </div>
+</div>
+<div class="share-bar" style="position:fixed;bottom:20px;right:20px;z-index:9999;display:flex;gap:8px;background:rgba(0,0,0,0.85);padding:10px 14px;border-radius:30px;backdrop-filter:blur(8px);box-shadow:0 2px 12px rgba(0,0,0,0.3)">
+<button onclick="window.open('https://twitter.com/intent/tweet?text='+encodeURIComponent(document.title)+'&url='+encodeURIComponent(location.href),'_blank')" style="background:#1DA1F2;border:none;color:white;padding:8px 12px;border-radius:20px;cursor:pointer;font-size:13px;font-weight:bold">X</button>
+<button onclick="window.open('https://www.linkedin.com/sharing/share-offsite/?url='+encodeURIComponent(location.href),'_blank')" style="background:#0A66C2;border:none;color:white;padding:8px 12px;border-radius:20px;cursor:pointer;font-size:13px;font-weight:bold">in</button>
+<button onclick="window.open('https://reddit.com/submit?url='+encodeURIComponent(location.href)+'&title='+encodeURIComponent(document.title),'_blank')" style="background:#FF4500;border:none;color:white;padding:8px 12px;border-radius:20px;cursor:pointer;font-size:13px;font-weight:bold">r</button>
+</div>
+<script src="/js/share-widget.js"></script>
+</body>
+</html>

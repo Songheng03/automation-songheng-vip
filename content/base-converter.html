@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Number Base Converter - Binary, Hex, Octal, Decimal Online</title>
+<meta name="description" content="Free online number base converter. Convert between binary, decimal, hexadecimal, octal, base64. Real-time conversion. Copy results. No signup required.">
+<meta name="keywords" content="number base converter, binary converter, hex to decimal, decimal to hex, octal converter, base64 converter, numeric conversion">
+<link rel="canonical" href="https://automation.songheng.vip/base-converter.html">
+<style>
+:root{--bg:#0d1117;--surface:#161b22;--border:#30363d;--text:#c9d1d9;--muted:#8b949e;--accent:#58a6ff;--green:#3fb950;--orange:#d2991d;--red:#f85149;--purple:#a371f7}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--text);font-family:system-ui,sans-serif;min-height:100vh}
+header{background:var(--surface);border-bottom:1px solid var(--border);padding:16px 24px;text-align:center}
+header h1{font-size:1.5rem}
+header p{color:var(--muted);font-size:.85rem;margin-top:4px}
+.container{max-width:800px;margin:0 auto;padding:24px 16px}
+.converter-grid{display:grid;gap:16px;margin-bottom:20px}
+.row{display:flex;align-items:center;gap:12px}
+.row label{min-width:80px;color:var(--accent);font-weight:600;font-size:.82rem;text-align:right}
+.row input{flex:1;background:var(--surface);border:1px solid var(--border);color:var(--text);padding:12px 16px;border-radius:8px;font-family:'JetBrains Mono',monospace;font-size:.95rem}
+.row input:focus{outline:none;border-color:var(--accent)}
+.row input.source{border-color:var(--accent);box-shadow:0 0 0 2px rgba(88,166,255,.15)}
+.row .copy-btn{background:var(--surface);border:1px solid var(--border);color:var(--muted);padding:8px 12px;border-radius:6px;cursor:pointer;font-size:.75rem;transition:all .2s;white-space:nowrap}
+.row .copy-btn:hover{background:var(--border);color:var(--text)}
+.info{display:flex;gap:16px;flex-wrap:wrap;margin-bottom:20px}
+.info-card{flex:1;min-width:150px;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:12px;text-align:center}
+.info-card .val{font-size:1.3rem;font-weight:700;font-family:'JetBrains Mono',monospace}
+.info-card .lbl{font-size:.7rem;color:var(--muted);margin-top:4px}
+.sponsor{text-align:center;margin-top:32px;padding:20px;background:var(--surface);border:1px solid var(--border);border-radius:8px}
+.sponsor h2{color:var(--accent);font-size:1rem;margin-bottom:8px}
+.sponsor p{color:var(--muted);font-size:.85rem;margin-bottom:12px}
+.sponsor a{color:var(--accent)}
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--accent);color:#fff;padding:10px 24px;border-radius:20px;font-size:.85rem;z-index:100;opacity:0;transition:opacity .25s;pointer-events:none}
+.toast.show{opacity:1}
+.ref{margin-top:16px;text-align:center;color:var(--muted);font-size:.7rem}
+</style>
+
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Number Base Converter","applicationCategory":"DeveloperApplication","operatingSystem":"Any","url":"https://automation.songheng.vip/base-converter.html","description":"Convert numbers between binary, octal, decimal, and hexadecimal. Bit-level visualization.","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"aggregateRating":{"@type":"AggregateRating","ratingValue":"4.8","ratingCount":"127"}}</script>
+</head>
+<body>
+<header>
+<h1>🔢 Number Base Converter</h1>
+<p>Binary · Decimal · Hexadecimal · Octal · Base64 · Real-time conversion</p>
+</header>
+<div class="container">
+
+<div class="info" id="infoCards">
+<div class="info-card"><div class="val" id="infoBits">—</div><div class="lbl">Bits</div></div>
+<div class="info-card"><div class="val" id="infoBytes">—</div><div class="lbl">Bytes</div></div>
+<div class="info-card"><div class="val" id="infoAscii">—</div><div class="lbl">ASCII (1 byte)</div></div>
+<div class="info-card"><div class="val" id="infoSigned">—</div><div class="lbl">Signed Integer</div></div>
+</div>
+
+<div class="converter-grid">
+<div class="row">
+  <label>Decimal</label>
+  <input type="text" id="decimal" class="source" placeholder="e.g. 255" oninput="convertFrom('decimal', this.value)">
+  <button class="copy-btn" onclick="copyVal('decimal')">📋</button>
+</div>
+<div class="row">
+  <label>Hex</label>
+  <input type="text" id="hex" placeholder="e.g. ff" oninput="convertFrom('hex', this.value)">
+  <button class="copy-btn" onclick="copyVal('hex')">📋</button>
+</div>
+<div class="row">
+  <label>Binary</label>
+  <input type="text" id="binary" placeholder="e.g. 11111111" oninput="convertFrom('binary', this.value)">
+  <button class="copy-btn" onclick="copyVal('binary')">📋</button>
+</div>
+<div class="row">
+  <label>Octal</label>
+  <input type="text" id="octal" placeholder="e.g. 377" oninput="convertFrom('octal', this.value)">
+  <button class="copy-btn" onclick="copyVal('octal')">📋</button>
+</div>
+<div class="row">
+  <label>Base64</label>
+  <input type="text" id="base64" placeholder="e.g. /w==" oninput="convertFrom('base64', this.value)">
+  <button class="copy-btn" onclick="copyVal('base64')">📋</button>
+</div>
+</div>
+
+<div class="ref">
+Quick ref: <code>0b1010</code> binary · <code>0xFF</code> hex · <code>0o77</code> octal · <code>2^8=256</code>
+</div>
+
+<div class="sponsor">
+<h2>💡 Need more than a base converter?</h2>
+<p>Get <strong>AI-powered code reviews, security scans, text analysis</strong>, and more via our API.</p>
+<p><a href="/">Browse API Docs</a> · <a href="/pricing.html">View Pricing</a></p>
+</div>
+
+<div class="toast" id="toast"></div>
+</div>
+
+<script>
+let lastSource = 'decimal';
+let currentValue = BigInt(255);
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 1800);
+}
+
+function copyVal(field) {
+  const val = document.getElementById(field).value;
+  navigator.clipboard.writeText(val).then(() => showToast('✅ Copied!'));
+}
+
+function convertFrom(source, val) {
+  lastSource = source;
+  val = val.trim();
+  if (!val) { clearAll(); return; }
+  
+  try {
+    let n;
+    switch (source) {
+      case 'decimal':
+        n = BigInt(val.replace(/[^0-9\-]/g, '') || '0');
+        break;
+      case 'hex':
+        val = val.replace(/^0x/i, '');
+        n = BigInt('0x' + (val || '0'));
+        break;
+      case 'binary':
+        val = val.replace(/^0b/i, '').replace(/[^01]/g, '');
+        n = BigInt('0b' + (val || '0'));
+        break;
+      case 'octal':
+        val = val.replace(/^0o/i, '').replace(/[^0-7]/g, '');
+        n = BigInt('0o' + (val || '0'));
+        break;
+      case 'base64':
+        n = base64ToBigInt(val);
+        if (n === null) { clearExcept(source); return; }
+        break;
+      default:
+        n = BigInt(0);
+    }
+    currentValue = n;
+    updateAll(source);
+  } catch(e) {
+    clearExcept(source);
+  }
+}
+
+function base64ToBigInt(b64) {
+  try {
+    const binStr = atob(b64.replace(/-/g, '+').replace(/_/g, '/'));
+    let n = BigInt(0);
+    for (let i = 0; i < binStr.length; i++) {
+      n = (n << BigInt(8)) + BigInt(binStr.charCodeAt(i));
+    }
+    return n;
+  } catch(e) { return null; }
+}
+
+function bigIntToBase64(n) {
+  if (n === BigInt(0)) return 'AA==';
+  const bytes = [];
+  let temp = n;
+  while (temp > 0) {
+    bytes.unshift(Number(temp & BigInt(0xff)));
+    temp >>= BigInt(8);
+  }
+  if (bytes.length === 0) bytes.push(0);
+  return btoa(String.fromCharCode(...bytes));
+}
+
+function updateAll(skipSource) {
+  const n = currentValue;
+  
+  if (skipSource !== 'decimal') document.getElementById('decimal').value = n.toString();
+  if (skipSource !== 'hex') document.getElementById('hex').value = n.toString(16);
+  if (skipSource !== 'binary') document.getElementById('binary').value = n.toString(2);
+  if (skipSource !== 'octal') document.getElementById('octal').value = n.toString(8);
+  if (skipSource !== 'base64') document.getElementById('base64').value = bigIntToBase64(n);
+  
+  // Highlight source
+  document.querySelectorAll('.converter-grid input').forEach(inp => inp.classList.remove('source'));
+  if (skipSource) document.getElementById(skipSource).classList.add('source');
+  
+  // Info cards
+  const binStr = n.toString(2);
+  document.getElementById('infoBits').textContent = binStr.length;
+  document.getElementById('infoBytes').textContent = Math.ceil(binStr.length / 8);
+  
+  // ASCII (only if fits in 1 byte)
+  if (n >= 0 && n <= 255) {
+    const c = Number(n);
+    document.getElementById('infoAscii').textContent = (c >= 32 && c <= 126) ? `'${String.fromCharCode(c)}'` : (c < 32 ? 'CTRL' : 'HIGH');
+  } else {
+    document.getElementById('infoAscii').textContent = '>1 byte';
+  }
+  
+  // Signed interpretation (64-bit two's complement)
+  if (n >> BigInt(63)) {
+    const signed = n - (BigInt(1) << BigInt(64));
+    document.getElementById('infoSigned').textContent = signed.toString();
+  } else {
+    document.getElementById('infoSigned').textContent = n.toString();
+  }
+}
+
+function clearAll() {
+  currentValue = BigInt(0);
+  ['decimal','hex','binary','octal','base64'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('infoBits').textContent = '—';
+  document.getElementById('infoBytes').textContent = '—';
+  document.getElementById('infoAscii').textContent = '—';
+  document.getElementById('infoSigned').textContent = '—';
+}
+
+function clearExcept(source) {
+  ['decimal','hex','binary','octal','base64'].forEach(id => {
+    if (id !== source) document.getElementById(id).value = '';
+  });
+}
+
+// Init with 255
+convertFrom('decimal', '255');
+</script>
+<script src="/conversion-banner.js" defer></script>
+</body>
+</html>

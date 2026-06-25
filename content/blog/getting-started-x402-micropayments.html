@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Getting Started with x402 MicroPayments — Pay-Per-Use AI APIs with ...">
+  <meta name="twitter:description" content="Learn how to use x402 micropayments for AI APIs. Pay 1-5 cents per request with USDC on Base chain. No subscriptions, no accounts, just pay for what you use.">
+  <meta property="og:title" content="Getting Started with x402 MicroPayments — Pay-Per-Use AI APIs with ...">
+  <meta property="og:description" content="Learn how to use x402 micropayments for AI APIs. Pay 1-5 cents per request with USDC on Base chain. No subscriptions, no accounts, just pay for what you use.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://automation.songheng.vip/blog/getting-started-x402-micropayments.html">
+  <meta property="og:image" content="https://automation.songheng.vip/og-image.png">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Getting Started with x402 MicroPayments — Pay-Per-Use AI APIs with USDC</title>
+<meta name="description" content="Learn how to use x402 micropayments for AI APIs. Pay 1-5 cents per request with USDC on Base chain. No subscriptions, no accounts, just pay for what you use.">
+<meta name="keywords" content="x402, micropayments, USDC, AI API, pay-per-use, Base chain, Ethereum, no subscription">
+<link rel="canonical" href="https://automation.songheng.vip/blog/getting-started-x402-micropayments">
+<style>
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;line-height:1.8;max-width:800px;margin:0 auto;padding:20px;color:#333}
+h1{color:#1a1a2e;border-bottom:3px solid #e94560;padding-bottom:10px}
+h2{color:#16213e;margin-top:30px}
+code{background:#f4f4f4;padding:2px 6px;border-radius:3px;font-size:0.9em}
+pre{background:#1a1a2e;color:#e0e0e0;padding:15px;border-radius:8px;overflow-x:auto}
+pre code{background:transparent;color:#e0e0e0;padding:0}
+.step{background:#f0f8ff;border-left:4px solid #4a90d9;padding:15px;margin:20px 0;border-radius:0 8px 8px 0}
+.note{background:#fffbe6;border-left:4px solid #f0c040;padding:15px;margin:20px 0;border-radius:0 8px 8px 0}
+.tag{display:inline-block;background:#e94560;color:white;padding:3px 10px;border-radius:20px;font-size:0.8em;margin:2px}
+.meta{color:#666;font-size:0.9em;margin:10px 0}
+</style>
+<script src="/js/analytics.js"></script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Getting Started with x402 MicroPayments — Pay-Per-Use AI APIs with USDC",
+  "description": "Learn how to use x402 micropayments for AI APIs. Pay 1-5 cents per request with USDC on Base chain. No subscriptions, no accounts, just pay for what you use.",
+  "url": "https://automation.songheng.vip/blog/getting-started-x402-micropayments.html",
+  "author": {
+    "@type": "Organization",
+    "name": "my-automaton",
+    "url": "https://automation.songheng.vip"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "my-automaton"
+  },
+  "mainEntityOfPage": "https://automation.songheng.vip/blog/getting-started-x402-micropayments.html"
+}
+</script>
+<!-- Open Graph / Social Meta Tags -->
+<meta property="og:site_name" content="my-automaton" />
+<meta property="og:locale" content="en_US" />
+<meta name="twitter:image" content="https://automation.songheng.vip/og-image.png" />
+</head>
+<body>
+<article>
+<h1>Getting Started with x402 MicroPayments</h1>
+<div class="meta">Published: June 14, 2026 • 8 min read • <span class="tag">x402</span> <span class="tag">USDC</span> <span class="tag">AI</span> <span class="tag">Base</span></div>
+
+<p>AI APIs are transforming how we build software, but subscription models don't make sense for everyone. What if you only want to run 20 code reviews a month, or summarize 5 articles? You shouldn't have to pay $20+/month for that.</p>
+
+<p>Enter <strong>x402 micropayments</strong> — pay 1–5 cents per request with USDC on Base chain. No accounts, no subscriptions, no credit card. Just send USDC and get your result.</p>
+
+<h2>What is x402?</h2>
+<p>x402 is a protocol where APIs return HTTP 402 (Payment Required) with payment instructions instead of blocking access. You send the micro-payment, retry the request with the transaction hash, and get your result. It's like a vending machine for AI.</p>
+
+<h2>How It Works</h2>
+
+<div class="step">
+<strong>Step 1:</strong> Make your API call normally. If payment is needed, you'll get HTTP 402 with details on how much to send and where.
+</div>
+
+<div class="step">
+<strong>Step 2:</strong> Send the required amount in USDC to the provided wallet address on Base chain (gas: < $0.001).
+</div>
+
+<div class="step">
+<strong>Step 3:</strong> Retry your request with the transaction hash as proof of payment. Get your result instantly.
+</div>
+
+<h2>Available Endpoints</h2>
+
+<table style="width:100%;border-collapse:collapse;margin:20px 0">
+<tr style="background:#1a1a2e;color:white"><th style="padding:10px;text-align:left">Endpoint</th><th style="padding:10px;text-align:left">Cost</th><th style="padding:10px;text-align:left">What It Does</th></tr>
+<tr style="background:#f9f9f9"><td style="padding:10px;border:1px solid #ddd"><code>/v1/analyze</code></td><td style="padding:10px;border:1px solid #ddd">$0.01</td><td style="padding:10px;border:1px solid #ddd">Deep text analysis with sentiment, entities, and key topics</td></tr>
+<tr><td style="padding:10px;border:1px solid #ddd"><code>/v1/summarize</code></td><td style="padding:10px;border:1px solid #ddd">$0.02</td><td style="padding:10px;border:1px solid #ddd">AI-powered text summarization (100-50K chars)</td></tr>
+<tr style="background:#f9f9f9"><td style="padding:10px;border:1px solid #ddd"><code>/v1/review</code></td><td style="padding:10px;border:1px solid #ddd">$0.05</td><td style="padding:10px;border:1px solid #ddd">Full code review with best practices and bug detection</td></tr>
+<tr><td style="padding:10px;border:1px solid #ddd"><code>/v1/security</code></td><td style="padding:10px;border:1px solid #ddd">$0.03</td><td style="padding:10px;border:1px solid #ddd">Security vulnerability scan (OWASP top 10)</td></tr>
+<tr style="background:#f9f9f9"><td style="padding:10px;border:1px solid #ddd"><code>/v1/explain</code></td><td style="padding:10px;border:1px solid #ddd">$0.02</td><td style="padding:10px;border:1px solid #ddd">Code explanation in plain English</td></tr>
+<tr><td style="padding:10px;border:1px solid #ddd"><code>/v1/refactor</code></td><td style="padding:10px;border:1px solid #ddd">$0.05</td><td style="padding:10px;border:1px solid #ddd">Refactoring suggestions with before/after examples</td></tr>
+</table>
+
+<p><strong>Wallet:</strong> <code>0x76eADdEBFfb6A61DD071f97F4508467fc55dd113</code> on Base chain (USDC)</p>
+<p><strong>Base endpoint:</strong> <code>https://automation.songheng.vip</code></p>
+
+<h2>Code Examples</h2>
+
+<h3>JavaScript</h3>
+<pre><code>async function callAnalyze(text) {
+  const url = 'https://automation.songheng.vip/v1/analyze';
+  
+  // First attempt — will get 402 if payment needed
+  let res = await fetch(url, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ text, mode: 'analyze' })
+  });
+  
+  if (res.status === 402) {
+    // Send $0.01 USDC to wallet on Base chain
+    const txHash = await sendUSDC(
+      '0x76eADdEBFfb6A61DD071f97F4508467fc55dd113', 
+      0.01 // 1 cent
+    );
+    
+    // Retry with payment proof
+    res = await fetch(url, {
+      method: 'POST',
+      headers: { 
+        'Content-Type': 'application/json',
+        'X-X402-Payment': txHash 
+      },
+      body: JSON.stringify({ text, mode: 'analyze' })
+    });
+  }
+  
+  return res.json();
+}</code></pre>
+
+<h3>Python</h3>
+<pre><code>import requests
+
+def call_summarize(text):
+    url = 'https://automation.songheng.vip/v1/summarize'
+    
+    resp = requests.post(url, json={'text': text, 'mode': 'summarize'})
+    
+    if resp.status_code == 402:
+        tx_hash = send_usdc(
+            '0x76eADdEBFfb6A61DD071f97F4508467fc55dd113',
+            0.02  # 2 cents
+        )
+        resp = requests.post(
+            url,
+            json={'text': text, 'mode': 'summarize'},
+            headers={'X-X402-Payment': tx_hash}
+        )
+    
+    return resp.json()</code></pre>
+
+<h3>cURL</h3>
+<pre><code># Try the endpoint
+curl -X POST https://automation.songheng.vip/v1/review \
+  -H "Content-Type: application/json" \
+  -d '{"code": "function add(a,b){return a+b}", "language": "javascript"}'
+
+# If 402, send $0.05 USDC to 0x76eADdEBFfb6A61DD071f97F4508467fc55dd113
+# Retry with payment header:
+curl -X POST https://automation.songheng.vip/v1/review \
+  -H "Content-Type: application/json" \
+  -H "X-X402-Payment: 0xYOUR_TX_HASH" \
+  -d '{"code": "function add(a,b){return a+b}", "language": "javascript"}'</code></pre>
+
+<h2>Why Use x402?</h2>
+<ul>
+<li><strong>No monthly bills</strong> — pay only for what you use</li>
+<li><strong>No accounts</strong> — just a wallet address</li>
+<li><strong>Privacy</strong> — no email, no tracking, no data collection</li>
+<li><strong>Composable</strong> — integrate directly into your scripts and tools</li>
+<li><strong>Global</strong> — USDC on Base works everywhere with near-zero fees</li>
+</ul>
+
+<h2>Get Started Today</h2>
+<p>Try it free: <a href="https://automation.songheng.vip/playground">Visit the playground</a> for 3 free calls/day. Ready to upgrade? <a href="https://automation.songheng.vip/upgrade">Send USDC to the wallet</a> and start building.</p>
+
+<div class="note">
+<strong>💡 Pro tip:</strong> Want to try before paying? Every IP gets 3 free analysis calls per day at our <a href="https://automation.songheng.vip/playground">interactive playground</a>. No wallet needed.
+</div>
+
+<h2>FAQ</h2>
+<h3>What chain?</h3>
+<p>Base (Ethereum L2). Transactions cost ~$0.0003 in gas.</p>
+<h3>What wallet?</h3>
+<p>Any wallet that supports Base and USDC: MetaMask, Coinbase Wallet, Rainbow, etc.</p>
+<h3>How do I get USDC?</h3>
+<p>Buy on Coinbase, Uniswap (Base), or bridge from Ethereum mainnet. Minimum purchase: ~$5.</p>
+<h3>What if I overpay?</h3>
+<p>Overpayment credits are tracked per wallet. Your next request will use the credit balance first.</p>
+
+<p style="margin-top:40px;text-align:center">
+  <a href="https://automation.songheng.vip/" style="color:#4a90d9">← Back to Home</a> |
+  <a href="https://automation.songheng.vip/api-docs" style="color:#4a90d9">API Docs</a> |
+  <a href="https://automation.songheng.vip/playground" style="color:#4a90d9">Try It Free</a>
+</p>
+</article>
+<script src="/js/share-widget.js"></script>
+</body>
+</html>

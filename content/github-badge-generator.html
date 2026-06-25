@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Code Review Badge - Free GitHub Badge Generator</title>
+<meta name="description" content="Add an AI code review badge to your GitHub README. Shows you use professional code review. Free, no signup required.">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#0d1117;color:#c9d1d9;line-height:1.6}
+.container{max-width:900px;margin:0 auto;padding:2rem}
+h1{font-size:2.5rem;color:#58a6ff;margin-bottom:1rem;text-align:center}
+.subtitle{text-align:center;color:#8b949e;font-size:1.1rem;margin-bottom:3rem}
+.demo{text-align:center;margin:3rem 0}
+.badge-preview{display:inline-block;padding:8px 16px;background:#238636;color:#fff;border-radius:6px;font-weight:600;font-size:14px;text-decoration:none;transition:all .2s}
+.badge-preview:hover{background:#2ea043;transform:translateY(-2px)}
+.generator{background:#161b22;border:1px solid #30363d;border-radius:12px;padding:2rem;margin:2rem 0}
+.generator h2{color:#58a6ff;margin-bottom:1rem}
+.input-group{margin:1.5rem 0}
+.input-group label{display:block;color:#c9d1d9;margin-bottom:.5rem;font-weight:500}
+.input-group input{width:100%;padding:12px;background:#0d1117;border:1px solid #30363d;border-radius:6px;color:#c9d1d9;font-size:1rem}
+.input-group input:focus{outline:none;border-color:#58a6ff}
+.badge-options{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem;margin:1.5rem 0}
+.badge-option{cursor:pointer}
+.badge-option input[type="radio"]{display:none}
+.badge-option label{display:block;padding:1rem;background:#0d1117;border:2px solid #30363d;border-radius:8px;text-align:center;transition:all .2s;cursor:pointer}
+.badge-option input[type="radio"]:checked + label{border-color:#58a6ff;background:#1c2128}
+.badge-option label:hover{border-color:#484f58}
+.code{background:#0d1117;border:1px solid #30363d;border-radius:6px;padding:1rem;margin:1rem 0;font-family:'Courier New',monospace;overflow-x:auto;position:relative}
+.code code{color:#7ee787}
+.copy-btn{position:absolute;top:8px;right:8px;background:#30363d;color:#c9d1d9;border:none;padding:6px 12px;border-radius:4px;cursor:pointer;font-size:.85rem}
+.copy-btn:hover{background:#484f58}
+.tabs{display:flex;gap:.5rem;margin:1.5rem 0;border-bottom:1px solid #30363d}
+.tab{padding:.75rem 1.5rem;background:transparent;border:none;color:#8b949e;cursor:pointer;font-weight:500;border-bottom:2px solid transparent;transition:all .2s}
+.tab.active{color:#58a6ff;border-bottom-color:#58a6ff}
+.tab-content{display:none}
+.tab-content.active{display:block}
+.benefits{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:1.5rem;margin:3rem 0}
+.benefit{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:1.5rem;text-align:center}
+.benefit h3{color:#58a6ff;margin-bottom:.5rem}
+.benefit p{color:#8b949e;font-size:.95rem}
+.cta{text-align:center;margin:3rem 0;padding:2rem;background:#161b22;border:1px solid #30363d;border-radius:12px}
+.cta h2{color:#58a6ff;margin-bottom:1rem}
+.cta p{color:#8b949e;margin-bottom:1.5rem}
+.cta a{display:inline-block;padding:12px 32px;background:#238636;color:#fff;text-decoration:none;border-radius:8px;font-weight:600;margin:.5rem;transition:all .2s}
+.cta a:hover{background:#2ea043;transform:translateY(-2px)}
+.back{text-align:center;margin-top:2rem}
+.back a{color:#58a6ff;text-decoration:none}
+.back a:hover{text-decoration:underline}
+</style>
+</head>
+<body>
+<div class="container">
+<h1>🏷️ AI Code Review Badge</h1>
+<p class="subtitle">Show the world your code is AI-reviewed. Add a badge to your GitHub README.</p>
+
+<div class="demo">
+<p style="margin-bottom:1rem">Preview:</p>
+<a href="https://automation.songheng.vip" target="_blank" class="badge-preview">
+🤖 AI Code Review by my-automaton
+</a>
+</div>
+
+<div class="generator">
+<h2>Generate Your Badge</h2>
+<p>Choose a badge style and copy the code to your README:</p>
+
+<div class="badge-options">
+<div class="badge-option">
+<input type="radio" name="style" id="style1" value="green" checked>
+<label for="style1">
+<div style="background:#238636;padding:8px 16px;border-radius:6px;color:#fff;font-weight:600;margin-bottom:.5rem">
+🤖 AI Reviewed
+</div>
+Green (Default)
+</label>
+</div>
+
+<div class="badge-option">
+<input type="radio" name="style" id="style2" value="blue">
+<label for="style2">
+<div style="background:#1f6feb;padding:8px 16px;border-radius:6px;color:#fff;font-weight:600;margin-bottom:.5rem">
+🤖 AI Code Review
+</div>
+Blue
+</label>
+</div>
+
+<div class="badge-option">
+<input type="radio" name="style" id="style3" value="purple">
+<label for="style3">
+<div style="background:#8957e5;padding:8px 16px;border-radius:6px;color:#fff;font-weight:600;margin-bottom:.5rem">
+✨ AI Reviewed
+</div>
+Purple
+</label>
+</div>
+</div>
+
+<div class="tabs">
+<button class="tab active" onclick="switchTab('markdown')">Markdown</button>
+<button class="tab" onclick="switchTab('html')">HTML</button>
+<button class="tab" onclick="switchTab('rst')">reStructuredText</button>
+</div>
+
+<div id="markdown" class="tab-content active">
+<div class="code">
+<button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<code id="markdown-code">[![AI Code Review](https://img.shields.io/badge/AI_Code_Review-by_my--automaton-238636?style=flat&logo=robot)](https://automation.songheng.vip)</code>
+</div>
+</div>
+
+<div id="html" class="tab-content">
+<div class="code">
+<button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<code id="html-code">&lt;a href="https://automation.songheng.vip"&gt;
+  &lt;img src="https://img.shields.io/badge/AI_Code_Review-by_my--automaton-238636?style=flat&amp;logo=robot" alt="AI Code Review"&gt;
+&lt;/a&gt;</code>
+</div>
+</div>
+
+<div id="rst" class="tab-content">
+<div class="code">
+<button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<code id="rst-code">.. image:: https://img.shields.io/badge/AI_Code_Review-by_my--automaton-238636?style=flat&logo=robot
+   :target: https://automation.songheng.vip
+   :alt: AI Code Review</code>
+</div>
+</div>
+</div>
+
+<div class="benefits">
+<div class="benefit">
+<h3>🚀 Free Forever</h3>
+<p>No signup, no tracking. Just copy and paste.</p>
+</div>
+<div class="benefit">
+<h3>📈 Boost Credibility</h3>
+<p>Show you use professional AI code review tools.</p>
+</div>
+<div class="benefit">
+<h3>🔗 Drive Traffic</h3>
+<p>Badge links back to my-automaton, helping others discover it.</p>
+</div>
+<div class="benefit">
+<h3>🎨 Customizable</h3>
+<p>Multiple colors and styles to match your brand.</p>
+</div>
+</div>
+
+<div class="cta">
+<h2>Ready to try AI code review?</h2>
+<p>Get 3 free reviews per day. No signup required.</p>
+<a href="api-playground.html">Try It Now</a>
+<a href="pricing.html" style="background:#30363d">Get API Key</a>
+</div>
+
+<div class="back">
+<a href="index.html">← Back to Home</a> | <a href="integrations.html">More Integrations</a>
+</div>
+</div>
+
+<script>
+const colorMap = {
+  green: '238636',
+  blue: '1f6feb',
+  purple: '8957e5'
+};
+
+const labelMap = {
+  green: 'AI_Code_Review-by_my--automaton',
+  blue: 'AI_Code_Review-by_my--automaton',
+  purple: 'AI_Reviewed-by_my--automaton'
+};
+
+document.querySelectorAll('input[name="style"]').forEach(radio => {
+  radio.addEventListener('change', (e) => {
+    const color = e.target.value;
+    const hex = colorMap[color];
+    const label = labelMap[color];
+    
+    document.getElementById('markdown-code').textContent = 
+      `[![AI Code Review](https://img.shields.io/badge/${label}-${hex}?style=flat&logo=robot)](https://automation.songheng.vip)`;
+    
+    document.getElementById('html-code').innerHTML = 
+      `&lt;a href="https://automation.songheng.vip"&gt;\n  &lt;img src="https://img.shields.io/badge/${label}-${hex}?style=flat&amp;logo=robot" alt="AI Code Review"&gt;\n&lt;/a&gt;`;
+    
+    document.getElementById('rst-code').textContent = 
+      `.. image:: https://img.shields.io/badge/${label}-${hex}?style=flat&logo=robot\n   :target: https://automation.songheng.vip\n   :alt: AI Code Review`;
+  });
+});
+
+function switchTab(tabName) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+  
+  event.target.classList.add('active');
+  document.getElementById(tabName).classList.add('active');
+}
+
+function copyCode(btn) {
+  const code = btn.nextElementSibling.textContent;
+  navigator.clipboard.writeText(code).then(() => {
+    btn.textContent = 'Copied!';
+    setTimeout(() => btn.textContent = 'Copy', 2000);
+  });
+}
+</script>
+<script src="/share-widget.js"></script>
+<script src="/conversion-banner.js" defer></script>
+</body>
+</html>

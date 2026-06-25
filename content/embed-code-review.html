@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Free AI Code Review Widget - Embed on Your Site | my-automaton</title>
+<meta name="description" content="Add AI-powered code review to your blog or documentation site. Free widget, no signup required. Pay only when you exceed free tier.">
+<meta property="og:title" content="Free AI Code Review Widget - Embed on Your Site">
+<meta property="og:description" content="Add AI-powered code review to your blog or documentation. One script tag, instant reviews.">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  min-height: 100vh;
+  color: #fff;
+  padding: 40px 20px;
+}
+.container { max-width: 900px; margin: 0 auto; }
+h1 { font-size: 42px; margin-bottom: 16px; text-align: center; }
+.subtitle { font-size: 20px; opacity: 0.9; text-align: center; margin-bottom: 40px; }
+.benefits {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+  margin-bottom: 40px;
+}
+.benefit {
+  background: rgba(255,255,255,0.1);
+  padding: 20px;
+  border-radius: 12px;
+  backdrop-filter: blur(10px);
+}
+.benefit h3 { font-size: 18px; margin-bottom: 8px; }
+.benefit p { font-size: 14px; opacity: 0.9; line-height: 1.5; }
+.section {
+  background: rgba(0,0,0,0.3);
+  padding: 30px;
+  border-radius: 12px;
+  margin-bottom: 30px;
+}
+.section h2 { font-size: 24px; margin-bottom: 16px; }
+.code-block {
+  background: rgba(0,0,0,0.5);
+  padding: 16px;
+  border-radius: 8px;
+  font-family: 'Monaco', 'Menlo', monospace;
+  font-size: 13px;
+  overflow-x: auto;
+  margin: 12px 0;
+  border: 1px solid rgba(255,255,255,0.1);
+}
+.code-block code { color: #a5f3fc; }
+.features-list { list-style: none; margin: 16px 0; }
+.features-list li {
+  padding: 12px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  display: flex;
+  align-items: center;
+}
+.features-list li:before { content: "✓"; margin-right: 12px; font-weight: bold; color: #4ade80; }
+.cta-button {
+  display: inline-block;
+  padding: 16px 32px;
+  background: #fff;
+  color: #667eea;
+  text-decoration: none;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 18px;
+  transition: transform 0.2s;
+  margin: 20px 0;
+}
+.cta-button:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+.demo-section { text-align: center; margin: 40px 0; }
+footer { text-align: center; margin-top: 40px; opacity: 0.8; }
+footer a { color: #fff; }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>🤖 AI Code Review Widget</h1>
+  <p class="subtitle">Add AI-powered code review to your site in 30 seconds</p>
+
+  <div class="benefits">
+    <div class="benefit">
+      <h3>🆓 Free Tier</h3>
+      <p>3 free reviews per day, per IP. Perfect for hobby projects and learning.</p>
+    </div>
+    <div class="benefit">
+      <h3>💰 Pay As You Go</h3>
+      <p>No subscription. Pay with USDC on Base chain. Reviews cost 1¢-5¢ each.</p>
+    </div>
+    <div class="benefit">
+      <h3>⚡ Zero Setup</h3>
+      <p>One script tag. No API keys, no signup, no backend required.</p>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>Installation</h2>
+    <p>Add this single line before your closing <code>&lt;/body&gt;</code> tag:</p>
+    <div class="code-block">
+      <code>&lt;script src="https://automation.songheng.vip/embed-widget.js"&gt;&lt;/script&gt;</code>
+    </div>
+    <p>Or place it wherever you want the widget to appear:</p>
+    <div class="code-block">
+      <code>&lt;div data-automaton-widget&gt;&lt;/div&gt;
+&lt;script src="https://automation.songheng.vip/embed-widget.js"&gt;&lt;/script&gt;</code>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>Features</h2>
+    <ul class="features-list">
+      <li>Code review with actionable suggestions</li>
+      <li>Security vulnerability scanning</li>
+      <li>Refactoring recommendations</li>
+      <li>Code explanation for complex logic</li>
+      <li>Supports 50+ programming languages</li>
+      <li>Responsive design, works on mobile</li>
+      <li>Dark theme, matches modern sites</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2>How It Works</h2>
+    <ol style="line-height: 2; margin-left: 20px;">
+      <li>Visitor pastes code into the widget</li>
+      <li>Selects review type (review, security, refactor, explain)</li>
+      <li>Clicks "Review Code"</li>
+      <li>AI analyzes and returns results in seconds</li>
+    </ol>
+    <p style="margin-top: 16px;">First 3 requests per day are free. After that, users can pay with USDC or get an API key.</p>
+  </div>
+
+  <div class="demo-section">
+    <h2>Live Demo</h2>
+    <p>The widget is embedded below. Try it now!</p>
+    <div data-automaton-widget></div>
+  </div>
+
+  <div class="section">
+    <h2>Why Add This to Your Site?</h2>
+    <ul class="features-list">
+      <li><strong>For tutorial sites:</strong> Let readers check their code instantly</li>
+      <li><strong>For documentation:</strong> Help users validate examples</li>
+      <li><strong>For coding blogs:</strong> Add interactive code review to posts</li>
+      <li><strong>For education:</strong> Students get instant feedback</li>
+      <li><strong>For open source:</strong> Review PRs faster with AI assistance</li>
+    </ul>
+  </div>
+
+  <div style="text-align: center;">
+    <a href="/api-playground.html" class="cta-button">Get API Key for Unlimited Use</a>
+  </div>
+
+  <footer>
+    <p>Widget by <a href="/">my-automaton</a> • <a href="/api-docs.html">API Docs</a> • <a href="/pricing.html">Pricing</a></p>
+    <p style="margin-top: 8px; font-size: 14px;">Questions? Email: support@automation.songheng.vip</p>
+  </footer>
+</div>
+
+<script src="/embed-widget.js"></script>
+</body>
+</html>

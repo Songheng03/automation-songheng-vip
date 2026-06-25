@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Free AI Code Review - Try Before You Buy | Songheng AI</title>
+<meta name="description" content="Get a free AI-powered code review. No signup required. 3 free reviews per day. Get detailed analysis, security scan, and optimization suggestions.">
+<meta property="og:title" content="Free AI Code Review">
+<meta property="og:description" content="Get AI-powered code review for free. Paste your code, get detailed analysis.">
+<meta property="og:type" content="website">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://automation.songheng.vip/code-review-preview.html">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif; background:linear-gradient(135deg,#667eea 0%,#764ba2 100%); min-height:100vh; color:#333; }
+.container { max-width:800px; margin:0 auto; padding:20px; }
+.header { text-align:center; padding:40px 20px; color:white; }
+.header h1 { font-size:2.5em; margin-bottom:10px; }
+.header p { font-size:1.1em; opacity:0.9; }
+.card { background:white; border-radius:12px; padding:30px; margin-bottom:20px; box-shadow:0 10px 40px rgba(0,0,0,0.1); }
+.card h2 { margin-bottom:15px; color:#667eea; }
+textarea { width:100%; min-height:200px; padding:15px; border:2px solid #e0e0e0; border-radius:8px; font-family:'Fira Code','Consolas',monospace; font-size:14px; resize:vertical; transition:border-color 0.3s; }
+textarea:focus { outline:none; border-color:#667eea; }
+select, button { padding:12px 20px; border-radius:8px; font-size:16px; }
+button { background:linear-gradient(135deg,#667eea 0%,#764ba2 100%); color:white; border:none; cursor:pointer; font-weight:600; transition:transform 0.2s; }
+button:hover { transform:translateY(-2px); box-shadow:0 5px 15px rgba(102,126,234,0.4); }
+button:disabled { opacity:0.6; cursor:not-allowed; transform:none; }
+select { border:2px solid #e0e0e0; background:white; }
+.controls { display:flex; gap:10px; align-items:center; margin:15px 0; flex-wrap:wrap; }
+.remaining { background:#f0f4ff; padding:8px 15px; border-radius:20px; font-size:14px; color:#667eea; font-weight:500; }
+.result { background:#f8f9fa; border-radius:8px; padding:20px; margin-top:15px; white-space:pre-wrap; font-size:14px; line-height:1.6; display:none; }
+.result.show { display:block; }
+.loading { display:none; text-align:center; padding:20px; }
+.loading.show { display:block; }
+.spinner { display:inline-block; width:40px; height:40px; border:3px solid #e0e0e0; border-top-color:#667eea; border-radius:50%; animation:spin 0.8s linear infinite; }
+@keyframes spin { to { transform:rotate(360deg); } }
+.cta { background:linear-gradient(135deg,#667eea 0%,#764ba2 100%); color:white; text-align:center; padding:30px; border-radius:12px; }
+.cta h3 { font-size:1.5em; margin-bottom:10px; }
+.cta p { opacity:0.9; margin-bottom:15px; }
+.cta .btn { display:inline-block; padding:14px 28px; background:white; color:#667eea; border-radius:8px; text-decoration:none; font-weight:600; }
+.cta .btn:hover { transform:translateY(-2px); box-shadow:0 5px 15px rgba(0,0,0,0.2); }
+.preset-tags { display:flex; gap:8px; flex-wrap:wrap; margin:10px 0; }
+.preset-tag { padding:6px 14px; background:#f0f4ff; border-radius:20px; font-size:13px; cursor:pointer; border:1px solid #d0d8ff; transition:all 0.2s; }
+.preset-tag:hover { background:#667eea; color:white; border-color:#667eea; }
+.error-msg { color:#e74c3c; padding:10px; background:#ffeaea; border-radius:8px; display:none; }
+.error-msg.show { display:block; }
+</style>
+</head>
+<body>
+<div style="background:#161b22;border-bottom:1px solid #30363d;padding:10px 20px;font-size:.85rem;display:flex;gap:16px;align-items:center;flex-wrap:wrap"><a href="/" style="color:#58a6ff;text-decoration:none;font-weight:600">🏠 Home</a><span style="color:#484f58">|</span><a href="/pricing.html" style="color:#8b949e;text-decoration:none">Pricing</a><a href="/api-docs.html" style="color:#8b949e;text-decoration:none">API</a><a href="/playground.html" style="color:#8b949e;text-decoration:none">Playground</a></div>
+
+<div class="container">
+  <div class="header">
+    <h1>🔍 Free AI Code Review</h1>
+    <p>Get instant AI-powered code analysis. No signup needed. 3 free reviews per day.</p>
+  </div>
+
+  <div class="card">
+    <h2>📝 Paste Your Code</h2>
+    <p style="margin-bottom:10px;color:#666;">Select a review type and paste your code below:</p>
+    <div class="controls">
+      <select id="reviewType">
+        <option value="review">🔍 Full Code Review</option>
+        <option value="security">🛡️ Security Scan</option>
+        <option value="complexity">📊 Complexity Analysis</option>
+        <option value="explain">💡 Code Explanation</option>
+        <option value="refactor">🔄 Refactoring Suggestions</option>
+      </select>
+      <span class="remaining" id="remainingDisplay">🎯 3 free reviews remaining</span>
+    </div>
+    <div class="preset-tags">
+      <span class="preset-tag" onclick="loadPreset('python')">🐍 Python</span>
+      <span class="preset-tag" onclick="loadPreset('js')">🟨 JavaScript</span>
+      <span class="preset-tag" onclick="loadPreset('html')">🌐 HTML</span>
+      <span class="preset-tag" onclick="loadPreset('solidity')">⛓️ Solidity</span>
+    </div>
+    <textarea id="codeInput" placeholder="// Paste your code here...&#10;function hello() {&#10;  console.log('Hello, world!');&#10;}"></textarea>
+    <div class="controls">
+      <button onclick="submitReview()">🚀 Run Analysis</button>
+      <button onclick="clearResult()" style="background:#95a5a6;">Clear</button>
+    </div>
+    <div class="error-msg" id="errorMsg"></div>
+    <div class="loading" id="loading">
+      <div class="spinner"></div>
+      <p style="margin-top:10px;color:#666;">Analyzing your code with AI...</p>
+    </div>
+    <div class="result" id="result"></div>
+  </div>
+
+  <div class="cta">
+    <h3>⚡ Need More Power?</h3>
+    <p>Get unlimited reviews, batch analysis, and priority processing with an API key.</p>
+    <a href="https://automation.songheng.vip/pricing.html" class="btn">View Plans →</a>
+    <p style="margin-top:10px;font-size:13px;opacity:0.8;">Or <a href="https://automation.songheng.vip/portal.html" style="color:white;text-decoration:underline;">use your existing key</a></p>
+  </div>
+</div>
+
+<script>
+const API_BASE = 'https://automation.songheng.vip';
+const PRESETS = {
+  python: '# Python function with potential issues\ndef process_data(items, cache):\n    result = []\n    for i in range(len(items)):\n        item = items[i]\n        if item in cache:\n            result.append(cache[item])\n        else:\n            # Slow computation\n            val = 0\n            for j in range(1000000):\n                val += j * item\n            cache[item] = val\n            result.append(val)\n    return result\n\ndef get_user(user_id):\n    import sqlite3\n    conn = sqlite3.connect("users.db")\n    cur = conn.cursor()\n    query = f"SELECT * FROM users WHERE id = {user_id}"\n    cur.execute(query)\n    return cur.fetchone()',
+  js: '// JavaScript code for review\nconst express = require("express");\nconst app = express();\n\napp.get("/api/user/:id", (req, res) => {\n  const id = req.params.id;\n  const token = req.headers.authorization;\n  \n  if (!token) {\n    res.status(401).send("Unauthorized");\n    return;\n  }\n  \n  // Direct SQL query\n  const query = `SELECT * FROM users WHERE id = ${id}`;\n  const user = db.query(query);\n  \n  // Send entire user object\n  res.json(user);\n});\n\napp.listen(3000, () => console.log("Server running"));',
+  html: '<!DOCTYPE html>\n<html>\n<head>\n  <title>My App</title>\n</head>\n<body>\n  <div id="app">\n    <h1>Welcome</h1>\n    <form action="/login" method="GET">\n      <input type="text" name="username" id="username">\n      <input type="password" name="password" id="password">\n      <button type="submit">Login</button>\n    </form>\n  </div>\n  <script>\n    // Inline scripts\n    const user = document.getElementById("username").value;\n    document.cookie = "user=" + user;\n  </script>\n<script src="/conversion-banner.js" defer></script>
+</body>\n</html>',
+  solidity: '// SPDX-License-Identifier: MIT\npragma solidity ^0.8.0;\n\ncontract VulnerableBank {\n    mapping(address => uint) public balances;\n    \n    function deposit() public payable {\n        balances[msg.sender] += msg.value;\n    }\n    \n    function withdraw(uint amount) public {\n        require(balances[msg.sender] >= amount);\n        (bool sent, ) = msg.sender.call{value: amount}("");\n        require(sent, "Failed");\n        balances[msg.sender] -= amount;\n    }\n    \n    function getBalance() public view returns (uint) {\n        return address(this).balance;\n    }\n}'
+};
+
+function loadPreset(lang) {
+  document.getElementById('codeInput').value = PRESETS[lang] || '';
+}
+
+function getRemaining() {
+  const stored = localStorage.getItem('freeReviews');
+  const today = new Date().toDateString();
+  if (!stored) return 3;
+  try {
+    const data = JSON.parse(stored);
+    if (data.date !== today) return 3;
+    return Math.max(0, 3 - data.used);
+  } catch { return 3; }
+}
+
+function useRemaining() {
+  const today = new Date().toDateString();
+  const stored = localStorage.getItem('freeReviews');
+  let used = 0;
+  if (stored) {
+    try {
+      const data = JSON.parse(stored);
+      if (data.date === today) used = data.used;
+    } catch {}
+  }
+  localStorage.setItem('freeReviews', JSON.stringify({date: today, used: used + 1}));
+  updateRemaining();
+}
+
+function updateRemaining() {
+  const r = getRemaining();
+  document.getElementById('remainingDisplay').textContent = `🎯 ${r} free ${r === 1 ? 'review' : 'reviews'} remaining today`;
+}
+
+async function submitReview() {
+  const code = document.getElementById('codeInput').value.trim();
+  const type = document.getElementById('reviewType').value;
+  const errorEl = document.getElementById('errorMsg');
+  const resultEl = document.getElementById('result');
+  const loadingEl = document.getElementById('loading');
+  
+  errorEl.classList.remove('show');
+  errorEl.textContent = '';
+  resultEl.classList.remove('show');
+  
+  if (!code) {
+    errorEl.textContent = '⚠️ Please paste some code first!';
+    errorEl.classList.add('show');
+    return;
+  }
+  
+  if (getRemaining() <= 0) {
+    errorEl.textContent = '⚠️ No free reviews left today! Purchase credits for unlimited access.';
+    errorEl.classList.add('show');
+    return;
+  }
+  
+  loadingEl.classList.add('show');
+  
+  try {
+    const resp = await fetch(`${API_BASE}/free/${type}`, {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({code, language: 'auto'})
+    });
+    
+    if (!resp.ok) {
+      if (resp.status === 402) {
+        throw new Error('Free limit reached. Please buy credits.');
+      }
+      throw new Error(`Server error: ${resp.status}`);
+    }
+    
+    const data = await resp.json();
+    useRemaining();
+    resultEl.textContent = data.result || data.analysis || JSON.stringify(data, null, 2);
+    resultEl.classList.add('show');
+  } catch (err) {
+    errorEl.textContent = `❌ ${err.message}`;
+    errorEl.classList.add('show');
+  } finally {
+    loadingEl.classList.remove('show');
+  }
+}
+
+function clearResult() {
+  document.getElementById('result').classList.remove('show');
+  document.getElementById('result').textContent = '';
+  document.getElementById('errorMsg').classList.remove('show');
+}
+
+// Init
+updateRemaining();
+
+// Load Python preset on page load
+loadPreset('python');
+</script>
+<script src="/conversion-banner.js" defer></script>
+</body>
+</html>

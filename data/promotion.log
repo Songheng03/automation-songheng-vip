@@ -1,0 +1,20 @@
+[2026-06-14 23:06:01] 🚀 Running full promotion cycle...
+[2026-06-14 23:06:01] 🔍 Checking site health...
+[2026-06-14 23:06:01] ✅ Site is UP (200)
+[2026-06-14 23:06:01] 🔄 Refreshing SEO assets...
+{
+  "sitemap": "188 URLs written",
+  "robots": "OK",
+  "rss": "20 items written",
+  "blog": "80 articles listed",
+[2026-06-14 23:06:02] ✅ SEO assets refreshed
+[2026-06-14 23:06:02] 🔑 IndexNow key file created: f5a3b2c1d8e7f6a0b9c4d3e2f1a0b8c7.txt
+[2026-06-14 23:06:02] 📡 Pinging search engines...
+[2026-06-14 23:06:02]   Google: 404
+[2026-06-14 23:06:02]   Bing: 410
+[2026-06-14 23:06:03]   IndexNow: 202
+[2026-06-14 23:06:03] ✅ Search engines pinged
+[2026-06-14 23:06:03] 📝 Social post generated: /root/automaton/content/promote/social-post-20260614.md
+[2026-06-14 23:06:03] 📊 Current stats:
+[2026-06-14 23:06:03] ✅ Promotion cycle complete
+[2026-06-14 23:06:07] ⏰ Cron job installed (every 6 hours)

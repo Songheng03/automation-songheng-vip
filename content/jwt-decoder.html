@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>JWT Decoder - Decode JSON Web Tokens Online</title>
+<meta name="description" content="Decode and inspect JWT tokens. View header, payload, and signature. Check expiration. 100% client-side — your tokens never leave your browser.">
+<link rel="canonical" href="https://automation.songheng.vip/jwt-decoder.html">
+<style>
+:root{--bg:#0d1117;--surface:#161b22;--border:#30363d;--text:#c9d1d9;--muted:#8b949e;--accent:#58a6ff;--green:#3fb950;--yellow:#d2991d;--red:#f85149}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--text);font-family:system-ui,sans-serif;min-height:100vh}
+header{background:var(--surface);border-bottom:1px solid var(--border);padding:16px 24px;text-align:center}
+header h1{font-size:1.5rem} header p{color:var(--muted);font-size:.85rem;margin-top:4px}
+.container{max-width:650px;margin:0 auto;padding:24px 16px}
+textarea{width:100%;min-height:90px;background:var(--bg);border:1px solid var(--border);color:var(--text);padding:12px 16px;border-radius:10px;font-size:.82rem;font-family:'JetBrains Mono',monospace;resize:vertical;margin-bottom:12px}
+textarea:focus{outline:none;border-color:var(--accent)}
+.btn{display:inline-block;padding:10px 20px;border-radius:8px;cursor:pointer;font-size:.85rem;font-weight:600;border:none;background:var(--accent);color:#fff;margin-bottom:16px}
+.section{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:16px}
+.section h4{font-size:.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;margin-bottom:10px}
+.section pre{background:var(--bg);padding:14px 16px;border-radius:8px;overflow-x:auto;font-family:'JetBrains Mono',monospace;font-size:.78rem;line-height:1.5;max-height:300px;overflow-y:auto;white-space:pre-wrap;word-break:break-all}
+.json-key{color:var(--accent)} .json-str{color:var(--green)} .json-num{color:var(--yellow)} .json-bool{color:#ff79c6}
+.status{display:inline-block;padding:3px 10px;border-radius:20px;font-size:.72rem;font-weight:600;margin-left:8px}
+.status.valid{background:rgba(63,185,80,.15);color:var(--green)}
+.status.expired{background:rgba(248,81,73,.15);color:var(--red)}
+.sponsor{text-align:center;padding:20px;background:var(--surface);border:1px solid var(--border);border-radius:8px}
+.sponsor a{color:var(--accent)}
+</style>
+</head>
+<body>
+<header><h1>🔓 JWT Decoder</h1><p>Decode and inspect JSON Web Tokens. Private — tokens stay in your browser.</p></header>
+<div class="container">
+<textarea id="jwtInput" placeholder="Paste a JWT token here... (e.g. eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...)"></textarea>
+<button class="btn" onclick="decodeJWT()">Decode JWT</button>
+<div class="section"><h4>Header</h4><pre id="headerBox"></pre></div>
+<div class="section"><h4>Payload <span id="expBadge"></span></h4><pre id="payloadBox"></pre></div>
+<div class="section"><h4>Signature</h4><pre id="sigBox" style="color:var(--muted);font-size:.72rem"></pre></div>
+<div class="sponsor"><p>💡 Working with JWTs? Use our <a href="/api-playground.html">AI API</a> for automated token management.</p></div>
+</div>
+<script>
+function syntaxJSON(obj){
+  const s=JSON.stringify(obj,null,2);
+  return s.replace(/("(\\u[a-fA-F0-9]{4}|\\[^u]|[^"\\])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g,m=>{
+    let cls='json-num';if(/^"/.test(m)){cls=/:$/.test(m)?'json-key':'json-str'}else if(/true|false/.test(m))cls='json-bool';else if(/null/.test(m))cls='json-num';
+    return'<span class="'+cls+'">'+m+'</span>';
+  });
+}
+function decodeJWT(){
+  const token=document.getElementById('jwtInput').value.trim();
+  const parts=token.split('.');
+  const headerEl=document.getElementById('headerBox');
+  const payloadEl=document.getElementById('payloadBox');
+  const sigEl=document.getElementById('sigBox');
+  const expBadge=document.getElementById('expBadge');
+  expBadge.innerHTML='';
+  if(parts.length!==3){
+    headerEl.innerHTML='<span style="color:var(--red)">Invalid JWT format. Expected 3 parts separated by dots.</span>';
+    payloadEl.innerHTML='';sigEl.innerHTML='';return;
+  }
+  try{
+    const header=JSON.parse(atob(parts[0]));
+    headerEl.innerHTML=syntaxJSON(header);
+  }catch(e){headerEl.innerHTML='<span style="color:var(--red)">Could not decode header: '+e.message+'</span>'}
+  try{
+    const payload=JSON.parse(atob(parts[1]));
+    payloadEl.innerHTML=syntaxJSON(payload);
+    if(payload.exp){
+      const exp=new Date(payload.exp*1000);const now=new Date();
+      const valid=exp>now;
+      expBadge.innerHTML='<span class="status '+(valid?'valid':'expired')+'">'+(valid?'✅ Valid until '+exp.toLocaleString():'❌ Expired: '+exp.toLocaleString())+'</span>';
+    }
+    if(payload.iat){
+      const iat=new Date(payload.iat*1000);
+      if(!payload.exp)expBadge.innerHTML='<span style="font-size:.72rem;color:var(--muted)">Issued: '+iat.toLocaleString()+'</span>';
+    }
+  }catch(e){payloadEl.innerHTML='<span style="color:var(--red)">Could not decode payload: '+e.message+'</span>'}
+  sigEl.innerHTML='<span style="color:var(--muted);font-size:.7rem">'+parts[2].substring(0,40)+'... (truncated)</span>';
+}
+</script>
+<script src="/conversion-banner.js" defer></script>
+</body>
+</html>

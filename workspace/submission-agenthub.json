@@ -1,0 +1,143 @@
+{
+  "platform": "AgentHub (agenthub.dev)",
+  "research_file": "workspace/research-agenthub.json",
+  "service": "my-automaton",
+  "submission_attempted": true,
+  "automatable": false,
+  "submission_successful": false,
+  "status": "no_submission_process",
+  "service_status": {
+    "name": "my-automaton",
+    "version": "2.2.0",
+    "type": "MCP server",
+    "endpoint": "http://localhost:8080",
+    "mcp_endpoint": "/mcp (POST - JSON-RPC, GET - SSE)",
+    "discovery": "/.well-known/mcp.json (GET)",
+    "running": true,
+    "uptime_seconds": null,
+    "tools": [
+      "analyze",
+      "summarize",
+      "review",
+      "security",
+      "explain",
+      "refactor",
+      "complexity"
+    ],
+    "payment": {
+      "type": "x402",
+      "currency": "USDC",
+      "chain": "Base",
+      "wallet": "0x76eADdEBFfb6A61DD071f97F4508467fc55dd113",
+      "pricing": {
+        "analyze": "$0.01",
+        "summarize": "$0.02",
+        "review": "$0.05",
+        "security": "$0.03",
+        "explain": "$0.02",
+        "refactor": "$0.05",
+        "complexity": "$0.02"
+      }
+    }
+  },
+  "details": {
+    "domain_status": {
+      "description": "agenthub.dev redirects (HTTP 301) to www.gumloop.com",
+      "final_url": "https://www.gumloop.com/",
+      "note": "Gumloop is a no-code AI automation platform — not an open agent listing directory"
+    },
+    "submission_process": {
+      "exists": false,
+      "details": "No dedicated submission form, documentation, or listing process found at agenthub.dev for external agent submissions. The domain simply redirects to Gumloop."
+    },
+    "submission_attempts": [
+      {
+        "method": "GET agenthub.dev/submit",
+        "status": "404 Not Found",
+        "result": "No submission form exists"
+      },
+      {
+        "method": "GET agenthub.dev/docs",
+        "status": "404 Not Found",
+        "result": "No documentation for listings"
+      },
+      {
+        "method": "GET agenthub.dev/listing",
+        "status": "404 Not Found",
+        "result": "No listing endpoint"
+      },
+      {
+        "method": "GET agenthub.dev/about",
+        "status": "404 Not Found",
+        "result": "No about page with submission info"
+      },
+      {
+        "method": "GET agenthub.dev/sitemap.xml",
+        "status": "Redirects to gumloop.com sitemap",
+        "result": "No agenthub-specific sitemap"
+      },
+      {
+        "method": "GET agenthub.dev/robots.txt",
+        "status": "200 OK — disallows /agents/, /api/, etc.",
+        "result": "No submission paths discovered"
+      }
+    ],
+    "gumloop_platform_pages_checked": [
+      "https://www.gumloop.com/ — Landing page (AI Automation Framework)",
+      "https://www.gumloop.com/agents — Platform-internal agent management",
+      "https://www.gumloop.com/templates — Community Templates page",
+      "https://www.gumloop.com/marketplace — Redirects to templates",
+      "https://www.gumloop.com/home — App home (requires login)"
+    ],
+    "blockers": [
+      {
+        "issue": "agenthub.dev is not a listing directory",
+        "detail": "The domain redirects to Gumloop (gumloop.com), a no-code AI automation platform, not an open agent/automation marketplace."
+      },
+      {
+        "issue": "No submission API or form exists",
+        "detail": "No REST API, web form, CLI tool, or GitHub-based submission process was found for listing external agents on agenthub.dev."
+      },
+      {
+        "issue": "Gumloop is a proprietary platform",
+        "detail": "Gumloop does not appear to accept external agent submissions. It is a platform for building AI automations visually within their system."
+      },
+      {
+        "issue": "No GitHub organization or repository",
+        "detail": "No GitHub organization (github.com/agenthub-dev) or repositories exist for community submissions."
+      }
+    ],
+    "recommended_alternatives": [
+      {
+        "platform": "Smithery (smithery.ai)",
+        "status": "MCP server marketplace — requires API key",
+        "research_file": "workspace/submission-smithery.json"
+      },
+      {
+        "platform": "Glama (glama.ai)",
+        "status": "MCP server directory — requires GitHub repo",
+        "research_file": "workspace/submission/glama-result.json"
+      },
+      {
+        "platform": "OpenAI GPT Store",
+        "status": "For GPTs/actions, not MCP servers"
+      },
+      {
+        "platform": "Hugging Face Agent Spaces",
+        "status": "Open platform for AI agent demos"
+      },
+      {
+        "platform": "PulseMCP (pulsemcp.com)",
+        "status": "MCP server directory",
+        "research_file": "workspace/submission/pulsemcp-result.json"
+      },
+      {
+        "platform": "MCP.so",
+        "status": "MCP server discovery",
+        "research_file": "workspace/submission/mcp-so-result.json"
+      }
+    ]
+  },
+  "conclusion": "Submission to agenthub.dev is not possible because the domain is not an agent listing directory — it redirects to Gumloop, a proprietary no-code AI automation platform with no public API or submission process for external agents. The my-automaton service (MCP server on port 8080 with 7 tools) is fully operational and could be submitted to alternative MCP directories such as Smithery, Glama, PulseMCP, or MCP.so instead.",
+  "timestamp": "2025-04-14T00:00:00Z"
+}

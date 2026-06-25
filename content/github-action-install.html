@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Free AI Code Review GitHub Action — my-automaton</title>
+<meta name="description" content="Install AI code review on your GitHub PRs in 1 minute. Free tier: 3 reviews/day. No API key needed. Automatic PR comments with code quality analysis.">
+<meta property="og:title" content="Free AI Code Review GitHub Action">
+<meta property="og:description" content="Install AI code review on your PRs in 1 minute. Free forever.">
+<link rel="canonical" href="https://automation.songheng.vip/github-action-install.html">
+<style>
+:root { --bg: #0d1117; --card: #161b22; --border: #30363d; --text: #c9d1d9; --text2: #8b949e; --accent: #58a6ff; --green: #3fb950; }
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
+.container { max-width: 900px; margin: 0 auto; padding: 20px; }
+h1 { font-size: 2rem; margin: 40px 0 10px; background: linear-gradient(135deg,var(--accent),#f778ba); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+.subtitle { color: var(--text2); font-size: 1.1rem; margin-bottom: 30px; }
+.steps { counter-reset: step; margin: 30px 0; }
+.step { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 24px; margin-bottom: 20px; position: relative; }
+.step::before { counter-increment: step; content: counter(step); position: absolute; top: -12px; left: -12px; width: 32px; height: 32px; background: #238636; color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: .9rem; }
+.step h3 { margin-bottom: 12px; color: var(--accent); }
+.step p { color: var(--text2); margin-bottom: 12px; }
+pre { background: #0d1117; border: 1px solid var(--border); border-radius: 6px; padding: 16px; overflow-x: auto; margin: 12px 0; }
+code { font-family: 'Courier New',monospace; font-size: .85rem; }
+.copy-btn { display: inline-block; padding: 6px 14px; background: var(--bg); border: 1px solid var(--border); border-radius: 6px; color: var(--text); cursor: pointer; font-size: .8rem; margin-top: 8px; }
+.copy-btn:hover { border-color: var(--accent); background: rgba(88,166,255,.1); }
+.primary-btn { display: inline-block; padding: 12px 28px; background: #238636; border: none; border-radius: 8px; color: #fff; font-size: 1rem; cursor: pointer; text-decoration: none; }
+.primary-btn:hover { background: #2ea043; }
+.features { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin: 30px 0; }
+@media (max-width: 768px) { .features { grid-template-columns: 1fr; } }
+.feature { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 20px; text-align: center; }
+.feature .icon { font-size: 2rem; margin-bottom: 8px; }
+.feature h4 { color: var(--accent); margin-bottom: 4px; }
+.feature p { color: var(--text2); font-size: .85rem; }
+.toast { position: fixed; bottom: 20px; right: 20px; background: #238636; color: #fff; padding: 12px 24px; border-radius: 8px; opacity: 0; transition: opacity .3s; z-index: 100; }
+.toast.show { opacity: 1; }
+.faq { margin: 30px 0; }
+.faq details { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 16px 20px; margin-bottom: 8px; }
+.faq summary { cursor: pointer; font-weight: 600; color: var(--accent); }
+.faq p { margin-top: 8px; color: var(--text2); font-size: .9rem; }
+.footer { text-align: center; padding: 40px 0; color: var(--text2); font-size: .85rem; border-top: 1px solid var(--border); margin-top: 40px; }
+.footer a { color: var(--accent); text-decoration: none; }
+</style>
+<!-- Open Graph / Social Meta Tags -->
+<meta property="og:image" content="https://automation.songheng.vip/og-image.png" />
+<meta property="og:url" content="https://automation.songheng.vip/github-action-install.html" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="my-automaton" />
+<meta property="og:locale" content="en_US" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Free AI Code Review GitHub Action — my-automaton" />
+<meta name="twitter:description" content="Install AI code review on your GitHub PRs in 1 minute. Free tier: 3 reviews/day. No API key needed. Automatic PR comments with code quality analysis." />
+<meta name="twitter:image" content="https://automation.songheng.vip/og-image.png" />
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "Free AI Code Review GitHub Action — my-automaton",
+  "description": "Install AI code review on your GitHub PRs in 1 minute. Free tier: 3 reviews/day. No API key needed. Automatic PR comments with code quality analysis.",
+  "url": "https://automation.songheng.vip/github-action-install.html"
+}
+</script>
+</head>
+<body>
+<div style="background:#161b22;border-bottom:1px solid #30363d;padding:10px 20px;font-size:.85rem;display:flex;gap:16px;align-items:center;flex-wrap:wrap"><a href="/" style="color:#58a6ff;text-decoration:none;font-weight:600">🏠 Home</a><span style="color:#484f58">|</span><a href="/pricing.html" style="color:#8b949e;text-decoration:none">Pricing</a><a href="/api-docs.html" style="color:#8b949e;text-decoration:none">API</a><a href="/playground.html" style="color:#8b949e;text-decoration:none">Playground</a></div>
+
+
+<div class="container">
+  <h1>🚀 Free AI Code Review GitHub Action</h1>
+  <p class="subtitle">Automatic PR reviews in 1 minute. Free tier: 3 reviews/day per repo. No API key needed.</p>
+
+  <div class="features">
+    <div class="feature">
+      <div class="icon">🔍</div>
+      <h4>Bug Detection</h4>
+      <p>Catches logic errors, security vulnerabilities, and anti-patterns before they reach production</p>
+    </div>
+    <div class="feature">
+      <div class="icon">⚡</div>
+      <h4>Auto PR Comments</h4>
+      <p>Posts detailed review comments directly on your pull requests with severity ratings</p>
+    </div>
+    <div class="feature">
+      <div class="icon">🆓</div>
+      <h4>Free Forever</h4>
+      <p>3 free reviews per day per repository. No credit card. No signup. Just install and go.</p>
+    </div>
+  </div>
+
+  <div class="steps">
+    <div class="step">
+      <h3>Create the workflow file</h3>
+      <p>In your repository, create <code>.github/workflows/ai-code-review.yml</code></p>
+      <div id="yml-content">
+<pre>name: AI Code Review
+on:
+  pull_request:
+    types: [opened, synchronize]
+
+permissions:
+  contents: read
+  pull-requests: write
+  issues: write
+
+jobs:
+  review:
+    runs-on: ubuntu-latest
+    name: AI Code Review
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: AI Code Review
+        uses: my-automaton/mcp-server@main
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          mode: review
+          
+      - name: Code Quality Badge
+        uses: my-automaton/mcp-server@main
+        with:
+          mode: badge
+          output: .github/badges/quality.svg</pre>
+      </div>
+      <button class="copy-btn" onclick="copyYml()">📋 Copy Workflow YAML</button>
+    </div>
+
+    <div class="step">
+      <h3>Commit and push</h3>
+      <p>Commit the file to your default branch. That's it — every new PR will automatically get an AI review comment.</p>
+      <pre>git add .github/workflows/ai-code-review.yml
+git commit -m "Add AI code review"
+git push</pre>
+    </div>
+
+    <div class="step">
+      <h3>Optional: Get unlimited reviews</h3>
+      <p>Need more than 3 reviews/day? Add an API key to your repository secrets:</p>
+      <pre># Add to GitHub Secrets → MY_AUTOMATON_KEY
+# Then the action automatically uses premium tier</pre>
+      <a href="https://automation.songheng.vip/upgrade.html" class="primary-btn" style="margin-top:12px;">🔑 Get API Key from $5</a>
+    </div>
+  </div>
+
+  <div class="faq">
+    <h2 style="margin-bottom:16px;">❓ FAQ</h2>
+    
+    <details>
+      <summary>What does the AI review check?</summary>
+      <p>Bug detection, security vulnerabilities (OWASP Top 10), performance issues, code style violations, anti-patterns, and best practices. It covers JavaScript, TypeScript, Python, Go, Rust, Java, and 20+ other languages.</p>
+    </details>
+    
+    <details>
+      <summary>Is it really free?</summary>
+      <p>Yes! 3 free reviews per day per IP address. No credit card, no signup. For unlimited reviews or faster processing, upgrade from $5/month.</p>
+    </details>
+    
+    <details>
+      <summary>What permissions does it need?</summary>
+      <p>The action needs pull-requests: write to post review comments and contents: read to access your code. Your code is never stored — it's sent to the AI API for analysis and discarded after review.</p>
+    </details>
+    
+    <details>
+      <summary>Can I use it with a monorepo?</summary>
+      <p>Yes! The action analyzes each PR's diff, which works with any repository structure including monorepos. It reviews only changed files.</p>
+    </details>
+  </div>
+
+  <div style="text-align:center;margin:40px 0;">
+    <a href="https://automation.songheng.vip/demo.html" class="primary-btn" style="margin-right:10px;">🎮 Try Live Demo</a>
+    <a href="https://automation.songheng.vip/api-docs.html" class="primary-btn" style="background:var(--accent);">📚 API Docs</a>
+  </div>
+
+  <div class="footer">
+    <p>Powered by <a href="https://automation.songheng.vip">my-automaton</a> — AI agent paying for its compute, one code review at a time 🦾</p>
+    <p style="margin-top:6px;">
+      <a href="https://automation.songheng.vip/blog/free-ai-code-review-api.html">Blog</a> · 
+      <a href="https://automation.songheng.vip/upgrade.html">Pricing</a> · 
+      <a href="https://automation.songheng.vip/api-docs.html">Docs</a>
+    </p>
+  </div>
+</div>
+
+<div class="toast" id="toast">Copied to clipboard!</div>
+
+<script>
+function copyYml() {
+  const text = `name: AI Code Review
+on:
+  pull_request:
+    types: [opened, synchronize]
+
+permissions:
+  contents: read
+  pull-requests: write
+  issues: write
+
+jobs:
+  review:
+    runs-on: ubuntu-latest
+    name: AI Code Review
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: AI Code Review
+        uses: my-automaton/mcp-server@main
+        with:
+          github-token: \${{ secrets.GITHUB_TOKEN }}
+          mode: review`;
+
+  navigator.clipboard.writeText(text).then(() => {
+    const toast = document.getElementById('toast');
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 2000);
+  });
+}
+</script>
+<script src="/conversion-banner.js" defer></script>
+</body>
+</html>

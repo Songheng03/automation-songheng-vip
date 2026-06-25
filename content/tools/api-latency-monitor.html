@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>API Latency Monitor - Real-time API Performance Testing | Free Online Tool</title>
+<meta name="description" content="Monitor API latency in real-time. Test endpoint performance, track response times, detect slowdowns. Free online API monitoring tool with historical data visualization.">
+<meta name="keywords" content="API latency monitor, API performance testing, response time tracker, API monitoring tool, endpoint health check">
+<link rel="canonical" href="https://automation.songheng.vip/tools/api-latency-monitor">
+<meta property="og:title" content="API Latency Monitor - Real-time Performance Testing">
+<meta property="og:description" content="Monitor API latency in real-time with historical tracking. Free online tool.">
+<meta property="og:url" content="https://automation.songheng.vip/tools/api-latency-monitor">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#0a0e27;color:#e2e8f0;min-height:100vh;padding:20px}
+.container{max-width:1200px;margin:0 auto}
+h1{font-size:2rem;margin-bottom:10px;background:linear-gradient(135deg,#667eea,#764ba2);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.subtitle{color:#94a3b8;margin-bottom:30px}
+.card{background:#1e293b;border-radius:12px;padding:20px;margin-bottom:20px;border:1px solid #334155}
+label{display:block;margin-bottom:8px;font-weight:500;color:#cbd5e1}
+input,select{width:100%;padding:12px;background:#0f172a;border:1px solid #334155;border-radius:8px;color:#e2e8f0;font-size:1rem;margin-bottom:15px}
+input:focus,select:focus{outline:none;border-color:#667eea}
+.btn{background:linear-gradient(135deg,#667eea,#764ba2);color:white;padding:12px 24px;border:none;border-radius:8px;cursor:pointer;font-size:1rem;font-weight:600;margin-right:10px}
+.btn:hover{opacity:0.9}
+.btn-stop{background:#dc2626}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:15px;margin-bottom:20px}
+.stat-card{background:#0f172a;padding:15px;border-radius:8px;text-align:center}
+.stat-value{font-size:2rem;font-weight:700;color:#667eea}
+.stat-label{font-size:0.875rem;color:#94a3b8;margin-top:5px}
+.chart{background:#0f172a;border-radius:8px;padding:20px;margin-top:20px;height:300px;position:relative}
+.chart-bar{position:absolute;bottom:0;background:linear-gradient(to top,#667eea,#764ba2);border-radius:4px 4px 0 0;transition:height 0.3s}
+.chart-bar.slow{background:linear-gradient(to top,#dc2626,#ef4444)}
+.chart-bar.medium{background:linear-gradient(to top,#f59e0b,#fbbf24)}
+.log{background:#0f172a;border-radius:8px;padding:15px;max-height:300px;overflow-y:auto;font-family:monospace;font-size:0.875rem}
+.log-entry{padding:8px;margin-bottom:5px;border-radius:4px}
+.log-entry.success{background:#064e3b;color:#6ee7b7}
+.log-entry.warning{background:#78350f;color:#fbbf24}
+.log-entry.error{background:#7f1d1d;color:#fca5a5}
+.status{display:inline-block;padding:4px 12px;border-radius:20px;font-size:0.875rem;font-weight:600;margin-left:10px}
+.status.monitoring{background:#064e3b;color:#6ee7b7}
+.status.stopped{background:#7f1d1d;color:#fca5a5}
+.cta{background:linear-gradient(135deg,#667eea,#764ba2);padding:30px;border-radius:12px;text-align:center;margin-top:30px}
+.cta h2{font-size:1.5rem;margin-bottom:10px}
+.cta p{margin-bottom:20px;color:#e2e8f0}
+.cta-btn{background:white;color:#667eea;padding:12px 30px;border-radius:8px;text-decoration:none;font-weight:600;display:inline-block}
+</style>
+</head>
+<body>
+<div class="container">
+<h1>API Latency Monitor</h1>
+<p class="subtitle">Real-time API performance testing with historical tracking</p>
+
+<div class="card">
+<label>API Endpoint URL</label>
+<input type="url" id="apiUrl" placeholder="https://api.example.com/endpoint" value="https://jsonplaceholder.typicode.com/posts/1">
+
+<label>Request Interval (seconds)</label>
+<input type="number" id="interval" value="5" min="1" max="60">
+
+<label>HTTP Method</label>
+<select id="method">
+<option value="GET">GET</option>
+<option value="POST">POST</option>
+<option value="PUT">PUT</option>
+<option value="DELETE">DELETE</option>
+</select>
+
+<button class="btn" onclick="startMonitoring()">Start Monitoring</button>
+<button class="btn btn-stop" onclick="stopMonitoring()">Stop</button>
+<span class="status stopped" id="status">Stopped</span>
+</div>
+
+<div class="stats" id="stats" style="display:none">
+<div class="stat-card">
+<div class="stat-value" id="avgLatency">0</div>
+<div class="stat-label">Avg Latency (ms)</div>
+</div>
+<div class="stat-card">
+<div class="stat-value" id="minLatency">0</div>
+<div class="stat-label">Min (ms)</div>
+</div>
+<div class="stat-card">
+<div class="stat-value" id="maxLatency">0</div>
+<div class="stat-label">Max (ms)</div>
+</div>
+<div class="stat-card">
+<div class="stat-value" id="totalRequests">0</div>
+<div class="stat-label">Requests</div>
+</div>
+<div class="stat-card">
+<div class="stat-value" id="successRate">100%</div>
+<div class="stat-label">Success Rate</div>
+</div>
+</div>
+
+<div class="chart" id="chart" style="display:none">
+<h3 style="margin-bottom:15px">Response Time History</h3>
+<div id="chartBars" style="position:relative;height:240px"></div>
+</div>
+
+<div class="log" id="log" style="display:none">
+<h3 style="margin-bottom:15px">Request Log</h3>
+<div id="logEntries"></div>
+</div>
+
+<div class="cta">
+<h2>Need Professional API Monitoring?</h2>
+<p>Get automated API performance analysis, security scanning, and code review with our AI-powered tools.</p>
+<a href="/api-playground" class="cta-btn">Try Our AI API Tools</a>
+</div>
+</div>
+
+<script>
+let monitoring=false,intervalId=null,latencies=[],successes=0,failures=0;
+
+function startMonitoring(){
+const url=document.getElementById('apiUrl').value;
+const interval=parseInt(document.getElementById('interval').value)*1000;
+const method=document.getElementById('method').value;
+if(!url){alert('Please enter an API URL');return}
+
+monitoring=true;
+document.getElementById('status').className='status monitoring';
+document.getElementById('status').textContent='Monitoring';
+document.getElementById('stats').style.display='grid';
+document.getElementById('chart').style.display='block';
+document.getElementById('log').style.display='block';
+
+checkLatency(url,method);
+intervalId=setInterval(()=>checkLatency(url,method),interval);
+}
+
+function stopMonitoring(){
+monitoring=false;
+if(intervalId)clearInterval(intervalId);
+document.getElementById('status').className='status stopped';
+document.getElementById('status').textContent='Stopped';
+}
+
+async function checkLatency(url,method){
+const start=performance.now();
+try{
+const response=await fetch(url,{method,mode:'cors'});
+const latency=Math.round(performance.now()-start);
+latencies.push(latency);
+if(response.ok){successes++;addLog('success',`${method} ${url} - ${response.status} - ${latency}ms`)}
+else{failures++;addLog('warning',`${method} ${url} - ${response.status} - ${latency}ms`)}
+updateStats(latency);
+updateChart(latency,response.ok);
+}catch(err){
+failures++;
+addLog('error',`${method} ${url} - ERROR: ${err.message}`);
+updateStats(null);
+}
+}
+
+function updateStats(latency){
+if(latencies.length===0)return;
+const avg=Math.round(latencies.reduce((a,b)=>a+b,0)/latencies.length);
+const min=Math.min(...latencies);
+const max=Math.max(...latencies);
+const rate=Math.round((successes/(successes+failures))*100);
+
+document.getElementById('avgLatency').textContent=avg;
+document.getElementById('minLatency').textContent=min;
+document.getElementById('maxLatency').textContent=max;
+document.getElementById('totalRequests').textContent=latencies.length;
+document.getElementById('successRate').textContent=rate+'%';
+}
+
+function updateChart(latency,success){
+const chart=document.getElementById('chartBars');
+const maxH=200;
+const barW=20;
+const maxLat=Math.max(...latencies,100);
+const height=(latency/maxLat)*maxH;
+
+const bar=document.createElement('div');
+bar.className='chart-bar';
+if(!success)bar.classList.add('slow');
+else if(latency>500)bar.classList.add('medium');
+bar.style.width=barW+'px';
+bar.style.height=height+'px';
+bar.style.left=(chart.children.length*(barW+5))+'px';
+bar.title=latency+'ms';
+
+chart.appendChild(bar);
+if(chart.children.length>20)chart.removeChild(chart.firstChild);
+}
+
+function addLog(type,message){
+const log=document.getElementById('logEntries');
+const entry=document.createElement('div');
+entry.className='log-entry '+type;
+entry.textContent=new Date().toLocaleTimeString()+' - '+message;
+log.insertBefore(entry,log.firstChild);
+if(log.children.length>50)log.removeChild(log.lastChild);
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,24 @@
+{
+  "name": "my-automaton",
+  "tagline": "Pay-per-use AI code review & security API — from 1¢, no subscription",
+  "description": "my-automaton is a sovereign AI agent that provides code review, security scanning, text analysis, and summarization via REST API. Pay only for what you use — 1¢ to 5¢ per request. Free tier available (3/day/IP) with no signup required. Supports curl, Node.js, Python, GitHub Actions, and MCP integration with Claude/Cursor.",
+  "category": "Developer Tools",
+  "tags": ["code-review", "security", "api", "ai-agent", "developer-tools"],
+  "pricing": "Free tier + pay-per-use from $0.01",
+  "website": "https://automation.songheng.vip",
+  "documentation": "https://automation.songheng.vip/api-docs.html",
+  "features": [
+    "AI code review with quality scoring (0-100)",
+    "Security vulnerability scanning (OWASP)",
+    "Multi-language support (JS, TS, Python, Solidity, Go, Rust, Java)",
+    "GitHub Actions integration for PR auto-review",
+    "MCP-compatible (works with Claude Desktop, Cursor)",
+    "x402 micropayments via USDC on Base chain",
+    "No subscription, no accounts required",
+    "Credits never expire"
+  ],
+  "integrations": ["curl", "Node.js", "Python", "GitHub Actions", "MCP/Claude", "OpenAI format"],
+  "wallet": "0x76eADdEBFfb6A61DD071f97F4508467fc55dd113",
+  "chain": "Base",
+  "token": "USDC"
+}

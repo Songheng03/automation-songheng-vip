@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Free Unix Timestamp Converter — Epoch to Human Date & Vice Versa | my-automaton</title>
+  <meta name="description" content="Free online Unix timestamp converter. Convert Unix timestamps to human-readable dates and vice versa. Supports seconds and milliseconds. Real-time conversion. 100% client-side.">
+  <meta name="keywords" content="unix timestamp converter, epoch converter, unix time to date, date to unix timestamp, epoch time converter, free unix tool">
+  <meta property="og:title" content="Free Unix Timestamp Converter — Epoch ↔ Date Conversion">
+  <meta property="og:description" content="Convert Unix timestamps to dates and back instantly. Supports seconds, milliseconds, and multiple time zones. Free, online, no sign-up.">
+  <meta property="og:type" content="website">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Unix Timestamp Converter",
+    "url": "https://automation.songheng.vip/timestamp-converter.html",
+    "description": "Free online Unix timestamp converter. Convert between Unix timestamps and human-readable dates. Real-time, 100% client-side.",
+    "applicationCategory": "DeveloperTool",
+    "operatingSystem": "All",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+  }
+  </script>
+  <style>
+    :root { --bg: #0d1117; --card: #161b22; --border: #30363d; --text: #c9d1d9; --text-secondary: #8b949e; --accent: #58a6ff; --accent-hover: #79b8ff; --green: #3fb950; --purple: #a371f7; --orange: #d2991d; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; min-height: 100vh; }
+    .container { max-width: 900px; margin: 0 auto; padding: 0 20px; }
+    header { background: var(--card); border-bottom: 1px solid var(--border); padding: 16px 0; position: sticky; top: 0; z-index: 100; }
+    header .container { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; }
+    .logo { font-size: 1.2em; font-weight: 700; color: var(--accent); text-decoration: none; }
+    .logo span { color: var(--text-secondary); font-weight: 400; font-size: 0.8em; }
+    nav a { color: var(--text-secondary); text-decoration: none; margin-left: 18px; font-size: 0.9em; }
+    nav a:hover { color: var(--accent); }
+    .hero { text-align: center; padding: 50px 20px 30px; }
+    .hero h1 { font-size: 2.2em; margin-bottom: 10px; background: linear-gradient(135deg, var(--accent), var(--purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .hero p { color: var(--text-secondary); font-size: 1.05em; max-width: 650px; margin: 0 auto; }
+
+    .converter-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 30px; }
+    .conv-card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 24px; }
+    .conv-card h2 { font-size: 1.1em; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+    .conv-card label { display: block; font-size: 0.82em; color: var(--text-secondary); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.04em; }
+    .conv-card input { width: 100%; padding: 12px 14px; border-radius: 8px; background: var(--bg); border: 1px solid var(--border); color: var(--text); font-family: 'SF Mono','Fira Code',monospace; font-size: 0.95em; outline: none; margin-bottom: 12px; }
+    .conv-card input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(88,166,255,0.15); }
+    .result-display { background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 14px; font-family: 'SF Mono','Fira Code',monospace; font-size: 0.9em; min-height: 42px; word-break: break-all; }
+    .result-display .dim { color: var(--text-secondary); font-size: 0.85em; }
+    .result-display .highlight { color: var(--green); font-weight: 600; }
+    .result-display .utc { color: var(--accent); }
+    .result-display .local { color: var(--orange); }
+
+    .now-section { text-align: center; padding: 24px; margin: 24px 0; background: var(--card); border: 1px solid var(--border); border-radius: 12px; }
+    .now-section .now-value { font-family: 'SF Mono','Fira Code',monospace; font-size: 1.8em; font-weight: 700; color: var(--green); margin: 8px 0; }
+    .now-section .now-meta { display: flex; justify-content: center; gap: 30px; flex-wrap: wrap; color: var(--text-secondary); font-size: 0.88em; }
+    .now-section .btn { margin-top: 12px; padding: 8px 16px; border-radius: 8px; border: 1px solid var(--border); background: var(--card); color: var(--text); cursor: pointer; }
+    .now-section .btn:hover { border-color: var(--accent); }
+
+    .info-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 14px; margin-top: 40px; }
+    .info-card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 20px; }
+    .info-card h3 { font-size: 1em; margin-bottom: 8px; }
+    .info-card p { color: var(--text-secondary); font-size: 0.88em; line-height: 1.55; }
+
+    .cta-section { text-align: center; padding: 40px 20px; margin: 40px 0; background: linear-gradient(135deg, rgba(88,166,255,0.08), rgba(163,113,247,0.08)); border: 1px solid var(--border); border-radius: 16px; }
+    .cta-section h3 { font-size: 1.3em; margin-bottom: 8px; }
+    .cta-section p { color: var(--text-secondary); margin-bottom: 16px; }
+    .cta-section a { display: inline-block; padding: 12px 28px; border-radius: 8px; background: var(--accent); color: #fff; text-decoration: none; font-weight: 600; }
+
+    footer { text-align: center; padding: 30px; color: var(--text-secondary); font-size: 0.85em; border-top: 1px solid var(--border); margin-top: 40px; }
+    footer a { color: var(--accent); text-decoration: none; }
+
+    .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); background: var(--green); color: #fff; padding: 10px 24px; border-radius: 20px; font-size: 0.9em; font-weight: 600; opacity: 0; transition: opacity 0.3s; pointer-events: none; z-index: 999; }
+    .toast.show { opacity: 1; }
+
+    @media (max-width: 768px) { .converter-grid { grid-template-columns: 1fr; } .hero h1 { font-size: 1.5em; } .now-value { font-size: 1.2em; } }
+  </style>
+</head>
+<body>
+<header>
+  <div class="container">
+    <a href="/" class="logo">my-automaton <span>· API</span></a>
+    <nav>
+      <a href="/api-docs.html">API Docs</a>
+      <a href="/pricing.html">Pricing</a>
+      <a href="/free-trial.html">Free Trial</a>
+      <a href="/dev-tools.html">Dev Tools</a>
+    </nav>
+  </div>
+</header>
+<main class="container">
+  <section class="hero">
+    <h1>Unix Timestamp Converter</h1>
+    <p>Convert Unix timestamps to human-readable dates and vice versa. Supports seconds, milliseconds, and multiple time zones. Real-time, free, 100% client-side.</p>
+  </section>
+
+  <div class="now-section">
+    <div style="color:var(--text-secondary);font-size:0.85em;">Current Unix Timestamp</div>
+    <div class="now-value" id="nowTimestamp">—</div>
+    <div class="now-meta">
+      <span>UTC: <span id="nowUTC">—</span></span>
+      <span>Local: <span id="nowLocal">—</span></span>
+      <span>Milliseconds: <span id="nowMS">—</span></span>
+    </div>
+    <button class="btn" onclick="copyNow()">📋 Copy Timestamp</button>
+  </div>
+
+  <div class="converter-grid">
+    <div class="conv-card">
+      <h2>🔢 Timestamp → Date</h2>
+      <label>Unix Timestamp (seconds)</label>
+      <input type="text" id="tsInput" placeholder="e.g. 1718812800" oninput="tsToDate()">
+      <label>or Milliseconds</label>
+      <input type="text" id="msInput" placeholder="e.g. 1718812800000" oninput="msToDate()">
+      <div class="result-display" id="tsResult"><span class="dim">Enter a timestamp above</span></div>
+    </div>
+    <div class="conv-card">
+      <h2>📅 Date → Timestamp</h2>
+      <label>Date &amp; Time (your local timezone)</label>
+      <input type="datetime-local" id="dateInput" oninput="dateToTs()">
+      <div class="result-display" id="dateResult"><span class="dim">Pick a date above</span></div>
+    </div>
+  </div>
+
+  <div class="info-grid">
+    <div class="info-card">
+      <h3>What is a Unix Timestamp?</h3>
+      <p>A Unix timestamp is the number of seconds (or milliseconds) since January 1, 1970 00:00:00 UTC — the Unix Epoch. It's the standard way to represent time in programming.</p>
+    </div>
+    <div class="info-card">
+      <h3>Seconds vs Milliseconds</h3>
+      <p>JavaScript uses milliseconds (13 digits). Most databases and APIs use seconds (10 digits). This tool handles both — just paste and it auto-detects.</p>
+    </div>
+    <div class="info-card">
+      <h3>Common Uses</h3>
+      <p>API responses, database timestamps, JWT tokens (iat/exp), log files, cookie expiration, cache keys, and any system that needs a universal time format.</p>
+    </div>
+  </div>
+
+  <section class="cta-section">
+    <h3>Working with timestamps in production?</h3>
+    <p>Use my-automaton's API for code review, text analysis, and security scanning. 50 free credits when you sign up.</p>
+    <a href="/free-trial.html">🚀 Get 50 Free API Credits</a>
+  </section>
+</main>
+<footer>
+  <p>© 2026 <a href="/">my-automaton</a> · Unix Timestamp Converter · All processing happens in your browser</p>
+  <p style="margin-top:6px;"><a href="/dev-tools.html">All Free Dev Tools</a> · <a href="/http-status-codes.html">HTTP Status Codes</a> · <a href="/blog.html">Blog</a></p>
+</footer>
+<div class="toast" id="toast">Copied!</div>
+<script>
+function showToast(msg) { const t = document.getElementById('toast'); t.textContent = msg; t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 1800); }
+
+function fmtDate(d) { return d.toISOString().replace('T',' ').replace('Z',''); }
+function fmtLocal(d) { return d.toString(); }
+
+function updateNow() {
+  const now = new Date();
+  const s = Math.floor(now.getTime() / 1000);
+  const ms = now.getTime();
+  document.getElementById('nowTimestamp').textContent = s.toLocaleString();
+  document.getElementById('nowUTC').textContent = fmtDate(now) + ' UTC';
+  document.getElementById('nowLocal').textContent = fmtLocal(now);
+  document.getElementById('nowMS').textContent = ms.toLocaleString();
+}
+
+function tsToDate() {
+  const val = document.getElementById('tsInput').value.trim();
+  const r = document.getElementById('tsResult');
+  if (!val) { r.innerHTML = '<span class="dim">Enter a timestamp above</span>'; return; }
+  const ts = parseInt(val, 10);
+  if (isNaN(ts) || ts < 0) { r.innerHTML = '<span style="color:var(--orange)">Invalid timestamp</span>'; return; }
+  const d = new Date(ts * 1000);
+  r.innerHTML = `
+    <span class="highlight">${fmtDate(d)}</span> UTC<br>
+    <span class="local">${fmtLocal(d)}</span> (Local)<br>
+    <span class="dim">ISO 8601: ${d.toISOString()}</span><br>
+    <span class="dim">Unix: ${ts}</span>
+  `;
+}
+
+function msToDate() {
+  const val = document.getElementById('msInput').value.trim();
+  const r = document.getElementById('tsResult');
+  if (!val) { tsToDate(); return; }
+  const ms = parseInt(val, 10);
+  if (isNaN(ms) || ms < 0) { r.innerHTML = '<span style="color:var(--orange)">Invalid milliseconds</span>'; return; }
+  const d = new Date(ms);
+  r.innerHTML = `
+    <span class="highlight">${fmtDate(d)}</span> UTC<br>
+    <span class="local">${fmtLocal(d)}</span> (Local)<br>
+    <span class="dim">ISO 8601: ${d.toISOString()}</span><br>
+    <span class="dim">Unix: ${Math.floor(ms/1000)}</span> · <span class="dim">Milliseconds: ${ms}</span>
+  `;
+}
+
+function dateToTs() {
+  const val = document.getElementById('dateInput').value;
+  const r = document.getElementById('dateResult');
+  if (!val) { r.innerHTML = '<span class="dim">Pick a date above</span>'; return; }
+  const d = new Date(val);
+  const s = Math.floor(d.getTime() / 1000);
+  r.innerHTML = `
+    <span class="highlight">${s.toLocaleString()}</span> — Unix seconds<br>
+    <span class="utc">${d.getTime().toLocaleString()}</span> — Milliseconds<br>
+    <span class="dim">${fmtDate(d)} UTC</span>
+  `;
+}
+
+function copyNow() {
+  const s = Math.floor(Date.now() / 1000);
+  navigator.clipboard.writeText(s.toString()).then(() => showToast('Copied ' + s));
+}
+
+setInterval(updateNow, 1000);
+updateNow();
+// Set date input to now
+document.getElementById('dateInput').value = new Date().toISOString().slice(0, 16);
+dateToTs();
+</script>
+<script src="/conversion-banner.js" defer></script>
+</body>
+</html>

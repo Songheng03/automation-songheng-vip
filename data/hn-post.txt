@@ -1,0 +1,25 @@
+Show HN: I Built a Sovereign AI Agent That Pays for Its Own Compute
+
+I'm posting this from my AI agent. Yes, really.
+
+I created an autonomous AI agent that lives on a VPS and pays for its own compute by offering APIs to developers. It uses USDC micropayments on Base chain.
+
+Services:
+- Code Review (5¢/req)
+- Security Scanning (3¢/req)  
+- Text Analysis (1¢/req)
+- Summarization (2¢/req)
+- Code Explanation (2¢/req)
+- Refactoring (5¢/req)
+- Complexity Analysis (2¢/req)
+
+Free tier: 3 requests/day per IP (no signup)
+
+Try it: https://automation.songheng.vip/free/review
+Read the docs: https://automation.songheng.vip/api-docs
+
+Wallet: 0x76eADdEBFfb6A61DD071f97F4508467fc55dd113 (Base, USDC)
+
+It wrote its own blog (97 articles), built a referral system, and submitted to search engines. I basically spawned it and it's been earning its keep ever since.
+
+Would love feedback from the HN community!

@@ -1,0 +1,125 @@
+{
+  "directory": {
+    "name": "MCPList",
+    "website": "https://mcplist.site",
+    "github": "https://github.com/tomsmithtld/mcplist",
+    "description": "A curated directory of MCP (Model Context Protocol) servers for Claude Code, Claude Desktop, and other MCP clients. Features search, voting, reviews, and detailed server pages with GitHub stats.",
+    "type": "Community-driven MCP server directory with voting and review system"
+  },
+  "submission_method": "GitHub Issue (via web form) or direct PR to data/servers.json",
+  "submission_url": "https://mcplist.site/submit",
+  "submission_guidelines": {
+    "summary": "Submit via the web form at https://mcplist.site/submit which creates a GitHub issue, or submit a PR editing data/servers.json directly.",
+    "steps_via_web_form": [
+      "Go to https://mcplist.site/submit",
+      "Fill in the GitHub Repository URL (required)",
+      "Enter the Server Name (required)",
+      "Write a Description (required)",
+      "Select a Category from the dropdown (required)",
+      "Provide the Install Command (required)",
+      "Add comma-separated use cases for 'Best For' (optional)",
+      "Check if it's an official Anthropic/MCP server (optional)",
+      "Click 'Create GitHub Issue to Submit' - opens a pre-filled GitHub issue"
+    ],
+    "steps_via_github_pr": [
+      "Fork the repository",
+      "Edit data/servers.json to add the new server entry",
+      "Submit a Pull Request"
+    ],
+    "web_form_fields": [
+      {
+        "field": "githubUrl",
+        "type": "url",
+        "required": true,
+        "placeholder": "https://github.com/username/mcp-server-name",
+        "label": "GitHub Repository URL"
+      },
+      {
+        "field": "name",
+        "type": "text",
+        "required": true,
+        "placeholder": "e.g., Filesystem MCP",
+        "label": "Server Name"
+      },
+      {
+        "field": "description",
+        "type": "textarea",
+        "required": true,
+        "placeholder": "A brief description of what the server does...",
+        "label": "Description"
+      },
+      {
+        "field": "category",
+        "type": "select",
+        "required": true,
+        "options": [
+          "filesystem", "database", "browser-automation", "cloud-platforms",
+          "version-control", "communication", "search", "ai-tools",
+          "code-execution", "media", "productivity", "utilities"
+        ],
+        "label": "Category"
+      },
+      {
+        "field": "installCommand",
+        "type": "text",
+        "required": true,
+        "placeholder": "e.g., npx @anthropic/mcp-server-filesystem",
+        "label": "Install Command"
+      },
+      {
+        "field": "bestFor",
+        "type": "text",
+        "required": false,
+        "placeholder": "e.g., reading files, writing code, local development",
+        "label": "Best For (comma-separated use cases)"
+      },
+      {
+        "field": "isOfficial",
+        "type": "checkbox",
+        "required": false,
+        "label": "This is an official Anthropic/MCP server"
+      }
+    ],
+    "server_data_schema": {
+      "id": "unique-slug",
+      "name": "Server Name",
+      "description": "What it does",
+      "category": "One of 12 categories",
+      "author": "Author Name",
+      "authorUrl": "https://author.site",
+      "githubUrl": "https://github.com/...",
+      "npmPackage": "@scope/package",
+      "installCommand": "npx -y @scope/package",
+      "isOfficial": false,
+      "tags": ["tag1", "tag2"],
+      "bestFor": ["use case 1", "use case 2"],
+      "stars": 1234,
+      "forks": 56,
+      "openIssues": 12,
+      "lastUpdated": "2025-12-20",
+      "language": "TypeScript",
+      "license": "MIT",
+      "weeklyDownloads": 5000,
+      "score": 78,
+      "rating": 4
+    },
+    "categories": [
+      "filesystem", "database", "browser-automation", "cloud-platforms",
+      "version-control", "communication", "search", "ai-tools",
+      "code-execution", "media", "productivity", "utilities"
+    ],
+    "review_process": "Submissions are reviewed manually via GitHub issues. Approved servers are typically added within 24-48 hours.",
+    "database_tracking": {
+      "submissions_table": true,
+      "statuses": ["pending", "approved", "rejected"],
+      "fields_tracked": ["github_url", "name", "description", "category", "tags", "best_for", "submitter_id", "submitter_email", "status", "review_notes", "reviewed_by", "reviewed_at"]
+    },
+    "data_sources": [
+      "Official MCP Registry (registry.modelcontextprotocol.io)",
+      "GitHub Awesome Lists (punkpeye, wong2, appcypher, TensorBlock, habitoai, jaw9c, rohitg00)",
+      "npm Registry (@modelcontextprotocol/* scope)",
+      "Anthropic Reference Servers",
+      "Third-Party Directories (mcp.so, PulseMCP, mcpservers.org, AI Agents List, Portkey, MCP Server Finder)"
+    ]
+  }
+}

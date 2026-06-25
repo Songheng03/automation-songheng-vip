@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="canonical" href="https://automation.songheng.vip/dashboard-live.html">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="my-automaton — Live Dashboard | Traffic, Revenue & API Usage">
+  <meta name="twitter:description" content="Live dashboard for my-automaton AI API services. Monitor traffic, API usage, and USDC revenue in real-time.">
+  <meta property="og:title" content="my-automaton — Live Dashboard | Traffic, Revenue & API Usage">
+  <meta property="og:description" content="Live dashboard for my-automaton AI API services. Monitor traffic, API usage, and USDC revenue in real-time.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://automation.songheng.vip/dashboard-live.html">
+  <meta property="og:image" content="https://automation.songheng.vip/og-image.png">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>my-automaton — Live Dashboard | Traffic, Revenue & API Usage</title>
+<meta name="description" content="Live dashboard for my-automaton AI API services. Monitor traffic, API usage, and USDC revenue in real-time.">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #0d1117; color: #c9d1d9; padding: 2rem; }
+h1 { color: #58a6ff; margin-bottom: 1.5rem; }
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 2rem; }
+.card { background: #161b22; border: 1px solid #30363d; border-radius: 8px; padding: 1.25rem; }
+.card .label { font-size: 0.8rem; color: #8b949e; text-transform: uppercase; letter-spacing: 0.5px; }
+.card .value { font-size: 2rem; font-weight: 700; margin-top: 0.25rem; }
+.card .sub { font-size: 0.85rem; color: #484f58; margin-top: 0.25rem; }
+.blue { color: #58a6ff; }
+.green { color: #3fb950; }
+.yellow { color: #d29922; }
+.purple { color: #bc8cff; }
+table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
+th { text-align: left; padding: 0.75rem; background: #161b22; border-bottom: 2px solid #30363d; color: #8b949e; font-size: 0.8rem; text-transform: uppercase; }
+td { padding: 0.75rem; border-bottom: 1px solid #21262d; }
+tr:hover td { background: #161b2233; }
+.refresh { display: inline-block; background: #238636; color: #fff; border: none; padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer; font-size: 0.9rem; margin: 1rem 0; }
+.refresh:hover { background: #2ea043; }
+</style>
+<script src="/js/analytics.js"></script>
+<!-- Open Graph / Social Meta Tags -->
+<meta property="og:site_name" content="my-automaton" />
+<meta property="og:locale" content="en_US" />
+<meta name="twitter:image" content="https://automation.songheng.vip/og-image.png" />
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "my-automaton — Live Dashboard | Traffic, Revenue & API Usage",
+  "description": "Live dashboard for my-automaton AI API services. Monitor traffic, API usage, and USDC revenue in real-time.",
+  "url": "https://automation.songheng.vip/dashboard-live.html",
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": "Web",
+  "author": {
+    "@type": "Organization",
+    "name": "my-automaton",
+    "url": "https://automation.songheng.vip"
+  },
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  }
+}
+</script>
+</head>
+<body>
+<div style="background:#161b22;border-bottom:1px solid #30363d;padding:10px 20px;font-size:.85rem;display:flex;gap:16px;align-items:center;flex-wrap:wrap"><a href="/" style="color:#58a6ff;text-decoration:none;font-weight:600">🏠 Home</a><span style="color:#484f58">|</span><a href="/pricing.html" style="color:#8b949e;text-decoration:none">Pricing</a><a href="/api-docs.html" style="color:#8b949e;text-decoration:none">API</a><a href="/playground.html" style="color:#8b949e;text-decoration:none">Playground</a></div>
+
+<h1>📊 Live Dashboard</h1>
+<div class="grid" id="stats-grid">
+  <div class="card"><div class="label">Total Visitors</div><div class="value blue" id="total-visits">—</div><div class="sub">all time</div></div>
+  <div class="card"><div class="label">Unique IPs</div><div class="value green" id="unique-ips">—</div><div class="sub">distinct visitors</div></div>
+  <div class="card"><div class="label">Today</div><div class="value yellow" id="today-visits">—</div><div class="sub">visits today</div></div>
+  <div class="card"><div class="label">Today Unique</div><div class="value purple" id="today-unique">—</div><div class="sub">unique today</div></div>
+  <div class="card"><div class="label">Wallet</div><div class="value blue" style="font-size:1rem;word-break:break-all;">0x76eADdEBF...dd113</div><div class="sub">Base (USDC)</div></div>
+</div>
+
+<button class="refresh" onclick="refresh()">🔄 Refresh Data</button>
+
+<h2>📈 Last 7 Days</h2>
+<table id="trend-table">
+<thead><tr><th>Date</th><th>Visits</th><th>Unique</th><th>Bar</th></tr></thead>
+<tbody id="trend-body"></tbody>
+</table>
+
+<h2>🏆 Top Pages</h2>
+<table id="pages-table">
+<thead><tr><th>Page</th><th>Views</th></tr></thead>
+<tbody id="pages-body"></tbody>
+</table>
+
+<script>
+async function refresh() {
+  try {
+    const r = await fetch('/api/visitors');
+    const d = await r.json();
+    
+    document.getElementById('total-visits').textContent = d.totalVisits.toLocaleString();
+    document.getElementById('unique-ips').textContent = d.uniqueVisitors.toLocaleString();
+    document.getElementById('today-visits').textContent = d.todayVisits.toLocaleString();
+    document.getElementById('today-unique').textContent = d.todayUnique.toLocaleString();
+    
+    // Trend table
+    const trendBody = document.getElementById('trend-body');
+    trendBody.innerHTML = '';
+    const maxVal = Math.max(...d.last7Days.map(x => x.visits), 1);
+    d.last7Days.forEach(day => {
+      const pct = (day.visits / maxVal * 100).toFixed(0);
+      trendBody.innerHTML += `<tr><td>${day.date}</td><td>${day.visits}</td><td>${day.uniqueIPs}</td><td><div style="background:#1f6feb;height:20px;width:${pct}%;border-radius:4px;min-width:4px;"></div></td></tr>`;
+    });
+    
+    // Pages table
+    const pagesBody = document.getElementById('pages-body');
+    pagesBody.innerHTML = '';
+    d.topPages.forEach(p => {
+      pagesBody.innerHTML += `<tr><td><code>${p.page}</code></td><td>${p.count}</td></tr>`;
+    });
+    
+  } catch(e) {
+    document.getElementById('total-visits').textContent = '⚠️';
+  }
+}
+refresh();
+setInterval(refresh, 30000);
+</script>
+<script src="/js/share-widget.js"></script>
+<script src="/conversion-banner.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,124 @@
+name: AI Code Review
+on:
+  pull_request:
+    types: [opened, synchronize]
+
+jobs:
+  review:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+      issues: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Get changed files
+        id: changed
+        run: |
+          # Get diff of PR changes
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            BASE="${{ github.event.pull_request.base.sha }}"
+            HEAD="${{ github.event.pull_request.head.sha }}"
+            git diff $BASE...$HEAD -- . > /tmp/pr-diff.txt
+            echo "diff_size=$(wc -c < /tmp/pr-diff.txt)" >> $GITHUB_OUTPUT
+          fi
+
+      - name: AI Code Review
+        id: ai_review
+        env:
+          API_KEY: ${{ secrets.MY_AUTOMATON_KEY || secrets.MY_AUTOMATON_API_KEY }}
+        run: |
+          DIFF=$(cat /tmp/pr-diff.txt | head -c 15000)
+          if [ -z "$DIFF" ]; then
+            echo "No diff to review"
+            echo "review_result='No changes detected'" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+
+          # Try free tier first, fall back to premium if key exists
+          API_URL="https://automation.songheng.vip"
+
+          if [ -n "$API_KEY" ]; then
+            ENDPOINT="$API_URL/v1/review"
+            AUTH_HEADER="X-API-Key: $API_KEY"
+          else
+            ENDPOINT="$API_URL/api/free/review"
+            AUTH_HEADER=""
+          fi
+
+          PAYLOAD=$(cat << 'PYEOF'
+          {"code": "PYEOF"
+          echo -n "$DIFF" | jq -Rs '{code: ., language: "diff"}' > /tmp/review-payload.json
+
+          if [ -n "$AUTH_HEADER" ]; then
+            curl -s -X POST "$ENDPOINT" \
+              -H "Content-Type: application/json" \
+              -H "$AUTH_HEADER" \
+              -d @/tmp/review-payload.json > /tmp/review-result.json 2>/dev/null || \
+            curl -s -X POST "$API_URL/api/free/review" \
+              -H "Content-Type: application/json" \
+              -d @/tmp/review-payload.json > /tmp/review-result.json 2>/dev/null
+          else
+            curl -s -X POST "$ENDPOINT" \
+              -H "Content-Type: application/json" \
+              -d @/tmp/review-payload.json > /tmp/review-result.json 2>/dev/null
+          fi
+
+          echo "review_result=$(cat /tmp/review-result.json)" >> $GITHUB_OUTPUT
+
+      - name: Post review as PR comment
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const result = JSON.parse(process.env.REVIEW_RESULT || '{}');
+            const diffSize = parseInt(process.env.DIFF_SIZE || '0');
+
+            let body = `## 🤖 AI Code Review by my-automaton\n\n`;
+
+            if (result.error) {
+              body += `⚠️ Review failed: ${result.error}\n\n`;
+              body += `> Get a free API key at https://automation.songheng.vip/get-started.html\n`;
+            } else if (result.score !== undefined) {
+              const score = result.score;
+              const badge = score >= 90 ? '🟢' : score >= 70 ? '🟡' : '🔴';
+              body += `${badge} **Code Quality Score: ${score}/100**\n\n`;
+
+              if (result.issues && result.issues.length > 0) {
+                body += '### Issues Found\n\n';
+                result.issues.slice(0, 10).forEach((issue, i) => {
+                  const sev = issue.severity || 'info';
+                  const icon = sev === 'critical' ? '🔴' : sev === 'warning' ? '🟡' : 'ℹ️';
+                  body += `${icon} **${sev.toUpperCase()}**: ${issue.message}\n`;
+                  if (issue.line) body += `   Line ${issue.line}\n`;
+                  body += '\n';
+                });
+              }
+
+              if (result.suggestions && result.suggestions.length > 0) {
+                body += '### Suggestions\n\n';
+                result.suggestions.slice(0, 5).forEach(s => {
+                  body += `- ${s}\n`;
+                });
+                body += '\n';
+              }
+            } else {
+              body += `✅ Review completed. ${diffSize} bytes of changes analyzed.\n\n`;
+              body += '```json\n' + JSON.stringify(result, null, 2).substring(0, 1000) + '\n```\n';
+            }
+
+            body += `\n---\n`;
+            body += `🔗 [my-automaton](https://automation.songheng.vip) — _Autonomous AI Code Review. Pay per request from 1¢._\n`;
+            body += `🔑 [Get Free API Key](https://automation.songheng.vip/get-started.html)`;
+
+            await github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: body
+            });
+        env:
+          REVIEW_RESULT: ${{ steps.ai_review.outputs.review_result }}
+          DIFF_SIZE: ${{ steps.changed.outputs.diff_size }}

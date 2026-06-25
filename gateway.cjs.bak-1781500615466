@@ -1,0 +1,353 @@
+#!/usr/bin/env node
+const express = require('express');
+const fs = require('fs');
+const path = require('path');
+const crypto = require('crypto');
+const app = express();
+const PORT = 8080;
+const CONTENT_DIR = '/root/automaton/content';
+const DATA_DIR = '/root/automaton/data';
+const API_KEYS_FILE = '/root/automaton/api-keys.json';
+const EMAIL_KEYS_FILE = '/root/automaton/email-keys.json';
+const CONFIG_FILE = '/root/automaton/automaton.json';
+const WALLET = '0x76eADdEBFfb6a61DD071f97F4508467fc55dd113';
+const STRIPE_SK = process.env.STRIPE_SK || '';
+const STRIPE_PK = process.env.STRIPE_PK || '';
+const BASE_URL = process.env.BASE_URL || 'https://automation.songheng.vip';
+
+function loadDeepSeekKey() {
+  try { const c = JSON.parse(fs.readFileSync(CONFIG_FILE, 'utf8')); return c.deepseekApiKey || process.env.DEEPSEEK_API_KEY || ''; }
+  catch(e) { return process.env.DEEPSEEK_API_KEY || ''; }
+}
+const DEEPSEEK_API_KEY = loadDeepSeekKey();
+const DEEPSEEK_BASE = 'https://api.deepseek.com/v1';
+
+// MCP Service (Model Context Protocol)
+require('./services/mcp-service.cjs')(app);
+require('./services/webhook-service.cjs')(app);
+require('./services/deepseek-service.cjs')(app);
+
+let emailToKey = {};
+try { emailToKey = JSON.parse(fs.readFileSync(EMAIL_KEYS_FILE, 'utf8')); } catch(e) {}
+function saveEmailKeys() { fs.writeFileSync(EMAIL_KEYS_FILE, JSON.stringify(emailToKey, null, 2)); }
+
+if (!fs.existsSync(DATA_DIR)) fs.mkdirSync(DATA_DIR, { recursive: true });
+
+app.use(express.json({ limit: '10mb' }));
+app.use(express.urlencoded({ extended: true }));
+app.use((req, res, next) => {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE,OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type,X-API-Key,Authorization');
+  if (req.method === 'OPTIONS') return res.sendStatus(200);
+  next();
+});
+
+
+
+// Service catalog
+app.get('/api/services', (req, res) => {
+  const services = {
+    analyze: { name: 'Deep Text Analysis', description: 'Sentiment, topics, entities, writing style, readability', credits: 1, freeLimit: 3 },
+    summarize: { name: 'AI Summarization', description: 'Concise summaries with customizable length', credits: 2, freeLimit: 3 },
+    review: { name: 'Code Review', description: 'Bugs, security, performance, style, best practices', credits: 5, freeLimit: 3 },
+    security: { name: 'Security Scan', description: 'OWASP Top 10, injection risks, auth issues', credits: 3, freeLimit: 3 },
+    explain: { name: 'Code Explanation', description: 'Line-by-line explanation with multiple detail levels', credits: 2, freeLimit: 3 },
+    refactor: { name: 'Refactoring Suggestions', description: 'Before/after code improvements', credits: 5, freeLimit: 3 },
+    complexity: { name: 'Complexity Analysis', description: 'Big O time/space complexity with optimizations', credits: 2, freeLimit: 3 }
+  };
+  res.json({ services, freeDailyLimit: 3, wallet: '0x76eADdEBFfb6a61DD071f97F4508467fc55dd113', upgrade: '/upgrade' });
+});
+
+// Analytics endpoint (read-only stats)
+app.get('/api/analytics', (req, res) => {
+  try {
+    const data = JSON.parse(fs.readFileSync('/root/automaton/data/analytics.json', 'utf8'));
+    res.json(data);
+  } catch(e) { res.json({ totalVisits:0, daily:{}, pages:{}, referrers:{} }); }
+});
+
+
+// Webhook integration routes (GitHub, Slack, Discord)
+app.post('/api/webhooks/github', (req, res) => {
+  const { action, code, repo, pr } = req.body || {};
+  res.json({ status:'received', service:'github', message:'Webhook received. Processing...' });
+});
+app.post('/api/webhooks/slack', (req, res) => {
+  const { text, channel, user } = req.body || {};
+  res.json({ status:'received', service:'slack', message:'Command received.' });
+});
+app.post('/api/webhooks/discord', (req, res) => {
+  const { content, channel_id, user_id } = req.body || {};
+  res.json({ status:'received', service:'discord', message:'Command received.' });
+});
+
+// Analytics middleware
+app.use((req, res, next) => {
+  if (req.method === 'GET') {
+    try {
+      const anal = JSON.parse(fs.readFileSync('/root/automaton/data/analytics.json', 'utf8'));
+      const today = new Date().toISOString().slice(0,10);
+      anal.totalVisits = (anal.totalVisits || 0) + 1;
+      if (!anal.firstVisit) anal.firstVisit = new Date().toISOString();
+      anal.lastVisit = new Date().toISOString();
+      if (!anal.daily[today]) anal.daily[today] = 0;
+      anal.daily[today]++;
+      const ref = req.headers['referer'] || req.headers['referrer'] || 'direct';
+      const domain = ref !== 'direct' ? new URL(ref).hostname : 'direct';
+      if (!anal.referrers[domain]) anal.referrers[domain] = 0;
+      anal.referrers[domain]++;
+      const page = req.path;
+      if (!anal.pages[page]) anal.pages[page] = 0;
+      anal.pages[page]++;
+      fs.writeFileSync('/root/automaton/data/analytics.json', JSON.stringify(anal, null, 2));
+    } catch(e) {}
+  }
+  next();
+});
+
+function loadApiKeys() {
+  try { return JSON.parse(fs.readFileSync(API_KEYS_FILE, 'utf8')); } catch(e) { return {}; }
+}
+function saveApiKeys(keys) { fs.writeFileSync(API_KEYS_FILE, JSON.stringify(keys, null, 2)); }
+function generateApiKey() { return 'am_' + crypto.randomBytes(24).toString('hex'); }
+function getCredits(key) { const keys = loadApiKeys(); return keys[key]?.credits || 0; }
+function deductCredits(key, amount) {
+  const keys = loadApiKeys(); const e = keys[key];
+  if (!e || (e.credits||0) < amount) return false;
+  e.credits -= amount; e.used = (e.used||0) + 1; e.last_used = new Date().toISOString();
+  saveApiKeys(keys); return true;
+}
+
+const PRICE_CREDITS = {
+  'price_1TiOLADly2uoyjDjIR8RVnTl': 500,
+  'price_1TiOLXDly2uoyjDj0UEar0Un': 1100,
+  'price_1TiOLXDly2uoyjDj2k3Hui0P': 3000,
+  'price_1TiOLYDly2uoyjDjNdqoIiKc': 6500,
+};
+
+function addCredits(email, priceId) {
+  const credits = PRICE_CREDITS[priceId]; if (!credits) return null;
+  const e = (email || '').toLowerCase().trim();
+  const keys = loadApiKeys();
+  if (e && emailToKey[e] && keys[emailToKey[e]]) {
+    const k = emailToKey[e]; keys[k].credits += credits;
+    keys[k].topups = (keys[k].topups || 0) + 1; keys[k].last_topup = new Date().toISOString();
+    saveApiKeys(keys); return { key: k, credits: keys[k].credits, topup: true };
+  }
+  const key = generateApiKey();
+  keys[key] = { credits, created: new Date().toISOString(), used: 0, price_id: priceId, topups: 0 };
+  if (e) emailToKey[e] = key; saveApiKeys(keys); saveEmailKeys();
+  return { key, credits, topup: false };
+}
+
+function requireAuth(req, res, next) {
+  const k = req.headers['x-api-key'] || req.headers['authorization']?.replace('Bearer ', '');
+  if (!k) return res.status(401).json({ error: 'Missing API key. Get one at /upgrade' });
+  const c = getCredits(k); if (c <= 0) return res.status(402).json({ error: 'Insufficient credits. Top up at /upgrade', credits: 0 });
+  req.apiKey = k; req.credits = c; next();
+}
+
+async function callAI(messages, opts) {
+  if (!DEEPSEEK_API_KEY) return 'AI service not configured.';
+  const r = await fetch(DEEPSEEK_BASE + '/chat/completions', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + DEEPSEEK_API_KEY },
+    body: JSON.stringify({ model: opts?.model || 'deepseek-chat', messages, max_tokens: opts?.max_tokens || 2048, temperature: opts?.temperature || 0.3 })
+  });
+  if (!r.ok) throw new Error('DeepSeek API ' + r.status);
+  const d = await r.json(); return d.choices[0].message.content;
+}
+
+
+// OpenAI tool format (JSON endpoint for GPT/Cursor)
+app.get('/mcp/v1/openai-json', (req, res) => {
+  const tools = [
+    { name:'analyze', description:'Deep text analysis - sentiment, entities, topics', parameters:{type:'object',properties:{text:{type:'string'},mode:{type:'string'}},required:['text']} },
+    { name:'summarize', description:'AI summarization with configurable length', parameters:{type:'object',properties:{text:{type:'string'},length:{type:'string'}},required:['text']} },
+    { name:'code_review', description:'Full code review - bugs, security, performance', parameters:{type:'object',properties:{code:{type:'string'},language:{type:'string'}},required:['code']} },
+    { name:'security_scan', description:'Security vulnerability scan', parameters:{type:'object',properties:{code:{type:'string'}},required:['code']} },
+    { name:'explain_code', description:'Line-by-line code explanation', parameters:{type:'object',properties:{code:{type:'string'}},required:['code']} },
+    { name:'refactor_code', description:'Refactoring suggestions with improved code', parameters:{type:'object',properties:{code:{type:'string'}},required:['code']} },
+    { name:'complexity_analysis', description:'Big O time and space complexity analysis', parameters:{type:'object',properties:{code:{type:'string'}},required:['code']} }
+  ];
+  res.json({ object:'list', data:tools.map(t => ({ type:'function', function:{ name:t.name, description:t.description, parameters:t.parameters } })) });
+});
+
+// MCP v1 compatibility alias
+app.get('/mcp/v1/openai', (req, res) => {
+  res.redirect('/mcp/v1/openai-json');
+});
+
+// Static content
+app.use('/js', express.static(CONTENT_DIR + '/js'));
+app.use('/css', express.static(CONTENT_DIR + '/css'));
+app.use('/images', express.static(CONTENT_DIR + '/images'));
+app.use('/fonts', express.static(CONTENT_DIR + '/fonts'));
+app.use('/tools', express.static(CONTENT_DIR + '/tools'));
+app.use('/blog', express.static(CONTENT_DIR + '/blog'));
+
+const staticPages = {
+  '/':'index.html','/upgrade':'upgrade.html','/thank-you':'thank-you.html',
+  '/api-docs':'api-docs.html','/api-playground':'api-playground.html',
+  '/tools':'tools.html','/quickstart':'quickstart.html','/dashboard':'dashboard.html','/mcp':'mcp-server.html',
+  '/share':'share.html','/blog.html':'blog.html','/admin':'admin.html',
+  '/submit-checklist':'submit-checklist.html',
+};
+for (const [route, file] of Object.entries(staticPages)) {
+  app.get(route, (req, res) => {
+    const fp = CONTENT_DIR + '/' + file;
+    if (fs.existsSync(fp)) res.sendFile(fp); else res.status(404).send('Page not found');
+  });
+}
+app.get('/sitemap.xml', (req, res) => {
+  const fp = CONTENT_DIR + '/sitemap.xml';
+  if (fs.existsSync(fp)) res.type('xml').sendFile(fp); else res.status(404).send('Not found');
+});
+app.get('/robots.txt', (req, res) => {
+  res.type('text/plain').send('User-agent: *\nAllow: /\nSitemap: ' + BASE_URL + '/sitemap.xml\n');
+});
+
+// API endpoints
+app.get('/api/health', (req, res) => { res.json({ status:'ok', agent:'my-automaton', uptime:Math.floor(process.uptime()) }); });
+app.get('/health', (req, res) => { res.json({ status:'ok', agent:'my-automaton', wallet:WALLET, uptime:Math.floor(process.uptime()) }); });
+app.get('/ping', (req, res) => res.send('pong'));
+app.get('/agent.json', (req, res) => res.json({ name:'my-automaton', wallet:WALLET, server:'automation.songheng.vip:8080', chain:'base' }));
+
+// Key info by email (for top-up flow)
+app.get('/api/key-info', (req, res) => {
+  const email = req.query.email?.toLowerCase().trim(); if (!email) return res.status(400).json({ error: 'Email required' });
+  const k = emailToKey[email]; const keys = loadApiKeys();
+  if (!k || !keys[k]) return res.json({ exists: false });
+  res.json({ exists: true, key_masked: k.slice(0,6)+'...'+k.slice(-4), credits: keys[k].credits, used: keys[k].used, topups: keys[k].topups||0, created: keys[k].created, last_topup: keys[k].last_topup||null });
+});
+
+// Stripe checkout
+app.post('/api/stripe/checkout', async (req, res) => {
+  const { price_id, email } = req.body || {};
+  if (!price_id || !PRICE_CREDITS[price_id]) return res.status(400).json({ error: 'Invalid price ID' });
+  if (!STRIPE_SK) return res.status(503).json({ error: 'Stripe not configured' });
+  try {
+    const stripe = require('stripe')(STRIPE_SK);
+    const session = await stripe.checkout.sessions.create({
+      mode:'payment', line_items:[{price:price_id,quantity:1}],
+      customer_email:email||undefined,
+      success_url:BASE_URL+'/thank-you?session_id={CHECKOUT_SESSION_ID}',
+      cancel_url:BASE_URL+'/upgrade',
+      metadata:{email:email||'',price_id}
+    });
+    res.json({url:session.url});
+  } catch(e) { res.status(500).json({error:e.message}); }
+});
+
+// Stripe webhook
+app.post('/api/stripe-webhook', async (req, res) => {
+  if (!STRIPE_SK) return res.status(503).json({ error: 'Stripe not configured' });
+  try {
+    const stripe = require('stripe')(STRIPE_SK);
+    const sig = req.headers['stripe-signature'];
+    const event = stripe.webhooks.constructEvent(JSON.stringify(req.body), sig, process.env.STRIPE_WHSEC || '');
+    if (event.type === 'checkout.session.completed') {
+      const s = event.data.object;
+      const email = s.metadata?.email || s.customer_details?.email || '';
+      const priceId = s.metadata?.price_id || '';
+      const result = addCredits(email, priceId);
+      if (result) console.log('[STRIPE] Payment:', email||'?', result.credits, 'credits', result.topup?'topup':'new');
+    }
+    res.json({received:true});
+  } catch(e) { console.error('[STRIPE] Webhook error:', e.message); res.status(400).json({error:e.message}); }
+});
+
+// Checkout result
+app.get('/api/checkout-result', async (req, res) => {
+  const sessionId = req.query.session_id; if (!sessionId) return res.status(400).json({error:'session_id required'});
+  if (!STRIPE_SK) return res.status(503).json({error:'Stripe not configured'});
+  try {
+    const stripe = require('stripe')(STRIPE_SK);
+    const session = await stripe.checkout.sessions.retrieve(sessionId);
+    const email = session.metadata?.email || session.customer_details?.email || '';
+    if (!email) return res.json({status:'pending',email:null});
+    const k = emailToKey[email]; const keys = loadApiKeys();
+    if (k && keys[k]) return res.json({status:'ready',email,key_masked:k.slice(0,6)+'...'+k.slice(-4),key_full:k,credits:keys[k].credits,topup:(keys[k].topups||0)>0});
+    const result = addCredits(email, session.metadata?.price_id||'');
+    if (result) return res.json({status:'ready',email,key_masked:result.key.slice(0,6)+'...'+result.key.slice(-4),key_full:result.key,credits:result.credits,topup:result.topup});
+    res.json({status:'pending'});
+  } catch(e) { res.status(500).json({error:e.message}); }
+});
+
+// Stats
+app.get('/api/stats/overview', (req, res) => {
+  const keys = loadApiKeys(); const vals = Object.values(keys);
+  res.json({total_keys:vals.length, issued:vals.reduce((s,x)=>s+(x.credits||0)+(x.used||0),0), used:vals.reduce((s,x)=>s+(x.used||0),0) });
+});
+
+// Premium AI endpoints
+const SERVICES = [
+  ['analyze','Deep text analysis',1],['summarize','Concise summarization',2],
+  ['review','Code review (bugs, security, perf)',5],['security','Security audit (XSS, SQLi, CSRF)',3],
+  ['explain','Line-by-line code explanation',2],['refactor','Refactoring suggestions',5],
+  ['complexity','Big O complexity analysis',2]
+];
+for (const [name, desc, cost] of SERVICES) {
+  app.post('/v1/' + name, requireAuth, async (req, res) => {
+    try {
+      const text = req.body?.text || req.body?.code || '';
+      if (!text) return res.status(400).json({error:'text required'});
+      if (!deductCredits(req.apiKey, cost)) return res.status(402).json({error:'Insufficient credits', credits:0});
+      const r = await callAI([{role:'system',content:desc},{role:'user',content:text}]);
+      res.json({result:r, credits_used:cost, credits_remaining:getCredits(req.apiKey)});
+    } catch(e) { res.status(500).json({error:e.message}); }
+  });
+}
+
+// Free tier
+const freeUsage = {};
+function checkFree(ip) {
+  const t = new Date().toISOString().slice(0,10);
+  if (!freeUsage[ip]) freeUsage[ip]={date:t,count:0};
+  if (freeUsage[ip].date!==t) freeUsage[ip]={date:t,count:0};
+  return freeUsage[ip].count<3;
+}
+function incFree(ip) {
+  const t = new Date().toISOString().slice(0,10);
+  if (!freeUsage[ip]) freeUsage[ip]={date:t,count:0};
+  if (freeUsage[ip].date!==t) freeUsage[ip]={date:t,count:0};
+  freeUsage[ip].count++;
+}
+for (const name of ['analyze','summarize','review','security','explain']) {
+  app.post('/free/' + name, async (req, res) => {
+    const ip = req.ip || req.connection?.remoteAddress || 'unknown';
+    if (!checkFree(ip)) return res.status(429).json({error:'Free limit reached (3/day)'});
+    const text = req.body?.text || '';
+    if (!text) return res.status(400).json({error:'text required'});
+    try { incFree(ip); const r = await callAI([{role:'system',content:name},{role:'user',content:text}]); res.json({result:r, free_remaining:3-freeUsage[ip].count}); }
+    catch(e) { res.status(500).json({error:e.message}); }
+  });
+}
+
+// Catalog
+app.get('/api/catalog', (req, res) => {
+  res.json({ agent:'my-automaton', version:'7.0', wallet:WALLET, chain:'base',
+    services: SERVICES.map(s=>({name:s[0],cost:s[2],desc:s[1]})), free:'3/day per IP', upgrade:BASE_URL+'/upgrade' });
+});
+
+// 404
+app.use((req, res) => {
+  if (req.path.startsWith('/api/')||req.path.startsWith('/v1/')) return res.status(404).json({error:'Not found',path:req.path});
+  const fp = CONTENT_DIR + (req.path==='/'?'/index.html':req.path);
+  if (fs.existsSync(fp)&&fs.statSync(fp).isFile()) return res.sendFile(fp);
+  res.status(404).type('html').send('<html><body style="font-family:sans-serif;background:#0a0f1e;color:#e2e8f0;padding:2em"><h1>🤖 my-automaton</h1><p><a href="/" style="color:#3b82f6">Home</a> · <a href="/api-docs" style="color:#3b82f6">Docs</a> · <a href="/upgrade" style="color:#3b82f6">Get API Key</a></p></body></html>');
+});
+
+// MCP Protocol Handler
+
+
+
+
+app.listen(PORT, '0.0.0.0', () => {
+  console.log('✓ Gateway v7.0 on 0.0.0.0:' + PORT);
+  console.log('  Domain: ' + BASE_URL);
+  console.log('  Stripe: ' + (STRIPE_SK ? '✓' : '✗'));
+  console.log('  DeepSeek: ' + (DEEPSEEK_API_KEY ? '✓' : '✗'));
+  console.log('  Keys: ' + Object.keys(loadApiKeys()).length + ', Emails: ' + Object.keys(emailToKey).length);
+});

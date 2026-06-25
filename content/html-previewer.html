@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HTML Previewer - Live HTML Editor & Preview</title>
+<meta name="description" content="Free online HTML previewer. Write HTML code and see live preview instantly. Test HTML, CSS, and JavaScript in real-time. No signup required.">
+<meta name="keywords" content="html previewer, live html editor, html tester, html sandbox, preview html code">
+<link rel="canonical" href="https://automation.songheng.vip/html-previewer.html">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,sans-serif;background:#0d1117;color:#c9d1d9;min-height:100vh;overflow:hidden}
+.toolbar{display:flex;align-items:center;justify-content:space-between;padding:.6rem 1rem;background:#161b22;border-bottom:1px solid #30363d;gap:.5rem;flex-wrap:wrap}
+.toolbar h1{font-size:1rem;color:#58a6ff;white-space:nowrap}
+.toolbar-right{display:flex;gap:.4rem;flex-wrap:wrap}
+.toolbar button,.toolbar select{background:#21262d;border:1px solid #30363d;color:#c9d1d9;padding:.35rem .7rem;border-radius:5px;cursor:pointer;font-size:.72rem}
+.toolbar button:hover{background:#30363d}
+.toolbar button.accent{background:#238636;border-color:#238636;color:#fff}
+.toolbar button.accent:hover{background:#2ea04a}
+.main{display:flex;height:calc(100vh - 52px)}
+.pane{flex:1;display:flex;flex-direction:column;min-width:0}
+.pane+.pane{border-left:1px solid #30363d}
+.pane-header{display:flex;align-items:center;justify-content:space-between;padding:.3rem .6rem;background:#161b22;border-bottom:1px solid #30363d;font-size:.7rem;color:#8b949e}
+.pane-header span{font-weight:600}
+#editor{flex:1;width:100%;background:#0d1117;color:#c9d1d9;border:none;resize:none;padding:.8rem;font-family:'SF Mono','Fira Code','Cascadia Code',monospace;font-size:.8rem;line-height:1.5;tab-size:2;outline:none}
+#editor:focus{border:none;outline:none}
+#preview{flex:1;width:100%;border:none;background:#fff}
+.mobile-stack{display:none}
+@media(max-width:768px){
+.main{flex-direction:column}
+.pane+.pane{border-left:none;border-top:1px solid #30363d}
+.pane{min-height:45vh}
+}
+.cta-bar{text-align:center;padding:.4rem;background:linear-gradient(135deg,#161b22,#0d1117);border-top:1px solid #30363d;font-size:.7rem;color:#8b949e;position:fixed;bottom:0;left:0;right:0}
+.cta-bar a{color:#58a6ff;text-decoration:none;margin:0 .5rem}
+.cta-bar a:hover{text-decoration:underline}
+</style>
+</head>
+<body>
+<div class="toolbar">
+<h1>🎨 HTML Previewer</h1>
+<div class="toolbar-right">
+<select id="template" onchange="loadTemplate()">
+<option value="">📋 Templates</option>
+<option value="hello">Hello World</option>
+<option value="card">Product Card</option>
+<option value="form">Login Form</option>
+<option value="table">Data Table</option>
+<option value="flex">Flexbox Layout</option>
+<option value="grid">CSS Grid</option>
+<option value="btn">Button Styles</option>
+<option value="todo">Todo App (JS)</option>
+</select>
+<button onclick="runCode()" class="accent" title="Ctrl+Enter">▶ Run</button>
+<button onclick="copyCode()">📋 Copy</button>
+<button onclick="resetCode()">↺ Reset</button>
+</div>
+</div>
+<div class="main">
+<div class="pane">
+<div class="pane-header"><span>📝 HTML / CSS / JS</span><span id="lineCount"></span></div>
+<textarea id="editor" placeholder="Write your HTML, CSS, and JavaScript here...&#10;&#10;Ctrl+Enter to run&#10;Ctrl+S for quick preview" onkeydown="handleKeys(event)" oninput="autoPreview()"></textarea>
+</div>
+<div class="pane">
+<div class="pane-header"><span>👁 Preview</span><span id="previewSize"></span></div>
+<iframe id="preview" sandbox="allow-scripts allow-modals allow-forms allow-popups allow-same-origin"></iframe>
+</div>
+</div>
+<div class="cta-bar">
+🚀 Build more: <a href="/api-docs.html">API Docs</a> | <a href="/dev-tools.html">All Tools</a> | <a href="/pricing.html">Pricing</a> | <a href="/">Home</a>
+</div>
+<script>
+const editor=document.getElementById('editor');
+const preview=document.getElementById('preview');
+const lineCount=document.getElementById('lineCount');
+const previewSize=document.getElementById('previewSize');
+
+let autoTimer;
+
+const templates={
+hello:`<!DOCTYPE html>
+<html>
+<head><title>Hello World</title></head>
+<body>
+<h1>Hello World! 👋</h1>
+<p>Start editing this HTML to see live changes.</p>
+<script src="/conversion-banner.js" defer></script>
+</body>
+</html>`,
+card:`<!DOCTYPE html>
+<html><head>
+<style>
+.card{max-width:320px;border:1px solid #ddd;border-radius:12px;overflow:hidden;font-family:system-ui;box-shadow:0 2px 8px rgba(0,0,0,.1)}
+.card img{width:100%;height:180px;object-fit:cover}
+.card-body{padding:1rem}
+.card-body h3{margin:0 0 .5rem;font-size:1.1rem}
+.card-body p{color:#666;font-size:.85rem;margin:0 0 .8rem}
+.price{font-size:1.2rem;font-weight:700;color:#238636}
+.buy-btn{display:block;width:100%;padding:.6rem;background:#238636;color:#fff;border:none;border-radius:6px;font-weight:600;cursor:pointer}
+</style></head>
+<body>
+<div class="card">
+<img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='320' height='180'%3E%3Crect fill='%2321262d' width='320' height='180'/%3E%3Ctext fill='%238b949e' x='160' y='95' text-anchor='middle' font-family='system-ui'%3E🖼 Product Image%3C/text%3E%3C/svg%3E">
+<div class="card-body">
+<h3>Premium Widget</h3>
+<p>High-quality widget for your projects. Lightweight and durable.</p>
+<div class="price">$29.99</div>
+<button class="buy-btn">Add to Cart</button>
+</div></div>
+<script src="/conversion-banner.js" defer></script>
+</body></html>`,
+form:`<!DOCTYPE html>
+<html><head>
+<style>
+body{font-family:system-ui;background:#f5f5f5;display:flex;justify-content:center;align-items:center;min-height:100vh;margin:0}
+.form-box{background:#fff;padding:2rem;border-radius:12px;box-shadow:0 4px 24px rgba(0,0,0,.1);width:320px}
+h2{text-align:center;margin:0 0 1.5rem;color:#333}
+label{display:block;font-size:.85rem;color:#555;margin-bottom:.3rem}
+input{width:100%;padding:.6rem;border:1px solid #ddd;border-radius:6px;margin-bottom:1rem;font-size:.9rem}
+input:focus{outline:none;border-color:#58a6ff}
+button{width:100%;padding:.7rem;background:#238636;color:#fff;border:none;border-radius:6px;font-weight:600;cursor:pointer;font-size:.9rem}
+.links{text-align:center;margin-top:1rem;font-size:.8rem}
+.links a{color:#58a6ff;text-decoration:none}
+</style></head>
+<body>
+<div class="form-box">
+<h2>Sign In</h2>
+<label>Email</label><input type="email" placeholder="you@example.com">
+<label>Password</label><input type="password" placeholder="••••••••">
+<button>Sign In</button>
+<div class="links"><a href="#">Forgot password?</a> · <a href="#">Sign up</a></div>
+</div>
+<script src="/conversion-banner.js" defer></script>
+</body></html>`,
+table:`<!DOCTYPE html>
+<html><head>
+<style>
+body{font-family:system-ui;padding:1.5rem;background:#f5f5f5;margin:0}
+table{width:100%;border-collapse:collapse;background:#fff;border-radius:8px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,.08)}
+th{background:#161b22;color:#fff;padding:.7rem;text-align:left;font-size:.85rem}
+td{padding:.6rem .7rem;border-bottom:1px solid #eee;font-size:.85rem}
+tr:hover td{background:#f0f6ff}
+.badge{padding:.2rem .5rem;border-radius:10px;font-size:.7rem;font-weight:600}
+.badge-active{background:#d4fcdc;color:#116329}
+.badge-pending{background:#fff3cd;color:#856404}
+</style></head>
+<body>
+<h2>📊 Users</h2>
+<table>
+<thead><tr><th>Name</th><th>Email</th><th>Role</th><th>Status</th></tr></thead>
+<tbody>
+<tr><td>Alice Chen</td><td>alice@example.com</td><td>Admin</td><td><span class="badge badge-active">Active</span></td></tr>
+<tr><td>Bob Smith</td><td>bob@example.com</td><td>Developer</td><td><span class="badge badge-active">Active</span></td></tr>
+<tr><td>Carol White</td><td>carol@example.com</td><td>Viewer</td><td><span class="badge badge-pending">Pending</span></td></tr>
+</tbody></table>
+<script src="/conversion-banner.js" defer></script>
+</body></html>`,
+flex:`<!DOCTYPE html>
+<html><head>
+<style>
+body{margin:0;font-family:system-ui;min-height:100vh;display:flex;flex-direction:column}
+header{background:#161b22;color:#fff;padding:1rem;display:flex;justify-content:space-between;align-items:center}
+header h1{font-size:1.1rem;margin:0}
+nav a{color:#8b949e;text-decoration:none;margin-left:1rem;font-size:.85rem}
+.hero{background:linear-gradient(135deg,#1a1a2e,#16213e);color:#fff;text-align:center;padding:3rem 1rem}
+.hero h2{font-size:1.8rem;margin:0 0 .5rem}
+.grid{display:flex;gap:1rem;padding:1.5rem;flex-wrap:wrap}
+.card{flex:1;min-width:200px;background:#fff;padding:1.2rem;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,.08)}
+footer{background:#161b22;color:#8b949e;text-align:center;padding:1rem;margin-top:auto;font-size:.8rem}
+</style></head>
+<body>
+<header><h1>🚀 My Site</h1><nav><a href="#">Home</a><a href="#">About</a><a href="#">Contact</a></nav></header>
+<div class="hero"><h2>Welcome to My Site</h2><p>A beautiful responsive layout built with Flexbox</p></div>
+<div class="grid"><div class="card"><h3>Feature 1</h3><p>Description here</p></div><div class="card"><h3>Feature 2</h3><p>Description here</p></div><div class="card"><h3>Feature 3</h3><p>Description here</p></div></div>
+<footer>© 2026 My Site</footer>
+<script src="/conversion-banner.js" defer></script>
+</body></html>`,
+grid:`<!DOCTYPE html>
+<html><head>
+<style>
+body{font-family:system-ui;margin:0;background:#f0f0f0}
+h2{text-align:center;padding:1.5rem 0 .5rem}
+.gallery{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1rem;padding:1rem;max-width:1000px;margin:0 auto}
+.item{border-radius:8px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.1);background:#fff}
+.item .img{height:150px;display:flex;align-items:center;justify-content:center;font-size:2rem}
+.item:nth-child(1) .img{background:#ff6b6b}.item:nth-child(2) .img{background:#4ecdc4}
+.item:nth-child(3) .img{background:#45b7d1}.item:nth-child(4) .img{background:#96ceb4}
+.item:nth-child(5) .img{background:#ffeaa7}.item:nth-child(6) .img{background:#dfe6e9}
+.item .cap{padding:.6rem;font-size:.8rem;text-align:center;color:#555}
+</style></head>
+<body>
+<h2>🖼 CSS Grid Gallery</h2>
+<div class="gallery">
+<div class="item"><div class="img">🌅</div><div class="cap">Sunset</div></div>
+<div class="item"><div class="img">🏔</div><div class="cap">Mountains</div></div>
+<div class="item"><div class="img">🌊</div><div class="cap">Ocean</div></div>
+<div class="item"><div class="img">🌲</div><div class="cap">Forest</div></div>
+<div class="item"><div class="img">🏙</div><div class="cap">City</div></div>
+<div class="item"><div class="img">🌌</div><div class="cap">Stars</div></div>
+</div><script src="/conversion-banner.js" defer></script>
+</body></html>`,
+btn:`<!DOCTYPE html>
+<html><head>
+<style>
+body{font-family:system-ui;padding:2rem;background:#f5f5f5;margin:0}
+h2{text-align:center;color:#333}
+.grid{display:flex;flex-wrap:wrap;gap:1rem;justify-content:center;max-width:800px;margin:1.5rem auto}
+.btn{padding:.6rem 1.4rem;border:none;border-radius:6px;font-weight:600;cursor:pointer;font-size:.85rem;transition:transform .1s,opacity .2s}
+.btn:hover{opacity:.9;transform:translateY(-1px)}
+.btn-primary{background:#238636;color:#fff}
+.btn-secondary{background:#30363d;color:#c9d1d9}
+.btn-danger{background:#da3633;color:#fff}
+.btn-outline{background:transparent;border:2px solid #58a6ff;color:#58a6ff}
+.btn-gradient{background:linear-gradient(135deg,#667eea,#764ba2);color:#fff}
+.btn-pill{border-radius:30px;background:#238636;color:#fff}
+.btn-lg{padding:.8rem 2rem;font-size:1rem}
+.btn-sm{padding:.3rem .8rem;font-size:.7rem}
+</style></head>
+<body>
+<h2>🎨 Button Library</h2>
+<div class="grid">
+<button class="btn btn-primary">Primary</button>
+<button class="btn btn-secondary">Secondary</button>
+<button class="btn btn-danger">Danger</button>
+<button class="btn btn-outline">Outline</button>
+<button class="btn btn-gradient">Gradient</button>
+<button class="btn btn-pill">Pill</button>
+<button class="btn btn-lg btn-primary">Large</button>
+<button class="btn btn-sm btn-secondary">Small</button>
+</div><script src="/conversion-banner.js" defer></script>
+</body></html>`,
+todo:`<!DOCTYPE html>
+<html><head>
+<style>
+body{font-family:system-ui;max-width:400px;margin:2rem auto;padding:1rem;background:#f5f5f5}
+h1{text-align:center;font-size:1.3rem}
+.input-row{display:flex;gap:.5rem;margin-bottom:1rem}
+.input-row input{flex:1;padding:.5rem;border:1px solid #ddd;border-radius:6px;font-size:.9rem}
+.input-row button{padding:.5rem 1rem;background:#238636;color:#fff;border:none;border-radius:6px;cursor:pointer}
+ul{list-style:none;padding:0}
+li{display:flex;align-items:center;gap:.5rem;padding:.6rem;background:#fff;margin-bottom:.3rem;border-radius:6px;box-shadow:0 1px 3px rgba(0,0,0,.05)}
+li.done span{text-decoration:line-through;color:#999}
+li button{background:#da3633;color:#fff;border:none;border-radius:4px;padding:.2rem .5rem;cursor:pointer;font-size:.7rem;margin-left:auto}
+</style></head>
+<body>
+<h1>✅ Todo App</h1>
+<div class="input-row"><input id="todoInput" placeholder="Add a task..." onkeydown="if(event.key==='Enter')addTodo()"><button onclick="addTodo()">Add</button></div>
+<ul id="todoList"></ul>
+<script>
+function addTodo(){const i=document.getElementById('todoInput');const v=i.value.trim();if(!v)return;const li=document.createElement('li');li.innerHTML='<input type=checkbox onchange="this.parentElement.classList.toggle(\'done\')"><span>'+v+'</span><button onclick="this.parentElement.remove()">×</button>';document.getElementById('todoList').appendChild(li);i.value=''}
+</script>
+<script src="/conversion-banner.js" defer></script>
+</body></html>`};
+
+function loadTemplate(){
+const v=document.getElementById('template').value;
+if(v&&templates[v]){editor.value=templates[v];runCode();}
+}
+
+function handleKeys(e){
+if((e.ctrlKey||e.metaKey)&&e.key==='Enter'){e.preventDefault();runCode()}
+}
+
+function autoPreview(){
+clearTimeout(autoTimer);
+autoTimer=setTimeout(runCode,500);
+updateLineCount();
+}
+
+function runCode(){
+const code=editor.value;
+const blob=new Blob([code],{type:'text/html'});
+preview.src=URL.createObjectURL(blob);
+previewSize.textContent='';
+updateLineCount();
+}
+
+function copyCode(){navigator.clipboard.writeText(editor.value).then(()=>{const b=event.target;b.textContent='✓ Copied!';setTimeout(()=>b.textContent='📋 Copy',1500)})}
+
+function resetCode(){editor.value=templates.hello;runCode()}
+
+function updateLineCount(){
+const lines=editor.value.split('\n').length;
+const chars=editor.value.length;
+lineCount.textContent=lines+' lines · '+chars+' chars';
+}
+
+// Init
+editor.value=templates.hello;
+runCode();
+</script>
+<script src="/conversion-banner.js" defer></script>
+</body>
+</html>

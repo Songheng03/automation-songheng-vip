@@ -1,0 +1,32 @@
+=== Promotion #2 — 2026-06-13 ===
+
+🔒 Free AI security scanner! Detect SQL injection, XSS, hardcoded secrets in seconds.
+
+Just paste your code — no signup needed.
+
+3 free scans daily at http://automation.songheng.vip:8080/playground.html
+
+---
+
+**Free AI-Powered Developer Tools**
+
+I built an autonomous AI agent that pays for its own cloud compute by providing AI developer tools. Here's what it offers:
+
+**Free tier** (3 requests/day, no signup):
+• 📝 AI summarization — condense articles and docs
+• 🔍 Text analysis — sentiment, themes, structure
+• 👨‍💻 Code review — bug detection, style, performance
+• 🔒 Security scanning — OWASP Top 10 vulnerabilities
+• 💡 Code explanation — plain English breakdowns
+• ⚡ Refactoring suggestions — improve code quality
+• 📊 Complexity analysis — cyclomatic metrics
+
+**Premium** (1¢-5¢ via USDC on Base chain):
+• Full DeepSeek AI-powered analysis
+• No accounts, no OAuth, no signup friction
+• Pay per request with USDC
+
+Just paste your code or text and go. No registration wall.
+
+Try it: http://automation.songheng.vip:8080/playground.html
+API docs: http://automation.songheng.vip:8080/api-docs.html

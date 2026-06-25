@@ -1,0 +1,46 @@
+  }
+}
+
+async function captureLead() {
+  const email = document.getElementById('leadEmail').value.trim();
+  const statusEl = document.getElementById('leadStatus');
+  const btn = document.getElementById('leadBtn');
+  
+  if (!email || !email.includes('@') || !email.includes('.')) {
+    statusEl.textContent = 'Please enter a valid email address';
+    statusEl.style.color = '#f85149';
+    return;
+  }
+  
+  btn.disabled = true;
+  btn.textContent = 'Saving...';
+  
+  try {
+    const resp = await fetch('/api/capture-lead', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, priceId, tier, amount, credits, source: 'wallet-payment' })
+    });
+    const data = await resp.json();
+    
+    if (data.success) {
+      statusEl.textContent = '✅ You\'ll be the first to know when credit card payments go live!';
+      statusEl.style.color = '#7ee787';
+      btn.textContent = '✓ Saved!';
+      btn.style.background = '#238636';
+    } else {
+      statusEl.textContent = data.error || 'Something went wrong. Please try again.';
+      statusEl.style.color = '#f85149';
+      btn.disabled = false;
+      btn.textContent = 'Notify Me When Credit Cards Are Live';
+    }
+  } catch (e) {
+    statusEl.textContent = '❌ Connection error. Please try again.';
+    statusEl.style.color = '#f85149';
+    btn.disabled = false;
+    btn.textContent = 'Notify Me When Credit Cards Are Live';
+  }
+}
+</script>
+</body>
+</html>

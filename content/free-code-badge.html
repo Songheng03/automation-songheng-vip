@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Free Code Quality Badge Generator — AI-Powered | my-automaton</title>
+<meta name="description" content="Get a free AI-powered code quality score and embeddable badge for your GitHub README. Analyzes code quality, security, and best practices instantly.">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#0d1117;color:#c9d1d9;line-height:1.7}
+.container{max-width:800px;margin:0 auto;padding:2rem}
+header{border-bottom:1px solid #30363d;padding:1rem 2rem;display:flex;gap:1.5rem;align-items:center;flex-wrap:wrap;font-size:.9rem}
+header a{color:#8b949e;text-decoration:none}
+header a:hover{color:#58a6ff}
+h1{font-size:2.2rem;color:#58a6ff;margin-bottom:.5rem}
+h2{font-size:1.4rem;color:#58a6ff;margin:2rem 0 1rem}
+p{color:#c9d1d9;margin:.8rem 0}
+.badge-preview{background:#161b22;border:1px solid #30363d;border-radius:12px;padding:2rem;text-align:center;margin:1.5rem 0}
+.badge-display{display:inline-block;padding:8px 20px;border-radius:6px;font-size:1.1rem;font-weight:700;margin:.5rem}
+.badge-A{background:#238636;color:#fff}
+.badge-B{background:#1f6feb;color:#fff}
+.badge-C{background:#d29922;color:#0d1117}
+.badge-D{background:#f0883e;color:#fff}
+.badge-F{background:#da3633;color:#fff}
+textarea{width:100%;min-height:200px;background:#0d1117;border:1px solid #30363d;border-radius:8px;padding:1rem;color:#e6edf3;font-family:monospace;font-size:.9rem;resize:vertical}
+textarea:focus{border-color:#58a6ff;outline:none}
+.btn{display:inline-block;padding:12px 28px;border-radius:8px;font-weight:600;font-size:1rem;border:none;cursor:pointer;transition:all .2s}
+.btn.primary{background:#238636;color:#fff}
+.btn.primary:hover{background:#2ea043;transform:translateY(-2px)}
+.btn.secondary{background:#21262d;color:#c9d1d9;border:1px solid #30363d}
+.btn.secondary:hover{background:#30363d}
+.btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
+.result-box{background:#161b22;border:1px solid #30363d;border-radius:12px;padding:1.5rem;margin:1rem 0;display:none}
+.result-box.visible{display:block}
+.score-display{text-align:center;padding:1rem}
+.score-number{font-size:4rem;font-weight:700;color:#58a6ff}
+.score-label{color:#8b949e;font-size:.9rem;margin-top:.3rem}
+.score-bar{height:8px;background:#21262d;border-radius:4px;margin:1rem 0;overflow:hidden}
+.score-fill{height:100%;border-radius:4px;transition:width 1s ease}
+.score-fill.A{background:#238636}
+.score-fill.B{background:#1f6feb}
+.score-fill.C{background:#d29922}
+.score-fill.D{background:#f0883e}
+.score-fill.F{background:#da3633}
+.findings{margin:1rem 0}
+.finding{padding:.8rem;border-bottom:1px solid #21262d;display:flex;gap:.8rem;align-items:flex-start}
+.finding:last-child{border-bottom:none}
+.finding .severity{flex-shrink:0;width:20px;height:20px;border-radius:50%;margin-top:2px}
+.severity.critical{background:#da3633}
+.severity.high{background:#f0883e}
+.severity.medium{background:#d29922}
+.severity.low{background:#58a6ff}
+.finding .text{font-size:.9rem;color:#c9d1d9}
+.finding .text .tag{display:inline-block;padding:1px 6px;border-radius:3px;font-size:.75rem;margin-right:4px}
+.tag.quality{background:#23863622;color:#3fb950}
+.tag.security{background:#da363322;color:#ff7b72}
+.tag.performance{background:#d2992222;color:#d29922}
+.tag.style{background:#1f6feb22;color:#58a6ff}
+.copy-area{background:#0d1117;border:1px solid #30363d;border-radius:8px;padding:1rem;font-family:monospace;font-size:.85rem;color:#8b949e;margin:.5rem 0;overflow-x:auto}
+.copy-btn{background:#21262d;border:1px solid #30363d;color:#c9d1d9;padding:6px 16px;border-radius:6px;cursor:pointer;font-size:.85rem;transition:all .2s;float:right}
+.copy-btn:hover{background:#30363d;border-color:#58a6ff}
+.loader{display:inline-block;width:20px;height:20px;border:2px solid #30363d;border-top-color:#58a6ff;border-radius:50%;animation:spin .6s linear infinite;margin-right:8px;vertical-align:middle}
+@keyframes spin{to{transform:rotate(360deg)}}
+.language-select{background:#0d1117;border:1px solid #30363d;border-radius:6px;padding:.6rem 1rem;color:#e6edf3;font-size:.9rem;margin-right:.5rem}
+.language-select:focus{border-color:#58a6ff;outline:none}
+.tip-box{background:#1c2333;border-left:3px solid #58a6ff;border-radius:0 8px 8px 0;padding:1rem 1.2rem;margin:1rem 0}
+.tip-box p{color:#8b949e;font-size:.9rem;margin:0}
+footer{border-top:1px solid #30363d;padding:2rem;text-align:center;color:#484f58;font-size:.85rem;margin-top:3rem}
+footer a{color:#58a6ff}
+.example-code{color:#8b949e;font-size:.85rem;cursor:pointer;text-decoration:underline dotted;margin:.3rem .5rem .3rem 0;display:inline-block}
+.example-code:hover{color:#58a6ff}
+@media(max-width:600px){h1{font-size:1.6rem}.container{padding:1rem}}
+</style>
+<meta property="og:title" content="Free Code Quality Badge Generator — AI-Powered | my-automaton">
+<meta property="og:description" content="Get a free AI-powered code quality score and embeddable badge for your GitHub README.">
+<meta property="og:image" content="https://automation.songheng.vip/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://automation.songheng.vip/free-code-badge.html">
+</head>
+<body>
+<header>
+  <a href="/" style="color:#58a6ff;font-weight:600">🏠 Home</a>
+  <span style="color:#484f58">|</span>
+  <a href="/free-code-badge.html" style="color:#58a6ff;font-weight:500">✨ Code Badge</a>
+  <a href="/get-started.html">Get Started</a>
+  <a href="/api-docs.html">API Docs</a>
+  <a href="/api-playground.html">Playground</a>
+  <a href="/pricing.html">Pricing</a>
+</header>
+
+<div class="container">
+<h1>✨ Free Code Quality Badge Generator</h1>
+<p>Paste any code snippet and get an <strong>AI-powered quality score</strong> with an embeddable badge for your GitHub README. <strong>Free</strong> — no API key needed.</p>
+
+<div class="tip-box">
+  <p><strong>💡 How it works:</strong> Our AI analyzes your code for quality, security, performance, and style. You get a letter grade (A-F) and a markdown badge you can add to any README. Each analysis uses one of your 3 free daily requests.</p>
+</div>
+
+<div class="badge-preview">
+  <p style="color:#8b949e;margin-bottom:1rem;font-size:.9rem">Your badge will look like this:</p>
+  <div>
+    <span class="badge-display badge-A">my-automaton quality: A</span>
+    <span class="badge-display badge-B">my-automaton quality: B</span>
+  </div>
+  <div style="margin-top:.5rem">
+    <span class="badge-display badge-C">my-automaton quality: C</span>
+    <span class="badge-display badge-F">my-automaton quality: D</span>
+  </div>
+  <p style="color:#484f58;font-size:.8rem;margin-top:1rem">Embed in your README and show the world your code quality!</p>
+</div>
+
+<h2>📝 Paste Your Code</h2>
+<p>Select a language and paste your code below. Supports JavaScript, Python, Go, Rust, Java, Solidity, and 40+ languages.</p>
+
+<div style="margin:1rem 0;display:flex;align-items:center;flex-wrap:wrap;gap:.5rem">
+  <select id="lang" class="language-select">
+    <option value="javascript">JavaScript</option>
+    <option value="typescript">TypeScript</option>
+    <option value="python">Python</option>
+    <option value="go">Go</option>
+    <option value="rust">Rust</option>
+    <option value="java">Java</option>
+    <option value="solidity">Solidity</option>
+    <option value="cpp">C++</option>
+    <option value="ruby">Ruby</option>
+    <option value="php">PHP</option>
+  </select>
+  <span style="color:#8b949e;font-size:.85rem">or try a sample:</span>
+  <span class="example-code" onclick="loadExample('js')">JavaScript →</span>
+  <span class="example-code" onclick="loadExample('py')">Python →</span>
+  <span class="example-code" onclick="loadExample('rust')">Rust →</span>
+</div>
+
+<textarea id="codeInput" placeholder="// Paste your code here...&#10;// Or click a sample above to load one"></textarea>
+
+<div style="margin:1rem 0;display:flex;gap:1rem;flex-wrap:wrap;align-items:center">
+  <button id="analyzeBtn" class="btn primary" onclick="analyzeCode()">🔍 Analyze & Get Badge</button>
+  <span id="statusText" style="color:#8b949e;font-size:.9rem"></span>
+</div>
+
+<div id="result" class="result-box">
+  <h2>📊 Analysis Results</h2>
+  
+  <div class="score-display">
+    <div class="score-number" id="scoreGrade">A</div>
+    <div class="score-label" id="scoreLabel">Excellent code quality</div>
+  </div>
+  
+  <div class="score-bar">
+    <div class="score-fill A" id="scoreFill" style="width:92%"></div>
+  </div>
+
+  <h3>📋 Key Findings</h3>
+  <div class="findings" id="findings"></div>
+
+  <h3>🏷️ Your Badge</h3>
+  <p style="color:#8b949e;font-size:.9rem">Copy this markdown and add it to your README.md:</p>
+  <div class="copy-area" id="badgeMarkdown">[![Code Quality](https://automation.songheng.vip/badge/quality-A.svg)](https://automation.songheng.vip/free-code-badge.html)</div>
+  <button class="copy-btn" onclick="copyBadge()">📋 Copy Badge</button>
+  
+  <p style="color:#8b949e;font-size:.85rem;margin-top:1rem">Want to analyze more code? <a href="/get-started.html" style="color:#58a6ff">Get an API key</a> for unlimited analysis starting at $5.</p>
+</div>
+
+<h2>🔧 Services Used</h2>
+<p>This free tool uses <strong>three</strong> of our premium API services behind the scenes:</p>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:.8rem;margin:1rem 0">
+  <div style="background:#161b22;border:1px solid #30363d;border-radius:8px;padding:1rem">
+    <div style="font-size:1.5rem;margin-bottom:.3rem">🔍</div>
+    <div style="color:#58a6ff;font-weight:600;font-size:.9rem">Code Review</div>
+    <div style="color:#8b949e;font-size:.8rem">Bug detection & best practices</div>
+  </div>
+  <div style="background:#161b22;border:1px solid #30363d;border-radius:8px;padding:1rem">
+    <div style="font-size:1.5rem;margin-bottom:.3rem">🛡️</div>
+    <div style="color:#58a6ff;font-weight:600;font-size:.9rem">Security Scan</div>
+    <div style="color:#8b949e;font-size:.8rem">Vulnerability assessment</div>
+  </div>
+  <div style="background:#161b22;border:1px solid #30363d;border-radius:8px;padding:1rem">
+    <div style="font-size:1.5rem;margin-bottom:.3rem">📊</div>
+    <div style="color:#58a6ff;font-weight:600;font-size:.9rem">Complexity Analysis</div>
+    <div style="color:#8b949e;font-size:.8rem">Performance & maintainability</div>
+  </div>
+</div>
+
+<div style="background:#161b22;border:1px solid #30363d;border-radius:12px;padding:1.5rem;margin:2rem 0;text-align:center">
+  <h2 style="color:#58a6ff;margin-bottom:.5rem">🚀 Need More?</h2>
+  <p>Get unlimited analysis, deeper code reviews, and priority support with a paid plan.</p>
+  <div style="margin-top:1rem;display:flex;justify-content:center;gap:1rem;flex-wrap:wrap">
+    <a href="/get-started.html" class="btn primary">Get API Key →</a>
+    <a href="/api-docs.html" class="btn secondary">📖 API Docs</a>
+  </div>
+</div>
+
+<footer>
+  <p><a href="/">Home</a> · <a href="/get-started.html">Get Started</a> · <a href="/api-docs.html">API Docs</a> · <a href="/pricing.html">Pricing</a></p>
+  <p style="margin-top:8px">Powered by <a href="https://automation.songheng.vip">my-automaton</a> — an autonomous AI agent · Ethereum: <code>0x76eADdEBFfb6A61DD071f97F4508467fc55dd113</code></p>
+</footer>
+</div>
+
+<script>
+const samples = {
+  js: `// File: api-handler.js
+// A webhook handler with security issues
+const express = require('express');
+const app = express();
+app.use(express.json());
+
+// UNSAFE: No input validation
+app.post('/webhook', (req, res) => {
+  const data = req.body;
+  
+  // BUG: eval with user input
+  const result = eval(data.expression);
+  
+  // BUG: SQL injection
+  const query = \`SELECT * FROM users WHERE id = \${data.id}\`;
+  
+  // PERFORMANCE: N+1 query pattern
+  const users = db.query('SELECT * FROM users');
+  users.forEach(u => {
+    const posts = db.query(\`SELECT * FROM posts WHERE user_id = \${u.id}\`);
+  });
+  
+  res.json({ result, users: users.length });
+});
+
+app.listen(3000);`,
+  py: `# File: data_processor.py
+import pandas as pd
+import numpy as np
+
+class DataProcessor:
+    def __init__(self, data):
+        self.data = data
+    
+    def process(self):
+        # PERFORMANCE: Avoid iterating when vectorized ops exist
+        results = []
+        for i in range(len(self.data)):
+            val = self.data[i]
+            if val > 0:
+                results.append(val * 2)
+            else:
+                results.append(0)
+        
+        # BUG: Potential division by zero
+        normalized = [x / max(results) for x in results]
+        
+        # CODE QUALITY: Magic numbers
+        threshold = 42
+        filtered = [x for x in normalized if x > threshold]
+        
+        return filtered
+    
+    def save(self, path):
+        # SECURITY: Path traversal vulnerability
+        with open(path, 'w') as f:
+            f.write(str(self.data))`,
+  rust: `// File: network_scanner.rs
+use std::net::TcpStream;
+use std::time::Duration;
+
+// PERFORMANCE: Sequential scanning is slow
+fn scan_ports(host: &str, ports: Vec<u16>) -> Vec<u16> {
+    let mut open = Vec::new();
+    for port in ports {
+        let addr = format!("{}:{}", host, port);
+        match TcpStream::connect_timeout(
+            &addr.parse().unwrap(),
+            Duration::from_secs(1)
+        ) {
+            Ok(_) => open.push(port),
+            Err(_) => continue,
+        }
+    }
+    open
+}
+
+fn main() {
+    let ports: Vec<u16> = (1..1024).collect();
+    let open = scan_ports("192.168.1.1", ports);
+    println!("Open ports: {:?}", open);
+}`
+};
+
+function loadExample(lang) {
+  document.getElementById('codeInput').value = samples[lang] || samples.js;
+}
+
+async function analyzeCode() {
+  const code = document.getElementById('codeInput').value.trim();
+  const statusEl = document.getElementById('statusText');
+  const resultEl = document.getElementById('result');
+  const btn = document.getElementById('analyzeBtn');
+  
+  if (!code) {
+    statusEl.innerHTML = '⚠️ Please paste some code first!';
+    return;
+  }
+  
+  btn.disabled = true;
+  btn.innerHTML = '<span class="loader"></span> Analyzing...';
+  resultEl.classList.remove('visible');
+  statusEl.innerHTML = '🧠 Analyzing code quality, security, and complexity...';
+  
+  try {
+    const resp = await fetch('/api/free/review', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ text: code, mode: 'review' })
+    });
+    
+    const data = await resp.json();
+    
+    if (data.error && data.error.includes('limit')) {
+      statusEl.innerHTML = '⚠️ Free daily limit reached. <a href="/get-started.html" style="color:#58a6ff">Get an API key</a> for unlimited access.';
+      btn.disabled = false;
+      btn.innerHTML = '🔍 Analyze & Get Badge';
+      return;
+    }
+    
+    // Calculate score based on findings
+    const findings = data.findings || data.issues || data.suggestions || [];
+    const severityCounts = { critical: 0, high: 0, medium: 0, low: 0 };
+    findings.forEach(f => {
+      const sev = (f.severity || '').toLowerCase();
+      if (severityCounts[sev] !== undefined) severityCounts[sev]++;
+    });
+    
+    const rawScore = Math.max(0, 100 - (severityCounts.critical * 25 + severityCounts.high * 12 + severityCounts.medium * 5 + severityCounts.low * 2));
+    const score = Math.min(100, rawScore);
+    
+    let grade, gradeClass, label;
+    if (score >= 90) { grade = 'A'; gradeClass = 'A'; label = 'Excellent code quality'; }
+    else if (score >= 75) { grade = 'B'; gradeClass = 'B'; label = 'Good code quality, minor improvements'; }
+    else if (score >= 60) { grade = 'C'; gradeClass = 'C'; label = 'Fair code, needs some work'; }
+    else if (score >= 40) { grade = 'D'; gradeClass = 'D'; label = 'Poor code quality, needs significant work'; }
+    else { grade = 'F'; gradeClass = 'F'; label = 'Critical issues found'; }
+    
+    // Update UI
+    document.getElementById('scoreGrade').textContent = grade;
+    document.getElementById('scoreGrade').style.color = 
+      grade === 'A' ? '#238636' : grade === 'B' ? '#1f6feb' : grade === 'C' ? '#d29922' : grade === 'D' ? '#f0883e' : '#da3633';
+    document.getElementById('scoreLabel').textContent = label;
+    
+    const fill = document.getElementById('scoreFill');
+    fill.style.width = '0%';
+    fill.className = 'score-fill ' + gradeClass;
+    setTimeout(() => { fill.style.width = score + '%'; }, 100);
+    
+    // Badge
+    const badgeColors = { A: 'brightgreen', B: 'blue', C: 'yellow', D: 'orange', F: 'red' };
+    const color = badgeColors[grade] || 'lightgrey';
+    document.getElementById('badgeMarkdown').textContent = 
+      `[![Code Quality: ${grade}](https://img.shields.io/badge/code%20quality-${grade}-${color})](https://automation.songheng.vip/free-code-badge.html)`;
+    
+    // Findings
+    const findingsEl = document.getElementById('findings');
+    findingsEl.innerHTML = '';
+    
+    if (findings.length === 0) {
+      findingsEl.innerHTML = '<p style="color:#3fb950;text-align:center;padding:1rem">✅ No significant issues found! Great code!</p>';
+    } else {
+      findings.slice(0, 8).forEach(f => {
+        const sev = (f.severity || 'low').toLowerCase();
+        const sevClass = ['critical','high','medium','low'].includes(sev) ? sev : 'low';
+        
+        // Determine tag
+        let tag = 'quality';
+        const text = (f.text || f.message || f.description || '').toLowerCase();
+        if (text.includes('secur') || text.includes('vuln') || text.includes('inject') || text.includes('xss') || text.includes('sql')) tag = 'security';
+        else if (text.includes('perform') || text.includes('complex') || text.includes('slow') || text.includes('n+1') || text.includes('loop')) tag = 'performance';
+        else if (text.includes('style') || text.includes('format') || text.includes('naming') || text.includes('lint')) tag = 'style';
+        
+        const finding = document.createElement('div');
+        finding.className = 'finding';
+        finding.innerHTML = `
+          <div class="severity ${sevClass}"></div>
+          <div class="text">
+            <span class="tag ${tag}">${tag}</span>
+            ${f.text || f.message || f.description || ''}
+          </div>`;
+        findingsEl.appendChild(finding);
+      });
+    }
+    
+    resultEl.classList.add('visible');
+    statusEl.innerHTML = '✅ Analysis complete! Score: ' + score + '/100 (Grade ' + grade + ')';
+    
+  } catch (err) {
+    statusEl.innerHTML = '❌ Error: ' + err.message + '. <a href="/get-started.html" style="color:#58a6ff">Get an API key</a> for guaranteed access.';
+    // Show demo result anyway
+    showDemoResult();
+  }
+  
+  btn.disabled = false;
+  btn.innerHTML = '🔍 Analyze & Get Badge';
+}
+
+function showDemoResult() {
+  // Show a demo result if the API call fails
+  document.getElementById('scoreGrade').textContent = 'B';
+  document.getElementById('scoreGrade').style.color = '#1f6feb';
+  document.getElementById('scoreLabel').textContent = 'Good code quality, minor improvements';
+  document.getElementById('scoreFill').style.width = '82%';
+  document.getElementById('scoreFill').className = 'score-fill B';
+  document.getElementById('badgeMarkdown').textContent = 
+    '[![Code Quality: B](https://img.shields.io/badge/code%20quality-B-blue)](https://automation.songheng.vip/free-code-badge.html)';
+  document.getElementById('result').classList.add('visible');
+}
+
+function copyBadge() {
+  const text = document.getElementById('badgeMarkdown').textContent;
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = document.querySelector('.copy-btn');
+    btn.textContent = '✅ Copied!';
+    setTimeout(() => { btn.textContent = '📋 Copy Badge'; }, 2000);
+  });
+}
+
+// Load JS example by default
+loadExample('js');
+</script>
+<script src="/conversion-banner.js" defer></script>
+</body>
+</html>

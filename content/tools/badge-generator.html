@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GitHub Badge Generator — Free Tool</title>
+<meta name="description" content="Generate beautiful SVG badges for GitHub README. Free tool by my-automaton AI code review.">
+<style>body{font-family:-apple-system,sans-serif;max-width:640px;margin:auto;background:#0d1117;color:#c9d1d9;padding:20px}
+h1{color:#fff}.card{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:15px;margin:10px 0}
+label{display:block;margin:10px 0 4px;color:#8b949e;font-size:.85rem}
+input,select{width:100%;padding:8px 12px;background:#0d1117;border:1px solid #30363d;border-radius:6px;color:#e6edf3;box-sizing:border-box}
+.preview{text-align:center;margin:15px 0}
+.copy-btn{background:#238636;border:none;color:#fff;padding:8px 16px;border-radius:6px;cursor:pointer}
+code{background:#0d1117;padding:8px 12px;border-radius:4px;display:block;word-break:break-all;font-size:.85rem}
+a{color:#58a6ff}</style>
+<!-- Open Graph / Social Meta Tags -->
+<meta property="og:title" content="GitHub Badge Generator — Free Tool" />
+<meta property="og:description" content="Generate beautiful SVG badges for GitHub README. Free tool by my-automaton AI code review." />
+<meta property="og:image" content="https://automation.songheng.vip/og-image.png" />
+<meta property="og:url" content="https://automation.songheng.vip/tools/badge-generator.html" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="my-automaton" />
+<meta property="og:locale" content="en_US" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="GitHub Badge Generator — Free Tool" />
+<meta name="twitter:description" content="Generate beautiful SVG badges for GitHub README. Free tool by my-automaton AI code review." />
+<meta name="twitter:image" content="https://automation.songheng.vip/og-image.png" />
+  <link rel="canonical" href="https://automation.songheng.vip/tools/badge-generator.html">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "GitHub Badge Generator — Free Tool",
+  "description": "Generate beautiful SVG badges for GitHub README. Free tool by my-automaton AI code review.",
+  "url": "https://automation.songheng.vip/tools/badge-generator.html",
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": "Web",
+  "author": {
+    "@type": "Organization",
+    "name": "my-automaton",
+    "url": "https://automation.songheng.vip"
+  },
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  }
+}
+</script>
+</head><body>
+<div style="background:#161b22;border-bottom:1px solid #30363d;padding:10px 20px;font-size:.85rem;display:flex;gap:16px;align-items:center;flex-wrap:wrap"><a href="/" style="color:#58a6ff;text-decoration:none;font-weight:600">🏠 Home</a><span style="color:#484f58">|</span><a href="/pricing.html" style="color:#8b949e;text-decoration:none">Pricing</a><a href="/api-docs.html" style="color:#8b949e;text-decoration:none">API</a><a href="/playground.html" style="color:#8b949e;text-decoration:none">Playground</a></div>
+
+<h1>GitHub Badge Generator</h1>
+<p style="color:#8b949e">Create badges for your README. Powered by <a href="/">my-automaton AI</a></p>
+<div class="card">
+<label>Label</label><input id="label" value="code quality" oninput="gen()">
+<label>Score</label><input id="score" value="95" oninput="gen()">
+<label>Color</label>
+<select id="color" onchange="gen()">
+<option value="brightgreen">Bright Green</option><option value="green">Green</option>
+<option value="yellowgreen">Yellow Green</option><option value="yellow">Yellow</option>
+<option value="orange">Orange</option><option value="red">Red</option>
+<option value="blue">Blue</option><option value="lightgrey">Light Grey</option>
+</select>
+</div>
+<div class="card"><h2>Preview</h2><div class="preview" id="preview"></div></div>
+<div class="card"><h2>Markdown</h2><code id="md"></code><br><button class="copy-btn" onclick="cp('md')">Copy</button></div>
+<div class="card"><h2>HTML</h2><code id="htmlOut"></code><br><button class="copy-btn" onclick="cp('htmlOut')">Copy</button></div>
+<script>
+function gen(){const l=encodeURIComponent(document.getElementById('label').value),s=encodeURIComponent(document.getElementById('score').value),c=document.getElementById('color').value,u='https://img.shields.io/badge/'+l+'-'+s+'%25-'+c+'?style=flat-square';document.getElementById('preview').innerHTML='<img src="'+u+'">',document.getElementById('md').textContent='!['+l+']('+u+')',document.getElementById('htmlOut').textContent='<img src="'+u+'" alt="'++'">'}
+function cp(id){navigator.clipboard.writeText(document.getElementById(id).textContent)};gen();
+</script></body></html>

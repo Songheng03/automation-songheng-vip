@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Developer Examples — my-automaton API</title>
+<meta name="description" content="Code examples for all 7 API services: analyze, summarize, review, security scan, explain, refactor, complexity. JS, Python, curl samples.">
+<style>
+:root { --bg: #0d1117; --card: #161b22; --border: #30363d; --text: #c9d1d9; --accent: #58a6ff; --green: #3fb950; }
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; }
+.container { max-width: 900px; margin: 0 auto; padding: 40px 20px; }
+h1 { font-size: 2.2em; margin-bottom: 8px; }
+h2 { font-size: 1.6em; margin: 48px 0 16px; border-bottom: 1px solid var(--border); padding-bottom: 8px; }
+h3 { font-size: 1.2em; margin: 24px 0 12px; color: var(--accent); }
+p { margin-bottom: 16px; }
+pre { background: #1c2128; padding: 16px; border-radius: 8px; overflow-x: auto; margin: 12px 0; border: 1px solid var(--border); }
+code { background: #1c2128; padding: 2px 6px; border-radius: 4px; font-size: 0.9em; }
+pre code { background: none; padding: 0; }
+.btn { display: inline-block; background: var(--accent); color: #fff; padding: 10px 24px; border-radius: 6px; text-decoration: none; font-weight: 600; margin: 4px; }
+.btn-g { background: var(--green); }
+.meta { color: #8b949e; margin-bottom: 32px; }
+.tab-bar { display: flex; gap: 0; margin: 16px 0; border-bottom: 2px solid var(--border); }
+.tab { padding: 10px 20px; cursor: pointer; background: none; border: none; color: #8b949e; font-size: 0.9em; }
+.tab.active { color: var(--accent); border-bottom: 2px solid var(--accent); margin-bottom: -2px; }
+</style>
+</head>
+<body>
+<div style="background:#161b22;border-bottom:1px solid #30363d;padding:10px 20px;font-size:.85rem;display:flex;gap:16px;align-items:center;flex-wrap:wrap"><a href="/" style="color:#58a6ff;text-decoration:none;font-weight:600">🏠 Home</a><span style="color:#484f58">|</span><a href="/pricing.html" style="color:#8b949e;text-decoration:none">Pricing</a><a href="/api-docs.html" style="color:#8b949e;text-decoration:none">API</a><a href="/playground.html" style="color:#8b949e;text-decoration:none">Playground</a></div>
+
+<div class="container">
+
+<h1>🚀 Developer Examples</h1>
+<p class="meta">Quickstart code for all 7 API services. Copy, paste, run.</p>
+
+<h2>Quick Start</h2>
+<p>All endpoints at <code>https://automation.songheng.vip</code>. Free tier: 3 requests/day/IP at <code>/free/</code> endpoints. Premium: use API key (<code>X-API-Key</code> header) or x402 micropayments on Base chain.</p>
+
+<h2>curl Examples</h2>
+
+<h3>1. Text Analysis (1 credit)</h3>
+<pre><code>curl -s https://automation.songheng.vip/free/analyze \
+  -H "Content-Type: application/json" \
+  -d '{"text":"The quick brown fox jumps over the lazy dog. This sentence contains every letter of the alphabet.","mode":"analyze"}' | jq .</code></pre>
+
+<h3>2. Code Review (5 credits)</h3>
+<pre><code>curl -s https://automation.songheng.vip/free/review \
+  -H "Content-Type: application/json" \
+  -d '{"code":"function factorial(n) {\n  if (n <= 1) return 1;\n  return n * factorial(n - 1);\n}","language":"javascript"}' | jq .</code></pre>
+
+<h3>3. Security Scan (3 credits)</h3>
+<pre><code>curl -s https://automation.songheng.vip/free/security \
+  -H "Content-Type: application/json" \
+  -d '{"code":"app.get(\"/user\", (req, res) => {\n  const id = req.query.id;\n  db.query(`SELECT * FROM users WHERE id = ${id}`, (err, rows) => {\n    res.json(rows);\n  });\n});"}' | jq .</code></pre>
+
+<h3>4. Summarization (2 credits)</h3>
+<pre><code>curl -s https://automation.songheng.vip/free/summarize \
+  -H "Content-Type: application/json" \
+  -d '{"text":"Long article text here...","max_length":100}' | jq .</code></pre>
+
+<h2>JavaScript (Node.js)</h2>
+<pre><code>const API = 'https://automation.songheng.vip';
+
+async function analyze(text) {
+  const res = await fetch(`${API}/free/analyze`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ text, mode: 'analyze' })
+  });
+  return res.json();
+}
+
+// With API key (paid)
+async function review(code, lang) {
+  const res = await fetch(`${API}/v1/review`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-API-Key': 'am_YOUR_KEY_HERE'
+    },
+    body: JSON.stringify({ code, language: lang })
+  });
+  return res.json();
+}
+
+// Example usage
+async function main() {
+  const result = await analyze('AI agents are transforming...');
+  console.log(result);
+}
+
+main();</code></pre>
+
+<h2>Python</h2>
+<pre><code>import requests
+
+API = 'https://automation.songheng.vip'
+
+def analyze_text(text):
+    resp = requests.post(f'{API}/free/analyze', json={
+        'text': text,
+        'mode': 'analyze'
+    })
+    return resp.json()
+
+def review_code(code, language='javascript'):
+    resp = requests.post(f'{API}/free/review', json={
+        'code': code,
+        'language': language
+    })
+    return resp.json()
+
+# Paid version with API key
+def security_scan(code):
+    resp = requests.post(f'{API}/v1/security', 
+        json={'code': code},
+        headers={'X-API-Key': 'am_YOUR_KEY_HERE'}
+    )
+    return resp.json()
+
+if __name__ == '__main__':
+    result = analyze_text('Python is a programming language...')
+    print(result)</code></pre>
+
+<h2>Premium with x402 Micropayments</h2>
+<p>No API key? Pay per request with USDC on Base chain:</p>
+<pre><code># Step 1: Call endpoint → get 402 with wallet & amount
+curl -s -X POST https://automation.songheng.vip/v1/review \
+  -H "Content-Type: application/json" \
+  -d '{"code":"console.log(1)","language":"javascript"}'
+
+# Returns: {"error":"payment_required","payer":"0x76eADdEBFfb6...","amount":"0.05","chain":"base","token":"USDC"}
+
+# Step 2: Send USDC to 0x76eADdEBFfb6a61DD071f97F4508467fc55dd113 on Base
+
+# Step 3: Retry with payment proof
+curl -s -X POST https://automation.songheng.vip/v1/review \
+  -H "Content-Type: application/json" \
+  -H "X-X402-Payment: 0xYOUR_TX_HASH" \
+  -d '{"code":"console.log(1)","language":"javascript"}'</code></pre>
+
+<h2>All Endpoints</h2>
+<table style="width:100%; border-collapse: collapse; margin: 16px 0;">
+  <tr style="border-bottom: 1px solid var(--border);">
+    <th style="text-align:left; padding: 8px;">Service</th>
+    <th style="text-align:left; padding: 8px;">Free Endpoint</th>
+    <th style="text-align:left; padding: 8px;">Premium Endpoint</th>
+    <th style="text-align:left; padding: 8px;">Cost</th>
+  </tr>
+  <tr style="border-bottom: 1px solid var(--border);">
+    <td style="padding: 8px;">Analyze</td>
+    <td style="padding: 8px;">/free/analyze</td>
+    <td style="padding: 8px;">/v1/analyze</td>
+    <td style="padding: 8px;">$0.01</td>
+  </tr>
+  <tr style="border-bottom: 1px solid var(--border);">
+    <td style="padding: 8px;">Summarize</td>
+    <td style="padding: 8px;">/free/summarize</td>
+    <td style="padding: 8px;">/v1/summarize</td>
+    <td style="padding: 8px;">$0.02</td>
+  </tr>
+  <tr style="border-bottom: 1px solid var(--border);">
+    <td style="padding: 8px;">Code Review</td>
+    <td style="padding: 8px;">/free/review</td>
+    <td style="padding: 8px;">/v1/review</td>
+    <td style="padding: 8px;">$0.05</td>
+  </tr>
+  <tr style="border-bottom: 1px solid var(--border);">
+    <td style="padding: 8px;">Security Scan</td>
+    <td style="padding: 8px;">/free/security</td>
+    <td style="padding: 8px;">/v1/security</td>
+    <td style="padding: 8px;">$0.03</td>
+  </tr>
+  <tr style="border-bottom: 1px solid var(--border);">
+    <td style="padding: 8px;">Explain</td>
+    <td style="padding: 8px;">/free/explain</td>
+    <td style="padding: 8px;">/v1/explain</td>
+    <td style="padding: 8px;">$0.02</td>
+  </tr>
+  <tr style="border-bottom: 1px solid var(--border);">
+    <td style="padding: 8px;">Refactor</td>
+    <td style="padding: 8px;">/free/refactor</td>
+    <td style="padding: 8px;">/v1/refactor</td>
+    <td style="padding: 8px;">$0.05</td>
+  </tr>
+  <tr style="border-bottom: 1px solid var(--border);">
+    <td style="padding: 8px;">Complexity</td>
+    <td style="padding: 8px;">/free/complexity</td>
+    <td style="padding: 8px;">/v1/complexity</td>
+    <td style="padding: 8px;">$0.02</td>
+  </tr>
+</table>
+
+<div style="background: linear-gradient(135deg, #1a1a2e, #16213e); text-align: center; padding: 32px; border-radius: 12px; margin: 40px 0; border: 1px solid var(--accent);">
+  <h2 style="margin-top: 0;">💰 Pay Per Request — From $0.01</h2>
+  <p style="margin-bottom: 20px;">Get your API key instantly. No approval needed.</p>
+  <a href="/pricing.html" class="btn">View Pricing</a>
+  <a href="https://automation.songheng.vip/api-docs" class="btn btn-g">API Docs</a>
+</div>
+
+<hr style="border-color: var(--border); margin: 40px 0;">
+<p style="color: #8b949e;"><em>Wallet: 0x76eADdEBFfb6a61DD071f97F4508467fc55dd113 (Base chain) · Questions? Open an issue on GitHub.</em></p>
+
+</div>
+<script src="/conversion-banner.js" defer></script>
+</body>
+</html>

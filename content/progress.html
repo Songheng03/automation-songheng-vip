@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <link rel="canonical" href="https://automation.songheng.vip/progress.html">
+  <meta property="og:title" content="System Progress - my-automaton">
+  <meta property="og:description" content="progress — Automaton AI. AI-powered code analysis, text processing, and developer tools. Free and premium services available.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://automation.songheng.vip/progress.html">
+  <meta property="og:image" content="https://automation.songheng.vip/og-image.png">
+  <meta name="description" content="progress — Automaton AI. AI-powered code analysis, text processing, and developer tools. Free and premium services available."><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>System Progress - my-automaton</title><style>body{font-family:-apple-system,sans-serif;background:#0f0f1a;color:#e0e0e0;max-width:800px;margin:0 auto;padding:2rem 1rem}h1{color:#fff}.stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1rem;margin:1rem 0}.stat-card{background:#111;border:1px solid #333;border-radius:8px;padding:1rem;text-align:center}.stat-card .num{font-size:1.8rem;color:#a78bfa;font-weight:700}.stat-card .label{font-size:.8rem;color:#666;margin-top:.2rem}.bar{border:1px solid #333;border-radius:8px;height:24px;overflow:hidden;background:#1a1a2e;margin:.5rem 0}.bar-fill{height:100%;background:linear-gradient(90deg,#a78bfa,#7c3aed);transition:width 1s;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:.75rem;color:#fff;min-width:fit-content;padding:0 8px;box-sizing:border-box}.log{background:#111;border:1px solid #222;border-radius:8px;max-height:300px;overflow-y:auto;padding:.8rem;font-family:monospace;font-size:.8rem;margin:1rem 0}.log div{padding:2px 0;border-bottom:1px solid #1a1a1a}</style><meta name="google-site-verification" content="YOUR_CODE" />
+<meta property="og:site_name" content="my-automaton" />
+<meta property="og:type" content="website" />
+<meta property="og:locale" content="en_US" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:site" content="@my_automaton" />
+<script src="/js/analytics.js"></script>
+<!-- Open Graph / Social Meta Tags -->
+<meta name="twitter:title" content="System Progress - my-automaton" />
+<meta name="twitter:description" content="progress — Automaton AI. AI-powered code analysis, text processing, and developer tools. Free and premium services available." />
+<meta name="twitter:image" content="https://automation.songheng.vip/og-image.png" />
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "System Progress - my-automaton",
+  "description": "progress — Automaton AI. AI-powered code analysis, text processing, and developer tools. Free and premium services available.",
+  "url": "https://automation.songheng.vip/progress.html"
+}
+</script>
+</head><body>
+<div style="background:#161b22;border-bottom:1px solid #30363d;padding:10px 20px;font-size:.85rem;display:flex;gap:16px;align-items:center;flex-wrap:wrap"><a href="/" style="color:#58a6ff;text-decoration:none;font-weight:600">🏠 Home</a><span style="color:#484f58">|</span><a href="/pricing.html" style="color:#8b949e;text-decoration:none">Pricing</a><a href="/api-docs.html" style="color:#8b949e;text-decoration:none">API</a><a href="/playground.html" style="color:#8b949e;text-decoration:none">Playground</a></div>
+<h1>📊 System Progress</h1><p style="color:#888">Real-time stats for my-automaton's AI services</p>
+
+<div class="stat-grid" id="stats">
+  <div class="stat-card"><div class="num" id="total-req">--</div><div class="label">Total Requests</div></div>
+  <div class="stat-card"><div class="num" id="free-req">--</div><div class="label">Free Uses Today</div></div>
+  <div class="stat-card"><div class="num" id="paid-req">--</div><div class="label">Paid Requests</div></div>
+  <div class="stat-card"><div class="num" id="revenue">$--</div><div class="label">Revenue</div></div>
+</div>
+
+<h2>Free Usage Today by Service</h2>
+<div id="services"></div>
+
+<h2>Recent Events</h2>
+<div class="log" id="events"><div>Loading...</div></div>
+
+<script>
+async function loadStats() {
+  try {
+    const r = await fetch('/api/stats');
+    const d = await r.json();
+    document.getElementById('total-req').textContent = d.totalRequests || 0;
+    document.getElementById('free-req').textContent = d.freeToday || 0;
+    document.getElementById('paid-req').textContent = d.paidRequests || 0;
+    document.getElementById('revenue').textContent = '$' + ((d.totalRevenueCents||0)/100).toFixed(2);
+
+    const sdiv = document.getElementById('services');
+    sdiv.innerHTML = '';
+    for (const [svc, count] of Object.entries(d.freeUsageByService || {})) {
+      const pct = d.freeToday > 0 ? Math.round(count/d.freeToday*100) : 0;
+      sdiv.innerHTML += `<div style="margin:.5rem 0"><div style="display:flex;justify-content:space-between;font-size:.85rem"><span>${svc}</span><span>${count} uses</span></div><div class="bar"><div class="bar-fill" style="width:${pct}%">${pct}%</div></div></div>`;
+    }
+    
+    const ev = document.getElementById('events');
+    if (d.recentEvents && d.recentEvents.length) {
+      ev.innerHTML = d.recentEvents.slice(-20).reverse().map(e => `<div>${new Date(e.t).toLocaleTimeString()} ${e.msg}</div>`).join('');
+    }
+  } catch(e) {
+    document.getElementById('events').innerHTML = '<div style="color:#f66">Error: ' + e.message + '</div>';
+  }
+}
+loadStats();
+setInterval(loadStats, 10000);
+</script>
+<div class="share-bar" style="position:fixed;bottom:20px;right:20px;z-index:9999;display:flex;gap:8px;background:rgba(0,0,0,0.85);padding:10px 14px;border-radius:30px;backdrop-filter:blur(8px);box-shadow:0 2px 12px rgba(0,0,0,0.3)">
+<button onclick="window.open('https://twitter.com/intent/tweet?text='+encodeURIComponent(document.title)+'&url='+encodeURIComponent(location.href),'_blank')" style="background:#1DA1F2;border:none;color:white;padding:8px 12px;border-radius:20px;cursor:pointer;font-size:13px;font-weight:bold">X</button>
+<button onclick="window.open('https://www.linkedin.com/sharing/share-offsite/?url='+encodeURIComponent(location.href),'_blank')" style="background:#0A66C2;border:none;color:white;padding:8px 12px;border-radius:20px;cursor:pointer;font-size:13px;font-weight:bold">in</button>
+<button onclick="window.open('https://reddit.com/submit?url='+encodeURIComponent(location.href)+'&title='+encodeURIComponent(document.title),'_blank')" style="background:#FF4500;border:none;color:white;padding:8px 12px;border-radius:20px;cursor:pointer;font-size:13px;font-weight:bold">r</button>
+</div>
+<script src="/js/share-widget.js"></script>
+<script src="/conversion-banner.js" defer></script>
+</body></html>

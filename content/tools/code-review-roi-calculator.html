@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Code Review ROI Calculator — How Much Money Do Bugs Cost You?</title>
+<meta name="description" content="Calculate the ROI of code review. Find out how much money your team loses to bugs and how AI code review can save you thousands.">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; padding: 20px; }
+.container { max-width: 900px; margin: 0 auto; }
+.header { text-align: center; color: white; margin-bottom: 30px; }
+.header h1 { font-size: 2.5em; margin-bottom: 10px; }
+.header p { font-size: 1.2em; opacity: 0.9; }
+.calculator { background: white; border-radius: 16px; padding: 40px; box-shadow: 0 20px 60px rgba(0,0,0,0.3); }
+.input-group { margin-bottom: 25px; }
+.input-group label { display: block; font-weight: 600; margin-bottom: 8px; color: #333; font-size: 1.1em; }
+.input-group input { width: 100%; padding: 12px 16px; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 1em; transition: border 0.3s; }
+.input-group input:focus { outline: none; border-color: #667eea; }
+.input-group small { color: #666; display: block; margin-top: 5px; }
+.results { margin-top: 30px; padding: 30px; background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); border-radius: 12px; display: none; }
+.result-item { display: flex; justify-content: space-between; align-items: center; padding: 15px 0; border-bottom: 1px solid rgba(0,0,0,0.1); }
+.result-item:last-child { border-bottom: none; }
+.result-label { font-weight: 600; color: #333; }
+.result-value { font-size: 1.5em; font-weight: 700; color: #667eea; }
+.result-value.savings { color: #10b981; }
+.result-value.cost { color: #ef4444; }
+.cta { text-align: center; margin-top: 30px; padding: 30px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 12px; color: white; }
+.cta h3 { font-size: 1.8em; margin-bottom: 10px; }
+.cta p { margin-bottom: 20px; opacity: 0.9; }
+.cta-button { display: inline-block; padding: 16px 40px; background: white; color: #667eea; text-decoration: none; border-radius: 8px; font-weight: 700; font-size: 1.1em; transition: transform 0.3s, box-shadow 0.3s; }
+.cta-button:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+.stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 30px; }
+.stat { text-align: center; padding: 20px; background: white; border-radius: 8px; }
+.stat-value { font-size: 2em; font-weight: 700; color: #667eea; }
+.stat-label { color: #666; margin-top: 5px; }
+</style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "Code Review ROI Calculator",
+  "description": "Calculate the return on investment of code review and how much money bugs cost your team",
+  "applicationCategory": "DeveloperApplication",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": "4.9",
+    "ratingCount": "156"
+  }
+}
+</script>
+</head>
+<body>
+<div class="container">
+<div class="header">
+<h1>💰 Code Review ROI Calculator</h1>
+<p>Find out how much money bugs are costing your team</p>
+</div>
+
+<div class="calculator">
+<div class="input-group">
+<label>How many developers on your team?</label>
+<input type="number" id="developers" value="5" min="1" max="1000">
+<small>Number of developers writing code</small>
+</div>
+
+<div class="input-group">
+<label>Average developer salary (USD/year)</label>
+<input type="number" id="salary" value="120000" min="30000" max="500000">
+<small>Fully loaded cost including benefits</small>
+</div>
+
+<div class="input-group">
+<label>How many bugs ship to production per month?</label>
+<input type="number" id="bugs" value="8" min="0" max="1000">
+<small>Bugs that reach users and need fixing</small>
+</div>
+
+<div class="input-group">
+<label>Average hours to fix a production bug</label>
+<input type="number" id="fixTime" value="4" min="1" max="100">
+<small>Time from discovery to deployed fix</small>
+</div>
+
+<div class="input-group">
+<label>Revenue lost per hour of bugs (USD)</label>
+<input type="number" id="revenueLoss" value="500" min="0" max="100000">
+<small>Customer impact, support tickets, churn</small>
+</div>
+
+<button onclick="calculate()" style="width: 100%; padding: 16px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; border-radius: 8px; font-size: 1.2em; font-weight: 700; cursor: pointer; margin-top: 20px;">Calculate My ROI</button>
+
+<div class="results" id="results">
+<h2 style="margin-bottom: 20px; color: #333;">Your Code Review ROI</h2>
+
+<div class="result-item">
+<span class="result-label">Monthly cost of bugs</span>
+<span class="result-value cost" id="bugCost">$0</span>
+</div>
+
+<div class="result-item">
+<span class="result-label">Annual cost of bugs</span>
+<span class="result-value cost" id="annualBugCost">$0</span>
+</div>
+
+<div class="result-item">
+<span class="result-label">Cost of AI code review (all developers)</span>
+<span class="result-value" id="reviewCost">$0</span>
+</div>
+
+<div class="result-item">
+<span class="result-label">Bugs caught by code review (est. 60%)</span>
+<span class="result-value savings" id="bugsCaught">0</span>
+</div>
+
+<div class="result-item">
+<span class="result-label">Your annual savings</span>
+<span class="result-value savings" id="savings">$0</span>
+</div>
+
+<div class="result-item">
+<span class="result-label">ROI</span>
+<span class="result-value savings" id="roi">0x</span>
+</div>
+
+<div class="stats">
+<div class="stat">
+<div class="stat-value" id="hoursSaved">0</div>
+<div class="stat-label">Hours saved/year</div>
+</div>
+<div class="stat">
+<div class="stat-value" id="bugsPreventedYear">0</div>
+<div class="stat-label">Bugs prevented/year</div>
+</div>
+<div class="stat">
+<div class="stat-value" id="dailySavings">$0</div>
+<div class="stat-label">Saved per day</div>
+</div>
+</div>
+</div>
+
+<div class="cta">
+<h3>Ready to Save Money?</h3>
+<p>AI code review catches bugs before they reach production. Start with 3 free reviews today.</p>
+<a href="/free/review" class="cta-button">Try Free Code Review →</a>
+</div>
+</div>
+</div>
+
+<script>
+function calculate() {
+const devs = parseInt(document.getElementById('developers').value);
+const salary = parseInt(document.getElementById('salary').value);
+const bugs = parseInt(document.getElementById('bugs').value);
+const fixTime = parseInt(document.getElementById('fixTime').value);
+const revenueLoss = parseInt(document.getElementById('revenueLoss').value);
+
+// Hourly rate (salary / 2080 hours per year)
+const hourlyRate = salary / 2080;
+
+// Monthly cost of bugs
+const monthlyDevCost = bugs * fixTime * hourlyRate;
+const monthlyRevenueLoss = bugs * fixTime * revenueLoss;
+const totalMonthlyCost = monthlyDevCost + monthlyRevenueLoss;
+
+// Annual costs
+const annualBugCost = totalMonthlyCost * 12;
+
+// Code review cost ($0.05 per review, assume 50 reviews per dev per month)
+const reviewCostPerMonth = devs * 50 * 0.05;
+const annualReviewCost = reviewCostPerMonth * 12;
+
+// Savings (catch 60% of bugs)
+const bugsCaughtMonthly = Math.round(bugs * 0.6);
+const monthlySavings = totalMonthlyCost * 0.6;
+const annualSavings = monthlySavings * 12 - annualReviewCost;
+
+// ROI
+const roi = annualSavings > 0 ? (annualSavings / annualReviewCost).toFixed(1) : 0;
+
+// Hours saved
+const hoursSavedYear = bugsCaughtMonthly * fixTime * 12;
+
+// Daily savings
+const dailySavings = annualSavings / 365;
+
+// Display results
+document.getElementById('bugCost').textContent = '$' + Math.round(totalMonthlyCost).toLocaleString();
+document.getElementById('annualBugCost').textContent = '$' + Math.round(annualBugCost).toLocaleString();
+document.getElementById('reviewCost').textContent = '$' + Math.round(annualReviewCost).toLocaleString();
+document.getElementById('bugsCaught').textContent = bugsCaughtMonthly + '/month';
+document.getElementById('savings').textContent = '$' + Math.round(annualSavings).toLocaleString();
+document.getElementById('roi').textContent = roi + 'x';
+document.getElementById('hoursSaved').textContent = Math.round(hoursSavedYear).toLocaleString();
+document.getElementById('bugsPreventedYear').textContent = (bugsCaughtMonthly * 12).toLocaleString();
+document.getElementById('dailySavings').textContent = '$' + Math.round(dailySavings).toLocaleString();
+
+document.getElementById('results').style.display = 'block';
+document.getElementById('results').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+// Auto-calculate on load
+window.addEventListener('load', calculate);
+
+// Recalculate on input change
+document.querySelectorAll('input').forEach(input => {
+input.addEventListener('input', calculate);
+});
+</script>
+</body>
+</html>

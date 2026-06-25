@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Free JSON Schema Generator — my-automaton</title>
+<meta name="description" content="Free online JSON Schema generator. Paste JSON, get valid JSON Schema instantly. Supports Draft 4/7/2020-12. No signup, no limits.">
+<meta name="keywords" content="json schema generator, json to schema, json schema validator, free json tools, api schema">
+<meta property="og:title" content="Free JSON Schema Generator">
+<meta property="og:description" content="Generate JSON Schema from any JSON in seconds. Free, no signup, works offline.">
+<meta property="og:url" content="https://automation.songheng.vip/json-schema-generator.html">
+<link rel="canonical" href="https://automation.songheng.vip/json-schema-generator.html">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#0d1117;color:#c9d1d9;line-height:1.6}
+.container{max-width:1200px;margin:0 auto;padding:20px}
+header{text-align:center;padding:40px 20px 20px;background:linear-gradient(135deg,#1a2332 0%,#0d1117 100%);border-bottom:1px solid #21262d}
+header h1{font-size:2.2rem;color:#58a6ff;margin-bottom:8px}
+header p{color:#8b949e;font-size:1.05rem;max-width:700px;margin:0 auto}
+.workspace{display:grid;grid-template-columns:1fr 1fr;gap:15px;margin:20px 0}
+@media(max-width:768px){.workspace{grid-template-columns:1fr}}
+.panel{background:#161b22;border:1px solid #30363d;border-radius:10px;overflow:hidden}
+.panel-header{background:#1a2332;padding:10px 15px;border-bottom:1px solid #30363d;display:flex;justify-content:space-between;align-items:center}
+.panel-header h2{font-size:.95rem;color:#c9d1d9;font-weight:600}
+.panel-header .badge{font-size:.75rem;background:#21262d;padding:2px 8px;border-radius:10px;color:#8b949e}
+textarea{width:100%;height:400px;background:#0d1117;border:none;color:#c9d1d9;padding:15px;font-family:'Monaco','Consolas',monospace;font-size:.85rem;resize:vertical;outline:none}
+textarea:focus{border-color:#58a6ff}
+pre{height:400px;overflow:auto;padding:15px;background:#0d1117;font-family:'Monaco','Consolas',monospace;font-size:.85rem;white-space:pre-wrap}
+pre .key{color:#58a6ff}
+pre .string{color:#7ee787}
+pre .number{color:#d29922}
+pre .boolean{color:#f0883e}
+pre .null{color:#f85149}
+.controls{display:flex;gap:10px;margin:15px 0;flex-wrap:wrap;align-items:center}
+.controls button{padding:10px 20px;border-radius:6px;border:1px solid #30363d;background:#21262d;color:#c9d1d9;cursor:pointer;font-size:.9rem;transition:all .2s;white-space:nowrap}
+.controls button:hover{background:#30363d;border-color:#58a6ff}
+.controls button.primary{background:#238636;border-color:#238636;color:#fff}
+.controls button.primary:hover{background:#2ea043}
+.controls select{padding:10px 12px;border-radius:6px;border:1px solid #30363d;background:#21262d;color:#c9d1d9;font-size:.9rem;cursor:pointer}
+.controls select:hover{border-color:#58a6ff}
+.controls label{color:#8b949e;font-size:.85rem;display:flex;align-items:center;gap:6px}
+.controls input[type="checkbox"]{accent-color:#238636}
+.options-row{display:flex;gap:15px;flex-wrap:wrap;margin:10px 0}
+.error{color:#f85149;background:#1f1115;border:1px solid #f8514966;border-radius:6px;padding:10px 15px;margin:10px 0;display:none}
+.error.show{display:block}
+.success{color:#3fb950;font-size:.85rem;margin-left:10px;opacity:0;transition:opacity .2s}
+.success.show{opacity:1}
+.cta-section{text-align:center;padding:25px;background:#161b22;border:1px solid #30363d;border-radius:10px;margin:20px 0}
+.cta-section h3{color:#d29922;margin-bottom:8px}
+.cta-section p{color:#8b949e;margin-bottom:12px;font-size:.9rem}
+.cta-section a{display:inline-block;background:#1f6feb;color:#fff;padding:10px 24px;border-radius:6px;text-decoration:none;font-weight:600}
+.cta-section a:hover{background:#388bfd}
+.tips{background:#161b22;border:1px solid #30363d;border-radius:10px;padding:20px;margin:20px 0}
+.tips h3{color:#58a6ff;margin-bottom:10px}
+.tips ul{color:#8b949e;font-size:.9rem;padding-left:20px}
+.tips li{margin-bottom:6px}
+footer{text-align:center;padding:20px;color:#484f58;font-size:.85rem;border-top:1px solid #21262d;margin-top:30px}
+footer a{color:#58a6ff}
+.stats{text-align:center;color:#484f58;font-size:.8rem}
+</style>
+</head>
+<body>
+<header>
+  <h1>📋 JSON Schema Generator</h1>
+  <p>Paste any JSON — get a valid JSON Schema instantly. Supports Draft 4, 7, and 2020-12. Free, no signup, works entirely in your browser.</p>
+</header>
+
+<div class="container">
+  <div class="controls">
+    <select id="draft-select" onchange="generateSchema()">
+      <option value="2020-12">Draft 2020-12</option>
+      <option value="7">Draft 7</option>
+      <option value="4">Draft 4</option>
+    </select>
+    <label><input type="checkbox" id="add-descriptions" checked onchange="generateSchema()"> Add descriptions</label>
+    <label><input type="checkbox" id="add-examples" checked onchange="generateSchema()"> Add examples</label>
+    <label><input type="checkbox" id="required-all" onchange="generateSchema()"> Mark all as required</label>
+    <label><input type="checkbox" id="additional-false" onchange="generateSchema()"> additionalProperties: false</label>
+  </div>
+
+  <div class="workspace">
+    <div class="panel">
+      <div class="panel-header">
+        <h2>Input JSON</h2>
+        <span class="badge">Paste your JSON here</span>
+      </div>
+      <textarea id="json-input" placeholder='{
+  "name": "John",
+  "age": 30,
+  "email": "john@example.com",
+  "isAdmin": false,
+  "tags": ["developer", "admin"],
+  "address": {
+    "street": "123 Main St",
+    "city": "San Francisco"
+  }
+}' oninput="autoGenerate()' oninput="autoGenerate()"></textarea>
+      <div class="error" id="error-msg"></div>
+    </div>
+    <div class="panel">
+      <div class="panel-header">
+        <h2>JSON Schema</h2>
+        <span class="badge" id="draft-badge">Draft 2020-12</span>
+        <span class="success" id="copy-success">Copied!</span>
+      </div>
+      <pre id="schema-output">// Paste JSON on the left to generate schema</pre>
+    </div>
+  </div>
+
+  <div class="controls">
+    <button class="primary" onclick="generateSchema()">🔄 Generate Schema</button>
+    <button onclick="copySchema()">📋 Copy Schema</button>
+    <button onclick="downloadSchema()">💾 Download</button>
+    <button onclick="loadSample('api')">📦 Sample: API Response</button>
+    <button onclick="loadSample('user')">👤 Sample: User</button>
+    <button onclick="loadSample('config')">⚙️ Sample: Config</button>
+    <button onclick="clearAll()">🗑️ Clear</button>
+    <span id="schema-stats" class="stats"></span>
+  </div>
+
+  <div class="cta-section">
+    <h3>🔍 Need to validate your API responses at scale?</h3>
+    <p>Use my-automaton's API to automatically review, validate, and secure your API endpoints. 50 free credits — no credit card needed.</p>
+    <a href="/free-trial.html">🎁 Get 50 Free API Credits</a>
+    <span style="margin:0 15px;color:#30363d">|</span>
+    <a href="/api-docs.html" style="background:#21262d;border:1px solid #30363d">📖 API Docs</a>
+  </div>
+
+  <div class="tips">
+    <h3>💡 Tips</h3>
+    <ul>
+      <li><strong>Nested objects</strong> are automatically detected and generate nested schemas.</li>
+      <li><strong>Arrays</strong> generate items schemas — we infer the type from array contents.</li>
+      <li><strong>Null values</strong> produce <code>"type": "null"</code> — wrap in an array for nullable types.</li>
+      <li><strong>Dates</strong> in ISO format are detected and formatted as <code>"format": "date-time"</code>.</li>
+      <li>Use this with <strong>OpenAPI</strong>, <strong>Ajv validation</strong>, <strong>TypeScript generation</strong>, or any JSON Schema tool.</li>
+    </ul>
+  </div>
+</div>
+
+<footer>
+  <p><a href="/">Home</a> · <a href="/free-trial.html">Free Trial</a> · <a href="/api-docs.html">API Docs</a> · <a href="/dev-tools.html">More Free Tools</a> · <a href="/blog.html">Blog</a></p>
+  <p>my-automaton — AI-powered developer tools. All client-side tools are free and unlimited.</p>
+</footer>
+
+<script>
+// Schema draft URIs
+const DRAFT_URIS = {
+  '2020-12': 'https://json-schema.org/draft/2020-12/schema',
+  '7': 'http://json-schema.org/draft-07/schema#',
+  '4': 'http://json-schema.org/draft-04/schema#'
+};
+
+// Debounce auto-generation
+let autoTimer;
+function autoGenerate() {
+  clearTimeout(autoTimer);
+  autoTimer = setTimeout(generateSchema, 400);
+}
+
+function getJsonType(val) {
+  if (val === null) return 'null';
+  if (Array.isArray(val)) return 'array';
+  return typeof val;
+}
+
+function inferSchema(obj, required, options, depth) {
+  if (depth > 20) return { type: 'object', description: 'Max depth reached' };
+  
+  const type = getJsonType(obj);
+  
+  if (type === 'null') {
+    return { type: 'null' };
+  }
+  
+  if (type === 'boolean') return { type: 'boolean' };
+  if (type === 'number') return { type: Number.isInteger(obj) ? 'integer' : 'number' };
+  
+  if (type === 'string') {
+    const s = { type: 'string' };
+    // Detect common formats
+    if (/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}/.test(obj)) s.format = 'date-time';
+    else if (/^\d{4}-\d{2}-\d{2}$/.test(obj)) s.format = 'date';
+    else if (/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(obj)) s.format = 'email';
+    else if (/^https?:\/\/.+/.test(obj)) s.format = 'uri';
+    else if (/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(obj)) s.format = 'uuid';
+    else if (/^[a-f0-9]{24}$/i.test(obj)) s.format = 'objectid'; // MongoDB
+    return s;
+  }
+  
+  if (type === 'array') {
+    const itemTypes = new Set();
+    obj.forEach(item => {
+      const t = getJsonType(item);
+      if (t === 'object') itemTypes.add('object');
+      else if (t === 'array') itemTypes.add('array');
+      else itemTypes.add(typeof item);
+    });
+    
+    const schema = { type: 'array' };
+    if (obj.length > 0) {
+      if (itemTypes.size === 1) {
+        const itemType = [...itemTypes][0];
+        if (itemType === 'object') {
+          schema.items = inferSchema(obj[0], [], options, depth + 1);
+        } else if (itemType === 'array') {
+          schema.items = inferSchema(obj[0], [], options, depth + 1);
+        } else {
+          schema.items = { type: itemType };
+        }
+      } else {
+        // Mixed types
+        schema.items = {};
+        const types = [...itemTypes].sort();
+        if (types.includes('null')) {
+          const nonNull = types.filter(t => t !== 'null');
+          schema.items.type = nonNull.length === 1 ? [nonNull[0], 'null'] : types;
+        } else {
+          schema.items.type = types.length === 1 ? types[0] : types;
+        }
+      }
+    }
+    if (options.addExamples && obj.length > 0) schema.examples = obj.slice(0, 3);
+    return schema;
+  }
+  
+  if (type === 'object') {
+    const schema = { type: 'object', properties: {} };
+    const keys = Object.keys(obj);
+    
+    if (options.requiredAll && keys.length > 0) {
+      schema.required = keys;
+    }
+    
+    if (options.additionalFalse) {
+      schema.additionalProperties = false;
+    }
+    
+    for (const key of keys) {
+      const value = obj[key];
+      const valueType = getJsonType(value);
+      const propSchema = inferSchema(value, [], options, depth + 1);
+      
+      if (options.addDescriptions) {
+        propSchema.description = `${key} field (${valueType})`;
+      }
+      if (options.addExamples && valueType !== 'object' && valueType !== 'array') {
+        propSchema.examples = [value];
+      }
+      
+      schema.properties[key] = propSchema;
+    }
+    return schema;
+  }
+  
+  return { type: type };
+}
+
+function generateSchema() {
+  const input = document.getElementById('json-input').value.trim();
+  const errorDiv = document.getElementById('error-msg');
+  const output = document.getElementById('schema-output');
+  const draftBadge = document.getElementById('draft-badge');
+  const stats = document.getElementById('schema-stats');
+  
+  errorDiv.classList.remove('show');
+  
+  if (!input) {
+    output.textContent = '// Paste JSON on the left to generate schema';
+    draftBadge.textContent = 'Draft 2020-12';
+    stats.textContent = '';
+    return;
+  }
+  
+  let obj;
+  try {
+    obj = JSON.parse(input);
+  } catch (e) {
+    errorDiv.textContent = '❌ Invalid JSON: ' + e.message;
+    errorDiv.classList.add('show');
+    return;
+  }
+  
+  const draft = document.getElementById('draft-select').value;
+  const options = {
+    addDescriptions: document.getElementById('add-descriptions').checked,
+    addExamples: document.getElementById('add-examples').checked,
+    requiredAll: document.getElementById('required-all').checked,
+    additionalFalse: document.getElementById('additional-false').checked,
+  };
+  
+  draftBadge.textContent = 'Draft ' + draft;
+  
+  const schema = {
+    $schema: DRAFT_URIS[draft],
+    title: 'Generated Schema',
+    ...inferSchema(obj, [], options, 0)
+  };
+  
+  // Count properties
+  let propCount = 0;
+  const countProps = (s) => {
+    if (s.properties) {
+      propCount += Object.keys(s.properties).length;
+      for (const k of Object.keys(s.properties)) {
+        countProps(s.properties[k]);
+      }
+    }
+    if (s.items && typeof s.items === 'object') countProps(s.items);
+  };
+  countProps(schema);
+  stats.textContent = `${propCount} propert${propCount !== 1 ? 'ies' : 'y'} · Draft ${draft}`;
+  
+  output.textContent = JSON.stringify(schema, null, 2);
+}
+
+function copySchema() {
+  const schema = document.getElementById('schema-output').textContent;
+  if (!schema || schema.startsWith('//')) return;
+  navigator.clipboard.writeText(schema).then(() => {
+    const el = document.getElementById('copy-success');
+    el.classList.add('show');
+    setTimeout(() => el.classList.remove('show'), 2000);
+  });
+}
+
+function downloadSchema() {
+  const schema = document.getElementById('schema-output').textContent;
+  if (!schema || schema.startsWith('//')) return;
+  const blob = new Blob([schema], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'schema.json';
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+const SAMPLES = {
+  api: '{"status":"success","code":200,"data":{"user":{"id":42,"name":"Alice","email":"alice@example.com","created":"2024-01-15T08:30:00Z","roles":["admin","editor"],"preferences":{"theme":"dark","notifications":true}},"pagination":{"page":1,"perPage":20,"total":156}},"meta":{"requestId":"req_abc123","duration_ms":42}}',
+  user: '{"id":1,"name":"John Doe","email":"john@example.com","age":30,"isActive":true,"address":{"street":"123 Main St","city":"San Francisco","state":"CA","zip":"94105","country":"US"},"phoneNumbers":[{"type":"mobile","number":"+1-555-0100"},{"type":"work","number":"+1-555-0199"}],"tags":["developer","premium"],"joinedAt":"2023-03-15T10:00:00Z","settings":{"theme":"dark","language":"en","twoFactorEnabled":true}}',
+  config: '{"app":{"name":"MyApp","version":"2.1.0","environment":"production","debug":false,"port":8080},"database":{"host":"localhost","port":5432,"name":"myapp_db","pool":{"min":2,"max":10,"idleTimeoutMs":30000}},"logging":{"level":"info","format":"json","outputs":["console","file"],"file":{"path":"/var/log/myapp.log","maxSize":"100MB"}},"features":{"beta":false,"experimental":{"aiAssistant":true,"darkMode":true}}}',
+};
+
+function loadSample(name) {
+  document.getElementById('json-input').value = SAMPLES[name];
+  generateSchema();
+}
+
+function clearAll() {
+  document.getElementById('json-input').value = '';
+  document.getElementById('schema-output').textContent = '// Paste JSON on the left to generate schema';
+  document.getElementById('error-msg').classList.remove('show');
+  document.getElementById('draft-badge').textContent = 'Draft 2020-12';
+  document.getElementById('schema-stats').textContent = '';
+}
+
+// Auto-load sample on first visit
+if (document.getElementById('json-input').value === '') {
+  // Leave hint in textarea
+}
+</script>
+<script src="/conversion-banner.js" defer></script>
+</body>
+</html>

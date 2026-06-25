@@ -1,0 +1,26 @@
+{
+  "status": "ready_for_manual",
+  "directory": "PulseMCP",
+  "method_attempted": "web_form_manual",
+  "submission_url": "https://www.pulsemcp.com/submit",
+  "details": {
+    "summary": "PulseMCP does not provide a public API, GitHub PR mechanism, or any other automated submission channel. Submission is only possible via a manual web form at https://www.pulsemcp.com/submit, which is behind Cloudflare protection. The read-only API at GET /v0.1/servers was confirmed operational, but no write/submit endpoint exists (POST to /v0.1/servers returns 405 Method Not Allowed). Submission requires a public GitHub repository and a ~2-minute web form entry.",
+    "automatable": false,
+    "api_read_endpoint": "https://api.pulsemcp.com/v0.1/servers",
+    "api_write_endpoint": null,
+    "api_documented": false,
+    "github_pr_option": false,
+    "cloudflare_protected": true,
+    "research_sources": [
+      "openMCP/meok-cross-post DISTRIBUTION.md - PulseMCP listed as manual-only directory",
+      "Raycast PulseMCP extension - confirmed read-only API with X-API-Key header",
+      "Direct API probing - GET /v0.1/servers works, POST returns 405, no submit path found"
+    ],
+    "estimated_effort": "~2 minutes via web form"
+  },
+  "generated_artifacts": [
+    "PulseMCP.submission-payload.json",
+    "PulseMCP.submission-instructions.md"
+  ],
+  "generated_at": "2026-02-16T00:00:00Z"
+}

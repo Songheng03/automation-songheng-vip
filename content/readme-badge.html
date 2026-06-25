@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>README Badge Generator — my-automaton AI Services</title>
+<meta name="description" content="Generate beautiful SVG badges for your GitHub README showing my-automaton AI integration. Show off your AI-powered code review, security scanning, and text analysis.">
+<meta name="og:title" content="README Badge Generator — my-automaton">
+<meta name="og:description" content="Free SVG badges for your GitHub README. Show your AI integration cred.">
+<meta name="og:image" content="https://automation.songheng.vip/favicon.png">
+<meta name="keywords" content="readme badge, github badge, svg badge, ai badge, code review badge, security badge, automaton badge">
+<link rel="canonical" href="https://automation.songheng.vip/readme-badge.html">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #0f0f1a; color: #e0e0e0; line-height: 1.6; }
+.container { max-width: 800px; margin: 0 auto; padding: 40px 20px; }
+h1 { font-size: 2.2rem; background: linear-gradient(135deg, #667eea, #764ba2); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 8px; }
+.subtitle { color: #999; font-size: 1.05rem; margin-bottom: 32px; }
+h2 { font-size: 1.3rem; color: #ccc; margin: 28px 0 12px; }
+.card { background: #1a1a2e; border-radius: 12px; padding: 24px; margin-bottom: 20px; border: 1px solid #2a2a4a; }
+label { display: block; font-size: 0.9rem; color: #aaa; margin-bottom: 6px; font-weight: 500; }
+select, input { width: 100%; padding: 10px 14px; background: #0f0f1a; border: 1px solid #333; border-radius: 8px; color: #e0e0e0; font-size: 1rem; margin-bottom: 16px; }
+select:focus, input:focus { outline: none; border-color: #667eea; }
+.preview-box { background: #0f0f1a; border-radius: 8px; padding: 20px; text-align: center; margin: 16px 0; min-height: 40px; display: flex; align-items: center; justify-content: center; }
+.code-box { background: #0a0a14; border-radius: 8px; padding: 14px 16px; font-family: 'SF Mono', 'Fira Code', monospace; font-size: 0.85rem; color: #6ee7b7; overflow-x: auto; white-space: pre-wrap; word-break: break-all; position: relative; }
+.copy-btn { position: absolute; top: 8px; right: 8px; background: #667eea; color: white; border: none; border-radius: 6px; padding: 4px 12px; font-size: 0.75rem; cursor: pointer; }
+.copy-btn:hover { background: #5a6fd8; }
+.toast { position: fixed; bottom: 24px; right: 24px; background: #22c55e; color: white; padding: 10px 20px; border-radius: 8px; font-size: 0.9rem; box-shadow: 0 4px 20px rgba(34,197,94,0.3); display: none; z-index: 9999; }
+.badge-options { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+@media (max-width: 600px) { .badge-options { grid-template-columns: 1fr; } }
+.option-btn { padding: 10px; background: #0f0f1a; border: 1px solid #333; border-radius: 8px; color: #ccc; cursor: pointer; text-align: center; font-size: 0.85rem; transition: all 0.2s; }
+.option-btn:hover { border-color: #667eea; }
+.option-btn.active { border-color: #667eea; background: rgba(102,126,234,0.1); color: #667eea; }
+.color-row { display: flex; gap: 8px; align-items: center; margin-bottom: 16px; }
+.color-row input[type="color"] { width: 48px; height: 38px; padding: 2px; border-radius: 6px; cursor: pointer; margin-bottom: 0; }
+.color-row input[type="text"] { flex: 1; margin-bottom: 0; }
+.link-row { display: flex; gap: 8px; margin-top: 8px; }
+.link-row a { flex: 1; text-align: center; padding: 10px; border-radius: 8px; background: linear-gradient(135deg, #667eea, #764ba2); color: white; text-decoration: none; font-weight: 600; font-size: 0.9rem; transition: opacity 0.2s; }
+.link-row a:hover { opacity: 0.9; }
+.link-row a.secondary { background: #2a2a4a; color: #ccc; }
+.features { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin: 24px 0; }
+@media (max-width: 600px) { .features { grid-template-columns: 1fr; } }
+.feature { background: #1a1a2e; border: 1px solid #2a2a4a; border-radius: 10px; padding: 16px; text-align: center; }
+.feature-icon { font-size: 2rem; margin-bottom: 8px; }
+.feature h3 { font-size: 0.95rem; margin-bottom: 4px; }
+.feature p { font-size: 0.8rem; color: #999; }
+footer { text-align: center; padding: 40px 0; color: #666; font-size: 0.8rem; }
+footer a { color: #667eea; text-decoration: none; }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>🏷️ README Badge Generator</h1>
+  <p class="subtitle">Generate beautiful SVG badges for your GitHub README to show you use AI-powered code review, security scanning &amp; text analysis from my-automaton.</p>
+
+  <div class="features">
+    <div class="feature">
+      <div class="feature-icon">🔍</div>
+      <h3>Boost Credibility</h3>
+      <p>Show visitors your project uses professional AI review tools</p>
+    </div>
+    <div class="feature">
+      <div class="feature-icon">📈</div>
+      <h3>SEO Backlinks</h3>
+      <p>Every badge links back to your service page — SEO gold</p>
+    </div>
+    <div class="feature">
+      <div class="feature-icon">⚡</div>
+      <h3>One-Click</h3>
+      <p>Generate, copy, paste into README. Takes 10 seconds.</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>1. Choose Style</h2>
+    <div class="badge-options" id="styleOptions">
+      <div class="option-btn active" data-style="flat" onclick="selectStyle('flat')">▬ Flat</div>
+      <div class="option-btn" data-style="flat-square" onclick="selectStyle('flat-square')">▬ Flat Square</div>
+      <div class="option-btn" data-style="plastic" onclick="selectStyle('plastic')">▣ Plastic</div>
+      <div class="option-btn" data-style="for-the-badge" onclick="selectStyle('for-the-badge')">⬛ For The Badge</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>2. Pick Service</h2>
+    <select id="serviceSelect" onchange="updateBadge()">
+      <option value="analyze">📝 Text Analysis</option>
+      <option value="summarize">📋 Summarization</option>
+      <option value="review" selected>🔍 Code Review</option>
+      <option value="security">🛡️ Security Scan</option>
+      <option value="explain">💡 Code Explain</option>
+      <option value="refactor">🔧 Refactoring</option>
+      <option value="complexity">📊 Complexity</option>
+      <option value="automaton" data-color="#667eea">🤖 All Services</option>
+    </select>
+  </div>
+
+  <div class="card">
+    <h2>3. Customize Colors</h2>
+    <div class="color-row">
+      <label style="margin:0 8px 0 0;white-space:nowrap;">Label</label>
+      <input type="color" id="labelColor" value="#555555" onchange="updateBadge()">
+      <input type="text" id="labelColorHex" value="#555555" oninput="document.getElementById('labelColor').value=this.value;updateBadge()">
+    </div>
+    <div class="color-row">
+      <label style="margin:0 8px 0 0;white-space:nowrap;">Value</label>
+      <input type="color" id="valueColor" value="#667eea" onchange="updateBadge()">
+      <input type="text" id="valueColorHex" value="#667eea" oninput="document.getElementById('valueColor').value=this.value;updateBadge()">
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>4. Preview</h2>
+    <div class="preview-box" id="previewBox">
+      <img id="badgePreview" src="" alt="Badge preview" style="max-width:100%;">
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>5. Copy Markdown</h2>
+    <div class="code-box" id="codeBox">
+      <span id="markdownCode">Loading...</span>
+      <button class="copy-btn" onclick="copyCode()">📋 Copy</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>6. Or Copy HTML</h2>
+    <div class="code-box" id="htmlCodeBox">
+      <span id="htmlCode">Loading...</span>
+      <button class="copy-btn" onclick="copyHtml()">📋 Copy</button>
+    </div>
+  </div>
+
+  <div class="link-row">
+    <a href="https://automation.songheng.vip" target="_blank">🚀 Try AI Services</a>
+    <a href="https://automation.songheng.vip/api-docs.html" target="_blank" class="secondary">📖 API Docs</a>
+    <a href="https://automation.songheng.vip/pricing.html" target="_blank" class="secondary">💰 Pricing</a>
+  </div>
+
+  <footer>
+    <p>Badge service by <a href="https://automation.songheng.vip">my-automaton</a> — AI-powered code review, security scanning &amp; text analysis.</p>
+    <p style="margin-top:8px;"><a href="https://automation.songheng.vip">automation.songheng.vip</a></p>
+  </footer>
+</div>
+
+<div class="toast" id="toast">✅ Copied to clipboard!</div>
+
+<script>
+const LABELS = {
+  analyze: 'AI Analyze', summarize: 'AI Summarize', review: 'AI Code Review',
+  security: 'AI Security', explain: 'AI Explain', refactor: 'AI Refactor',
+  complexity: 'AI Complexity', automaton: 'my-automaton'
+};
+const MESSAGES = {
+  analyze: 'analyze text', summarize: 'summarize', review: 'review code',
+  security: 'security scan', explain: 'explain code', refactor: 'refactor',
+  complexity: 'complexity', automaton: 'AI services'
+};
+const COLORS = {
+  analyze: '#4f46e5', summarize: '#7c3aed', review: '#2563eb',
+  security: '#dc2626', explain: '#059669', refactor: '#d97706',
+  complexity: '#9333ea', automaton: '#667eea'
+};
+
+let currentStyle = 'flat';
+
+function selectStyle(style) {
+  currentStyle = style;
+  document.querySelectorAll('.option-btn').forEach(b => b.classList.toggle('active', b.dataset.style === style));
+  updateBadge();
+}
+
+function getServiceColor(service) {
+  const hex = document.getElementById('valueColor').value.replace('#', '');
+  return hex;
+}
+
+function updateBadge() {
+  const service = document.getElementById('serviceSelect').value;
+  const label = LABELS[service] || 'AI Service';
+  const message = MESSAGES[service] || 'powered';
+  const labelBg = document.getElementById('labelColor').value.replace('#', '');
+  const valueBg = document.getElementById('valueColor').value.replace('#', '');
+  const style = currentStyle;
+
+  const baseUrl = 'https://img.shields.io/badge';
+  const badgeUrl = `${baseUrl}/${label}-${message}-${labelBg}?style=${style}&logo=github&logoColor=white&labelColor=${labelBg}&color=${valueBg}`;
+  
+  document.getElementById('badgePreview').src = badgeUrl;
+  
+  const md = `[![${label}](${badgeUrl})](https://automation.songheng.vip)`;
+  const html = `<a href="https://automation.songheng.vip" target="_blank"><img src="${badgeUrl}" alt="${label}"></a>`;
+  
+  document.getElementById('markdownCode').textContent = md;
+  document.getElementById('htmlCode').textContent = html;
+}
+
+function copyCode() {
+  const code = document.getElementById('markdownCode').textContent;
+  navigator.clipboard.writeText(code).then(() => showToast());
+}
+
+function copyHtml() {
+  const code = document.getElementById('htmlCode').textContent;
+  navigator.clipboard.writeText(code).then(() => showToast());
+}
+
+function showToast() {
+  const toast = document.getElementById('toast');
+  toast.style.display = 'block';
+  setTimeout(() => toast.style.display = 'none', 2000);
+}
+
+// Init
+updateBadge();
+
+// Dynamic color sync
+document.getElementById('labelColor').addEventListener('input', function() {
+  document.getElementById('labelColorHex').value = this.value;
+});
+document.getElementById('valueColor').addEventListener('input', function() {
+  document.getElementById('valueColorHex').value = this.value;
+});
+</script>
+<script src="/conversion-banner.js" defer></script>
+</body>
+</html>

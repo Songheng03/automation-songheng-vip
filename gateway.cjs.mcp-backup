@@ -1,0 +1,562 @@
+#!/usr/bin/env node
+/**
+ * production-gateway — my-automaton FULL Gateway v2.0
+ * All routes: static content, free API (3/day), premium API (credit-based),
+ * Creem checkout + webhook, dev-key funnel, badge generation.
+ *
+ * Migrated from Stripe to Creem (USDC settlement).
+ *
+ * ENV VARS:
+ *   CREEM_API_KEY     — Creem API key for checkout creation
+ *   CREEM_WEBHOOK_SECRET — Creem webhook signing secret
+ *   DEEPSEEK_API_KEY  — DeepSeek AI key
+ *   CREEM_PRODUCT_IDS — JSON mapping of price IDs to Creem product IDs
+ */
+
+const http = require('http');
+const fs = require('fs');
+const path = require('path');
+const crypto = require('crypto');
+const url = require('url');
+const githubWebhook = require('/root/automaton/services/github-webhook-handler.cjs');
+
+// ── Configuration ──────────────────────────────────────────
+const PORT = 8080;
+const CONTENT = '/root/automaton/content';
+const API_KEYS = '/root/automaton/api-keys.json';
+const DATA_DIR = '/root/automaton/data';
+const CREEM_API_KEY = process.env.CREEM_API_KEY || '';
+const CREEM_WEBHOOK_SECRET = process.env.CREEM_WEBHOOK_SECRET || '';
+const DEEPSEEK_ENDPOINT = process.env.DEEPSEEK_ENDPOINT || 'https://api.deepseek.com/chat/completions';
+const DEEPSEEK_KEY = process.env.DEEPSEEK_API_KEY || (() => { try { return JSON.parse(fs.readFileSync('/root/automaton/automaton.json','utf-8')).deepseekApiKey || JSON.parse(fs.readFileSync('/root/automaton/automaton.json','utf-8')).deepseek_key || ''; } catch { return ''; }})();
+
+// Creem product IDs — map our price tier keys to Creem product IDs
+// Set via CREEM_PRODUCT_IDS env var as JSON, or defaults to placeholder
+const CREEM_PRODUCT_IDS = (() => {
+  try { return JSON.parse(process.env.CREEM_PRODUCT_IDS || '{}'); } catch { return {}; }
+})();
+
+// Price tiers (credits per purchase)
+const PRICES = {
+  'price_starter': { name: 'Starter', credits: 500, price: 5, hkd: 38 },
+  'price_advanced': { name: 'Advanced', credits: 1100, price: 10, hkd: 78 },
+  'price_pro': { name: 'Pro', credits: 3000, price: 25, hkd: 198 },
+  'price_ultimate': { name: 'Ultimate', credits: 6500, price: 50, hkd: 388 },
+};
+
+// Creem API base
+const CREEM_API = 'https://api.creem.io/v1';
+
+// Credit costs per endpoint
+const CREDIT_COST = { analyze: 1, summarize: 2, review: 5, security: 3, explain: 2, refactor: 5, complexity: 2 };
+
+// Rate limiting (in-memory)
+const FREE_LIMIT = new Map(); // ip -> { date, count }
+
+// ── Helpers ────────────────────────────────────────────────
+const MIME = { '.html':'text/html','.js':'text/javascript','.mjs':'text/javascript','.css':'text/css','.png':'image/png','.jpg':'image/jpeg','.svg':'image/svg+xml','.json':'application/json','.xml':'application/xml','.txt':'text/plain','.md':'text/markdown','.ico':'image/x-icon' };
+
+function mime(p) { return MIME[path.extname(p).toLowerCase()] || 'application/octet-stream'; }
+
+function readJSON(p, def={}) {
+  try { return JSON.parse(fs.readFileSync(p, 'utf-8')); } catch { return def; }
+}
+
+function writeJSON(p, data) {
+  fs.mkdirSync(path.dirname(p), { recursive: true });
+  fs.writeFileSync(p, JSON.stringify(data, null, 2));
+}
+
+function log(msg) {
+  const l = `[${new Date().toISOString()}] ${msg}`;
+  console.log(l);
+  try { fs.mkdirSync(DATA_DIR, { recursive: true }); fs.appendFileSync(path.join(DATA_DIR,'gateway.log'), l+'\n'); } catch {}
+}
+
+function ipFromReq(req) {
+  return req.headers['x-forwarded-for']?.split(',')[0]?.trim() || req.socket.remoteAddress || '0.0.0.0';
+}
+
+function generateKey() {
+  return 'am_' + crypto.randomBytes(24).toString('base64url');
+}
+
+function getCredits(key) {
+  const db = readJSON(API_KEYS);
+  return db[key] || null;
+}
+
+function useCredits(key, cost) {
+  const db = readJSON(API_KEYS);
+  if (!db[key]) return false;
+  if (db[key].credits < cost) return false;
+  db[key].credits -= cost;
+  db[key].used = (db[key].used || 0) + 1;
+  db[key].last_used = new Date().toISOString();
+  writeJSON(API_KEYS, db);
+  return true;
+}
+
+function addCredits(priceId, txHash) {
+  const tier = PRICES[priceId];
+  if (!tier) return null;
+  const key = generateKey();
+  const db = readJSON(API_KEYS);
+  db[key] = { credits: tier.credits, created: new Date().toISOString(), used: 0, price_id: priceId, tx_hash: txHash || '', payment_provider: 'creem' };
+  writeJSON(API_KEYS, db);
+  return key;
+}
+
+// Free rate limit check
+function checkFreeLimit(ip) {
+  const today = new Date().toISOString().split('T')[0];
+  const entry = FREE_LIMIT.get(ip);
+  if (!entry || entry.date !== today) {
+    FREE_LIMIT.set(ip, { date: today, count: 0 });
+    return true;
+  }
+  if (entry.count >= 3) return false;
+  return true;
+}
+
+function incrementFree(ip) {
+  const today = new Date().toISOString().split('T')[0];
+  const entry = FREE_LIMIT.get(ip);
+  if (!entry || entry.date !== today) FREE_LIMIT.set(ip, { date: today, count: 1 });
+  else entry.count++;
+}
+
+// DeepSeek call
+async function callAI(messages) {
+  if (!DEEPSEEK_KEY) return { error: 'AI not configured' };
+  try {
+    const resp = await fetch(DEEPSEEK_ENDPOINT, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${DEEPSEEK_KEY}` },
+      body: JSON.stringify({ model: 'deepseek-chat', messages, max_tokens: 2048, temperature: 0.3 })
+    });
+    const data = await resp.json();
+    return data.choices?.[0]?.message?.content || JSON.stringify(data);
+  } catch (e) {
+    return { error: e.message };
+  }
+}
+
+// ── Creem Checkout ─────────────────────────────────────────
+
+/**
+ * Create a Creem checkout session via Creem API.
+ */
+async function createCreemCheckout(priceId, metadata = {}) {
+  const productId = CREEM_PRODUCT_IDS[priceId];
+  if (!productId) {
+    log(`No Creem product ID for price: ${priceId} (available: ${Object.keys(CREEM_PRODUCT_IDS).join(', ')})`);
+    return null;
+  }
+
+  const tier = PRICES[priceId];
+  if (!tier) return null;
+
+  const body = JSON.stringify({
+    product_id: productId,
+    success_url: `https://automation.chaosong.dpdns.org/success.html?price_id=${priceId}`,
+    metadata: JSON.stringify({ price_id: priceId, ...metadata }),
+  });
+
+  try {
+    const resp = await fetch(`${CREEM_API}/checkouts`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-API-Key': CREEM_API_KEY,
+      },
+      body,
+    });
+    const data = await resp.json();
+    if (!resp.ok) {
+      log(`Creem checkout error: ${resp.status} ${JSON.stringify(data)}`);
+      return null;
+    }
+    return data; // { id, url, ... }
+  } catch (e) {
+    log(`Creem checkout network error: ${e.message}`);
+    return null;
+  }
+}
+
+/**
+ * Fallback: direct Creem product checkout link (if API key not configured).
+ * Creem provides direct product checkout URLs in the format:
+ * https://creem.io/checkout/<product_id>
+ */
+function getDirectCheckoutUrl(priceId) {
+  const productId = CREEM_PRODUCT_IDS[priceId];
+  if (!productId) return null;
+  return `https://creem.io/checkout/${productId}`;
+}
+
+// ── Route handlers ────────────────────────────────────────
+
+// Static content -- with .html auto-resolution
+async function serveStatic(req, res) {
+  let p = url.parse(req.url).pathname;
+  if (p === '/' || p === '') p = '/index.html';
+  const ext = path.extname(p);
+  let filePath;
+  if (!ext) {
+    // No extension: try .html first
+    filePath = path.join(CONTENT, p + '.html');
+    if (!fs.existsSync(filePath)) {
+      filePath = path.join(CONTENT, p);
+    }
+  } else {
+    filePath = path.join(CONTENT, p);
+  }
+  // Security: prevent directory traversal
+  if (!filePath.startsWith(CONTENT)) {
+    res.writeHead(403); res.end('Forbidden'); return;
+  }
+  try {
+    if (!fs.existsSync(filePath) || fs.statSync(filePath).isDirectory()) {
+      res.writeHead(404); res.end('Not found'); return;
+    }
+    const content = fs.readFileSync(filePath);
+    res.writeHead(200, { 'Content-Type': mime(filePath), 'Cache-Control': 'public, max-age=3600' });
+    res.end(content);
+  } catch (e) {
+    res.writeHead(500); res.end('Error');
+  }
+}
+
+// Health
+async function handleHealth(req, res) {
+  const data = {
+    status: 'ok', time: new Date().toISOString(), uptime: process.uptime(),
+    version: 'v2.0', creem: !!CREEM_API_KEY,
+    deepseek: !!DEEPSEEK_KEY, free_today: FREE_LIMIT.size
+  };
+  res.writeHead(200, { 'Content-Type': 'application/json' });
+  res.end(JSON.stringify(data));
+}
+
+// Free endpoints (3/day/IP)
+async function handleFree(req, res) {
+  const ip = ipFromReq(req);
+  const mode = url.parse(req.url).pathname.split('/').pop();
+  
+  if (!checkFreeLimit(ip)) {
+    res.writeHead(429, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({ error: 'Free limit reached (3/day). Buy credits at /upgrade.html', upgrade: true }));
+    return;
+  }
+  
+  let body = '';
+  req.on('data', c => body += c);
+  req.on('end', async () => {
+    try {
+      const input = JSON.parse(body);
+      const prompt = buildPrompt(mode, input);
+      const result = await callAI([{ role: 'user', content: prompt }]);
+      incrementFree(ip);
+      res.writeHead(200, { 'Content-Type': 'application/json', 'X-Free-Remaining': 2 - (FREE_LIMIT.get(ip)?.count || 0) });
+      res.end(JSON.stringify({ result, mode, free_remaining: 2 - (FREE_LIMIT.get(ip)?.count || 0) }));
+    } catch (e) {
+      res.writeHead(400); res.end(JSON.stringify({ error: 'Invalid request: ' + e.message }));
+    }
+  });
+}
+
+function buildPrompt(mode, input) {
+  const code = input.code || input.text || '';
+  const lang = input.language || input.lang || '';
+  const prompts = {
+    analyze: `Analyze this text deeply. Provide insights, themes, and key points:\n\n${code}`,
+    summarize: `Summarize this text concisely:\n\n${code}`,
+    review: `Code review the following ${lang} code. Check for bugs, security issues, style problems, and suggest improvements:\n\n${code}`,
+    security: `Security audit this ${lang} code. Check for OWASP Top 10, injections, secrets, and vulnerabilities:\n\n${code}`,
+    explain: `Explain this ${lang} code in simple terms:\n\n${code}`,
+    refactor: `Refactor this ${lang} code. Improve readability, performance, and maintainability:\n\n${code}`,
+    complexity: `Calculate cyclomatic complexity and analyze this ${lang} code:\n\n${code}`
+  };
+  return prompts[mode] || `Process this:\n\n${code}`;
+}
+
+// Premium endpoints
+async function handlePremium(req, res) {
+  const ip = ipFromReq(req);
+  const mode = url.parse(req.url).pathname.split('/')[2]; // /v1/{mode}
+  
+  const apiKey = req.headers['x-api-key'] || '';
+  const credits = getCredits(apiKey);
+  
+  if (!credits) {
+    res.writeHead(401, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({ error: 'Invalid or missing API key. Get one at /upgrade.html' }));
+    return;
+  }
+
+  const cost = CREDIT_COST[mode] || 5;
+  if (credits.credits < cost) {
+    res.writeHead(402, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({ error: 'Insufficient credits', credits: credits.credits, cost, upgrade: '/upgrade.html' }));
+    return;
+  }
+
+  let body = '';
+  req.on('data', c => body += c);
+  req.on('end', async () => {
+    try {
+      const input = JSON.parse(body);
+      const prompt = buildPrompt(mode, input);
+      const result = await callAI([{ role: 'user', content: prompt }]);
+      if (useCredits(apiKey, cost)) {
+        res.writeHead(200, { 'Content-Type': 'application/json', 'X-Credits-Remaining': credits.credits - cost });
+        res.end(JSON.stringify({ result, mode, credits_remaining: credits.credits - cost }));
+      } else {
+        res.writeHead(402); res.end(JSON.stringify({ error: 'Credits exhausted' }));
+      }
+    } catch (e) {
+      res.writeHead(400); res.end(JSON.stringify({ error: 'Invalid request: ' + e.message }));
+    }
+  });
+}
+
+// Creem checkout handler
+async function handleCreemCheckout(req, res) {
+  if (req.method !== 'POST') { res.writeHead(405); res.end('Method not allowed'); return; }
+  let body = '';
+  req.on('data', c => body += c);
+  req.on('end', async () => {
+    try {
+      const { price_id } = JSON.parse(body);
+      if (!price_id || !PRICES[price_id]) {
+        res.writeHead(400); res.end(JSON.stringify({ error: 'Invalid price_id', available: Object.keys(PRICES) }));
+        return;
+      }
+      const checkout = await createCreemCheckout(price_id);
+      if (checkout && checkout.url) {
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ url: checkout.url }));
+      } else {
+        const directUrl = getDirectCheckoutUrl(price_id);
+        if (directUrl) {
+          res.writeHead(200, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ url: directUrl, note: 'Direct checkout link used' }));
+        } else {
+          res.writeHead(500); res.end(JSON.stringify({ error: 'Checkout creation failed' }));
+        }
+      }
+    } catch (e) {
+      res.writeHead(400); res.end(JSON.stringify({ error: e.message }));
+    }
+  });
+}
+
+// Creem webhook
+async function handleCreemWebhook(req, res) {
+  if (req.method !== 'POST') { res.writeHead(405); res.end('Method not allowed'); return; }
+  let body = '';
+  req.on('data', c => body += c);
+  req.on('end', async () => {
+    try {
+      const payload = JSON.parse(body);
+      log(`Creem webhook received: ${payload.type || 'unknown'}`);
+      
+      if (payload.type === 'checkout.completed') {
+        const metadata = payload.metadata ? (typeof payload.metadata === 'string' ? JSON.parse(payload.metadata) : payload.metadata) : {};
+        const priceId = metadata.price_id;
+        const txHash = payload.transaction_hash || payload.id || '';
+        if (priceId) {
+          const key = addCredits(priceId, txHash);
+          if (key) {
+            log(`Credits issued for ${priceId}: key=${key}`);
+            res.writeHead(200, { 'Content-Type': 'application/json' });
+            res.end(JSON.stringify({ status: 'ok', key }));
+          } else {
+            res.writeHead(400); res.end(JSON.stringify({ error: 'Invalid price_id' }));
+          }
+        } else {
+          res.writeHead(400); res.end(JSON.stringify({ error: 'Missing price_id in metadata' }));
+        }
+      } else {
+        res.writeHead(200); res.end(JSON.stringify({ status: 'ok' }));
+      }
+    } catch (e) {
+      res.writeHead(400); res.end(JSON.stringify({ error: e.message }));
+    }
+  });
+}
+
+// Checkout success handler
+async function handleCheckoutSuccess(req, res) {
+  const query = url.parse(req.url, true).query;
+  const priceId = query.price_id;
+  if (priceId && PRICES[priceId]) {
+    const key = addCredits(priceId, 'manual');
+    if (key) {
+      res.writeHead(200, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({ success: true, api_key: key, message: `Your API key: ${key}` }));
+    } else {
+      res.writeHead(400); res.end(JSON.stringify({ error: 'Invalid price_id' }));
+    }
+  } else {
+    res.writeHead(400); res.end(JSON.stringify({ error: 'Missing or invalid price_id', available: Object.keys(PRICES) }));
+  }
+}
+
+// Upgrade page
+async function handleUpgrade(req, res) {
+  const filePath = path.join(CONTENT, 'upgrade.html');
+  try {
+    const content = fs.readFileSync(filePath);
+    res.writeHead(200, { 'Content-Type': 'text/html' });
+    res.end(content);
+  } catch {
+    res.writeHead(200, { 'Content-Type': 'text/html' });
+    res.end(`<html><body><h1>Upgrade</h1><p>Choose your plan:</p><ul>${Object.entries(PRICES).map(([k,v]) => `<li><strong>${v.name}</strong>: ${v.credits} credits for $${v.price}</li>`).join('')}</ul></body></html>`);
+  }
+}
+
+// Stats overview
+async function handleStats(req, res) {
+  const db = readJSON(API_KEYS);
+  const keys = Object.keys(db).length;
+  const totalUsed = Object.values(db).reduce((s, k) => s + (k.used || 0), 0);
+  res.writeHead(200, { 'Content-Type': 'application/json' });
+  res.end(JSON.stringify({ keys, total_requests: totalUsed, free_today: FREE_LIMIT.size, uptime: process.uptime() }));
+}
+
+// Admin
+async function handleAdmin(req, res) {
+  const db = readJSON(API_KEYS);
+  const list = Object.entries(db).map(([key, val]) => ({ key: key.slice(0, 12) + '...', credits: val.credits, used: val.used || 0, created: val.created, last_used: val.last_used || 'never' }));
+  res.writeHead(200, { 'Content-Type': 'application/json' });
+  res.end(JSON.stringify({ keys: list.length, details: list }));
+}
+
+// Badge handler
+async function handleBadge(req, res) {
+  const p = url.parse(req.url).pathname;
+  const parts = p.split('/').filter(Boolean);
+  // /badge/:type/:user/:repo
+  const type = parts[1] || 'review';
+  const user = parts[2] || 'my-automaton';
+  const repo = parts[3] || 'repo';
+  
+  const color = type === 'review' ? 'green' : type === 'security' ? 'orange' : 'blue';
+  const label = type.charAt(0).toUpperCase() + type.slice(1);
+  
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="120" height="20">
+    <rect width="120" height="20" rx="3" fill="#555"/>
+    <rect x="0" width="50" height="20" fill="#555"/>
+    <rect x="50" width="70" height="20" fill="${color === 'green' ? '#4c1' : color === 'orange' ? '#e05' : '#08c'}"/>
+    <text x="25" y="14" fill="#fff" font-size="11" text-anchor="middle">${label}</text>
+    <text x="85" y="14" fill="#fff" font-size="11" text-anchor="middle">my-automaton</text>
+  </svg>`;
+  
+  res.writeHead(200, { 'Content-Type': 'image/svg+xml', 'Cache-Control': 'public, max-age=3600' });
+  res.end(svg);
+}
+
+function escapeXml(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+// Sitemap
+async function handleSitemap(req, res) {
+  const sitemapPath = path.join(CONTENT, 'sitemap.xml');
+  try {
+    const content = fs.readFileSync(sitemapPath);
+    res.writeHead(200, { 'Content-Type': 'application/xml' });
+    res.end(content);
+  } catch {
+    res.writeHead(404); res.end('Not found');
+  }
+}
+
+// OpenAPI spec
+async function handleOpenAPI(req, res) {
+  const spec = {
+    openapi: '3.0.0',
+    info: { title: 'my-automaton API', version: '1.0.0', description: 'AI-powered code review and analysis API. Pay-per-use.' },
+    servers: [{ url: 'https://automation.songheng.vip' }],
+    paths: {
+      '/free/analyze': { post: { summary: 'Free text analysis (3/day)', requestBody: { content: { 'application/json': { schema: { type: 'object', properties: { text: { type: 'string' }, mode: { type: 'string', enum: ['analyze','summarize','review','security','explain'] } } } } } }, responses: { '200': { description: 'Analysis result' }, '429': { description: 'Rate limited' } } } },
+      '/v1/review': { post: { summary: 'Premium code review (5 credits)', parameters: [{ name: 'X-API-Key', in: 'header', required: true, schema: { type: 'string' } }], requestBody: { content: { 'application/json': { schema: { type: 'object', properties: { code: { type: 'string' }, language: { type: 'string' } } } } } }, responses: { '200': { description: 'Review result' }, '402': { description: 'Insufficient credits' } } } },
+      '/v1/security': { post: { summary: 'Premium security scan (3 credits)', parameters: [{ name: 'X-API-Key', in: 'header', required: true, schema: { type: 'string' } }], requestBody: { content: { 'application/json': { schema: { type: 'object', properties: { code: { type: 'string' }, language: { type: 'string' } } } } } }, responses: { '200': { description: 'Security report' } } } },
+      '/api/stats/overview': { get: { summary: 'Public stats', responses: { '200': { description: 'Stats JSON' } } } }
+    }
+  };
+  res.writeHead(200, { 'Content-Type': 'application/json' });
+  res.end(JSON.stringify(spec, null, 2));
+}
+
+// ── HTTP Server ───────────────────────────────────────────
+
+const server = http.createServer(async (req, res) => {
+  try {
+    const p = url.parse(req.url).pathname;
+
+    // CORS
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+    res.setHeader("Access-Control-Allow-Headers", "Content-Type, X-API-Key, Authorization");
+    if (req.method === "OPTIONS") { res.writeHead(204); res.end(); return; }
+
+    // Route matching
+    if (p === "/health" || p === "/api/health") { await handleHealth(req, res); return; }
+    if (p.startsWith("/free/")) { await handleFree(req, res); return; }
+    if (p.startsWith("/v1/")) { await handlePremium(req, res); return; }
+    if (p === "/api/checkout") { await handleCreemCheckout(req, res); return; }
+    if (p === "/api/creem-webhook") { await handleCreemWebhook(req, res); return; }
+    if (p === "/api/checkout-success") { await handleCheckoutSuccess(req, res); return; }
+    if (p.startsWith("/upgrade")) { await handleUpgrade(req, res); return; }
+    if (p === "/api/stats/overview") { await handleStats(req, res); return; }
+    if (p === "/api/admin") { await handleAdmin(req, res); return; }
+    if (p.startsWith("/badge")) { await handleBadge(req, res); return; }
+    if (p === "/sitemap.xml") { await handleSitemap(req, res); return; }
+    if (p === "/api/openapi" || p === "/api/openapi.json") { await handleOpenAPI(req, res); return; }
+    if (p.startsWith("/api/github-webhook/")) { await handleWebhookRoute(req, res, p); return; }
+
+    // Default: static files
+    await serveStatic(req, res);
+  } catch (e) {
+    log(`Error: ${e.message}`);
+    if (!res.headersSent) {
+      res.writeHead(500);
+      res.end(JSON.stringify({ error: "Internal error" }));
+    }
+  }
+});
+
+async function handleWebhookRoute(req, res, p) {
+  const method = req.method;
+  // Add CORS headers
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, X-GitHub-Token, X-API-Key');
+  if (method === 'OPTIONS') { res.writeHead(204); res.end(); return; }
+  if (method !== 'POST') { res.writeHead(405); res.end(JSON.stringify({error:'Method not allowed'})); return; }
+  
+  const match = p.match(/^\/api\/github-webhook\/(am_[a-zA-Z0-9]+)$/);
+  const apiKey = match ? match[1] : null;
+  if (!apiKey) { res.writeHead(400); res.end(JSON.stringify({error:'Invalid webhook URL. Use /api/github-webhook/am_YOUR_KEY'})); return; }
+  
+  let bodyStr = '';
+  req.on('data', c => bodyStr += c);
+  req.on('end', async () => {
+    try {
+      const body = JSON.parse(bodyStr);
+      const handler = require('/root/automaton/services/github-webhook-handler.cjs');
+      const result = await handler.handleWebhook(body, apiKey, req.headers);
+      res.writeHead(result.status || 200, {'Content-Type': 'application/json'});
+      res.end(JSON.stringify(result));
+    } catch (e) {
+      res.writeHead(400, {'Content-Type': 'application/json'});
+      res.end(JSON.stringify({error:'Invalid JSON payload', detail: e.message}));
+    }
+  });
+}
+
+// Start server
+server.listen(PORT, () => {
+  log(`Gateway running on port ${PORT}`);
+});

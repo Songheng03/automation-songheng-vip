@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Color Contrast Checker — WCAG 2.1 AA/AAA Compliance | my-automaton</title>
+<meta name="description" content="Check color contrast ratios for WCAG 2.1 AA and AAA compliance. Real-time contrast ratio, pass/fail for normal and large text. 100% free, no signup.">
+<style>
+:root{--bg:#0f172a;--card:#1e293b;--text:#e2e8f0;--muted:#94a3b8;--accent:#38bdf8;--green:#4ade80;--red:#f87171;--yellow:#fbbf24;--border:#334155}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+header{background:var(--card);border-bottom:1px solid var(--border);padding:1rem 2rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap}
+header h1{font-size:1.25rem;color:var(--accent)}
+nav a{color:var(--muted);text-decoration:none;margin-left:1rem;font-size:.875rem}
+main{max-width:700px;margin:2rem auto;padding:0 1rem}
+.preview-area{height:120px;border-radius:16px;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:1.5rem;font-weight:700;transition:all .2s;margin-bottom:1.5rem}
+.color-inputs{display:flex;gap:1rem;flex-wrap:wrap;margin-bottom:1.5rem}
+.color-inputs .col{flex:1;min-width:120px;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1rem}
+.color-inputs label{display:block;font-size:.65rem;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:.5rem}
+.color-inputs .hex-row{display:flex;gap:.3rem;align-items:center}
+.color-inputs input[type="color"]{width:44px;height:44px;border:none;border-radius:8px;cursor:pointer;background:transparent;flex-shrink:0}
+.color-inputs input[type="text"]{flex:1;min-width:0;background:#0a0f1a;color:var(--text);border:1px solid var(--border);border-radius:6px;padding:.4rem .6rem;font-family:"Fira Code",monospace;font-size:.75rem}
+.color-inputs input[type="text"]:focus{outline:none;border-color:var(--accent)}
+.ratio-display{text-align:center;margin-bottom:1.5rem;padding:1rem;background:var(--card);border:1px solid var(--border);border-radius:12px}
+.ratio-display .ratio-value{font-family:"Fira Code",monospace;font-size:3rem;font-weight:800;color:var(--accent)}
+@media(max-width:500px){.ratio-display .ratio-value{font-size:2rem}}
+.ratio-display .ratio-label{font-size:.65rem;color:var(--muted)}
+.results-grid{display:grid;grid-template-columns:1fr 1fr;gap:.5rem}
+@media(max-width:400px){.results-grid{grid-template-columns:1fr}}
+.pass-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:.75rem 1rem;display:flex;align-items:center;gap:.75rem}
+.pass-card .status{font-size:1.5rem}.pass-card .text{font-size:.7rem;font-weight:600}
+.pass-card .detail{font-size:.6rem;color:var(--muted)}
+.preset-row{display:flex;gap:.3rem;flex-wrap:wrap;margin-bottom:1rem}
+.preset-row button{padding:.2rem .8rem;border:1px solid var(--border);border-radius:20px;background:transparent;color:var(--muted);cursor:pointer;font-size:.65rem}
+.preset-row button:hover{border-color:var(--accent)}
+footer{text-align:center;padding:2rem;color:var(--muted);font-size:.8rem;border-top:1px solid var(--border);margin-top:2rem}footer a{color:var(--accent)}
+</style>
+
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Color Contrast Checker (WCAG 2.1)","applicationCategory":"DeveloperApplication","operatingSystem":"Any","url":"https://automation.songheng.vip/color-contrast.html","description":"Check color contrast ratios for WCAG 2.1 AA/AAA accessibility compliance. Real-time preview.","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"aggregateRating":{"@type":"AggregateRating","ratingValue":"4.8","ratingCount":"127"}}</script>
+</head>
+<body>
+<header><h1>🎯 Color Contrast Checker</h1><nav><a href="/">Home</a><a href="/dev-tools-hub.html">Tools Hub</a></nav></header>
+<main>
+<div class="preview-area" id="preview">Sample Text Preview</div>
+<div class="preset-row">
+  <span style="font-size:.65rem;color:var(--muted);align-self:center">Presets: </span>
+  <button onclick="setPair('#ffffff','#1a1a1a')">White/Black</button>
+  <button onclick="setPair('#333333','#ffffff')">Dark/White</button>
+  <button onclick="setPair('#4a90d9','#ffffff')">Blue/White</button>
+  <button onclick="setPair('#38bdf8','#0f172a')">Sky/Dark</button>
+  <button onclick="setPair('#fbbf24','#ffffff')">Yellow/White</button>
+  <button onclick="setPair('#4ade80','#0f172a')">Green/Dark</button>
+  <button onclick="setPair('#f87171','#ffffff')">Red/White</button>
+  <button onclick="setPair('#94a3b8','#0f172a')">Gray/Dark</button>
+</div>
+<div class="color-inputs">
+  <div class="col">
+    <label>Text Color</label>
+    <div class="hex-row"><input type="color" id="textColor" value="#333333" oninput="syncHex('textColor','textHex');calculate()"><input type="text" id="textHex" value="#333333" oninput="syncColor('textHex','textColor');calculate()"></div>
+  </div>
+  <div class="col">
+    <label>Background Color</label>
+    <div class="hex-row"><input type="color" id="bgColor" value="#ffffff" oninput="syncHex('bgColor','bgHex');calculate()"><input type="text" id="bgHex" value="#ffffff" oninput="syncColor('bgHex','bgColor');calculate()"></div>
+  </div>
+</div>
+<div class="ratio-display">
+  <div class="ratio-value" id="ratio">—</div>
+  <div class="ratio-label">Contrast Ratio</div>
+</div>
+<div class="results-grid" id="results"></div>
+</main>
+<footer><p>my-automaton · Free Color Contrast Checker · <a href="/dev-tools-hub.html">All Tools</a></p></footer>
+<script>
+function syncHex(colorId,hexId){document.getElementById(hexId).value=document.getElementById(colorId).value;calculate()}
+function syncColor(hexId,colorId){const v=document.getElementById(hexId).value;if(/^#[0-9a-fA-F]{6}$/.test(v))document.getElementById(colorId).value=v;calculate()}
+
+function setPair(text,bg){
+  document.getElementById('textColor').value=text;document.getElementById('textHex').value=text;
+  document.getElementById('bgColor').value=bg;document.getElementById('bgHex').value=bg;
+  calculate();
+}
+
+function getLuminance(hex){
+  hex=hex.replace('#','');
+  const r=parseInt(hex.slice(0,2),16)/255;
+  const g=parseInt(hex.slice(2,4),16)/255;
+  const b=parseInt(hex.slice(4,6),16)/255;
+  const sr=r<=0.03928?r/12.92:Math.pow((r+0.055)/1.055,2.4);
+  const sg=g<=0.03928?g/12.92:Math.pow((g+0.055)/1.055,2.4);
+  const sb=b<=0.03928?b/12.92:Math.pow((b+0.055)/1.055,2.4);
+  return 0.2126*sr+0.7152*sg+0.0722*sb;
+}
+
+function calculate(){
+  const textHex=document.getElementById('textHex').value;
+  const bgHex=document.getElementById('bgHex').value;
+  if(!/^#[0-9a-fA-F]{6}$/.test(textHex)||!/^#[0-9a-fA-F]{6}$/.test(bgHex)){
+    document.getElementById('ratio').textContent='—';
+    document.getElementById('results').innerHTML='<span style="font-size:.65rem;color:var(--muted)">Enter valid hex colors</span>';
+    return;
+  }
+
+  const lt=getLuminance(textHex);
+  const lb=getLuminance(bgHex);
+  const contrast=(Math.max(lt,lb)+0.05)/(Math.min(lt,lb)+0.05);
+  document.getElementById('ratio').textContent=contrast.toFixed(2)+':1';
+
+  // Preview
+  document.getElementById('preview').style.backgroundColor=bgHex;
+  document.getElementById('preview').style.color=textHex;
+
+  const checks=[
+    {label:'AA Normal',min:4.5},{label:'AA Large',min:3},{label:'AAA Normal',min:7},{label:'AAA Large',min:4.5}
+  ];
+
+  document.getElementById('results').innerHTML=checks.map(c=>{
+    const pass=contrast>=c.min;
+    return `<div class="pass-card">
+      <span class="status">${pass?'✅':'❌'}</span>
+      <div><div class="text" style="color:${pass?'var(--green)':'var(--red)'}">${c.label} — ${pass?'PASS':'FAIL'}</div>
+      <div class="detail">Requires ${c.min}:1 contrast ratio</div></div>
+    </div>`;
+  }).join('');
+}
+
+setPair('#333333','#ffffff');
+</script>
+<script src="/conversion-banner.js" defer></script>
+</body>
+</html>

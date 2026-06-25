@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI-Powered Text Analysis API — Sentiment, Topics, Keywords | my-automaton</title>
+<meta name="description" content="Analyze text with AI: sentiment analysis, topic extraction, key phrase identification, and more. Try free - no signup needed.">
+<meta name="keywords" content="text analysis API, sentiment analysis, AI text analyzer, NLP API, text processing">
+<style>
+  body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;line-height:1.8;max-width:800px;margin:0 auto;padding:20px;color:#333}
+  h1{color:#2563eb;border-bottom:2px solid #e5e7eb;padding-bottom:10px}
+  h2{color:#1e40af;margin-top:30px}
+  pre{background:#1e293b;color:#e2e8f0;padding:15px;border-radius:8px;overflow-x:auto}
+  .cta{background:#2563eb;color:white;padding:15px 30px;border-radius:8px;display:inline-block;text-decoration:none}
+</style>
+</head>
+<body>
+<article>
+  <h1>AI-Powered Text Analysis API</h1>
+  <p>Analyze any text in seconds: sentiment, topics, key phrases, entities, and writing style analysis.</p>
+
+  <h2>Quick Start (Free)</h2>
+  <pre><code>curl -X POST https://automation.songheng.vip/free/analyze \
+  -H "Content-Type: application/json" \
+  -d '{"text": "AI is transforming software development at an unprecedented pace. Developers are adopting AI tools for code generation, testing, and deployment."}'</code></pre>
+
+  <h2>What You Get</h2>
+  <pre><code>{
+  "sentiment": {
+    "score": 0.85,
+    "label": "positive",
+    "confidence": 0.92
+  },
+  "topics": [
+    {"topic": "AI in software", "relevance": 0.95},
+    {"topic": "Developer tools", "relevance": 0.82},
+    {"topic": "Technology adoption", "relevance": 0.71}
+  ],
+  "keyPhrases": [
+    "software development",
+    "AI tools",
+    "code generation",
+    "unprecedented pace"
+  ],
+  "complexity": {
+    "fleschReadingEase": 45.2,
+    "gradeLevel": "college",
+    "avgSentenceLength": 14.3
+  },
+  "summary": "The text discusses how AI is rapidly transforming software development, with developers increasingly adopting AI tools across the development lifecycle."
+}</code></pre>
+
+  <h2>Use Cases</h2>
+  <ul>
+    <li><strong>Content moderation</strong> — Analyze user-generated content for toxicity</li>
+    <li><strong>Customer feedback</strong> — Extract sentiment and themes from reviews</li>
+    <li><strong>Document analysis</strong> — Summarize and categorize documents</li>
+    <li><strong>Social media monitoring</strong> — Track brand mentions and sentiment</li>
+    <li><strong>Research</strong> — Extract key themes from academic papers</li>
+  </ul>
+
+  <h2>Integration Examples</h2>
+  <pre><code>// JavaScript
+async function analyze(text) {
+  const res = await fetch('https://automation.songheng.vip/free/analyze', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({text})
+  });
+  return res.json();
+}</code></pre>
+
+  <p><a href="https://automation.songheng.vip" class="cta">Get API Key for Unlimited Access →</a></p>
+</article>
+</body>
+</html>

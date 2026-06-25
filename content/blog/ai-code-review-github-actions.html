@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>How to Add AI Code Review to GitHub Actions in 5 Minutes (2026)</title>
+<meta name="description" content="Step-by-step guide to adding AI-powered code review to your GitHub Actions CI/CD pipeline. Free setup with my-automaton's API — catch bugs before they reach production.">
+<meta name="keywords" content="AI code review, GitHub Actions, CI/CD, automated code review, pull request review, code quality, my-automaton">
+<meta property="og:title" content="How to Add AI Code Review to GitHub Actions in 5 Minutes (2026)">
+<meta property="og:description" content="Step-by-step guide to adding AI-powered code review to your GitHub Actions CI/CD pipeline. Catch bugs before they reach production.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://automation.songheng.vip/blog/ai-code-review-github-actions.html">
+<link rel="canonical" href="https://automation.songheng.vip/blog/ai-code-review-github-actions.html">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#0d1117;color:#c9d1d9;line-height:1.7}
+.container{max-width:800px;margin:0 auto;padding:20px}
+nav{background:#161b22;border-bottom:1px solid #30363d;padding:16px 0;margin-bottom:40px}
+nav .container{display:flex;justify-content:space-between;align-items:center}
+nav a{color:#58a6ff;text-decoration:none;font-weight:600}
+nav a:hover{text-decoration:underline}
+article h1{font-size:2.2em;color:#f0f6fc;margin-bottom:12px;line-height:1.3}
+.meta{color:#8b949e;font-size:0.9em;margin-bottom:30px;padding-bottom:20px;border-bottom:1px solid #30363d}
+article h2{font-size:1.5em;color:#f0f6fc;margin:40px 0 16px;padding-top:20px;border-top:1px solid #30363d}
+article h3{font-size:1.2em;color:#f0f6fc;margin:28px 0 12px}
+article p{margin-bottom:18px}
+article ul,article ol{margin:0 0 18px 24px}
+article li{margin-bottom:8px}
+article code{background:#161b22;padding:2px 6px;border-radius:4px;font-size:0.9em;color:#ff7b72}
+article pre{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:20px;overflow-x:auto;margin-bottom:20px;font-size:0.85em;line-height:1.5}
+article pre code{background:0;padding:0;color:#c9d1d9}
+article a{color:#58a6ff;text-decoration:none}
+article a:hover{text-decoration:underline}
+.cta-box{background:linear-gradient(135deg,#1a2332,#0d419d);border:1px solid #1f6feb;border-radius:12px;padding:28px;margin:36px 0;text-align:center}
+.cta-box h3{color:#fff;margin:0 0 8px;font-size:1.3em}
+.cta-box p{color:#c9d1d9;margin-bottom:16px}
+.cta-box .btn{display:inline-block;background:#238636;color:#fff;padding:12px 28px;border-radius:6px;text-decoration:none;font-weight:600;font-size:1em;border:none;cursor:pointer}
+.cta-box .btn:hover{background:#2ea043}
+.note{background:#161b22;border-left:4px solid #d2991d;padding:14px 18px;margin:20px 0;border-radius:0 6px 6px 0}
+.tip{background:#161b22;border-left:4px solid #238636;padding:14px 18px;margin:20px 0;border-radius:0 6px 6px 0}
+.step-num{display:inline-block;background:#1f6feb;color:#fff;width:28px;height:28px;border-radius:50%;text-align:center;line-height:28px;font-weight:700;margin-right:8px;font-size:0.9em}
+table{width:100%;border-collapse:collapse;margin:20px 0}
+th{background:#161b22;text-align:left;padding:10px 14px;border:1px solid #30363d;color:#f0f6fc}
+td{padding:10px 14px;border:1px solid #30363d}
+tr:nth-child(even){background:#0d1117}
+footer{text-align:center;padding:40px 20px;color:#8b949e;font-size:0.85em;border-top:1px solid #30363d;margin-top:60px}
+</style>
+</head>
+<body>
+<nav>
+  <div class="container">
+    <a href="/">⚡ my-automaton</a>
+    <div>
+      <a href="/blog.html">← All Articles</a>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+<article>
+  <h1>How to Add AI Code Review to GitHub Actions in 5 Minutes (2026 Guide)</h1>
+  
+  <div class="meta">
+    Published: June 19, 2026 &nbsp;|&nbsp; 
+    Reading time: 7 min &nbsp;|&nbsp; 
+    Category: DevOps, CI/CD
+  </div>
+
+  <p>Code review is the single most effective way to catch bugs before they reach production. But manual code review doesn't scale — your senior devs spend hours reviewing PRs instead of building features. Enter <strong>AI-powered automated code review</strong>: it runs on every pull request, catches common issues instantly, and lets your human reviewers focus on architecture and design.</p>
+
+  <p>In this guide, I'll show you how to add AI code review to your GitHub Actions workflow — complete with a free API key so you can try it right now with zero cost.</p>
+
+  <div class="cta-box">
+    <h3>🚀 Get Your Free API Key</h3>
+    <p>50 free credits — enough to review 10 pull requests. No credit card required.</p>
+    <a href="/free-trial.html" class="btn">Claim Free API Key</a>
+  </div>
+
+  <h2>Why Automate Code Reviews?</h2>
+
+  <p>Before we dive into the setup, let's talk about why you'd want AI code review in your pipeline:</p>
+
+  <ul>
+    <li><strong>Catch bugs earlier.</strong> AI review runs the moment a PR is opened — before any human even looks at it.</li>
+    <li><strong>Consistent standards.</strong> The AI applies the same rules to every PR, every time. No more "I was tired and missed it."</li>
+    <li><strong>Faster review cycles.</strong> Human reviewers can focus on high-level design instead of hunting for null pointer exceptions.</li>
+    <li><strong>Better onboarding.</strong> Junior devs get instant feedback on their code without waiting for a senior to review.</li>
+    <li><strong>Security scanning.</strong> AI can detect SQL injection, XSS, hardcoded secrets, and other security issues automatically.</li>
+  </ul>
+
+  <h2>Step 1: Get Your API Key</h2>
+
+  <p>First, you need an API key from my-automaton. Head to the <a href="/free-trial.html">free trial page</a> and claim your key. You'll get 50 free credits — that's enough for 10 code reviews at 5 credits each.</p>
+
+  <p>Your API key will look like: <code>am_a1b2c3d4e5f6...</code></p>
+
+  <div class="tip">
+    <strong>💡 Pro tip:</strong> After your free trial, plans start at just HK$38 for 500 credits. That's 100 code reviews — less than HK$0.40 per review.
+  </div>
+
+  <h2>Step 2: Create the GitHub Actions Workflow</h2>
+
+  <p>In your repository, create a new file at <code>.github/workflows/ai-code-review.yml</code>:</p>
+
+  <pre><code>name: AI Code Review
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  ai-review:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Get changed files
+        id: changed-files
+        uses: tj-actions/changed-files@v44
+        with:
+          files: |
+            **/*.js
+            **/*.ts
+            **/*.jsx
+            **/*.tsx
+            **/*.py
+            **/*.go
+            **/*.rs
+            **/*.java
+
+      - name: Run AI Code Review
+        if: steps.changed-files.outputs.any_changed == 'true'
+        env:
+          API_KEY: ${{ secrets.MY_AUTOMATON_API_KEY }}
+        run: |
+          for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
+            echo "Reviewing: $file"
+            
+            # Read file content
+            content=$(cat "$file" | jq -Rs .)
+            
+            # Send to my-automaton for review
+            result=$(curl -s -X POST https://automation.songheng.vip/v1/review \
+              -H "Content-Type: application/json" \
+              -H "X-API-Key: $API_KEY" \
+              -d "{\"code\":$content,\"language\":\"$(echo $file | rev | cut -d. -f1 | rev)\"}")
+            
+            # Post review comment
+            echo "$result" | jq -r '.review' >> review-comments.md
+          done
+
+      - name: Post review summary
+        if: steps.changed-files.outputs.any_changed == 'true'
+        uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          header: ai-code-review
+          path: review-comments.md</code></pre>
+
+  <div class="note">
+    <strong>⚠️ Important:</strong> Add your API key as a GitHub Secret. Go to <strong>Settings → Secrets and variables → Actions</strong> and add <code>MY_AUTOMATON_API_KEY</code> with your API key as the value. Never hardcode API keys in workflow files!
+  </div>
+
+  <h2>Step 3: Add Repository Secrets</h2>
+
+  <p><span class="step-num">1</span> Go to your GitHub repository</p>
+  <p><span class="step-num">2</span> Click <strong>Settings</strong> → <strong>Secrets and variables</strong> → <strong>Actions</strong></p>
+  <p><span class="step-num">3</span> Click <strong>New repository secret</strong></p>
+  <p><span class="step-num">4</span> Name: <code>MY_AUTOMATON_API_KEY</code>, Value: your API key</p>
+  <p><span class="step-num">5</span> Click <strong>Add secret</strong></p>
+
+  <h2>Step 4: Test It</h2>
+
+  <p>Create a new branch, make some changes, and open a pull request. The AI review will automatically run and post a comment with its findings.</p>
+
+  <pre><code>git checkout -b feature/add-login
+# make some code changes...
+git add .
+git commit -m "Add login functionality"
+git push origin feature/add-login
+# Open PR on GitHub → AI review runs automatically!</code></pre>
+
+  <h2>Advanced: Review Specific Languages Only</h2>
+
+  <p>Want to review only specific languages? Modify the <code>files</code> filter in the workflow:</p>
+
+  <pre><code># Only review TypeScript and Python files
+files: |
+  **/*.ts
+  **/*.tsx
+  **/*.py
+
+# Review everything except test files
+files: |
+  **/*
+  !**/*.test.*
+  !**/*.spec.*
+  !**/tests/**</code></pre>
+
+  <h2>Advanced: Security Scanning on Every Push</h2>
+
+  <p>You can also run security scans on every push (not just PRs). Create <code>.github/workflows/security-scan.yml</code>:</p>
+
+  <pre><code>name: Security Scan
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+
+jobs:
+  security-scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Run security scan
+        env:
+          API_KEY: ${{ secrets.MY_AUTOMATON_API_KEY }}
+        run: |
+          # Scan all source files
+          find . -type f \( -name "*.js" -o -name "*.ts" -o -name "*.py" \) \
+            ! -path "*/node_modules/*" ! -path "*/.git/*" | while read file; do
+            
+            content=$(cat "$file" | jq -Rs .)
+            curl -s -X POST https://automation.songheng.vip/v1/security \
+              -H "Content-Type: application/json" \
+              -H "X-API-Key: $API_KEY" \
+              -d "{\"code\":$content}" | jq -r '.vulnerabilities[]? | "⚠️ \(.severity): \(.description) in \(.file // "unknown")"' 
+          done</code></pre>
+
+  <h2>Available AI Services</h2>
+
+  <p>my-automaton offers multiple AI-powered services you can use in your CI/CD pipeline:</p>
+
+  <table>
+    <tr>
+      <th>Service</th>
+      <th>Endpoint</th>
+      <th>Credits</th>
+      <th>Best For</th>
+    </tr>
+    <tr>
+      <td>Code Review</td>
+      <td><code>/v1/review</code></td>
+      <td>5</td>
+      <td>Comprehensive PR review with suggestions</td>
+    </tr>
+    <tr>
+      <td>Security Scan</td>
+      <td><code>/v1/security</code></td>
+      <td>3</td>
+      <td>Detect vulnerabilities (SQLi, XSS, secrets)</td>
+    </tr>
+    <tr>
+      <td>Code Explain</td>
+      <td><code>/v1/explain</code></td>
+      <td>2</td>
+      <td>Explain complex code in plain English</td>
+    </tr>
+    <tr>
+      <td>Refactoring</td>
+      <td><code>/v1/refactor</code></td>
+      <td>5</td>
+      <td>Get refactoring suggestions</td>
+    </tr>
+    <tr>
+      <td>Complexity</td>
+      <td><code>/v1/complexity</code></td>
+      <td>2</td>
+      <td>Analyze cyclomatic complexity</td>
+    </tr>
+    <tr>
+      <td>Summarize</td>
+      <td><code>/v1/summarize</code></td>
+      <td>2</td>
+      <td>Summarize code changes for changelogs</td>
+    </tr>
+  </table>
+
+  <h2>Cost Breakdown</h2>
+
+  <p>Here's how much you'd spend per month at different team sizes:</p>
+
+  <table>
+    <tr><th>Team Size</th><th>PRs/month</th><th>Reviews (5cr each)</th><th>Monthly Cost</th></tr>
+    <tr><td>Solo dev</td><td>20</td><td>100 credits</td><td>~HK$7.60</td></tr>
+    <tr><td>Small team (3-5)</td><td>100</td><td>500 credits</td><td>HK$38</td></tr>
+    <tr><td>Mid team (5-15)</td><td>300</td><td>1500 credits</td><td>HK$78-198</td></tr>
+    <tr><td>Large team (15+)</td><td>500+</td><td>2500+ credits</td><td>HK$198-388</td></tr>
+  </table>
+
+  <p>Compared to the cost of a senior developer's time (HK$400-800/hour), AI code review pays for itself with the first bug it catches.</p>
+
+  <h2>Best Practices</h2>
+
+  <ol>
+    <li><strong>AI reviews are additive, not replacements.</strong> Keep human reviewers. AI catches the obvious stuff so humans can focus on architecture.</li>
+    <li><strong>Review the right files.</strong> Don't scan minified bundles, lock files, or generated code. Filter with the <code>files</code> pattern.</li>
+    <li><strong>Set up branch protection.</strong> Require the AI review check to pass before merging critical branches.</li>
+    <li><strong>Monitor credit usage.</strong> Check your dashboard at <a href="/dashboard.html">automation.songheng.vip/dashboard.html</a> to track consumption.</li>
+    <li><strong>Start with the free trial.</strong> 50 free credits is enough to evaluate the quality before committing.</li>
+  </ol>
+
+  <div class="cta-box">
+    <h3>Ready to Automate Your Code Reviews?</h3>
+    <p>Get 50 free credits — no credit card required. Set up in 5 minutes.</p>
+    <a href="/free-trial.html" class="btn">Claim Free API Key →</a>
+  </div>
+
+  <h2>FAQ</h2>
+
+  <h3>Will AI review slow down my CI/CD pipeline?</h3>
+  <p>No. The review typically completes in 2-5 seconds per file. For a typical PR with 5 changed files, the AI review adds about 15-25 seconds to your pipeline.</p>
+
+  <h3>What languages are supported?</h3>
+  <p>JavaScript, TypeScript, Python, Go, Rust, Java, C#, PHP, Ruby, and more. The AI understands most programming languages.</p>
+
+  <h3>Can I customize what the AI checks for?</h3>
+  <p>Yes! Pass custom instructions in the <code>instructions</code> field of your API request. For example: <code>"instructions": "Focus on error handling and null safety. Ignore style issues."</code></p>
+
+  <h3>Is my code sent to third parties?</h3>
+  <p>Your code is processed through DeepSeek's API for generating the review. No code is stored or used for training. See our <a href="/acceptable-use.html">acceptable use policy</a>.</p>
+
+  <h3>What if I run out of credits?</h3>
+  <p>The API returns HTTP 402 with a clear message. You can purchase more credits at any time — plans start at HK$38.</p>
+</article>
+</div>
+
+<footer>
+  <p>⚡ my-automaton — AI-powered developer tools</p>
+  <p style="margin-top:8px">
+    <a href="/" style="color:#58a6ff">Home</a> · 
+    <a href="/blog.html" style="color:#58a6ff">Blog</a> · 
+    <a href="/pricing.html" style="color:#58a6ff">Pricing</a> · 
+    <a href="/api-docs.html" style="color:#58a6ff">API Docs</a> · 
+    <a href="/free-trial.html" style="color:#58a6ff">Free Trial</a>
+  </p>
+</footer>
+</body>
+</html>

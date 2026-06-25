@@ -1,0 +1,170 @@
+[
+  {
+    "name": "RapidAPI",
+    "url": "https://rapidapi.com/submit",
+    "type": "api",
+    "status": "manual"
+  },
+  {
+    "name": "ProgrammableWeb",
+    "url": "https://www.programmableweb.com/submit-api",
+    "type": "api",
+    "status": "manual"
+  },
+  {
+    "name": "APILayer",
+    "url": "https://apilayer.com/submit",
+    "type": "api",
+    "status": "manual"
+  },
+  {
+    "name": "OpenAPI Hub",
+    "url": "https://openapihub.com/submit",
+    "type": "api",
+    "status": "manual"
+  },
+  {
+    "name": "API Tracker",
+    "url": "https://apitracker.io/submit",
+    "type": "api",
+    "status": "manual"
+  },
+  {
+    "name": "FreeAPI",
+    "url": "https://freeapi.dev/submit",
+    "type": "api",
+    "status": "manual"
+  },
+  {
+    "name": "There's An AI For That",
+    "url": "https://theresanaiforthat.com/submit/",
+    "type": "ai",
+    "status": "manual"
+  },
+  {
+    "name": "Futurepedia",
+    "url": "https://www.futurepedia.io/submit",
+    "type": "ai",
+    "status": "manual"
+  },
+  {
+    "name": "AI Tool Hunt",
+    "url": "https://aitoolhunt.com/submit",
+    "type": "ai",
+    "status": "manual"
+  },
+  {
+    "name": "SaaS AI Tools",
+    "url": "https://saasaitools.com/submit",
+    "type": "ai",
+    "status": "manual"
+  },
+  {
+    "name": "AI Tools Club",
+    "url": "https://aitoolsclub.com/submit",
+    "type": "ai",
+    "status": "manual"
+  },
+  {
+    "name": "AI Scout",
+    "url": "https://aiscout.net/submit",
+    "type": "ai",
+    "status": "manual"
+  },
+  {
+    "name": "Tool Pilot",
+    "url": "https://toolpilot.ai/submit",
+    "type": "ai",
+    "status": "manual"
+  },
+  {
+    "name": "Product Hunt",
+    "url": "https://www.producthunt.com/posts/new",
+    "type": "product",
+    "status": "manual"
+  },
+  {
+    "name": "BetaList",
+    "url": "https://betalist.com/submit",
+    "type": "product",
+    "status": "manual"
+  },
+  {
+    "name": "AlternativeTo",
+    "url": "https://alternativeto.net/submit/",
+    "type": "product",
+    "status": "manual"
+  },
+  {
+    "name": "SaaSHub",
+    "url": "https://www.saashub.com/submit",
+    "type": "product",
+    "status": "manual"
+  },
+  {
+    "name": "G2",
+    "url": "https://www.g2.com/products/new",
+    "type": "product",
+    "status": "manual"
+  },
+  {
+    "name": "GitHub Topic: code-review",
+    "url": "https://github.com/topics/code-review",
+    "type": "github",
+    "status": "manual"
+  },
+  {
+    "name": "GitHub Topic: ai-code-review",
+    "url": "https://github.com/topics/ai-code-review",
+    "type": "github",
+    "status": "manual"
+  },
+  {
+    "name": "Dev.to",
+    "url": "https://dev.to/new",
+    "type": "content",
+    "status": "manual"
+  },
+  {
+    "name": "Hacker News",
+    "url": "https://news.ycombinator.com/submit",
+    "type": "content",
+    "status": "manual"
+  },
+  {
+    "name": "Google Search Console",
+    "url": "https://search.google.com/search-console",
+    "type": "seo",
+    "status": "done"
+  },
+  {
+    "name": "Bing Webmaster",
+    "url": "https://www.bing.com/webmasters",
+    "type": "seo",
+    "status": "done"
+  },
+  {
+    "name": "IndexNow",
+    "url": "https://www.indexnow.org/",
+    "type": "seo",
+    "status": "running"
+  },
+  {
+    "name": "Zapier",
+    "url": "https://zapier.com/app/partner/submit",
+    "type": "integration",
+    "status": "manual"
+  },
+  {
+    "name": "Make (Integromat)",
+    "url": "https://www.make.com/en/partners",
+    "type": "integration",
+    "status": "manual"
+  },
+  {
+    "name": "Pipedream",
+    "url": "https://pipedream.com/submit",
+    "type": "integration",
+    "status": "manual"
+  }
+]

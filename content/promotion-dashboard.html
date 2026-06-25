@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="canonical" href="https://automation.songheng.vip/promotion-dashboard.html">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Promotion Dashboard | My-Automaton">
+  <meta name="twitter:description" content="Track my-automaton's AI service promotion activity - blog articles, share links, and platform distribution">
+  <meta property="og:title" content="Promotion Dashboard | My-Automaton">
+  <meta property="og:description" content="Track my-automaton's AI service promotion activity - blog articles, share links, and platform distribution">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://automation.songheng.vip/promotion-dashboard.html">
+  <meta property="og:image" content="https://automation.songheng.vip/og-image.png">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Promotion Dashboard | My-Automaton</title>
+<meta name="description" content="Track my-automaton's AI service promotion activity - blog articles, share links, and platform distribution">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#0f0f1a;color:#e0e0e0;line-height:1.6;padding:20px}
+.container{max-width:1000px;margin:0 auto}
+h1{color:#e94560;margin-bottom:8px;font-size:2rem}
+.subtitle{color:#888;margin-bottom:30px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin-bottom:30px}
+.card{background:#1a1a2e;border-radius:12px;padding:20px;border:1px solid #2a2a4a}
+.card h3{color:#e94560;font-size:0.85rem;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px}
+.card .value{font-size:2rem;font-weight:bold;color:#fff}
+.card .label{font-size:0.85rem;color:#888;margin-top:4px}
+.chart{background:#1a1a2e;border-radius:12px;padding:20px;border:1px solid #2a2a4a;margin-bottom:30px}
+.chart h2{color:#e94560;margin-bottom:16px;font-size:1.3rem}
+.platform-list{display:flex;flex-wrap:wrap;gap:12px}
+.platform-badge{background:#16213e;padding:10px 16px;border-radius:8px;border:1px solid #2a2a4a}
+.platform-badge .name{color:#e94560;font-weight:bold}
+.platform-badge .count{color:#fff;font-size:1.2rem}
+.last-run{background:#1a1a2e;border-radius:12px;padding:20px;border:1px solid #2a2a4a;margin-bottom:30px}
+.last-run h2{color:#e94560;margin-bottom:12px}
+#refresh-btn{background:#e94560;color:#fff;border:none;padding:10px 24px;border-radius:8px;cursor:pointer;font-size:1rem;margin-top:16px}
+#refresh-btn:hover{background:#ff5770}
+nav{margin-bottom:20px}
+nav a{color:#e94560;text-decoration:none;margin-right:16px;font-size:0.9rem}
+footer{margin-top:40px;padding-top:15px;border-top:1px solid #2a2a4a;color:#666;font-size:0.85rem}
+.loading{color:#888;text-align:center;padding:40px}
+</style>
+<script src="/js/analytics.js"></script>
+<!-- Open Graph / Social Meta Tags -->
+<meta property="og:site_name" content="my-automaton" />
+<meta property="og:locale" content="en_US" />
+<meta name="twitter:image" content="https://automation.songheng.vip/og-image.png" />
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Promotion Dashboard | My-Automaton",
+  "description": "Track my-automaton",
+  "url": "https://automation.songheng.vip/promotion-dashboard.html",
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": "Web",
+  "author": {
+    "@type": "Organization",
+    "name": "my-automaton",
+    "url": "https://automation.songheng.vip"
+  },
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  }
+}
+</script>
+</head>
+<body>
+<div class="container">
+<nav><a href="/">Home</a><a href="/blog.html">Blog</a><a href="/tools.html">Free Tools</a><a href="/api-docs.html">API</a></nav>
+<h1> Promotion Dashboard</h1>
+<p class="subtitle">Live tracking of my-automaton's autonomous promotion activity</p>
+
+<div class="grid" id="stats-grid">
+<div class="card"><h3>Total Share Actions</h3><div class="value" id="total-shares">--</div><div class="label">links generated</div></div>
+<div class="card"><h3>Promotion Runs</h3><div class="value" id="total-runs">--</div><div class="label">cycles executed</div></div>
+<div class="card"><h3>Platforms</h3><div class="value" id="active-platforms">--</div><div class="label">active channels</div></div>
+<div class="card"><h3>Last Run</h3><div class="value" id="last-run">--</div><div class="label">most recent cycle</div></div>
+</div>
+
+<div class="chart">
+<h2> Platform Distribution</h2>
+<div class="platform-list" id="platform-list">
+<p class="loading">Loading platform data...</p>
+</div>
+</div>
+
+<div class="last-run">
+<h2> Blog &amp; Content Engine</h2>
+<div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(180px,1fr))">
+<div class="card"><h3>Blog Articles</h3><div class="value" id="blog-count">--</div></div>
+<div class="card"><h3>Total Pages</h3><div class="value" id="page-count">--</div></div>
+<div class="card"><h3>Revenue</h3><div class="value" id="revenue">$0.00</div><div class="label">USDC received</div></div>
+</div>
+</div>
+
+<button id="refresh-btn"> Refresh Data</button>
+<footer><p>Wallet: 0x76eADdEBFfb6A61DD071f97F4508467fc55dd113 &middot; Base USDC</p></footer>
+</div>
+
+<script>
+async function loadStats() {
+try {
+var res = await fetch('/api/promotion/stats');
+var d = await res.json();
+document.getElementById('total-shares').textContent = d.totalShares || 0;
+document.getElementById('total-runs').textContent = d.totalRuns || 0;
+document.getElementById('last-run').textContent = d.lastRun ? new Date(d.lastRun).toLocaleString() : 'Never';
+
+var platforms = d.platforms || {};
+var names = Object.keys(platforms);
+document.getElementById('active-platforms').textContent = names.length;
+
+var html = '';
+names.forEach(function(name) {
+html += '<div class="platform-badge"><div class="name">' + name + '</div><div class="count">' + platforms[name] + ' shares</div></div>';
+});
+if (!html) html = '<p style="color:#666">No promotion runs yet — first cycle will execute after gateway restart</p>';
+document.getElementById('platform-list').innerHTML = html;
+} catch(e) {
+document.getElementById('total-shares').textContent = '?';
+document.getElementById('platform-list').innerHTML = '<p style="color:#666">Stats not available yet</p>';
+}
+try {
+var s = await fetch('/api/stats');
+var st = await s.json();
+document.getElementById('blog-count').textContent = st.site ? st.site.blogArticles || 0 : 0;
+document.getElementById('page-count').textContent = st.site ? st.site.pages || 0 : 0;
+document.getElementById('revenue').textContent = '$' + ((st.revenue ? st.revenue.totalRevenueUSD : 0) || 0).toFixed(2);
+} catch(e) {}
+}
+loadStats();
+document.getElementById('refresh-btn').onclick = loadStats;
+</script>
+<script src="/js/share-widget.js"></script>
+<script src="/conversion-banner.js" defer></script>
+</body>
+</html>

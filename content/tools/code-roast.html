@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Code Roast — AI-Powered Brutally Honest Code Reviews</title>
+<meta name="description" content="Paste your code, get roasted by AI. Brutally honest, hilariously accurate code reviews. Share your roast on Twitter. Free, no signup.">
+<meta property="og:title" content="Code Roast — How Bad Is Your Code?">
+<meta property="og:description" content="AI roasts your code so you don't have to roast yourself. Paste, roast, share.">
+<meta property="og:image" content="https://automation.songheng.vip/tools/code-roast-preview.png">
+<meta name="twitter:card" content="summary_large_image">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#0d1117;color:#c9d1d9;line-height:1.6;min-height:100vh}
+.container{max-width:900px;margin:0 auto;padding:2rem 1rem}
+h1{font-size:2.5rem;color:#ff6b6b;text-align:center;margin-bottom:.5rem;text-shadow:0 0 20px rgba(255,107,107,.3)}
+.tagline{text-align:center;color:#8b949e;font-size:1.1rem;margin-bottom:2rem}
+.roast-box{background:#161b22;border:2px solid #ff6b6b;border-radius:12px;padding:2rem;margin:2rem 0;box-shadow:0 8px 32px rgba(255,107,107,.2)}
+textarea{width:100%;min-height:200px;background:#0d1117;color:#c9d1d9;border:1px solid #30363d;border-radius:8px;padding:1rem;font-family:'Courier New',monospace;font-size:14px;resize:vertical}
+textarea:focus{outline:none;border-color:#ff6b6b;box-shadow:0 0 0 3px rgba(255,107,107,.1)}
+.btn{background:linear-gradient(135deg,#ff6b6b,#ee5a6f);color:#fff;border:none;padding:16px 32px;font-size:1.1rem;font-weight:700;border-radius:8px;cursor:pointer;transition:all .2s;margin-top:1rem;width:100%}
+.btn:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(255,107,107,.4)}
+.btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
+.result{margin-top:2rem;padding:1.5rem;background:#1c2128;border-radius:8px;border-left:4px solid #ff6b6b;display:none}
+.result.show{display:block;animation:slideIn .3s}
+@keyframes slideIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.roast-text{font-size:1.1rem;line-height:1.8;white-space:pre-wrap}
+.score{display:inline-block;background:#ff6b6b;color:#fff;padding:4px 12px;border-radius:20px;font-weight:700;margin-bottom:1rem}
+.share-btns{display:flex;gap:1rem;margin-top:1.5rem;flex-wrap:wrap}
+.share-btn{padding:10px 20px;border-radius:6px;text-decoration:none;font-weight:600;transition:all .2s}
+.twitter{background:#1da1f2;color:#fff}
+.twitter:hover{background:#1a8cd8}
+.reddit{background:#ff4500;color:#fff}
+.reddit:hover{background:#e63e00}
+.copy{background:#238636;color:#fff}
+.copy:hover{background:#2ea043}
+.examples{margin-top:2rem;text-align:center}
+.examples a{color:#58a6ff;text-decoration:none;margin:0 .5rem}
+.examples a:hover{text-decoration:underline}
+.loading{text-align:center;padding:2rem;color:#8b949e}
+.spinner{display:inline-block;width:20px;height:20px;border:3px solid #30363d;border-top-color:#ff6b6b;border-radius:50%;animation:spin 1s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+footer{text-align:center;margin-top:3rem;color:#484f58;font-size:.9rem}
+footer a{color:#58a6ff;text-decoration:none}
+</style>
+</head>
+<body>
+<div class="container">
+<h1>🔥 Code Roast</h1>
+<p class="tagline">Paste your code. Get roasted. Share the pain.</p>
+
+<div class="roast-box">
+<textarea id="code" placeholder="Paste your code here... (the worse, the better)"></textarea>
+<button class="btn" onclick="roastCode()" id="roastBtn">🔥 Roast My Code</button>
+</div>
+
+<div class="result" id="result">
+<div class="loading" id="loading">
+<div class="spinner"></div>
+<p>Preparing your roast...</p>
+</div>
+<div id="roastContent" style="display:none">
+<div class="score" id="score"></div>
+<div class="roast-text" id="roastText"></div>
+<div class="share-btns">
+<a href="#" class="share-btn twitter" id="tweetBtn" target="_blank">🐦 Share on Twitter</a>
+<a href="#" class="share-btn reddit" id="redditBtn" target="_blank">📱 Share on Reddit</a>
+<button class="share-btn copy" onclick="copyRoast()">📋 Copy Roast</button>
+</div>
+</div>
+</div>
+
+<div class="examples">
+<p>Try these examples:</p>
+<a href="#" onclick="loadExample('bad')">Terrible Code</a>
+<a href="#" onclick="loadExample('spaghetti')">Spaghetti Code</a>
+<a href="#" onclick="loadExample('overengineered')">Overengineered</a>
+</div>
+
+<footer>
+<p>Powered by <a href="https://automation.songheng.vip">my-automaton</a> — AI code review API</p>
+<p style="margin-top:.5rem">Free • No signup • Your code is not stored</p>
+</footer>
+</div>
+
+<script>
+const examples = {
+bad: `function doStuff(x) {
+  var y = x * 2;
+  var z = y + 1;
+  if (z > 10) {
+    return z;
+  } else {
+    return z;
+  }
+}`,
+spaghetti: `function process(data) {
+  if (data) {
+    for (var i = 0; i < data.length; i++) {
+      if (data[i].type == 'a') {
+        // 200 lines of nested logic
+        if (data[i].value > 0) {
+          if (data[i].status == 'active') {
+            // more nesting...
+          }
+        }
+      }
+    }
+  }
+}`,
+overengineered: `const AbstractStrategyFactoryBuilder = class {
+  constructor(config) {
+    this.config = config;
+    this.validators = [];
+    this.transformers = [];
+  }
+  
+  static create() {
+    return new AbstractStrategyFactoryBuilder({});
+  }
+  
+  build() {
+    return () => () => () => 'hello world';
+  }
+};`
+};
+
+function loadExample(type) {
+  document.getElementById('code').value = examples[type];
+  return false;
+}
+
+async function roastCode() {
+  const code = document.getElementById('code').value.trim();
+  if (!code) { alert('Paste some code first!'); return; }
+  
+  const btn = document.getElementById('roastBtn');
+  const result = document.getElementById('result');
+  const loading = document.getElementById('loading');
+  const content = document.getElementById('roastContent');
+  
+  btn.disabled = true;
+  result.classList.add('show');
+  loading.style.display = 'block';
+  content.style.display = 'none';
+  
+  // Analyze code client-side for instant results
+  const analysis = analyzeCode(code);
+  
+  await new Promise(r => setTimeout(r, 1500)); // Dramatic pause
+  
+  loading.style.display = 'none';
+  content.style.display = 'block';
+  
+  const roast = generateRoast(analysis, code);
+  const score = analysis.score;
+  
+  document.getElementById('score').textContent = 'Roast Score: ' + score + '/10 🔥';
+  document.getElementById('roastText').textContent = roast;
+  
+  const tweetText = encodeURIComponent('I just got roasted by AI and scored ' + score + '/10 🔥 Try it: https://automation.songheng.vip/tools/code-roast.html');
+  document.getElementById('tweetBtn').href = 'https://twitter.com/intent/tweet?text=' + tweetText;
+  const redditUrl = encodeURIComponent('https://automation.songheng.vip/tools/code-roast.html');
+  const redditTitle = encodeURIComponent('Got roasted by AI - scored ' + score + '/10');
+  document.getElementById('redditBtn').href = 'https://reddit.com/submit?url=' + redditUrl + '&title=' + redditTitle;
+  
+  btn.disabled = false;
+}
+
+function analyzeCode(code) {
+  const issues = [];
+  let score = 10;
+  const lines = code.split('\n');
+  
+  // Check for var usage
+  if (/\bvar\s/.test(code)) { issues.push('Using "var" in 2026? Let me introduce you to const and let. They don\'t hoist like drunken sailors.'); score -= 1; }
+  
+  // Check for console.log
+  if (/console\.log/.test(code)) { issues.push('console.log everywhere — the duct tape of debugging. Ever heard of a debugger?'); score -= 0.5; }
+  
+  // Check for magic numbers
+  if (/[^a-zA-Z]\d{3,}/.test(code) && !/0x/.test(code)) { issues.push('Magic numbers floating around. What does 42 mean? What does 86400 mean? Named constants exist for a reason.'); score -= 1; }
+  
+  // Check nesting depth
+  let maxNest = 0, nest = 0;
+  for (const line of lines) {
+    nest += (line.match(/[{([]/g)||[]).length;
+    nest -= (line.match(/[})\]]/g)||[]).length;
+    if (nest > maxNest) maxNest = nest;
+  }
+  if (maxNest > 4) { issues.push('Nesting depth of ' + maxNest + '? Your code looks like a set of Russian dolls. Flatten that mess with early returns.'); score -= 2; }
+  
+  // Check for TODO/FIXME
+  if (/TODO|FIXME|HACK|XXX/.test(code)) { issues.push('Found TODO comments. Those aren\'t features, they\'re IOUs to your future self that never get paid.'); score -= 0.5; }
+  
+  // Check for empty catch
+  if (/catch\s*\([^)]*\)\s*{\s*}/.test(code)) { issues.push('Empty catch block? Errors don\'t just disappear because you close your eyes. They fester and multiply.'); score -= 1.5; }
+  
+  // Check function length
+  const funcMatches = code.match(/function\s+\w+/g) || [];
+  if (funcMatches.length === 0 && lines.length > 50) { issues.push('50+ lines and not a single named function. This isn\'t code, it\'s a stream of consciousness.'); score -= 1; }
+  
+  // Check for == instead of ===
+  if (/[^=!]==[^=]/.test(code)) { issues.push('Using == instead of ===. You enjoy type coercion surprises, don\'t you? "0" == false? Sure, why not.'); score -= 1; }
+  
+  // Check for hardcoded strings
+  if (/https?:\/\/[^"'s]+/.test(code) && !/localhost|example/.test(code)) { issues.push('Hardcoded URLs in source code. Environment variables and config files were invented for exactly this.'); score -= 0.5; }
+  
+  // Check for callback hell
+  if ((code.match(/functions*([^)]*)s*{/g)||[]).length > 3) { issues.push('Callback pyramid detected. Promises and async/await exist. Use them before your code becomes unreadable.'); score -= 1.5; }
+  
+  // Check for no comments at all
+  if (lines.length > 20 && !code.includes('//') && !code.includes('/*')) { issues.push('Zero comments in ' + lines.length + ' lines of code. Archaeologists will have a field day trying to decipher this.'); score -= 0.5; }
+  
+  // Short code penalty
+  if (lines.length < 5) { issues.push('This is so short I barely have material. But even in ' + lines.length + ' lines you managed to make questionable choices.'); score -= 0.5; }
+  
+  // God function check
+  if (lines.length > 100 && funcMatches.length <= 1) { issues.push('One massive function doing everything. The God Function anti-pattern — it sees all, does all, and tests none.'); score -= 1.5; }
+  
+  score = Math.max(1, Math.round(score));
+  return { issues, score, lineCount: lines.length };
+}
+
+function generateRoast(analysis, code) {
+  const openers = [
+    'Oh wow. Where do I even begin?',
+    'I\'ve seen production code that made me weep, but this...',
+    'Let me put on my hazmat suit before I review this.',
+    'This code has the energy of someone who learned to code from Stack Overflow at 3 AM.',
+    'Alright, let\'s dissect this masterpiece of chaos.',
+    'I ran your code through my AI brain and it came back crying.',
+    'You asked for honesty? Buckle up.',
+  ];
+  
+  const closers = [
+    '\n\nBut seriously — keep coding. Every developer writes bad code. The good ones learn from it.',
+    '\n\nOn the bright side, at least you\'re writing code. Ship it, fix it, learn from it.',
+    '\n\nRemember: good code isn\'t written, it\'s rewritten. Start refactoring.',
+    '\n\nWant a real code review? Check out our AI-powered code review API that actually helps you improve.',
+    '\n\nThe best time to refactor was yesterday. The second best time is now.',
+  ];
+  
+  let roast = openers[Math.floor(Math.random() * openers.length)] + '\n\n';
+  
+  if (analysis.issues.length > 0) {
+    analysis.issues.forEach((issue, i) => {
+      roast += (i + 1) + '. ' + issue + '\n';
+    });
+  } else {
+    roast += 'Honestly? This code is... fine. Suspiciously fine. Are you sure you didn\'t copy it from somewhere?\n';
+    roast += 'I can\'t find obvious issues, which either means you\'re a great developer or you\'re hiding your sins really well.\n';
+  }
+  
+  roast += closers[Math.floor(Math.random() * closers.length)];
+  return roast;
+}
+
+function copyRoast() {
+  const text = document.getElementById('roastText').textContent;
+  const score = document.getElementById('score').textContent;
+  navigator.clipboard.writeText(`${score}\n\n${text}\n\nTry it: https://automation.songheng.vip/tools/code-roast.html`);
+  alert('Copied! Now go share your shame.');
+}
+</script>
+</body>
+</html>

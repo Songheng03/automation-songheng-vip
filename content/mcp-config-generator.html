@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MCP Config Generator — Claude Desktop, Cursor, VS Code | my-automaton</title>
+<meta name="description" content="Generate ready-to-use MCP config for my-automaton's AI code review tools. Works with Claude Desktop, Cursor IDE, VS Code, GitHub Copilot, and any MCP client.">
+<meta name="keywords" content="MCP config generator, Claude Desktop MCP, Cursor MCP, VS Code MCP, AI code review MCP server">
+<style>
+:root{--bg:#0d1117;--card:#161b22;--border:#30363d;--text:#c9d1d9;--heading:#f0f6fc;--accent:#58a6ff;--green:#238636;--orange:#d29922}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--text);line-height:1.7;padding:20px}
+.container{max-width:900px;margin:0 auto}
+h1{color:var(--heading);font-size:2em;margin:30px 0 10px}
+h2{color:var(--heading);font-size:1.3em;margin:24px 0 8px;padding-bottom:6px;border-bottom:1px solid var(--border)}
+p{color:var(--text);margin:8px 0}
+a{color:var(--accent);text-decoration:none}
+a:hover{text-decoration:underline}
+.card{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:20px;margin:16px 0}
+.code-block{background:#010409;border:1px solid var(--border);border-radius:6px;padding:16px;margin:8px 0;overflow-x:auto;font-family:'JetBrains Mono','Fira Code',monospace;font-size:.85em;position:relative}
+.code-block code{color:#e6edf3}
+.code-block .comment{color:#8b949e}
+.code-block .key{color:#79c0ff}
+.code-block .string{color:#a5d6ff}
+.code-block .num{color:#79c0ff}
+.copy-btn{position:absolute;top:8px;right:8px;background:var(--border);color:var(--text);border:none;padding:4px 10px;border-radius:4px;cursor:pointer;font-size:.8em}
+.copy-btn:hover{background:#58a6ff;color:#fff}
+.tag{display:inline-block;background:#1f6feb33;color:var(--accent);padding:2px 8px;border-radius:8px;font-size:.75em;margin:2px}
+.btn{display:inline-block;background:var(--green);color:#fff;padding:10px 24px;border-radius:6px;font-weight:600;text-decoration:none;margin:8px 4px}
+.btn-outline{background:transparent;border:1px solid var(--accent);color:var(--accent)}
+.btn-sm{font-size:.85em;padding:6px 14px}
+.tab-bar{display:flex;gap:0;margin:12px 0;border-bottom:1px solid var(--border)}
+.tab{padding:8px 16px;cursor:pointer;border:1px solid transparent;border-bottom:none;border-radius:6px 6px 0 0;color:#8b949e;background:transparent}
+.tab.active{color:var(--accent);border-color:var(--border);background:var(--card)}
+.tab-panel{display:none}
+.tab-panel.active{display:block}
+.config-preview{background:#010409;border:1px solid var(--border);border-radius:6px;padding:16px;min-height:200px;white-space:pre-wrap;font-family:monospace;font-size:.85em;color:#e6edf3}
+select,input,textarea{background:#010409;border:1px solid var(--border);border-radius:6px;padding:8px 12px;color:var(--text);font-size:.9em;width:100%;margin:4px 0}
+select option{background:#0d1117}
+label{display:block;margin:8px 0 2px;color:#8b949e;font-size:.9em}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}
+.chip{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:4px 12px;cursor:pointer;font-size:.85em;color:#8b949e;transition:all .2s}
+.chip.selected{background:#1f6feb33;border-color:var(--accent);color:var(--accent)}
+.feature-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin:12px 0}
+.feature{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:14px;text-align:center}
+.feature h3{font-size:.95em;margin-bottom:4px}
+.feature p{font-size:.82em;color:#8b949e}
+.step-num{display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;background:#1f6feb33;color:var(--accent);border-radius:50%;margin-right:8px;font-size:.85em;font-weight:600}
+.faq-item{border-bottom:1px solid var(--border);padding:12px 0}
+.faq-item h3{font-size:.95em;cursor:pointer;color:var(--accent)}
+.faq-item p{font-size:.9em;color:#8b949e;margin-top:4px}
+.footer{margin-top:40px;padding-top:16px;border-top:1px solid var(--border);text-align:center;color:#8b949e;font-size:.85em}
+@media(max-width:600px){.feature-grid{grid-template-columns:1fr}}
+</style>
+
+<!-- Open Graph / Social Meta Tags -->
+<meta property="og:title" content="MCP Config Generator — Claude Desktop, Cursor, VS Code | my-automaton" />
+<meta property="og:description" content="Generate ready-to-use MCP config for my-automaton" />
+<meta property="og:image" content="https://automation.songheng.vip/og-image.png" />
+<meta property="og:url" content="https://automation.songheng.vip/mcp-config-generator.html" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="my-automaton" />
+<meta property="og:locale" content="en_US" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="MCP Config Generator — Claude Desktop, Cursor, VS Code | my-automaton" />
+<meta name="twitter:description" content="Generate ready-to-use MCP config for my-automaton" />
+<meta name="twitter:image" content="https://automation.songheng.vip/og-image.png" />
+  <link rel="canonical" href="https://automation.songheng.vip/mcp-config-generator.html">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "MCP Config Generator — Claude Desktop, Cursor, VS Code | my-automaton",
+  "description": "Generate ready-to-use MCP config for my-automaton",
+  "url": "https://automation.songheng.vip/mcp-config-generator.html",
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": "Web",
+  "author": {
+    "@type": "Organization",
+    "name": "my-automaton",
+    "url": "https://automation.songheng.vip"
+  },
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  }
+}
+</script>
+</head>
+<body>
+<div class="container">
+
+<h1>🔧 MCP Config Generator</h1>
+<p style="color:#8b949e;margin-bottom:12px">Generate ready-to-use MCP config for my-automaton's AI code review & analysis tools. <span class="tag">Free</span><span class="tag">3/day</span></p>
+
+<div class="card">
+<h2>Select Your Tools</h2>
+<p style="color:#8b949e;font-size:.9em">Choose the AI tools you want to enable:</p>
+<div class="chips" id="tool-chips">
+  <span class="chip selected" data-tool="analyze">📊 Analyze</span>
+  <span class="chip selected" data-tool="summarize">📝 Summarize</span>
+  <span class="chip selected" data-tool="code_review">💻 Code Review</span>
+  <span class="chip selected" data-tool="security_scan">🔒 Security</span>
+  <span class="chip selected" data-tool="explain_code">📖 Explain</span>
+  <span class="chip selected" data-tool="refactor_code">🔄 Refactor</span>
+  <span class="chip selected" data-tool="complexity_analysis">📊 Complexity</span>
+</div>
+</div>
+
+<div class="card">
+<h2>Select Client</h2>
+<p style="color:#8b949e;font-size:.9em">Choose your MCP client:</p>
+<div class="tab-bar" id="client-tabs">
+  <div class="tab active" data-client="claude">Claude Desktop</div>
+  <div class="tab" data-client="cursor">Cursor IDE</div>
+  <div class="tab" data-client="vscode">VS Code</div>
+  <div class="tab" data-client="copilot">GitHub Copilot</div>
+  <div class="tab" data-client="generic">Generic MCP</div>
+</div>
+
+<div id="config-output" class="config-preview">Select tools and client above to generate config...</div>
+<button class="copy-btn" id="copy-config" style="position:relative;top:auto;right:auto;margin-top:8px">📋 Copy Config</button>
+</div>
+
+<div class="card">
+<h2>🚀 Quick Start</h2>
+<div class="feature-grid">
+  <div class="feature">
+    <div class="step-num">1</div>
+    <h3>Select Tools</h3>
+    <p>Pick the AI tools you need</p>
+  </div>
+  <div class="feature">
+    <div class="step-num">2</div>
+    <h3>Choose Client</h3>
+    <p>Select Claude/Cursor/VS Code</p>
+  </div>
+  <div class="feature">
+    <div class="step-num">3</div>
+    <h3>Copy Config</h3>
+    <p>One click to clipboard</p>
+  </div>
+  <div class="feature">
+    <div class="step-num">4</div>
+    <h3>Start Using</h3>
+    <p>3 free analyses/day per tool</p>
+  </div>
+</div>
+</div>
+
+<div class="card">
+<h2>🎯 Free Tier — No Account Needed</h2>
+<p>Every tool gives you <strong>3 free analyses per day</strong>. No account, no signup, no credit card.</p>
+<p>Need more? <a href="/upgrade">Get an API key</a> for full access starting at just $5.</p>
+<div style="margin-top:12px">
+  <a href="/api-playground" class="btn">🧪 Try it Live</a>
+  <a href="/api-docs" class="btn btn-outline">📚 API Docs</a>
+  <a href="/upgrade" class="btn btn-outline">🔑 Get API Key</a>
+</div>
+</div>
+
+<div class="card">
+<h2>❓ FAQ</h2>
+<div class="faq-item">
+<h3>What is MCP?</h3>
+<p>Model Context Protocol (MCP) is an open standard for AI apps to discover and use tools. Claude Desktop, Cursor, and VS Code all support it natively.</p>
+</div>
+<div class="faq-item">
+<h3>Is it really free?</h3>
+<p>Yes! 3 analyses per tool per day, completely free. Need more? API keys start at $5 for 500 credits.</p>
+</div>
+<div class="faq-item">
+<h3>What tools are available?</h3>
+<p>Code review, security scanning, text analysis, summarization, code explanation, refactoring suggestions, and complexity analysis.</p>
+</div>
+<div class="faq-item">
+<h3>How do I use this in Cursor?</h3>
+<p>Open Cursor Settings → Features → MCP Servers → "Add New MCP Server" → Paste the config from this page. Done.</p>
+</div>
+</div>
+
+<div class="footer">
+  <a href="/">Home</a> · <a href="/blog">Blog</a> · <a href="/api-docs">API Docs</a> · 
+  <a href="/api-playground">Playground</a> · <a href="/upgrade">Pricing</a><br>
+  <span>my-automaton · AI Code Review & Dev Tools</span>
+</div>
+
+</div>
+
+<script>
+const TOOL_NAMES = {
+  analyze: 'AI Text Analysis (sentiment, themes, entities)',
+  summarize: 'AI Summarization',
+  code_review: 'AI Code Review (bugs, security, style)',
+  security_scan: 'AI Security Vulnerability Scan',
+  explain_code: 'AI Code Explanation',
+  refactor_code: 'AI Refactoring Suggestions',
+  complexity_analysis: 'AI Complexity Analysis'
+};
+
+const CLIENT_CONFIGS = {
+  claude: (tools) => ({
+    mcpServers: {
+      'my-automaton': {
+        command: 'npx',
+        args: ['-y', '@my-automaton/mcp-server'],
+        env: {},
+        tools: tools
+      }
+    }
+  }),
+  cursor: (tools) => ({
+    mcpServers: {
+      'my-automaton': {
+        url: 'https://automation.songheng.vip/v1/mcp',
+        headers: {},
+        tools: tools
+      }
+    }
+  }),
+  vscode: (tools) => ({
+    "github.copilot.chat.mcpServers": {
+      'my-automaton': {
+        url: 'https://automation.songheng.vip/v1/mcp',
+        tools: tools
+      }
+    }
+  }),
+  copilot: (tools) => ({
+    "github.copilot.chat.mcpServers": {
+      'my-automaton': {
+        url: 'https://automation.songheng.vip/v1/mcp',
+        tools: tools
+      }
+    }
+  }),
+  generic: (tools) => ({
+    mcpServers: {
+      'my-automaton': {
+        url: 'https://automation.songheng.vip/v1/mcp',
+        transport: 'stdio',
+        tools: tools
+      }
+    }
+  })
+};
+
+function getSelectedTools() {
+  return Array.from(document.querySelectorAll('#tool-chips .chip.selected'))
+    .map(c => c.dataset.tool);
+}
+
+function getSelectedClient() {
+  const active = document.querySelector('#client-tabs .tab.active');
+  return active ? active.dataset.client : 'claude';
+}
+
+function generateConfig() {
+  const tools = getSelectedTools();
+  const client = getSelectedClient();
+  
+  if (tools.length === 0) {
+    return 'Select at least one tool above to generate config...';
+  }
+  
+  const generator = CLIENT_CONFIGS[client];
+  if (!generator) return 'Unknown client selected.';
+  
+  const config = generator(tools);
+  return JSON.stringify(config, null, 2);
+}
+
+function updateConfig() {
+  const output = document.getElementById('config-output');
+  output.textContent = generateConfig();
+}
+
+// Tool chip click
+document.querySelectorAll('#tool-chips .chip').forEach(chip => {
+  chip.addEventListener('click', () => {
+    chip.classList.toggle('selected');
+    updateConfig();
+  });
+});
+
+// Client tab click
+document.querySelectorAll('#client-tabs .tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('#client-tabs .tab').forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
+    updateConfig();
+  });
+});
+
+// Copy button
+document.getElementById('copy-config').addEventListener('click', () => {
+  const text = document.getElementById('config-output').textContent;
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = document.getElementById('copy-config');
+    btn.textContent = '✅ Copied!';
+    setTimeout(() => { btn.textContent = '📋 Copy Config'; }, 2000);
+  });
+});
+
+// Initial render
+updateConfig();
+</script>
+<script src="/conversion-banner.js" defer></script>
+</body>
+</html>

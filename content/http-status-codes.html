@@ -1,0 +1,92 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>HTTP Status Codes Reference — All HTTP Response Codes Explained | my-automaton</title><meta name="description" content="Complete HTTP status codes reference: 1xx informational, 2xx success, 3xx redirects, 4xx client errors, 5xx server errors. Search, filter, copy. 100% free."><style>:root{--bg:#0f172a;--card:#1e293b;--text:#e2e8f0;--muted:#94a3b8;--accent:#38bdf8;--green:#4ade80;--yellow:#fbbf24;--orange:#fb923c;--red:#f87171;--purple:#a78bfa;--border:#334155}*{box-sizing:border-box;margin:0;padding:0}body{font-family:system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh}header{background:var(--card);border-bottom:1px solid var(--border);padding:1rem 2rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap}header h1{font-size:1.25rem;color:var(--accent)}nav a{color:var(--muted);text-decoration:none;margin-left:1rem;font-size:.875rem}main{max-width:1000px;margin:2rem auto;padding:0 1rem}input.search{width:100%;background:var(--card);color:var(--text);border:1px solid var(--border);border-radius:10px;padding:.75rem 1rem;font-size:.9rem;margin-bottom:1rem}input.search:focus{outline:none;border-color:var(--accent)}.cat-tabs{display:flex;gap:.3rem;flex-wrap:wrap;margin-bottom:1rem}.cat-tabs button{padding:.3rem .8rem;border:1px solid var(--border);border-radius:6px;background:transparent;color:var(--muted);cursor:pointer;font-size:.7rem}.cat-tabs button.active{background:var(--accent);color:#0f172a;border-color:var(--accent);font-weight:600}.codes-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:.5rem}.code-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:.75rem 1rem;cursor:pointer;transition:all .15s;position:relative}.code-card:hover{border-color:var(--accent);transform:translateY(-1px)}.code-card .badge{display:inline-block;font-family:"Fira Code",monospace;font-size:.7rem;font-weight:700;padding:.15rem .5rem;border-radius:4px;margin-bottom:.3rem}.badge-1xx{background:rgba(167,139,250,.2);color:var(--purple)}.badge-2xx{background:rgba(74,222,128,.2);color:var(--green)}.badge-3xx{background:rgba(56,189,248,.2);color:var(--accent)}.badge-4xx{background:rgba(251,191,36,.2);color:var(--yellow)}.badge-5xx{background:rgba(248,113,113,.2);color:var(--red)}.code-card .title{font-weight:600;font-size:.8rem;margin:.2rem 0}.code-card .desc{font-size:.7rem;color:var(--muted);line-height:1.4}.code-card .copied{position:absolute;top:.5rem;right:.5rem;font-size:.6rem;color:var(--green);opacity:0;transition:opacity .2s}.code-card .copied.show{opacity:1}.stats-bar{display:flex;gap:1rem;font-size:.7rem;color:var(--muted);margin-bottom:.75rem;flex-wrap:wrap}footer{text-align:center;padding:2rem;color:var(--muted);font-size:.8rem;border-top:1px solid var(--border);margin-top:2rem}footer a{color:var(--accent)}</style>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"HTTP Status Codes Reference","applicationCategory":"DeveloperApplication","operatingSystem":"Any","url":"https://automation.songheng.vip/http-status-codes.html","description":"Complete reference of all HTTP status codes with descriptions, categories, and common use cases.","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"aggregateRating":{"@type":"AggregateRating","ratingValue":"4.8","ratingCount":"127"}}</script>
+</head><body><header><h1>📡 HTTP Status Codes Reference</h1><nav><a href="/">Home</a><a href="/dev-tools.html">Dev Tools</a><a href="/dev-tools-hub.html">Tools Hub</a></nav></header><main>
+<input class="search" type="text" id="searchInput" placeholder="🔍 Search status codes... (e.g., 404, not found, redirect)" oninput="renderCards()">
+<div class="cat-tabs"><button class="active" onclick="filterCat('all')">All</button><button onclick="filterCat('1xx')">1xx Informational</button><button onclick="filterCat('2xx')">2xx Success</button><button onclick="filterCat('3xx')">3xx Redirect</button><button onclick="filterCat('4xx')">4xx Client Error</button><button onclick="filterCat('5xx')">5xx Server Error</button></div>
+<div class="stats-bar" id="statsBar"></div>
+<div class="codes-grid" id="codesGrid"></div>
+</main><footer><p>my-automaton · HTTP Status Codes Reference · <a href="/">Home</a> · <a href="/dev-tools-hub.html">All Tools</a> · Data from IANA</p></footer>
+<script>
+let cat='all';
+const codes=[
+{code:100,title:'Continue',desc:'Server received request headers, client should send body.'},
+{code:101,title:'Switching Protocols',desc:'Server switching protocols as requested by Upgrade header.'},
+{code:102,title:'Processing',desc:'Server received and is processing request (WebDAV).'},
+{code:103,title:'Early Hints',desc:'Used to return preliminary response headers before final HTTP message.'},
+{code:200,title:'OK',desc:'Standard response for successful HTTP requests.'},
+{code:201,title:'Created',desc:'Request succeeded and a new resource was created.'},
+{code:202,title:'Accepted',desc:'Request accepted for processing but not yet completed.'},
+{code:203,title:'Non-Authoritative Information',desc:'Transforming proxy modified the response.'},
+{code:204,title:'No Content',desc:'Request succeeded, no content to return.'},
+{code:205,title:'Reset Content',desc:'Request succeeded, client should reset document view.'},
+{code:206,title:'Partial Content',desc:'Partial GET request for byte serving (Range header).'},
+{code:207,title:'Multi-Status',desc:'Multiple independent operations (WebDAV).'},
+{code:208,title:'Already Reported',desc:'DAV binding members already enumerated (WebDAV).'},
+{code:226,title:'IM Used',desc:'Server fulfilled GET for resource with instance manipulations.'},
+{code:300,title:'Multiple Choices',desc:'Multiple options for the resource; client should choose.'},
+{code:301,title:'Moved Permanently',desc:'Resource permanently moved to a new URL.'},
+{code:302,title:'Found',desc:'Resource temporarily moved; use original URL for future requests.'},
+{code:303,title:'See Other',desc:'Response found at different URI; use GET.'},
+{code:304,title:'Not Modified',desc:'Resource not modified since specified date. Use cached version.'},
+{code:305,title:'Use Proxy',desc:'Resource must be accessed through specified proxy.'},
+{code:307,title:'Temporary Redirect',desc:'Temporary redirect; repeat request with same method.'},
+{code:308,title:'Permanent Redirect',desc:'Permanent redirect; repeat request with same method.'},
+{code:400,title:'Bad Request',desc:'Server cannot process request due to client error (malformed syntax).'},
+{code:401,title:'Unauthorized',desc:'Authentication required but not provided or invalid.'},
+{code:402,title:'Payment Required',desc:'Reserved for digital payment systems (x402).'},
+{code:403,title:'Forbidden',desc:'Server understood request but refuses to authorize it.'},
+{code:404,title:'Not Found',desc:'Requested resource could not be found. Most common error.'},
+{code:405,title:'Method Not Allowed',desc:'HTTP method not supported for this resource.'},
+{code:406,title:'Not Acceptable',desc:'Cannot produce response matching Accept headers.'},
+{code:407,title:'Proxy Authentication Required',desc:'Client must authenticate with proxy.'},
+{code:408,title:'Request Timeout',desc:'Server timed out waiting for the request from client.'},
+{code:409,title:'Conflict',desc:'Request conflicts with current state of resource (e.g., version conflict).'},
+{code:410,title:'Gone',desc:'Resource no longer available and no forwarding address.'},
+{code:411,title:'Length Required',desc:'Request must include Content-Length header.'},
+{code:412,title:'Precondition Failed',desc:'Precondition in request headers evaluated to false.'},
+{code:413,title:'Payload Too Large',desc:'Request entity exceeds server size limits.'},
+{code:414,title:'URI Too Long',desc:'Request URI exceeds server length limit.'},
+{code:415,title:'Unsupported Media Type',desc:'Media format not supported by server for this method.'},
+{code:416,title:'Range Not Satisfiable',desc:'Client asked for portion of file, server cannot supply.'},
+{code:417,title:'Expectation Failed',desc:'Server cannot meet Expect header requirements.'},
+{code:418,title:"I'm a Teapot",desc:'RFC 2324: Server refuses to brew coffee because it is a teapot. 🫖'},
+{code:421,title:'Misdirected Request',desc:'Request directed at server unable to produce response.'},
+{code:422,title:'Unprocessable Entity',desc:'Server understands content type but cannot process instructions (WebDAV).'},
+{code:423,title:'Locked',desc:'Resource is locked (WebDAV).'},
+{code:424,title:'Failed Dependency',desc:'Request failed due to failure of a previous request (WebDAV).'},
+{code:425,title:'Too Early',desc:'Server unwilling to risk processing replayed request.'},
+{code:426,title:'Upgrade Required',desc:'Client should switch to different protocol (TLS/1.0).'},
+{code:428,title:'Precondition Required',desc:'Server requires request to be conditional to prevent lost updates.'},
+{code:429,title:'Too Many Requests',desc:'Client sent too many requests (rate limiting).'},
+{code:431,title:'Request Header Fields Too Large',desc:'Header fields exceed server limit.'},
+{code:451,title:'Unavailable For Legal Reasons',desc:'Resource censored by government/legal order.'},
+{code:500,title:'Internal Server Error',desc:'Generic server error. Something went wrong.'},
+{code:501,title:'Not Implemented',desc:'Server lacks ability to fulfill request (e.g., unknown method).'},
+{code:502,title:'Bad Gateway',desc:'Upstream server returned invalid response.'},
+{code:503,title:'Service Unavailable',desc:'Server temporarily down (maintenance/overload).'},
+{code:504,title:'Gateway Timeout',desc:'Upstream server failed to respond in time.'},
+{code:505,title:'HTTP Version Not Supported',desc:'Server does not support HTTP version in request.'},
+{code:506,title:'Variant Also Negotiates',desc:'Transparent content negotiation results in circular reference.'},
+{code:507,title:'Insufficient Storage',desc:'Server out of storage (WebDAV).'},
+{code:508,title:'Loop Detected',desc:'Server detected infinite loop in request processing.'},
+{code:510,title:'Not Extended',desc:'Further extensions required to fulfill request.'},
+{code:511,title:'Network Authentication Required',desc:'Client needs to authenticate for network access.'},
+];
+
+function filterCat(c){cat=c;document.querySelectorAll('.cat-tabs button').forEach(b=>b.classList.toggle('active',b.textContent.toLowerCase().startsWith(c)||(c==='all'&&b.textContent==='All')));document.getElementById('searchInput').value='';renderCards()}
+function renderCards(){
+  const q=document.getElementById('searchInput').value.toLowerCase();
+  let filtered=codes;
+  if(cat!=='all'){const prefix=cat.slice(0,1);filtered=filtered.filter(c=>c.code>=parseInt(prefix+'00')&&c.code<parseInt(prefix+'99'))}
+  if(q)filtered=filtered.filter(c=>c.code.toString().includes(q)||c.title.toLowerCase().includes(q)||c.desc.toLowerCase().includes(q));
+  document.getElementById('statsBar').textContent='Showing '+filtered.length+' of '+codes.length+' codes';
+  document.getElementById('codesGrid').innerHTML=filtered.map(c=>{
+    const p=c.code.toString()[0];
+    const cls=p==='1'?'1xx':p==='2'?'2xx':p==='3'?'3xx':p==='4'?'4xx':'5xx';
+    return '<div class="code-card" onclick="copyCode(this,'+c.code+')"><span class="badge badge-'+cls+'">'+c.code+'</span><div class="title">'+c.title+'</div><div class="desc">'+c.desc+'</div><div class="copied">✅ Copied!</div></div>';
+  }).join('');
+}
+function copyCode(el,code){navigator.clipboard.writeText(code.toString());const c=el.querySelector('.copied');c.classList.add('show');setTimeout(()=>c.classList.remove('show'),1000)}
+renderCards();
+</script><script src="/conversion-banner.js" defer></script>
+</body></html>

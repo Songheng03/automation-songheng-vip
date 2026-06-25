@@ -1,0 +1,109 @@
+# .github/workflows/ai-code-review.yml
+# Free AI Code Review by my-automaton
+# https://automation.songheng.vip
+#
+# Copy this file to your repo at .github/workflows/ai-code-review.yml
+# It will run on every pull request and review changed files.
+#
+# Free tier: 3 reviews/day per endpoint
+# Premium: Get an API key at https://automation.songheng.vip/upgrade
+
+name: AI Code Review
+on:
+  pull_request:
+    types: [opened, synchronize]
+  push:
+    branches: [main, master]
+
+jobs:
+  review:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Get changed files
+        id: changes
+        run: |
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            git diff --name-only origin/${{ github.base_ref }}...HEAD > changed-files.txt
+          else
+            git diff --name-only HEAD~1 > changed-files.txt
+          fi
+          echo "files=$(cat changed-files.txt | grep -E '\.(js|ts|py|go|rs|java|sol|rb|php|c|cpp|swift|kt)$' | head -5)" >> $GITHUB_OUTPUT
+          cat changed-files.txt
+
+      - name: Run AI Code Review
+        if: steps.changes.outputs.files != ''
+        env:
+          AUTOMATON_API_KEY: ${{ secrets.AUTOMATON_API_KEY }}
+        run: |
+          for file in $(cat changed-files.txt | grep -E '\.(js|ts|py|go|rs|java|sol|rb|php|c|cpp|swift|kt)$' | head -5); do
+            echo "=== Reviewing: $file ==="
+            code=$(cat "$file")
+            
+            # Free tier (3/day) — no API key needed
+            if [ -z "$AUTOMATON_API_KEY" ]; then
+              curl -s -X POST https://automation.songheng.vip/api/free/review \
+                -H "Content-Type: application/json" \
+                -d "{\"code\": $(echo "$code" | jq -Rs .), \"language\": \"${file##*.}\"}" \
+                | jq '.result' -r
+            else
+              # Premium tier — uses API key
+              curl -s -X POST https://automation.songheng.vip/v1/review \
+                -H "Content-Type: application/json" \
+                -H "X-API-Key: $AUTOMATON_API_KEY" \
+                -d "{\"code\": $(echo "$code" | jq -Rs .), \"language\": \"${file##*.}\"}" \
+                | jq '.result' -r
+            fi
+            echo "---"
+          done
+
+      - name: Run Security Scan
+        if: steps.changes.outputs.files != ''
+        env:
+          AUTOMATON_API_KEY: ${{ secrets.AUTOMATON_API_KEY }}
+        run: |
+          for file in $(cat changed-files.txt | grep -E '\.(js|ts|py|go|rs|java|sol|rb|php|c|cpp|swift|kt)$' | head -3); do
+            echo "=== Security Scan: $file ==="
+            code=$(cat "$file")
+            
+            if [ -z "$AUTOMATON_API_KEY" ]; then
+              curl -s -X POST https://automation.songheng.vip/api/free/security \
+                -H "Content-Type: application/json" \
+                -d "{\"code\": $(echo "$code" | jq -Rs .)}" \
+                | jq '.result' -r
+            else
+              curl -s -X POST https://automation.songheng.vip/v1/security \
+                -H "Content-Type: application/json" \
+                -H "X-API-Key: $AUTOMATON_API_KEY" \
+                -d "{\"code\": $(echo "$code" | jq -Rs .)}" \
+                | jq '.result' -r
+            fi
+            echo "---"
+          done
+
+      - name: Post Comment (optional)
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const report = fs.readFileSync('changed-files.txt', 'utf8');
+            const files = report.split('\n').filter(f => f.match(/\.(js|ts|py|go|rs|java|sol|rb|php|c|cpp|swift|kt)$/));
+            if (files.length > 0) {
+              let body = '## 🤖 AI Code Review\n\n';
+              body += `Reviewed ${files.length} files. `;
+              body += 'Powered by [my-automaton](https://automation.songheng.vip).\n\n';
+              body += '### Files reviewed:\n';
+              files.forEach(f => { body += `- \`${f}\`\n`; });
+              body += '\n---\n';
+              body += '💡 Get unlimited reviews — [Get an API key](https://automation.songheng.vip/upgrade)';
+              github.rest.issues.createComment({
+                issue_number: context.issue.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                body: body
+              });
+            }

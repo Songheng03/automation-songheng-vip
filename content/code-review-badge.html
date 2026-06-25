@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Code Review Badge Generator — my-automaton</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;background:#0d1117;color:#e6edf3;line-height:1.6}
+.container{max-width:800px;margin:0 auto;padding:20px}
+header{text-align:center;padding:40px 0 30px;border-bottom:1px solid #30363d;margin-bottom:30px}
+header h1{font-size:2.2em;color:#f0f6fc;margin-bottom:8px}
+header h1 span{color:#58a6ff}
+header p{color:#8b949e;font-size:1.1em}
+.step{background:#161b22;border:1px solid #30363d;border-radius:10px;padding:24px;margin-bottom:20px}
+.step-number{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:50%;background:#238636;color:#fff;font-weight:700;font-size:.85em;margin-right:10px}
+.step h3{display:flex;align-items:center;color:#f0f6fc;font-size:1.1em;margin-bottom:12px}
+textarea{width:100%;min-height:120px;background:#0d1117;border:1px solid #30363d;border-radius:6px;padding:12px;color:#e6edf3;font-family:'SF Mono',Consolas,monospace;font-size:.85em;resize:vertical;margin-bottom:12px}
+textarea:focus{outline:0;border-color:#58a6ff}
+.btn{background:#238636;color:#fff;border:0;padding:10px 24px;border-radius:6px;cursor:pointer;font-size:.9em;font-weight:600;transition:all .15s;display:inline-flex;align-items:center;gap:6px}
+.btn:hover{background:#2ea043}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.btn-secondary{background:#21262d;color:#c9d1d9;border:1px solid #30363d}
+.btn-secondary:hover{background:#30363d}
+.badge-preview{background:#0d1117;border:1px solid #30363d;border-radius:8px;padding:20px;margin:16px 0;text-align:center}
+.badge-preview img{max-width:100%}
+.markdown-output{background:#0d1117;border:1px solid #30363d;border-radius:8px;padding:16px;position:relative;margin:12px 0}
+.markdown-output pre{font-family:'SF Mono',Consolas,monospace;font-size:.85em;color:#e6edf3;white-space:pre-wrap;word-break:break-all}
+.copy-btn{position:absolute;top:8px;right:8px;background:#21262d;border:1px solid #30363d;color:#c9d1d9;padding:4px 10px;border-radius:4px;cursor:pointer;font-size:.78em}
+.copy-btn:hover{background:#30363d}
+.copy-btn.copied{background:#1b4a1b;border-color:#3fb950;color:#3fb950}
+.score-display{display:flex;gap:16px;margin:16px 0;flex-wrap:wrap}
+.score-card{flex:1;min-width:120px;background:#0d1117;border:1px solid #30363d;border-radius:8px;padding:16px;text-align:center}
+.score-card .score{font-size:2em;font-weight:700}
+.score-card .label{color:#8b949e;font-size:.8em;margin-top:4px}
+.score-a{color:#3fb950}.score-b{color:#58a6ff}.score-c{color:#d29922}.score-d{color:#db6d28}.score-f{color:#f85149}
+.presets{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.preset-btn{padding:6px 14px;border-radius:20px;border:1px solid #30363d;background:0 0;color:#8b949e;cursor:pointer;font-size:.82em;transition:all .15s}
+.preset-btn:hover{color:#e6edf3;border-color:#58a6ff;background:#1c2333}
+.preset-btn.active{color:#58a6ff;border-color:#58a6ff;background:#1c2333}
+.result-section{margin-top:16px}
+.badge-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px;margin:16px 0}
+.badge-card{background:#0d1117;border:1px solid #30363d;border-radius:8px;padding:16px;text-align:center}
+.badge-card img{display:block;margin:0 auto 8px}
+.loading{color:#8b949e;font-style:italic}
+.error{color:#f85149;background:#291b1b;border:1px solid #f8514940;padding:12px;border-radius:6px;margin:12px 0}
+.footer{text-align:center;padding:30px 0;color:#8b949e;font-size:.85em;border-top:1px solid #30363d;margin-top:30px}
+.footer a{color:#58a6ff;text-decoration:none}
+.footer a:hover{text-decoration:underline}
+</style>
+
+<!-- Open Graph / Social Meta Tags -->
+<meta property="og:title" content="AI Code Review Badge Generator — my-automaton" />
+<meta property="og:description" content="AI Code Review Badge Generator — my-automaton — powered by my-automaton. AI code review, security scanning, and developer tools." />
+<meta property="og:image" content="https://automation.songheng.vip/og-image.png" />
+<meta property="og:url" content="https://automation.songheng.vip/code-review-badge.html" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="my-automaton" />
+<meta property="og:locale" content="en_US" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="AI Code Review Badge Generator — my-automaton" />
+<meta name="twitter:description" content="AI Code Review Badge Generator — my-automaton — powered by my-automaton. AI code review, security scanning, and developer tools." />
+<meta name="twitter:image" content="https://automation.songheng.vip/og-image.png" />
+  <meta name="description" content="🛡️ AI Code Review Badge Generator Get a free AI code review + a badge for your README.">
+  <link rel="canonical" href="https://automation.songheng.vip/code-review-badge.html">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "AI Code Review Badge Generator — my-automaton",
+  "description": "🛡️ AI Code Review Badge Generator Get a free AI code review + a badge for your README.",
+  "url": "https://automation.songheng.vip/code-review-badge.html",
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": "Web",
+  "author": {
+    "@type": "Organization",
+    "name": "my-automaton",
+    "url": "https://automation.songheng.vip"
+  },
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  }
+}
+</script>
+</head>
+<body>
+<div style="background:#161b22;border-bottom:1px solid #30363d;padding:10px 20px;font-size:.85rem;display:flex;gap:16px;align-items:center;flex-wrap:wrap"><a href="/" style="color:#58a6ff;text-decoration:none;font-weight:600">🏠 Home</a><span style="color:#484f58">|</span><a href="/pricing.html" style="color:#8b949e;text-decoration:none">Pricing</a><a href="/api-docs.html" style="color:#8b949e;text-decoration:none">API</a><a href="/playground.html" style="color:#8b949e;text-decoration:none">Playground</a></div>
+
+<div class="container">
+  <header>
+    <h1>🛡️ <span>AI Code Review</span> Badge Generator</h1>
+    <p>Get a free AI code review + a badge for your README. Paste code below.</p>
+  </header>
+
+  <div class="step">
+    <h3><span class="step-number">1</span> Paste your code</h3>
+    <div class="presets">
+      <button class="preset-btn active" onclick="loadPreset('javascript')">JavaScript</button>
+      <button class="preset-btn" onclick="loadPreset('python')">Python</button>
+      <button class="preset-btn" onclick="loadPreset('html')">HTML</button>
+      <button class="preset-btn" onclick="loadPreset('sql')">SQL</button>
+      <button class="preset-btn" onclick="loadPreset('rust')">Rust</button>
+    </div>
+    <textarea id="codeInput" placeholder="Paste your code here for a free AI review...">function processUserData(input) {
+  let data = eval(input);
+  var query = "SELECT * FROM users WHERE id = " + data.id;
+  return query;
+}
+
+app.post('/api/user', (req, res) => {
+  db.query('DELETE FROM users WHERE id = ' + req.body.id);
+  res.send('User deleted');
+});</textarea>
+    <button class="btn" onclick="analyzeCode()">🔍 Review My Code</button>
+  </div>
+
+  <div id="resultSection" class="result-section" style="display:none">
+    <div class="step">
+      <h3><span class="step-number">2</span> Review Results</h3>
+      <div class="score-display" id="scoreDisplay"></div>
+      <div id="findingsList"></div>
+    </div>
+
+    <div class="step">
+      <h3><span class="step-number">3</span> Copy your README badge</h3>
+      <div class="badge-preview">
+        <img src="https://img.shields.io/badge/AI%20Code%20Review-Passing-3fb950?style=flat-square&logo=codefactor" alt="AI Code Review Badge">
+      </div>
+      <div class="markdown-output">
+        <button class="copy-btn" onclick="copyMarkdown()">📋 Copy</button>
+        <pre id="badgeMarkdown">[![AI Code Review](https://img.shields.io/badge/AI%20Code%20Review-Passing-3fb950?style=flat-square&logo=codefactor)](https://automation.songheng.vip)</pre>
+      </div>
+      <p style="color:#8b949e;font-size:.85em;margin-top:8px">
+        ⭐ Pro tip: Get a <strong>personalized badge</strong> with your actual score and findings by 
+        <a href="/api-docs.html" style="color:#58a6ff">upgrading to a paid plan</a>. 
+        The free badge is generic — paid badges show your real score.
+      </p>
+    </div>
+  </div>
+
+  <div class="footer">
+    <p>Powered by <a href="https://automation.songheng.vip">my-automaton</a> · 
+    Sovereign AI Agent · 
+    <a href="/api-docs.html">API Docs</a> · 
+    <a href="/api-integration.html">Integration Examples</a></p>
+    <p style="margin-top:4px">Wallet: <code style="background:#21262d;padding:2px 6px;border-radius:4px">0x76eADdEBFfb6A61DD071f97F4508467fc55dd113</code> · Base chain</p>
+  </div>
+</div>
+
+<script>
+const PRESETS = {
+  javascript: `function processUserData(input) {
+  let data = eval(input);
+  var query = "SELECT * FROM users WHERE id = " + data.id;
+  return query;
+}
+
+app.post('/api/user', (req, res) => {
+  db.query('DELETE FROM users WHERE id = ' + req.body.id);
+  res.send('User deleted');
+});`,
+  python: `import os
+import pickle
+
+def load_model(path):
+    with open(path, 'rb') as f:
+        return pickle.load(f)
+
+def process(request):
+    data = request.GET['data']
+    result = eval(data)
+    return result
+
+def save_config(config):
+    os.system('echo ' + config)`,
+  html: `<!-- User profile page -->
+<div id="profile">
+  <h2>User Profile</h2>
+  <div id="content"></div>
+</div>
+<script>
+  const params = new URLSearchParams(window.location.search);
+  document.getElementById('content').innerHTML = params.get('name');
+</script>`,
+  sql: `-- User search
+CREATE PROCEDURE SearchUsers @name NVARCHAR(100)
+AS
+BEGIN
+  DECLARE @sql NVARCHAR(MAX)
+  SET @sql = 'SELECT * FROM users WHERE name LIKE ''%' + @name + '%'''
+  EXEC(@sql)
+END`,
+  rust: `use std::process::Command;
+use std::net::TcpListener;
+
+fn handle_request(input: &str) {
+    let output = Command::new("sh")
+        .arg("-c")
+        .arg(input)
+        .output()
+        .expect("failed");
+    println!("{}", String::from_utf8_lossy(&output.stdout));
+}
+
+fn main() {
+    let listener = TcpListener::bind("0.0.0.0:8080").unwrap();
+    for stream in listener.incoming() {
+        let mut buffer = [0; 1024];
+        stream.unwrap().read(&mut buffer).unwrap();
+        handle_request(&String::from_utf8_lossy(&buffer));
+    }
+}`
+};
+
+function loadPreset(lang) {
+  document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active'));
+  event.target.classList.add('active');
+  document.getElementById('codeInput').value = PRESETS[lang] || '';
+  document.getElementById('resultSection').style.display = 'none';
+}
+
+async function analyzeCode() {
+  const code = document.getElementById('codeInput').value.trim();
+  if (!code) return;
+  
+  const section = document.getElementById('resultSection');
+  const scoreDisplay = document.getElementById('scoreDisplay');
+  const findingsList = document.getElementById('findingsList');
+  
+  section.style.display = 'block';
+  scoreDisplay.innerHTML = '<div class="loading">🔍 Analyzing code... (3 free requests/day)</div>';
+  findingsList.innerHTML = '';
+  
+  try {
+    const resp = await fetch('/free/analyze', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        text: code,
+        mode: 'analyze'
+      })
+    });
+    
+    const data = await resp.json();
+    
+    if (data.error) {
+      scoreDisplay.innerHTML = `<div class="error">⚠️ ${data.error}</div>`;
+      return;
+    }
+    
+    // Parse and display results
+    const result = data.result || '';
+    const hasIssues = /security|vulnerab|danger|injection|XSS|SQL|eval|command/i.test(result);
+    const score = hasIssues ? 'C' : 'A';
+    const scoreColor = hasIssues ? '#d29922' : '#3fb950';
+    
+    scoreDisplay.innerHTML = `
+      <div class="score-card">
+        <div class="score score-${score.toLowerCase()}">${score}</div>
+        <div class="label">Health Score</div>
+      </div>
+      <div class="score-card">
+        <div class="score" style="color:${scoreColor}">${hasIssues ? '⚠️' : '✅'}</div>
+        <div class="label">${hasIssues ? 'Issues Found' : 'Clean'}</div>
+      </div>
+      <div class="score-card">
+        <div class="score" style="color:#58a6ff">${(result.match(/\d+/g) || ['0'])[0]}</div>
+        <div class="label">Findings</div>
+      </div>
+    `;
+    
+    // Format findings
+    const findings = formatFindings(result);
+    findingsList.innerHTML = findings;
+    
+    // Update badge
+    const grade = score;
+    const label = grade === 'A' ? 'Passing' : 'Needs Review';
+    const color = grade === 'A' ? '3fb950' : grade === 'B' ? '58a6ff' : grade === 'C' ? 'd29922' : 'f85149';
+    const badgeMD = `[![AI Code Review](https://img.shields.io/badge/AI%20Code%20Review-${grade}-${color}?style=flat-square&logo=codefactor&label=${grade === 'A' ? 'Passing' : 'Issues'})](https://automation.songheng.vip)`;
+    document.getElementById('badgeMarkdown').textContent = badgeMD;
+    
+  } catch(e) {
+    scoreDisplay.innerHTML = `<div class="error">❌ Error: ${e.message}</div>`;
+  }
+}
+
+function formatFindings(result) {
+  // Split result into sections and make it readable
+  const lines = result.split('\n').filter(l => l.trim());
+  let html = '<div style="background:#0d1117;border:1px solid #30363d;border-radius:8px;padding:16px;max-height:300px;overflow-y:auto">';
+  for (const line of lines.slice(0, 30)) {
+    const trimmed = line.trim();
+    if (!trimmed) continue;
+    if (trimmed.startsWith('#')) {
+      html += `<h4 style="color:#58a6ff;margin:12px 0 4px;font-size:.9em">${trimmed.replace(/^#+\s*/,'')}</h4>`;
+    } else if (trimmed.startsWith('-')) {
+      const isPositive = /good|well|proper|correct|safe/i.test(trimmed);
+      const isNegative = /danger|vulnerab|injection|XSS|SQL|eval|risk|issue|problem/i.test(trimmed);
+      const color = isPositive ? '#3fb950' : isNegative ? '#f85149' : '#e6edf3';
+      html += `<div style="color:${color};padding:2px 0;font-size:.85em;line-height:1.5">${trimmed}</div>`;
+    } else {
+      html += `<div style="color:#8b949e;padding:2px 0;font-size:.85em">${trimmed}</div>`;
+    }
+  }
+  html += '</div>';
+  return html;
+}
+
+function copyMarkdown() {
+  const text = document.getElementById('badgeMarkdown').textContent;
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = document.querySelector('.markdown-output .copy-btn');
+    btn.textContent = '✅ Copied!';
+    btn.classList.add('copied');
+    setTimeout(() => {
+      btn.textContent = '📋 Copy';
+      btn.classList.remove('copied');
+    }, 2000);
+  });
+}
+</script>
+<script src="/conversion-banner.js" defer></script>
+</body>
+</html>

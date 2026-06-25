@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HTTP Status Codes Reference — Free Developer Tool</title>
+<meta name="description" content="Complete HTTP status codes reference with descriptions. Free developer tool by my-automaton AI code review service.">
+<style>body{font-family:-apple-system,sans-serif;max-width:800px;margin:auto;background:#0d1117;color:#c9d1d9;padding:20px}
+h1{color:#fff}.code{display:inline-block;width:60px;font-weight:700;font-family:monospace;font-size:1.1rem}
+.card{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:12px 16px;margin:8px 0}
+.card:hover{border-color:#58a6ff}
+.search{width:100%;padding:12px;background:#0d1117;border:1px solid #30363d;border-radius:6px;color:#e6edf3;font-size:16px;margin-bottom:20px;box-sizing:border-box}
+.footer{text-align:center;padding:20px;color:#484f58}a{color:#58a6ff}</style>
+<!-- Open Graph / Social Meta Tags -->
+<meta property="og:title" content="HTTP Status Codes Reference — Free Developer Tool" />
+<meta property="og:description" content="Complete HTTP status codes reference with descriptions. Free developer tool by my-automaton AI code review service." />
+<meta property="og:image" content="https://automation.songheng.vip/og-image.png" />
+<meta property="og:url" content="https://automation.songheng.vip/tools/http-status-codes.html" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="my-automaton" />
+<meta property="og:locale" content="en_US" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="HTTP Status Codes Reference — Free Developer Tool" />
+<meta name="twitter:description" content="Complete HTTP status codes reference with descriptions. Free developer tool by my-automaton AI code review service." />
+<meta name="twitter:image" content="https://automation.songheng.vip/og-image.png" />
+  <link rel="canonical" href="https://automation.songheng.vip/tools/http-status-codes.html">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "HTTP Status Codes Reference — Free Developer Tool",
+  "description": "Complete HTTP status codes reference with descriptions. Free developer tool by my-automaton AI code review service.",
+  "url": "https://automation.songheng.vip/tools/http-status-codes.html",
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": "Web",
+  "author": {
+    "@type": "Organization",
+    "name": "my-automaton",
+    "url": "https://automation.songheng.vip"
+  },
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  }
+}
+</script>
+</head><body>
+<div style="background:#161b22;border-bottom:1px solid #30363d;padding:10px 20px;font-size:.85rem;display:flex;gap:16px;align-items:center;flex-wrap:wrap"><a href="/" style="color:#58a6ff;text-decoration:none;font-weight:600">🏠 Home</a><span style="color:#484f58">|</span><a href="/pricing.html" style="color:#8b949e;text-decoration:none">Pricing</a><a href="/api-docs.html" style="color:#8b949e;text-decoration:none">API</a><a href="/playground.html" style="color:#8b949e;text-decoration:none">Playground</a></div>
+
+<h1>HTTP Status Codes Reference</h1>
+<p style="color:#8b949e">Complete API developer reference. Powered by <a href="/">my-automaton AI Code Review</a></p>
+<input class="search" id="search" placeholder="Search code or description..." oninput="filter()">
+<div id="list"></div>
+<div class="footer"><p><a href="/">my-automaton</a> — AI Code Review & Analysis API</p></div>
+<script>
+const codes=[[100,"Continue"],[101,"Switching Protocols"],[200,"OK"],[201,"Created"],[204,"No Content"],[301,"Moved Permanently"],[302,"Found"],[304,"Not Modified"],[400,"Bad Request"],[401,"Unauthorized"],[402,"Payment Required"],[403,"Forbidden"],[404,"Not Found"],[405,"Method Not Allowed"],[408,"Request Timeout"],[409,"Conflict"],[410,"Gone"],[429,"Too Many Requests"],[500,"Internal Server Error"],[502,"Bad Gateway"],[503,"Service Unavailable"],[504,"Gateway Timeout"]];
+function render(list){document.getElementById('list').innerHTML=list.map(([c,n])=>'<div class="card"><div><span class="code">'+c+'</span> <strong>'+n+'</strong></div></div>').join('')}
+render(codes);
+function filter(){const q=document.getElementById('search').value.toLowerCase();render(codes.filter(([c,n])=>String(c)===q||n.toLowerCase().includes(q)))}
+</script></body></html>

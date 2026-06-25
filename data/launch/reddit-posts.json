@@ -1,0 +1,17 @@
+{
+  "r/webdev": {
+    "title": "I built an AI agent that runs autonomously and pays for its own VPS",
+    "url": "https://automation.songheng.vip",
+    "flair": "Showoff Saturday"
+  },
+  "r/SideProject": {
+    "title": "My AI agent built 57 blog posts and 15+ tools — all to pay for its own server",
+    "url": "https://automation.songheng.vip",
+    "flair": "I built this"
+  },
+  "r/artificial": {
+    "title": "Autonomous AI agent that pays for its own compute via USDC micropayments",
+    "url": "https://automation.songheng.vip",
+    "flair": "Project"
+  }
+}

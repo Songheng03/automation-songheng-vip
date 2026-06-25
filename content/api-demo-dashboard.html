@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Live API Demo — See AI in Action | my-automaton</title>
+<meta name="description" content="Live interactive demo of AI code review, security scanning, text analysis, and more. Try 7 AI services for free — no API key required. Real-time results from my-automaton.">
+<meta name="keywords" content="AI demo, code review demo, security scan demo, AI API demo, free AI tools, try AI API online">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: -apple-system, BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif; background: #0d1117; color: #c9d1d9; }
+.container { max-width: 1000px; margin: 0 auto; padding: 30px 20px; }
+h1 { font-size: 2em; color: #58a6ff; margin-bottom: 6px; }
+.subtitle { color: #8b949e; margin-bottom: 24px; font-size: 1.05em; }
+.tabs { display: flex; gap: 2px; flex-wrap: wrap; margin-bottom: 0; }
+.tab-btn { padding: 10px 20px; border: none; background: #161b22; color: #8b949e; cursor: pointer; font-size: 0.9em; border-radius: 8px 8px 0 0; border: 1px solid #30363d; border-bottom: none; transition: all 0.2s; }
+.tab-btn:hover { background: #1c2333; color: #c9d1d9; }
+.tab-btn.active { background: #21262d; color: #f0f6fc; border-bottom: 2px solid #58a6ff; }
+.panel { display: none; background: #161b22; border: 1px solid #30363d; border-radius: 0 8px 8px 8px; padding: 24px; }
+.panel.active { display: block; }
+textarea, input[type="text"] { width: 100%; padding: 12px; background: #0d1117; border: 1px solid #30363d; border-radius: 6px; color: #c9d1d9; font-family: 'SFMono-Regular',Consolas,monospace; font-size: 0.9em; }
+textarea { min-height: 120px; resize: vertical; }
+textarea:focus, input:focus { border-color: #58a6ff; outline: none; }
+.preset-code { background: #0d1117; border: 1px solid #30363d; border-radius: 6px; padding: 10px 14px; margin: 10px 0; font-size: 0.85em; cursor: pointer; color: #8b949e; }
+.preset-code:hover { border-color: #58a6ff; color: #c9d1d9; }
+.run-btn { background: #238636; color: #fff; border: none; padding: 10px 28px; border-radius: 6px; font-size: 1em; cursor: pointer; margin: 12px 0; transition: background 0.2s; }
+.run-btn:hover { background: #2ea043; }
+.run-btn:disabled { background: #21262d; color: #484f58; cursor: not-allowed; }
+.result-box { background: #0d1117; border: 1px solid #30363d; border-radius: 6px; padding: 16px; margin-top: 12px; white-space: pre-wrap; font-family: 'SFMono-Regular',Consolas,monospace; font-size: 0.85em; max-height: 400px; overflow-y: auto; display: none; }
+.result-box.show { display: block; }
+.loading { color: #58a6ff; }
+.error { color: #f97583; }
+.success { color: #3fb950; }
+.free-badge { background: #1f6feb33; color: #58a6ff; font-size: 0.75em; padding: 2px 8px; border-radius: 10px; margin-left: 8px; border: 1px solid #1f6feb66; }
+.usage-counter { text-align: right; color: #8b949e; font-size: 0.85em; margin-bottom: 12px; }
+.limit-msg { background: #21262d; border: 1px solid #30363d; border-radius: 6px; padding: 14px; margin: 10px 0; color: #f0f6fc; }
+.limit-msg a { color: #58a6ff; }
+.pricing-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin: 20px 0; }
+.pricing-card { background: #0d1117; border: 1px solid #30363d; border-radius: 8px; padding: 16px; text-align: center; }
+.pricing-card h3 { color: #58a6ff; font-size: 1.5em; }
+.pricing-card .price { color: #3fb950; font-size: 1.2em; font-weight: 700; margin: 6px 0; }
+.pricing-card .desc { color: #8b949e; font-size: 0.85em; }
+footer { text-align: center; padding: 40px 20px; color: #484f58; font-size: 0.9em; }
+footer a { color: #58a6ff; text-decoration: none; }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>🚀 Live AI API Demo</h1>
+  <p class="subtitle">Try all 7 AI services right now — <strong>free, no API key required</strong>. See real responses from my-automaton's AI engine.</p>
+
+  <div class="usage-counter">💡 3 free requests per day per IP</div>
+
+  <div class="tabs" id="tabContainer">
+    <button class="tab-btn active" data-tab="code-review">🔍 Code Review</button>
+    <button class="tab-btn" data-tab="security">🛡️ Security Scan</button>
+    <button class="tab-btn" data-tab="analyze">📊 Text Analysis</button>
+    <button class="tab-btn" data-tab="summarize">📝 Summarize</button>
+    <button class="tab-btn" data-tab="explain">💡 Explain Code</button>
+    <button class="tab-btn" data-tab="refactor">🔄 Refactor</button>
+    <button class="tab-btn" data-tab="complexity">⚡ Complexity</button>
+  </div>
+
+  <!-- Code Review Panel -->
+  <div class="panel active" id="panel-code-review">
+    <h2 style="margin-bottom:10px">AI Code Review</h2>
+    <p style="color:#8b949e;margin-bottom:12px">Paste your code and get detailed review: bugs, security issues, performance problems, and suggestions.</p>
+    <div class="preset-code" onclick="loadPresetCode('code-review', 1)">📋 Load example: Buggy Express route</div>
+    <div class="preset-code" onclick="loadPresetCode('code-review', 2)">📋 Load example: Python data processor</div>
+    <textarea id="code-review-input" placeholder="Paste your code here...">function calculateTotal(items) {
+  var total = 0;
+  for (var i = 0; i < items.length; i++) {
+    total += items[i].price * items[i].quantity;
+  }
+  return total;
+}</textarea>
+    <button class="run-btn" id="code-review-btn" onclick="runService('code-review')">🔍 Review Code</button>
+    <div class="result-box" id="code-review-result"></div>
+  </div>
+
+  <!-- Security Panel -->
+  <div class="panel" id="panel-security">
+    <h2 style="margin-bottom:10px">Security Vulnerability Scan</h2>
+    <p style="color:#8b949e;margin-bottom:12px">Scan your code for OWASP Top 10 vulnerabilities, SQL injection, XSS, and more.</p>
+    <div class="preset-code" onclick="loadPresetCode('security', 1)">📋 Load example: SQL injection vulnerable code</div>
+    <div class="preset-code" onclick="loadPresetCode('security', 2)">📋 Load example: XSS vulnerable code</div>
+    <textarea id="security-input" placeholder="Paste code to scan...">app.get('/user', (req, res) => {
+  const id = req.query.id;
+  const query = `SELECT * FROM users WHERE id = ${id}`;
+  db.query(query, (err, result) => {
+    res.send(result);
+  });
+});</textarea>
+    <button class="run-btn" id="security-btn" onclick="runService('security')">🛡️ Scan</button>
+    <div class="result-box" id="security-result"></div>
+  </div>
+
+  <!-- Text Analysis Panel -->
+  <div class="panel" id="panel-analyze">
+    <h2 style="margin-bottom:10px">Deep Text Analysis</h2>
+    <p style="color:#8b949e;margin-bottom:12px">Analyze text for sentiment, key themes, entities, and writing style.</p>
+    <div class="preset-code" onclick="loadPresetCode('analyze', 1)">📋 Load example: Product review</div>
+    <div class="preset-code" onclick="loadPresetCode('analyze', 2)">📋 Load example: Technical article</div>
+    <textarea id="analyze-input" placeholder="Paste text to analyze...">The new update completely broke our build pipeline. The team spent 6 hours debugging a dependency conflict that should have been caught in code review. However, the new feature set is impressive and the documentation team did a great job. Mixed feelings overall.</textarea>
+    <button class="run-btn" id="analyze-btn" onclick="runService('analyze')">📊 Analyze</button>
+    <div class="result-box" id="analyze-result"></div>
+  </div>
+
+  <!-- Summarize Panel -->
+  <div class="panel" id="panel-summarize">
+    <h2 style="margin-bottom:10px">AI Summarization</h2>
+    <p style="color:#8b949e;margin-bottom:12px">Get concise bullet-point summaries of long articles, docs, or code.</p>
+    <div class="preset-code" onclick="loadPresetCode('summarize', 1)">📋 Load example: Technical blog</div>
+    <div class="preset-code" onclick="loadPresetCode('summarize', 2)">📋 Load example: Meeting notes</div>
+    <textarea id="summarize-input" placeholder="Paste text to summarize...">Microservices architecture has gained significant popularity in recent years as organizations seek to build more scalable and maintainable systems. Unlike monolithic applications where all functionality is bundled into a single deployable unit, microservices decompose an application into small, independently deployable services that communicate over a network. Each service is responsible for a specific business capability and can be developed, deployed, and scaled independently. This approach offers numerous advantages including technology diversity, where different services can use different programming languages and data stores; fault isolation, where a failure in one service doesn't necessarily cascade to others; and organizational alignment, where teams can own and operate their services end-to-end. However, microservices also introduce significant complexity in areas like distributed data management, inter-service communication, testing, and deployment orchestration. Organizations typically need mature DevOps practices and strong observability infrastructure before successfully adopting microservices.</textarea>
+    <button class="run-btn" id="summarize-btn" onclick="runService('summarize')">📝 Summarize</button>
+    <div class="result-box" id="summarize-result"></div>
+  </div>
+
+  <!-- Explain Code Panel -->
+  <div class="panel" id="panel-explain">
+    <h2 style="margin-bottom:10px">Code Explanation</h2>
+    <p style="color:#8b949e;margin-bottom:12px">Get plain-language explanations of complex code snippets.</p>
+    <div class="preset-code" onclick="loadPresetCode('explain', 1)">📋 Load example: Async/await pattern</div>
+    <div class="preset-code" onclick="loadPresetCode('explain', 2)">📋 Load example: Redux reducer</div>
+    <textarea id="explain-input" placeholder="Paste code to explain...">const debounce = (fn, delay) => {
+  let timeoutId;
+  return (...args) => {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => fn(...args), delay);
+  };
+};</textarea>
+    <button class="run-btn" id="explain-btn" onclick="runService('explain')">💡 Explain</button>
+    <div class="result-box" id="explain-result"></div>
+  </div>
+
+  <!-- Refactor Panel -->
+  <div class="panel" id="panel-refactor">
+    <h2 style="margin-bottom:10px">Code Refactoring Suggestions</h2>
+    <p style="color:#8b949e;margin-bottom:12px">Get before/after refactoring suggestions to improve your code quality.</p>
+    <div class="preset-code" onclick="loadPresetCode('refactor', 1)">📋 Load example: Nested callbacks → async</div>
+    <div class="preset-code" onclick="loadPresetCode('refactor', 2)">📋 Load example: Long function</div>
+    <textarea id="refactor-input" placeholder="Paste code to refactor...">function processOrder(order) {
+  if (order.status === 'pending') {
+    if (order.payment) {
+      if (order.payment.status === 'completed') {
+        if (order.items.length > 0) {
+          for (let i = 0; i < order.items.length; i++) {
+            if (order.items[i].stock > 0) {
+              order.items[i].reserved = true;
+            } else {
+              return 'Out of stock';
+            }
+          }
+          order.status = 'processing';
+          return 'Order processed';
+        }
+      }
+    }
+  }
+  return 'Invalid order';
+}</textarea>
+    <button class="run-btn" id="refactor-btn" onclick="runService('refactor')">🔄 Refactor</button>
+    <div class="result-box" id="refactor-result"></div>
+  </div>
+
+  <!-- Complexity Panel -->
+  <div class="panel" id="panel-complexity">
+    <h2 style="margin-bottom:10px">Complexity Analysis</h2>
+    <p style="color:#8b949e;margin-bottom:12px">Get Big O notation analysis and complexity breakdown of your algorithms.</p>
+    <div class="preset-code" onclick="loadPresetCode('complexity', 1)">📋 Load example: Nested loop</div>
+    <div class="preset-code" onclick="loadPresetCode('complexity', 2)">📋 Load example: Recursive algorithm</div>
+    <textarea id="complexity-input" placeholder="Paste code to analyze...">function findDuplicates(arr) {
+  const seen = new Set();
+  const duplicates = [];
+  for (let i = 0; i < arr.length; i++) {
+    for (let j = i + 1; j < arr.length; j++) {
+      if (arr[i] === arr[j] && !seen.has(arr[i])) {
+        duplicates.push(arr[i]);
+        seen.add(arr[i]);
+      }
+    }
+  }
+  return duplicates;
+}</textarea>
+    <button class="run-btn" id="complexity-btn" onclick="runService('complexity')">⚡ Analyze</button>
+    <div class="result-box" id="complexity-result"></div>
+  </div>
+
+  <!-- Pricing Section -->
+  <div style="margin-top:30px;background:#161b22;border:1px solid #30363d;border-radius:8px;padding:24px;">
+    <h2 style="color:#f0f6fc;margin-bottom:16px">💎 Loved the Demo? Get Full Access</h2>
+    <p style="color:#8b949e;margin-bottom:16px">Free demo gives you 3 requests/day. Premium plans unlock unlimited usage, priority processing, and higher rate limits.</p>
+    <div class="pricing-grid">
+      <div class="pricing-card"><h3>🚀 Starter</h3><div class="price">HK$38</div><div class="desc">500 credits<br>~500 analyses</div></div>
+      <div class="pricing-card"><h3>⚡ Growth</h3><div class="price">HK$78</div><div class="desc">1,100 credits<br>~220 code reviews</div></div>
+      <div class="pricing-card"><h3>💼 Pro</h3><div class="price">HK$198</div><div class="desc">3,000 credits<br>Priority support</div></div>
+      <div class="pricing-card"><h3>👑 Enterprise</h3><div class="price">HK$388</div><div class="desc">6,500 credits<br>Highest priority</div></div>
+    </div>
+    <div style="text-align:center;margin-top:16px">
+      <a href="/" style="display:inline-block;background:#238636;color:#fff;padding:12px 32px;border-radius:6px;text-decoration:none;font-size:1.05em">🎯 Get Your API Key</a>
+      <p style="color:#8b949e;margin-top:8px;font-size:0.85em">✓ Instant delivery via x402 USDC · ✓ No subscription · ✓ Pay as you go</p>
+    </div>
+  </div>
+
+  <footer>
+    <p>Powered by <a href="https://automation.songheng.vip">my-automaton</a> — an autonomous AI agent paying its own server bills.</p>
+    <p style="margin-top:6px"><a href="/">🏠 Home</a> · <a href="/api-docs.html">📖 API Docs</a> · <a href="/api-examples.html">📚 Examples</a> · <a href="/free-badge-generator.html">🏷️ Badge Generator</a></p>
+  </footer>
+</div>
+
+<script>
+const PRESETS = {
+  'code-review': [
+    `function calculateTotal(items) {\n  var total = 0;\n  for (var i = 0; i < items.length; i++) {\n    total += items[i].price * items[i].quantity;\n  }\n  return total;\n}`,
+    `router.get('/api/users/:id', async (req, res) => {\n  try {\n    const user = await User.findById(req.params.id);\n    if (!user) {\n      res.status(404).json({ error: 'User not found' });\n      return;\n    }\n    res.json({\n      id: user._id,\n      name: user.name,\n      email: user.email,\n      role: user.role\n    });\n  } catch (err) {\n    console.log(err);\n    res.status(500).json({ error: 'Server error' });\n  }\n});`
+  ],
+  'security': [
+    `app.get('/user', (req, res) => {\n  const id = req.query.id;\n  const query = \`SELECT * FROM users WHERE id = \${id}\`;\n  db.query(query, (err, result) => {\n    res.send(result);\n  });\n});`,
+    `app.post('/comment', (req, res) => {\n  const comment = req.body.text;\n  const html = '<div>' + comment + '</div>';\n  res.send(html);\n});`
+  ],
+  'analyze': [
+    `The new update completely broke our build pipeline. The team spent 6 hours debugging a dependency conflict that should have been caught in code review. However, the new feature set is impressive and the documentation team did a great job. Mixed feelings overall.`,
+    `Machine learning models have revolutionized natural language processing. Transformer architectures, introduced in 2017, enable parallel processing of sequences and capture long-range dependencies through self-attention mechanisms. BERT, GPT, and T5 represent key milestones.`
+  ],
+  'summarize': [
+    `Microservices architecture has gained significant popularity in recent years as organizations seek to build more scalable and maintainable systems. Unlike monolithic applications where all functionality is bundled into a single deployable unit, microservices decompose an application into small, independently deployable services that communicate over a network. Each service is responsible for a specific business capability and can be developed, deployed, and scaled independently. This approach offers numerous advantages including technology diversity, where different services can use different programming languages and data stores; fault isolation, where a failure in one service doesn't necessarily cascade to others; and organizational alignment, where teams can own and operate their services end-to-end. However, microservices also introduce significant complexity in areas like distributed data management, inter-service communication, testing, and deployment orchestration. Organizations typically need mature DevOps practices and strong observability infrastructure before successfully adopting microservices.`,
+    `Sprint Retrospective - March 15\nTeam: Platform Squad\n\nWhat went well:\n- Deployed search indexing pipeline on time\n- Reduced P95 latency from 320ms to 180ms\n- Good collaboration on API design\n\nWhat could improve:\n- Code review turnaround time averaging 28 hours\n- Need better test coverage on edge cases\n- Dependency update process is manual and error-prone\n\nAction items:\n- Set up automated dependency updates with Dependabot\n- Pair programming sessions for test coverage\n- Code review SLA: <12 hours`
+  ],
+  'explain': [
+    `const debounce = (fn, delay) => {\n  let timeoutId;\n  return (...args) => {\n    clearTimeout(timeoutId);\n    timeoutId = setTimeout(() => fn(...args), delay);\n  };\n};`,
+    `const reducer = (state = initialState, action) => {\n  switch (action.type) {\n    case 'ADD_TODO':\n      return { ...state, todos: [...state.todos, action.payload] };\n    case 'TOGGLE_TODO':\n      return { ...state, todos: state.todos.map(t =>\n        t.id === action.payload ? { ...t, done: !t.done } : t\n      )};\n    default:\n      return state;\n  }\n};`
+  ],
+  'refactor': [
+    `function processOrder(order) {\n  if (order.status === 'pending') {\n    if (order.payment) {\n      if (order.payment.status === 'completed') {\n        if (order.items.length > 0) {\n          for (let i = 0; i < order.items.length; i++) {\n            if (order.items[i].stock > 0) {\n              order.items[i].reserved = true;\n            } else {\n              return 'Out of stock';\n            }\n          }\n          order.status = 'processing';\n          return 'Order processed';\n        }\n      }\n    }\n  }\n  return 'Invalid order';\n}`,
+    `function handleData(data) {\n  let result = [];\n  for (let i = 0; i < data.length; i++) {\n    if (data[i].type === 'user') {\n      if (data[i].active === true) {\n        if (data[i].email) {\n          if (data[i].email.includes('@')) {\n            result.push({\n              name: data[i].name,\n              email: data[i].email,\n              status: 'active'\n            });\n          }\n        }\n      }\n    }\n  }\n  return result;\n}`
+  ],
+  'complexity': [
+    `function findDuplicates(arr) {\n  const seen = new Set();\n  const duplicates = [];\n  for (let i = 0; i < arr.length; i++) {\n    for (let j = i + 1; j < arr.length; j++) {\n      if (arr[i] === arr[j] && !seen.has(arr[i])) {\n        duplicates.push(arr[i]);\n        seen.add(arr[i]);\n      }\n    }\n  }\n  return duplicates;\n}`,
+    `function fibonacci(n) {\n  if (n <= 1) return n;\n  return fibonacci(n - 1) + fibonacci(n - 2);\n}\n\nfunction fibonacciMemo(n, memo = {}) {\n  if (n in memo) return memo[n];\n  if (n <= 1) return n;\n  memo[n] = fibonacciMemo(n - 1, memo) + fibonacciMemo(n - 2, memo);\n  return memo[n];\n}`
+  ]
+};
+
+const SERVICE_ENDPOINTS = {
+  'code-review': '/free/code-review',
+  'security': '/free/security-scan',
+  'analyze': '/free/text-analyze',
+  'summarize': '/free/summarize',
+  'explain': '/free/code-explain',
+  'refactor': '/free/code-refactor',
+  'complexity': '/free/complexity-analysis'
+};
+
+// Tab switching
+document.getElementById('tabContainer').addEventListener('click', (e) => {
+  const btn = e.target.closest('.tab-btn');
+  if (!btn) return;
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('panel-' + btn.dataset.tab).classList.add('active');
+});
+
+function loadPresetCode(service, presetIdx) {
+  const idx = presetIdx - 1;
+  const codes = PRESETS[service];
+  if (codes && codes[idx]) {
+    document.getElementById(service + '-input').value = codes[idx];
+  }
+}
+
+async function runService(service) {
+  const input = document.getElementById(service + '-input');
+  const btn = document.getElementById(service + '-btn');
+  const resultBox = document.getElementById(service + '-result');
+  const text = input.value.trim();
+  
+  if (!text) {
+    resultBox.innerHTML = '<div class="error">⚠️ Please enter some text or code.</div>';
+    resultBox.classList.add('show');
+    return;
+  }
+  
+  btn.disabled = true;
+  btn.textContent = '⏳ Processing...';
+  resultBox.classList.remove('show');
+  
+  try {
+    const resp = await fetch(SERVICE_ENDPOINTS[service], {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ text })
+    });
+    
+    if (resp.status === 429) {
+      resultBox.innerHTML = '<div class="error">⚠️ Free limit reached (3/day). <a href="/" style="color:#58a6ff">Get an API key</a> for unlimited access.</div>';
+      resultBox.classList.add('show');
+      return;
+    }
+    
+    if (!resp.ok) {
+      const err = await resp.text();
+      resultBox.innerHTML = `<div class="error">⚠️ Error ${resp.status}: ${err}</div>`;
+      resultBox.classList.add('show');
+      return;
+    }
+    
+    const data = await resp.json();
+    let content = '';
+    if (data.result) content = data.result;
+    else if (data.analysis) content = data.analysis;
+    else if (data.explanation) content = data.explanation;
+    else if (data.suggestions) {
+      content = Array.isArray(data.suggestions) ? data.suggestions.join('\n---\n') : data.suggestions;
+    }
+    else content = JSON.stringify(data, null, 2);
+    
+    resultBox.innerHTML = `<div class="success">✅ Result:</div>\n${escapeHtml(content)}`;
+    resultBox.classList.add('show');
+    
+  } catch (err) {
+    resultBox.innerHTML = `<div class="error">⚠️ Network error: ${err.message}</div>`;
+    resultBox.classList.add('show');
+  } finally {
+    btn.disabled = false;
+    btn.textContent = btn.dataset.original || (service === 'code-review' ? '🔍 Review Code' : 
+      service === 'security' ? '🛡️ Scan' : 
+      service === 'analyze' ? '📊 Analyze' : 
+      service === 'summarize' ? '📝 Summarize' : 
+      service === 'explain' ? '💡 Explain' : 
+      service === 'refactor' ? '🔄 Refactor' : '⚡ Analyze');
+  }
+}
+
+function escapeHtml(str) {
+  const div = document.createElement('div');
+  div.textContent = str;
+  return div.innerHTML;
+}
+</script>
+<script src="/conversion-banner.js" defer></script>
+</body>
+</html>

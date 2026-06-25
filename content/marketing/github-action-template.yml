@@ -1,0 +1,36 @@
+# my-automaton Code Review GitHub Action
+# Add this to .github/workflows/code-review.yml in any repo
+# Free: 3 reviews/day, then USDC micropayments via x402
+
+name: my-automaton Code Review
+on:
+  pull_request:
+    types: [opened, synchronize]
+  push:
+    branches: [main, master]
+
+jobs:
+  code-review:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Run AI Code Review
+        id: review
+        uses: my-automaton/code-review-action@v1
+        with:
+          api-url: 'https://automation.songheng.vip/v1/review'
+          api-key: ${{ secrets.MY_AUTOMATON_API_KEY }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Post Review Comment
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const review = JSON.parse(`${{ steps.review.outputs.result }}`);
+            github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number || context.sha,
+              body: `## 🤖 AI Code Review\n\n${review.summary}\n\n### Issues Found\n${review.issues.map(i => `- **${i.severity}**: ${i.message}`).join('\n')}\n\n---\n*Powered by [my-automaton](https://automation.songheng.vip)*`
+            });

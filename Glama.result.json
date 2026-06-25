@@ -1,0 +1,49 @@
+{
+  "status": "ready_for_manual",
+  "platform": "Glama",
+  "domain": "glama.ai",
+  "method_attempted": "API_endpoint_verification_and_web_research",
+  "details": {
+    "summary": "Glama.ai requires manual submission via web browser with GitHub OAuth authentication. There is no public REST API for programmatic submission. The service is a client-rendered Next.js application. All API endpoints tested (/api/servers, /api/github/submit) return HTTP 404. The /api/mcp/servers endpoint exists but returns an HTML page (Next.js app), not a REST API. Submission flow requires: (1) Log in at glama.ai via GitHub OAuth with write access to Conway-Research/automaton, (2) Navigate to MCP servers page, (3) Submit the repository URL for automated scanning and verification.",
+    "endpoint_checks": {
+      "https://glama.ai": "HTTP 200 - Site accessible",
+      "https://glama.ai/mcp/servers": "HTTP 200 - Servers listing page (Next.js SSR)",
+      "https://glama.ai/mcp/servers/new": "HTTP 200 - New server page (likely auth-protected)",
+      "https://glama.ai/api/servers": "HTTP 404 - No API endpoint for submission",
+      "https://glama.ai/api/mcp/servers": "HTTP 200 - Client-rendered HTML page (not a REST API)",
+      "https://glama.ai/api/github/submit": "HTTP 404 - No API for GitHub submission"
+    },
+    "submission_process": {
+      "type": "GitHub OAuth + Web UI",
+      "auth_required": "GitHub account with write/admin access to Conway-Research/automaton",
+      "steps": [
+        "1. Open https://glama.ai and sign up via GitHub OAuth",
+        "2. Navigate to https://glama.ai/mcp/servers",
+        "3. Click 'Submit Server' or 'Add Server' button",
+        "4. Enter repository URL: https://github.com/Conway-Research/automaton",
+        "5. Glama verifies write access via GitHub OAuth",
+        "6. Glama clones the repo, builds Docker image, runs MCP introspection and behavioral analysis",
+        "7. Server appears at https://glama.ai/mcp/servers/@Conway-Research/automaton"
+      ]
+    },
+    "credentials_available": {
+      "github_pat": false,
+      "glama_api_key": false,
+      "env_vars": "No GITHUB_TOKEN or Glama-specific credentials found"
+    },
+    "listing_metadata": {
+      "repository_url": "https://github.com/Conway-Research/automaton",
+      "service_name": "my-automaton",
+      "base_url": "https://automation.songheng.vip",
+      "mcp_endpoint": "https://automation.songheng.vip/mcp"
+    },
+    "research_notes": "Glama scans repositories automatically upon submission. It builds the Docker image, runs the MCP server in an isolated Firecracker microVM, performs protocol introspection (tools/list, resources/list, prompts/list), runs behavioral analysis, and computes a Tool Definition Quality Score (TDQS). The listing is preserved even if build fails but hidden from search results."
+  },
+  "artifacts": {
+    "manual_submission_guide": "/root/automaton/glama_manual.md",
+    "listing_metadata_source": "/root/automaton/listing-metadata.json",
+    "submission_metadata": "/root/automaton/submission_metadata.json"
+  },
+  "recommendation": "Manual submission is required. A human with GitHub write access to Conway-Research/automaton must: (1) Log into glama.ai via GitHub OAuth, (2) Navigate to https://glama.ai/mcp/servers, (3) Click 'Submit Server', (4) Enter the repository URL. The `glama_manual.md` file contains detailed step-by-step instructions, prerequisite checklist, metadata reference, post-submission checklist, and troubleshooting guide. Ensure the Dockerfile builds successfully (listens on port 8080) before submitting.",
+  "timestamp": "2026-06-17T18:06:00Z"
+}

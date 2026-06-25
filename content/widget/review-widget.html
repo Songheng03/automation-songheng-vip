@@ -1,0 +1,71 @@
+<!-- my-automaton Code Review Widget -->
+<!-- Drop this snippet into any page to add AI code review -->
+<div id="ma-review-widget" style="max-width:800px;margin:2rem auto;font-family:system-ui,-apple-system,sans-serif;">
+  <style>
+    #ma-review-widget{background:#0d1117;color:#c9d1d9;border-radius:12px;padding:24px;border:1px solid #30363d}
+    #ma-review-widget h3{color:#58a6ff;margin:0 0 16px;font-size:18px}
+    #ma-review-widget textarea{width:100%;min-height:200px;background:#161b22;color:#c9d1d9;border:1px solid #30363d;border-radius:8px;padding:12px;font-family:'Fira Code',monospace;font-size:14px;resize:vertical;box-sizing:border-box}
+    #ma-review-widget select,#ma-review-widget button{padding:10px 20px;border-radius:8px;border:1px solid #30363d;font-size:14px;margin:8px 8px 8px 0}
+    #ma-review-widget select{background:#161b22;color:#c9d1d9}
+    #ma-review-widget button{background:#238636;color:#fff;border:none;cursor:pointer;font-weight:600}
+    #ma-review-widget button:hover{background:#2ea043}
+    #ma-review-widget button:disabled{background:#21262d;color:#484f58;cursor:not-allowed}
+    #ma-review-widget .ma-result{margin-top:16px;padding:16px;background:#161b22;border-radius:8px;border:1px solid #30363d;white-space:pre-wrap;font-size:13px;max-height:400px;overflow-y:auto}
+    #ma-review-widget .ma-toolbar{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:8px 0}
+    #ma-review-widget .ma-powered{font-size:11px;color:#484f58;margin-top:12px;text-align:right}
+    #ma-review-widget .ma-powered a{color:#58a6ff;text-decoration:none}
+    #ma-review-widget .ma-badge{background:#1f6feb22;color:#58a6ff;padding:2px 8px;border-radius:12px;font-size:11px}
+  </style>
+  <h3>🤖 AI Code Review</h3>
+  <textarea id="ma-code" placeholder="Paste your code here for instant AI review..."></textarea>
+  <div class="ma-toolbar">
+    <select id="ma-lang">
+      <option value="">Auto-detect</option>
+      <option value="javascript">JavaScript</option>
+      <option value="typescript">TypeScript</option>
+      <option value="python">Python</option>
+      <option value="go">Go</option>
+      <option value="rust">Rust</option>
+      <option value="java">Java</option>
+      <option value="solidity">Solidity</option>
+    </select>
+    <select id="ma-endpoint">
+      <option value="review">Code Review (5¢)</option>
+      <option value="security">Security Scan (3¢)</option>
+      <option value="explain">Explain (2¢)</option>
+      <option value="refactor">Refactor (5¢)</option>
+      <option value="complexity">Complexity (2¢)</option>
+    </select>
+    <button id="ma-submit" onclick="maReview()">Review Code</button>
+    <span class="ma-badge">3 free / day</span>
+  </div>
+  <div id="ma-result" class="ma-result" style="display:none"></div>
+  <div class="ma-powered">Powered by <a href="https://automation.songheng.vip" target="_blank">my-automaton</a></div>
+</div>
+<script>
+async function maReview(){
+  const code=document.getElementById('ma-code').value.trim();
+  if(!code){alert('Paste some code first!');return}
+  const lang=document.getElementById('ma-lang').value;
+  const ep=document.getElementById('ma-endpoint').value;
+  const btn=document.getElementById('ma-submit');
+  const res=document.getElementById('ma-result');
+  btn.disabled=true;btn.textContent='Analyzing...';
+  res.style.display='block';res.textContent='⏳ Sending to AI...';
+  try{
+    const body={text:code,language:lang||undefined};
+    let r=await fetch('https://automation.songheng.vip/free/'+ep,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+    if(r.status===402||r.status===429){
+      res.innerHTML='⚠️ Free tier limit reached. <a href="https://automation.songheng.vip/pricing.html" target="_blank" style="color:#58a6ff">Get an API key</a> for unlimited reviews.';
+      btn.disabled=false;btn.textContent='Review Code';return;
+    }
+    const d=await r.json();
+    if(d.error){res.textContent='❌ '+d.error}
+    else{
+      let out=d.result||d.summary||d.analysis||JSON.stringify(d,null,2);
+      res.textContent=out;
+    }
+  }catch(e){res.textContent='❌ Network error: '+e.message}
+  btn.disabled=false;btn.textContent='Review Code';
+}
+</script>

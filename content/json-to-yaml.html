@@ -1,0 +1,46 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Free JSON to YAML Converter — Convert JSON to YAML Online | my-automaton</title><meta name="description" content="Convert JSON to YAML instantly. Paste JSON, get clean indented YAML. Download as .yaml. 100% free, no signup."><style>:root{--bg:#0f172a;--card:#1e293b;--text:#e2e8f0;--muted:#94a3b8;--accent:#38bdf8;--green:#4ade80;--red:#f87171;--border:#334155}*{box-sizing:border-box;margin:0;padding:0}body{font-family:system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh}header{background:var(--card);border-bottom:1px solid var(--border);padding:1rem 2rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap}header h1{font-size:1.25rem;color:var(--accent)}nav a{color:var(--muted);text-decoration:none;margin-left:1rem;font-size:.875rem}main{max-width:900px;margin:2rem auto;padding:0 1rem}.card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.5rem;margin-bottom:1rem}.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:1rem}@media(max-width:650px){.grid-2{grid-template-columns:1fr}}textarea{width:100%;background:#0f172a;color:var(--text);border:1px solid var(--border);border-radius:8px;padding:.75rem;font-family:"Fira Code",monospace;font-size:.75rem;resize:vertical;min-height:300px}textarea:focus{outline:none;border-color:var(--accent)}.error{color:var(--red);font-size:.75rem}.success{color:var(--green);font-size:.75rem}.btn-row{display:flex;gap:.5rem;flex-wrap:wrap;margin:.75rem 0}.btn{padding:.4rem 1rem;border:none;border-radius:6px;cursor:pointer;font-size:.8rem;font-weight:600}.btn-green{background:var(--green);color:#0f172a}.btn-secondary{background:var(--border);color:var(--text)}.presets button{padding:.15rem .5rem;border:1px solid var(--border);border-radius:4px;background:transparent;color:var(--muted);cursor:pointer;font-size:.65rem;margin:.15rem}footer{text-align:center;padding:2rem;color:var(--muted);font-size:.8rem;border-top:1px solid var(--border);margin-top:2rem}footer a{color:var(--accent)}</style></head><body><header><h1>🔄 JSON to YAML Converter</h1><nav><a href="/">Home</a><a href="/dev-tools.html">Dev Tools</a><a href="/dev-tools-hub.html">Tools Hub</a></nav></header><main>
+<div class="presets"><span style="font-size:.65rem;color:var(--muted)">Samples: </span><button onclick="load('config')">Docker Config</button><button onclick="load('api')">API Spec</button><button onclick="load('ci')">CI Config</button></div>
+<div class="grid-2"><textarea id="jsonInput" placeholder='{"key": "value"}' oninput="convert()">{"app":{"name":"my-service","version":"2.1.0","port":8080,"debug":false},"database":{"host":"localhost","port":5432,"name":"myapp","pool":{"min":2,"max":10}},"features":["auth","logging","caching"]}</textarea><textarea id="yamlOutput" readonly placeholder="YAML output..."></textarea></div>
+<div class="error" id="errorMsg"></div>
+<div class="btn-row"><button class="btn btn-green" onclick="copyOutput()">📋 Copy YAML</button><button class="btn btn-secondary" onclick="downloadYAML()">📥 Download .yaml</button></div>
+</main><footer><p>my-automaton · Free JSON to YAML Converter · <a href="/">Home</a> · <a href="/dev-tools-hub.html">All Tools</a></p></footer>
+<script>
+const samples={config:'{"version":"3.8","services":{"web":{"image":"nginx:alpine","ports":["80:80","443:443"],"volumes":["./html:/usr/share/nginx/html","./certs:/etc/nginx/certs"],"environment":{"NODE_ENV":"production"}}}}',api:'{"openapi":"3.0.0","info":{"title":"Pet Store","version":"1.0"},"paths":{"/pets":{"get":{"summary":"List pets","parameters":[{"name":"limit","in":"query","schema":{"type":"integer"}}]}}}}',ci:'{"name":"CI Pipeline","on":{"push":{"branches":["main"]}},"jobs":{"test":{"runs-on":"ubuntu-latest","steps":[{"uses":"actions/checkout@v3"},{"run":"npm test"}]}}}'};
+function load(n){document.getElementById('jsonInput').value=samples[n];convert()}
+function jsonToYaml(obj,indent=0){
+  const pad='  '.repeat(indent);
+  if(obj===null||obj===undefined)return 'null';
+  if(typeof obj==='boolean')return obj?'true':'false';
+  if(typeof obj==='number')return String(obj);
+  if(typeof obj==='string'){
+    if(/[:\{\}\[\],&\*\#\?\|\-<>=!%@`]/.test(obj)||obj.includes('\n')||obj.length===0)return '"'+obj.replace(/"/g,'\\"').replace(/\n/g,'\\n')+'"';
+    return obj;
+  }
+  if(Array.isArray(obj)){
+    if(obj.length===0)return '[]';
+    return obj.map(v=>pad+'- '+jsonToYaml(v,indent+1).replace(/^  /,'')).join('\n');
+  }
+  const keys=Object.keys(obj);
+  if(keys.length===0)return '{}';
+  return keys.map(k=>{
+    const v=obj[k];
+    if(v&&typeof v==='object')return pad+k+':\n'+jsonToYaml(v,indent+1);
+    return pad+k+': '+jsonToYaml(v,indent);
+  }).join('\n');
+}
+function convert(){
+  const err=document.getElementById('errorMsg');
+  try{
+    const obj=JSON.parse(document.getElementById('jsonInput').value);
+    document.getElementById('yamlOutput').value=jsonToYaml(obj);
+    err.textContent='';
+  }catch(e){
+    err.textContent='❌ Invalid JSON: '+e.message;
+    document.getElementById('yamlOutput').value='';
+  }
+}
+function copyOutput(){const v=document.getElementById('yamlOutput').value;if(v)navigator.clipboard.writeText(v)}
+function downloadYAML(){const v=document.getElementById('yamlOutput').value;if(v){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([v],{type:'text/yaml'}));a.download='data.yaml';a.click()}}
+setTimeout(convert,100);
+</script><script src="/conversion-banner.js" defer></script>
+</body></html>

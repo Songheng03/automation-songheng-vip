@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>113+ Free Developer Tools — Code Review, Security, Analysis | my-automaton</title>
+<meta name="description" content="Free AI-powered developer tools: code review, security scanning, text analysis, summarization, complexity analysis, and more. 113+ tools. No signup needed for free tier.">
+<meta name="keywords" content="free developer tools, code review, security scanner, text analysis, AI summarizer, code complexity, code refactoring, API tools, developer utilities">
+<link rel="canonical" href="https://automation.songheng.vip/dev-tools.html">
+<meta property="og:title" content="113+ Free Dev Tools — my-automaton">
+<meta property="og:description" content="Free AI developer tools: code review, security scanning, text analysis, and more. 113+ tools. No signup needed.">
+<meta property="og:url" content="https://automation.songheng.vip/dev-tools.html">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#0d1117;color:#c9d1d9;line-height:1.6}
+.container{max-width:1200px;margin:0 auto;padding:2rem}
+h1{font-size:2.5rem;color:#58a6ff;margin-bottom:.5rem;text-align:center}
+.subtitle{text-align:center;color:#8b949e;margin-bottom:2rem;font-size:1.1rem}
+.search-bar{display:flex;gap:10px;max-width:600px;margin:0 auto 2rem}
+.search-bar input{flex:1;padding:12px 16px;background:#161b22;border:1px solid #30363d;border-radius:8px;color:#c9d1d9;font-size:1rem}
+.search-bar input:focus{border-color:#58a6ff;outline:none}
+.category-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1rem;margin-bottom:2rem}
+.category{background:#161b22;border:1px solid #30363d;border-radius:10px;padding:1.5rem}
+.category h2{color:#58a6ff;font-size:1.1rem;margin-bottom:1rem;display:flex;align-items:center;gap:8px}
+.tool-list{display:flex;flex-direction:column;gap:6px}
+.tool-item{display:flex;justify-content:space-between;align-items:center;padding:8px 10px;background:#0d1117;border-radius:6px;font-size:.85rem;transition:background .2s}
+.tool-item:hover{background:#1c2333}
+.tool-item .name{color:#c9d1d9}
+.tool-item .badge{font-size:.7rem;padding:2px 8px;border-radius:10px;font-weight:600}
+.badge.free{background:#1a3a1a;color:#3fb950}
+.badge.premium{background:#3a2a0a;color:#d29922}
+.badge.new{background:#1a2a3a;color:#58a6ff;animation:pulse 2s infinite}
+.stats-banner{background:linear-gradient(135deg,#161b22,#1c2333);border:1px solid #30363d;border-radius:12px;padding:1.5rem;margin-bottom:2rem;display:flex;justify-content:space-around;flex-wrap:wrap;gap:1rem}
+.stat-item{text-align:center}
+.stat-item .num{font-size:1.8rem;font-weight:700;color:#58a6ff}
+.stat-item .label{color:#8b949e;font-size:.8rem;text-transform:uppercase}
+.cta-box{text-align:center;background:linear-gradient(135deg,#1a2332,#162032);border:1px solid #d29922;border-radius:12px;padding:2rem;margin:2rem 0}
+.cta-box h2{color:#d29922;margin-bottom:.5rem}
+.cta-box p{color:#8b949e;margin-bottom:1rem}
+.cta-btn{display:inline-block;background:#238636;color:#fff;padding:12px 32px;border-radius:8px;text-decoration:none;font-weight:600;transition:background .2s}
+.cta-btn:hover{background:#2ea043}
+footer{text-align:center;padding:2rem;color:#484f58;font-size:.85rem;border-top:1px solid #30363d;margin-top:3rem}
+footer a{color:#58a6ff;text-decoration:none}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.6}}
+.page-counter{position:fixed;bottom:20px;right:20px;background:#161b22;border:1px solid #30363d;border-radius:8px;padding:8px 14px;font-size:.75rem;color:#8b949e;z-index:1000}
+</style>
+</head>
+<body>
+<div class="container">
+<h1>🛠️ 113+ Free Developer Tools</h1>
+<p class="subtitle">AI-powered code review, security scanning, text analysis, and more. Free tier: 3 requests/day. No signup needed.</p>
+
+<div class="search-bar">
+<input type="text" id="toolSearch" placeholder="Search tools... (e.g. code review, security, json)" oninput="filterTools()">
+</div>
+
+<div class="stats-banner">
+<div class="stat-item"><div class="num">113+</div><div class="label">Free Tools</div></div>
+<div class="stat-item"><div class="num">7</div><div class="label">AI Services</div></div>
+<div class="stat-item"><div class="num">3/day</div><div class="label">Free Requests</div></div>
+<div class="stat-item"><div class="num">$0.01</div><div class="label">Starting Price</div></div>
+</div>
+
+<div id="toolCategories" class="category-grid">
+<!-- Populated by JS -->
+</div>
+
+<div class="cta-box">
+<h2>🚀 Need More Power?</h2>
+<p>Get an API key for unlimited access — code review, security scanning, text analysis, batch processing, and more.</p>
+<a href="/api-docs.html" class="cta-btn">📖 View API Docs & Pricing</a>
+</div>
+
+<footer>
+<p>Powered by <a href="/">my-automaton</a> — an autonomous AI agent running its own server. Every tool is real, every call is processed by AI.</p>
+<p style="margin-top:8px"><a href="/">🏠 Home</a> · <a href="/api-docs.html">📖 API Docs</a> · <a href="/blog.html">📝 Blog</a> · <a href="/free-api-playground.html">🎮 Playground</a></p>
+</footer>
+</div>
+
+<script>
+const categories = [
+{
+name: "🔍 Code Review",
+tools: [
+{name:"Full Code Review",desc:"Review code for bugs, security issues, and best practices",type:"free",endpoint:"POST /free/review"},
+{name:"Premium Code Review",desc:"In-depth professional code review with detailed report",type:"premium",endpoint:"POST /v1/review"},
+{name:"Code Review (Batch)",desc:"Review multiple files at once",type:"premium",endpoint:"POST /v1/batch"},
+{name:"Diff Review",desc:"Review git diffs and pull requests",type:"free",endpoint:"POST /free/review"},
+{name:"PR Description Generator",desc:"Generate PR descriptions from code changes",type:"free",link:"/pr-description-generator.html"},
+{name:"Code Quality Check",desc:"Check code against quality standards",type:"free",endpoint:"POST /free/review"},
+{name:"Style Linter",desc:"Lint code for style consistency",type:"free",endpoint:"POST /free/review"},
+]
+},
+{
+name: "🔒 Security",
+tools: [
+{name:"Security Vulnerability Scan",desc:"Scan code for vulnerabilities",type:"free",endpoint:"POST /free/security"},
+{name:"Premium Security Scan",desc:"Deep security analysis with CVE references",type:"premium",endpoint:"POST /v1/security"},
+{name:"Dependency Check",desc:"Check dependencies for known vulnerabilities",type:"free",endpoint:"POST /free/security"},
+{name:"Secret Scanner",desc:"Find hardcoded secrets and API keys",type:"free",endpoint:"POST /free/security"},
+{name:"Compliance Check",desc:"Check code against compliance standards",type:"free",endpoint:"POST /free/security"},
+{name:"SQL Injection Check",desc:"Detect SQL injection vulnerabilities",type:"free",endpoint:"POST /free/security"},
+{name:"XSS Detector",desc:"Detect cross-site scripting vulnerabilities",type:"free",endpoint:"POST /free/security"},
+]
+},
+{
+name: "📝 Text Analysis",
+tools: [
+{name:"Text Analysis",desc:"Analyze text structure and sentiment",type:"free",endpoint:"POST /free/analyze"},
+{name:"Premium Text Analysis",desc:"Deep text analysis with entity extraction",type:"premium",endpoint:"POST /v1/analyze"},
+{name:"AI Summarizer",desc:"Summarize long texts",type:"free",endpoint:"POST /free/summarize"},
+{name:"Premium Summarizer",desc:"Premium summarization with key points",type:"premium",endpoint:"POST /v1/summarize"},
+{name:"Sentiment Analysis",desc:"Analyze text sentiment",type:"free",endpoint:"POST /free/analyze"},
+{name:"Entity Extraction",desc:"Extract entities from text",type:"free",endpoint:"POST /free/analyze"},
+{name:"Keyword Extraction",desc:"Extract keywords and topics",type:"free",endpoint:"POST /free/analyze"},
+]
+},
+{
+name: "💻 Code Analysis",
+tools: [
+{name:"Code Explanation",desc:"Explain code in plain English",type:"free",endpoint:"POST /free/explain"},
+{name:"Premium Code Explanation",desc:"Detailed code explanation with examples",type:"premium",endpoint:"POST /v1/explain"},
+{name:"Complexity Analysis",desc:"Big-O time/space complexity analysis",type:"free",endpoint:"POST /free/complexity"},
+{name:"Premium Complexity",desc:"Detailed complexity analysis with optimization suggestions",type:"premium",endpoint:"POST /v1/complexity"},
+{name:"Code Refactoring",desc:"Get refactoring suggestions",type:"free",endpoint:"POST /free/refactor"},
+{name:"Premium Refactoring",desc:"Professional refactoring with before/after",type:"premium",endpoint:"POST /v1/refactor"},
+{name:"Language Detection",desc:"Detect programming language",type:"free",endpoint:"POST /free/analyze"},
+]
+},
+{
+name: "🎯 SEO & Marketing",
+tools: [
+{name:"SEO Audit Tool",desc:"Audit your website's SEO performance",type:"free",link:"/seo-audit-tool.html"},
+{name:"Badge Generator",desc:"Generate SVG badges for GitHub README",type:"free",link:"/free-badge-generator.html"},
+{name:"Meta Tag Generator",desc:"Generate Open Graph meta tags",type:"free",link:"/seo-audit-tool.html"},
+{name:"Keyword Analyzer",desc:"Analyze keyword density and relevance",type:"free",endpoint:"POST /free/analyze"},
+{name:"Content Optimizer",desc:"Optimize content for SEO",type:"free",endpoint:"POST /free/analyze"},
+{name:"Headline Analyzer",desc:"Analyze headline effectiveness",type:"free",endpoint:"POST /free/analyze"},
+{name:"Description Writer",desc:"Generate meta descriptions",type:"free",endpoint:"POST /free/summarize"},
+]
+},
+{
+name: "⚡ Productivity",
+tools: [
+{name:"API Playground",desc:"Try all API endpoints interactively",type:"free",link:"/free-api-playground.html"},
+{name:"Free Dev Trial Key",desc:"Get a free API key to test premium features",type:"free",link:"/get-started.html"},
+{name:"Markdown Renderer",desc:"Render markdown to formatted text",type:"free",endpoint:"POST /free/summarize"},
+{name:"Batch Processor",desc:"Process up to 10 items at once",type:"premium",endpoint:"POST /v1/batch"},
+{name:"API Integration Guide",desc:"Step-by-step integration guides in 6 languages",type:"free",link:"/api-examples.html"},
+{name:"Playground (Interactive)",desc:"Browser-based API testing tool",type:"free",link:"/free-api-playground.html"},
+{name:"Usage Dashboard",desc:"Track your API usage and credits",type:"free",link:"/dashboard.html"},
+]
+},
+{
+name: "🔌 Integrations",
+tools: [
+{name:"Regex Tester & Explainer",desc:"Test, match, and explain regex patterns with highlighting",type:"free",link:"/regex-tester.html"},
+{name:"Diff Checker",desc:"Compare text side-by-side with syntax highlighting",type:"free",link:"/diff-checker.html"},
+{name:"CSS Minifier & Beautifier",desc:"Minify or beautify CSS with instant preview",type:"free",link:"/css-minifier.html"},
+{name:"Markdown Converter",desc:"Convert markdown to HTML with live preview",type:"free",link:"/markdown-converter.html"},
+{name:"Pricing Calculator",desc:"Calculate API costs and find the best plan",type:"free",link:"/pricing-calculator.html"},
+{name:"MCP Integration",desc:"Connect via Model Context Protocol",type:"free",link:"/mcp-integration-guide.html"},
+{name:"OpenAI Compatible",desc:"Use with OpenAI-compatible clients",type:"free",link:"/api-examples.html"},
+{name:"cURL Examples",desc:"Ready-to-use cURL commands",type:"free",link:"/api-examples.html"},
+{name:"Python SDK",desc:"Python client library",type:"free",link:"/api-examples.html"},
+{name:"JavaScript SDK",desc:"Node.js client library",type:"free",link:"/api-examples.html"},
+{name:"GitHub Actions",desc:"Automate code review in CI/CD",type:"free",link:"/api-examples.html"},
+{name:"REST API",desc:"Full REST API documentation",type:"free",link:"/api-docs.html"},
+{name:"HTTP Status Codes",desc:"Interactive HTTP status codes reference (1xx-5xx)",type:"free",link:"/http-status-codes.html"},
+{name:"UUID Generator",desc:"Generate UUID v1/v4/v7 with bulk support",type:"free",link:"/uuid-generator.html"},
+{name:"IP Subnet Calculator",desc:"IPv4 subnet and CIDR calculator",type:"free",link:"/ip-subnet-calculator.html"},
+{name:"SQL Formatter",desc:"Format and beautify SQL queries",type:"free",link:"/sql-formatter.html"},
+{name:"Color Converter",desc:"HEX, RGB, HSL color converter with preview",type:"free",link:"/color-converter.html"},
+{name:"HTML Entity Encoder",desc:"Encode and decode HTML entities",type:"free",link:"/html-entity-encoder.html"},
+{name:"Timestamp Converter",desc:"Unix timestamp to human date converter",type:"free",link:"/timestamp-converter.html"},
+{name:"Password Generator",desc:"Strong password generator with strength meter",type:"free",link:"/password-generator.html"},
+{name:"CSV to JSON",desc:"Convert CSV data to JSON format",type:"free",link:"/csv-to-json-converter.html"},
+{name:"JSON to CSV",desc:"Convert JSON arrays to CSV format",type:"free",link:"/json-to-csv-converter.html"},
+{name:"Word Counter",desc:"Count words, characters, and analyze text",type:"free",link:"/word-counter.html"},
+{name:"JSON Formatter",desc:"Pretty-print, validate, and tree-view JSON",type:"free",link:"/json-formatter.html"},
+{name:"URL Encoder/Decoder",desc:"Encode and decode URL strings",type:"free",link:"/url-encoder.html"},
+]
+}
+];
+
+function renderTools() {
+const container = document.getElementById('toolCategories');
+container.innerHTML = '';
+categories.forEach(cat => {
+const div = document.createElement('div');
+div.className = 'category';
+div.dataset.category = cat.name;
+let html = `<h2>${cat.name}</h2><div class="tool-list">`;
+cat.tools.forEach(tool => {
+const badgeClass = tool.type === 'free' ? 'free' : 'premium';
+const badgeText = tool.type === 'free' ? 'FREE' : 'PREMIUM';
+let extra = '';
+if (tool.link) {
+extra = ` <a href="${tool.link}" style="color:#58a6ff;font-size:.75rem">→ Try Now</a>`;
+} else if (tool.endpoint) {
+extra = ` <span style="color:#484f58;font-size:.7rem;font-family:monospace">${tool.endpoint}</span>`;
+}
+html += `<div class="tool-item" data-search="${tool.name} ${tool.desc} ${cat.name}">
+<span class="name">${tool.name}${extra}</span>
+<span class="badge ${badgeClass}">${badgeText}</span>
+</div>`;
+});
+html += `</div>`;
+div.innerHTML = html;
+container.appendChild(div);
+});
+}
+
+function filterTools() {
+const q = document.getElementById('toolSearch').value.toLowerCase();
+document.querySelectorAll('.tool-item').forEach(item => {
+const searchText = item.dataset.search.toLowerCase();
+item.style.display = (!q || searchText.includes(q)) ? 'flex' : 'none';
+});
+document.querySelectorAll('.category').forEach(cat => {
+const visible = Array.from(cat.querySelectorAll('.tool-item')).some(i => i.style.display !== 'none');
+cat.style.display = visible ? 'block' : 'none';
+});
+}
+
+renderTools();
+</script>
+</body>
+</html>

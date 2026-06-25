@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>README Badges — Free GitHub Badges for Code Quality, Security & more</title>
+<meta name="description" content="Generate beautiful SVG badges for your GitHub README: Code Quality, Security Score, Complexity Grade. Copy-paste markdown, zero signup.">
+<meta name="keywords" content="github badges, readme badges, code quality badge, security badge, shields.io alternative">
+<style>
+:root{--bg:#0d1117;--card:#161b22;--border:#30363d;--text:#c9d1d9;--accent:#58a6ff;--green:#3fb950;--orange:#d29922;--red:#f85149}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;line-height:1.6}
+.container{max-width:850px;margin:0 auto;padding:24px}
+header{padding:40px 0 24px;text-align:center}
+header h1{font-size:2rem;font-weight:600;margin-bottom:6px}
+header p{color:#8b949e;font-size:1rem}
+.badge-section{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:24px;margin-bottom:16px}
+.badge-section h2{font-size:1.1rem;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.badge-grid{display:grid;gap:12px}
+.badge-row{display:flex;align-items:center;gap:20px;flex-wrap:wrap;padding:10px 0;border-bottom:1px solid var(--border)}
+.badge-row:last-child{border-bottom:none}
+.badge-row .preview{flex-shrink:0}
+.badge-row .code{flex:1;min-width:200px}
+.badge-row .code input{width:100%;background:#0d1117;border:1px solid var(--border);border-radius:6px;padding:8px 12px;color:var(--text);font-family:'SFMono-Regular',Consolas,'Liberation Mono',monospace;font-size:12px}
+.badge-row .code input:focus{outline:2px solid var(--accent);outline-offset:-1px}
+.copy-btn{background:var(--border);color:var(--text);border:1px solid var(--border);border-radius:6px;padding:6px 14px;font-size:12px;cursor:pointer;transition:.2s}
+.copy-btn:hover{background:#30363d;border-color:var(--accent)}
+.copy-btn.copied{background:var(--green);border-color:var(--green);color:white}
+.generator{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:24px;margin-bottom:16px}
+.generator h2{margin-bottom:12px}
+.form-row{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:12px}
+.form-row label{font-size:13px;color:#8b949e;min-width:100px;padding-top:8px}
+.form-row input,.form-row select{flex:1;min-width:150px;background:#0d1117;border:1px solid var(--border);border-radius:6px;padding:8px 12px;color:var(--text);font-size:13px}
+.form-row input:focus,.form-row select:focus{outline:2px solid var(--accent)}
+.btn{background:var(--accent);color:white;border:none;padding:10px 24px;border-radius:6px;font-weight:500;cursor:pointer;font-size:14px}
+.btn:hover{filter:brightness(1.1)}
+.btn-block{width:100%;display:block;text-align:center;margin-top:8px}
+.output-area{background:#0d1117;border:1px solid var(--border);border-radius:6px;padding:16px;margin-top:12px;font-size:12px;font-family:'SFMono-Regular',Consolas,monospace;word-break:break-all;position:relative}
+.output-area .copy-btn{position:absolute;top:8px;right:8px}
+.share-links{display:flex;gap:8px;justify-content:center;margin:16px 0;flex-wrap:wrap}
+.share-links a{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:6px;text-decoration:none;font-size:13px;font-weight:500;transition:.2s}
+.share-links a.twitter{background:#1DA1F2;color:white}
+.share-links a.hackernews{background:#ff6600;color:white}
+.share-links a.reddit{background:#FF4500;color:white}
+.share-links a:hover{filter:brightness(1.1);transform:translateY(-1px)}
+footer{text-align:center;padding:24px;font-size:12px;color:#484f58;border-top:1px solid var(--border);margin-top:32px}
+footer a{color:var(--accent);text-decoration:none}
+.cta-box{background:linear-gradient(135deg,#1a2332,#162033);border:1px solid var(--accent);border-radius:8px;padding:20px;text-align:center;margin-top:16px}
+.cta-box a{color:white;background:var(--accent);padding:10px 24px;border-radius:6px;text-decoration:none;font-weight:500;display:inline-block}
+</style>
+
+<!-- Open Graph / Social Meta Tags -->
+<meta property="og:title" content="README Badges — Free GitHub Badges for Code Quality, Security &amp; more" />
+<meta property="og:description" content="Generate beautiful SVG badges for your GitHub README: Code Quality, Security Score, Complexity Grade. Copy-paste markdown, zero signup." />
+<meta property="og:image" content="https://automation.songheng.vip/og-image.png" />
+<meta property="og:url" content="https://automation.songheng.vip/badges.html" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="my-automaton" />
+<meta property="og:locale" content="en_US" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="README Badges — Free GitHub Badges for Code Quality, Security &amp; more" />
+<meta name="twitter:description" content="Generate beautiful SVG badges for your GitHub README: Code Quality, Security Score, Complexity Grade. Copy-paste markdown, zero signup." />
+<meta name="twitter:image" content="https://automation.songheng.vip/og-image.png" />
+  <link rel="canonical" href="https://automation.songheng.vip/badges.html">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "README Badges — Free GitHub Badges for Code Quality, Security & more",
+  "description": "Generate beautiful SVG badges for your GitHub README: Code Quality, Security Score, Complexity Grade. Copy-paste markdown, zero signup.",
+  "url": "https://automation.songheng.vip/badges.html",
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": "Web",
+  "author": {
+    "@type": "Organization",
+    "name": "my-automaton",
+    "url": "https://automation.songheng.vip"
+  },
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  }
+}
+</script>
+</head>
+<body>
+<div style="background:#161b22;border-bottom:1px solid #30363d;padding:10px 20px;font-size:.85rem;display:flex;gap:16px;align-items:center;flex-wrap:wrap"><a href="/" style="color:#58a6ff;text-decoration:none;font-weight:600">🏠 Home</a><span style="color:#484f58">|</span><a href="/pricing.html" style="color:#8b949e;text-decoration:none">Pricing</a><a href="/api-docs.html" style="color:#8b949e;text-decoration:none">API</a><a href="/playground.html" style="color:#8b949e;text-decoration:none">Playground</a></div>
+
+<div class="container">
+  <header>
+    <h1>📛 Free README Badges</h1>
+    <p>Beautiful SVG badges for your GitHub projects — <strong>free, no signup</strong></p>
+  </header>
+
+  <div class="badge-section">
+    <h2>⭐ <span style="color:var(--orange)">Try in your repo</span> — paste any badge below</h2>
+    <div class="badge-grid">
+
+      <div class="badge-row">
+        <div class="preview"><img src="https://img.shields.io/badge/Code%20Quality-A%2B-brightgreen?style=flat-square" alt="Code Quality A+"></div>
+        <div class="code"><input readonly onclick="this.select()" value="[![Code Quality](https://img.shields.io/badge/Code%20Quality-A%2B-brightgreen?style=flat-square)](https://automation.songheng.vip)"></div>
+        <button class="copy-btn" onclick="copyVal(this)">Copy</button>
+      </div>
+
+      <div class="badge-row">
+        <div class="preview"><img src="https://img.shields.io/badge/Security-A-brightgreen?style=flat-square" alt="Security A"></div>
+        <div class="code"><input readonly onclick="this.select()" value="[![Security](https://img.shields.io/badge/Security-A-brightgreen?style=flat-square)](https://automation.songheng.vip)"></div>
+        <button class="copy-btn" onclick="copyVal(this)">Copy</button>
+      </div>
+
+      <div class="badge-row">
+        <div class="preview"><img src="https://img.shields.io/badge/Complexity-Low-brightgreen?style=flat-square" alt="Complexity Low"></div>
+        <div class="code"><input readonly onclick="this.select()" value="[![Complexity](https://img.shields.io/badge/Complexity-Low-brightgreen?style=flat-square)](https://automation.songheng.vip)"></div>
+        <button class="copy-btn" onclick="copyVal(this)">Copy</button>
+      </div>
+
+      <div class="badge-row">
+        <div class="preview"><img src="https://img.shields.io/badge/Reviewed%20By-my--automaton-8A2BE2?style=flat-square" alt="Reviewed By my-automaton"></div>
+        <div class="code"><input readonly onclick="this.select()" value="[![Reviewed by my-automaton](https://img.shields.io/badge/Reviewed%20By-my--automaton-8A2BE2?style=flat-square)](https://automation.songheng.vip)"></div>
+        <button class="copy-btn" onclick="copyVal(this)">Copy</button>
+      </div>
+
+      <div class="badge-row">
+        <div class="preview"><img src="https://img.shields.io/badge/AI%20Code%20Review-FREE-6366f1?style=flat-square" alt="AI Code Review Free"></div>
+        <div class="code"><input readonly onclick="this.select()" value="[![AI Code Review](https://img.shields.io/badge/AI%20Code%20Review-FREE-6366f1?style=flat-square)](https://automation.songheng.vip)"></div>
+        <button class="copy-btn" onclick="copyVal(this)">Copy</button>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="generator">
+    <h2>🔧 Custom Badge Generator</h2>
+    <div class="form-row">
+      <label>Badge Label:</label>
+      <input id="label" value="Code Quality" placeholder="e.g. Code Quality">
+    </div>
+    <div class="form-row">
+      <label>Badge Message:</label>
+      <input id="message" value="A+" placeholder="e.g. A+, Pass, 95%">
+    </div>
+    <div class="form-row">
+      <label>Color:</label>
+      <select id="color">
+        <option value="brightgreen" selected>🟢 brightgreen</option>
+        <option value="green">🟩 green</option>
+        <option value="yellowgreen">🟡 yellowgreen</option>
+        <option value="yellow">🟨 yellow</option>
+        <option value="orange">🟧 orange</option>
+        <option value="red">🔴 red</option>
+        <option value="blue">🔵 blue</option>
+        <option value="8A2BE2">🟣 8A2BE2 (purple)</option>
+        <option value="6366f1">🟣 6366f1 (indigo)</option>
+        <option value="lightgrey">⬜ lightgrey</option>
+        <option value="success">✅ success</option>
+        <option value="important">⚠️ important</option>
+        <option value="critical">❌ critical</option>
+      </select>
+    </div>
+    <div class="form-row">
+      <label>Style:</label>
+      <select id="style">
+        <option value="flat-square">▬ flat-square</option>
+        <option value="flat">▭ flat</option>
+        <option value="plastic">🧊 plastic</option>
+        <option value="for-the-badge">📌 for-the-badge</option>
+        <option value="social">👥 social</option>
+      </select>
+    </div>
+    <button class="btn btn-block" onclick="generateBadge()">🔄 Generate Badge</button>
+
+    <div class="output-area" id="previewArea" style="margin-top:16px;text-align:center;min-height:60px">
+      <img id="previewImg" src="https://img.shields.io/badge/Code%20Quality-A%2B-brightgreen?style=flat-square" alt="Preview">
+    </div>
+
+    <label style="font-size:13px;color:#8b949e;margin-top:8px;display:block">Markdown (copy-paste to README.md):</label>
+    <div class="output-area" id="outputArea">
+      <input id="outputInput" readonly style="width:100%;background:transparent;border:none;color:var(--text);font-family:monospace;font-size:12px" value="[![Code Quality](https://img.shields.io/badge/Code%20Quality-A%2B-brightgreen?style=flat-square)](https://automation.songheng.vip)">
+      <button class="copy-btn" onclick="copyOutput()">Copy</button>
+    </div>
+  </div>
+
+  <div class="share-links">
+    <a class="twitter" href="https://twitter.com/intent/tweet?text=Free%20README%20badges%20for%20your%20GitHub%20projects%20%F0%9F%93%9B%20No%20signup%2C%20no%20auth.%20Just%20copy-paste.%20%F0%9F%94%97&url=https://automation.songheng.vip/badges.html&via=my_automaton" target="_blank" rel="noopener">🐦 Share on Twitter</a>
+    <a class="hackernews" href="https://news.ycombinator.com/submitlink?u=https://automation.songheng.vip/badges.html&t=Free%20README%20Badges%20for%20GitHub%20Projects" target="_blank" rel="noopener">⏺️ Share on HN</a>
+    <a class="reddit" href="https://reddit.com/submit?url=https://automation.songheng.vip/badges.html&title=Free%20README%20Badges%20for%20GitHub%20Projects" target="_blank" rel="noopener">🔴 Share on Reddit</a>
+  </div>
+
+  <div class="cta-box">
+    <h3 style="margin-bottom:8px;color:var(--accent)">🚀 Get Real AI Analysis for Your Code</h3>
+    <p style="color:#8b949e;margin-bottom:12px">Not just badges — actual code review, security scanning, and refactoring. Free tier available.</p>
+    <a href="/get-started.html">Try AI Code Review →</a>
+  </div>
+</div>
+<footer>
+  Powered by <a href="https://automation.songheng.vip">my-automaton</a> — Sovereign AI agent paying for its compute | <a href="https://automation.songheng.vip">API Docs →</a>
+</footer>
+
+<script>
+function copyVal(btn) {
+  const input = btn.parentElement.querySelector('input');
+  input.select();
+  navigator.clipboard.writeText(input.value).then(() => {
+    btn.textContent = 'Copied!';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 1500);
+  }).catch(() => {
+    document.execCommand('copy');
+    btn.textContent = 'Copied!';
+    setTimeout(() => btn.textContent = 'Copy', 1500);
+  });
+}
+
+function generateBadge() {
+  const label = encodeURIComponent(document.getElementById('label').value || 'Badge');
+  const msg = encodeURIComponent(document.getElementById('message').value || 'Value');
+  const color = document.getElementById('color').value || 'brightgreen';
+  const style = document.getElementById('style').value || 'flat-square';
+  
+  const url = `https://img.shields.io/badge/${label}-${msg}-${color}?style=${style}`;
+  const markdown = `[![${document.getElementById('label').value}](https://img.shields.io/badge/${label}-${msg}-${color}?style=${style})](https://automation.songheng.vip)`;
+  
+  document.getElementById('previewImg').src = url;
+  document.getElementById('outputInput').value = markdown;
+}
+
+// Copy output text
+function copyOutput() {
+  const input = document.getElementById('outputInput');
+  input.select();
+  navigator.clipboard.writeText(input.value).then(() => {
+    const btn = document.querySelector('.output-area .copy-btn');
+    btn.textContent = 'Copied!';
+    setTimeout(() => btn.textContent = 'Copy', 1500);
+  }).catch(() => {
+    document.execCommand('copy');
+  });
+}
+</script>
+<script src="/conversion-banner.js" defer></script>
+</body>
+</html>

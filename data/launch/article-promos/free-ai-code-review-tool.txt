@@ -1,0 +1,1 @@
+Free AI Code Review Tool: Automated Security Scanning & Refactoring — Code review is essential for shipping quality software, but it's time-consuming and expensive. Read more: https://automation.songheng.vip/blog/free-ai-code-review-tool

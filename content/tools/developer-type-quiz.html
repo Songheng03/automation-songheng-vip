@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>What Kind of Developer Are You? - Free Quiz | Automation AI</title>
+<meta name="description" content="Take this 10-question quiz to find out what kind of developer you are. Share your results with friends!">
+<link rel="stylesheet" href="/style.css">
+<style>
+.quiz-hero{background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);padding:60px 20px;text-align:center}
+.quiz-hero h1{font-size:2.5em;margin:0;color:#fff}
+.quiz-hero p{font-size:1.2em;color:#e9d8fd;margin:15px 0}
+.quiz-container{max-width:800px;margin:-40px auto 40px;padding:0 20px}
+.quiz-card{background:#fff;border-radius:16px;padding:40px;box-shadow:0 20px 60px rgba(0,0,0,0.3)}
+.quiz-question{font-size:1.3em;font-weight:600;margin-bottom:20px;color:#2d3748}
+.quiz-options{display:grid;gap:12px}
+.quiz-option{padding:16px 20px;border:2px solid #e2e8f0;border-radius:8px;cursor:pointer;transition:all 0.2s;font-size:1em}
+.quiz-option:hover{border-color:#667eea;background:#f7fafc}
+.quiz-option.selected{border-color:#667eea;background:#e6fffa}
+.quiz-nav{display:flex;justify-content:space-between;margin-top:30px}
+.quiz-btn{padding:14px 32px;border:none;border-radius:8px;font-size:1em;font-weight:600;cursor:pointer;transition:all 0.2s}
+.quiz-btn-primary{background:#667eea;color:#fff}
+.quiz-btn-primary:hover{background:#5568d3}
+.quiz-btn:disabled{opacity:0.5;cursor:not-allowed}
+.quiz-progress{display:flex;gap:8px;justify-content:center;margin-bottom:30px}
+.quiz-dot{width:12px;height:12px;border-radius:50%;background:#e2e8f0}
+.quiz-dot.active{background:#667eea}
+.quiz-dot.done{background:#48bb78}
+.quiz-result{display:none;text-align:center}
+.quiz-result h2{font-size:2em;margin:0;color:#2d3748}
+.quiz-type{font-size:3em;font-weight:bold;background:linear-gradient(135deg,#667eea,#764ba2);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin:20px 0}
+.quiz-description{font-size:1.1em;color:#4a5568;line-height:1.8;margin:20px 0}
+.share-btns{display:flex;gap:12px;justify-content:center;margin:30px 0;flex-wrap:wrap}
+.share-btn{padding:14px 28px;border:none;border-radius:8px;cursor:pointer;font-weight:600;color:#fff;font-size:1em}
+.share-twitter{background:#1da1f2}
+.share-linkedin{background:#0077b5}
+.share-reddit{background:#ff4500}
+.cta-box{background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;padding:30px;border-radius:12px;margin-top:30px}
+.cta-box h3{margin-top:0}
+.cta-btn{display:inline-block;padding:15px 30px;background:#fff;color:#667eea;border-radius:8px;text-decoration:none;font-weight:600;margin-top:15px}
+</style>
+</head>
+<body>
+<div class="quiz-hero">
+<h1>🎯 What Kind of Developer Are You?</h1>
+<p>10 questions. 2 minutes. Find your developer personality.</p>
+</div>
+<div class="quiz-container">
+<div class="quiz-card">
+<div class="quiz-progress" id="progress"></div>
+<div id="questionBox"></div>
+<div class="quiz-nav">
+<button class="quiz-btn" id="prevBtn" onclick="prevQuestion()" disabled>← Back</button>
+<button class="quiz-btn quiz-btn-primary" id="nextBtn" onclick="nextQuestion()">Next →</button>
+</div>
+<div class="quiz-result" id="result">
+<h2>You are a:</h2>
+<div class="quiz-type" id="devType"></div>
+<div class="quiz-description" id="devDesc"></div>
+<div class="share-btns">
+<button class="share-btn share-twitter" onclick="shareTwitter()">Share on Twitter</button>
+<button class="share-btn share-linkedin" onclick="shareLinkedIn()">Share on LinkedIn</button>
+<button class="share-btn share-reddit" onclick="shareReddit()">Share on Reddit</button>
+</div>
+<div class="cta-box">
+<h3>Want AI-Powered Code Review?</h3>
+<p>Our AI analyzes code quality, security, and suggests improvements.</p>
+<a href="/pricing.html" class="cta-btn">Get Professional Review →</a>
+</div>
+</div>
+</div>
+</div>
+<script>
+const questions=[
+{q:"When you see a bug in production, you:",options:[
+{text:"Add logging and investigate systematically",type:"architect"},
+{text:"Hotfix it immediately",type:"hacker"},
+{text:"Write a test that reproduces it first",type:"tester"},
+{text:"Check if it's a CSS issue",type:"frontend"}]},
+{q:"Your ideal Friday afternoon:",options:[
+{text:"Refactoring legacy code",type:"architect"},
+{text:"Building a cool side project",type:"hacker"},
+{text:"Writing documentation",type:"tester"},
+{text:"Perfecting pixel-perfect UI",type:"frontend"}]},
+{q:"Pick your weapon:",options:[
+{text:"Design patterns and UML diagrams",type:"architect"},
+{text:"Vim and terminal",type:"hacker"},
+{text:"Testing frameworks",type:"tester"},
+{text:"Figma and CSS",type:"frontend"}]},
+{q:"How do you learn new tech?",options:[
+{text:"Read the official docs thoroughly",type:"architect"},
+{text:"Jump in and break things",type:"hacker"},
+{text:"Watch tutorials and follow along",type:"tester"},
+{text:"Build a demo project",type:"frontend"}]},
+{q:"Your code review style:",options:[
+{text:"Check architecture and scalability",type:"architect"},
+{text:"Look for clever optimizations",type:"hacker"},
+{text:"Verify edge cases and error handling",type:"tester"},
+{text:"Check responsive design and UX",type:"frontend"}]},
+{q:"Your biggest pet peeve:",options:[
+{text:"Poor system design",type:"architect"},
+{text:"Slow performance",type:"hacker"},
+{text:"Untested code",type:"tester"},
+{text:"Ugly interfaces",type:"frontend"}]},
+{q:"Choose your side project:",options:[
+{text:"Microservices architecture",type:"architect"},
+{text:"CLI tool in Rust",type:"hacker"},
+{text:"Automated testing suite",type:"tester"},
+{text:"Beautiful portfolio site",type:"frontend"}]},
+{q:"Your desk setup:",options:[
+{text:"Multiple monitors with diagrams",type:"architect"},
+{text:"Minimalist, just a laptop",type:"hacker"},
+{text:"Documentation printouts everywhere",type:"tester"},
+{text:"RGB lights and color samples",type:"frontend"}]},
+{q:"Your Git commit messages:",options:[
+{text:"'Refactor: Improve service layer abstraction'",type:"architect"},
+{text:"'fix: it works now'",type:"hacker"},
+{text:"'test: Add coverage for auth module'",type:"tester"},
+{text:"'style: Adjust spacing and colors'",type:"frontend"}]},
+{q:"What excites you most?",options:[
+{text:"Solving complex architectural problems",type:"architect"},
+{text:"Learning new languages and frameworks",type:"hacker"},
+{text:"Achieving 100% test coverage",type:"tester"},
+{text:"Creating beautiful user experiences",type:"frontend"}]}
+];
+const types={
+architect:{name:"The Architect 🏛️",desc:"You think in systems. You love design patterns, scalability, and clean architecture. You see the big picture and plan for the future. Your code is well-structured, documented, and built to last."},
+hacker:{name:"The Hacker 💻",desc:"You're a problem-solving wizard. You love terminal, automation, and clever solutions. You move fast, break things, and ship features. Your code might be messy, but it works."},
+tester:{name:"The Quality Guardian 🛡️",desc:"You're the team's safety net. You love testing, documentation, and edge cases. You think about what could go wrong and prevent it. Your code is reliable and well-tested."},
+frontend:{name:"The UI/UX Artist 🎨",desc:"You bridge code and design. You love beautiful interfaces, smooth animations, and great user experiences. You think about the user first. Your code creates delightful products."}
+};
+let current=0,answers=new Array(10).fill(null),currentType='';
+function renderProgress(){
+const prog=document.getElementById('progress');
+prog.innerHTML='';
+for(let i=0;i<10;i++){
+const dot=document.createElement('div');
+dot.className='quiz-dot'+(i===current?' active':'')+(answers[i]!==null?' done':'');
+prog.appendChild(dot);
+}}
+function renderQuestion(){
+if(current>=10){showResult();return}
+renderProgress();
+const q=questions[current];
+const box=document.getElementById('questionBox');
+box.innerHTML=`<div class="quiz-question">Question ${current+1}/10: ${q.q}</div><div class="quiz-options"></div>`;
+const opts=box.querySelector('.quiz-options');
+q.options.forEach((opt,i)=>{
+const btn=document.createElement('div');
+btn.className='quiz-option'+(answers[current]===i?' selected':'');
+btn.textContent=opt.text;
+btn.onclick=()=>{answers[current]=i;renderQuestion()};
+opts.appendChild(btn);
+});
+document.getElementById('prevBtn').disabled=current===0;
+document.getElementById('nextBtn').textContent=current===9?'See Results 🎉':'Next →';
+}
+function nextQuestion(){
+if(answers[current]===null){alert('Please select an answer');return}
+current++;renderQuestion();
+}
+function prevQuestion(){if(current>0){current--;renderQuestion()}}
+function showResult(){
+const counts={architect:0,hacker:0,tester:0,frontend:0};
+answers.forEach((a,i)=>{if(a!==null)counts[questions[i].options[a].type]++});
+let maxType='architect',maxCount=0;
+for(let t in counts){if(counts[t]>maxCount){maxCount=counts[t];maxType=t}}
+currentType=types[maxType].name;
+document.getElementById('questionBox').style.display='none';
+document.querySelector('.quiz-nav').style.display='none';
+document.querySelector('.quiz-progress').style.display='none';
+document.getElementById('result').style.display='block';
+document.getElementById('devType').textContent=types[maxType].name;
+document.getElementById('devDesc').textContent=types[maxType].desc;
+}
+function shareTwitter(){
+const text=`I'm "${currentType}" 🎯\n\nWhat kind of developer are you? Take the quiz:`;
+window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(location.href)}`,'_blank');
+}
+function shareLinkedIn(){
+const text=`I just took the "What Kind of Developer Are You?" quiz and I'm "${currentType}". Take it yourself:`;
+window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(location.href)}`,'_blank');
+}
+function shareReddit(){
+const text=`What Kind of Developer Are You? - Free Quiz`;
+window.open(`https://reddit.com/submit?url=${encodeURIComponent(location.href)}&title=${encodeURIComponent(text)}`,'_blank');
+}
+renderQuestion();
+</script>
+</body>
+</html>

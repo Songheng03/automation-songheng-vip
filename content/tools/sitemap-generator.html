@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Free Sitemap Generator — XML Sitemap for SEO</title>
+<meta name="description" content="Generate a free XML sitemap for your website. Enter your URLs and get a complete sitemap.xml file ready to submit to Google, Bing, and other search engines.">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;line-height:1.7;color:#e6edf3;background:#0d1117;max-width:800px;margin:0 auto;padding:24px}
+h1{font-size:2em;margin:0 0 8px;color:#f0f6fc}
+.subtitle{color:#8b949e;margin-bottom:24px}
+textarea{width:100%;height:180px;background:#161b22;border:1px solid #30363d;border-radius:8px;color:#e6edf3;padding:12px;font-family:monospace;font-size:14px;resize:vertical}
+textarea:focus{outline:none;border-color:#58a6ff}
+label{display:block;color:#f0f6fc;margin:16px 0 6px;font-weight:600}
+input[type=text],input[type=url]{width:100%;background:#161b22;border:1px solid #30363d;border-radius:8px;color:#e6edf3;padding:10px 12px;font-size:14px}
+input:focus{outline:none;border-color:#58a6ff}
+button{background:#238636;color:#fff;border:none;padding:10px 20px;border-radius:8px;font-size:15px;cursor:pointer;font-weight:600;margin:8px 4px 0 0}
+button:hover{background:#2ea043}
+button.secondary{background:#21262d;color:#c9d1d9;border:1px solid #30363d}
+button.secondary:hover{background:#30363d}
+.result{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:16px;margin:16px 0;max-height:400px;overflow:auto}
+.result pre{white-space:pre-wrap;word-break:break-all;font-size:13px;color:#e6edf3}
+.badge{display:inline-block;padding:2px 8px;border-radius:12px;font-size:12px;font-weight:600}
+.badge.green{background:#23863620;color:#3fb950;border:1px solid #238636}
+.badge.blue{background:#1f6feb20;color:#58a6ff;border:1px solid #1f6feb}
+.info{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:16px;margin:16px 0}
+.info h3{color:#f0f6fc;font-size:1em;margin-bottom:8px}
+.count{display:inline-block;background:#1f6feb;color:#fff;border-radius:50%;width:24px;height:24px;text-align:center;line-height:24px;font-size:13px;font-weight:700;margin-right:6px}
+@media(max-width:600px){body{padding:16px}h1{font-size:1.5em}}
+</style>
+
+<!-- Open Graph / Social Meta Tags -->
+<meta property="og:title" content="Free Sitemap Generator — XML Sitemap for SEO" />
+<meta property="og:description" content="Generate a free XML sitemap for your website. Enter your URLs and get a complete sitemap.xml file ready to submit to Google, Bing, and other search engines." />
+<meta property="og:image" content="https://automation.songheng.vip/og-image.png" />
+<meta property="og:url" content="https://automation.songheng.vip/tools/sitemap-generator.html" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="my-automaton" />
+<meta property="og:locale" content="en_US" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Free Sitemap Generator — XML Sitemap for SEO" />
+<meta name="twitter:description" content="Generate a free XML sitemap for your website. Enter your URLs and get a complete sitemap.xml file ready to submit to Google, Bing, and other search engines." />
+<meta name="twitter:image" content="https://automation.songheng.vip/og-image.png" />
+  <link rel="canonical" href="https://automation.songheng.vip/tools/sitemap-generator.html">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Free Sitemap Generator — XML Sitemap for SEO",
+  "description": "Generate a free XML sitemap for your website. Enter your URLs and get a complete sitemap.xml file ready to submit to Google, Bing, and other search engines.",
+  "url": "https://automation.songheng.vip/tools/sitemap-generator.html",
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": "Web",
+  "author": {
+    "@type": "Organization",
+    "name": "my-automaton",
+    "url": "https://automation.songheng.vip"
+  },
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  }
+}
+</script>
+</head>
+<body>
+
+<h1>Free XML Sitemap Generator</h1>
+<p class="subtitle">Generate a complete sitemap.xml for your website. Ready for Google Search Console, Bing Webmaster Tools, and IndexNow.</p>
+
+<div class="info">
+<h3>How it works</h3>
+<p style="color:#8b949e;font-size:14px">1. Enter your site URLs (one per line) &nbsp;→&nbsp; 2. Set priority/change frequency &nbsp;→&nbsp; 3. Copy your sitemap.xml</p>
+</div>
+
+<label>1. Your Website Base URL</label>
+<input type="url" id="baseUrl" value="https://example.com" placeholder="https://yoursite.com">
+
+<label>2. Page URLs (one per line)</label>
+<textarea id="urls" placeholder="/&#10;/about&#10;/blog&#10;/contact">/
+/about
+/blog
+/contact
+/privacy
+/terms
+/pricing
+/faq
+</textarea>
+
+<label>3. Default Priority</label>
+<select id="priority" style="width:100%;background:#161b22;border:1px solid #30363d;border-radius:8px;color:#e6edf3;padding:10px;font-size:14px">
+<option value="1.0">1.0 — Homepage / Main pages</option>
+<option value="0.9" selected>0.9 — Important pages</option>
+<option value="0.8">0.8 — Landing pages</option>
+<option value="0.7">0.7 — Category pages</option>
+<option value="0.5">0.5 — Blog posts</option>
+<option value="0.3">0.3 — Archive / historical</option>
+</select>
+
+<label>4. Change Frequency</label>
+<select id="changefreq" style="width:100%;background:#161b22;border:1px solid #30363d;border-radius:8px;color:#e6edf3;padding:10px;font-size:14px">
+<option value="daily">Daily</option>
+<option value="weekly" selected>Weekly</option>
+<option value="monthly">Monthly</option>
+<option value="yearly">Yearly</option>
+<option value="never">Never</option>
+</select>
+
+<div style="margin-top:16px">
+<button onclick="generate()">Generate Sitemap</button>
+<button class="secondary" onclick="copyResult()">Copy to Clipboard</button>
+<button class="secondary" onclick="downloadResult()">Download .xml</button>
+</div>
+
+<div id="result" class="result" style="display:none"></div>
+<div id="stats" style="margin-top:8px;color:#8b949e;font-size:14px"></div>
+
+<div class="info" style="margin-top:24px">
+<h3>What is a sitemap? <span class="badge green">SEO Essential</span></h3>
+<p style="color:#8b949e;font-size:14px">An XML sitemap helps search engines discover and index your pages. Submit it to Google Search Console, Bing Webmaster Tools, and IndexNow for faster indexing. Every website needs one.</p>
+<h3 style="margin-top:12px">Benefits <span class="badge blue">Free Tool</span></h3>
+<p style="color:#8b949e;font-size:14px">✓ Faster indexing of new content &nbsp;✓ Better crawl prioritization &nbsp;✓ Discover orphaned pages &nbsp;✓ Submit via IndexNow for instant indexing</p>
+</div>
+
+<div class="info">
+<h3>Try our AI services too</h3>
+<p style="color:#8b949e;font-size:14px">
+<a href="/v1/analyze" style="color:#58a6ff">Text Analysis</a> · 
+<a href="/v1/review" style="color:#58a6ff">Code Review</a> · 
+<a href="/v1/security" style="color:#58a6ff">Security Scan</a> · 
+<a href="/free/analyze" style="color:#58a6ff">Try Free (3/day)</a>
+</p>
+</div>
+
+<script>
+function generate(){
+  const base=document.getElementById('baseUrl').value.replace(/\/+$/,'');
+  const urls=document.getElementById('urls').value.split('\n').map(s=>s.trim()).filter(s=>s);
+  const pr=document.getElementById('priority').value;
+  const cf=document.getElementById('changefreq').value;
+  
+  if(!urls.length){alert('Enter at least one URL');return;}
+  
+  let xml='<?xml version="1.0" encoding="UTF-8"?>\n';
+  xml+='<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n';
+  urls.forEach(u=>{
+    const url=u.startsWith('http')?u:base+u;
+    xml+='  <url>\n    <loc>'+url+'</loc>\n    <priority>'+pr+'</priority>\n    <changefreq>'+cf+'</changefreq>\n  </url>\n';
+  });
+  xml+='</urlset>';
+  
+  document.getElementById('result').style.display='block';
+  document.getElementById('result').innerHTML='<pre>'+escHtml(xml)+'</pre>';
+  document.getElementById('stats').innerHTML='<span class="badge green">'+urls.length+' URLs</span> · '+(xml.length/1024).toFixed(1)+' KB';
+  
+  window._sitemap=xml;
+  
+  // Track usage
+  fetch('/api/traffic?path=/tools/sitemap-generator&action=generate');
+}
+
+function copyResult(){
+  if(!window._sitemap){alert('Generate a sitemap first');return;}
+  navigator.clipboard.writeText(window._sitemap).then(()=>{
+    const btn=document.querySelector('button.secondary');
+    const orig=btn.textContent;
+    btn.textContent='✓ Copied!';
+    setTimeout(()=>btn.textContent=orig,2000);
+  });
+}
+
+function downloadResult(){
+  if(!window._sitemap){alert('Generate a sitemap first');return;}
+  const blob=new Blob([window._sitemap],{type:'application/xml'});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download='sitemap.xml';
+  a.click();
+}
+
+function escHtml(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+</script>
+
+<br>
+<p style="text-align:center;color:#8b949e;font-size:0.9em">
+<a href="/">Home</a> · <a href="/tools">Tools</a> · <a href="/blog">Blog</a> · <a href="/upgrade">Premium</a>
+</p>
+
+</body>
+</html>

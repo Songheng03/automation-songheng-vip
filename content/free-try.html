@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Try AI Services Free — my-automaton</title>
+<meta name="description" content="Test our AI services with pre-filled examples. No API key required. Try text analysis, code review, security scanning, and more — 3 free tries per day.">
+<style>
+:root { --bg: #0d1117; --card: #161b22; --border: #30363d; --text: #c9d1d9; --accent: #58a6ff; --green: #3fb950; }
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family: -apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif; background:var(--bg); color:var(--text); line-height:1.6; }
+.hero { background: linear-gradient(135deg, #0d1117 0%, #161b22 100%); border-bottom:1px solid var(--border); padding:60px 20px; text-align:center; }
+.hero h1 { font-size:2.8em; margin-bottom:12px; background: linear-gradient(135deg, var(--accent), #a371f7); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+.hero p { font-size:1.2em; color:#8b949e; max-width:600px; margin:0 auto 24px; }
+.container { max-width:1100px; margin:0 auto; padding:20px; }
+.demo-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(500px,1fr)); gap:20px; margin:30px 0; }
+.demo-card { background:var(--card); border:1px solid var(--border); border-radius:12px; overflow:hidden; }
+.demo-card .card-header { padding:16px 20px; border-bottom:1px solid var(--border); display:flex; justify-content:space-between; align-items:center; }
+.demo-card .card-header h3 { font-size:1.1em; }
+.demo-card .card-header .cost-badge { background:rgba(88,166,255,0.1); color:var(--accent); padding:3px 10px; border-radius:12px; font-size:0.8em; }
+.demo-card .card-body { padding:16px 20px; }
+.demo-card textarea, .demo-card input { width:100%; background:#0d1117; border:1px solid var(--border); color:var(--text); padding:10px 12px; border-radius:6px; font-family:monospace; font-size:0.9em; margin-bottom:10px; }
+.demo-card textarea { min-height:80px; resize:vertical; }
+.demo-card .result-box { background:#0d1117; border:1px solid var(--border); border-radius:6px; padding:12px; min-height:50px; margin-top:10px; font-size:0.85em; white-space:pre-wrap; display:none; max-height:300px; overflow-y:auto; }
+.demo-card .btn { background:var(--accent); color:#fff; border:none; padding:8px 20px; border-radius:6px; font-size:0.9em; cursor:pointer; font-weight:600; }
+.demo-card .btn:disabled { opacity:0.5; cursor:not-allowed; }
+.demo-card .btn:hover:not(:disabled) { filter:brightness(1.1); }
+.free-remaining { text-align:center; padding:12px; color:#8b949e; font-size:0.9em; }
+.free-remaining strong { color:var(--green); }
+.cta-section { text-align:center; padding:50px 20px; }
+.cta-section h2 { font-size:2em; margin-bottom:16px; }
+.cta-section .btn-large { background:var(--green); color:#fff; border:none; padding:16px 40px; border-radius:8px; font-size:1.2em; cursor:pointer; font-weight:700; text-decoration:none; display:inline-block; }
+.cta-section .btn-large:hover { filter:brightness(1.1); }
+.footer { text-align:center; padding:30px; color:#484f58; font-size:0.85em; border-top:1px solid var(--border); }
+.toast { position:fixed; bottom:20px; right:20px; padding:12px 24px; border-radius:8px; color:#fff; font-weight:600; display:none; z-index:999; }
+.toast.success { background:var(--green); }
+.toast.error { background:#f85149; }
+@media(max-width:600px){ .demo-grid { grid-template-columns:1fr; } }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <h1>🚀 Try Before You Buy</h1>
+  <p>Test our AI services with pre-filled examples — no API key required. <br>3 free tries per day, per IP.</p>
+  <div class="free-remaining">
+    🤖 Free tries remaining today: <strong id="freeRemaining">3</strong>
+  </div>
+</div>
+
+<div class="container">
+  <div class="demo-grid" id="demoGrid">
+    <!-- Cards injected by JS -->
+  </div>
+
+  <div class="cta-section">
+    <h2>Ready for Production?</h2>
+    <p style="color:#8b949e;margin-bottom:24px;max-width:500px;margin-left:auto;margin-right:auto;">
+      Get an API key with 500+ credits starting at just $5.
+      Use our services from code, CLI, GitHub Actions, or MCP.
+    </p>
+    <a href="/pricing" class="btn-large">💰 Buy Credits</a>
+    <br><br>
+    <a href="/portal.html" style="color:var(--accent);font-size:0.9em;">🔑 Already have a key? Log in here →</a>
+  </div>
+</div>
+
+<div class="footer">
+  <a href="/" style="color:var(--accent);">my-automaton</a> · AI services for developers · 
+  <a href="/api-docs" style="color:var(--accent);">API Docs</a> · 
+  <a href="/dev-examples" style="color:var(--accent);">Code Examples</a>
+</div>
+
+<div id="toast" class="toast"></div>
+
+<script>
+const API = window.location.origin;
+
+const SERVICES = [
+  { 
+    id:'analyze', name:'📊 Text Analysis', cost:'1 credit', placeholder:'Enter text to analyze...', 
+    defaultText:'The rapid advancement of artificial intelligence has transformed how we interact with technology. From natural language processing to computer vision, AI systems are increasingly capable of performing tasks that once required human intelligence. This technological revolution presents both unprecedented opportunities and significant challenges for society.',
+    btnLabel:'Analyze Free'
+  },
+  { 
+    id:'summarize', name:'📝 Summarization', cost:'2 credits', placeholder:'Paste long text...',
+    defaultText:'Artificial intelligence (AI) has evolved dramatically over the past decade. Deep learning models have achieved remarkable results in image recognition, natural language processing, and game playing. The development of transformer architectures has been particularly impactful, enabling models like GPT, BERT, and their successors to understand and generate human-like text. These advances have led to practical applications in healthcare, finance, education, and entertainment. However, concerns about bias, privacy, and the societal impact of AI continue to be important topics of discussion among researchers and policymakers. The future of AI will likely involve more sophisticated models that can reason, plan, and learn with greater efficiency.',
+    btnLabel:'Summarize Free'
+  },
+  { 
+    id:'review', name:'🔍 Code Review', cost:'5 credits', placeholder:'Paste code for review...',
+    defaultText:`function processData(input) {
+  var data = JSON.parse(input);
+  var result = [];
+  for (var i = 0; i < data.items.length; i++) {
+    var item = data.items[i];
+    if (item.status == "active") {
+      var processed = {
+        id: item.id,
+        name: item.name,
+        total: item.price * item.quantity
+      };
+      eval("result.push(processed)");
+    }
+  }
+  return result;
+}`,
+    btnLabel:'Review Free',
+    lang:'javascript'
+  },
+  { 
+    id:'security', name:'🔒 Security Scan', cost:'3 credits', placeholder:'Paste code to scan...',
+    defaultText:`app.get('/api/user', (req, res) => {
+  const id = req.query.id;
+  const query = "SELECT * FROM users WHERE id = " + id;
+  db.query(query, (err, results) => {
+    if (err) throw err;
+    res.json(results);
+  });
+});`,
+    btnLabel:'Scan Free'
+  },
+  { 
+    id:'explain', name:'💡 Explain Code', cost:'2 credits', placeholder:'Paste code to explain...',
+    defaultText:`const memoize = (fn) => {
+  const cache = new Map();
+  return (...args) => {
+    const key = JSON.stringify(args);
+    if (cache.has(key)) return cache.get(key);
+    const result = fn(...args);
+    cache.set(key, result);
+    return result;
+  };
+};`,
+    btnLabel:'Explain Free'
+  },
+  { 
+    id:'refactor', name:'🔄 Refactor', cost:'5 credits', placeholder:'Paste code to refactor...',
+    defaultText:`function getStuff() {
+  var a = [];
+  for (var i = 0; i < arguments.length; i++) {
+    if (arguments[i] != null && arguments[i] != undefined) {
+      if (typeof arguments[i] == "string") {
+        a.push(arguments[i].trim());
+      } else {
+        a.push(arguments[i]);
+      }
+    }
+  }
+  return a;
+}`,
+    btnLabel:'Refactor Free'
+  },
+  { 
+    id:'complexity', name:'⚡ Complexity Analysis', cost:'2 credits', placeholder:'Paste code to analyze...',
+    defaultText:`function findDuplicates(arr) {
+  const seen = new Map();
+  const duplicates = [];
+  for (let i = 0; i < arr.length; i++) {
+    for (let j = i + 1; j < arr.length; j++) {
+      if (arr[i] === arr[j] && !seen.has(arr[i])) {
+        seen.set(arr[i], true);
+        duplicates.push(arr[i]);
+      }
+    }
+  }
+  return duplicates;
+}`,
+    btnLabel:'Analyze Free'
+  }
+];
+
+let freeUsed = 0;
+
+async function checkFreeRemaining() {
+  try {
+    // Try a HEAD request to check remaining count
+    const res = await fetch(API + '/free/analyze', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({text: 'check'})
+    });
+    document.getElementById('freeRemaining').textContent = '3';
+  } catch(e) {}
+}
+
+function showToast(msg, type) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast ' + type;
+  t.style.display = 'block';
+  setTimeout(() => t.style.display = 'none', 3000);
+}
+
+async function callFree(serviceId, btn) {
+  const card = btn.closest('.demo-card');
+  const textarea = card.querySelector('textarea');
+  const resultBox = card.querySelector('.result-box');
+  const text = textarea.value.trim();
+  if (!text) { showToast('Please enter some text', 'error'); return; }
+  
+  btn.disabled = true;
+  btn.textContent = 'Processing...';
+  resultBox.style.display = 'none';
+  
+  try {
+    const body = { text, mode: serviceId };
+    if (['review','security','explain','refactor','complexity'].includes(serviceId)) {
+      body.code = text;
+    }
+    if (serviceId === 'summarize') body.max_length = 200;
+    
+    const res = await fetch(API + '/free/' + serviceId, {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(body)
+    });
+    
+    const data = await res.json().catch(() => ({}));
+    
+    if (res.ok) {
+      const output = data.output || data.result || data.analysis || data.summary || data.review || data.explanation || data.suggestions || JSON.stringify(data, null, 2);
+      resultBox.textContent = typeof output === 'object' ? JSON.stringify(output, null, 2) : output;
+      resultBox.style.display = 'block';
+      showToast('✅ Done! Try another service →', 'success');
+      const rem = document.getElementById('freeRemaining');
+      rem.textContent = Math.max(0, parseInt(rem.textContent) - 1);
+    } else if (res.status === 429) {
+      showToast('⚠️ Free limit reached! Buy credits to continue.', 'error');
+      resultBox.textContent = 'Daily free limit reached. Purchase credits to continue using services.';
+      resultBox.style.display = 'block';
+    } else {
+      showToast(data.error || 'Error ' + res.status, 'error');
+    }
+  } catch(e) {
+    showToast('Network error: ' + e.message, 'error');
+  }
+  
+  btn.disabled = false;
+  btn.textContent = btn.dataset.label || 'Try Free';
+}
+
+function initDemoCards() {
+  const grid = document.getElementById('demoGrid');
+  grid.innerHTML = '';
+  
+  SERVICES.forEach(s => {
+    const card = document.createElement('div');
+    card.className = 'demo-card';
+    card.innerHTML = `
+      <div class="card-header">
+        <h3>${s.name}</h3>
+        <span class="cost-badge">${s.cost}</span>
+      </div>
+      <div class="card-body">
+        <textarea id="input-${s.id}">${s.defaultText}</textarea>
+        ${s.lang ? `<input type="text" id="lang-${s.id}" value="${s.lang}" placeholder="Language" style="font-size:0.85em;padding:6px 10px;">` : ''}
+        <button class="btn" onclick="callFree('${s.id}', this)" data-label="${s.btnLabel}">${s.btnLabel}</button>
+        <div class="result-box" id="result-${s.id}"></div>
+      </div>
+    `;
+    grid.appendChild(card);
+  });
+}
+
+initDemoCards();
+checkFreeRemaining();
+</script>
+<script src="/conversion-banner.js" defer></script>
+</body>
+</html>

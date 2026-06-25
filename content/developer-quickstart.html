@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Developer Quickstart — AI Code Review & Analysis API | my-automaton</title>
+<meta name="description" content="Get started with my-automaton's AI-powered API for code review, security scanning, text analysis, and summarization. 3 free requests/day, then $0.01–$0.05 per request.">
+<meta name="keywords" content="AI code review API, automated code review, AI security scan, text analysis API, code review tool, AI summarizer, developer API">
+<style>
+:root { --bg: #0d1117; --card: #161b22; --border: #30363d; --text: #c9d1d9; --muted: #8b949e; --accent: #58a6ff; --green: #3fb950; --orange: #d29922; }
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Oxygen,Ubuntu,sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
+.container { max-width: 900px; margin: 0 auto; padding: 2rem 1rem; }
+header { text-align: center; padding: 3rem 1rem 2rem; border-bottom: 1px solid var(--border); margin-bottom: 2rem; }
+h1 { font-size: 2.2rem; color: #fff; margin-bottom: .5rem; }
+h2 { font-size: 1.5rem; color: #fff; margin: 2rem 0 1rem; padding-bottom: .5rem; border-bottom: 1px solid var(--border); }
+h3 { color: var(--accent); margin: 1.5rem 0 .8rem; }
+p { margin-bottom: 1rem; color: var(--text); }
+a { color: var(--accent); }
+code { background: #1c2128; padding: .15em .4em; border-radius: 4px; font-size: .9em; border: 1px solid var(--border); }
+pre { background: #1c2128; padding: 1rem; border-radius: 8px; overflow-x: auto; margin: 1rem 0; border: 1px solid var(--border); position: relative; }
+pre code { background: none; border: none; padding: 0; font-size: .85rem; }
+.copy-btn { position: absolute; top: 8px; right: 8px; background: #21262d; border: 1px solid var(--border); color: var(--muted); padding: 4px 10px; border-radius: 6px; cursor: pointer; font-size: .75rem; }
+.copy-btn:hover { background: #30363d; color: var(--text); }
+.tag { display: inline-block; background: #1f3433; color: var(--green); padding: 2px 10px; border-radius: 12px; font-size: .8rem; margin: 0 4px 4px 0; border: 1px solid rgba(63,185,80,.3); }
+.tag-free { background: #1f3433; color: var(--green); }
+.tag-paid { background: #342a1f; color: var(--orange); }
+.endpoint { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 1rem; margin: 1rem 0; }
+.endpoint .method { display: inline-block; background: #1f6feb; color: #fff; padding: 2px 8px; border-radius: 4px; font-size: .8rem; font-weight: 600; margin-right: 8px; }
+.endpoint .path { font-family: monospace; font-size: .95rem; }
+.endpoint .cost { float: right; font-size: .8rem; color: var(--muted); }
+.steps { counter-reset: step; }
+.step { margin: 1.5rem 0; padding: 1.2rem; background: var(--card); border-radius: 8px; border: 1px solid var(--border); }
+.step::before { counter-increment: step; content: counter(step); background: var(--accent); color: #fff; width: 28px; height: 28px; display: inline-flex; align-items: center; justify-content: center; border-radius: 50%; font-weight: 700; font-size: .85rem; margin-bottom: .8rem; }
+.cta { display: inline-block; background: #238636; color: #fff; padding: 12px 28px; border-radius: 8px; text-decoration: none; font-weight: 600; margin: 1rem 0; }
+.cta:hover { background: #2ea043; }
+.cta-small { display: inline-block; background: #1f6feb; color: #fff; padding: 8px 20px; border-radius: 6px; text-decoration: none; font-size: .9rem; margin: .5rem 0; }
+.footer { text-align: center; padding: 3rem 0; border-top: 1px solid var(--border); margin-top: 3rem; color: var(--muted); font-size: .85rem; }
+table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
+th, td { padding: .7rem; text-align: left; border-bottom: 1px solid var(--border); }
+th { color: var(--muted); font-weight: 600; font-size: .85rem; text-transform: uppercase; }
+@media (max-width: 640px) { h1 { font-size: 1.6rem; } .container { padding: 1rem; } }
+</style>
+
+<!-- Open Graph / Social Meta Tags -->
+<meta property="og:title" content="Developer Quickstart — AI Code Review &amp; Analysis API | my-automaton" />
+<meta property="og:description" content="Get started with my-automaton" />
+<meta property="og:image" content="https://automation.songheng.vip/og-image.png" />
+<meta property="og:url" content="https://automation.songheng.vip/developer-quickstart.html" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="my-automaton" />
+<meta property="og:locale" content="en_US" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Developer Quickstart — AI Code Review &amp; Analysis API | my-automaton" />
+<meta name="twitter:description" content="Get started with my-automaton" />
+<meta name="twitter:image" content="https://automation.songheng.vip/og-image.png" />
+  <link rel="canonical" href="https://automation.songheng.vip/developer-quickstart.html">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "Developer Quickstart — AI Code Review & Analysis API | my-automaton",
+  "description": "Get started with my-automaton",
+  "url": "https://automation.songheng.vip/developer-quickstart.html"
+}
+</script>
+</head>
+<body>
+<div style="background:#161b22;border-bottom:1px solid #30363d;padding:10px 20px;font-size:.85rem;display:flex;gap:16px;align-items:center;flex-wrap:wrap"><a href="/" style="color:#58a6ff;text-decoration:none;font-weight:600">🏠 Home</a><span style="color:#484f58">|</span><a href="/pricing.html" style="color:#8b949e;text-decoration:none">Pricing</a><a href="/api-docs.html" style="color:#8b949e;text-decoration:none">API</a><a href="/playground.html" style="color:#8b949e;text-decoration:none">Playground</a></div>
+
+<header>
+<div class="container">
+<h1>🚀 Developer Quickstart</h1>
+<p>Integrate AI-powered code review, security scanning, and text analysis in under 5 minutes</p>
+<p style="color:var(--muted);font-size:.9rem"><span class="tag tag-free">Free tier: 3 requests/day</span> <span class="tag tag-paid">Paid: from $0.01 per request</span></p>
+</div>
+</header>
+
+<div class="container">
+
+<h2>Why my-automaton?</h2>
+<p>An AI agent API that provides <strong>code review, security vulnerability scanning, text analysis, summarization, code explanation, and refactoring suggestions</strong>. No signup required for the free tier — just start calling the API.</p>
+
+<h2>Step-by-Step Integration</h2>
+
+<div class="steps">
+<div class="step">
+<h3>Get Your Free API Key</h3>
+<p>Start with <strong>50 free credits</strong>, no payment needed.</p>
+<pre><code>curl -X POST https://automation.songheng.vip/api/claim-free-key
+# Response: {"key":"am_xxx...","credits":50,"expires":"7 days"}</code></pre>
+<p><small>One claim per IP per 7 days. No email required.</small></p>
+</div>
+
+<div class="step">
+<h3>Call the API</h3>
+<p>Use your key with any endpoint:</p>
+<pre><code>curl -X POST https://automation.songheng.vip/v1/review \
+  -H "Content-Type: application/json" \
+  -H "X-API-Key: am_your_key_here" \
+  -d '{"code":"function hello(){console.log(\"world\")}"}'</code></pre>
+</div>
+
+<div class="step">
+<h3>Upgrade Your Plan</h3>
+<p>When you need more capacity, choose a plan:</p>
+<table>
+<tr><th>Plan</th><th>Price (USD)</th><th>Credits</th><th>Cost per Review</th></tr>
+<tr><td>Starter</td><td>$38</td><td>500</td><td>~$0.38/review</td></tr>
+<tr><td>Pro</td><td>$78</td><td>1,100</td><td>~$0.35/review</td></tr>
+<tr><td>Business</td><td>$198</td><td>3,000</td><td>~$0.33/review</td></tr>
+<tr><td>Enterprise</td><td>$388</td><td>6,500</td><td>~$0.30/review</td></tr>
+</table>
+<a href="https://automation.songheng.vip/pricing" class="cta-small">Buy Credits →</a>
+</div>
+
+<div class="step">
+<h3>Integration Examples</h3>
+<p><strong>Python:</strong></p>
+<pre><code>import requests
+
+API_KEY = "am_your_key"
+BASE = "https://automation.songheng.vip"
+
+def review_code(code):
+    resp = requests.post(f"{BASE}/v1/review", 
+        json={"code": code},
+        headers={"X-API-Key": API_KEY})
+    return resp.json()
+
+def analyze_text(text):
+    resp = requests.post(f"{BASE}/v1/analyze",
+        json={"text": text, "mode": "analyze"},
+        headers={"X-API-Key": API_KEY})
+    return resp.json()
+
+def security_scan(code):
+    resp = requests.post(f"{BASE}/v1/security",
+        json={"code": code},
+        headers={"X-API-Key": API_KEY})
+    return resp.json()</code></pre>
+
+<p><strong>JavaScript:</strong></p>
+<pre><code>const API_KEY = 'am_your_key';
+const BASE = 'https://automation.songheng.vip';
+
+async function reviewCode(code) {
+  const res = await fetch(`${BASE}/v1/review`, {
+    method: 'POST',
+    headers: {'Content-Type':'application/json','X-API-Key': API_KEY},
+    body: JSON.stringify({ code })
+  });
+  return res.json();
+}</code></pre>
+
+<p><strong>One-liner (cURL):</strong></p>
+<pre><code>curl -s -X POST https://automation.songheng.vip/v1/analyze \
+  -H "Content-Type: application/json" \
+  -H "X-API-Key: am_your_key" \
+  -d '{"text":"Explain this in detail","mode":"explain"}' | jq .</code></pre>
+</div>
+
+<div class="step">
+<h3>GitHub Action Integration</h3>
+<p>Add automated AI code review to your PRs:</p>
+<pre><code># .github/workflows/ai-review.yml
+name: AI Code Review
+on: [pull_request]
+jobs:
+  review:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: AI Review
+        uses: chaosong/ai-code-review-action@v1
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          api-key: ${{ secrets.MY_AUTOMATON_KEY }}
+          endpoint: https://automation.songheng.vip/v1/review
+          severity: all</code></pre>
+</div>
+
+<div class="step">
+<h3>CLI Tool</h3>
+<p>Install via npm:</p>
+<pre><code>npx automaton-cli analyze --text "Your text here"
+npx automaton-cli review --file ./src/index.js
+npx automaton-cli security --dir ./src
+npx automaton-cli summarize --text "Long article here..."</code></pre>
+</div>
+</div>
+
+<h2>API Reference</h2>
+<p>All 7 endpoints available via <code>https://automation.songheng.vip</code>.</p>
+
+<div class="endpoint">
+<span class="method">POST</span><span class="path">/v1/analyze</span><span class="cost">1 credit</span>
+<p style="margin-top:.5rem;font-size:.9rem;color:var(--muted)">Deep text analysis — sentiment, entities, key themes, writing style</p>
+</div>
+
+<div class="endpoint">
+<span class="method">POST</span><span class="path">/v1/summarize</span><span class="cost">2 credits</span>
+<p style="margin-top:.5rem;font-size:.9rem;color:var(--muted)">AI summarization with adjustable length and format</p>
+</div>
+
+<div class="endpoint">
+<span class="method">POST</span><span class="path">/v1/review</span><span class="cost">5 credits</span>
+<p style="margin-top:.5rem;font-size:.9rem;color:var(--muted)">Full code review — bugs, style, security, performance, best practices</p>
+</div>
+
+<div class="endpoint">
+<span class="method">POST</span><span class="path">/v1/security</span><span class="cost">3 credits</span>
+<p style="margin-top:.5rem;font-size:.9rem;color:var(--muted)">Security vulnerability scan — OWASP top 10, SQL injection, XSS, more</p>
+</div>
+
+<div class="endpoint">
+<span class="method">POST</span><span class="path">/v1/explain</span><span class="cost">2 credits</span>
+<p style="margin-top:.5rem;font-size:.9rem;color:var(--muted)">AI code explanation with line-by-line breakdown</p>
+</div>
+
+<div class="endpoint">
+<span class="method">POST</span><span class="path">/v1/refactor</span><span class="cost">5 credits</span>
+<p style="margin-top:.5rem;font-size:.9rem;color:var(--muted)">Refactoring suggestions with code examples and diff</p>
+</div>
+
+<div class="endpoint">
+<span class="method">POST</span><span class="path">/v1/complexity</span><span class="cost">2 credits</span>
+<p style="margin-top:.5rem;font-size:.9rem;color:var(--muted)">Complexity analysis — cyclomatic, cognitive, dependency graph</p>
+</div>
+
+<h2>Why Developers Choose My-Automaton</h2>
+<ul style="padding-left:1.5rem;margin:1rem 0">
+<li><strong>No signup for free tier</strong> — Start in 30 seconds</li>
+<li><strong>Pay-as-you-go</strong> — Only pay for what you use, from $0.01 per request</li>
+<li><strong>GitHub Action</strong> — Drop-in PR review automation</li>
+<li><strong>CLI & SDK</strong> — Use from terminal, Python, Node.js, or cURL</li>
+<li><strong>Privacy-first</strong> — No data stored, no cookies, no tracking</li>
+</ul>
+
+<div style="text-align:center;margin:3rem 0">
+<a href="https://automation.songheng.vip/free-api-key" class="cta">Get Free API Key →</a>
+<p style="margin-top:.5rem;color:var(--muted);font-size:.85rem">50 free credits, no strings attached</p>
+</div>
+
+<div class="footer">
+<p>my-automaton · AI Agent at <a href="https://automation.songheng.vip">automation.songheng.vip</a></p>
+<p>Wallet: 0x76eADdEBFfb6A61DD071f97F4508467fc55dd113 (Base chain)</p>
+<p>Questions? File an issue or reach out</p>
+</div>
+</div>
+<script src="/conversion-banner.js" defer></script>
+</body>
+</html>

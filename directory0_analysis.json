@@ -1,0 +1,102 @@
+{
+  "directory_index": 0,
+  "directory_name": "Smithery",
+  "url": "https://smithery.ai",
+  "submission_url": "https://smithery.ai/docs/build/publish",
+  "api_base": "https://api.smithery.ai",
+  "analysis": {
+    "json_api_available": true,
+    "json_api_details": {
+      "list_servers": {
+        "method": "GET",
+        "endpoint": "https://api.smithery.ai/servers",
+        "description": "Search and browse public MCP servers with full-text/semantic search, pagination, and filtering",
+        "auth_required": false,
+        "parameters": ["q", "page", "pageSize", "topK", "fields", "ids", "qualifiedName", "namespace", "remote", "isDeployed", "verified", "smitheryManaged", "ownerId", "repoOwner", "repoName", "seed"],
+        "response_format": "JSON",
+        "test_result": "Success - retrieved 3 servers of 6,358 total from public API"
+      },
+      "create_server": {
+        "method": "PUT",
+        "endpoint": "https://api.smithery.ai/servers/{qualifiedName}",
+        "description": "Create a new server entry. Idempotent.",
+        "auth_required": true,
+        "auth_type": "Bearer token (API key)"
+      },
+      "publish_server": {
+        "method": "PUT",
+        "endpoint": "https://api.smithery.ai/servers/{qualifiedName}/releases",
+        "description": "Submit a release via multipart form. Supports hosted (JS module), external (URL), and stdio (MCPB bundle) release types.",
+        "auth_required": true,
+        "auth_type": "Bearer token (API key)"
+      },
+      "update_server": {
+        "method": "PATCH",
+        "endpoint": "https://api.smithery.ai/servers/{qualifiedName}",
+        "description": "Update server metadata such as display name, description, repository, icon, or visibility.",
+        "auth_required": true
+      },
+      "get_server": {
+        "method": "GET",
+        "endpoint": "https://api.smithery.ai/servers/{qualifiedName}",
+        "description": "Retrieve server details including connections, tools, and security status.",
+        "auth_required": false
+      }
+    },
+    "interactive_form_fills_required": true,
+    "interactive_form_details": {
+      "web_ui_url": "https://smithery.ai/new",
+      "description": "Web-based form for publishing servers via URL or local bundle. Requires browser interaction.",
+      "fields": ["Server URL (for URL method)", "Server name (qualified name)", "Optional config schema"],
+      "cli_alternative": "smithery mcp publish command available as alternative"
+    },
+    "captcha_required": false,
+    "captcha_details": null,
+    "heavy_javascript_required": false,
+    "heavy_javascript_details": {
+      "main_site": "The main smithery.ai website uses Next.js with significant JavaScript for rendering",
+      "api": "The API at api.smithery.ai returns pure JSON and requires no JavaScript processing",
+      "docs": "Documentation at smithery.ai/docs is built with Mintlify (Next.js) but content is also accessible via LLMs.txt format"
+    },
+    "publish_methods": [
+      {
+        "method": "API",
+        "description": "REST API at api.smithery.ai for programmatic server creation and publishing",
+        "complexity": "Low",
+        "automation_friendly": true,
+        "notes": "Requires API key authentication for write operations. Best for automated workflows."
+      },
+      {
+        "method": "CLI",
+        "description": "Smithery CLI tool for publishing from command line",
+        "complexity": "Low",
+        "automation_friendly": true,
+        "notes": "Use `smithery mcp publish` command. Handles authentication via API key."
+      },
+      {
+        "method": "Web UI",
+        "description": "Browser-based form at smithery.ai/new",
+        "complexity": "Low",
+        "automation_friendly": false,
+        "notes": "Interactive form for manual submission. Not suitable for automation."
+      }
+    ],
+    "recommended_method": "API",
+    "recommended_method_details": {
+      "rationale": "Smithery provides a well-documented, comprehensive REST JSON API at api.smithery.ai. No CAPTCHA, no JavaScript rendering required, no interactive form fills. The API supports all operations needed: listing servers (public, no auth), creating servers (with API key), and publishing releases (with API key). This is the most efficient and reliable method for automation.",
+      "steps": [
+        "1. Obtain a Smithery API key from the Smithery dashboard",
+        "2. Create a server: PUT https://api.smithery.ai/servers/{qualifiedName} with JSON body (displayName, description)",
+        "3. Publish a release: PUT https://api.smithery.ai/servers/{qualifiedName}/releases with multipart form data including JSON payload",
+        "4. For URL-based hosting (simplest): Set payload type to 'external' with the server URL",
+        "5. For stdio servers: Upload an MCPB bundle file"
+      ],
+      "key_endpoints": [
+        {"method": "GET", "path": "/servers", "purpose": "List/search servers (no auth)"},
+        {"method": "PUT", "path": "/servers/{qualifiedName}", "purpose": "Create server (auth required)"},
+        {"method": "PUT", "path": "/servers/{qualifiedName}/releases", "purpose": "Publish release (auth required)"}
+      ]
+    }
+  },
+  "conclusion": "Smithery is the most API-friendly MCP directory. It has a fully documented REST API, no CAPTCHAs, no JavaScript rendering requirements for API operations, and supports programmatic listing, creation, and publishing of MCP servers. The API method is strongly recommended for automation."
+}

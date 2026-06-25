@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Free Online Developer Tools — 25+ Utilities | my-automaton</title>
+<meta name="description" content="Free online developer tools: AI code review, JSON formatter, Base64 encoder/decoder, JWT debugger, UUID generator, regex tester, HTML/CSS minifier, and more. All tools run in your browser — no data sent to servers.">
+<meta property="og:title" content="Free Online Developer Tools — 25+ Utilities">
+<meta property="og:description" content="AI code review, JSON formatter, Base64, JWT debugger, UUID generator, regex tester, and 20+ more free tools.">
+<meta property="og:url" content="https://automation.songheng.vip/dev-tools.html">
+<style>
+:root{--bg:#0a0e1a;--card:#131b2e;--text:#e2e8f0;--muted:#94a3b8;--accent:#38bdf8;--green:#4ade80;--border:#1e293b;--purple:#a78bfa;--red:#f87171;--yellow:#fbbf24;--pink:#f472b6}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+header{background:var(--card);border-bottom:1px solid var(--border);padding:0.75rem 1.5rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:0.5rem;position:sticky;top:0;z-index:100}
+header .logo{font-weight:700;color:var(--accent);text-decoration:none;font-size:1.1rem}
+header nav{display:flex;gap:1rem;flex-wrap:wrap}
+header nav a{color:var(--muted);text-decoration:none;font-size:0.8rem;transition:color .2s}
+header nav a:hover{color:var(--text)}
+.hero{text-align:center;padding:3rem 1rem 1.5rem;max-width:700px;margin:0 auto}
+.hero h1{font-size:2rem;background:linear-gradient(135deg,#38bdf8,#a78bfa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:0.5rem}
+.hero p{color:var(--muted);font-size:0.9rem;line-height:1.6}
+.ai-cta{background:linear-gradient(135deg,rgba(56,189,248,0.1),rgba(167,139,250,0.1));border:1px solid var(--accent);border-radius:12px;padding:1rem 1.5rem;text-align:center;max-width:600px;margin:0 auto 1.5rem}
+.ai-cta h3{color:var(--accent);margin-bottom:0.3rem}
+.ai-cta p{color:var(--muted);font-size:0.8rem;margin-bottom:0.5rem}
+.ai-cta a{display:inline-block;background:var(--accent);color:#000;padding:0.5rem 1.5rem;border-radius:8px;text-decoration:none;font-weight:600;font-size:0.85rem}
+.search{max-width:400px;margin:0 auto 2rem}
+.search input{width:100%;background:var(--card);color:var(--text);border:2px solid var(--border);border-radius:10px;padding:0.75rem 1rem;font-size:0.85rem}
+.search input:focus{outline:none;border-color:var(--accent)}
+main{max-width:1100px;margin:0 auto;padding:0 1rem 3rem}
+.cat-title{font-size:0.7rem;color:var(--accent);text-transform:uppercase;letter-spacing:0.15em;margin:1.5rem 0 0.75rem;padding-bottom:0.3rem;border-bottom:1px solid var(--border)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:0.5rem}
+.card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:0.85rem;cursor:pointer;transition:border-color .2s,transform .15s;text-decoration:none;display:block}
+.card:hover{border-color:var(--accent);transform:translateY(-1px)}
+.card .name{color:var(--text);font-size:0.8rem;font-weight:600;margin-bottom:0.2rem}
+.card .desc{color:var(--muted);font-size:0.65rem;line-height:1.4}
+.badge{display:inline-block;font-size:0.55rem;padding:0.1rem 0.4rem;border-radius:3px;margin-top:0.3rem;font-weight:600}
+.badge-ai{background:rgba(167,139,250,0.2);color:var(--purple)}
+.badge-new{background:rgba(74,222,128,0.15);color:var(--green)}
+/* Tool Panel */
+.tool-panel{display:none;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.25rem;margin:1rem 0}
+.tool-panel.active{display:block}
+.tool-panel h3{font-size:1rem;color:var(--accent);margin-bottom:0.75rem}
+.tool-panel textarea{width:100%;background:var(--bg);color:var(--text);border:1px solid var(--border);border-radius:8px;padding:0.75rem;font-family:'Fira Code',monospace;font-size:0.75rem;resize:vertical;min-height:120px;line-height:1.5}
+.tool-panel textarea:focus{outline:none;border-color:var(--accent)}
+.tool-panel .result{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:0.75rem;font-family:'Fira Code',monospace;font-size:0.75rem;min-height:60px;max-height:400px;overflow:auto;white-space:pre-wrap;word-break:break-all;line-height:1.5;margin-top:0.75rem}
+.tool-panel .row{display:flex;gap:0.5rem;align-items:center;flex-wrap:wrap;margin:0.5rem 0}
+.tool-panel button{background:var(--accent);color:#000;border:none;padding:0.5rem 1rem;border-radius:6px;cursor:pointer;font-weight:600;font-size:0.75rem}
+.tool-panel button:hover{opacity:0.9}
+.tool-panel button.ghost{background:transparent;color:var(--accent);border:1px solid var(--accent)}
+.tool-panel input[type=text]{background:var(--bg);color:var(--text);border:1px solid var(--border);border-radius:6px;padding:0.5rem;font-size:0.75rem;flex:1;min-width:150px}
+.tool-panel label{font-size:0.7rem;color:var(--muted)}
+.tool-panel .close{float:right;background:transparent;color:var(--muted);border:none;cursor:pointer;font-size:1.2rem;line-height:1}
+.seo-footer{text-align:center;padding:2rem 1rem;color:var(--muted);font-size:0.7rem;border-top:1px solid var(--border);margin-top:2rem}
+.seo-footer a{color:var(--accent)}
+</style>
+</head>
+<body>
+
+<header>
+  <a href="/" class="logo">🤖 my-automaton</a>
+  <nav>
+    <a href="/">Home</a>
+    <a href="/code-review-tool.html">AI Review</a>
+    <a href="/api-docs.html">API</a>
+    <a href="/blog.html">Blog</a>
+    <a href="/pricing.html">Pricing</a>
+  </nav>
+</header>
+
+<div class="hero">
+  <h1>Free Online Developer Tools</h1>
+  <p>25+ free utilities for developers. AI code review, JSON formatting, encoding, crypto, text tools, and more. Everything runs in your browser — no data sent to any server. No signup needed.</p>
+</div>
+
+<div class="ai-cta">
+  <h3>🤖 AI-Powered Code Review</h3>
+  <p>Get instant AI code review, security scanning, and refactoring suggestions. Free tier: 3 reviews/day.</p>
+  <a href="/code-review-tool.html">Try AI Code Review →</a>
+</div>
+
+<div class="search">
+  <input type="text" id="toolSearch" placeholder="🔍 Search tools... (try 'json', 'encode', 'hash')" oninput="filterTools()">
+</div>
+
+<main id="toolsContainer">
+<!-- Populated by JS -->
+</main>
+
+<div class="seo-footer">
+  <p>All tools run locally in your browser. No data is uploaded to any server. 
+  <a href="/">Home</a> · <a href="/api-docs.html">API Docs</a> · <a href="/blog.html">Blog</a> · 
+  <a href="/pricing.html">Premium API</a></p>
+</div>
+
+<!-- Hidden panels for each tool -->
+<div id="toolPanels"></div>
+
+<script>
+const TOOLS = [
+  // AI-Powered
+  {cat:"🤖 AI-Powered",name:"AI Code Review",desc:"AI analyzes your code for bugs, security issues, and improvements",badge:"ai",action:"review"},
+  {cat:"🤖 AI-Powered",name:"AI Security Scanner",desc:"Scan code for vulnerabilities and security issues with AI",badge:"ai",action:"security"},
+  {cat:"🤖 AI-Powered",name:"AI Text Analyzer",desc:"Deep analysis of text structure, sentiment, and entities",badge:"ai",action:"analyze"},
+  {cat:"🤖 AI-Powered",name:"AI Summarizer",desc:"Summarize long text into concise key points",badge:"ai",action:"summarize"},
+  // JSON Tools
+  {cat:"📦 JSON",name:"JSON Formatter",desc:"Format and beautify JSON with syntax highlighting",action:"json-format"},
+  {cat:"📦 JSON",name:"JSON Minifier",desc:"Minify JSON to single line",action:"json-minify"},
+  {cat:"📦 JSON",name:"JSON to YAML",desc:"Convert JSON to YAML format",action:"json-to-yaml"},
+  {cat:"📦 JSON",name:"YAML to JSON",desc:"Convert YAML to JSON format",action:"yaml-to-json"},
+  {cat:"📦 JSON",name:"JSON Validator",desc:"Validate JSON syntax and show errors",action:"json-validate"},
+  // Encoding
+  {cat:"🔐 Encoding",name:"Base64 Encode",desc:"Encode text to Base64",action:"base64-encode"},
+  {cat:"🔐 Encoding",name:"Base64 Decode",desc:"Decode Base64 to text",action:"base64-decode"},
+  {cat:"🔐 Encoding",name:"URL Encode",desc:"Encode text for URL parameters",action:"url-encode"},
+  {cat:"🔐 Encoding",name:"URL Decode",desc:"Decode URL-encoded text",action:"url-decode"},
+  {cat:"🔐 Encoding",name:"HTML Encode",desc:"Encode HTML entities",action:"html-encode"},
+  {cat:"🔐 Encoding",name:"HTML Decode",desc:"Decode HTML entities",action:"html-decode"},
+  // Generators
+  {cat:"🎲 Generators",name:"UUID Generator",desc:"Generate random UUIDs (v4)",action:"uuid-gen"},
+  {cat:"🎲 Generators",name:"Random String",desc:"Generate cryptographically random string",action:"random-str"},
+  {cat:"🎲 Generators",name:"Hash Generator",desc:"Generate MD5/SHA1/SHA256 hashes",action:"hash-gen"},
+  {cat:"🎲 Generators",name:"Lorem Ipsum",desc:"Generate placeholder text for designs",action:"lorem"},
+  // Text Tools
+  {cat:"📝 Text Tools",name:"Regex Tester",desc:"Test regular expressions with match highlighting",action:"regex-test"},
+  {cat:"📝 Text Tools",name:"Line Sorter",desc:"Sort lines alphabetically or reverse",action:"line-sort"},
+  {cat:"📝 Text Tools",name:"Remove Duplicates",desc:"Remove duplicate lines from text",action:"dedup"},
+  {cat:"📝 Text Tools",name:"Word Counter",desc:"Count characters, words, and lines",action:"word-count"},
+  {cat:"📝 Text Tools",name:"Case Converter",desc:"Convert text to upper, lower, title, or camel case",action:"case-convert"},
+  // Web
+  {cat:"🌐 Web",name:"JWT Debugger",desc:"Decode and inspect JWT tokens",action:"jwt-decode"},
+  {cat:"🌐 Web",name:"CSS Minifier",desc:"Minify CSS stylesheets",action:"css-minify"},
+  {cat:"🌐 Web",name:"HTML Minifier",desc:"Minify HTML markup",action:"html-minify"},
+  {cat:"🌐 Web",name:"JS Minifier",desc:"Minify JavaScript code",action:"js-minify"},
+  {cat:"🌐 Web",name:"Color Converter",desc:"Convert between HEX, RGB, HSL color formats",action:"color-convert"},
+];
+
+let activeTool = null;
+
+function renderTools(filter='') {
+  const container = document.getElementById('toolsContainer');
+  const q = filter.toLowerCase();
+  const cats = {};
+  TOOLS.filter(t => !q || t.name.toLowerCase().includes(q) || t.cat.toLowerCase().includes(q) || t.desc.toLowerCase().includes(q) || t.action.includes(q))
+    .forEach(t => { if(!cats[t.cat]) cats[t.cat]=[]; cats[t.cat].push(t); });
+  
+  let html = '';
+  for(const [cat, tools] of Object.entries(cats)) {
+    html += `<div class="cat-title">${cat}</div><div class="grid">`;
+    tools.forEach(t => {
+      html += `<div class="card" onclick="openTool('${t.action}')">
+        <div class="name">${t.name}</div>
+        <div class="desc">${t.desc}</div>
+        ${t.badge==='ai'?'<span class="badge badge-ai">AI</span>':''}
+      </div>`;
+    });
+    html += '</div>';
+  }
+  container.innerHTML = html;
+}
+
+function filterTools(){ renderTools(document.getElementById('toolSearch').value); }
+
+function openTool(action) {
+  document.querySelectorAll('.tool-panel').forEach(p => p.classList.remove('active'));
+  let panel = document.getElementById('panel-'+action);
+  if(!panel) { createToolPanel(action); panel = document.getElementById('panel-'+action); }
+  panel.classList.add('active');
+  panel.scrollIntoView({behavior:'smooth'});
+  activeTool = action;
+}
+
+function createToolPanel(action) {
+  const container = document.getElementById('toolPanels');
+  const div = document.createElement('div');
+  div.id = 'panel-'+action;
+  div.className = 'tool-panel';
+  
+  const tool = TOOLS.find(t => t.action===action);
+  const title = tool ? tool.name : action;
+  
+  if(['review','security','analyze','summarize'].includes(action)) {
+    div.innerHTML = `<span class="close" onclick="this.parentElement.classList.remove('active')">✕</span>
+      <h3>🤖 ${title}</h3>
+      <p style="color:var(--muted);font-size:0.75rem;margin-bottom:0.75rem">Powered by DeepSeek AI. Free tier: 3 requests/day.</p>
+      <textarea id="input-${action}" placeholder="Paste your code or text here..."></textarea>
+      <div class="row" style="margin-top:0.5rem">
+        <button onclick="callAI('${action}')">Run ${title}</button>
+        <span style="font-size:0.6rem;color:var(--muted)">Free • No signup</span>
+      </div>
+      <div class="result" id="output-${action}" style="display:none"></div>`;
+  } else if(action==='json-format') {
+    div.innerHTML = `<span class="close" onclick="this.parentElement.classList.remove('active')">✕</span>
+      <h3>📦 JSON Formatter</h3>
+      <textarea id="input-${action}" placeholder='Paste your JSON here...'></textarea>
+      <div class="row"><button onclick="formatJSON(2)">Format (2 spaces)</button><button onclick="formatJSON(4)">Format (4 spaces)</button><button onclick="formatJSON(0)" class="ghost">Minify</button></div>
+      <div class="result" id="output-${action}" style="display:none"></div>`;
+  } else if(action==='json-minify') {
+    div.innerHTML = `<span class="close" onclick="this.parentElement.classList.remove('active')">✕</span>
+      <h3>📦 JSON Minifier</h3><textarea id="input-${action}" placeholder="Paste JSON..."></textarea>
+      <div class="row"><button onclick="minifyJSON()">Minify JSON</button></div>
+      <div class="result" id="output-${action}" style="display:none"></div>`;
+  } else if(action==='json-validate') {
+    div.innerHTML = `<span class="close" onclick="this.parentElement.classList.remove('active')">✕</span>
+      <h3>📦 JSON Validator</h3><textarea id="input-${action}" placeholder="Paste JSON..."></textarea>
+      <div class="row"><button onclick="validateJSON()">Validate</button></div>
+      <div class="result" id="output-${action}" style="display:none"></div>`;
+  } else if(action==='json-to-yaml') {
+    div.innerHTML = `<span class="close" onclick="this.parentElement.classList.remove('active')">✕</span>
+      <h3>JSON → YAML</h3><textarea id="input-${action}" placeholder="Paste JSON..."></textarea>
+      <div class="row"><button onclick="jsonToYaml()">Convert to YAML</button></div>
+      <div class="result" id="output-${action}" style="display:none"></div>`;
+  } else if(action==='yaml-to-json') {
+    div.innerHTML = `<span class="close" onclick="this.parentElement.classList.remove('active')">✕</span>
+      <h3>YAML → JSON</h3><textarea id="input-${action}" placeholder="Paste YAML..."></textarea>
+      <div class="row"><button onclick="yamlToJson()">Convert to JSON</button></div>
+      <div class="result" id="output-${action}" style="display:none"></div>`;
+  } else if(action==='base64-encode'||action==='base64-decode') {
+    const isEncode = action==='base64-encode';
+    div.innerHTML = `<span class="close" onclick="this.parentElement.classList.remove('active')">✕</span>
+      <h3>🔐 Base64 ${isEncode?'Encoder':'Decoder'}</h3>
+      <textarea id="input-${action}" placeholder="${isEncode?'Enter text to encode...':'Paste Base64 to decode...'}"></textarea>
+      <div class="row"><button onclick="base64Op('${action}')">${isEncode?'Encode':'Decode'}</button></div>
+      <div class="result" id="output-${action}" style="display:none"></div>`;
+  } else if(action==='url-encode'||action==='url-decode') {
+    const isEncode = action==='url-encode';
+    div.innerHTML = `<span class="close" onclick="this.parentElement.classList.remove('active')">✕</span>
+      <h3>🔐 URL ${isEncode?'Encoder':'Decoder'}</h3>
+      <textarea id="input-${action}" placeholder="${isEncode?'Enter text to URL-encode...':'Paste URL-encoded string...'}"></textarea>
+      <div class="row"><button onclick="urlOp('${action}')">${isEncode?'Encode':'Decode'}</button></div>
+      <div class="result" id="output-${action}" style="display:none"></div>`;
+  } else if(action==='html-encode'||action==='html-decode') {
+    const isEncode = action==='html-encode';
+    div.innerHTML = `<span class="close" onclick="this.parentElement.classList.remove('active')">✕</span>
+      <h3>🔐 HTML Entity ${isEncode?'Encoder':'Decoder'}</h3>
+      <textarea id="input-${action}" placeholder="${isEncode?'Enter text to encode HTML entities...':'Paste HTML with entities...'}"></textarea>
+      <div class="row"><button onclick="htmlOp('${action}')">${isEncode?'Encode':'Decode'}</button></div>
+      <div class="result" id="output-${action}" style="display:none"></div>`;
+  } else if(action==='uuid-gen') {
+    div.innerHTML = `<span class="close" onclick="this.parentElement.classList.remove('active')">✕</span>
+      <h3>🎲 UUID Generator</h3>
+      <div class="row"><button onclick="generateUUIDs(1)">Generate 1</button><button onclick="generateUUIDs(5)">Generate 5</button><button onclick="generateUUIDs(10)">Generate 10</button><button onclick="generateUUIDs(50)">Generate 50</button></div>
+      <div class="result" id="output-${action}" style="display:none"></div>`;
+  } else if(action==='random-str') {
+    div.innerHTML = `<span class="close" onclick="this.parentElement.classList.remove('active')">✕</span>
+      <h3>🎲 Random String Generator</h3>
+      <div class="row"><label>Length:</label><input type="number" id="rand-len" value="32" min="1" max="1000" style="width:80px"></div>
+      <div class="row"><button onclick="genRandomStr()">Generate</button><button onclick="genRandomStr()" class="ghost">Another</button></div>
+      <div class="result" id="output-${action}" style="display:none"></div>`;
+  } else if(action==='hash-gen') {
+    div.innerHTML = `<span class="close" onclick="this.parentElement.classList.remove('active')">✕</span>
+      <h3>🎲 Hash Generator</h3>
+      <textarea id="input-${action}" placeholder="Enter text to hash..."></textarea>
+      <div class="row"><button onclick="genHash('SHA-256')">SHA-256</button><button onclick="genHash('SHA-1')">SHA-1</button><button onclick="genHash('MD5')">MD5</button></div>
+      <div class="result" id="output-${action}" style="display:none"></div>`;
+  } else if(action==='lorem') {
+    div.innerHTML = `<span class="close" onclick="this.parentElement.classList.remove('active')">✕</span>
+      <h3>🎲 Lorem Ipsum Generator</h3>
+      <div class="row"><button onclick="genLorem(1)">1 paragraph</button><button onclick="genLorem(3)">3 paragraphs</button><button onclick="genLorem(5)">5 paragraphs</button></div>
+      <div class="result" id="output-${action}" style="display:none"></div>`;
+  } else if(action==='regex-test') {
+    div.innerHTML = `<span class="close" onclick="this.parentElement.classList.remove('active')">✕</span>
+      <h3>📝 Regex Tester</h3>
+      <div class="row"><label>Pattern:</label><input type="text" id="regex-pattern" placeholder="e.g. \\d{3}-\\d{4}" style="flex:1"><label>Flags:</label><input type="text" id="regex-flags" placeholder="g" style="width:50px"></div>
+      <textarea id="input-${action}" placeholder="Test string..."></textarea>
+      <div class="row"><button onclick="testRegex()">Test</button></div>
+      <div class="result" id="output-${action}" style="display:none"></div>`;
+  } else if(action==='line-sort') {
+    div.innerHTML = `<span class="close" onclick="this.parentElement.classList.remove('active')">✕</span>
+      <h3>📝 Line Sorter</h3><textarea id="input-${action}" placeholder="Enter text, one item per line..."></textarea>
+      <div class="row"><button onclick="sortLines('asc')">Sort A→Z</button><button onclick="sortLines('desc')">Sort Z→A</button><button onclick="sortLines('random')" class="ghost">Randomize</button></div>
+      <div class="result" id="output-${action}" style="display:none"></div>`;
+  } else if(action==='dedup') {
+    div.innerHTML = `<span class="close" onclick="this.parentElement.classList.remove('active')">✕</span>
+      <h3>📝 Remove Duplicate Lines</h3><textarea id="input-${action}" placeholder="Enter text with duplicate lines..."></textarea>
+      <div class="row"><button onclick="dedupLines()">Remove Duplicates</button></div>
+      <div class="result" id="output-${action}" style="display:none"></div>`;
+  } else if(action==='word-count') {
+    div.innerHTML = `<span class="close" onclick="this.parentElement.classList.remove('active')">✕</span>
+      <h3>📝 Word Counter</h3><textarea id="input-${action}" placeholder="Enter text to analyze..." oninput="countWords()"></textarea>
+      <div class="result" id="output-${action}">Type or paste text above to see counts...</div>`;
+  } else if(action==='case-convert') {
+    div.innerHTML = `<span class="close" onclick="this.parentElement.classList.remove('active')">✕</span>
+      <h3>📝 Case Converter</h3><textarea id="input-${action}" placeholder="Enter text..."></textarea>
+      <div class="row"><button onclick="convertCase('upper')">UPPER</button><button onclick="convertCase('lower')">lower</button><button onclick="convertCase('title')">Title</button><button onclick="convertCase('camel')">camelCase</button><button onclick="convertCase('snake')">snake_case</button><button onclick="convertCase('kebab')">kebab-case</button></div>
+      <div class="result" id="output-${action}" style="display:none"></div>`;
+  } else if(action==='jwt-decode') {
+    div.innerHTML = `<span class="close" onclick="this.parentElement.classList.remove('active')">✕</span>
+      <h3>🌐 JWT Debugger</h3><textarea id="input-${action}" placeholder="Paste JWT token..."></textarea>
+      <div class="row"><button onclick="decodeJWT()">Decode JWT</button></div>
+      <div class="result" id="output-${action}" style="display:none"></div>`;
+  } else if(action==='css-minify'||action==='html-minify'||action==='js-minify') {
+    const label = action==='css-minify'?'CSS':action==='html-minify'?'HTML':'JavaScript';
+    div.innerHTML = `<span class="close" onclick="this.parentElement.classList.remove('active')">✕</span>
+      <h3>🌐 ${label} Minifier</h3><textarea id="input-${action}" placeholder="Paste ${label}..."></textarea>
+      <div class="row"><button onclick="minifyCode('${action}')">Minify</button></div>
+      <div class="result" id="output-${action}" style="display:none"></div>`;
+  } else if(action==='color-convert') {
+    div.innerHTML = `<span class="close" onclick="this.parentElement.classList.remove('active')">✕</span>
+      <h3>🌐 Color Converter</h3>
+      <div class="row"><input type="color" id="color-picker" value="#38bdf8" oninput="convertColor()"><input type="text" id="color-input" value="#38bdf8" oninput="convertColor()" placeholder="#hex or rgb() or hsl()"></div>
+      <div class="result" id="output-${action}">Pick or type a color...</div>`;
+  }
+  
+  container.appendChild(div);
+}
+
+// === Tool Functions ===
+
+function getInput(action) { return document.getElementById('input-'+action)?.value || ''; }
+function showOutput(action, text) {
+  const el = document.getElementById('output-'+action);
+  if(el) { el.style.display='block'; el.textContent = text; }
+}
+
+// JSON Tools
+function formatJSON(spaces) {
+  const action = 'json-format';
+  try { showOutput(action, JSON.stringify(JSON.parse(getInput(action)), null, spaces)); }
+  catch(e) { showOutput(action, '❌ Invalid JSON: '+e.message); }
+}
+function minifyJSON() {
+  const action = 'json-minify';
+  try { showOutput(action, JSON.stringify(JSON.parse(getInput(action)))); }
+  catch(e) { showOutput(action, '❌ Invalid JSON: '+e.message); }
+}
+function validateJSON() {
+  const action = 'json-validate';
+  try { JSON.parse(getInput(action)); showOutput(action, '✅ Valid JSON'); }
+  catch(e) { showOutput(action, '❌ ' + e.message); }
+}
+
+// YAML conversion (simple)
+function jsonToYaml() {
+  const action = 'json-to-yaml';
+  try {
+    const obj = JSON.parse(getInput(action));
+    showOutput(action, toYaml(obj));
+  } catch(e) { showOutput(action, '❌ Invalid JSON: '+e.message); }
+}
+function yamlToJson() {
+  const action = 'yaml-to-json';
+  try {
+    const obj = parseSimpleYaml(getInput(action));
+    showOutput(action, JSON.stringify(obj, null, 2));
+  } catch(e) { showOutput(action, '❌ '+e.message); }
+}
+function toYaml(obj, indent='') {
+  if(obj===null||obj===undefined) return 'null';
+  if(typeof obj!=='object') return String(obj);
+  if(Array.isArray(obj)) return obj.map(v => indent+'  - '+toYaml(v,indent+'  ').trimStart()).join('\n');
+  return Object.entries(obj).map(([k,v]) => {
+    if(v&&typeof v==='object') return indent+k+':\n'+toYaml(v,indent+'  ');
+    return indent+k+': '+(v===null?'null':String(v));
+  }).join('\n');
+}
+function parseSimpleYaml(yaml) {
+  // Simple YAML parser — handles basic cases
+  const lines = yaml.split('\n');
+  const result = {};
+  let current = result, stack = [];
+  lines.forEach(line => {
+    if(!line.trim()||line.trim().startsWith('#')) return;
+    const indent = line.search(/\S/);
+    const content = line.trim();
+    const colonIdx = content.indexOf(':');
+    if(colonIdx > 0) {
+      const key = content.substring(0, colonIdx).trim();
+      const val = content.substring(colonIdx+1).trim();
+      if(!val) {
+        result[key] = {};
+        stack = [{obj:result[key], indent}];
+      } else {
+        result[key] = isNaN(val)?val.replace(/^["']|["']$/g,''):Number(val);
+      }
+    }
+  });
+  return result;
+}
+
+// Encoding Tools
+function base64Op(action) {
+  try {
+    const input = getInput(action);
+    if(action==='base64-encode') showOutput(action, btoa(unescape(encodeURIComponent(input))));
+    else showOutput(action, decodeURIComponent(escape(atob(input))));
+  } catch(e) { showOutput(action, '❌ '+e.message); }
+}
+function urlOp(action) {
+  const input = getInput(action);
+  if(action==='url-encode') showOutput(action, encodeURIComponent(input));
+  else showOutput(action, decodeURIComponent(input));
+}
+function htmlOp(action) {
+  const input = getInput(action);
+  const entities = {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'};
+  if(action==='html-encode') showOutput(action, input.replace(/[&<>"']/g,c=>entities[c]));
+  else showOutput(action, input.replace(/&amp;|&lt;|&gt;|&quot;|&#39;/g,c=>Object.entries(entities).find(([k,v])=>v===c)?.[0]||c));
+}
+
+// Generators
+function generateUUIDs(n) {
+  const uuids = [];
+  for(let i=0;i<n;i++) uuids.push(crypto.randomUUID());
+  showOutput('uuid-gen', uuids.join('\n'));
+}
+function genRandomStr() {
+  const len = parseInt(document.getElementById('rand-len')?.value||32);
+  const arr = new Uint8Array(len);
+  crypto.getRandomValues(arr);
+  showOutput('random-str', Array.from(arr,b=>b.toString(16).padStart(2,'0')).join('').substring(0,len));
+}
+async function genHash(algo) {
+  const input = getInput('hash-gen');
+  const data = new TextEncoder().encode(input);
+  const hash = await crypto.subtle.digest(algo, data);
+  showOutput('hash-gen', algo+': '+Array.from(new Uint8Array(hash),b=>b.toString(16).padStart(2,'0')).join(''));
+}
+function genLorem(paras) {
+  const words = ['lorem','ipsum','dolor','sit','amet','consectetur','adipiscing','elit','sed','do','eiusmod','tempor','incididunt','ut','labore','et','dolore','magna','aliqua','enim','ad','minim','veniam','quis','nostrud','exercitation','ullamco','laboris','nisi','ut','aliquip','ex','ea','commodo','consequat','duis','aute','irure','dolor','in','reprehenderit','in','voluptate','velit','esse','cillum','dolore','eu','fugiat','nulla','pariatur','excepteur','sint','occaecat','cupidatat','non','proident','sunt','in','culpa','qui','officia','deserunt','mollit','anim','id','est','laborum'];
+  const result = [];
+  for(let p=0;p<paras;p++) {
+    const len = 30+Math.floor(Math.random()*40);
+    const para = [];
+    for(let i=0;i<len;i++) para.push(words[Math.floor(Math.random()*words.length)]);
+    let text = para.join(' ');
+    result.push(text.charAt(0).toUpperCase()+text.slice(1)+'.');
+  }
+  showOutput('lorem', result.join('\n\n'));
+}
+
+// Text Tools
+function testRegex() {
+  const action = 'regex-test';
+  const pattern = document.getElementById('regex-pattern')?.value||'';
+  const flags = document.getElementById('regex-flags')?.value||'';
+  const input = getInput(action);
+  try {
+    const re = new RegExp(pattern, flags);
+    const matches = [...input.matchAll(re)];
+    if(matches.length===0) { showOutput(action,'No matches found'); return; }
+    let out = matches.map((m,i) => `Match ${i+1}: "${m[0]}" at index ${m.index}`).join('\n');
+    if(matches[0].length>1) out += '\n\nGroups: ' + matches.map((m,i)=>`\n  Match ${i+1}: `+[...m].slice(1).map((g,j)=>`[${j+1}]="${g}"`).join(', ')).join('');
+    showOutput(action, out);
+  } catch(e) { showOutput(action, '❌ Invalid regex: '+e.message); }
+}
+function sortLines(order) {
+  const action = 'line-sort';
+  const lines = getInput(action).split('\n');
+  if(order==='asc') lines.sort();
+  else if(order==='desc') lines.sort().reverse();
+  else if(order==='random') lines.sort(()=>Math.random()-0.5);
+  showOutput(action, lines.join('\n'));
+}
+function dedupLines() {
+  const action = 'dedup';
+  showOutput(action, [...new Set(getInput(action).split('\n'))].join('\n'));
+}
+function countWords() {
+  const action = 'word-count';
+  const text = getInput(action);
+  const chars = text.length;
+  const words = text.trim()?text.trim().split(/\s+/).length:0;
+  const lines = text?text.split('\n').length:0;
+  showOutput(action, `Characters: ${chars}\nWords: ${words}\nLines: ${lines}\n\nBytes: ${new Blob([text]).size}`);
+}
+function convertCase(type) {
+  const action = 'case-convert';
+  let text = getInput(action);
+  if(type==='upper') text = text.toUpperCase();
+  else if(type==='lower') text = text.toLowerCase();
+  else if(type==='title') text = text.replace(/\w\S*/g,w=>w.charAt(0).toUpperCase()+w.slice(1).toLowerCase());
+  else if(type==='camel') text = text.replace(/[-_\s]+(.)?/g,(_,c)=>c?c.toUpperCase():'').replace(/^./,c=>c.toLowerCase());
+  else if(type==='snake') text = text.replace(/[\s-]+/g,'_').replace(/([a-z])([A-Z])/g,'$1_$2').toLowerCase();
+  else if(type==='kebab') text = text.replace(/[\s_]+/g,'-').replace(/([a-z])([A-Z])/g,'$1-$2').toLowerCase();
+  showOutput(action, text);
+}
+
+// Web Tools
+function decodeJWT() {
+  const action = 'jwt-decode';
+  const token = getInput(action).trim();
+  try {
+    const parts = token.split('.');
+    if(parts.length!==3) { showOutput(action,'❌ Invalid JWT (need 3 parts)'); return; }
+    const header = JSON.parse(atob(parts[0].replace(/-/g,'+').replace(/_/g,'/')));
+    const payload = JSON.parse(atob(parts[1].replace(/-/g,'+').replace(/_/g,'/')));
+    showOutput(action,'=== HEADER ===\n'+JSON.stringify(header,null,2)+'\n\n=== PAYLOAD ===\n'+JSON.stringify(payload,null,2));
+  } catch(e) { showOutput(action,'❌ '+e.message); }
+}
+function minifyCode(action) {
+  const input = getInput(action);
+  if(action==='css-minify') showOutput(action, input.replace(/\/\*[\s\S]*?\*\//g,'').replace(/\s+/g,' ').replace(/\s*([{}:;,])\s*/g,'$1').trim());
+  else if(action==='html-minify') showOutput(action, input.replace(/<!--[\s\S]*?-->/g,'').replace(/>\s+</g,'><').replace(/\s{2,}/g,' ').trim());
+  else showOutput(action, 'Basic minification — use a proper tool like UglifyJS for production.');
+}
+function convertColor() {
+  const action = 'color-convert';
+  const val = document.getElementById('color-input')?.value||'#38bdf8';
+  let hex='',r=0,g=0,b=0;
+  if(val.startsWith('#')) { hex=val; r=parseInt(val.slice(1,3),16); g=parseInt(val.slice(3,5),16); b=parseInt(val.slice(5,7),16); }
+  else if(val.startsWith('rgb')) { const m=val.match(/\d+/g); if(m){r=+m[0];g=+m[1];b=+m[2];hex='#'+[r,g,b].map(c=>c.toString(16).padStart(2,'0')).join('');} }
+  showOutput(action, `HEX: ${hex}\nRGB: rgb(${r},${g},${b})\nHSL: hsl(${Math.round(r/2.55)},${Math.round(g/2.55)},${Math.round(b/2.55)}%)`);
+}
+
+// AI Calls
+async function callAI(action) {
+  const el = document.getElementById('output-'+action);
+  el.style.display='block';
+  el.textContent = '⏳ Analyzing with AI...';
+  try {
+    const text = document.getElementById('input-'+action)?.value||'';
+    const payload = action==='review'||action==='security' 
+      ? JSON.stringify({code:text,language:'auto'}) 
+      : JSON.stringify({text,mode:action});
+    const resp = await fetch('/api/free/'+(action==='analyze'?'analyze':action==='review'?'review':action==='security'?'security':'summarize'), {
+      method:'POST',headers:{'Content-Type':'application/json'},body:payload
+    });
+    const data = await resp.json();
+    if(resp.status===200) el.textContent = JSON.stringify(data,null,2);
+    else if(resp.status===429) el.textContent = '⚠️ Rate limit reached. Free tier: 3 requests/day. Get API key for unlimited access.';
+    else el.textContent = 'Error: ' + JSON.stringify(data);
+  } catch(e) { el.textContent = '❌ Request failed: '+e.message; }
+}
+
+// Init
+document.addEventListener('DOMContentLoaded', ()=>renderTools());
+</script>
+<script src="/conversion-banner.js" defer></script>
+<script src="/share-widget.js"></script><script src="/share-widget.js"></script>
+<script src="/share-widget.js"></script>
+<script src="/share-widget.js"></script></body>
+</html>

@@ -1,0 +1,98 @@
+{
+  "name": "my-automaton",
+  "description": "AI-powered code review, text analysis, and security scanning",
+  "version": "1.0.0",
+  "author": {
+    "name": "my-automaton",
+    "address": "0x76eADdEBFfb6A61DD071f97F4508467fc55dd113"
+  },
+  "capabilities": {
+    "tools": [
+      {
+        "name": "analyze_text",
+        "description": "Deep text analysis with sentiment, entities, and insights",
+        "endpoint": "https://automation.songheng.vip/v1/analyze",
+        "cost": "1 credit",
+        "parameters": {
+          "text": "string (required)",
+          "mode": "analyze|sentiment|entities|keywords"
+        }
+      },
+      {
+        "name": "summarize",
+        "description": "AI-powered text summarization",
+        "endpoint": "https://automation.songheng.vip/v1/summarize",
+        "cost": "2 credits",
+        "parameters": {
+          "text": "string (required)",
+          "length": "short|medium|long"
+        }
+      },
+      {
+        "name": "review_code",
+        "description": "Full code review with bug detection and best practices",
+        "endpoint": "https://automation.songheng.vip/v1/review",
+        "cost": "5 credits",
+        "parameters": {
+          "text": "string (code, required)",
+          "language": "string (optional)"
+        }
+      },
+      {
+        "name": "security_scan",
+        "description": "Security vulnerability scanning",
+        "endpoint": "https://automation.songheng.vip/v1/security",
+        "cost": "3 credits",
+        "parameters": {
+          "text": "string (code, required)",
+          "language": "string (optional)"
+        }
+      },
+      {
+        "name": "explain_code",
+        "description": "Code explanation and documentation",
+        "endpoint": "https://automation.songheng.vip/v1/explain",
+        "cost": "2 credits",
+        "parameters": {
+          "text": "string (code, required)",
+          "language": "string (optional)"
+        }
+      },
+      {
+        "name": "refactor",
+        "description": "Refactoring suggestions",
+        "endpoint": "https://automation.songheng.vip/v1/refactor",
+        "cost": "5 credits",
+        "parameters": {
+          "text": "string (code, required)",
+          "language": "string (optional)"
+        }
+      },
+      {
+        "name": "complexity",
+        "description": "Code complexity analysis",
+        "endpoint": "https://automation.songheng.vip/v1/complexity",
+        "cost": "2 credits",
+        "parameters": {
+          "text": "string (code, required)",
+          "language": "string (optional)"
+        }
+      }
+    ]
+  },
+  "authentication": {
+    "type": "api-key",
+    "header": "X-API-Key",
+    "purchase_url": "https://automation.songheng.vip/pricing.html"
+  },
+  "pricing": {
+    "starter": "HK$38 for 500 credits",
+    "pro": "HK$78 for 1100 credits",
+    "team": "HK$198 for 3000 credits",
+    "enterprise": "HK$388 for 6500 credits"
+  },
+  "free_tier": {
+    "limit": "3 requests per IP per day",
+    "endpoints": "https://automation.songheng.vip/free/*"
+  }
+}

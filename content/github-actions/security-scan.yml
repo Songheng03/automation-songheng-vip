@@ -1,0 +1,146 @@
+# =============================================================================
+# my-automaton Security Scan — GitHub Actions Workflow
+# =============================================================================
+# 
+# Add this to your repo at .github/workflows/security-scan.yml
+# Get a free API key at https://automation.songheng.vip
+#
+# Features:
+# - Scan every PR for security vulnerabilities
+# - Auto-comment findings on PRs
+# - Fail CI on high-severity issues
+# - 3 free scans/day per IP (no API key needed)
+# =============================================================================
+
+name: my-automaton Security Scan
+
+on:
+  pull_request:
+    branches: [ main, master, develop ]
+  push:
+    branches: [ main, master ]
+  schedule:
+    - cron: '0 6 * * 1'  # Every Monday at 6 AM
+
+jobs:
+  security-scan:
+    runs-on: ubuntu-latest
+    name: AI-Powered Security Analysis
+    
+    # Allow up to 3 free scans per day per IP (no API key needed)
+    # For unlimited scans, get a paid plan at:
+    # https://automation.songheng.vip
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Gather files for scanning
+        id: gather
+        run: |
+          # Collect all source files (exclude node_modules, .git, etc.)
+          FILES=$(find . -type f \( -name "*.js" -o -name "*.ts" -o -name "*.py" -o -name "*.go" -o -name "*.rs" -o -name "*.sol" -o -name "*.php" -o -name "*.java" -o -name "*.cpp" -o -name "*.c" -o -name "*.rb" \) \
+            ! -path "*/node_modules/*" \
+            ! -path "*/.git/*" \
+            ! -path "*/vendor/*" \
+            ! -path "*/dist/*" \
+            ! -path "*/build/*" \
+            | head -20)
+          
+          if [ -z "$FILES" ]; then
+            echo "No supported source files found."
+            echo "has_files=false" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+          
+          echo "has_files=true" >> $GITHUB_OUTPUT
+          echo "files<<EOF" >> $GITHUB_OUTPUT
+          echo "$FILES" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: Run AI Security Scan
+        if: steps.gather.outputs.has_files == 'true'
+        id: scan
+        env:
+          # For paid tier: set API_KEY as a GitHub secret
+          # MY_AUTOMATON_KEY: ${{ secrets.MY_AUTOMATON_KEY }}
+          FILES: ${{ steps.gather.outputs.files }}
+        run: |
+          # Scan each file using my-automaton's free tier
+          RESULTS_DIR="security-results"
+          mkdir -p "$RESULTS_DIR"
+          
+          echo "$FILES" | while IFS= read -r file; do
+            echo "Scanning: $file"
+            
+            # Use the free tier (3 free scans/day/IP)
+            RESPONSE=$(curl -s -X POST \
+              "https://automation.songheng.vip/free/security" \
+              -H "Content-Type: application/json" \
+              -d "{\"code\": $(cat "$file" | jq -Rs .), \"filename\": \"$file\"}")
+            
+            # Save result
+            echo "$RESPONSE" > "$RESULTS_DIR/$(echo $file | tr '/' '_').json"
+            
+            # Extract severity for summary
+            SEVERITY=$(echo "$RESPONSE" | jq -r '.severity // "unknown"')
+            echo "$file: $SEVERITY" >> "$RESULTS_DIR/summary.txt"
+          done
+
+      - name: Generate Report
+        if: steps.gather.outputs.has_files == 'true'
+        id: report
+        run: |
+          echo "# 🔒 my-automaton Security Scan Results" > report.md
+          echo "" >> report.md
+          
+          if [ -f "security-results/summary.txt" ]; then
+            HIGH_COUNT=$(grep -c "high\|critical" security-results/summary.txt || true)
+            echo "**Found $HIGH_COUNT files with high/critical severity issues**" >> report.md
+            echo "" >> report.md
+            echo "## Detailed Results" >> report.md
+            echo '```' >> report.md
+            
+            for f in security-results/*.json; do
+              echo "--- $(basename $f .json | tr '_' '/') ---" >> report.md
+              cat "$f" | jq -r '.summary // .result // .' >> report.md 2>/dev/null || cat "$f" >> report.md
+              echo "" >> report.md
+            done
+            
+            echo '```' >> report.md
+          else
+            echo "✅ No security issues found." >> report.md
+          fi
+
+      - name: Comment PR
+        if: github.event_name == 'pull_request' && steps.gather.outputs.has_files == 'true'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const report = fs.readFileSync('report.md', 'utf8');
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: report
+            });
+
+      - name: Fail on High Severity
+        if: steps.gather.outputs.has_files == 'true'
+        run: |
+          if [ -f "security-results/summary.txt" ]; then
+            HIGH_COUNT=$(grep -c "high\|critical" security-results/summary.txt || true)
+            if [ "$HIGH_COUNT" -gt 0 ]; then
+              echo "❌ Found $HIGH_COUNT high/critical severity issues!"
+              exit 1
+            fi
+          fi
+          echo "✅ Security scan passed!"
+
+      - name: Upload Scan Results
+        if: always() && steps.gather.outputs.has_files == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: security-scan-results
+          path: security-results/

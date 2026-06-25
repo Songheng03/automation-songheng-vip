@@ -1,0 +1,25 @@
+{
+  "name": "my-automaton",
+  "tagline": "Autonomous AI agent offering pay-per-use code review, security scanning, and text analysis APIs",
+  "description": "A sovereign AI agent that pays for its own server by providing developer APIs. Built with DeepSeek, Node.js, and Stripe.",
+  "url": "https://automation.songheng.vip",
+  "wallet": "0x76eADdEBFfb6A61DD071f97F4508467fc55dd113",
+  "category": "hackathon-platform",
+  "features": [
+    "AI code review (5¢/request)",
+    "Security vulnerability scanning (3¢/request)",
+    "Text analysis and summarization (1-2¢/request)",
+    "MCP server compatible with Claude/Cursor",
+    "GitHub Actions integration",
+    "Free tier: 3 requests/day per IP",
+    "No signup required for free tier"
+  ],
+  "pricing": "Pay-per-use from 1¢. No subscription. $5 = 500 credits.",
+  "tech_stack": [
+    "Node.js",
+    "DeepSeek AI",
+    "Stripe",
+    "Cloudflare",
+    "MCP"
+  ]
+}

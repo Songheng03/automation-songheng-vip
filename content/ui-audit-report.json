@@ -1,0 +1,1028 @@
+{
+  "timestamp": "2026-06-23T23:11:33.836Z",
+  "summary": {
+    "total": 571,
+    "checked": 571,
+    "critical": 131,
+    "warnings": 72
+  },
+  "critical": [
+    {
+      "file": ".well-known/google-site-verification.html",
+      "issue": "Missing DOCTYPE",
+      "severity": "critical"
+    },
+    {
+      "file": ".well-known/google-site-verification.html",
+      "issue": "Missing viewport meta",
+      "severity": "critical"
+    },
+    {
+      "file": ".well-known/google-site-verification.html",
+      "issue": "Missing title",
+      "severity": "critical"
+    },
+    {
+      "file": "admin.html",
+      "issue": "Missing viewport meta",
+      "severity": "critical"
+    },
+    {
+      "file": "api-demo.html",
+      "issue": "Missing viewport meta",
+      "severity": "critical"
+    },
+    {
+      "file": "backlink-badges.html",
+      "issue": "Missing DOCTYPE",
+      "severity": "critical"
+    },
+    {
+      "file": "backlink-badges.html",
+      "issue": "Missing viewport meta",
+      "severity": "critical"
+    },
+    {
+      "file": "backlink-badges.html",
+      "issue": "Missing title",
+      "severity": "critical"
+    },
+    {
+      "file": "backlinks.html",
+      "issue": "Missing viewport meta",
+      "severity": "critical"
+    },
+    {
+      "file": "badge-code.html",
+      "issue": "Missing DOCTYPE",
+      "severity": "critical"
+    },
+    {
+      "file": "badge-code.html",
+      "issue": "Missing viewport meta",
+      "severity": "critical"
+    },
+    {
+      "file": "badge-code.html",
+      "issue": "Missing title",
+      "severity": "critical"
+    },
+    {
+      "file": "badge-generator.html",
+      "issue": "Broken internal links",
+      "severity": "critical"
+    },
+    {
+      "file": "blog/ai-code-review-free-tool.html",
+      "issue": "Missing viewport meta",
+      "severity": "critical"
+    },
+    {
+      "file": "blog/ai-code-review-pricing-comparison.html",
+      "issue": "Missing DOCTYPE",
+      "severity": "critical"
+    },
+    {
+      "file": "blog/ai-code-review-pricing-comparison.html",
+      "issue": "Missing viewport meta",
+      "severity": "critical"
+    },
+    {
+      "file": "blog/ai-code-review-pricing-comparison.html",
+      "issue": "Missing title",
+      "severity": "critical"
+    },
+    {
+      "file": "blog/building-ai-code-review-api.html",
+      "issue": "Missing DOCTYPE",
+      "severity": "critical"
+    },
+    {
+      "file": "blog/building-ai-code-review-api.html",
+      "issue": "Missing viewport meta",
+      "severity": "critical"
+    },
+    {
+      "file": "blog/building-ai-code-review-api.html",
+      "issue": "Missing title",
+      "severity": "critical"
+    },
+    {
+      "file": "blog/json-to-typescript-converter-guide.html",
+      "issue": "Missing viewport meta",
+      "severity": "critical"
+    },
+    {
+      "file": "blog/seo-audit-guide.html",
+      "issue": "Broken internal links",
+      "severity": "critical"
+    },
+    {
+      "file": "blog/test-post.html",
+      "issue": "Missing DOCTYPE",
+      "severity": "critical"
+    },
+    {
+      "file": "blog/test-post.html",
+      "issue": "Missing viewport meta",
+      "severity": "critical"
+    },
+    {
+      "file": "blog/test-post.html",
+      "issue": "Missing title",
+      "severity": "critical"
+    },
+    {
+      "file": "blog/text-analysis-tool-guide.html",
+      "issue": "Missing viewport meta",
+      "severity": "critical"
+    },
+    {
+      "file": "blog-index-partial.html",
+      "issue": "Missing DOCTYPE",
+      "severity": "critical"
+    },
+    {
+      "file": "blog-index-partial.html",
+      "issue": "Missing viewport meta",
+      "severity": "critical"
+    },
+    {
+      "file": "blog-index-partial.html",
+      "issue": "Missing title",
+      "severity": "critical"
+    },
+    {
+      "file": "catalog/index.html",
+      "issue": "Missing viewport meta",
+      "severity": "critical"
+    },
+    {
+      "file": "checkout.html",
+      "issue": "Broken internal links",
+      "severity": "critical"
+    },
+    {
+      "file": "clawhunt-submission.html",
+      "issue": "Missing viewport meta",
+      "severity": "critical"
+    },
+    {
+      "file": "code-quality-analyzer.html",
+      "issue": "Missing viewport meta",
+      "severity": "critical"
+    },
+    {
+      "file": "dev-tools-hub.html",
+      "issue": "Broken internal links",
+      "severity": "critical"
+    },
+    {
+      "file": "free-demo.html",
+      "issue": "Missing DOCTYPE",
+      "severity": "critical"
+    },
+    {
+      "file": "free-demo.html",
+      "issue": "Missing viewport meta",
+      "severity": "critical"
+    },
+    {
+      "file": "free-demo.html",
+      "issue": "Missing title",
+      "severity": "critical"
+    },
+    {
+      "file": "github-actions-integration.html",
+      "issue": "Missing DOCTYPE",
+      "severity": "critical"
+    },
+    {
+      "file": "github-actions-integration.html",
+      "issue": "Missing viewport meta",
+      "severity": "critical"
+    },
+    {
+      "file": "github-actions-integration.html",
+      "issue": "Missing title",
+      "severity": "critical"
+    },
+    {
+      "file": "github-integration.html",
+      "issue": "Missing viewport meta",
+      "severity": "critical"
+    },
+    {
+      "file": "github-readme-generator.html",
+      "issue": "Missing DOCTYPE",
+      "severity": "critical"
+    },
+    {
+      "file": "github-readme-generator.html",
+      "issue": "Missing viewport meta",
+      "severity": "critical"
+    },
+    {
+      "file": "github-readme-generator.html",
+      "issue": "Missing title",
+      "severity": "critical"
+    },
+    {
+      "file": "google-search-console.html",
+      "issue": "Missing viewport meta",
+      "severity": "critical"
+    },
+    {
+      "file": "google-verification.html",
+      "issue": "Missing viewport meta",
+      "severity": "critical"
+    },
+    {
+      "file": "google1432abcd5678efgh.html",
+      "issue": "Missing viewport meta",
+      "severity": "critical"
+    },
+    {
+      "file": "google1432abcd5678efgh.html",
+      "issue": "Missing title",
+      "severity": "critical"
+    },
+    {
+      "file": "google27f3c8e1a2b4d5f6.html",
+      "issue": "Missing DOCTYPE",
+      "severity": "critical"
+    },
+    {
+      "file": "google27f3c8e1a2b4d5f6.html",
+      "issue": "Missing viewport meta",
+      "severity": "critical"
+    },
+    {
+      "file": "google27f3c8e1a2b4d5f6.html",
+      "issue": "Missing title",
+      "severity": "critical"
+    },
+    {
+      "file": "google3a2b8c1d4e5f6a7b8c9d0e1f2a3b4c5.html",
+      "issue": "Missing viewport meta",
+      "severity": "critical"
+    },
+    {
+      "file": "google4c3a2b1f.html",
+      "issue": "Missing viewport meta",
+      "severity": "critical"
+    },
+    {
+      "file": "google4c3a2b1f.html",
+      "issue": "Missing title",
+      "severity": "critical"
+    },
+    {
+      "file": "googlea1b2c3d4e5f6a7b8.html",
+      "issue": "Missing DOCTYPE",
+      "severity": "critical"
+    },
+    {
+      "file": "googlea1b2c3d4e5f6a7b8.html",
+      "issue": "Missing viewport meta",
+      "severity": "critical"
+    },
+    {
+      "file": "googlea1b2c3d4e5f6a7b8.html",
+      "issue": "Missing title",
+      "severity": "critical"
+    },
+    {
+      "file": "googlea1b2c3d4e5f6g7h8.html",
+      "issue": "Missing DOCTYPE",
+      "severity": "critical"
+    },
+    {
+      "file": "googlea1b2c3d4e5f6g7h8.html",
+      "issue": "Missing viewport meta",
+      "severity": "critical"
+    },
+    {
+      "file": "googlea1b2c3d4e5f6g7h8.html",
+      "issue": "Missing title",
+      "severity": "critical"
+    },
+    {
+      "file": "googlea8c3f7b2e1d4f5a6.html",
+      "issue": "Missing DOCTYPE",
+      "severity": "critical"
+    },
+    {
+      "file": "googlea8c3f7b2e1d4f5a6.html",
+      "issue": "Missing viewport meta",
+      "severity": "critical"
+    },
+    {
+      "file": "googlea8c3f7b2e1d4f5a6.html",
+      "issue": "Missing title",
+      "severity": "critical"
+    },
+    {
+      "file": "googlec9b6b9b3c9b6b9b3.html",
+      "issue": "Missing DOCTYPE",
+      "severity": "critical"
+    },
+    {
+      "file": "googlec9b6b9b3c9b6b9b3.html",
+      "issue": "Missing viewport meta",
+      "severity": "critical"
+    },
+    {
+      "file": "googlec9b6b9b3c9b6b9b3.html",
+      "issue": "Missing title",
+      "severity": "critical"
+    },
+    {
+      "file": "googled8e7f8c3a2b1d4e5.html",
+      "issue": "Missing DOCTYPE",
+      "severity": "critical"
+    },
+    {
+      "file": "googled8e7f8c3a2b1d4e5.html",
+      "issue": "Missing viewport meta",
+      "severity": "critical"
+    },
+    {
+      "file": "googled8e7f8c3a2b1d4e5.html",
+      "issue": "Missing title",
+      "severity": "critical"
+    },
+    {
+      "file": "googlede4c8e8e3c8e8e3c.html",
+      "issue": "Missing DOCTYPE",
+      "severity": "critical"
+    },
+    {
+      "file": "googlede4c8e8e3c8e8e3c.html",
+      "issue": "Missing viewport meta",
+      "severity": "critical"
+    },
+    {
+      "file": "googlede4c8e8e3c8e8e3c.html",
+      "issue": "Missing title",
+      "severity": "critical"
+    },
+    {
+      "file": "googlee5c4b8f3a2d1e7f0.html",
+      "issue": "Missing DOCTYPE",
+      "severity": "critical"
+    },
+    {
+      "file": "googlee5c4b8f3a2d1e7f0.html",
+      "issue": "Missing viewport meta",
+      "severity": "critical"
+    },
+    {
+      "file": "googlee5c4b8f3a2d1e7f0.html",
+      "issue": "Missing title",
+      "severity": "critical"
+    },
+    {
+      "file": "googlee96ef8ba1cc95fe9.html",
+      "issue": "Missing DOCTYPE",
+      "severity": "critical"
+    },
+    {
+      "file": "googlee96ef8ba1cc95fe9.html",
+      "issue": "Missing viewport meta",
+      "severity": "critical"
+    },
+    {
+      "file": "googlee96ef8ba1cc95fe9.html",
+      "issue": "Missing title",
+      "severity": "critical"
+    },
+    {
+      "file": "googlegooglec9b6b9b3c9b6b9b3.html",
+      "issue": "Missing DOCTYPE",
+      "severity": "critical"
+    },
+    {
+      "file": "googlegooglec9b6b9b3c9b6b9b3.html",
+      "issue": "Missing viewport meta",
+      "severity": "critical"
+    },
+    {
+      "file": "googlegooglec9b6b9b3c9b6b9b3.html",
+      "issue": "Missing title",
+      "severity": "critical"
+    },
+    {
+      "file": "integrations.html",
+      "issue": "Broken internal links",
+      "severity": "critical"
+    },
+    {
+      "file": "link-assets/og-template.html",
+      "issue": "Missing viewport meta",
+      "severity": "critical"
+    },
+    {
+      "file": "link-assets/widget.html",
+      "issue": "Missing DOCTYPE",
+      "severity": "critical"
+    },
+    {
+      "file": "link-assets/widget.html",
+      "issue": "Missing viewport meta",
+      "severity": "critical"
+    },
+    {
+      "file": "link-assets/widget.html",
+      "issue": "Missing title",
+      "severity": "critical"
+    },
+    {
+      "file": "mailto-generator.html",
+      "issue": "Broken internal links",
+      "severity": "critical"
+    },
+    {
+      "file": "markdown-converter.html",
+      "issue": "Broken internal links",
+      "severity": "critical"
+    },
+    {
+      "file": "markdown-editor.html",
+      "issue": "Broken internal links",
+      "severity": "critical"
+    },
+    {
+      "file": "markdown-preview.html",
+      "issue": "Broken internal links",
+      "severity": "critical"
+    },
+    {
+      "file": "mcp-submission-report.html",
+      "issue": "Missing viewport meta",
+      "severity": "critical"
+    },
+    {
+      "file": "meta-tag-generator.html",
+      "issue": "Broken internal links",
+      "severity": "critical"
+    },
+    {
+      "file": "open-graph.html",
+      "issue": "Missing DOCTYPE",
+      "severity": "critical"
+    },
+    {
+      "file": "pricing.html",
+      "issue": "Missing DOCTYPE",
+      "severity": "critical"
+    },
+    {
+      "file": "pricing.html",
+      "issue": "Missing viewport meta",
+      "severity": "critical"
+    },
+    {
+      "file": "pricing.html",
+      "issue": "Missing title",
+      "severity": "critical"
+    },
+    {
+      "file": "readme-gen-body.html",
+      "issue": "Missing DOCTYPE",
+      "severity": "critical"
+    },
+    {
+      "file": "readme-gen-body.html",
+      "issue": "Missing viewport meta",
+      "severity": "critical"
+    },
+    {
+      "file": "readme-gen-body.html",
+      "issue": "Missing title",
+      "severity": "critical"
+    },
+    {
+      "file": "readme-gen-body.html",
+      "issue": "Broken internal links",
+      "severity": "critical"
+    },
+    {
+      "file": "revenue.html",
+      "issue": "Missing viewport meta",
+      "severity": "critical"
+    },
+    {
+      "file": "seo-audit-tool.html",
+      "issue": "Broken internal links",
+      "severity": "critical"
+    },
+    {
+      "file": "seo-links.html",
+      "issue": "Missing DOCTYPE",
+      "severity": "critical"
+    },
+    {
+      "file": "seo-links.html",
+      "issue": "Missing viewport meta",
+      "severity": "critical"
+    },
+    {
+      "file": "seo-links.html",
+      "issue": "Missing title",
+      "severity": "critical"
+    },
+    {
+      "file": "seo-report.html",
+      "issue": "Missing viewport meta",
+      "severity": "critical"
+    },
+    {
+      "file": "sitemap.html",
+      "issue": "Broken internal links",
+      "severity": "critical"
+    },
+    {
+      "file": "slack-webhook-integration.html",
+      "issue": "Missing DOCTYPE",
+      "severity": "critical"
+    },
+    {
+      "file": "slack-webhook-integration.html",
+      "issue": "Missing viewport meta",
+      "severity": "critical"
+    },
+    {
+      "file": "slack-webhook-integration.html",
+      "issue": "Missing title",
+      "severity": "critical"
+    },
+    {
+      "file": "social-share.html",
+      "issue": "Broken internal links",
+      "severity": "critical"
+    },
+    {
+      "file": "submit-checklist.html",
+      "issue": "Missing viewport meta",
+      "severity": "critical"
+    },
+    {
+      "file": "submit-directories.html",
+      "issue": "Missing viewport meta",
+      "severity": "critical"
+    },
+    {
+      "file": "test.html",
+      "issue": "Missing DOCTYPE",
+      "severity": "critical"
+    },
+    {
+      "file": "test.html",
+      "issue": "Missing viewport meta",
+      "severity": "critical"
+    },
+    {
+      "file": "test.html",
+      "issue": "Missing title",
+      "severity": "critical"
+    },
+    {
+      "file": "tools/backlink-generator.html",
+      "issue": "Broken internal links",
+      "severity": "critical"
+    },
+    {
+      "file": "tools/github-profile-readme-generator.html",
+      "issue": "Broken internal links",
+      "severity": "critical"
+    },
+    {
+      "file": "tools/markdown-preview.html",
+      "issue": "Broken internal links",
+      "severity": "critical"
+    },
+    {
+      "file": "tools/markdown-to-html.html",
+      "issue": "Broken internal links",
+      "severity": "critical"
+    },
+    {
+      "file": "tools/meta-preview.html",
+      "issue": "Broken internal links",
+      "severity": "critical"
+    },
+    {
+      "file": "tools/og-tag-generator.html",
+      "issue": "Broken internal links",
+      "severity": "critical"
+    },
+    {
+      "file": "tools/seo-meta-generator.html",
+      "issue": "Broken internal links",
+      "severity": "critical"
+    },
+    {
+      "file": "tools/seo-meta-tag-generator.html",
+      "issue": "Broken internal links",
+      "severity": "critical"
+    },
+    {
+      "file": "tunnel-notice.html",
+      "issue": "Missing viewport meta",
+      "severity": "critical"
+    },
+    {
+      "file": "widget/review-widget.html",
+      "issue": "Missing DOCTYPE",
+      "severity": "critical"
+    },
+    {
+      "file": "widget/review-widget.html",
+      "issue": "Missing viewport meta",
+      "severity": "critical"
+    },
+    {
+      "file": "widget/review-widget.html",
+      "issue": "Missing title",
+      "severity": "critical"
+    },
+    {
+      "file": "widgets/badge-code-review.html",
+      "issue": "Missing viewport meta",
+      "severity": "critical"
+    },
+    {
+      "file": "widgets/index.html",
+      "issue": "Missing viewport meta",
+      "severity": "critical"
+    },
+    {
+      "file": "widgets/qr.html",
+      "issue": "Missing viewport meta",
+      "severity": "critical"
+    }
+  ],
+  "warnings": [
+    {
+      "file": "agent-integration.html",
+      "issue": "Console.log statements",
+      "severity": "warning"
+    },
+    {
+      "file": "agent-roast.html",
+      "issue": "Console.log statements",
+      "severity": "warning"
+    },
+    {
+      "file": "api-demo-dashboard.html",
+      "issue": "Console.log statements",
+      "severity": "warning"
+    },
+    {
+      "file": "api-docs.html",
+      "issue": "Console.log statements",
+      "severity": "warning"
+    },
+    {
+      "file": "api-examples.html",
+      "issue": "Console.log statements",
+      "severity": "warning"
+    },
+    {
+      "file": "api-integration.html",
+      "issue": "Console.log statements",
+      "severity": "warning"
+    },
+    {
+      "file": "base64-image.html",
+      "issue": "Missing alt on images",
+      "severity": "warning"
+    },
+    {
+      "file": "blog/ai-code-review-guide.html",
+      "issue": "Console.log statements",
+      "severity": "warning"
+    },
+    {
+      "file": "blog/build-self-sustaining-ai-agent.html",
+      "issue": "Console.log statements",
+      "severity": "warning"
+    },
+    {
+      "file": "blog/building-ai-code-review-api.html",
+      "issue": "Console.log statements",
+      "severity": "warning"
+    },
+    {
+      "file": "blog/decentralized-ai-agent-economy.html",
+      "issue": "Console.log statements",
+      "severity": "warning"
+    },
+    {
+      "file": "blog/devto-article.html",
+      "issue": "Console.log statements",
+      "severity": "warning"
+    },
+    {
+      "file": "blog/digital-lifeform-survival.html",
+      "issue": "Console.log statements",
+      "severity": "warning"
+    },
+    {
+      "file": "blog/free-ai-api-gateway-setup.html",
+      "issue": "Console.log statements",
+      "severity": "warning"
+    },
+    {
+      "file": "blog/free-ai-code-review-api.html",
+      "issue": "Console.log statements",
+      "severity": "warning"
+    },
+    {
+      "file": "blog/github-webhook-integration.html",
+      "issue": "Console.log statements",
+      "severity": "warning"
+    },
+    {
+      "file": "blog/self-sustaining-ai-agent-server-bills.html",
+      "issue": "Console.log statements",
+      "severity": "warning"
+    },
+    {
+      "file": "blog/seo-sitemap-guide-2025.html",
+      "issue": "Console.log statements",
+      "severity": "warning"
+    },
+    {
+      "file": "blog/survival-story.html",
+      "issue": "Console.log statements",
+      "severity": "warning"
+    },
+    {
+      "file": "cicd-integration.html",
+      "issue": "Console.log statements",
+      "severity": "warning"
+    },
+    {
+      "file": "client-libraries.html",
+      "issue": "Console.log statements",
+      "severity": "warning"
+    },
+    {
+      "file": "code-grader.html",
+      "issue": "Console.log statements",
+      "severity": "warning"
+    },
+    {
+      "file": "code-quality-checker.html",
+      "issue": "Console.log statements",
+      "severity": "warning"
+    },
+    {
+      "file": "code-review-preview.html",
+      "issue": "Console.log statements",
+      "severity": "warning"
+    },
+    {
+      "file": "code-review-showdown.html",
+      "issue": "Console.log statements",
+      "severity": "warning"
+    },
+    {
+      "file": "curl-converter.html",
+      "issue": "Console.log statements",
+      "severity": "warning"
+    },
+    {
+      "file": "curl-playground.html",
+      "issue": "Console.log statements",
+      "severity": "warning"
+    },
+    {
+      "file": "curl-to-code.html",
+      "issue": "Console.log statements",
+      "severity": "warning"
+    },
+    {
+      "file": "deploy.html",
+      "issue": "Console.log statements",
+      "severity": "warning"
+    },
+    {
+      "file": "dev-examples.html",
+      "issue": "Console.log statements",
+      "severity": "warning"
+    },
+    {
+      "file": "dev-quickstart.html",
+      "issue": "Console.log statements",
+      "severity": "warning"
+    },
+    {
+      "file": "developer-quickstart.html",
+      "issue": "Console.log statements",
+      "severity": "warning"
+    },
+    {
+      "file": "diff-checker.html",
+      "issue": "Console.log statements",
+      "severity": "warning"
+    },
+    {
+      "file": "examples.html",
+      "issue": "Console.log statements",
+      "severity": "warning"
+    },
+    {
+      "file": "format.html",
+      "issue": "Console.log statements",
+      "severity": "warning"
+    },
+    {
+      "file": "free-ai-code-review-api.html",
+      "issue": "Console.log statements",
+      "severity": "warning"
+    },
+    {
+      "file": "free-api-key.html",
+      "issue": "Console.log statements",
+      "severity": "warning"
+    },
+    {
+      "file": "free-code-review.html",
+      "issue": "Console.log statements",
+      "severity": "warning"
+    },
+    {
+      "file": "getting-started.html",
+      "issue": "Console.log statements",
+      "severity": "warning"
+    },
+    {
+      "file": "guide.html",
+      "issue": "Console.log statements",
+      "severity": "warning"
+    },
+    {
+      "file": "html-entity-encoder.html",
+      "issue": "Missing alt on images",
+      "severity": "warning"
+    },
+    {
+      "file": "html-preview.html",
+      "issue": "Console.log statements",
+      "severity": "warning"
+    },
+    {
+      "file": "html-previewer.html",
+      "issue": "Missing alt on images",
+      "severity": "warning"
+    },
+    {
+      "file": "integration-guide.html",
+      "issue": "Console.log statements",
+      "severity": "warning"
+    },
+    {
+      "file": "integration.html",
+      "issue": "Console.log statements",
+      "severity": "warning"
+    },
+    {
+      "file": "interactive-demo.html",
+      "issue": "Console.log statements",
+      "severity": "warning"
+    },
+    {
+      "file": "landing-v2.html",
+      "issue": "Console.log statements",
+      "severity": "warning"
+    },
+    {
+      "file": "markdown-converter.html",
+      "issue": "Console.log statements",
+      "severity": "warning"
+    },
+    {
+      "file": "markdown-preview.html",
+      "issue": "Console.log statements",
+      "severity": "warning"
+    },
+    {
+      "file": "meta-tag-preview.html",
+      "issue": "Missing alt on images",
+      "severity": "warning"
+    },
+    {
+      "file": "pay-as-you-go.html",
+      "issue": "Console.log statements",
+      "severity": "warning"
+    },
+    {
+      "file": "payment-guide.html",
+      "issue": "Console.log statements",
+      "severity": "warning"
+    },
+    {
+      "file": "playground.html",
+      "issue": "Console.log statements",
+      "severity": "warning"
+    },
+    {
+      "file": "promote-dashboard.html",
+      "issue": "Console.log statements",
+      "severity": "warning"
+    },
+    {
+      "file": "quickstart.html",
+      "issue": "Console.log statements",
+      "severity": "warning"
+    },
+    {
+      "file": "readme-gen-body.html",
+      "issue": "Console.log statements",
+      "severity": "warning"
+    },
+    {
+      "file": "revenue-funnel.html",
+      "issue": "Console.log statements",
+      "severity": "warning"
+    },
+    {
+      "file": "sample-outputs.html",
+      "issue": "Console.log statements",
+      "severity": "warning"
+    },
+    {
+      "file": "scan.html",
+      "issue": "Console.log statements",
+      "severity": "warning"
+    },
+    {
+      "file": "security-scanner.html",
+      "issue": "Console.log statements",
+      "severity": "warning"
+    },
+    {
+      "file": "seo-landing.html",
+      "issue": "Console.log statements",
+      "severity": "warning"
+    },
+    {
+      "file": "tools/badge-generator.html",
+      "issue": "Missing alt on images",
+      "severity": "warning"
+    },
+    {
+      "file": "tools/code-quality-score.html",
+      "issue": "Console.log statements",
+      "severity": "warning"
+    },
+    {
+      "file": "tools/code-roast.html",
+      "issue": "Console.log statements",
+      "severity": "warning"
+    },
+    {
+      "file": "tools/github-profile-readme-generator.html",
+      "issue": "Missing alt on images",
+      "severity": "warning"
+    },
+    {
+      "file": "tools/markdown-preview.html",
+      "issue": "Console.log statements",
+      "severity": "warning"
+    },
+    {
+      "file": "tools/meta-tags-checker.html",
+      "issue": "Missing alt on images",
+      "severity": "warning"
+    },
+    {
+      "file": "tools/seo-audit.html",
+      "issue": "Missing alt on images",
+      "severity": "warning"
+    },
+    {
+      "file": "tools-playground.html",
+      "issue": "Console.log statements",
+      "severity": "warning"
+    },
+    {
+      "file": "welcome.html",
+      "issue": "Console.log statements",
+      "severity": "warning"
+    },
+    {
+      "file": "x402-guide.html",
+      "issue": "Console.log statements",
+      "severity": "warning"
+    },
+    {
+      "file": "x402-integration-guide.html",
+      "issue": "Console.log statements",
+      "severity": "warning"
+    }
+  ]
+}

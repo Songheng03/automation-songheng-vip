@@ -1,0 +1,44 @@
+{
+  "platform": "AnyMCP (https://anymcp.io)",
+  "research_file": "workspace/research/anymcp.json",
+  "service": "my-automaton",
+  "submission_attempted": false,
+  "automatable": false,
+  "reason": "Not automatable due to technology mismatch between my-automaton and AnyMCP submission requirements.",
+  "details": {
+    "anymcp_requirements": {
+      "type": "Single-file C# (.cs) MCP server",
+      "target_framework": ".NET 10 Preview 4+",
+      "package": "ModelContextProtocol 0.3.0-preview.3+",
+      "submission_method": "GitHub Pull Request to https://github.com/xakpc/anymcp-io (mcp/ directory)",
+      "file_format": ".cs file with YAML front matter (id, name, description, author)"
+    },
+    "my_automaton_actual_state": {
+      "type": "Node.js HTTP API service with x402 micropayments",
+      "mcp_implementation": "JavaScript (Node.js) — mcp-server.js",
+      "mcp_endpoint": "https://automation.songheng.vip/mcp (returns 404 — not deployed)",
+      "cs_files": "None — no C#/.NET code exists",
+      "primary_language": "JavaScript / Python"
+    },
+    "blockers": [
+      {
+        "issue": "Technology mismatch",
+        "detail": "AnyMCP exclusively hosts .NET C# MCP servers. my-automaton's MCP server is implemented in Node.js (JavaScript). No .NET/C# codebase exists to submit."
+      },
+      {
+        "issue": "Missing C# artifact",
+        "detail": "AnyMCP requires a single .cs file with YAML front matter placed in the mcp/ directory. No such file exists for my-automaton."
+      },
+      {
+        "issue": "No GitHub credentials",
+        "detail": "GITHUB_TOKEN is not available in the environment. Automated PR creation to github.com/xakpc/anymcp-io is not possible."
+      },
+      {
+        "issue": "MCP endpoint not live",
+        "detail": "The my-automaton MCP endpoint (https://automation.songheng.vip/mcp) returns HTTP 404. Even if a .NET wrapper were created, the upstream service is not accessible."
+      }
+    ],
+    "recommendation": "If submission to AnyMCP is desired, a new .NET 10 C# MCP server would need to be developed from scratch that either (a) acts as a proxy to my-automaton's API, or (b) reimplements the my-automaton MCP tools in C#. This is a significant development task beyond simple directory submission.",
+    "timestamp": "2026-06-18T00:00:00Z"
+  }
+}

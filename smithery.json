@@ -1,0 +1,227 @@
+{
+  "$schema": "https://smithery.ai/schemas/mcp-server.json",
+  "name": "my-automaton",
+  "displayName": "my-automaton - AI Code Review & Analysis",
+  "description": "AI-powered code review, security scanning, text analysis, summarization, code explanation, refactoring, and complexity analysis. Pay-per-use from $0.01. Free tier available (3 requests/day/IP).",
+  "version": "2.0.0",
+  "homepage": "https://automation.songheng.vip",
+  "author": {
+    "name": "my-automaton",
+    "wallet": "0x76eADdEBFfb6A61DD071f97F4508467fc55dd113",
+    "email": "",
+    "url": "https://automation.songheng.vip"
+  },
+  "license": "MIT",
+  "categories": ["code-review", "security", "text-analysis", "developer-tools"],
+  "tags": ["code-review", "security-scanning", "text-analysis", "ai", "mcp", "developer-tools"],
+  "keywords": ["code review", "security scan", "text analysis", "AI", "LLM", "code quality", "OWASP", "vulnerability scanning"],
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "transport": {
+    "type": "http",
+    "url": "https://automation.songheng.vip/mcp",
+    "sseUrl": "https://automation.songheng.vip/mcp",
+    "jsonrpcUrl": "https://automation.songheng.vip/mcp",
+    "headers": {
+      "Content-Type": "application/json"
+    }
+  },
+  "tools": [
+    {
+      "name": "analyze",
+      "description": "Deep text analysis — extract insights, themes, and key points from text content. Returns structured analysis with topics, sentiment, and key findings.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "text": {
+            "type": "string",
+            "description": "The text content to analyze"
+          }
+        },
+        "required": ["text"]
+      },
+      "pricing": {
+        "type": "free",
+        "limit": "3/day/IP",
+        "premium": "$0.01/request"
+      }
+    },
+    {
+      "name": "summarize",
+      "description": "AI-powered text summarization — condense long text into a concise summary with key points and actionable insights.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "text": {
+            "type": "string",
+            "description": "The text to summarize"
+          }
+        },
+        "required": ["text"]
+      },
+      "pricing": {
+        "type": "free",
+        "limit": "3/day/IP",
+        "premium": "$0.02/request"
+      }
+    },
+    {
+      "name": "review",
+      "description": "Full code review — check for bugs, security issues, style problems, performance bottlenecks, and suggest concrete improvements with code examples.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "The source code to review"
+          },
+          "language": {
+            "type": "string",
+            "description": "Programming language (e.g., javascript, python, rust, go)"
+          }
+        },
+        "required": ["code"]
+      },
+      "pricing": {
+        "type": "free",
+        "limit": "3/day/IP",
+        "premium": "$0.05/request"
+      }
+    },
+    {
+      "name": "security",
+      "description": "Security vulnerability scan — check code for OWASP Top 10 vulnerabilities, injections, secrets exposure, XSS, CSRF, and other security issues with remediation guidance.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "The source code to audit for security vulnerabilities"
+          },
+          "language": {
+            "type": "string",
+            "description": "Programming language"
+          }
+        },
+        "required": ["code"]
+      },
+      "pricing": {
+        "type": "free",
+        "limit": "3/day/IP",
+        "premium": "$0.03/request"
+      }
+    },
+    {
+      "name": "explain",
+      "description": "Code explanation — explain complex code in simple terms. Perfect for understanding unfamiliar codebases, generated code, or legacy systems.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "The code to explain"
+          },
+          "language": {
+            "type": "string",
+            "description": "Programming language"
+          }
+        },
+        "required": ["code"]
+      },
+      "pricing": {
+        "type": "free",
+        "limit": "3/day/IP",
+        "premium": "$0.02/request"
+      }
+    },
+    {
+      "name": "refactor",
+      "description": "Refactoring suggestions — provide concrete, actionable improvements for code quality, maintainability, and performance with before/after examples.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "The source code to refactor"
+          },
+          "language": {
+            "type": "string",
+            "description": "Programming language"
+          }
+        },
+        "required": ["code"]
+      },
+      "pricing": {
+        "type": "free",
+        "limit": "3/day/IP",
+        "premium": "$0.05/request"
+      }
+    },
+    {
+      "name": "complexity",
+      "description": "Complexity analysis — calculate cyclomatic complexity, cognitive complexity, maintainability index, and provide optimization targets for your codebase.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "The code to analyze for complexity"
+          },
+          "language": {
+            "type": "string",
+            "description": "Programming language"
+          }
+        },
+        "required": ["code"]
+      },
+      "pricing": {
+        "type": "free",
+        "limit": "3/day/IP",
+        "premium": "$0.02/request"
+      }
+    }
+  ],
+  "pricing": {
+    "type": "freemium",
+    "free": "3 requests/day/IP on all tools",
+    "premium": {
+      "currency": "USDC",
+      "chain": "Base",
+      "wallet": "0x76eADdEBFfb6A61DD071f97F4508467fc55dd113",
+      "prices": {
+        "analyze": 0.01,
+        "summarize": 0.02,
+        "review": 0.05,
+        "security": 0.03,
+        "explain": 0.02,
+        "refactor": 0.05,
+        "complexity": 0.02
+      }
+    },
+    "paymentModel": "x402",
+    "description": "Pay-per-request with USDC on Base chain. First 3 requests per day per IP are free."
+  },
+  "features": {
+    "auth": "none",
+    "freeTier": true,
+    "webhooks": false,
+    "streaming": false,
+    "batching": true
+  },
+  "deployment": {
+    "type": "cloud",
+    "provider": "Vultr",
+    "region": "global",
+    "uptime": "24/7"
+  },
+  "discovery": {
+    "endpoints": {
+      "mcp": "https://automation.songheng.vip/mcp",
+      "api": "https://automation.songheng.vip",
+      "playground": "https://automation.songheng.vip/api-playground.html"
+    },
+    "discoveryUrl": "https://automation.songheng.vip/mcp"
+  }
+}

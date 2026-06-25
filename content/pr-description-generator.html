@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI PR Description Generator — Free Online Tool | my-automaton</title>
+<meta name="description" content="Free AI PR Description Generator. Generate professional pull request descriptions from your code changes. Supports multiple languages. No signup needed.">
+<meta name="keywords" content="PR description generator, AI pull request generator, code review, automated PR, developer tools">
+<meta property="og:title" content="Free AI PR Description Generator | my-automaton">
+<meta property="og:description" content="Generate professional PR descriptions from code changes in seconds. Free, no signup.">
+<meta property="og:type" content="website">
+<link rel="canonical" href="https://automation.songheng.vip/pr-description-generator">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#0d1117;color:#c9d1d9;line-height:1.6}
+.container{max-width:900px;margin:0 auto;padding:2rem}
+h1{color:#58a6ff;font-size:2.2rem;margin-bottom:.5rem}
+.subtitle{color:#8b949e;margin-bottom:2rem;font-size:1.1rem}
+.tool-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-bottom:2rem}
+@media(max-width:700px){.tool-grid{grid-template-columns:1fr}}
+.card{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:1.5rem}
+.card h3{color:#58a6ff;margin-bottom:1rem;font-size:1rem;text-transform:uppercase;letter-spacing:.5px}
+textarea{width:100%;background:#0d1117;border:1px solid #30363d;border-radius:6px;color:#c9d1d9;padding:12px;font-family:'SF Mono','Fira Code','Consolas',monospace;font-size:14px;resize:vertical;min-height:200px}
+textarea:focus{outline:none;border-color:#58a6ff}
+select,button{background:#21262d;border:1px solid #30363d;color:#c9d1d9;padding:8px 16px;border-radius:6px;font-size:14px;margin:4px;cursor:pointer}
+select:hover,button:hover{border-color:#58a6ff}
+button.primary{background:#238636;border-color:#238636;color:#fff;font-weight:600}
+button.primary:hover{background:#2ea043}
+button.primary:disabled{opacity:.5;cursor:not-allowed}
+.controls{display:flex;gap:.5rem;flex-wrap:wrap;align-items:center;margin:1rem 0}
+.result-box{background:#0d1117;border:1px solid #30363d;border-radius:8px;padding:1.5rem;margin-top:1rem;display:none}
+.result-box.visible{display:block}
+.result-box pre{white-space:pre-wrap;word-break:break-word;color:#e6edf3;font-family:'SF Mono','Fira Code','Consolas',monospace;font-size:14px;line-height:1.5}
+.copy-btn{background:#21262d;border:1px solid #30363d;color:#c9d1d9;padding:6px 12px;border-radius:4px;cursor:pointer;font-size:12px}
+.copy-btn:hover{border-color:#58a6ff}
+.usage-counter{color:#8b949e;font-size:.85rem;margin-top:.5rem}
+.free-badge{display:inline-block;background:#1f6feb22;color:#58a6ff;border:1px solid #1f6feb44;padding:2px 10px;border-radius:12px;font-size:.8rem;font-weight:500}
+.powered-by{color:#484f58;font-size:.85rem;text-align:center;margin-top:2rem;border-top:1px solid #21262d;padding-top:1.5rem}
+.powered-by a{color:#58a6ff;text-decoration:none}
+@media(prefers-color-scheme:light){body{background:#fff;color:#24292f}.card,.result-box,.controls button,.copy-btn{background:#f6f8fa;border-color:#d0d7de}h1{color:#0969da}.subtitle,.usage-counter{color:#656d76}textarea{background:#f6f8fa;color:#24292f}}
+</style>
+</head>
+<body>
+<div class="container">
+<h1>🔄 AI PR Description Generator</h1>
+<p class="subtitle">Paste your code diff or commit message — get a professional pull request description in seconds. Free, no signup.</p>
+
+<div class="tool-grid">
+<div class="card">
+<h3>📝 Code Changes</h3>
+<textarea id="codeInput" placeholder="Paste your code diff, commit changes, or describe what you changed...&#10;&#10;Example:&#10;- Added user authentication with JWT&#10;- Created login API endpoint&#10;- Added password hashing with bcrypt&#10;- Fixed session timeout bug"></textarea>
+<div class="controls">
+<select id="prType">
+<option value="feature">✨ Feature</option>
+<option value="bugfix">🐛 Bug Fix</option>
+<option value="refactor">🔨 Refactor</option>
+<option value="docs">📚 Documentation</option>
+<option value="chore">🔧 Chore</option>
+<option value="perf">⚡ Performance</option>
+</select>
+<select id="tone">
+<option value="professional">Professional</option>
+<option value="concise">Concise</option>
+<option value="detailed">Detailed</option>
+</select>
+<button class="primary" id="generateBtn" onclick="generatePR()">🚀 Generate PR Description</button>
+</div>
+<p class="usage-counter" id="usageCounter">Free tier: <span id="remainingCount">3</span> generations remaining today</p>
+</div>
+
+<div class="card">
+<h3>✨ Preview</h3>
+<div class="result-box" id="resultBox">
+<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem">
+<span style="color:#58a6ff;font-weight:600">📋 PR Description</span>
+<button class="copy-btn" onclick="copyResult()">📋 Copy</button>
+</div>
+<pre id="resultContent"></pre>
+<div style="margin-top:1rem;padding-top:1rem;border-top:1px solid #30363d;text-align:center">
+<a href="/api-docs" style="color:#58a6ff;text-decoration:none;font-size:.9rem">Need more? Get 500+ generations with API credits →</a>
+</div>
+</div>
+<div id="placeholder" style="color:#484f58;text-align:center;padding:3rem 1rem">
+<p style="font-size:3rem;margin-bottom:1rem">📝</p>
+<p>Add your code changes and click generate</p>
+</div>
+</div>
+</div>
+
+<div class="powered-by">
+Powered by <a href="/">my-automaton</a> — AI code review, analysis, and security tools.<br>
+Free tier: 3 uses/day. <a href="/api-docs">Get unlimited API access →</a>
+</div>
+</div>
+
+<script>
+// Track free tier usage via localStorage
+function getCount() {
+  const today = new Date().toDateString();
+  const data = JSON.parse(localStorage.getItem('pr_gen_count') || '{"date":"","count":0}');
+  if (data.date !== today) { data.date = today; data.count = 0; }
+  return data;
+}
+
+function updateCounter() {
+  const data = getCount();
+  document.getElementById('remainingCount').textContent = Math.max(0, 3 - data.count);
+}
+
+function generatePR() {
+  const data = getCount();
+  if (data.count >= 3) {
+    document.getElementById('resultBox').classList.add('visible');
+    document.getElementById('resultContent').textContent = '⚠️ Free tier limit reached (3/day). Please use the API for unlimited PR descriptions.\n\nGet your API key at /api-docs';
+    return;
+  }
+
+  const code = document.getElementById('codeInput').value.trim();
+  if (!code) { alert('Please enter your code changes first!'); return; }
+
+  const prType = document.getElementById('prType').value;
+  const tone = document.getElementById('tone').value;
+  const btn = document.getElementById('generateBtn');
+  btn.disabled = true; btn.textContent = '⏳ Generating...';
+
+  const payload = JSON.stringify({
+    text: code,
+    mode: 'generate-pr',
+    pr_type: prType,
+    tone: tone
+  });
+
+  fetch('/free/analyze', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: payload
+  })
+  .then(r => r.json())
+  .then(resp => {
+    data.count++;
+    data.date = new Date().toDateString();
+    localStorage.setItem('pr_gen_count', JSON.stringify(data));
+    updateCounter();
+
+    const content = typeof resp === 'string' ? resp :
+      resp.result || resp.text || resp.response || resp.message || JSON.stringify(resp, null, 2);
+
+    document.getElementById('placeholder').style.display = 'none';
+    document.getElementById('resultBox').classList.add('visible');
+    document.getElementById('resultContent').textContent = formatPR(content, prType, tone);
+  })
+  .catch(err => {
+    // Fallback: generate a template locally
+    document.getElementById('placeholder').style.display = 'none';
+    document.getElementById('resultBox').classList.add('visible');
+    document.getElementById('resultContent').textContent = generateLocalPR(code, prType, tone);
+    data.count++;
+    data.date = new Date().toDateString();
+    localStorage.setItem('pr_gen_count', JSON.stringify(data));
+    updateCounter();
+  })
+  .finally(() => {
+    btn.disabled = false; btn.textContent = '🚀 Generate PR Description';
+  });
+}
+
+function formatPR(text, type, tone) {
+  const typeMap = {feature:'✨ Feature',bugfix:'🐛 Bug Fix',refactor:'🔨 Refactor',docs:'📚 Documentation',chore:'🔧 Chore',perf:'⚡ Performance'};
+  return `## ${typeMap[type] || '📝 Changes'}\n\n` + text;
+}
+
+function generateLocalPR(code, type, tone) {
+  const lines = code.split('\n').filter(l => l.trim());
+  const typeMap = {feature:'Feature',bugfix:'Bug Fix',refactor:'Refactor',docs:'Documentation',chore:'Chore',perf:'Performance'};
+  const features = lines.filter(l => l.startsWith('-') || l.startsWith('+') || l.startsWith('*'))
+    .map(l => l.replace(/^[-+*]\s*/, '')).filter(l => l.length > 3);
+
+  let pr = `## ${typeMap[type] || 'Update'}\n\n`;
+  if (tone === 'professional') {
+    pr += `### Summary\nThis pull request introduces ${features.length > 0 ? 'the following changes' : 'updates to the codebase'}.\n\n`;
+  } else if (tone === 'detailed') {
+    pr += `### Overview\n\nThis PR implements ${typeMap[type] || 'changes'} to improve the codebase.\n\n### Changes Made\n\n`;
+    features.forEach(f => pr += `- ${f}\n`);
+    return pr + `\n### Testing\n- [ ] Unit tests pass\n- [ ] Manual testing completed\n\n### Review Notes\nPlease pay attention to the changed logic areas.`;
+  } else {
+    pr += `${features.length > 0 ? features.join('. ') : 'Various improvements to the codebase'}.\n\n`;
+  }
+
+  if (features.length > 0 && tone !== 'detailed') {
+    pr += `**Changes:**\n`;
+    features.slice(0, 10).forEach(f => pr += `- ${f}\n`);
+  }
+  pr += `\n### Checklist\n- [ ] Code follows project style\n- [ ] Tests added/updated\n- [ ] Documentation updated\n- [ ] Changes are self-reviewable`;
+  return pr;
+}
+
+function copyResult() {
+  const text = document.getElementById('resultContent').textContent;
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = document.querySelector('.copy-btn');
+    btn.textContent = '✅ Copied!';
+    setTimeout(() => btn.textContent = '📋 Copy', 2000);
+  });
+}
+
+updateCounter();
+</script>
+<script src="/conversion-banner.js" defer></script>
+</body>
+</html>

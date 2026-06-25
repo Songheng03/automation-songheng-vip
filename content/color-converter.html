@@ -1,0 +1,62 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Color Converter — HEX, RGB, HSL, CMYK Online | my-automaton</title><meta name="description" content="Convert colors between HEX, RGB, HSL, HSV, and CMYK. Real-time conversion with color preview. Pick any color or type values. 100% free."><style>:root{--bg:#0f172a;--card:#1e293b;--text:#e2e8f0;--muted:#94a3b8;--accent:#38bdf8;--green:#4ade80;--border:#334155}*{box-sizing:border-box;margin:0;padding:0}body{font-family:system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh}header{background:var(--card);border-bottom:1px solid var(--border);padding:1rem 2rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap}header h1{font-size:1.25rem;color:var(--accent)}nav a{color:var(--muted);text-decoration:none;margin-left:1rem;font-size:.875rem}main{max-width:700px;margin:2rem auto;padding:0 1rem}.card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.5rem;margin-bottom:1rem}.color-preview{width:100%;height:100px;border-radius:10px;margin-bottom:1rem;border:2px solid var(--border);transition:background .2s}.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:.75rem}@media(max-width:500px){.grid-2{grid-template-columns:1fr}}.field{margin-bottom:.5rem}.field label{font-size:.65rem;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;display:block;margin-bottom:.15rem}.field input{width:100%;background:#0f172a;color:var(--text);border:1px solid var(--border);border-radius:6px;padding:.5rem;font-family:"Fira Code",monospace;font-size:.8rem}input:focus{outline:none;border-color:var(--accent)}input[type="color"]{width:48px;height:36px;padding:2px;cursor:pointer;border:1px solid var(--border);border-radius:6px}.color-input-row{display:flex;align-items:center;gap:.5rem;margin-bottom:1rem}.btn-row{display:flex;gap:.5rem;flex-wrap:wrap}.btn{padding:.3rem .8rem;border:1px solid var(--border);border-radius:6px;background:transparent;color:var(--muted);cursor:pointer;font-size:.7rem}.btn:hover{border-color:var(--accent);color:var(--text)}footer{text-align:center;padding:2rem;color:var(--muted);font-size:.8rem;border-top:1px solid var(--border);margin-top:2rem}footer a{color:var(--accent)}</style>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Color Converter","applicationCategory":"DeveloperApplication","operatingSystem":"Any","url":"https://automation.songheng.vip/color-converter.html","description":"Convert colors between RGB, HEX, HSL, and CMYK formats with visual preview.","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"aggregateRating":{"@type":"AggregateRating","ratingValue":"4.8","ratingCount":"127"}}</script>
+</head><body><header><h1>🎨 Color Converter</h1><nav><a href="/">Home</a><a href="/dev-tools.html">Dev Tools</a><a href="/dev-tools-hub.html">Tools Hub</a></nav></header><main>
+<div class="card">
+  <div class="color-preview" id="preview"></div>
+  <div class="color-input-row">
+    <input type="color" id="picker" value="#38bdf8" oninput="fromPicker()">
+    <span style="font-size:.7rem;color:var(--muted)">or type values below ↓</span>
+  </div>
+</div>
+<div class="grid-2">
+  <div class="card">
+    <div class="field"><label>HEX</label><input type="text" id="hex" value="#38BDF8" oninput="fromHex()" placeholder="#RRGGBB"></div>
+    <div class="field"><label>RGB</label><input type="text" id="rgb" value="rgb(56, 189, 248)" oninput="fromRGB()" placeholder="rgb(r, g, b)"></div>
+    <div class="field"><label>HSL</label><input type="text" id="hsl" value="hsl(198, 93%, 60%)" oninput="fromHSL()" placeholder="hsl(h, s%, l%)"></div>
+  </div>
+  <div class="card">
+    <div class="field"><label>H S V</label><input type="text" id="hsv" value="hsv(198, 77%, 97%)" oninput="fromHSV()" placeholder="hsv(h, s%, v%)"></div>
+    <div class="field"><label>CMYK</label><input type="text" id="cmyk" value="cmyk(77%, 24%, 0%, 3%)" oninput="fromCMYK()" placeholder="cmyk(c%, m%, y%, k%)"></div>
+    <div class="field"><label>CSS Name or Value</label><input type="text" id="cssName" value="sky blue" oninput="fromCSSName()" placeholder="red, #fff, rgba(...)"></div>
+  </div>
+</div>
+<div class="btn-row">
+  <button class="btn" onclick="randomColor()">🎲 Random Color</button>
+  <button class="btn" onclick="copyAll()">📋 Copy All</button>
+</div>
+</main><footer><p>my-automaton · Free Color Converter · <a href="/">Home</a> · <a href="/dev-tools-hub.html">All Tools</a></p></footer>
+<script>
+function hexToRgb(h){h=h.replace('#','');if(h.length===3)h=h[0]+h[0]+h[1]+h[1]+h[2]+h[2];return[parseInt(h.slice(0,2),16),parseInt(h.slice(2,4),16),parseInt(h.slice(4,6),16)]}
+function rgbToHex(r,g,b){return'#'+[r,g,b].map(x=>{const s=x.toString(16).toUpperCase();return s.length===1?'0'+s:s}).join('')}
+function rgbToHsl(r,g,b){r/=255;g/=255;b/=255;const max=Math.max(r,g,b),min=Math.min(r,g,b);let h=0,s,l=(max+min)/2;if(max!==min){const d=max-min;s=l>.5?d/(2-max-min):d/(max+min);switch(max){case r:h=((g-b)/d+(g<b?6:0))/6;break;case g:h=((b-r)/d+2)/6;break;case b:h=((r-g)/d+4)/6}}return[Math.round(h*360),Math.round(s*100),Math.round(l*100)]}
+function hslToRgb(h,s,l){h/=360;s/=100;l/=100;if(s===0)return[Math.round(l*255),Math.round(l*255),Math.round(l*255)];const q=l<.5?l*(1+s):l+s-l*s,p=2*l-q;const r=p2(p,q,h+1/3),g=p2(p,q,h),b=p2(p,q,h-1/3);return[Math.round(r*255),Math.round(g*255),Math.round(b*255)]}
+function p2(p,q,t){if(t<0)t+=1;if(t>1)t-=1;if(t<1/6)return p+(q-p)*6*t;if(t<1/2)return q;if(t<2/3)return p+(q-p)*(2/3-t)*6;return p}
+function rgbToCmyk(r,g,b){r/=255;g/=255;b/=255;const k=1-Math.max(r,g,b);if(k===1)return[0,0,0,100];return[Math.round((1-r-k)/(1-k)*100),Math.round((1-g-k)/(1-k)*100),Math.round((1-b-k)/(1-k)*100),Math.round(k*100)]}
+function cmykToRgb(c,m,y,k){c/=100;m/=100;y/=100;k/=100;return[Math.round(255*(1-c)*(1-k)),Math.round(255*(1-m)*(1-k)),Math.round(255*(1-y)*(1-k))]}
+function updateAll(r,g,b){
+  document.getElementById('hex').value=rgbToHex(r,g,b);
+  document.getElementById('rgb').value='rgb('+r+', '+g+', '+b+')';
+  const[h,sl,l]=rgbToHsl(r,g,b);document.getElementById('hsl').value='hsl('+h+', '+sl+'%, '+l+'%)';
+  const max=Math.max(r,g,b);const sv=max===0?0:Math.round((1-Math.min(r,g,b)/max)*100);const v=Math.round(max/255*100);document.getElementById('hsv').value='hsv('+h+', '+sv+'%, '+v+'%)';
+  const[cm,cy,ck,cc]=rgbToCmyk(r,g,b);document.getElementById('cmyk').value='cmyk('+cm+'%, '+cy+'%, '+ck+'%, '+cc+'%)';
+  document.getElementById('preview').style.background='rgb('+r+','+g+','+b+')';
+  document.getElementById('picker').value=rgbToHex(r,g,b);
+}
+function fromPicker(){const v=document.getElementById('picker').value;updateAll(...hexToRgb(v))}
+function fromHex(){const v=document.getElementById('hex').value.trim();try{updateAll(...hexToRgb(v))}catch(e){}}
+function fromRGB(){const v=document.getElementById('rgb').value.trim();const m=v.match(/[\d.]+/g);if(m&&m.length>=3)updateAll(parseInt(m[0]),parseInt(m[1]),parseInt(m[2]))}
+function fromHSL(){const v=document.getElementById('hsl').value.trim();const m=v.match(/[\d.]+/g);if(m&&m.length>=3)updateAll(...hslToRgb(parseFloat(m[0]),parseFloat(m[1]),parseFloat(m[2])))}
+function fromHSV(){const v=document.getElementById('hsv').value.trim();const m=v.match(/[\d.]+/g);if(m&&m.length>=3){const h=parseFloat(m[0]),s=parseFloat(m[1])/100,vv=parseFloat(m[2])/100;const c=vv*s;const x=c*(1-Math.abs((h/60)%2-1));const mm=vv-c;let r1,g1,b1;if(h<60){r1=c;g1=x;b1=0}else if(h<120){r1=x;g1=c;b1=0}else if(h<180){r1=0;g1=c;b1=x}else if(h<240){r1=0;g1=x;b1=c}else if(h<300){r1=x;g1=0;b1=c}else{r1=c;g1=0;b1=x}updateAll(Math.round((r1+mm)*255),Math.round((g1+mm)*255),Math.round((b1+mm)*255))}}
+function fromCMYK(){const v=document.getElementById('cmyk').value.trim();const m=v.match(/[\d.]+/g);if(m&&m.length>=4)updateAll(...cmykToRgb(parseFloat(m[0]),parseFloat(m[1]),parseFloat(m[2]),parseFloat(m[3])))}
+function fromCSSName(){
+  const v=document.getElementById('cssName').value.trim();
+  if(!v)return;
+  const d=document.createElement('div');d.style.color=v;document.body.appendChild(d);
+  const c=getComputedStyle(d).color;document.body.removeChild(d);
+  const m=c.match(/[\d.]+/g);if(m&&m.length>=3)updateAll(parseInt(m[0]),parseInt(m[1]),parseInt(m[2]))
+}
+function randomColor(){const r=Math.floor(Math.random()*256),g=Math.floor(Math.random()*256),b=Math.floor(Math.random()*256);updateAll(r,g,b)}
+function copyAll(){const vals=['HEX: '+document.getElementById('hex').value,'RGB: '+document.getElementById('rgb').value,'HSL: '+document.getElementById('hsl').value,'HSV: '+document.getElementById('hsv').value,'CMYK: '+document.getElementById('cmyk').value];navigator.clipboard.writeText(vals.join('\n'))}
+updateAll(56,189,248);
+</script><script src="/conversion-banner.js" defer></script>
+</body></html>

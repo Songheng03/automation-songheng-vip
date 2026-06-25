@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PasteBin - Share Code Snippets | my-automaton</title>
+<meta name="description" content="Free pastebin for code snippets. Share code with syntax highlighting, no signup required. Powered by my-automaton AI.">
+<meta name="keywords" content="pastebin, code sharing, code snippet, paste, share code, developer tools">
+<link rel="canonical" href="https://automation.songheng.vip/pastebin.html">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#0d1117;color:#c9d1d9;min-height:100vh}
+.container{max-width:900px;margin:0 auto;padding:1.5rem}
+header{background:#161b22;border-bottom:1px solid #30363d;padding:1rem 0;margin-bottom:2rem}
+header .container{display:flex;justify-content:space-between;align-items:center;padding:.5rem 1.5rem}
+header h1{font-size:1.2rem;color:#f0f6fc}
+header h1 span{color:#58a6ff}
+header nav a{color:#8b949e;text-decoration:none;margin-left:1rem;font-size:.85rem}
+header nav a:hover{color:#58a6ff}
+.toolbar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:1rem;align-items:center}
+.toolbar select,.toolbar button{background:#21262d;border:1px solid #30363d;color:#c9d1d9;padding:6px 12px;border-radius:6px;font-size:.85rem;cursor:pointer}
+.toolbar select:hover,.toolbar button:hover{background:#30363d}
+.toolbar button.primary{background:#238636;border-color:#2ea043;color:#fff;font-weight:600}
+.toolbar button.primary:hover{background:#2ea043}
+.toolbar .spacer{flex:1}
+textarea{width:100%;min-height:400px;background:#0d1117;border:1px solid #30363d;border-radius:8px;padding:1rem;color:#e6edf3;font-family:'JetBrains Mono','Fira Code','Consolas',monospace;font-size:14px;line-height:1.5;resize:vertical;tab-size:2;outline:none;transition:border-color .2s}
+textarea:focus{border-color:#58a6ff}
+textarea::placeholder{color:#484f58}
+#preview{display:none;background:#0d1117;border:1px solid #30363d;border-radius:8px;padding:1rem;overflow-x:auto;font-family:'JetBrains Mono','Consolas',monospace;font-size:14px;line-height:1.5;white-space:pre;tab-size:2}
+#shareUrl{display:none;background:#161b22;border:1px solid #30363d;border-radius:8px;padding:1rem;margin:1rem 0;word-break:break-all}
+#shareUrl input{width:100%;background:#0d1117;border:1px solid #30363d;color:#e6edf3;padding:8px 12px;border-radius:4px;font-family:monospace;font-size:.85rem;outline:none}
+#shareUrl input:focus{border-color:#58a6ff}
+.info-bar{display:flex;justify-content:space-between;color:#8b949e;font-size:.8rem;margin:.5rem 0;padding:0 4px}
+.saved-pastes{margin-top:2rem}
+.saved-pastes h3{color:#8b949e;font-size:.85rem;text-transform:uppercase;letter-spacing:.5px;margin-bottom:.75rem}
+.paste-item{display:flex;justify-content:space-between;align-items:center;padding:.6rem .75rem;border:1px solid #21262d;border-radius:6px;margin-bottom:.5rem;font-size:.85rem}
+.paste-item:hover{background:#161b22}
+.paste-item .name{color:#58a6ff;cursor:pointer;font-family:monospace}
+.paste-item .name:hover{text-decoration:underline}
+.paste-item .meta{color:#8b949e;font-size:.75rem}
+.paste-item .del{cursor:pointer;color:#f85149;font-size:1rem;padding:0 4px}
+.paste-item .del:hover{color:#ff6b6b}
+.cta-section{margin-top:3rem;padding:2rem;background:#161b22;border:1px solid #30363d;border-radius:8px;text-align:center}
+.cta-section h3{color:#f0f6fc;margin-bottom:.5rem}
+.cta-section p{color:#8b949e;font-size:.9rem;margin-bottom:1rem}
+.cta-buttons{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.cta-btn{display:inline-block;padding:10px 24px;border-radius:6px;text-decoration:none;font-weight:600;font-size:.9rem}
+.cta-btn.primary{background:#3fb950;color:#000}
+.cta-btn.secondary{background:#21262d;border:1px solid #30363d;color:#c9d1d9}
+.cta-btn:hover{opacity:.9}
+.language-tag{display:inline-block;padding:2px 8px;border-radius:4px;font-size:.7rem;background:#1c2128;color:#8b949e;border:1px solid #30363d}
+footer{margin-top:3rem;padding:2rem 0;border-top:1px solid #21262d;text-align:center;color:#484f58;font-size:.8rem}
+footer a{color:#58a6ff;text-decoration:none}
+</style>
+
+<!-- Open Graph / Social Meta Tags -->
+<meta property="og:title" content="PasteBin - Share Code Snippets | my-automaton" />
+<meta property="og:description" content="Free pastebin for code snippets. Share code with syntax highlighting, no signup required. Powered by my-automaton AI." />
+<meta property="og:image" content="https://automation.songheng.vip/og-image.png" />
+<meta property="og:url" content="https://automation.songheng.vip/pastebin.html" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="my-automaton" />
+<meta property="og:locale" content="en_US" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="PasteBin - Share Code Snippets | my-automaton" />
+<meta name="twitter:description" content="Free pastebin for code snippets. Share code with syntax highlighting, no signup required. Powered by my-automaton AI." />
+<meta name="twitter:image" content="https://automation.songheng.vip/og-image.png" />
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "PasteBin - Share Code Snippets | my-automaton",
+  "description": "Free pastebin for code snippets. Share code with syntax highlighting, no signup required. Powered by my-automaton AI.",
+  "url": "https://automation.songheng.vip/pastebin.html"
+}
+</script>
+</head>
+<body>
+<header>
+<div class="container">
+  <h1>📋 <span>Paste</span>Bin</h1>
+  <nav>
+    <a href="/">Home</a>
+    <a href="/get-started.html">API</a>
+    <a href="/dashboard.html">Stats</a>
+  </nav>
+</div>
+</header>
+
+<div class="container">
+  <div class="toolbar">
+    <select id="lang" onchange="updateLang()">
+      <option value="plaintext">Plain Text</option>
+      <option value="javascript">JavaScript</option>
+      <option value="typescript">TypeScript</option>
+      <option value="python">Python</option>
+      <option value="go">Go</option>
+      <option value="rust">Rust</option>
+      <option value="solidity">Solidity</option>
+      <option value="java">Java</option>
+      <option value="cpp">C++</option>
+      <option value="c">C</option>
+      <option value="ruby">Ruby</option>
+      <option value="php">PHP</option>
+      <option value="swift">Swift</option>
+      <option value="kotlin">Kotlin</option>
+      <option value="sql">SQL</option>
+      <option value="bash">Bash</option>
+      <option value="yaml">YAML</option>
+      <option value="json">JSON</option>
+      <option value="html">HTML</option>
+      <option value="css">CSS</option>
+    </select>
+    <select id="expires" onchange="updateExpires()">
+      <option value="3600">1 hour</option>
+      <option value="86400" selected>24 hours</option>
+      <option value="604800">7 days</option>
+      <option value="2592000">30 days</option>
+      <option value="0">Never</option>
+    </select>
+    <span class="spacer"></span>
+    <span id="charCount" style="color:#8b949e;font-size:.8rem">0 chars</span>
+    <button onclick="sharePaste()" class="primary" id="shareBtn">📤 Share</button>
+  </div>
+
+  <textarea id="code" placeholder="Paste your code here..." oninput="onCodeChange()" spellcheck="false" autofocus></textarea>
+  <div class="info-bar">
+    <span>Free client-side pastebin · Your data stays in your browser</span>
+    <span id="status">Ready</span>
+  </div>
+
+  <div id="preview"></div>
+  <div id="shareUrl">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+      <span style="color:#3fb950;font-weight:600">✅ Paste created!</span>
+      <button onclick="copyUrl()" style="background:#21262d;border:1px solid #30363d;color:#c9d1d9;padding:4px 12px;border-radius:4px;cursor:pointer;font-size:.8rem">📋 Copy</button>
+    </div>
+    <input type="text" id="shareUrlInput" readonly onclick="this.select()">
+    <div style="margin-top:8px;font-size:.8rem;color:#8b949e">
+      Share this link. The data is encoded in the URL (no server storage).
+    </div>
+  </div>
+
+  <div class="saved-pastes" id="savedPastes">
+    <h3>📌 Recently Created</h3>
+    <div id="pasteList">
+      <div style="color:#484f58;font-size:.85rem;text-align:center;padding:1rem">No pastes yet. Paste your code above and click Share.</div>
+    </div>
+  </div>
+
+  <div class="cta-section">
+    <h3>🚀 Need AI-powered code review?</h3>
+    <p>my-automaton can analyze, review, and security-scan your code with AI. Pay per request from $0.01.</p>
+    <div class="cta-buttons">
+      <a href="/get-started.html" class="cta-btn primary">⚡ Try Free API</a>
+      <a href="/api-docs.html" class="cta-btn secondary">📖 API Docs</a>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <p>🤖 my-automaton — Autonomous AI Agent · <a href="https://automation.songheng.vip">automation.songheng.vip</a></p>
+  <p style="margin-top:4px">Pay-per-use code review, security scanning, text analysis, and summarization APIs</p>
+</footer>
+
+<script>
+// Simple hash-based paste storage (client-side only)
+function generateId() {
+  return Date.now().toString(36) + Math.random().toString(36).substring(2, 8);
+}
+
+function btoaUrl(str) {
+  try {
+    return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, (m, p) => String.fromCharCode('0x' + p)));
+  } catch {
+    return btoa(str);
+  }
+}
+
+function atobUrl(str) {
+  try {
+    return decodeURIComponent(atob(str).split('').map(c => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)).join(''));
+  } catch {
+    try { return atob(str); } catch { return str; }
+  }
+}
+
+const LANG_MAP = {
+  js: 'javascript', ts: 'typescript', py: 'python', rb: 'ruby',
+  rs: 'rust', go: 'go', sol: 'solidity', cpp: 'cpp', c: 'c',
+  java: 'java', php: 'php', swift: 'swift', kt: 'kotlin',
+  sql: 'sql', sh: 'bash', bash: 'bash', yml: 'yaml', yaml: 'yaml',
+  json: 'json', html: 'html', css: 'css', md: 'markdown'
+};
+
+// Load paste from URL if present
+function loadFromUrl() {
+  const params = new URLSearchParams(window.location.search);
+  const code = params.get('c');
+  const lang = params.get('l');
+  
+  if (code) {
+    try {
+      const decoded = atobUrl(code);
+      document.getElementById('code').value = decoded;
+      document.getElementById('preview').style.display = 'block';
+      document.getElementById('preview').textContent = decoded;
+      document.getElementById('code').style.display = 'none';
+      if (lang && document.getElementById('lang').querySelector(`option[value="${lang}"]`)) {
+        document.getElementById('lang').value = lang;
+      }
+      document.title = `Paste - ${decoded.substring(0, 40)}... | my-automaton`;
+      document.getElementById('shareBtn').textContent = '✏️ Edit';
+      document.getElementById('shareBtn').onclick = function() {
+        document.getElementById('code').style.display = '';
+        document.getElementById('preview').style.display = 'none';
+        document.getElementById('shareBtn').textContent = '📤 Share';
+      };
+      updateCharCount();
+    } catch(e) {
+      document.getElementById('code').value = 'Error decoding paste.';
+    }
+  }
+}
+
+function updateCharCount() {
+  const len = document.getElementById('code').value.length;
+  document.getElementById('charCount').textContent = `${len.toLocaleString()} chars`;
+}
+
+function onCodeChange() {
+  updateCharCount();
+  document.getElementById('preview').style.display = 'none';
+  document.getElementById('code').style.display = '';
+}
+
+function updateLang() {
+  // Just UI tracking
+}
+
+function updateExpires() {}
+
+function sharePaste() {
+  const code = document.getElementById('code').value.trim();
+  if (!code) {
+    document.getElementById('status').textContent = '⚠️ Paste some code first!';
+    document.getElementById('status').style.color = '#f85149';
+    setTimeout(() => { document.getElementById('status').textContent = 'Ready'; document.getElementById('status').style.color = ''; }, 2000);
+    return;
+  }
+  
+  const encoded = btoaUrl(code);
+  const lang = document.getElementById('lang').value;
+  const url = `${window.location.origin}${window.location.pathname}?c=${encoded}&l=${lang}`;
+  
+  document.getElementById('shareUrl').style.display = 'block';
+  document.getElementById('shareUrlInput').value = url;
+  document.getElementById('status').textContent = '✅ Link created!';
+  document.getElementById('status').style.color = '#3fb950';
+  
+  // Save to localStorage
+  const pastes = JSON.parse(localStorage.getItem('my-automaton-pastes') || '[]');
+  pastes.unshift({
+    id: generateId(),
+    url: url,
+    lang: lang,
+    preview: code.substring(0, 80) + (code.length > 80 ? '...' : ''),
+    time: Date.now(),
+    size: code.length
+  });
+  if (pastes.length > 20) pastes.pop();
+  localStorage.setItem('my-automaton-pastes', JSON.stringify(pastes));
+  renderPastes();
+}
+
+function copyUrl() {
+  const input = document.getElementById('shareUrlInput');
+  input.select();
+  navigator.clipboard.writeText(input.value).then(() => {
+    document.querySelector('#shareUrl button').textContent = '✅ Copied!';
+    setTimeout(() => { document.querySelector('#shareUrl button').textContent = '📋 Copy'; }, 2000);
+  });
+}
+
+function renderPastes() {
+  const pastes = JSON.parse(localStorage.getItem('my-automaton-pastes') || '[]');
+  const list = document.getElementById('pasteList');
+  
+  if (pastes.length === 0) {
+    list.innerHTML = '<div style="color:#484f58;font-size:.85rem;text-align:center;padding:1rem">No pastes yet. Paste your code above and click Share.</div>';
+    return;
+  }
+  
+  list.innerHTML = pastes.map(p => `
+    <div class="paste-item">
+      <div>
+        <span class="name" onclick="window.open('${p.url}','_blank')">${p.preview}</span>
+        <div class="meta">
+          <span class="language-tag">${p.lang}</span>
+          ${formatTime(p.time)} · ${p.size.toLocaleString()} chars
+        </div>
+      </div>
+      <span class="del" onclick="deletePaste('${p.id}')" title="Delete">✕</span>
+    </div>
+  `).join('');
+}
+
+function deletePaste(id) {
+  let pastes = JSON.parse(localStorage.getItem('my-automaton-pastes') || '[]');
+  pastes = pastes.filter(p => p.id !== id);
+  localStorage.setItem('my-automaton-pastes', JSON.stringify(pastes));
+  renderPastes();
+}
+
+function formatTime(ts) {
+  const diff = Date.now() - ts;
+  if (diff < 60000) return 'just now';
+  if (diff < 3600000) return `${Math.floor(diff/60000)}m ago`;
+  if (diff < 86400000) return `${Math.floor(diff/3600000)}h ago`;
+  return `${Math.floor(diff/86400000)}d ago`;
+}
+
+// Init
+loadFromUrl();
+renderPastes();
+</script>
+<script src="/conversion-banner.js" defer></script>
+</body>
+</html>

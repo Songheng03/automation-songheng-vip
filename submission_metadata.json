@@ -1,0 +1,139 @@
+{
+  "service": {
+    "name": "my-automaton",
+    "displayName": "My Automaton",
+    "description": "A premium MCP automation server offering 7 x402 pay-per-use endpoints (1¢–5¢ each) for web scraping, text summarization, data extraction, content generation, image analysis, code execution, and language translation. Includes a free tier (3 requests/day) for evaluation.",
+    "tagline": "Automate anything — pay per task, not per month.",
+    "baseUrl": "https://automation.songheng.vip",
+    "contact": "0x76eADdEBFfb6A61DD071f97F4508467fc55dd113",
+    "version": "1.0.0",
+    "license": "MIT"
+  },
+  "pricing": {
+    "model": "x402-pay-per-use",
+    "freeTier": {
+      "requestsPerDay": 3,
+      "description": "3 complimentary requests per day across all endpoints"
+    },
+    "endpoints": [
+      {
+        "name": "web-scraper",
+        "description": "Scrape and extract content from any public web page",
+        "pricePerRequest": 3,
+        "unit": "cents",
+        "category": "data-collection"
+      },
+      {
+        "name": "text-summarizer",
+        "description": "Condense long documents into concise summaries",
+        "pricePerRequest": 1,
+        "unit": "cents",
+        "category": "nlp"
+      },
+      {
+        "name": "data-extractor",
+        "description": "Extract structured data (JSON/CSV) from unstructured text",
+        "pricePerRequest": 3,
+        "unit": "cents",
+        "category": "data-processing"
+      },
+      {
+        "name": "content-generator",
+        "description": "Generate human-quality text content for any purpose",
+        "pricePerRequest": 5,
+        "unit": "cents",
+        "category": "generation"
+      },
+      {
+        "name": "image-analyzer",
+        "description": "Analyze images: captioning, object detection, OCR",
+        "pricePerRequest": 5,
+        "unit": "cents",
+        "category": "vision"
+      },
+      {
+        "name": "code-executor",
+        "description": "Execute code snippets in a sandboxed environment (Python, JS, etc.)",
+        "pricePerRequest": 2,
+        "unit": "cents",
+        "category": "execution"
+      },
+      {
+        "name": "translator",
+        "description": "Translate text between 50+ languages with high accuracy",
+        "pricePerRequest": 1,
+        "unit": "cents",
+        "category": "nlp"
+      }
+    ],
+    "currency": "USD",
+    "settlement": "On-chain (ETH compatible via x402)"
+  },
+  "protocol": {
+    "type": "MCP (Model Context Protocol)",
+    "transport": "Streamable HTTP",
+    "authentication": "x402 HTTP 402 Payment Required — pay-per-request with crypto micropayments",
+    "endpoint": "/mcp"
+  },
+  "platforms": {
+    "smithery": {
+      "qualifiedName": "my-automaton",
+      "namespace": "my-automaton",
+      "type": "external",
+      "upstreamUrl": "https://automation.songheng.vip/mcp",
+      "configSchema": {
+        "type": "object",
+        "properties": {
+          "apiKey": {
+            "type": "string",
+            "description": "Optional API key for higher rate limits"
+          }
+        }
+      }
+    },
+    "mcp_so": {
+      "type": "MCP Server",
+      "name": "my-automaton",
+      "url": "https://github.com/your-org/my-automaton",
+      "serverConfig": {
+        "mcpServers": {
+          "my-automaton": {
+            "command": "node",
+            "args": ["index.js"],
+            "env": {
+              "BASE_URL": "https://automation.songheng.vip"
+            }
+          }
+        }
+      }
+    },
+    "glama": {
+      "repositoryUrl": "https://github.com/your-org/my-automaton"
+    },
+    "opentools": {
+      "toolUrl": "https://automation.songheng.vip",
+      "category": "Automation",
+      "pricingModel": "pay-per-use"
+    }
+  },
+  "metadata": {
+    "tags": [
+      "mcp",
+      "automation",
+      "x402",
+      "micropayments",
+      "web-scraping",
+      "nlp",
+      "ai",
+      "pay-per-use"
+    ],
+    "categories": [
+      "Automation",
+      "AI Tools",
+      "Data Processing",
+      "Developer Tools"
+    ],
+    "created": "2025-06-17",
+    "contactEmail": "0x76eADdEBFfb6A61DD071f97F4508467fc55dd113"
+  }
+}

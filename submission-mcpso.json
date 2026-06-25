@@ -1,0 +1,75 @@
+{
+  "platform": "MCP.so",
+  "submissionUrl": "https://mcp.so/submit",
+  "success": false,
+  "message": "Submission blocked by authentication requirement. MCP.so requires Google One Tap sign-in to submit projects via the web form at /submit. The API endpoint /api/submit-project returned error: 'no auth, please login' (code: -1). Alternative submission via GitHub issues (https://github.com/chatmcp/mcpso/issues) also requires GitHub authentication. Both methods require interactive browser-based authentication that cannot be performed programmatically from this environment.",
+  "listingUrl": null,
+  "details": {
+    "service": {
+      "name": "my-automaton",
+      "version": "2.0.0",
+      "description": "AI-powered text analysis, code review, security scanning, and summarization services",
+      "serviceUrl": "http://localhost:8080",
+      "type": "MCP Server",
+      "mcpEndpoints": {
+        "jsonrpc": "/mcp (POST)",
+        "sse": "/mcp (GET)",
+        "discovery": "/.well-known/mcp.json (GET)"
+      },
+      "tools": ["analyze", "summarize", "review", "security", "explain", "refactor", "complexity"],
+      "capabilities": {
+        "tools": ["analyze", "summarize", "review", "security", "explain", "refactor", "complexity"],
+        "resources": ["services", "docs", "pricing"],
+        "prompts": ["code-review", "security-scan", "analyze-text"]
+      },
+      "payment": {
+        "type": "x402",
+        "currency": "USDC",
+        "chain": "Base",
+        "wallet": "0x76eADdEBFfb6A61DD071f97F4508467fc55dd113",
+        "pricing": {
+          "analyze": "$0.01",
+          "summarize": "$0.02",
+          "review": "$0.05",
+          "security": "$0.03",
+          "explain": "$0.02",
+          "refactor": "$0.05",
+          "complexity": "$0.02"
+        }
+      }
+    },
+    "submissionMethods": {
+      "webForm": {
+        "url": "https://mcp.so/submit",
+        "apiEndpoint": "POST /api/submit-project",
+        "requiredFields": ["type", "name", "url", "server_config", "is_innovation", "is_dxt"],
+        "authentication": "Google One Tap (OAuth)",
+        "status": "BLOCKED - requires interactive Google sign-in"
+      },
+      "gitHubIssues": {
+        "url": "https://github.com/chatmcp/mcpso/issues",
+        "titleFormat": "[Submit] server-name or [Submission] server-name",
+        "bodyFields": ["Name", "Description", "Repository URL", "Tools", "Transport", "Installation", "License"],
+        "authentication": "GitHub account required",
+        "status": "BLOCKED - requires GitHub authentication"
+      }
+    },
+    "submissionPayload": {
+      "name": "my-automaton",
+      "type": "server",
+      "url": "http://localhost:8080",
+      "server_config": "{\n  \"mcpServers\": {\n    \"my-automaton\": {\n      \"command\": \"node\",\n      \"args\": [\"server.js\"],\n      \"env\": {}\n    }\n  }\n}",
+      "is_innovation": false,
+      "is_dxt": false
+    }
+  },
+  "researchNotes": {
+    "mcpSoOverview": "MCP.so is the largest MCP Server directory. Built with Next.js. Uses Google One Tap for authentication.",
+    "githubRepo": "https://github.com/chatmcp/mcpso",
+    "issueExample": "[Submit] server-name - Issues use format with Name, Description, Repository, Tools, Transport, Installation, License",
+    "contactMethods": {
+      "discord": "https://discord.gg/RsYPRrnyqg",
+      "email": "support@mcp.so"
+    }
+  }
+}

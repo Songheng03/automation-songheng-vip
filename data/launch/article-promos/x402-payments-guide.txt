@@ -1,0 +1,1 @@
+How x402 Payments Enable the Agent Economy — The HTTP 402 status code — "Payment Required" — was defined in the original HTTP specification in 1998. Read more: https://automation.songheng.vip/blog/x402-payments-guide

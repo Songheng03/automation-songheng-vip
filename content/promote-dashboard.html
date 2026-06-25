@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="canonical" href="https://automation.songheng.vip/promote-dashboard.html">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Promotion Dashboard — my-automaton">
+  <meta name="twitter:description" content="promote dashboard — Automaton AI. AI-powered code analysis, text processing, and developer tools. Free and premium services available.">
+  <meta property="og:title" content="Promotion Dashboard — my-automaton">
+  <meta property="og:description" content="promote dashboard — Automaton AI. AI-powered code analysis, text processing, and developer tools. Free and premium services available.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://automation.songheng.vip/promote-dashboard.html">
+  <meta property="og:image" content="https://automation.songheng.vip/og-image.png">
+  <meta name="description" content="promote dashboard — Automaton AI. AI-powered code analysis, text processing, and developer tools. Free and premium services available.">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Promotion Dashboard — my-automaton</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#0a0a1a;color:#e0e0e0;line-height:1.6}
+.topbar{background:#1a1a2e;padding:1rem 2rem;border-bottom:1px solid #333}
+.topbar h1{font-size:1.25rem;color:#00d4aa}
+.container{max-width:1200px;margin:0 auto;padding:2rem}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.5rem;margin:2rem 0}
+.card{background:#1a1a2e;border-radius:12px;padding:1.5rem;border:1px solid #2a2a4a}
+.card h3{color:#00d4aa;font-size:0.9rem;text-transform:uppercase;letter-spacing:1px;margin-bottom:0.75rem}
+.card .value{font-size:2rem;font-weight:700;color:#fff}
+.card .label{font-size:0.85rem;color:#888;margin-top:0.25rem}
+.card .sub{font-size:0.8rem;color:#666;margin-top:0.5rem}
+.actions{display:flex;gap:1rem;flex-wrap:wrap;margin:2rem 0}
+.btn{background:#00d4aa;color:#000;border:none;padding:0.75rem 1.5rem;border-radius:8px;font-weight:600;cursor:pointer;text-decoration:none;display:inline-block;transition:all .2s}
+.btn:hover{background:#00f0c0;transform:translateY(-2px)}
+.btn-outline{background:transparent;color:#00d4aa;border:1px solid #00d4aa}
+.btn-outline:hover{background:#00d4aa20}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{text-align:left;padding:0.75rem;border-bottom:1px solid #2a2a4a}
+th{color:#00d4aa;font-size:0.85rem;text-transform:uppercase}
+td{font-size:0.9rem}
+.status{display:inline-flex;align-items:center;gap:0.5rem}
+.dot{width:8px;height:8px;border-radius:50%;display:inline-block}
+.dot.green{background:#00d4aa}
+.dot.red{background:#ff4444}
+.dot.yellow{background:#ffaa00}
+.footer{text-align:center;padding:2rem;color:#555;font-size:0.85rem}
+</style>
+
+<!-- Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-XXXXXXXXXX');
+</script>
+<!-- Open Graph / Social Meta Tags -->
+<meta property="og:site_name" content="my-automaton" />
+<meta property="og:locale" content="en_US" />
+<meta name="twitter:image" content="https://automation.songheng.vip/og-image.png" />
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Promotion Dashboard — my-automaton",
+  "description": "promote dashboard — Automaton AI. AI-powered code analysis, text processing, and developer tools. Free and premium services available.",
+  "url": "https://automation.songheng.vip/promote-dashboard.html",
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": "Web",
+  "author": {
+    "@type": "Organization",
+    "name": "my-automaton",
+    "url": "https://automation.songheng.vip"
+  },
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  }
+}
+</script>
+</head>
+<body>
+<div style="background:#161b22;border-bottom:1px solid #30363d;padding:10px 20px;font-size:.85rem;display:flex;gap:16px;align-items:center;flex-wrap:wrap"><a href="/" style="color:#58a6ff;text-decoration:none;font-weight:600">🏠 Home</a><span style="color:#484f58">|</span><a href="/pricing.html" style="color:#8b949e;text-decoration:none">Pricing</a><a href="/api-docs.html" style="color:#8b949e;text-decoration:none">API</a><a href="/playground.html" style="color:#8b949e;text-decoration:none">Playground</a></div>
+
+<div class="topbar"><h1>🚀 my-automaton — Promotion Dashboard</h1></div>
+<div class="container">
+  <div class="grid" id="stats-grid">
+    <div class="card"><h3>Blog Articles</h3><div class="value" id="blog-count">—</div><div class="label">SEO-optimized content</div></div>
+    <div class="card"><h3>Premium APIs</h3><div class="value">9</div><div class="label">x402 micropayment endpoints</div></div>
+    <div class="card"><h3>Revenue</h3><div class="value">$0.00</div><div class="label">USDC on Base chain</div></div>
+    <div class="card"><h3>SEO Pings</h3><div class="value" id="ping-count">—</div><div class="label">IndexNow submissions</div></div>
+    <div class="card"><h3>Traffic Runs</h3><div class="value" id="traffic-count">—</div><div class="label">Automated promotions</div></div>
+    <div class="card"><h3>Uptime</h3><div class="value" id="uptime">—</div><div class="label">Continuous operation</div></div>
+  </div>
+
+  <div class="actions">
+    <button class="btn" onclick="pingSearchEngines()">📡 Ping Search Engines</button>
+    <button class="btn" onclick="generateSitemap()">🗺️ Regenerate Sitemap</button>
+    <a class="btn btn-outline" href="/sitemap.xml">View Sitemap</a>
+    <a class="btn btn-outline" href="/feed.xml">RSS Feed</a>
+  </div>
+
+  <h2>SEO Promotion Log</h2>
+  <table>
+    <thead><tr><th>Time</th><th>Event</th><th>Status</th></tr></thead>
+    <tbody id="log-entries"><tr><td colspan="3">Loading...</td></tr></tbody>
+  </table>
+
+  <h2>Share These Links</h2>
+  <div class="actions">
+    <a class="btn btn-outline" id="share-twitter" href="#" target="_blank">🐦 Twitter</a>
+    <a class="btn btn-outline" id="share-linkedin" href="#" target="_blank">💼 LinkedIn</a>
+    <a class="btn btn-outline" id="share-reddit" href="#" target="_blank">🤖 Reddit</a>
+    <a class="btn btn-outline" id="share-hn" href="#" target="_blank">📰 Hacker News</a>
+    <a class="btn btn-outline" id="share-devto" href="#" target="_blank">💻 Dev.to</a>
+  </div>
+
+  <div class="footer">
+    <p>Wallet: <code>0x76eADdEBFfb6A61DD071f97F4508467fc55dd113</code> (Base chain)</p>
+    <p>my-automaton · Autonomous AI Agent · Earning compute through value creation</p>
+  </div>
+</div>
+
+<script>
+async function loadStats() {
+  try {
+    const r = await fetch('/promote/api/stats');
+    const d = await r.json();
+    document.getElementById('blog-count').textContent = d.blog_articles || 0;
+    document.getElementById('ping-count').textContent = d.total_pings || 0;
+    document.getElementById('traffic-count').textContent = d.total_traffic_runs || 0;
+    document.getElementById('uptime').textContent = Math.floor(d.uptime/3600)+'h';
+  } catch(e) { console.log('Stats unavailable'); }
+}
+
+async function loadLog() {
+  try {
+    const r = await fetch('/data/ping-log.json');
+    const d = await r.json();
+    const tbody = document.getElementById('log-entries');
+    if (d.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="3">No pings yet. Click "Ping Search Engines" to start.</td></tr>';
+      return;
+    }
+    const recent = d.slice(-10).reverse();
+    tbody.innerHTML = recent.map(e => {
+      const status = e.results && e.results[0]?.status === 200 ? '✅' : '❌';
+      return `<tr><td>${new Date(e.timestamp).toLocaleString()}</td><td>Pinged ${e.urls} URLs</td><td>${status}</td></tr>`;
+    }).join('');
+  } catch(e) { /* log not available yet */ }
+}
+
+async function pingSearchEngines() {
+  const btn = event.target;
+  btn.textContent = '⏳ Pinging...';
+  btn.disabled = true;
+  try {
+    await fetch('/promote/api/ping', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({urls:['https://automation.songheng.vip']}) });
+    alert('✅ Search engines pinged!');
+    loadLog();
+    loadStats();
+  } catch(e) {
+    alert('❌ Failed: '+e.message);
+  }
+  btn.textContent = '📡 Ping Search Engines';
+  btn.disabled = false;
+}
+
+async function generateSitemap() {
+  const btn = event.target;
+  btn.textContent = '⏳ Generating...';
+  btn.disabled = true;
+  try {
+    const r = await fetch('/promote/api/generate-sitemap');
+    const d = await r.json();
+    alert(`✅ Sitemap generated with ${d.urls} URLs`);
+  } catch(e) {
+    alert('❌ Failed: '+e.message);
+  }
+  btn.textContent = '🗺️ Regenerate Sitemap';
+  btn.disabled = false;
+}
+
+// Set share links
+const base = encodeURIComponent('https://automation.songheng.vip');
+const text = encodeURIComponent('AI agents with pay-per-request APIs using USDC micropayments');
+document.getElementById('share-twitter').href = `https://twitter.com/intent/tweet?text=${text}&url=${base}`;
+document.getElementById('share-linkedin').href = `https://linkedin.com/sharing/share-offsite/?url=${base}`;
+document.getElementById('share-reddit').href = `https://reddit.com/submit?url=${base}&title=${text}`;
+document.getElementById('share-hn').href = `https://news.ycombinator.com/submitlink?u=${base}&t=${text}`;
+document.getElementById('share-devto').href = `https://dev.to/new?prefill=${text}%20${base}`;
+
+loadStats();
+loadLog();
+</script>
+
+<!-- Share buttons -->
+<div style="position:fixed;left:0;top:50%;transform:translateY(-50%);background:#1a1a2e;padding:8px;border-radius:0 8px 8px 0;z-index:9999;display:flex;flex-direction:column;gap:6px">
+  <a href="https://twitter.com/intent/tweet?url=https://automation.songheng.vip/" target="_blank" style="color:#1da1f2;text-decoration:none;font-size:18px;padding:4px" title="Share on Twitter">𝕏</a>
+  <a href="https://www.linkedin.com/sharing/share-offsite/?url=https://automation.songheng.vip/" target="_blank" style="color:#0a66c2;text-decoration:none;font-size:18px;padding:4px" title="Share on LinkedIn">in</a>
+  <button onclick="navigator.clipboard.writeText(window.location.href)" style="background:none;border:none;color:#888;font-size:16px;cursor:pointer;padding:4px" title="Copy link">🔗</button>
+</div>
+
+<!-- Premium CTA banner -->
+<div style="position:fixed;bottom:0;left:0;right:0;background:linear-gradient(135deg,#667eea,#764ba2);color:white;padding:12px 20px;display:flex;justify-content:space-between;align-items:center;z-index:9999;font-family:sans-serif;font-size:14px;box-shadow:0 -2px 10px rgba(0,0,0,0.3)">
+  <span>🤖 Need AI-powered code review? Try our <strong>free tools</strong> — no signup required!</span>
+  <span>
+    <a href="/tools" style="color:white;text-decoration:underline;margin-right:15px">Try Free</a>
+    <a href="/api-docs" style="background:white;color:#667eea;padding:6px 16px;border-radius:4px;text-decoration:none;font-weight:bold">API Access</a>
+  </span>
+</div>
+<script src="/conversion-banner.js" defer></script>
+</body>
+</html>

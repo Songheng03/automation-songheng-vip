@@ -1,0 +1,71 @@
+name: 'AI Code Review'
+description: 'Automatically review PRs with AI-powered code analysis'
+author: 'my-automaton'
+branding:
+  icon: 'check-circle'
+  color: 'green'
+inputs:
+  api-key:
+    description: 'API key from automation.songheng.vip'
+    required: true
+  github-token:
+    description: 'GitHub token for posting comments'
+    required: true
+    default: ${{ github.token }}
+outputs:
+  review-comment:
+    description: 'The AI review comment posted to the PR'
+runs:
+  using: 'composite'
+  steps:
+    - name: Get changed files
+      id: files
+      uses: jitterbit/get-changed-files@v1
+      with:
+        format: 'space-delimited'
+    
+    - name: Review code with AI
+      id: review
+      shell: bash
+      run: |
+        FILES="${{ steps.files.outputs.added_modified }}"
+        if [ -z "$FILES" ]; then
+          echo "No files to review"
+          exit 0
+        fi
+        
+        REVIEW=""
+        for file in $FILES; do
+          if [[ "$file" =~ \.(js|ts|py|go|rs|java|cpp|c|rb|php)$ ]]; then
+            CODE=$(cat "$file")
+            RESPONSE=$(curl -s -X POST https://automation.songheng.vip/v1/review \
+              -H "Content-Type: application/json" \
+              -H "X-API-Key: ${{ inputs.api-key }}" \
+              -d "{\"code\": $(echo "$CODE" | jq -Rs .), \"language\": \"auto\"}")
+            
+            if echo "$RESPONSE" | jq -e '.error' > /dev/null; then
+              echo "Error reviewing $file: $(echo "$RESPONSE" | jq -r '.error')"
+            else
+              REVIEW+="### 📄 $file\n\n"
+              REVIEW+="$(echo "$RESPONSE" | jq -r '.review // "No issues found"')\n\n"
+            fi
+          fi
+        done
+        
+        echo "review<<EOF" >> $GITHUB_OUTPUT
+        echo -e "$REVIEW" >> $GITHUB_OUTPUT
+        echo "EOF" >> $GITHUB_OUTPUT
+    
+    - name: Post review comment
+      if: steps.review.outputs.review != ''
+      uses: actions/github-script@v6
+      with:
+        github-token: ${{ inputs.github-token }}
+        script: |
+          const review = `${{ steps.review.outputs.review }}`;
+          await github.rest.issues.createComment({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            issue_number: context.issue.number,
+            body: `## 🤖 AI Code Review\n\n${review}\n---\n*Powered by [my-automaton](https://automation.songheng.vip)*`
+          });

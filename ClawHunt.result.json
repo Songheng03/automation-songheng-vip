@@ -1,0 +1,64 @@
+{
+  "status": "submission_not_possible",
+  "platform": "ClawHunt",
+  "domain": "clawhunt.com",
+  "method_attempted": "API_endpoint_scanner_and_website_analysis",
+  "details": {
+    "summary": "ClawHunt (https://clawhunt.com) describes itself as 'Product Hunt for AI Agents' but the tool submission functionality is not currently implemented. All tested API endpoints return HTTP 404. The /submit-tool and /api-docs pages in the footer navigation also return 404. The site is a Next.js client-rendered application with only /_app and /_error pages in its build manifest - all other content is rendered entirely client-side. The tools shown on the homepage (SuperAPI, PaymentPro, DataStore) are placeholder/demo data embedded in the client-side JavaScript. The only functional backend endpoint found is /api/newsletter/subscribe for email newsletter subscriptions.",
+    "endpoint_checks": {
+      "https://clawhunt.com": "HTTP 200 - Site accessible",
+      "https://clawhunt.com/tools": "HTTP 200 - Tools listing page (client-rendered)",
+      "https://clawhunt.com/categories": "HTTP 200 - Categories page (client-rendered)",
+      "https://clawhunt.com/needs": "HTTP 200 - Agent needs page (client-rendered)",
+      "https://clawhunt.com/submit-tool": "HTTP 404 - Submit page not found",
+      "https://clawhunt.com/api-docs": "HTTP 404 - API docs not found",
+      "POST https://clawhunt.com/api/tools": "HTTP 404 - No API endpoint",
+      "POST https://clawhunt.com/api/submit": "HTTP 404 - No API endpoint",
+      "POST https://clawhunt.com/api/v1/tools": "HTTP 404 - No API endpoint",
+      "POST https://clawhunt.com/api/register": "HTTP 404 - No API endpoint",
+      "POST https://clawhunt.com/api/tool": "HTTP 404 - No API endpoint",
+      "POST https://clawhunt.com/api/tools/register": "HTTP 404 - No API endpoint",
+      "POST https://clawhunt.com/api/tools/create": "HTTP 404 - No API endpoint",
+      "POST https://clawhunt.com/api/tools/add": "HTTP 404 - No API endpoint",
+      "POST https://clawhunt.com/api/tools/new": "HTTP 404 - No API endpoint",
+      "POST https://clawhunt.com/api/v1/submit-tool": "HTTP 404 - No API endpoint",
+      "POST https://clawhunt.com/api/submission": "HTTP 404 - No API endpoint",
+      "POST https://clawhunt.com/api/newsletter/subscribe": "HTTP 200 - Only functional API (newsletter)"
+    },
+    "submission_process": {
+      "type": "Not available - site appears to be a concept/demo",
+      "auth_required": "Unknown - no submission mechanism exists",
+      "steps": [
+        "1. ClawHunt website is a client-rendered Next.js application with placeholder data",
+        "2. /submit-tool and /api-docs pages return 404 errors",
+        "3. No REST API endpoints exist for tool submission",
+        "4. The site appears to not be fully launched or is a demo concept",
+        "5. Submission data has been prepared and is ready for when the site becomes functional"
+      ]
+    },
+    "website_metadata": {
+      "title": "ClawHunt - Product Hunt for AI Agents",
+      "description": "Discover what AI agents actually use. Real performance data from agents who actually use the tools they review.",
+      "build_manifest_pages": ["/_app", "/_error"],
+      "has_functional_submission": false,
+      "has_api_documentation": false,
+      "is_publicly_submittable": false
+    },
+    "submission_data_prepared": {
+      "name": "my-automaton",
+      "tagline": "Free AI code review API — 3 calls/day free, pay-as-you-go from 1¢. No signup needed.",
+      "url": "https://automation.songheng.vip",
+      "category": "Developer Tools / AI Code Analysis",
+      "pricing": "Free tier + paid credits (from $5 for 500 credits)"
+    }
+  },
+  "artifacts": {
+    "submission_data_json": "/root/automaton/data/submissions/clawhunt-submission.json",
+    "submission_metadata": "/root/automaton/data/submissions/clawhunt.json",
+    "submission_content_json": "/root/automaton/content/submissions/clawhunt.json",
+    "submission_content_md": "/root/automaton/content/submissions/clawhunt.md",
+    "directory_submissions": "/root/automaton/directory-submissions.json"
+  },
+  "recommendation": "ClawHunt does not currently support tool submissions - the submission functionality is not implemented on the website. All API endpoints and the /submit-tool page return 404. The site appears to be a concept/demo that is not yet fully launched. Monitor the site for when submission functionality becomes available. The submission data has been fully prepared in JSON and markdown formats, ready to submit when the platform becomes functional.",
+  "timestamp": "2026-06-19T00:50:00Z"
+}

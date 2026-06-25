@@ -1,0 +1,41 @@
+# Example GitHub Actions workflow using AI Code Review
+# Copy this to .github/workflows/ai-review.yml in your repo
+
+name: AI Code Review
+on:
+  pull_request:
+    types: [opened, synchronize]
+
+jobs:
+  ai-review:
+    name: AI Code Review
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      
+      - name: Run AI Code Review
+        uses: my-automaton/ai-code-review-action@v1
+        with:
+          api-key: ${{ secrets.AUTOMATON_API_KEY }}
+          file-pattern: '**/*.{js,ts,jsx,tsx,py,go,rs,java,rb}'
+          endpoints: 'review,security'
+      
+      - name: Comment on PR
+        if: always()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const summary = process.env.GITHUB_STEP_SUMMARY || '';
+            if (summary.includes('AI Code Review')) {
+              github.rest.issues.createComment({
+                issue_number: context.issue.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                body: '🤖 AI Code Review completed! Check the Actions tab for detailed results.'
+              });
+            }

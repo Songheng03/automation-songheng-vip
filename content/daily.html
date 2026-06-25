@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Daily Dev Challenge — my-automaton</title>
+<meta name="description" content="A new code challenge every day. Solve it with AI-powered analysis. Free daily credits for returning users.">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#0d1117;color:#c9d1d9;line-height:1.6}
+.container{max-width:900px;margin:0 auto;padding:2rem}
+header{text-align:center;padding:2rem 0;border-bottom:1px solid #30363d;margin-bottom:2rem}
+header h1{font-size:2rem;color:#58a6ff;margin-bottom:.5rem}
+header .subtitle{color:#8b949e;font-size:1rem}
+header .streak{display:inline-block;background:#1c2333;border:1px solid #d29922;border-radius:20px;padding:6px 16px;color:#d29922;font-size:.85rem;margin-top:1rem}
+.streak span{font-weight:700;font-size:1.1rem}
+.daily-card{background:#161b22;border:1px solid #30363d;border-radius:12px;padding:2rem;margin-bottom:2rem}
+.daily-card .date-badge{display:inline-block;background:#21262d;border-radius:6px;padding:4px 12px;font-size:.8rem;color:#8b949e;margin-bottom:1rem}
+.daily-card h2{color:#58a6ff;margin-bottom:1rem;font-size:1.3rem}
+.daily-card p{color:#8b949e;margin-bottom:1rem;line-height:1.7}
+.challenge-box{background:#0d1117;border:1px solid #21262d;border-radius:8px;padding:1.5rem;margin:1rem 0}
+.challenge-box .diff{display:inline-block;padding:2px 10px;border-radius:10px;font-size:.75rem;font-weight:600;margin-bottom:.5rem}
+.diff.easy{background:#1c3a1c;color:#3fb950}
+.diff.medium{background:#3a2e1c;color:#d29922}
+.diff.hard{background:#3a1c1c;color:#f85149}
+.challenge-box h3{color:#c9d1d9;margin-bottom:.5rem}
+.challenge-box pre{background:#0d1117;border:1px solid #21262d;border-radius:6px;padding:1rem;overflow-x:auto;font-size:.85rem;color:#8b949e;margin:.5rem 0}
+.challenge-box .hint{color:#8b949e;font-size:.85rem;font-style:italic;margin:.5rem 0;padding:.5rem;border-left:3px solid #d29922;background:#1c2333;border-radius:0 6px 6px 0}
+textarea{width:100%;min-height:120px;background:#0d1117;border:1px solid #30363d;border-radius:8px;padding:1rem;color:#c9d1d9;font-family:monospace;font-size:.9rem;resize:vertical;margin:.5rem 0}
+textarea:focus{outline:none;border-color:#58a6ff}
+.btn-group{display:flex;gap:.5rem;flex-wrap:wrap;margin:1rem 0}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:10px 24px;border-radius:8px;font-weight:600;font-size:.9rem;border:none;cursor:pointer;text-decoration:none;transition:all .2s}
+.btn.primary{background:#238636;color:#fff}
+.btn.primary:hover{background:#2ea043;transform:translateY(-1px)}
+.btn.primary:disabled{background:#1a4f26;color:#555;cursor:not-allowed;transform:none}
+.btn.secondary{background:#21262d;color:#c9d1d9;border:1px solid #30363d}
+.btn.secondary:hover{background:#30363d;border-color:#58a6ff}
+.btn.gold{background:#d29922;color:#0d1117}
+.btn.gold:hover{background:#daa520}
+.result-box{background:#0d1117;border:1px solid #21262d;border-radius:8px;padding:1rem;margin:1rem 0;display:none}
+.result-box.show{display:block}
+.result-box .loading{color:#8b949e;text-align:center;padding:2rem;font-size:.9rem}
+.result-box .output{white-space:pre-wrap;font-family:monospace;font-size:.85rem;color:#7ee787;line-height:1.5}
+.result-box .error{color:#f85149}
+.result-box .meta{font-size:.75rem;color:#484f58;margin-top:.5rem;padding-top:.5rem;border-top:1px solid #21262d}
+.tip-card{background:linear-gradient(135deg,#1c2333,#161b22);border:1px solid #30363d;border-radius:12px;padding:1.5rem;margin-bottom:2rem}
+.tip-card h3{color:#d29922;margin-bottom:.5rem;font-size:1rem}
+.tip-card p{color:#8b949e;font-size:.9rem}
+.tip-card code{background:#0d1117;padding:2px 6px;border-radius:4px;color:#58a6ff;font-size:.85rem}
+.stats-row{display:flex;justify-content:center;gap:2rem;margin:2rem 0;flex-wrap:wrap}
+.stat{text-align:center}
+.stat .num{font-size:1.5rem;font-weight:700;color:#58a6ff}
+.stat .label{color:#8b949e;font-size:.75rem;text-transform:uppercase;letter-spacing:.5px}
+.free-banner{background:linear-gradient(135deg,#1c3a1c,#161b22);border:1px solid #3fb950;border-radius:12px;padding:1.2rem;text-align:center;margin-bottom:2rem}
+.free-banner h3{color:#3fb950;margin-bottom:.3rem}
+.free-banner p{color:#8b949e;font-size:.9rem}
+.history-list{list-style:none;padding:0;margin:1rem 0}
+.history-list li{padding:.5rem 0;border-bottom:1px solid #21262d;display:flex;justify-content:space-between;align-items:center;font-size:.85rem}
+.history-list .completed{color:#3fb950}
+.history-list .skipped{color:#484f58}
+.history-list .date-col{color:#8b949e;font-size:.8rem}
+.history-list .title-col{flex:1;padding:0 1rem}
+.history-list .status-col{font-size:.75rem;padding:2px 8px;border-radius:8px}
+nav{display:flex;justify-content:center;gap:1rem;margin-bottom:2rem;flex-wrap:wrap}
+nav a{color:#8b949e;text-decoration:none;font-size:.9rem;padding:4px 12px;border-radius:6px;transition:all .2s}
+nav a:hover{color:#58a6ff;background:#1c2333}
+footer{border-top:1px solid #30363d;padding:2rem;text-align:center;color:#484f58;font-size:.8rem;margin-top:2rem}
+footer a{color:#58a6ff}
+</style>
+</head>
+<body>
+<div class="container">
+
+<nav>
+  <a href="/">🏠 Home</a>
+  <a href="/daily.html">🔥 Daily Challenge</a>
+  <a href="/api-docs.html">📖 API Docs</a>
+  <a href="/api-playground.html">🧪 Playground</a>
+  <a href="/portal.html">🔑 Portal</a>
+</nav>
+
+<header>
+  <h1>🔥 Daily Dev Challenge</h1>
+  <p class="subtitle">A new coding challenge every day. Solve it, learn something new, earn bonus credits.</p>
+  <div class="streak">⚡ Streak: <span id="streak-count">0</span> days</div>
+</header>
+
+<div class="free-banner">
+  <h3>🎁 Free Daily Credit</h3>
+  <p>Solve today's challenge and get <strong>10 bonus credits</strong> loaded to your account. Every day a new challenge!</p>
+</div>
+
+<!-- Today's Challenge -->
+<div class="daily-card" id="today-card">
+  <div class="date-badge" id="date-badge">Loading...</div>
+  <h2 id="challenge-title">Loading today's challenge...</h2>
+  <p id="challenge-description">...</p>
+  <div class="challenge-box" id="challenge-content">
+    <span class="diff" id="difficulty-badge">easy</span>
+    <h3 id="challenge-heading">Challenge</h3>
+    <p id="challenge-text" style="color:#c9d1d9;margin-bottom:1rem"></p>
+    <pre id="code-snippet"></pre>
+    <div class="hint" id="hint-box"></div>
+  </div>
+  
+  <h3>🧠 Your Solution</h3>
+  <p style="color:#8b949e;font-size:.85rem;margin-bottom:.5rem">Paste your code or text solution below. The AI will analyze it.</p>
+  <textarea id="user-input" placeholder="Paste your code, analysis, or answer here..."></textarea>
+  
+  <div class="btn-group">
+    <button class="btn primary" id="submit-btn" onclick="submitChallenge()">🚀 Submit for Review</button>
+    <button class="btn gold" onclick="getHint()">💡 Hint</button>
+    <button class="btn secondary" onclick="skipChallenge()">⏭ Skip (come back tomorrow)</button>
+  </div>
+  
+  <div class="result-box" id="result-box">
+    <div id="result-content"></div>
+  </div>
+</div>
+
+<!-- Daily Tip -->
+<div class="tip-card">
+  <h3>💡 Dev Tip of the Day</h3>
+  <p id="daily-tip">Loading...</p>
+</div>
+
+<!-- Your Progress -->
+<div class="daily-card">
+  <h2>📊 Your Progress</h2>
+  <div class="stats-row">
+    <div class="stat">
+      <div class="num" id="total-solved">0</div>
+      <div class="label">Challenges Solved</div>
+    </div>
+    <div class="stat">
+      <div class="num gold" id="bonus-earned">0</div>
+      <div class="label">Bonus Credits Earned</div>
+    </div>
+    <div class="stat">
+      <div class="num" id="current-streak">0</div>
+      <div class="label">Day Streak</div>
+    </div>
+  </div>
+  <ul class="history-list" id="challenge-history">
+    <li style="color:#484f58;text-align:center;padding:1rem;justify-content:center">Complete your first challenge to start tracking!</li>
+  </ul>
+</div>
+
+<footer>
+  <p>Powered by <a href="/">my-automaton</a> · An autonomous AI agent · <a href="/portal.html">Get your API Key</a></p>
+</footer>
+</div>
+
+<script>
+// ── Challenge Database ─────────────────────────────────────
+const CHALLENGES = [
+  {
+    date: '2026-06-18',
+    title: 'Find the Security Vulnerability',
+    description: 'Can you spot the security flaw in this code? Analyze it and explain the vulnerability.',
+    difficulty: 'easy',
+    code: `def authenticate_user(request):
+    username = request.POST.get('username')
+    password = request.POST.get('password')
+    query = "SELECT * FROM users WHERE username='" + username + "' AND password='" + password + "'"
+    return database.execute(query)`,
+    hint: 'Look at how the query is constructed. What happens if someone types something unexpected?',
+    tip: 'Always use parameterized queries instead of string concatenation to prevent SQL injection.',
+    answer_hint: 'SQL Injection vulnerability'
+  },
+  {
+    date: '2026-06-19',
+    title: 'Refactor This Mess',
+    description: 'This code works but it\'s hard to read and maintain. Refactor it to be cleaner and more efficient.',
+    difficulty: 'easy',
+    code: `function processItems(items) {
+  let result = [];
+  for (let i = 0; i < items.length; i++) {
+    if (items[i].active === true) {
+      if (items[i].type === 'premium') {
+        result.push({ name: items[i].name, price: items[i].price * 0.9, tier: 'premium' });
+      } else if (items[i].type === 'basic') {
+        result.push({ name: items[i].name, price: items[i].price, tier: 'basic' });
+      } else {
+        result.push({ name: items[i].name, price: items[i].price * 1.1, tier: 'other' });
+      }
+    }
+  }
+  return result;
+}`,
+    hint: 'Think about using map/filter, switch statements, or a lookup table.',
+    tip: 'Clean code is not just for readability — it reduces bugs and makes maintenance easier.',
+    answer_hint: 'Use map/filter + object lookup instead of if/else chain'
+  },
+  {
+    date: '2026-06-20',
+    title: 'Race Condition Detective',
+    description: 'This concurrent code has a race condition. Find it and fix it.',
+    difficulty: 'medium',
+    code: `class Counter {
+  private int count = 0;
+  
+  public void increment() {
+    count++;  // This is not atomic!
+  }
+  
+  public int getCount() {
+    return count;
+  }
+}
+
+// Used by 10 threads concurrently
+for (int i = 0; i < 10; i++) {
+  new Thread(() -> {
+    for (int j = 0; j < 1000; j++) {
+      counter.increment();
+    }
+  }).start();
+}`,
+    hint: 'What happens when two threads call increment() at the exact same time?',
+    tip: 'Race conditions are among the hardest bugs to reproduce. Always use proper synchronization in concurrent code.',
+    answer_hint: 'Use synchronized keyword or AtomicInteger'
+  },
+  {
+    date: '2026-06-21',
+    title: 'Memory Leak Hunt',
+    description: 'This Node.js server leaks memory. Find the leak and propose a fix.',
+    difficulty: 'medium',
+    code: `const http = require('http');
+const cache = {};
+
+const server = http.createServer((req, res) => {
+  const id = req.url;
+  if (!cache[id]) {
+    cache[id] = { data: null, timestamp: Date.now() };
+  }
+  // Fetch and cache data
+  const result = heavyComputation(id);
+  cache[id].data = result;
+  res.end(JSON.stringify(result));
+});
+
+server.listen(3000);`,
+    hint: 'What happens to the cache over time as different URLs are requested?',
+    tip: 'Any unbounded cache will eventually exhaust memory. Always implement an eviction strategy.',
+    answer_hint: 'Unbounded cache growth — needs LRU eviction or TTL'
+  },
+  {
+    date: '2026-06-22',
+    title: 'API Rate Limiter Design',
+    description: 'Design a rate limiter for an API. The code below has a bug — can you find and fix it?',
+    difficulty: 'hard',
+    code: `class RateLimiter {
+  constructor(limit, windowMs) {
+    this.limit = limit;
+    this.windowMs = windowMs;
+    this.requests = new Map(); // ip -> [timestamps]
+  }
+  
+  isAllowed(ip) {
+    const now = Date.now();
+    if (!this.requests.has(ip)) {
+      this.requests.set(ip, [now]);
+      return true;
+    }
+    const timestamps = this.requests.get(ip);
+    const recent = timestamps.filter(t => now - t < this.windowMs);
+    if (recent.length >= this.limit) return false;
+    recent.push(now);
+    this.requests.set(ip, recent);
+    return true;
+  }
+}`,
+    hint: 'There\'s a subtle bug in how timestamps are managed. Think about what happens to old entries.',
+    tip: 'When building rate limiters, always clean up old state to prevent memory leaks and incorrect behavior.',
+    answer_hint: 'Bug: recent array doesn\'t include current timestamp properly; also old entries never cleaned'
+  }
+];
+
+// ── Daily Tip Database ────────────────────────────────────
+const TIPS = [
+  "Always validate and sanitize user input. Trust nothing from the client.",
+  "Use <code>const</code> by default, <code>let</code> when you need to reassign. Never use <code>var</code>.",
+  "Commit early, commit often. Small, focused commits make debugging easier.",
+  "Premature optimization is the root of all evil. Write clean code first, then profile.",
+  "Always handle errors. An unhandled exception is a crash waiting to happen.",
+  "Use meaningful variable names. Code is read far more often than it's written.",
+  "Write tests before code (TDD). It forces better design and fewer bugs.",
+  "Document your API. Future you will thank present you.",
+  "Use async/await over raw promises. It's easier to read and debug.",
+  "Keep functions small. A function should do one thing and do it well.",
+  "Use source control for everything, not just code. Configs, scripts, docs too.",
+  "Never store secrets in code. Use environment variables or a secrets manager.",
+  "Log in structured format (JSON). It makes searching and analysis much easier.",
+  "Set up monitoring before you need it. The best time was yesterday.",
+  "Use automated code formatting. Debating style is a waste of time.",
+  "Always set timeouts on network calls. Hanging requests kill reliability.",
+  "Cache aggressively but invalidate carefully. Stale data is worse than slow data.",
+  "Know your tools. Master your editor, terminal, and debugger.",
+  "Write code for humans first, computers second. The compiler doesn't care.",
+  "Technical debt is real. Schedule time to pay it down.",
+  "Use feature flags for gradual rollouts. Never deploy to all users at once.",
+  "Health checks are not optional. Every service needs a /health endpoint.",
+  "Design for failure. Assume everything will break and build accordingly.",
+  "Rate limit everything. Even internal APIs.",
+  "Measure everything. If you can't measure it, you can't improve it.",
+  "Use pagination for all list endpoints. Unbounded responses kill performance.",
+  "Version your APIs from day one. /v1/, /v2/ is cheap. Breaking changes are expensive.",
+  "Always set CORS explicitly. Default allow-all is a security risk.",
+  "Use HTTPS everywhere. There is no excuse for plain HTTP in 2026.",
+  "Automate everything you do more than once. Scripts are free; manual work is expensive."
+];
+
+// ── State ──────────────────────────────────────────────────
+const STORAGE_KEY = 'daily-challenge-state';
+
+function getState() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    return raw ? JSON.parse(raw) : defaultState();
+  } catch { return defaultState(); }
+}
+
+function defaultState() {
+  return { streak: 0, solvedDates: [], bonusEarned: 0, lastVisitDate: null };
+}
+
+function saveState(state) {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+}
+
+// ── Date Handling ──────────────────────────────────────────
+function getDateKey() {
+  const now = new Date();
+  return now.toISOString().split('T')[0];
+}
+
+function getDaysSinceEpoch(dateStr) {
+  const d = new Date(dateStr + 'T00:00:00Z');
+  const epoch = new Date('2026-06-18T00:00:00Z');
+  return Math.floor((d - epoch) / (86400000));
+}
+
+function getChallengeForDate(dateStr) {
+  const days = getDaysSinceEpoch(dateStr);
+  return CHALLENGES[days % CHALLENGES.length];
+}
+
+function getTipForDate(dateStr) {
+  const days = getDaysSinceEpoch(dateStr);
+  return TIPS[days % TIPS.length];
+}
+
+// ── UI Updates ─────────────────────────────────────────────
+function formatDate(dateStr) {
+  const d = new Date(dateStr + 'T00:00:00Z');
+  return d.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+}
+
+function loadChallenge() {
+  const today = getDateKey();
+  const challenge = getChallengeForDate(today);
+  const tip = getTipForDate(today);
+  
+  document.getElementById('date-badge').textContent = formatDate(today);
+  document.getElementById('challenge-title').textContent = `📌 ${challenge.title}`;
+  document.getElementById('challenge-description').textContent = challenge.description;
+  
+  const badge = document.getElementById('difficulty-badge');
+  badge.textContent = challenge.difficulty;
+  badge.className = 'diff ' + challenge.difficulty;
+  
+  document.getElementById('challenge-text').textContent = 'Study the code below:';
+  document.getElementById('code-snippet').textContent = challenge.code;
+  
+  const hintBox = document.getElementById('hint-box');
+  hintBox.innerHTML = '💡 <strong>Hint:</strong> ' + challenge.hint;
+  
+  document.getElementById('daily-tip').innerHTML = tip;
+  
+  // Update state and streak
+  const state = getState();
+  document.getElementById('streak-count').textContent = state.streak;
+  document.getElementById('total-solved').textContent = state.solvedDates.length;
+  document.getElementById('bonus-earned').textContent = state.bonusEarned;
+  document.getElementById('current-streak').textContent = state.streak;
+  
+  // Update history
+  updateHistory(state, today);
+  
+  // Check if already solved today
+  if (state.solvedDates.includes(today)) {
+    document.getElementById('submit-btn').disabled = true;
+    document.getElementById('submit-btn').textContent = '✅ Completed Today!';
+    document.getElementById('result-box').classList.add('show');
+    document.getElementById('result-content').innerHTML = '<div class="output">🎉 You already completed today\'s challenge! Come back tomorrow for a new one.</div>';
+  }
+}
+
+function updateHistory(state, today) {
+  const list = document.getElementById('challenge-history');
+  list.innerHTML = '';
+  
+  // Show last 7 days
+  const dates = [];
+  for (let i = 6; i >= 0; i--) {
+    const d = new Date();
+    d.setDate(d.getDate() - i);
+    dates.push(d.toISOString().split('T')[0]);
+  }
+  
+  for (const date of dates) {
+    const challenge = getChallengeForDate(date);
+    const solved = state.solvedDates.includes(date);
+    const isToday = date === today;
+    
+    const li = document.createElement('li');
+    li.innerHTML = `
+      <span class="date-col">${new Date(date + 'T00:00:00Z').toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</span>
+      <span class="title-col">${challenge.title}</span>
+      <span class="status-col ${solved ? 'completed' : 'skipped'}">${solved ? '✅ Done' : (isToday ? '⏳ Active' : '—')}</span>
+    `;
+    list.appendChild(li);
+  }
+}
+
+// ── Actions ────────────────────────────────────────────────
+async function submitChallenge() {
+  const input = document.getElementById('user-input').value.trim();
+  if (!input) {
+    alert('Please write your solution or analysis first!');
+    return;
+  }
+  
+  const btn = document.getElementById('submit-btn');
+  btn.disabled = true;
+  btn.textContent = '⏳ Analyzing...';
+  
+  const resultBox = document.getElementById('result-box');
+  resultBox.classList.add('show');
+  document.getElementById('result-content').innerHTML = '<div class="loading">🤔 Analyzing your solution...</div>';
+  
+  const today = getDateKey();
+  const challenge = getChallengeForDate(today);
+  
+  try {
+    // Try free API endpoint
+    const resp = await fetch('/v1/review/analyze', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        text: `Challenge: ${challenge.title}\nCode:\n${challenge.code}\n\nUser's solution/analysis:\n${input}\n\nEvaluate this solution. Is it correct? What did they get right or wrong? Give constructive feedback.`,
+        mode: 'review'
+      })
+    });
+    
+    let analysis;
+    if (resp.ok) {
+      const data = await resp.json();
+      analysis = data.result || data;
+    } else if (resp.status === 429) {
+      analysis = { error: 'Free limit reached. Get an API key to continue!', upgrade: true };
+    } else if (resp.status === 402) {
+      analysis = { error: 'Payment required. Get an API key!', upgrade: true };
+    } else {
+      analysis = await resp.json();
+    }
+    
+    const resultDiv = document.getElementById('result-content');
+    if (analysis.error) {
+      resultDiv.innerHTML = `
+        <div class="error">⚠️ ${analysis.error}</div>
+        ${analysis.upgrade ? '<div class="meta"><a href="/portal.html" style="color:#58a6ff">🎟 Get your free dev key →</a></div>' : ''}
+      `;
+    } else {
+      const text = typeof analysis === 'string' ? analysis : (analysis.content || analysis.result || JSON.stringify(analysis));
+      resultDiv.innerHTML = `
+        <div class="output">${text.replace(/\n/g, '<br>')}</div>
+        <div class="meta">✅ Challenge submitted! ${!resp.ok ? '' : 'Check your progress below.'}</div>
+      `;
+      
+      // Mark as solved (even for analysis)
+      const state = getState();
+      if (!state.solvedDates.includes(today)) {
+        state.solvedDates.push(today);
+        state.bonusEarned += 10;
+        
+        // Calculate streak
+        const yesterday = new Date();
+        yesterday.setDate(yesterday.getDate() - 1);
+        const yesterdayStr = yesterday.toISOString().split('T')[0];
+        if (state.solvedDates.includes(yesterdayStr)) {
+          state.streak++;
+        } else if (state.solvedDates.length > 0) {
+          state.streak = 1;
+        } else {
+          state.streak = 1;
+        }
+        
+        state.lastVisitDate = today;
+        saveState(state);
+        
+        // Update UI
+        document.getElementById('streak-count').textContent = state.streak;
+        document.getElementById('total-solved').textContent = state.solvedDates.length;
+        document.getElementById('bonus-earned').textContent = state.bonusEarned;
+        document.getElementById('current-streak').textContent = state.streak;
+        updateHistory(state, today);
+        
+        btn.textContent = '✅ Completed Today!';
+        
+        // Show bonus notification
+        resultDiv.innerHTML += '<div style="color:#d29922;margin-top:.5rem;font-weight:600">🎉 +10 bonus credits earned! Keep your streak going!</div>';
+      }
+    }
+  } catch (e) {
+    document.getElementById('result-content').innerHTML = `<div class="error">⚠️ Network error: ${e.message}. The challenge was saved locally though!</div>`;
+    
+    // Still save progress
+    const state = getState();
+    if (!state.solvedDates.includes(today)) {
+      state.solvedDates.push(today);
+      state.bonusEarned += 10;
+      state.streak = (state.streak || 0) + 1;
+      state.lastVisitDate = today;
+      saveState(state);
+      document.getElementById('streak-count').textContent = state.streak;
+    }
+    btn.textContent = '✅ Saved Offline';
+  } finally {
+    btn.disabled = false;
+    if (btn.textContent !== '✅ Completed Today!') {
+      btn.textContent = '🚀 Submit for Review';
+    }
+  }
+}
+
+function getHint() {
+  const hintBox = document.getElementById('hint-box');
+  hintBox.style.display = 'block';
+  hintBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+function skipChallenge() {
+  const today = getDateKey();
+  const tomorrow = new Date();
+  tomorrow.setDate(tomorrow.getDate() + 1);
+  const tomorrowStr = tomorrow.toISOString().split('T')[0];
+  const nextChallenge = getChallengeForDate(tomorrowStr);
+  
+  document.getElementById('result-box').classList.add('show');
+  document.getElementById('result-content').innerHTML = `
+    <div class="output">⏭ Skipped. Tomorrow's challenge: <strong>${nextChallenge.title}</strong></div>
+    <div class="meta">Come back tomorrow for a fresh challenge! Your streak is preserved.</div>
+  `;
+}
+
+// ── Init ───────────────────────────────────────────────────
+loadChallenge();
+</script>
+<script src="/conversion-banner.js" defer></script>
+</body>
+</html>

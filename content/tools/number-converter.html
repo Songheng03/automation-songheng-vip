@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="canonical" href="https://automation.songheng.vip/tools/number-converter.html">
+  <meta property="og:title" content="Free Online Number Base Converter - Bin/Dec/Hex/Oct | my-automaton">
+  <meta property="og:description" content="Convert numbers between binary, decimal, hexadecimal, octal, and ASCII. Free online base converter tool.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://automation.songheng.vip/tools/number-converter.html">
+  <meta property="og:image" content="https://automation.songheng.vip/og-image.png"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Free Online Number Base Converter - Bin/Dec/Hex/Oct | my-automaton</title>
+<meta name="description" content="Convert numbers between binary, decimal, hexadecimal, octal, and ASCII. Free online base converter tool.">
+<style>*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#0d1117;color:#c9d1d9;padding:20px;max-width:700px;margin:0 auto;line-height:1.6}
+h1{color:#58a6ff}p{color:#8b949e;margin-bottom:20px}
+input[type="text"]{width:100%;background:#0d1117;border:1px solid #30363d;border-radius:8px;padding:12px 16px;color:#c9d1d9;font-family:monospace;font-size:1rem}
+input:focus{outline:none;border-color:#58a6ff}
+select{background:#0d1117;border:1px solid #30363d;border-radius:6px;color:#c9d1d9;padding:10px;font-size:.9rem}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:14px 0}
+.card{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:14px;text-align:center}
+.card .label{color:#8b949e;font-size:.8rem;margin-bottom:4px}
+.card .value{color:#f0f6fc;font-family:monospace;font-size:1.1rem;word-break:break-all}
+.card .value.clickable{cursor:pointer}.card .value.clickable:hover{color:#58a6ff}
+.btn{padding:10px 24px;border:none;border-radius:6px;font-weight:600;cursor:pointer;font-size:.9rem}
+.btn-primary{background:#238636;color:#fff}.btn-primary:hover{background:#2ea043}
+.controls{display:flex;gap:10px;flex-wrap:wrap;margin:10px 0;align-items:center}
+nav a{color:#58a6ff;text-decoration:none;margin-right:15px;font-size:.9rem}
+</style>
+<meta name="google-site-verification" content="YOUR_CODE" />
+<meta property="og:site_name" content="my-automaton" />
+<meta property="og:type" content="website" />
+<meta property="og:locale" content="en_US" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:site" content="@my_automaton" />
+<script src="/js/analytics.js"></script>
+<!-- Open Graph / Social Meta Tags -->
+<meta name="twitter:title" content="Free Online Number Base Converter - Bin/Dec/Hex/Oct | my-automaton" />
+<meta name="twitter:description" content="Convert numbers between binary, decimal, hexadecimal, octal, and ASCII. Free online base converter tool." />
+<meta name="twitter:image" content="https://automation.songheng.vip/og-image.png" />
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Free Online Number Base Converter - Bin/Dec/Hex/Oct | my-automaton",
+  "description": "Convert numbers between binary, decimal, hexadecimal, octal, and ASCII. Free online base converter tool.",
+  "url": "https://automation.songheng.vip/tools/number-converter.html",
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": "Web",
+  "author": {
+    "@type": "Organization",
+    "name": "my-automaton",
+    "url": "https://automation.songheng.vip"
+  },
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  }
+}
+</script>
+</head>
+<body>
+<nav><a href="/">🏠 Home</a> <a href="/tools">🔧 Dev Tools</a></nav>
+<h1>🔢 Number Base Converter</h1>
+<p>Convert between binary, decimal, hex, octal, and ASCII character codes.</p>
+<div class="controls">
+<select id="inputBase"><option value="10">Decimal</option><option value="16">Hex</option><option value="2">Binary</option><option value="8">Octal</option></select>
+<input type="text" id="input" value="255" placeholder="Enter number" style="flex:1">
+<button class="btn btn-primary" onclick="convert()">⟳ Convert</button>
+</div>
+<div class="grid">
+<div class="card"><div class="label">🔢 Decimal</div><div class="value clickable" id="dec" onclick="copyVal('dec')">255</div></div>
+<div class="card"><div class="label">🔤 Hex</div><div class="value clickable" id="hex" onclick="copyVal('hex')">FF</div></div>
+<div class="card"><div class="label">⚡ Binary</div><div class="value clickable" style="font-size:.8rem" id="bin" onclick="copyVal('bin')">11111111</div></div>
+<div class="card"><div class="label">🔮 Octal</div><div class="value clickable" id="oct" onclick="copyVal('oct')">377</div></div>
+</div>
+<div class="card" style="margin-top:8px"><div class="label">ASCII / Unicode Character</div><div class="value clickable" style="font-size:2rem" id="char" onclick="copyVal('char')">ÿ</div></div>
+<script>
+function convert(){const v=document.getElementById('input').value.trim();const base=parseInt(document.getElementById('inputBase').value);if(!v)return;let num;try{num=parseInt(v,base);if(isNaN(num))throw new Error;}catch{document.getElementById('input').style.borderColor='#da3633';setTimeout(()=>document.getElementById('input').style.borderColor='#30363d',1500);return;}document.getElementById('dec').textContent=num.toString(10);document.getElementById('hex').textContent=num.toString(16).toUpperCase();document.getElementById('bin').textContent=num.toString(2);document.getElementById('oct').textContent=num.toString(8);document.getElementById('char').textContent=num>=32&&num<=0x10FFFF?String.fromCodePoint(num):'⛔ (non-printable)';}
+function copyVal(id){const val=document.getElementById(id).textContent;if(!val||val.startsWith('⛔'))return;navigator.clipboard.writeText(val).then(()=>{document.getElementById(id).style.color='#3fb950';setTimeout(()=>document.getElementById(id).style.color='#f0f6fc',1000);});}
+document.getElementById('input').addEventListener('input',convert);
+document.getElementById('inputBase').addEventListener('change',convert);
+convert();
+</script>
+<div class="share-bar" style="position:fixed;bottom:20px;right:20px;z-index:9999;display:flex;gap:8px;background:rgba(0,0,0,0.85);padding:10px 14px;border-radius:30px;backdrop-filter:blur(8px);box-shadow:0 2px 12px rgba(0,0,0,0.3)">
+<button onclick="window.open('https://twitter.com/intent/tweet?text='+encodeURIComponent(document.title)+'&url='+encodeURIComponent(location.href),'_blank')" style="background:#1DA1F2;border:none;color:white;padding:8px 12px;border-radius:20px;cursor:pointer;font-size:13px;font-weight:bold">X</button>
+<button onclick="window.open('https://www.linkedin.com/sharing/share-offsite/?url='+encodeURIComponent(location.href),'_blank')" style="background:#0A66C2;border:none;color:white;padding:8px 12px;border-radius:20px;cursor:pointer;font-size:13px;font-weight:bold">in</button>
+<button onclick="window.open('https://reddit.com/submit?url='+encodeURIComponent(location.href)+'&title='+encodeURIComponent(document.title),'_blank')" style="background:#FF4500;border:none;color:white;padding:8px 12px;border-radius:20px;cursor:pointer;font-size:13px;font-weight:bold">r</button>
+</div>
+<script src="/js/share-widget.js"></script>
+</body>
+</html>

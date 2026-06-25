@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DNS Lookup - Free Online DNS Record Checker</title>
+<meta name="description" content="Free online DNS lookup tool. Query A, AAAA, MX, TXT, NS, CNAME, SOA, CAA records. Check DNS propagation. No signup required.">
+<meta name="keywords" content="dns lookup, dns checker, dns records, dns propagation, a record, mx record, txt record, online dns tool">
+<link rel="canonical" href="https://automation.songheng.vip/dns-lookup.html">
+<style>
+:root{--bg:#0d1117;--surface:#161b22;--border:#30363d;--text:#c9d1d9;--muted:#8b949e;--accent:#58a6ff;--green:#3fb950;--orange:#d2991d;--red:#f85149;--purple:#a371f7}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--text);font-family:system-ui,sans-serif;min-height:100vh}
+header{background:var(--surface);border-bottom:1px solid var(--border);padding:16px 24px;text-align:center}
+header h1{font-size:1.5rem}
+header p{color:var(--muted);font-size:.85rem;margin-top:4px}
+.container{max-width:900px;margin:0 auto;padding:24px 16px}
+.search-bar{display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap}
+.search-bar input[type=text]{flex:1;min-width:200px;background:var(--surface);border:1px solid var(--border);color:var(--text);padding:12px 16px;border-radius:8px;font-family:'JetBrains Mono',monospace;font-size:.9rem}
+.search-bar input:focus{outline:none;border-color:var(--accent)}
+.record-types{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px}
+.rtype-btn{background:var(--surface);border:1px solid var(--border);color:var(--muted);padding:8px 14px;border-radius:8px;cursor:pointer;font-size:.78rem;transition:all .2s;font-family:'JetBrains Mono',monospace}
+.rtype-btn:hover{border-color:var(--text);color:var(--text)}
+.rtype-btn.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px}
+.btn{background:var(--surface);border:1px solid var(--border);color:var(--text);padding:10px 20px;border-radius:8px;cursor:pointer;font-size:.85rem;transition:all .15s;font-weight:600}
+.btn:hover{transform:translateY(-1px);box-shadow:0 4px 12px rgba(0,0,0,.2)}
+.btn-primary{background:var(--accent);border-color:var(--accent);color:#fff}
+.btn:disabled{opacity:.4;pointer-events:none}
+.loading{text-align:center;padding:32px;color:var(--muted);display:none}
+.loading .spinner{display:inline-block;width:24px;height:24px;border:2px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin .6s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.results{margin-top:16px}
+.record-group{margin-bottom:16px}
+.record-group-title{font-family:'JetBrains Mono',monospace;font-size:.85rem;color:var(--accent);padding:8px 0;border-bottom:1px solid var(--border);margin-bottom:8px;display:flex;justify-content:space-between}
+.record-group-title .count{color:var(--muted);font-size:.75rem}
+.record-item{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:10px 14px;margin-bottom:6px;font-family:'JetBrains Mono',monospace;font-size:.78rem;display:flex;justify-content:space-between;align-items:flex-start;word-break:break-all}
+.record-item .type-badge{padding:2px 8px;border-radius:4px;font-size:.65rem;font-weight:700;margin-right:10px;white-space:nowrap;flex-shrink:0}
+.type-A{background:rgba(88,166,255,.15);color:var(--accent)}
+.type-AAAA{background:rgba(163,113,247,.15);color:var(--purple)}
+.type-MX{background:rgba(210,153,29,.15);color:var(--orange)}
+.type-TXT{background:rgba(63,185,80,.15);color:var(--green)}
+.type-NS{background:rgba(57,211,83,.15);color:var(--cyan)}
+.type-CNAME{background:rgba(248,81,73,.15);color:var(--red)}
+.type-SOA{background:rgba(139,148,158,.15);color:var(--muted)}
+.type-CAA{background:rgba(163,113,247,.15);color:var(--purple)}
+.record-item .value{flex:1}
+.record-item .ttl{color:var(--muted);font-size:.65rem;margin-left:8px;white-space:nowrap}
+.error-msg{background:rgba(248,81,73,.1);border:1px solid var(--red);color:var(--red);padding:12px 16px;border-radius:8px;margin-bottom:16px;display:none}
+.presets{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+.preset-btn{background:var(--surface);border:1px solid var(--border);color:var(--muted);padding:6px 14px;border-radius:8px;cursor:pointer;font-size:.78rem;transition:all .2s;font-family:'JetBrains Mono',monospace}
+.preset-btn:hover{border-color:var(--text);color:var(--text)}
+.summary-cards{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:16px}
+.summary-card{flex:1;min-width:100px;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:12px;text-align:center}
+.summary-card .val{font-size:1.2rem;font-weight:700;color:var(--accent)}
+.summary-card .label{font-size:.7rem;color:var(--muted);margin-top:2px}
+.sponsor{text-align:center;margin-top:32px;padding:20px;background:var(--surface);border:1px solid var(--border);border-radius:8px}
+.sponsor h2{color:var(--accent);font-size:1rem;margin-bottom:8px}
+.sponsor p{color:var(--muted);font-size:.85rem;margin-bottom:12px}
+.sponsor a{color:var(--accent)}
+.note{color:var(--muted);font-size:.7rem;margin-top:8px;text-align:center}
+</style>
+</head>
+<body>
+<header>
+<h1>🌐 DNS Lookup</h1>
+<p>Query DNS records — A, AAAA, MX, TXT, NS, CNAME, SOA, CAA — via Google DNS-over-HTTPS</p>
+</header>
+<div class="container">
+
+<div class="presets">
+<button class="preset-btn" onclick="lookupDomain('google.com')">google.com</button>
+<button class="preset-btn" onclick="lookupDomain('github.com')">github.com</button>
+<button class="preset-btn" onclick="lookupDomain('cloudflare.com')">cloudflare.com</button>
+</div>
+
+<div class="search-bar">
+<input type="text" id="domainInput" placeholder="Enter domain name... (e.g. example.com)" onkeydown="if(event.key==='Enter')doLookup()">
+<button class="btn btn-primary" onclick="doLookup()">🔍 Lookup</button>
+</div>
+
+<div class="record-types" id="rtypeRow">
+<button class="rtype-btn active" data-type="A" onclick="toggleType(this)">A</button>
+<button class="rtype-btn active" data-type="AAAA" onclick="toggleType(this)">AAAA</button>
+<button class="rtype-btn" data-type="MX" onclick="toggleType(this)">MX</button>
+<button class="rtype-btn" data-type="TXT" onclick="toggleType(this)">TXT</button>
+<button class="rtype-btn" data-type="NS" onclick="toggleType(this)">NS</button>
+<button class="rtype-btn" data-type="CNAME" onclick="toggleType(this)">CNAME</button>
+<button class="rtype-btn" data-type="SOA" onclick="toggleType(this)">SOA</button>
+<button class="rtype-btn" data-type="CAA" onclick="toggleType(this)">CAA</button>
+<button class="rtype-btn" data-type="PTR" onclick="toggleType(this)">PTR</button>
+</div>
+
+<div id="errorBox" class="error-msg"></div>
+
+<div class="summary-cards" id="summaryCards"></div>
+<div class="loading" id="loading"><div class="spinner"></div><p style="margin-top:8px">Querying DNS...</p></div>
+<div class="results" id="results"></div>
+
+<div class="note">⚡ Uses Google DNS-over-HTTPS (dns.google). Results are publicly available DNS records.</div>
+
+<div class="sponsor">
+<h2>💡 Need more than a DNS lookup?</h2>
+<p>Get <strong>AI-powered code reviews, security scans, text analysis</strong>, and more via our API.</p>
+<p><a href="/">Browse API Docs</a> · <a href="/pricing.html">View Pricing</a></p>
+</div>
+</div>
+
+<script>
+const DNS_API = 'https://dns.google/resolve?name=';
+
+function getActiveTypes() {
+  return [...document.querySelectorAll('.rtype-btn.active')].map(b => b.dataset.type);
+}
+
+function toggleType(btn) {
+  btn.classList.toggle('active');
+  // Don't auto-query, let user press Lookup
+}
+
+function lookupDomain(domain) {
+  document.getElementById('domainInput').value = domain;
+  doLookup();
+}
+
+async function doLookup() {
+  const domain = document.getElementById('domainInput').value.trim();
+  if (!domain) return;
+  
+  // Clean domain (remove protocol, path)
+  const cleanDomain = domain.replace(/^https?:\/\//i, '').replace(/\/.*$/, '').replace(/:\d+$/, '');
+  
+  const types = getActiveTypes();
+  const loading = document.getElementById('loading');
+  const errorBox = document.getElementById('errorBox');
+  const resultsDiv = document.getElementById('results');
+  const summaryDiv = document.getElementById('summaryCards');
+  
+  loading.style.display = 'block';
+  errorBox.style.display = 'none';
+  resultsDiv.innerHTML = '';
+  summaryDiv.innerHTML = '';
+  
+  try {
+    const allResults = {};
+    let totalRecords = 0;
+    
+    for (const type of types) {
+      const url = `${DNS_API}${encodeURIComponent(cleanDomain)}&type=${type}`;
+      const resp = await fetch(url);
+      if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+      const data = await resp.json();
+      
+      if (data.Answer && data.Answer.length > 0) {
+        allResults[type] = data.Answer;
+        totalRecords += data.Answer.length;
+      }
+    }
+    
+    // Summary
+    if (Object.keys(allResults).length === 0) {
+      resultsDiv.innerHTML = '<div style="text-align:center;padding:32px;color:var(--muted)">No DNS records found for <strong>' + cleanDomain + '</strong> with selected types.</div>';
+    } else {
+      summaryDiv.innerHTML = `
+        <div class="summary-card"><div class="val">${cleanDomain}</div><div class="label">Domain</div></div>
+        <div class="summary-card"><div class="val">${totalRecords}</div><div class="label">Records</div></div>
+        <div class="summary-card"><div class="val">${Object.keys(allResults).length}</div><div class="label">Types</div></div>
+      `;
+      
+      let html = '';
+      for (const [type, records] of Object.entries(allResults)) {
+        html += `<div class="record-group">
+          <div class="record-group-title">${type} Records <span class="count">${records.length} record(s)</span></div>`;
+        
+        for (const rec of records) {
+          html += `<div class="record-item">
+            <span class="type-badge type-${type}">${type}</span>
+            <span class="value">${rec.data}</span>
+            <span class="ttl">TTL: ${rec.TTL}s</span>
+          </div>`;
+        }
+        html += '</div>';
+      }
+      resultsDiv.innerHTML = html;
+    }
+  } catch(e) {
+    errorBox.textContent = '❌ DNS lookup failed: ' + e.message + '. Check the domain name and try again.';
+    errorBox.style.display = '';
+  } finally {
+    loading.style.display = 'none';
+  }
+}
+
+// Auto-lookup on load with default
+document.getElementById('domainInput').value = 'google.com';
+</script>
+<script src="/conversion-banner.js" defer></script>
+</body>
+</html>

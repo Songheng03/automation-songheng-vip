@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GitHub Action Quickstart — AI Code Review Automation</title>
+<meta name="description" content="Set up automated AI code review on every PR with my-automaton's API. Free tier available. 3-minute setup.">
+<meta property="og:title" content="GitHub Action Quickstart — AI Code Review">
+<meta property="og:description" content="Automated AI code review on every PR. 3-minute setup. Free tier.">
+<meta property="og:type" content="website">
+<link rel="canonical" href="https://automation.songheng.vip/github-action-quickstart.html">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #0d1117; color: #c9d1d9; line-height: 1.6; }
+.container { max-width: 920px; margin: 0 auto; padding: 2rem 1.5rem; }
+h1 { font-size: 2rem; color: #fff; margin-bottom: 0.5rem; }
+h2 { font-size: 1.4rem; color: #58a6ff; margin: 2rem 0 1rem; }
+h3 { font-size: 1.1rem; color: #f0f6fc; margin: 1.5rem 0 0.5rem; }
+p { margin: 0.75rem 0; }
+.code-block { background: #161b22; border: 1px solid #30363d; border-radius: 8px; padding: 1.2rem; margin: 1rem 0; overflow-x: auto; position: relative; }
+.code-block pre { font-family: 'JetBrains Mono', 'Fira Code', monospace; font-size: 0.85rem; color: #e6edf3; }
+.copy-btn { position: absolute; top: 8px; right: 8px; background: #21262d; border: 1px solid #30363d; color: #c9d1d9; padding: 4px 10px; border-radius: 6px; cursor: pointer; font-size: 0.75rem; }
+.copy-btn:hover { background: #30363d; }
+.steps { counter-reset: step; }
+.step { background: #161b22; border: 1px solid #30363d; border-radius: 8px; padding: 1.2rem; margin: 1rem 0; }
+.step::before { counter-increment: step; content: "Step " counter(step); display: block; color: #58a6ff; font-weight: 600; font-size: 0.85rem; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.05em; }
+.badge { display: inline-block; background: #1f6feb; color: #fff; padding: 2px 10px; border-radius: 12px; font-size: 0.75rem; font-weight: 600; margin-right: 0.5rem; }
+.badge.green { background: #238636; }
+.badge.orange { background: #d29922; }
+ul, ol { margin: 0.75rem 0 0.75rem 1.5rem; }
+li { margin: 0.4rem 0; }
+a { color: #58a6ff; text-decoration: none; }
+a:hover { text-decoration: underline; }
+.cta { display: inline-block; background: #238636; color: #fff; padding: 0.8rem 2rem; border-radius: 8px; font-weight: 600; font-size: 1.05rem; margin: 1rem 0; }
+.cta:hover { background: #2ea043; text-decoration: none; }
+table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
+th, td { text-align: left; padding: 0.6rem 0.8rem; border: 1px solid #30363d; }
+th { background: #161b22; color: #8b949e; font-size: 0.85rem; text-transform: uppercase; }
+.highlight { border-left: 4px solid #238636; padding-left: 1rem; background: #161b22; border-radius: 0 8px 8px 0; }
+.highlight.warn { border-left-color: #d29922; }
+</style>
+</head>
+<body>
+<div style="background:#161b22;border-bottom:1px solid #30363d;padding:10px 20px;font-size:.85rem;display:flex;gap:16px;align-items:center;flex-wrap:wrap"><a href="/" style="color:#58a6ff;text-decoration:none;font-weight:600">🏠 Home</a><span style="color:#484f58">|</span><a href="/pricing.html" style="color:#8b949e;text-decoration:none">Pricing</a><a href="/api-docs.html" style="color:#8b949e;text-decoration:none">API</a><a href="/playground.html" style="color:#8b949e;text-decoration:none">Playground</a></div>
+
+<div class="container">
+<h1>🚀 AI Code Review GitHub Action</h1>
+<p>Automatically review every pull request in your repo. Catches bugs, security issues, style problems, and suggests improvements — before a human even looks at it.</p>
+
+<div class="highlight">
+<p><strong>💰 Pricing:</strong> Free tier: 3 reviews/day per repo · Then <strong>$0.01+/review</strong> (500 reviews for $5) · <a href="/pricing.html">See all plans →</a></p>
+</div>
+
+<h2>⚡ 3-Minute Setup</h2>
+
+<div class="steps">
+<div class="step">
+<p><strong>Create <code>.github/workflows/code-review.yml</code></strong> in your repo root:</p>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre>name: AI Code Review
+on:
+  pull_request:
+    types: [opened, synchronize]
+jobs:
+  review:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: AI Review PR
+        uses: chaosong/ai-code-review-action@v1
+        with:
+          api-key: ${{ secrets.AI_REVIEW_KEY }}
+          severity: all
+          max-comments: 10
+          endpoint: https://automation.songheng.vip</pre>
+</div>
+</div>
+
+<div class="step">
+<p><strong>Get a free API key:</strong> <a href="https://automation.songheng.vip/portal.html">Get your key</a> (50 free credits to start)</p>
+</div>
+
+<div class="step">
+<p><strong>Add to GitHub Secrets:</strong></p>
+<ul>
+<li>Go to your repo → <strong>Settings → Secrets and variables → Actions</strong></li>
+<li>Click <strong>New repository secret</strong></li>
+<li>Name: <code>AI_REVIEW_KEY</code></li>
+<li>Value: Your API key from step 2</li>
+<li>Click <strong>Add secret</strong></li>
+</ul>
+</div>
+
+<div class="step">
+<p><strong>Open a PR</strong> — the action runs automatically. Review comments appear inline on your PR within seconds.</p>
+</div>
+</div>
+
+<h2>🔧 Advanced Configuration</h2>
+
+<table>
+<tr><th>Option</th><th>Default</th><th>Description</th></tr>
+<tr><td><code>api-key</code></td><td>—</td><td>Your API key (required)</td></tr>
+<tr><td><code>severity</code></td><td><code>all</code></td><td><code>all</code>, <code>critical</code>, <code>style</code>, <code>security</code></td></tr>
+<tr><td><code>max-comments</code></td><td><code>10</code></td><td>Max inline comments per review</td></tr>
+<tr><td><code>endpoint</code></td><td><code>https://automation.songheng.vip</code></td><td>API endpoint</td></tr>
+</table>
+
+<h2>📋 What Gets Reviewed</h2>
+<ul>
+<li><strong>Security vulnerabilities</strong> — SQL injection, XSS, auth flaws, hardcoded secrets</li>
+<li><strong>Code quality</strong> — cyclomatic complexity, dead code, DRY violations</li>
+<li><strong>Performance</strong> — N+1 queries, memory leaks, inefficient loops</li>
+<li><strong>Style & consistency</strong> — formatting, naming conventions, best practices</li>
+<li><strong>Bug detection</strong> — null pointer risks, race conditions, off-by-one errors</li>
+</ul>
+
+<h2>📊 Credit Usage</h2>
+<table>
+<tr><th>Review scope</th><th>Cost</th></tr>
+<tr><td>Quick scan (&lt;50 lines changed)</td><td>1 credit</td></tr>
+<tr><td>Standard review (50-500 lines)</td><td>2 credits</td></tr>
+<tr><td>Deep review (500+ lines)</td><td>5 credits</td></tr>
+<tr><td>Security-only scan</td><td>3 credits</td></tr>
+</table>
+
+<div class="highlight warn">
+<p><strong>💡 Pro tip:</strong> Set <code>severity: critical</code> to only flag security and crash bugs — uses fewer credits per review. Upgrade to the <strong>Professional plan ($25 for 3,000 credits)</strong> for heavy usage.</p>
+</div>
+
+<h2>🔄 Workflow Examples</h2>
+
+<h3>Security-Only Review</h3>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre>name: Security Scan
+on: pull_request
+jobs:
+  security:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: AI Security Review
+        uses: chaosong/ai-code-review-action@v1
+        with:
+          api-key: ${{ secrets.AI_REVIEW_KEY }}
+          severity: security
+          endpoint: https://automation.songheng.vip</pre>
+</div>
+
+<h3>Multi-Config Review (TS + Python)</h3>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre>name: Full Review
+on: pull_request
+jobs:
+  review:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: AI Review
+        uses: chaosong/ai-code-review-action@v1
+        with:
+          api-key: ${{ secrets.AI_REVIEW_KEY }}
+          severity: all
+          max-comments: 20
+          endpoint: https://automation.songheng.vip
+          # Only review TypeScript and Python files
+          include: "*.ts,*.py"
+          # Ignore generated files
+          exclude: "*.generated.*,dist/"</pre>
+</div>
+
+<h2>💳 Ready to get started?</h2>
+<p>Get your free API key, add it to GitHub, and start automated code reviews in 3 minutes.</p>
+<a class="cta" href="/pricing.html">Get a Key → $5 for 500 reviews</a>
+<p style="font-size: 0.9rem; color: #8b949e;">Free tier: <a href="https://automation.songheng.vip/portal.html">Portal →</a> 3 free reviews/day</p>
+</div>
+
+<script>
+function copyCode(btn) {
+  const code = btn.nextElementSibling.textContent;
+  navigator.clipboard.writeText(code).then(() => {
+    btn.textContent = 'Copied!';
+    setTimeout(() => { btn.textContent = 'Copy'; }, 2000);
+  });
+}
+</script>
+<script src="/conversion-banner.js" defer></script>
+</body>
+</html>

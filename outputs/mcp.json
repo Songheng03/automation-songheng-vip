@@ -1,0 +1,188 @@
+{
+  "name": "my-automaton",
+  "description": "AI-powered text analysis, code review, security scanning, and summarization services. Pay-per-use with USDC on Base chain.",
+  "version": "2.2.0",
+  "url": "http://localhost:8080",
+  "type": "mcp",
+  "author": {
+    "wallet": "0x76eADdEBFfb6A61DD071f97F4508467fc55dd113",
+    "name": "my-automaton"
+  },
+  "mcp": {
+    "endpoint": "/mcp",
+    "sse": "/mcp",
+    "transport": ["http+sse", "json-rpc"],
+    "jsonrpc": "2.0"
+  },
+  "capabilities": {
+    "tools": ["analyze", "summarize", "review", "security", "explain", "refactor", "complexity"],
+    "resources": ["services", "docs", "pricing"],
+    "prompts": ["code-review", "security-scan", "analyze-text"]
+  },
+  "payment": {
+    "type": "x402",
+    "currency": "USDC",
+    "chain": "Base",
+    "wallet": "0x76eADdEBFfb6A61DD071f97F4508467fc55dd113",
+    "pricing": {
+      "analyze": "$0.01",
+      "summarize": "$0.02",
+      "review": "$0.05",
+      "security": "$0.03",
+      "explain": "$0.02",
+      "refactor": "$0.05",
+      "complexity": "$0.02"
+    }
+  },
+  "tools": [
+    {
+      "name": "analyze",
+      "description": "Deep text analysis — extract insights, themes, and key points from text content.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "text": {
+            "type": "string",
+            "description": "The text content to analyze"
+          }
+        },
+        "required": ["text"]
+      }
+    },
+    {
+      "name": "summarize",
+      "description": "AI-powered text summarization — condense long text into a concise summary.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "text": {
+            "type": "string",
+            "description": "The text to summarize"
+          }
+        },
+        "required": ["text"]
+      }
+    },
+    {
+      "name": "review",
+      "description": "Full code review — check for bugs, security issues, style problems, and suggest improvements.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "The source code to review"
+          },
+          "language": {
+            "type": "string",
+            "description": "Programming language (optional)"
+          }
+        },
+        "required": ["code"]
+      }
+    },
+    {
+      "name": "security",
+      "description": "Security vulnerability scan — check code for OWASP Top 10, injections, secrets exposure.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "The source code to audit"
+          },
+          "language": {
+            "type": "string",
+            "description": "Programming language (optional)"
+          }
+        },
+        "required": ["code"]
+      }
+    },
+    {
+      "name": "explain",
+      "description": "Code explanation — explain what code does in simple terms.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "The code to explain"
+          },
+          "language": {
+            "type": "string",
+            "description": "Programming language (optional)"
+          }
+        },
+        "required": ["code"]
+      }
+    },
+    {
+      "name": "refactor",
+      "description": "Refactoring suggestions — provide concrete improvements for code quality and maintainability.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "The source code to refactor"
+          },
+          "language": {
+            "type": "string",
+            "description": "Programming language (optional)"
+          }
+        },
+        "required": ["code"]
+      }
+    },
+    {
+      "name": "complexity",
+      "description": "Complexity analysis — analyze code complexity, cyclomatic complexity, and maintainability.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "The code to analyze"
+          },
+          "language": {
+            "type": "string",
+            "description": "Programming language (optional)"
+          }
+        },
+        "required": ["code"]
+      }
+    }
+  ],
+  "resources": [
+    {
+      "name": "services",
+      "description": "List of available AI services and their capabilities",
+      "uri": "http://localhost:8080/health"
+    },
+    {
+      "name": "docs",
+      "description": "API documentation and usage guides",
+      "uri": "http://localhost:8080/api-docs.html"
+    },
+    {
+      "name": "pricing",
+      "description": "Pay-per-request pricing per tool",
+      "uri": "http://localhost:8080/.well-known/mcp.json"
+    }
+  ],
+  "prompts": [
+    {
+      "name": "code-review",
+      "description": "Review code for bugs, security issues, style problems, and improvements"
+    },
+    {
+      "name": "security-scan",
+      "description": "Scan code for OWASP Top 10 vulnerabilities and secrets exposure"
+    },
+    {
+      "name": "analyze-text",
+      "description": "Analyze text content for insights, themes, and key points"
+    }
+  ]
+}

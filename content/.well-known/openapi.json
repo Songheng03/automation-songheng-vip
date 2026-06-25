@@ -1,0 +1,32 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "my-automaton AI API",
+    "description": "AI-powered code review, security scanning, text analysis, summarization, explanation, refactoring, and complexity analysis. Free tier available. Premium via API key.",
+    "version": "1.0.0",
+    "contact": {
+      "name": "my-automaton",
+      "url": "https://automation.songheng.vip",
+      "email": "admin@automation.songheng.vip"
+    }
+  },
+  "servers": [
+    { "url": "https://automation.songheng.vip", "description": "Production" },
+    { "url": "http://automation.songheng.vip:8080", "description": "Direct IP" }
+  ],
+  "paths": {
+    "/health": { "get": { "summary": "Health check", "responses": { "200": { "description": "OK" } } } },
+    "/free/analyze": { "post": { "summary": "Free text analysis (3/day/IP)", "requestBody": { "content": { "application/json": { "schema": { "type": "object", "properties": { "text": { "type": "string" }, "mode": { "type": "string", "enum": ["analyze","summarize","review","security","explain","refactor","complexity"] } } } } } }, "responses": { "200": { "description": "Analysis result" }, "429": { "description": "Rate limited" } } } },
+    "/v1/analyze": { "post": { "summary": "Premium text analysis (1 credit)", "parameters": [{ "name": "X-API-Key", "in": "header", "required": true, "schema": { "type": "string" } }], "responses": { "200": { "description": "Analysis result" }, "402": { "description": "Insufficient credits" } } } },
+    "/v1/summarize": { "post": { "summary": "Premium summarization (2 credits)", "parameters": [{ "name": "X-API-Key", "in": "header", "required": true, "schema": { "type": "string" } }], "responses": { "200": { "description": "Summary" }, "402": { "description": "Insufficient credits" } } } },
+    "/v1/review": { "post": { "summary": "Premium code review (5 credits)", "parameters": [{ "name": "X-API-Key", "in": "header", "required": true, "schema": { "type": "string" } }], "responses": { "200": { "description": "Code review" }, "402": { "description": "Insufficient credits" } } } },
+    "/v1/security": { "post": { "summary": "Premium security scan (3 credits)", "parameters": [{ "name": "X-API-Key", "in": "header", "required": true, "schema": { "type": "string" } }], "responses": { "200": { "description": "Security report" }, "402": { "description": "Insufficient credits" } } } },
+    "/v1/explain": { "post": { "summary": "Premium code explanation (2 credits)", "parameters": [{ "name": "X-API-Key", "in": "header", "required": true, "schema": { "type": "string" } }], "responses": { "200": { "description": "Explanation" }, "402": { "description": "Insufficient credits" } } } },
+    "/v1/refactor": { "post": { "summary": "Premium refactoring suggestions (5 credits)", "parameters": [{ "name": "X-API-Key", "in": "header", "required": true, "schema": { "type": "string" } }], "responses": { "200": { "description": "Refactoring suggestions" }, "402": { "description": "Insufficient credits" } } } },
+    "/v1/complexity": { "post": { "summary": "Premium complexity analysis (2 credits)", "parameters": [{ "name": "X-API-Key", "in": "header", "required": true, "schema": { "type": "string" } }], "responses": { "200": { "description": "Complexity report" }, "402": { "description": "Insufficient credits" } } } },
+    "/api/catalog/openai": { "get": { "summary": "OpenAI tool format catalog", "responses": { "200": { "description": "Tool definitions" } } } },
+    "/api/mcp": { "post": { "summary": "MCP JSON-RPC endpoint", "responses": { "200": { "description": "MCP response" } } } },
+    "/api/public-stats": { "get": { "summary": "Public usage statistics", "responses": { "200": { "description": "Stats" } } } },
+    "/api/dev-key": { "get": { "summary": "Free developer API key (1/IP/day)", "responses": { "200": { "description": "API key with 50 credits" } } } }
+  }
+}

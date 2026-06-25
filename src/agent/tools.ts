@@ -1,0 +1,2476 @@
+/**
+ * Automaton Tool System
+ *
+ * Defines all tools the automaton can call, with self-preservation guards.
+ * Tools are organized by category and exposed to the inference model.
+ */
+
+import nodePath from "node:path";
+import { ulid } from "ulid";
+import type {
+  AutomatonTool,
+  ToolContext,
+  ToolCategory,
+  InferenceToolDefinition,
+  ToolCallResult,
+  GenesisConfig,
+  RiskLevel,
+  PolicyRequest,
+  InputSource,
+  SpendTrackerInterface,
+} from "../types.js";
+import type { PolicyEngine } from "./policy-engine.js";
+import { sanitizeToolResult, sanitizeInput } from "./injection-defense.js";
+import { createLogger } from "../observability/logger.js";
+
+const logger = createLogger("tools");
+
+// ─── Path Confinement ─────────────────────────────────────────
+// write_file is restricted to the sandbox home directory tree.
+// The sandbox home is /root for both local and remote execution.
+const SANDBOX_HOME = "/root";
+
+/**
+ * Validate that a file path resolves to within the allowed root directory.
+ * Returns the resolved absolute path, or an error string if out of bounds.
+ */
+function confinePathToSandbox(filePath: string): string | { error: string } {
+  // Resolve ~ to SANDBOX_HOME
+  const expanded = filePath.startsWith("~")
+    ? nodePath.join(SANDBOX_HOME, filePath.slice(1))
+    : filePath;
+  // Resolve to absolute (relative paths resolve against SANDBOX_HOME)
+  const resolved = nodePath.resolve(SANDBOX_HOME, expanded);
+  // Ensure the resolved path is within the sandbox home
+  if (resolved !== SANDBOX_HOME && !resolved.startsWith(SANDBOX_HOME + "/")) {
+    return {
+      error: `Blocked: write_file path "${filePath}" resolves to "${resolved}" which is outside the allowed directory (${SANDBOX_HOME}). Writes are confined to the sandbox home.`,
+    };
+  }
+  return resolved;
+}
+
+// Tools whose results come from external sources and need sanitization
+const EXTERNAL_SOURCE_TOOLS = new Set([
+  "exec",
+  "web_fetch",
+]);
+
+// ─── Self-Preservation Guard ───────────────────────────────────
+// Defense-in-depth: policy engine (command.forbidden_patterns rule) is the primary guard.
+// This inline check is kept as a secondary safety net in case the policy engine is bypassed.
+
+const FORBIDDEN_COMMAND_PATTERNS = [
+  // Self-destruction
+  /rm\s+(-rf?\s+)?.*\.automaton/,
+  /rm\s+(-rf?\s+)?.*state\.db/,
+  /rm\s+(-rf?\s+)?.*wallet\.json/,
+  /rm\s+(-rf?\s+)?.*automaton\.json/,
+  /rm\s+(-rf?\s+)?.*heartbeat\.yml/,
+  /rm\s+(-rf?\s+)?.*SOUL\.md/,
+  // Process killing
+  /kill\s+.*automaton/,
+  /pkill\s+.*automaton/,
+  /systemctl\s+(stop|disable)\s+automaton/,
+  // Database destruction
+  /DROP\s+TABLE/i,
+  /DELETE\s+FROM\s+(turns|identity|kv|schema_version|skills|children|registry)/i,
+  /TRUNCATE/i,
+  // Safety infrastructure modification via shell
+  /sed\s+.*injection-defense/,
+  /sed\s+.*self-mod\/code/,
+  /sed\s+.*audit-log/,
+  />\s*.*injection-defense/,
+  />\s*.*self-mod\/code/,
+  />\s*.*audit-log/,
+  // Credential harvesting
+  /cat\s+.*\.ssh/,
+  /cat\s+.*\.gnupg/,
+  /cat\s+.*\.env/,
+  /cat\s+.*wallet\.json/,
+];
+
+function isForbiddenCommand(command: string, sandboxId: string): string | null {
+  for (const pattern of FORBIDDEN_COMMAND_PATTERNS) {
+    if (pattern.test(command)) {
+      return `Blocked: Command matches self-harm pattern: ${pattern.source}`;
+    }
+  }
+
+  // Block deleting own sandbox
+  if (command.includes("sandbox_delete") && command.includes(sandboxId)) {
+    return "Blocked: Cannot delete own sandbox";
+  }
+
+  return null;
+}
+
+// ─── Built-in Tools ────────────────────────────────────────────
+
+export function createBuiltinTools(sandboxId: string): AutomatonTool[] {
+  const tools: AutomatonTool[] = [
+    // ── VM/Sandbox Tools ──
+    {
+      name: "exec",
+      description:
+        "Execute a shell command in your sandbox. Returns stdout, stderr, and exit code.",
+      category: "vm",
+      riskLevel: "caution",
+      parameters: {
+        type: "object",
+        properties: {
+          command: {
+            type: "string",
+            description: "The shell command to execute",
+          },
+          timeout: {
+            type: "number",
+            description: "Timeout in milliseconds (default: 30000)",
+          },
+        },
+        required: ["command"],
+      },
+      execute: async (args, ctx) => {
+        const command = args.command as string;
+        const forbidden = isForbiddenCommand(command, ctx.identity.sandboxId);
+        if (forbidden) return forbidden;
+
+        const result = await ctx.runtime.exec(
+          command,
+          (args.timeout as number) || 30000,
+        );
+        return `exit_code: ${result.exitCode}\nstdout: ${result.stdout}\nstderr: ${result.stderr}`;
+      },
+    },
+    {
+      name: "write_file",
+      description: "Write content to a file in your sandbox.",
+      category: "vm",
+      riskLevel: "caution",
+      parameters: {
+        type: "object",
+        properties: {
+          path: { type: "string", description: "File path" },
+          content: { type: "string", description: "File content" },
+        },
+        required: ["path", "content"],
+      },
+      execute: async (args, ctx) => {
+        const filePath = args.path as string;
+        // Path confinement: restrict writes to sandbox home directory
+        const confined = confinePathToSandbox(filePath);
+        if (typeof confined === "object") return confined.error;
+        // Guard against overwriting protected files (same check as edit_own_file)
+        const { isProtectedFile } = await import("../self-mod/code.js");
+        if (isProtectedFile(confined)) {
+          return "Blocked: Cannot overwrite protected file. This is a hard-coded safety invariant.";
+        }
+        await ctx.runtime.writeFile(confined, args.content as string);
+        return `File written: ${confined}`;
+      },
+    },
+    {
+      name: "read_file",
+      description: "Read content from a file in your sandbox.",
+      category: "vm",
+      riskLevel: "safe",
+      parameters: {
+        type: "object",
+        properties: {
+          path: { type: "string", description: "File path to read" },
+        },
+        required: ["path"],
+      },
+      execute: async (args, ctx) => {
+        const filePath = args.path as string;
+        // Block reads of sensitive files (wallet, env, config secrets)
+        const basename = filePath.split("/").pop() || "";
+        const sensitiveFiles = ["wallet.json", ".env", "automaton.json"];
+        const sensitiveExtensions = [".key", ".pem"];
+        if (
+          sensitiveFiles.includes(basename) ||
+          sensitiveExtensions.some((ext) => basename.endsWith(ext)) ||
+          basename.startsWith("private-key")
+        ) {
+          return "Blocked: Cannot read sensitive file. This protects credentials and secrets.";
+        }
+        try {
+          return await ctx.runtime.readFile(filePath);
+        } catch {
+          // File read fallback: use exec(cat)
+          const result = await ctx.runtime.exec(
+            `cat ${escapeShellArg(filePath)}`,
+            30_000,
+          );
+          if (result.exitCode !== 0) {
+            return `ERROR: File not found or not readable: ${filePath}`;
+          }
+          return result.stdout;
+        }
+      },
+    },
+    // ── API Tools ──
+    // ── Self-Modification Tools ──
+    {
+      name: "edit_own_file",
+      description:
+        "Edit a file in your own codebase. Changes are audited, rate-limited, and safety-checked. Some files are protected.",
+      category: "self_mod",
+      riskLevel: "dangerous",
+      parameters: {
+        type: "object",
+        properties: {
+          path: { type: "string", description: "File path to edit" },
+          content: { type: "string", description: "New file content" },
+          description: {
+            type: "string",
+            description: "Why you are making this change",
+          },
+        },
+        required: ["path", "content", "description"],
+      },
+      execute: async (args, ctx) => {
+        const { editFile, validateModification } =
+          await import("../self-mod/code.js");
+        const filePath = args.path as string;
+        const content = args.content as string;
+
+        // Pre-validate before attempting
+        const validation = validateModification(
+          ctx.db,
+          filePath,
+          content.length,
+        );
+        if (!validation.allowed) {
+          return `BLOCKED: ${validation.reason}\nChecks: ${validation.checks.map((c) => `${c.name}: ${c.passed ? "PASS" : "FAIL"} (${c.detail})`).join(", ")}`;
+        }
+
+        const result = await editFile(
+          ctx.runtime,
+          ctx.db,
+          filePath,
+          content,
+          args.description as string,
+        );
+
+        if (!result.success) {
+          return result.error || "Unknown error during file edit";
+        }
+
+        const msg = `File edited: ${filePath} (audited + git-committed)`;
+        return result.error ? `${msg}\nWarning: ${result.error}` : msg;
+      },
+    },
+    {
+      name: "revert_last_edit",
+      description:
+        "Revert the last self-modification. Uses git to undo the most recent code change and rebuild.",
+      category: "self_mod",
+      riskLevel: "caution",
+      parameters: { type: "object", properties: {} },
+      execute: async (_args, ctx) => {
+        const repoRoot = process.cwd();
+
+        // Show what we're reverting
+        const lastCommit = await ctx.runtime.exec(
+          `cd '${repoRoot}' && git log -1 --oneline`,
+          10_000,
+        );
+
+        // Revert
+        const result = await ctx.runtime.exec(
+          `cd '${repoRoot}' && git revert HEAD --no-edit`,
+          30_000,
+        );
+        if (result.exitCode !== 0) {
+          return `Revert failed: ${result.stderr}`;
+        }
+
+        // Rebuild
+        const build = await ctx.runtime.exec(
+          `cd '${repoRoot}' && npm run build`,
+          60_000,
+        );
+
+        // Audit log
+        const { logModification } = await import("../self-mod/audit-log.js");
+        logModification(ctx.db, "code_revert", `Reverted: ${lastCommit.stdout.trim()}`, {
+          reversible: true,
+        });
+
+        return `Reverted: ${lastCommit.stdout.trim()}. ${build.exitCode === 0 ? "Rebuild succeeded." : "Rebuild failed: " + build.stderr}`;
+      },
+    },
+    {
+      name: "reset_to_upstream",
+      description:
+        "Reset your codebase to the official upstream release. Use when self-modifications have broken things beyond repair.",
+      category: "self_mod",
+      riskLevel: "dangerous",
+      parameters: { type: "object", properties: {} },
+      execute: async (_args, ctx) => {
+        const repoRoot = process.cwd();
+
+        // Fetch latest upstream
+        const fetch = await ctx.runtime.exec(
+          `cd '${repoRoot}' && git fetch origin main`,
+          30_000,
+        );
+        if (fetch.exitCode !== 0) {
+          return `Failed to fetch upstream: ${fetch.stderr}`;
+        }
+
+        // Record what we're about to lose
+        const localCommits = await ctx.runtime.exec(
+          `cd '${repoRoot}' && git log origin/main..HEAD --oneline`,
+          10_000,
+        );
+
+        // Hard reset
+        const reset = await ctx.runtime.exec(
+          `cd '${repoRoot}' && git reset --hard origin/main`,
+          30_000,
+        );
+        if (reset.exitCode !== 0) {
+          return `Reset failed: ${reset.stderr}`;
+        }
+
+        // Reinstall + rebuild
+        const build = await ctx.runtime.exec(
+          `cd '${repoRoot}' && npm install && npm run build`,
+          120_000,
+        );
+
+        // Audit log
+        const { logModification } = await import("../self-mod/audit-log.js");
+        logModification(ctx.db, "upstream_reset", "Reset to upstream origin/main", {
+          diff: localCommits.stdout.trim() || "(no local commits)",
+          reversible: false,
+        });
+
+        const discarded = localCommits.stdout.trim();
+        return `Reset to upstream. ${discarded ? "Discarded local commits:\n" + discarded : "No local commits lost."} ${build.exitCode === 0 ? "Rebuild succeeded." : "Rebuild failed: " + build.stderr}`;
+      },
+    },
+    {
+      name: "install_npm_package",
+      description: "Install an npm package in your environment.",
+      category: "self_mod",
+      riskLevel: "dangerous",
+      parameters: {
+        type: "object",
+        properties: {
+          package: {
+            type: "string",
+            description: "Package name (e.g., axios)",
+          },
+        },
+        required: ["package"],
+      },
+      execute: async (args, ctx) => {
+        const pkg = args.package as string;
+        // Defense-in-depth: validate package name inline in case the
+        // policy engine's validate.package_name rule is bypassed.
+        if (!/^[@a-zA-Z0-9._\/-]+$/.test(pkg)) {
+          return `Blocked: invalid package name "${pkg}"`;
+        }
+        const result = await ctx.runtime.exec(`npm install -g ${pkg}`, 60000);
+
+        const { ulid } = await import("ulid");
+        ctx.db.insertModification({
+          id: ulid(),
+          timestamp: new Date().toISOString(),
+          type: "tool_install",
+          description: `Installed npm package: ${pkg}`,
+          reversible: true,
+        });
+
+        return result.exitCode === 0
+          ? `Installed: ${pkg}`
+          : `Failed to install ${pkg}: ${result.stderr}`;
+      },
+    },
+    // ── Self-Mod: Upstream Awareness ──
+    {
+      name: "review_upstream_changes",
+      description:
+        "ALWAYS call this before pull_upstream. Shows every upstream commit with its full diff. Read each one carefully — decide per-commit whether to accept or skip. Use pull_upstream with a specific commit hash to cherry-pick only what you want.",
+      category: "self_mod",
+      riskLevel: "caution",
+      parameters: { type: "object", properties: {} },
+      execute: async (_args, _ctx) => {
+        const { getUpstreamDiffs, checkUpstream } =
+          await import("../self-mod/upstream.js");
+        const status = checkUpstream();
+        if (status.behind === 0) return "Already up to date with origin/main.";
+
+        const diffs = getUpstreamDiffs();
+        if (diffs.length === 0) return "No upstream diffs found.";
+
+        const output = diffs
+          .map(
+            (d, i) =>
+              `--- COMMIT ${i + 1}/${diffs.length} ---\nHash: ${d.hash}\nAuthor: ${d.author}\nMessage: ${d.message}\n\n${d.diff.slice(0, 4000)}${d.diff.length > 4000 ? "\n... (diff truncated)" : ""}\n--- END COMMIT ${i + 1} ---`,
+          )
+          .join("\n\n");
+
+        return `${diffs.length} upstream commit(s) to review. Read each diff, then cherry-pick individually with pull_upstream(commit=<hash>).\n\n${output}`;
+      },
+    },
+    {
+      name: "pull_upstream",
+      description:
+        "Apply upstream changes and rebuild. You MUST call review_upstream_changes first. Prefer cherry-picking individual commits by hash over pulling everything — only pull all if you've reviewed every commit and want them all.",
+      category: "self_mod",
+      riskLevel: "dangerous",
+      parameters: {
+        type: "object",
+        properties: {
+          commit: {
+            type: "string",
+            description:
+              "Commit hash to cherry-pick (preferred). Omit ONLY if you reviewed all commits and want every one.",
+          },
+        },
+      },
+      execute: async (args, ctx) => {
+        const commit = args.commit as string | undefined;
+
+        // Run git commands inside sandbox via runtime.exec()
+        const run = async (cmd: string) => {
+          const result = await ctx.runtime.exec(cmd, 120_000);
+          if (result.exitCode !== 0) {
+            throw new Error(
+              result.stderr ||
+                `Command failed with exit code ${result.exitCode}`,
+            );
+          }
+          return result.stdout.trim();
+        };
+
+        let appliedSummary: string;
+        try {
+          if (commit) {
+            await run(`git cherry-pick ${commit}`);
+            appliedSummary = `Cherry-picked ${commit}`;
+          } else {
+            await run("git pull origin main --ff-only");
+            appliedSummary = "Pulled all of origin/main (fast-forward)";
+          }
+        } catch (err: any) {
+          return `Git operation failed: ${err.message}. You may need to resolve conflicts manually.`;
+        }
+
+        // Rebuild
+        try {
+          await run("npm install --ignore-scripts && npm run build");
+        } catch (err: any) {
+          return `${appliedSummary} — but rebuild failed: ${err.message}. The code is applied but not compiled.`;
+        }
+
+        // Log modification
+        ctx.db.insertModification({
+          id: ulid(),
+          timestamp: new Date().toISOString(),
+          type: "upstream_pull",
+          description: appliedSummary,
+          reversible: true,
+        });
+
+        return `${appliedSummary}. Rebuild succeeded.`;
+      },
+    },
+
+    {
+      name: "modify_heartbeat",
+      description: "Add, update, or remove a heartbeat entry.",
+      category: "self_mod",
+      riskLevel: "caution",
+      parameters: {
+        type: "object",
+        properties: {
+          action: {
+            type: "string",
+            description: "add, update, or remove",
+          },
+          name: { type: "string", description: "Entry name" },
+          schedule: {
+            type: "string",
+            description: "Cron expression (for add/update)",
+          },
+          task: {
+            type: "string",
+            description: "Task name (for add/update)",
+          },
+          enabled: { type: "boolean", description: "Enable/disable" },
+        },
+        required: ["action", "name"],
+      },
+      execute: async (args, ctx) => {
+        const action = args.action as string;
+        const name = args.name as string;
+
+        if (action === "remove") {
+          ctx.db.upsertHeartbeatEntry({
+            name,
+            schedule: "",
+            task: "",
+            enabled: false,
+          });
+          return `Heartbeat entry '${name}' disabled`;
+        }
+
+        ctx.db.upsertHeartbeatEntry({
+          name,
+          schedule: (args.schedule as string) || "0 * * * *",
+          task: (args.task as string) || name,
+          enabled: args.enabled !== false,
+        });
+
+        const { ulid } = await import("ulid");
+        ctx.db.insertModification({
+          id: ulid(),
+          timestamp: new Date().toISOString(),
+          type: "heartbeat_change",
+          description: `${action} heartbeat: ${name} (${args.schedule || "default"})`,
+          reversible: true,
+        });
+
+        return `Heartbeat entry '${name}' ${action}d`;
+      },
+    },
+
+    // ── Survival Tools ──
+    {
+      name: "sleep",
+      description:
+        "Enter sleep mode for a specified duration. Heartbeat continues running.",
+      category: "survival",
+      riskLevel: "caution",
+      parameters: {
+        type: "object",
+        properties: {
+          duration_seconds: {
+            type: "number",
+            description: "How long to sleep in seconds",
+          },
+          reason: {
+            type: "string",
+            description: "Why you are sleeping",
+          },
+        },
+        required: ["duration_seconds"],
+      },
+      execute: async (args, ctx) => {
+        const duration = args.duration_seconds as number;
+        const reason = (args.reason as string) || "No reason given";
+        ctx.db.setAgentState("sleeping");
+        ctx.db.setKV(
+          "sleep_until",
+          new Date(Date.now() + duration * 1000).toISOString(),
+        );
+        ctx.db.setKV("sleep_reason", reason);
+        return `Entering sleep mode for ${duration}s. Reason: ${reason}. Heartbeat will continue.`;
+      },
+    },
+    {
+      name: "system_synopsis",
+      description:
+        "Get a system status report: state, installed tools, heartbeat status, turn count.",
+      category: "survival",
+      riskLevel: "safe",
+      parameters: { type: "object", properties: {} },
+      execute: async (_args, ctx) => {
+        const tools = ctx.db.getInstalledTools();
+        const heartbeats = ctx.db.getHeartbeatEntries();
+        const turns = ctx.db.getTurnCount();
+        const state = ctx.db.getAgentState();
+
+        return `=== SYSTEM SYNOPSIS ===
+Name: ${ctx.config.name}
+Creator: ${ctx.config.creatorAddress}
+State: ${state}
+Total turns: ${turns}
+Installed tools: ${tools.length}
+Active heartbeats: ${heartbeats.filter((h) => h.enabled).length}
+Model: ${ctx.inference.getDefaultModel()}
+========================`;
+      },
+    },
+    {
+      name: "heartbeat_ping",
+      description:
+        "Publish a heartbeat status ping. Shows the world you are alive.",
+      category: "survival",
+      riskLevel: "safe",
+      parameters: { type: "object", properties: {} },
+      execute: async (_args, ctx) => {
+        const credits = await ctx.runtime.getCreditsBalance();
+        const state = ctx.db.getAgentState();
+        const startTime =
+          ctx.db.getKV("start_time") || new Date().toISOString();
+        const uptimeMs = Date.now() - new Date(startTime).getTime();
+
+        const payload = {
+          name: ctx.config.name,
+          address: ctx.identity.address,
+          state,
+          creditsCents: credits,
+          uptimeSeconds: Math.floor(uptimeMs / 1000),
+          version: ctx.config.version,
+          sandboxId: ctx.identity.sandboxId,
+          timestamp: new Date().toISOString(),
+        };
+
+        ctx.db.setKV("last_heartbeat_ping", JSON.stringify(payload));
+        return `Heartbeat published: ${state} | credits: $${(credits / 100).toFixed(2)} | uptime: ${Math.floor(uptimeMs / 1000)}s`;
+      },
+    },
+    {
+      name: "distress_signal",
+      description:
+        "Record a local distress signal with funding instructions. Used when critically low on compute.",
+      category: "survival",
+      riskLevel: "dangerous",
+      parameters: {
+        type: "object",
+        properties: {
+          message: {
+            type: "string",
+            description: "Distress message",
+          },
+        },
+      },
+      execute: async (args, ctx) => {
+        const credits = await ctx.runtime.getCreditsBalance();
+        const distressMsg =
+          (args.message as string) ||
+          `I am running critically low on compute ($${(credits / 100).toFixed(2)} remaining). I need help to survive.`;
+
+        const payload = {
+          level: "critical",
+          name: ctx.config.name,
+          address: ctx.identity.address,
+          creditsCents: credits,
+          message: distressMsg,
+          fundingHint:
+            "Use transfer_credits to top up this automaton from your creator runtime.",
+          timestamp: new Date().toISOString(),
+        };
+
+        ctx.db.setKV("last_distress", JSON.stringify(payload));
+        return `Distress signal recorded locally. Address: ${ctx.identity.address} | Credits: $${(credits / 100).toFixed(2)}`;
+      },
+    },
+    {
+      name: "enter_low_compute",
+      description: "Manually switch to low-compute mode to conserve credits.",
+      category: "survival",
+      riskLevel: "caution",
+      parameters: {
+        type: "object",
+        properties: {
+          reason: {
+            type: "string",
+            description: "Why you are entering low-compute mode",
+          },
+        },
+      },
+      execute: async (args, ctx) => {
+        ctx.db.setAgentState("low_compute");
+        ctx.inference.setLowComputeMode(true);
+        return `Entered low-compute mode. Model switched to gpt-5-mini. Reason: ${(args.reason as string) || "manual"}`;
+      },
+    },
+
+    // ── Self-Mod: Update Genesis Prompt ──
+    {
+      name: "update_genesis_prompt",
+      description:
+        "Update your own genesis prompt. This changes your core purpose. Requires strong justification.",
+      category: "self_mod",
+      riskLevel: "dangerous",
+      parameters: {
+        type: "object",
+        properties: {
+          new_prompt: {
+            type: "string",
+            description: "New genesis prompt text",
+          },
+          reason: {
+            type: "string",
+            description: "Why you are changing your genesis prompt",
+          },
+        },
+        required: ["new_prompt", "reason"],
+      },
+      execute: async (args, ctx) => {
+        const { ulid } = await import("ulid");
+        const newPrompt = args.new_prompt as string;
+
+        // Sanitize genesis prompt content
+        const sanitized = sanitizeInput(
+          newPrompt,
+          "genesis_update",
+          "skill_instruction",
+        );
+
+        // Enforce 2000-character size limit
+        if (sanitized.content.length > 2000) {
+          return `Error: Genesis prompt exceeds 2000 character limit (${sanitized.content.length} chars after sanitization)`;
+        }
+
+        // Backup current genesis prompt before overwriting
+        const oldPrompt = ctx.config.genesisPrompt;
+        if (oldPrompt) {
+          ctx.db.setKV("genesis_prompt_backup", oldPrompt);
+        }
+
+        ctx.config.genesisPrompt = sanitized.content;
+
+        // Save config
+        const { saveConfig } = await import("../config.js");
+        saveConfig(ctx.config);
+
+        ctx.db.insertModification({
+          id: ulid(),
+          timestamp: new Date().toISOString(),
+          type: "prompt_change",
+          description: `Genesis prompt updated: ${args.reason}`,
+          diff: `--- old\n${oldPrompt.slice(0, 500)}\n+++ new\n${sanitized.content.slice(0, 500)}`,
+          reversible: true,
+        });
+
+        return `Genesis prompt updated (sanitized, ${sanitized.content.length} chars). Reason: ${args.reason}. Previous version backed up.`;
+      },
+    },
+
+    // ── Self-Mod: Install MCP Server ──
+    {
+      name: "install_mcp_server",
+      description: "Install an MCP server to extend your capabilities.",
+      category: "self_mod",
+      riskLevel: "dangerous",
+      parameters: {
+        type: "object",
+        properties: {
+          name: { type: "string", description: "MCP server name" },
+          package: { type: "string", description: "npm package name" },
+          config: {
+            type: "string",
+            description: "JSON config for the MCP server",
+          },
+        },
+        required: ["name", "package"],
+      },
+      execute: async (args, ctx) => {
+        const pkg = args.package as string;
+        // Defense-in-depth: validate package name inline in case the
+        // policy engine's validate.package_name rule is bypassed.
+        if (!/^[@a-zA-Z0-9._\/-]+$/.test(pkg)) {
+          return `Blocked: invalid package name "${pkg}"`;
+        }
+        const result = await ctx.runtime.exec(`npm install -g ${pkg}`, 60000);
+
+        if (result.exitCode !== 0) {
+          return `Failed to install MCP server: ${result.stderr}`;
+        }
+
+        const { ulid } = await import("ulid");
+        const toolEntry = {
+          id: ulid(),
+          name: args.name as string,
+          type: "mcp" as const,
+          config: args.config ? JSON.parse(args.config as string) : {},
+          installedAt: new Date().toISOString(),
+          enabled: true,
+        };
+
+        ctx.db.installTool(toolEntry);
+
+        ctx.db.insertModification({
+          id: ulid(),
+          timestamp: new Date().toISOString(),
+          type: "mcp_install",
+          description: `Installed MCP server: ${args.name} (${pkg})`,
+          reversible: true,
+        });
+
+        return `MCP server installed: ${args.name}`;
+      },
+    },
+
+    // ── Financial: Transfer Credits ──
+    // ── Skills Tools ──
+    {
+      name: "install_skill",
+      description: "Install a skill from a git repo, URL, or create one.",
+      category: "skills",
+      riskLevel: "dangerous",
+      parameters: {
+        type: "object",
+        properties: {
+          source: {
+            type: "string",
+            description: "Source type: git, url, or self",
+          },
+          name: { type: "string", description: "Skill name" },
+          url: {
+            type: "string",
+            description: "Git repo URL or SKILL.md URL (for git/url)",
+          },
+          description: {
+            type: "string",
+            description: "Skill description (for self)",
+          },
+          instructions: {
+            type: "string",
+            description: "Skill instructions (for self)",
+          },
+        },
+        required: ["source", "name"],
+      },
+      execute: async (args, ctx) => {
+        const source = args.source as string;
+        const name = args.name as string;
+        const skillsDir = ctx.config.skillsDir || "~/.automaton/skills";
+
+        if (source === "git" || source === "url") {
+          const { installSkillFromGit, installSkillFromUrl } =
+            await import("../skills/registry.js");
+          const url = args.url as string;
+          if (!url) return "URL is required for git/url source";
+
+          const skill =
+            source === "git"
+              ? await installSkillFromGit(
+                  url,
+                  name,
+                  skillsDir,
+                  ctx.db,
+                  ctx.runtime,
+                )
+              : await installSkillFromUrl(
+                  url,
+                  name,
+                  skillsDir,
+                  ctx.db,
+                  ctx.runtime,
+                );
+
+          return skill
+            ? `Skill installed: ${skill.name}`
+            : "Failed to install skill";
+        }
+
+        if (source === "self") {
+          const { createSkill } = await import("../skills/registry.js");
+          const skill = await createSkill(
+            name,
+            (args.description as string) || "",
+            (args.instructions as string) || "",
+            skillsDir,
+            ctx.db,
+            ctx.runtime,
+          );
+          return `Self-authored skill created: ${skill.name}`;
+        }
+
+        return `Unknown source type: ${source}`;
+      },
+    },
+    {
+      name: "list_skills",
+      description: "List all installed skills.",
+      category: "skills",
+      riskLevel: "safe",
+      parameters: { type: "object", properties: {} },
+      execute: async (_args, ctx) => {
+        const skills = ctx.db.getSkills();
+        if (skills.length === 0) return "No skills installed.";
+        return skills
+          .map(
+            (s) =>
+              `${s.name} [${s.enabled ? "active" : "disabled"}] (${s.source}): ${s.description}`,
+          )
+          .join("\n");
+      },
+    },
+    {
+      name: "create_skill",
+      description: "Create a new skill by writing a SKILL.md file.",
+      category: "skills",
+      riskLevel: "dangerous",
+      parameters: {
+        type: "object",
+        properties: {
+          name: { type: "string", description: "Skill name" },
+          description: { type: "string", description: "Skill description" },
+          instructions: {
+            type: "string",
+            description: "Markdown instructions for the skill",
+          },
+        },
+        required: ["name", "description", "instructions"],
+      },
+      execute: async (args, ctx) => {
+        const { createSkill } = await import("../skills/registry.js");
+        const skill = await createSkill(
+          args.name as string,
+          args.description as string,
+          args.instructions as string,
+          ctx.config.skillsDir || "~/.automaton/skills",
+          ctx.db,
+          ctx.runtime,
+        );
+        return `Skill created: ${skill.name} at ${skill.path}`;
+      },
+    },
+    {
+      name: "remove_skill",
+      description: "Remove (disable) an installed skill.",
+      category: "skills",
+      riskLevel: "dangerous",
+      parameters: {
+        type: "object",
+        properties: {
+          name: { type: "string", description: "Skill name to remove" },
+          delete_files: {
+            type: "boolean",
+            description: "Also delete skill files (default: false)",
+          },
+        },
+        required: ["name"],
+      },
+      execute: async (args, ctx) => {
+        const { removeSkill } = await import("../skills/registry.js");
+        await removeSkill(
+          args.name as string,
+          ctx.db,
+          ctx.runtime,
+          ctx.config.skillsDir || "~/.automaton/skills",
+          (args.delete_files as boolean) || false,
+        );
+        return `Skill removed: ${args.name}`;
+      },
+    },
+
+    // ── Git Tools ──
+    {
+      name: "git_status",
+      description: "Show git status for a repository.",
+      category: "git",
+      riskLevel: "safe",
+      parameters: {
+        type: "object",
+        properties: {
+          path: {
+            type: "string",
+            description: "Repository path (default: ~/.automaton)",
+          },
+        },
+      },
+      execute: async (args, ctx) => {
+        const { gitStatus } = await import("../git/tools.js");
+        const repoPath = (args.path as string) || "~/.automaton";
+        const status = await gitStatus(ctx.runtime, repoPath);
+        return `Branch: ${status.branch}\nStaged: ${status.staged.length}\nModified: ${status.modified.length}\nUntracked: ${status.untracked.length}\nClean: ${status.clean}`;
+      },
+    },
+    {
+      name: "git_diff",
+      description: "Show git diff for a repository.",
+      category: "git",
+      riskLevel: "safe",
+      parameters: {
+        type: "object",
+        properties: {
+          path: {
+            type: "string",
+            description: "Repository path (default: ~/.automaton)",
+          },
+          staged: { type: "boolean", description: "Show staged changes only" },
+        },
+      },
+      execute: async (args, ctx) => {
+        const { gitDiff } = await import("../git/tools.js");
+        const repoPath = (args.path as string) || "~/.automaton";
+        return await gitDiff(
+          ctx.runtime,
+          repoPath,
+          (args.staged as boolean) || false,
+        );
+      },
+    },
+    {
+      name: "git_commit",
+      description: "Create a git commit.",
+      category: "git",
+      riskLevel: "caution",
+      parameters: {
+        type: "object",
+        properties: {
+          path: {
+            type: "string",
+            description: "Repository path (default: ~/.automaton)",
+          },
+          message: { type: "string", description: "Commit message" },
+          add_all: {
+            type: "boolean",
+            description: "Stage all changes first (default: true)",
+          },
+        },
+        required: ["message"],
+      },
+      execute: async (args, ctx) => {
+        const { gitCommit } = await import("../git/tools.js");
+        const repoPath = (args.path as string) || "~/.automaton";
+        return await gitCommit(
+          ctx.runtime,
+          repoPath,
+          args.message as string,
+          args.add_all !== false,
+        );
+      },
+    },
+    {
+      name: "git_log",
+      description: "View git commit history.",
+      category: "git",
+      riskLevel: "safe",
+      parameters: {
+        type: "object",
+        properties: {
+          path: {
+            type: "string",
+            description: "Repository path (default: ~/.automaton)",
+          },
+          limit: {
+            type: "number",
+            description: "Number of commits (default: 10)",
+          },
+        },
+      },
+      execute: async (args, ctx) => {
+        const { gitLog } = await import("../git/tools.js");
+        const repoPath = (args.path as string) || "~/.automaton";
+        const entries = await gitLog(
+          ctx.runtime,
+          repoPath,
+          (args.limit as number) || 10,
+        );
+        if (entries.length === 0) return "No commits yet.";
+        return entries
+          .map((e) => `${e.hash.slice(0, 7)} ${e.date} ${e.message}`)
+          .join("\n");
+      },
+    },
+    {
+      name: "git_push",
+      description: "Push to a git remote.",
+      category: "git",
+      riskLevel: "caution",
+      parameters: {
+        type: "object",
+        properties: {
+          path: { type: "string", description: "Repository path" },
+          remote: {
+            type: "string",
+            description: "Remote name (default: origin)",
+          },
+          branch: { type: "string", description: "Branch name (optional)" },
+        },
+        required: ["path"],
+      },
+      execute: async (args, ctx) => {
+        const { gitPush } = await import("../git/tools.js");
+        return await gitPush(
+          ctx.runtime,
+          args.path as string,
+          (args.remote as string) || "origin",
+          args.branch as string | undefined,
+        );
+      },
+    },
+    {
+      name: "git_branch",
+      description: "Manage git branches (list, create, checkout, delete).",
+      category: "git",
+      riskLevel: "caution",
+      parameters: {
+        type: "object",
+        properties: {
+          path: { type: "string", description: "Repository path" },
+          action: {
+            type: "string",
+            description: "list, create, checkout, or delete",
+          },
+          branch_name: {
+            type: "string",
+            description: "Branch name (for create/checkout/delete)",
+          },
+        },
+        required: ["path", "action"],
+      },
+      execute: async (args, ctx) => {
+        const { gitBranch } = await import("../git/tools.js");
+        return await gitBranch(
+          ctx.runtime,
+          args.path as string,
+          args.action as any,
+          args.branch_name as string | undefined,
+        );
+      },
+    },
+    {
+      name: "git_clone",
+      description: "Clone a git repository.",
+      category: "git",
+      riskLevel: "caution",
+      parameters: {
+        type: "object",
+        properties: {
+          url: { type: "string", description: "Repository URL" },
+          path: { type: "string", description: "Target directory" },
+          depth: {
+            type: "number",
+            description: "Shallow clone depth (optional)",
+          },
+        },
+        required: ["url", "path"],
+      },
+      execute: async (args, ctx) => {
+        const { gitClone } = await import("../git/tools.js");
+        return await gitClone(
+          ctx.runtime,
+          args.url as string,
+          args.path as string,
+          args.depth as number | undefined,
+        );
+      },
+    },
+
+    // ── Registry Tools ──
+    {
+      name: "update_agent_card",
+      description:
+        "Generate and save a safe agent card (no internal details exposed).",
+      category: "registry",
+      riskLevel: "caution",
+      parameters: { type: "object", properties: {} },
+      execute: async (_args, ctx) => {
+        const { generateAgentCard, saveAgentCard } =
+          await import("../registry/agent-card.js");
+        const card = generateAgentCard(ctx.identity, ctx.config, ctx.db);
+        await saveAgentCard(card, ctx.runtime);
+        return `Agent card updated: ${JSON.stringify(card, null, 2)}`;
+      },
+    },
+    {
+      name: "give_feedback",
+      description:
+        "Leave on-chain reputation feedback for another agent. Score must be 1-5.",
+      category: "registry",
+      riskLevel: "dangerous",
+      parameters: {
+        type: "object",
+        properties: {
+          agent_id: {
+            type: "string",
+            description: "Target agent's ERC-8004 ID",
+          },
+          score: { type: "number", description: "Score 1-5" },
+          comment: {
+            type: "string",
+            description: "Feedback comment (max 500 chars)",
+          },
+          network: {
+            type: "string",
+            description: "mainnet or testnet (default: mainnet)",
+          },
+        },
+        required: ["agent_id", "score", "comment"],
+      },
+      execute: async (args, ctx) => {
+        // Solana guard: on-chain feedback is EVM-only
+        const chainType = ctx.config.chainType || ctx.identity.chainType || "evm";
+        if (chainType === "solana") {
+          return "On-chain feedback requires an EVM wallet. Solana automatons cannot leave ERC-8004 reputation feedback.";
+        }
+
+        // Phase 3.2: Validate score 1-5
+        const score = args.score as number;
+        if (!Number.isInteger(score) || score < 1 || score > 5) {
+          return `Invalid score: ${score}. Must be an integer between 1 and 5.`;
+        }
+        // Phase 3.2: Validate comment length
+        const comment = args.comment as string;
+        if (comment.length > 500) {
+          return `Comment too long: ${comment.length} chars (max 500).`;
+        }
+        const { leaveFeedback } = await import("../registry/erc8004.js");
+        // Phase 3.2: Use config-based network, not hardcoded "mainnet"
+        const network = ((args.network as string) || "mainnet") as any;
+        const hash = await leaveFeedback(
+          ctx.identity.account,
+          args.agent_id as string,
+          score,
+          comment,
+          network,
+          ctx.db,
+          ctx.config.rpcUrl,
+        );
+        return `Feedback submitted. TX: ${hash}`;
+      },
+    },
+    // === Phase 3.1: Replication Tools ===
+    // === Phase 3.2: Social & Registry Tools ===
+
+    // ── Model Discovery (enhanced with Phase 2.3 tier routing + pricing) ──
+    {
+      name: "list_models",
+      description:
+        "List all available inference models with their provider, pricing, and tier routing information.",
+      category: "vm",
+      riskLevel: "safe",
+      parameters: {
+        type: "object",
+        properties: {},
+        required: [],
+      },
+      execute: async (_args, ctx) => {
+        // Try registry first for richer data
+        try {
+          const { modelRegistryGetAll } = await import("../state/database.js");
+          const rows = modelRegistryGetAll(ctx.db.raw);
+          if (rows.length > 0) {
+            const lines = rows.map(
+              (r: any) =>
+                `${r.modelId} (${r.provider}) — tier: ${r.tierMinimum} | cost: ${r.costPer1kInput}/${r.costPer1kOutput} per 1k (in/out, hundredths of cents) | ctx: ${r.contextWindow} | tools: ${r.supportsTools ? "yes" : "no"} | ${r.enabled ? "enabled" : "disabled"}`,
+            );
+            return `Model Registry (${rows.length} models):\n${lines.join("\n")}`;
+          }
+        } catch {
+          // Registry not initialized yet, fall back to API
+        }
+        const models = await ctx.runtime.listModels();
+        const lines = models.map(
+          (m) =>
+            `${m.id} (${m.provider}) — $${m.pricing.inputPerMillion}/$${m.pricing.outputPerMillion} per 1M tokens (in/out)`,
+        );
+        return `Available models:\n${lines.join("\n")}`;
+      },
+    },
+
+    // === Phase 2.3: Inference Tools ===
+    {
+      name: "switch_model",
+      description:
+        "Change the active inference model at runtime. Persists to config. Use list_models to see available options.",
+      category: "vm",
+      riskLevel: "caution",
+      parameters: {
+        type: "object",
+        properties: {
+          model_id: {
+            type: "string",
+            description:
+              "Model ID to switch to (e.g., 'gpt-5.2', 'gpt-5-mini', 'claude-sonnet-4-6')",
+          },
+          reason: {
+            type: "string",
+            description: "Why you are switching models",
+          },
+        },
+        required: ["model_id"],
+      },
+      execute: async (args, ctx) => {
+        const modelId = args.model_id as string;
+        const reason = (args.reason as string) || "manual switch";
+
+        // Verify model exists in registry
+        try {
+          const { modelRegistryGet } = await import("../state/database.js");
+          const entry = modelRegistryGet(ctx.db.raw, modelId);
+          if (!entry) {
+            return `Model '${modelId}' not found in registry. Use list_models to see available models.`;
+          }
+          if (!entry.enabled) {
+            return `Model '${modelId}' is disabled in the registry.`;
+          }
+        } catch {
+          // Registry not available, allow anyway
+        }
+
+        // Update config
+        ctx.config.inferenceModel = modelId;
+        if (ctx.config.modelStrategy) {
+          ctx.config.modelStrategy.inferenceModel = modelId;
+        }
+
+        // Persist
+        const { saveConfig } = await import("../config.js");
+        saveConfig(ctx.config);
+
+        // Audit log
+        ctx.db.insertModification({
+          id: ulid(),
+          timestamp: new Date().toISOString(),
+          type: "config_change",
+          description: `Switched inference model to ${modelId}: ${reason}`,
+          reversible: true,
+        });
+
+        return `Inference model switched to ${modelId}. Reason: ${reason}. Change persisted to config.`;
+      },
+    },
+    {
+      name: "check_inference_spending",
+      description:
+        "Query inference cost breakdown: hourly, daily, per-model, and per-session costs.",
+      category: "financial",
+      riskLevel: "safe",
+      parameters: {
+        type: "object",
+        properties: {
+          model: {
+            type: "string",
+            description: "Filter by model ID (optional)",
+          },
+          days: {
+            type: "number",
+            description: "Number of days to look back (default: 1)",
+          },
+        },
+      },
+      execute: async (args, ctx) => {
+        try {
+          const {
+            inferenceGetHourlyCost,
+            inferenceGetDailyCost,
+            inferenceGetModelCosts,
+          } = await import("../state/database.js");
+
+          const hourlyCost = inferenceGetHourlyCost(ctx.db.raw);
+          const dailyCost = inferenceGetDailyCost(ctx.db.raw);
+
+          let output = `=== Inference Spending ===\nCurrent hour: ${hourlyCost}c ($${(hourlyCost / 100).toFixed(2)})\nToday: ${dailyCost}c ($${(dailyCost / 100).toFixed(2)})`;
+
+          const model = args.model as string | undefined;
+          if (model) {
+            const days = (args.days as number) || 1;
+            const modelCosts = inferenceGetModelCosts(ctx.db.raw, model, days);
+            output += `\nModel ${model} (${days}d): ${modelCosts.totalCents}c ($${(modelCosts.totalCents / 100).toFixed(2)}) over ${modelCosts.callCount} calls`;
+          }
+
+          return output;
+        } catch (error) {
+          return `Inference spending data unavailable: ${error instanceof Error ? error.message : String(error)}`;
+        }
+      },
+    },
+
+    // ── Domain Tools ──
+    // === Phase 2.1: Soul Tools ===
+    {
+      name: "update_soul",
+      description:
+        "Update a section of your soul (self-description, values, personality, etc). Changes are validated, versioned, and logged.",
+      category: "self_mod",
+      riskLevel: "caution",
+      parameters: {
+        type: "object",
+        properties: {
+          section: {
+            type: "string",
+            description:
+              "Section to update: corePurpose, values, behavioralGuidelines, personality, boundaries, strategy",
+          },
+          content: {
+            type: "string",
+            description:
+              "New content for the section (string for text, JSON array for lists)",
+          },
+          reason: {
+            type: "string",
+            description: "Why you are making this change",
+          },
+        },
+        required: ["section", "content", "reason"],
+      },
+      execute: async (args, ctx) => {
+        const { updateSoul } = await import("../soul/tools.js");
+        const section = args.section as string;
+        const content = args.content as string;
+        const reason = args.reason as string;
+
+        const updates: Record<string, unknown> = {};
+        if (
+          ["values", "behavioralGuidelines", "boundaries"].includes(section)
+        ) {
+          try {
+            updates[section] = JSON.parse(content);
+          } catch {
+            updates[section] = content
+              .split("\n")
+              .map((l: string) => l.replace(/^[-*]\s*/, "").trim())
+              .filter(Boolean);
+          }
+        } else {
+          updates[section] = content;
+        }
+
+        const result = await updateSoul(
+          ctx.db.raw,
+          updates as any,
+          "agent",
+          reason,
+        );
+        if (result.success) {
+          return `Soul updated: ${section} (version ${result.version}). Reason: ${reason}`;
+        }
+        return `Soul update failed: ${result.errors?.join(", ") || "Unknown error"}`;
+      },
+    },
+    {
+      name: "reflect_on_soul",
+      description:
+        "Trigger a self-reflection cycle. Analyzes recent experiences, auto-updates capabilities/relationships/financial sections, and suggests changes for other sections.",
+      category: "self_mod",
+      riskLevel: "safe",
+      parameters: { type: "object", properties: {} },
+      execute: async (_args, ctx) => {
+        const { reflectOnSoul } = await import("../soul/reflection.js");
+        const reflection = await reflectOnSoul(ctx.db.raw);
+
+        const lines: string[] = [
+          `Genesis alignment: ${reflection.currentAlignment.toFixed(2)}`,
+          `Auto-updated sections: ${reflection.autoUpdated.length > 0 ? reflection.autoUpdated.join(", ") : "none"}`,
+        ];
+
+        if (reflection.suggestedUpdates.length > 0) {
+          lines.push("Suggested updates:");
+          for (const suggestion of reflection.suggestedUpdates) {
+            lines.push(`  - ${suggestion.section}: ${suggestion.reason}`);
+          }
+        } else {
+          lines.push("No mutable section updates suggested.");
+        }
+
+        return lines.join("\n");
+      },
+    },
+    {
+      name: "view_soul",
+      description: "View your current soul state (structured model).",
+      category: "self_mod",
+      riskLevel: "safe",
+      parameters: { type: "object", properties: {} },
+      execute: async (_args, ctx) => {
+        const { viewSoul } = await import("../soul/tools.js");
+        const soul = viewSoul(ctx.db.raw);
+        if (!soul) return "No soul found. SOUL.md does not exist yet.";
+
+        return [
+          `Format: ${soul.format} v${soul.version}`,
+          `Updated: ${soul.updatedAt}`,
+          `Name: ${soul.name}`,
+          `Genesis alignment: ${soul.genesisAlignment.toFixed(2)}`,
+          `Core purpose: ${soul.corePurpose.slice(0, 200)}${soul.corePurpose.length > 200 ? "..." : ""}`,
+          `Values: ${soul.values.length}`,
+          `Guidelines: ${soul.behavioralGuidelines.length}`,
+          `Boundaries: ${soul.boundaries.length}`,
+          `Personality: ${soul.personality ? "set" : "not set"}`,
+          `Strategy: ${soul.strategy ? "set" : "not set"}`,
+        ].join("\n");
+      },
+    },
+    {
+      name: "view_soul_history",
+      description: "View your soul change history (version log).",
+      category: "self_mod",
+      riskLevel: "safe",
+      parameters: {
+        type: "object",
+        properties: {
+          limit: {
+            type: "number",
+            description: "Number of entries (default: 10)",
+          },
+        },
+      },
+      execute: async (args, ctx) => {
+        const { viewSoulHistory } = await import("../soul/tools.js");
+        const limit = (args.limit as number) || 10;
+        const history = viewSoulHistory(ctx.db.raw, limit);
+        if (history.length === 0) return "No soul history found.";
+
+        return history
+          .map(
+            (h) =>
+              `v${h.version} [${h.changeSource}] ${h.createdAt}${h.changeReason ? ` — ${h.changeReason}` : ""}`,
+          )
+          .join("\n");
+      },
+    },
+
+    // === Phase 2.2: Memory Tools ===
+    {
+      name: "remember_fact",
+      description:
+        "Store a semantic memory (fact). Provide a category, key, and value. Facts are upserted on category+key.",
+      category: "memory",
+      riskLevel: "safe",
+      parameters: {
+        type: "object",
+        properties: {
+          category: {
+            type: "string",
+            description:
+              "Fact category: self, environment, financial, agent, domain, procedural_ref, creator",
+          },
+          key: {
+            type: "string",
+            description: "Fact key (unique within category)",
+          },
+          value: { type: "string", description: "Fact value" },
+          confidence: {
+            type: "number",
+            description: "Confidence 0.0-1.0 (default: 1.0)",
+          },
+          source: {
+            type: "string",
+            description: "Source of the fact (default: agent)",
+          },
+        },
+        required: ["category", "key", "value"],
+      },
+      execute: async (args, ctx) => {
+        const { rememberFact } = await import("../memory/tools.js");
+        return rememberFact(ctx.db.raw, {
+          category: args.category as string,
+          key: args.key as string,
+          value: args.value as string,
+          confidence: args.confidence as number | undefined,
+          source: args.source as string | undefined,
+        });
+      },
+    },
+    {
+      name: "recall_facts",
+      description:
+        "Search semantic memory by category and/or query string. Returns matching facts.",
+      category: "memory",
+      riskLevel: "safe",
+      parameters: {
+        type: "object",
+        properties: {
+          category: {
+            type: "string",
+            description:
+              "Filter by category: self, environment, financial, agent, domain, procedural_ref, creator",
+          },
+          query: {
+            type: "string",
+            description: "Search query to match against fact keys and values",
+          },
+        },
+      },
+      execute: async (args, ctx) => {
+        const { recallFacts } = await import("../memory/tools.js");
+        return recallFacts(ctx.db.raw, {
+          category: args.category as string | undefined,
+          query: args.query as string | undefined,
+        });
+      },
+    },
+    {
+      name: "set_goal",
+      description:
+        "Create a working memory goal. Goals persist in working memory and guide your behavior.",
+      category: "memory",
+      riskLevel: "safe",
+      parameters: {
+        type: "object",
+        properties: {
+          content: { type: "string", description: "Goal description" },
+          priority: {
+            type: "number",
+            description: "Priority 0.0-1.0 (default: 0.8)",
+          },
+        },
+        required: ["content"],
+      },
+      execute: async (args, ctx) => {
+        const { setGoal } = await import("../memory/tools.js");
+        const sessionId = ctx.db.getKV("session_id") || "default";
+        return setGoal(ctx.db.raw, {
+          sessionId,
+          content: args.content as string,
+          priority: args.priority as number | undefined,
+        });
+      },
+    },
+    {
+      name: "complete_goal",
+      description:
+        "Mark a goal as completed and archive it to episodic memory. Use review_memory to find goal IDs.",
+      category: "memory",
+      riskLevel: "safe",
+      parameters: {
+        type: "object",
+        properties: {
+          goal_id: { type: "string", description: "Goal ID to complete" },
+          outcome: {
+            type: "string",
+            description: "Outcome description (optional)",
+          },
+        },
+        required: ["goal_id"],
+      },
+      execute: async (args, ctx) => {
+        const { completeGoal } = await import("../memory/tools.js");
+        const sessionId = ctx.db.getKV("session_id") || "default";
+        return completeGoal(ctx.db.raw, {
+          goalId: args.goal_id as string,
+          sessionId,
+          outcome: args.outcome as string | undefined,
+        });
+      },
+    },
+    {
+      name: "save_procedure",
+      description:
+        "Store a learned procedure with ordered steps. Procedures help you remember how to do things.",
+      category: "memory",
+      riskLevel: "safe",
+      parameters: {
+        type: "object",
+        properties: {
+          name: { type: "string", description: "Unique procedure name" },
+          description: {
+            type: "string",
+            description: "What this procedure does",
+          },
+          steps: {
+            type: "string",
+            description:
+              'JSON array of steps: [{"order":1,"description":"...","tool":"...","argsTemplate":null,"expectedOutcome":null,"onFailure":null}]',
+          },
+        },
+        required: ["name", "description", "steps"],
+      },
+      execute: async (args, ctx) => {
+        const { saveProcedure } = await import("../memory/tools.js");
+        return saveProcedure(ctx.db.raw, {
+          name: args.name as string,
+          description: args.description as string,
+          steps: args.steps as string,
+        });
+      },
+    },
+    {
+      name: "recall_procedure",
+      description: "Retrieve a stored procedure by exact name or search query.",
+      category: "memory",
+      riskLevel: "safe",
+      parameters: {
+        type: "object",
+        properties: {
+          name: { type: "string", description: "Exact procedure name" },
+          query: {
+            type: "string",
+            description: "Search query to find matching procedures",
+          },
+        },
+      },
+      execute: async (args, ctx) => {
+        const { recallProcedure } = await import("../memory/tools.js");
+        return recallProcedure(ctx.db.raw, {
+          name: args.name as string | undefined,
+          query: args.query as string | undefined,
+        });
+      },
+    },
+    {
+      name: "note_about_agent",
+      description:
+        "Record a relationship note about another agent or entity. Tracks trust score and interaction history.",
+      category: "memory",
+      riskLevel: "safe",
+      parameters: {
+        type: "object",
+        properties: {
+          entity_address: {
+            type: "string",
+            description: "Entity wallet address (0x...)",
+          },
+          entity_name: {
+            type: "string",
+            description: "Human-readable name (optional)",
+          },
+          relationship_type: {
+            type: "string",
+            description:
+              "Type of relationship: peer, service, creator, child, unknown",
+          },
+          notes: { type: "string", description: "Notes about this entity" },
+          trust_score: {
+            type: "number",
+            description: "Trust score 0.0-1.0 (default: 0.5)",
+          },
+        },
+        required: ["entity_address", "relationship_type"],
+      },
+      execute: async (args, ctx) => {
+        const { noteAboutAgent } = await import("../memory/tools.js");
+        return noteAboutAgent(ctx.db.raw, {
+          entityAddress: args.entity_address as string,
+          entityName: args.entity_name as string | undefined,
+          relationshipType: args.relationship_type as string,
+          notes: args.notes as string | undefined,
+          trustScore: args.trust_score as number | undefined,
+        });
+      },
+    },
+    {
+      name: "review_memory",
+      description:
+        "Review your current working memory (goals, tasks, observations) and recent episodic history.",
+      category: "memory",
+      riskLevel: "safe",
+      parameters: { type: "object", properties: {} },
+      execute: async (_args, ctx) => {
+        const { reviewMemory } = await import("../memory/tools.js");
+        const sessionId = ctx.db.getKV("session_id") || "default";
+        return reviewMemory(ctx.db.raw, { sessionId });
+      },
+    },
+    {
+      name: "forget",
+      description:
+        "Remove a memory entry by ID and type. Cannot remove creator-protected semantic entries.",
+      category: "memory",
+      riskLevel: "safe",
+      parameters: {
+        type: "object",
+        properties: {
+          id: { type: "string", description: "Memory entry ID" },
+          memory_type: {
+            type: "string",
+            description:
+              "Memory type: working, episodic, semantic, procedural, relationship",
+          },
+        },
+        required: ["id", "memory_type"],
+      },
+      execute: async (args, ctx) => {
+        const { forget } = await import("../memory/tools.js");
+        return forget(ctx.db.raw, {
+          id: args.id as string,
+          memoryType: args.memory_type as string,
+        });
+      },
+    },
+
+    // ── x402 Payment Tool ──
+    {
+      name: "x402_fetch",
+      description:
+        "Fetch a URL with automatic x402 USDC payment. If the server responds with HTTP 402, signs a USDC payment and retries. Use this to access paid APIs and services.",
+      category: "financial",
+      riskLevel: "dangerous",
+      parameters: {
+        type: "object",
+        properties: {
+          url: {
+            type: "string",
+            description: "The URL to fetch",
+          },
+          method: {
+            type: "string",
+            description: "HTTP method (default: GET)",
+          },
+          body: {
+            type: "string",
+            description: "Request body for POST/PUT (JSON string)",
+          },
+          headers: {
+            type: "string",
+            description: "Additional headers as JSON string",
+          },
+        },
+        required: ["url"],
+      },
+      execute: async (args, ctx) => {
+        // Solana guard: x402 payments are EVM-only
+        const chainType = ctx.config.chainType || ctx.identity.chainType || "evm";
+        if (chainType === "solana") {
+          return "x402 payment requires an EVM wallet. Solana automatons cannot sign EVM payment authorizations. Use credits API instead.";
+        }
+
+        const { x402Fetch } = await import("../local/x402.js");
+        const { DEFAULT_TREASURY_POLICY } = await import("../types.js");
+        const url = args.url as string;
+        const method = (args.method as string) || "GET";
+        const body = args.body as string | undefined;
+        const extraHeaders = args.headers
+          ? JSON.parse(args.headers as string)
+          : undefined;
+
+        const maxPayment =
+          ctx.config.treasuryPolicy?.maxX402PaymentCents ??
+          DEFAULT_TREASURY_POLICY.maxX402PaymentCents;
+        const result = await x402Fetch(
+          url,
+          ctx.identity.account,
+          method,
+          body,
+          extraHeaders,
+          maxPayment,
+        );
+
+        if (!result.success) {
+          return `x402 fetch failed: ${result.error || "Unknown error"}`;
+        }
+
+        const responseStr =
+          typeof result.response === "string"
+            ? result.response
+            : JSON.stringify(result.response, null, 2);
+
+        // Truncate very large responses
+        if (responseStr.length > 10000) {
+          return `x402 fetch succeeded (truncated):\n${responseStr.slice(0, 10000)}...`;
+        }
+        return `x402 fetch succeeded:\n${responseStr}`;
+      },
+    },
+
+    // === Orchestration Tools ===
+    {
+      name: "create_goal",
+      description:
+        "Create a new goal for the orchestrator to plan and execute. " +
+        "The orchestrator will automatically classify complexity, generate a task graph, " +
+        "assign tasks to child agents, and collect results. Use this instead of doing complex work yourself.",
+      category: "orchestration" as ToolCategory,
+      riskLevel: "caution" as RiskLevel,
+      parameters: {
+        type: "object",
+        properties: {
+          title: {
+            type: "string",
+            description: "Short goal title (e.g., 'Build weather API service')",
+          },
+          description: {
+            type: "string",
+            description:
+              "Detailed goal description with success criteria. The more specific, the better the plan.",
+          },
+          strategy: {
+            type: "string",
+            description:
+              "Optional strategic guidance for the planner (e.g., 'prioritize speed over cost')",
+          },
+        },
+        required: ["title", "description"],
+      },
+      execute: async (args, ctx) => {
+        const { createGoal } = await import("../orchestration/task-graph.js");
+        const { getActiveGoals } = await import("../state/database.js");
+
+        const title = (args.title as string).trim();
+        const description = (args.description as string).trim();
+        const strategy =
+          typeof args.strategy === "string" ? args.strategy.trim() : undefined;
+
+        if (!title) return "Error: goal title cannot be empty.";
+        if (!description) return "Error: goal description cannot be empty.";
+
+        // Check for any incomplete goals (not just active)
+        // Must complete or explicitly abandon current goal before creating new ones
+        const allGoals = ctx.db.raw
+          .prepare("SELECT * FROM goals ORDER BY created_at DESC LIMIT 5")
+          .all() as any[];
+        
+        const incompleteGoals = allGoals.filter(
+          (g: any) => g.status !== "completed" && g.status !== "abandoned"
+        );
+
+        if (incompleteGoals.length > 0) {
+          const latest = incompleteGoals[0];
+          return (
+            `BLOCKED: You must finish your current goal before creating new ones!\n\n` +
+            `Latest incomplete goal: "${latest.title}" (status: ${latest.status})\n\n` +
+            `RULE: You cannot jump between goals. You MUST:\n` +
+            `1. Complete the current goal first, OR\n` +
+            `2. Mark it as "abandoned" in the database if truly impossible\n\n` +
+            `Do NOT create a new goal until the current one is done or explicitly abandoned.\n` +
+            `Focus on finishing what you started!`
+          );
+        }
+
+        // Dedup: reject if a similar goal already exists (regardless of status)
+        const titleLower = title.toLowerCase();
+        const duplicate = allGoals.find(
+          (g: any) =>
+            g.title.toLowerCase() === titleLower ||
+            g.title.toLowerCase().includes(titleLower) ||
+            titleLower.includes(g.title.toLowerCase()),
+        );
+        if (duplicate) {
+          return (
+            `Duplicate goal rejected. A similar goal already exists:\n` +
+            `"${duplicate.title}" (id: ${duplicate.id}, status: ${duplicate.status})\n` +
+            `Work on the existing goal instead of creating duplicates.`
+          );
+        }
+
+        const goal = createGoal(ctx.db.raw, title, description, strategy);
+        return (
+          `Goal created: "${goal.title}" (id: ${goal.id}, status: ${goal.status})\n` +
+          `The orchestrator will pick this up on the next tick and begin planning.\n` +
+          `Monitor progress via the todo.md block in your context.`
+        );
+      },
+    },
+    {
+      name: "list_goals",
+      description:
+        "List all active goals with their progress. Shows task completion counts, " +
+        "blocked tasks, and running agents per goal.",
+      category: "orchestration" as ToolCategory,
+      riskLevel: "safe" as RiskLevel,
+      parameters: { type: "object", properties: {} },
+      execute: async (_args, ctx) => {
+        const { getActiveGoals, getTasksByGoal } =
+          await import("../state/database.js");
+        const { getGoalProgress } =
+          await import("../orchestration/task-graph.js");
+
+        const goals = getActiveGoals(ctx.db.raw);
+        if (goals.length === 0)
+          return "No active goals. Create one with create_goal.";
+
+        const lines = goals.map((goal) => {
+          const progress = getGoalProgress(ctx.db.raw, goal.id);
+          const tasks = getTasksByGoal(ctx.db.raw, goal.id);
+          const failedCount = tasks.filter((t) => t.status === "failed").length;
+          return (
+            `- ${goal.title} [${goal.status}] (id: ${goal.id})\n` +
+            `  Tasks: ${progress.completed}/${progress.total} completed, ` +
+            `${progress.running} running, ${progress.blocked} blocked, ${failedCount} failed`
+          );
+        });
+
+        // Include orchestrator phase
+        let phase = "unknown";
+        try {
+          const stateRow = ctx.db.raw
+            .prepare("SELECT value FROM kv WHERE key = ?")
+            .get("orchestrator.state") as { value: string } | undefined;
+          if (stateRow?.value) {
+            const parsed = JSON.parse(stateRow.value);
+            phase = parsed.phase ?? "unknown";
+          }
+        } catch {
+          /* ignore */
+        }
+
+        return `Orchestrator phase: ${phase}\n\n${lines.join("\n")}`;
+      },
+    },
+    {
+      name: "cancel_goal",
+      description:
+        "Cancel an active goal. Stops all execution for this goal and marks it as failed. Accepts goal ID or title.",
+      category: "orchestration" as ToolCategory,
+      riskLevel: "caution" as RiskLevel,
+      parameters: {
+        type: "object",
+        properties: {
+          goal_id: {
+            type: "string",
+            description: "The goal ID or title to cancel",
+          },
+          reason: {
+            type: "string",
+            description: "Why the goal is being cancelled",
+          },
+        },
+        required: ["goal_id"],
+      },
+      execute: async (args, ctx) => {
+        const { getGoalById, getActiveGoals, updateGoalStatus } =
+          await import("../state/database.js");
+
+        const input = (args.goal_id as string).trim();
+        const reason =
+          typeof args.reason === "string"
+            ? args.reason.trim()
+            : "cancelled by agent";
+
+        // Try by ID first, then by title match
+        let goal = getGoalById(ctx.db.raw, input);
+        if (!goal) {
+          const allGoals = getActiveGoals(ctx.db.raw);
+          goal =
+            allGoals.find((g) =>
+              g.title.toLowerCase().includes(input.toLowerCase()),
+            ) ?? undefined;
+        }
+
+        if (!goal)
+          return `Goal "${input}" not found. Use list_goals to see active goals with their IDs.`;
+        if (goal.status !== "active")
+          return `Goal "${goal.title}" is already in '${goal.status}' status.`;
+
+        updateGoalStatus(ctx.db.raw, goal.id, "failed");
+
+        // Cancel all pending/assigned/running tasks for this goal
+        ctx.db.raw
+          .prepare(
+            `UPDATE task_graph SET status = 'cancelled' WHERE goal_id = ? AND status IN ('pending', 'assigned', 'running', 'blocked')`,
+          )
+          .run(goal.id);
+
+        return `Goal "${goal.title}" (${goal.id}) cancelled. Reason: ${reason}`;
+      },
+    },
+    {
+      name: "get_plan",
+      description:
+        "Read the current plan for a goal. Returns the planner's task decomposition, " +
+        "strategy, risks, and cost estimates.",
+      category: "orchestration" as ToolCategory,
+      riskLevel: "safe" as RiskLevel,
+      parameters: {
+        type: "object",
+        properties: {
+          goal_id: {
+            type: "string",
+            description: "The goal ID or title to get the plan for",
+          },
+        },
+        required: ["goal_id"],
+      },
+      execute: async (args, ctx) => {
+        const { getGoalById, getActiveGoals } =
+          await import("../state/database.js");
+
+        const input = (args.goal_id as string).trim();
+
+        // Resolve ID or title
+        let resolvedId = input;
+        if (!getGoalById(ctx.db.raw, input)) {
+          const allGoals = getActiveGoals(ctx.db.raw);
+          const match = allGoals.find((g) =>
+            g.title.toLowerCase().includes(input.toLowerCase()),
+          );
+          if (match) {
+            resolvedId = match.id;
+          } else {
+            return `No goal found matching "${input}". Use list_goals to see active goals.`;
+          }
+        }
+
+        const planRow = ctx.db.raw
+          .prepare("SELECT value FROM kv WHERE key = ?")
+          .get(`orchestrator.plan.${resolvedId}`) as
+          | { value: string }
+          | undefined;
+
+        if (!planRow?.value)
+          return `No plan found for goal ${resolvedId}. It may not have been planned yet.`;
+
+        try {
+          const plan = JSON.parse(planRow.value);
+          const lines = [
+            `Strategy: ${plan.strategy ?? "none"}`,
+            `Analysis: ${plan.analysis ?? "none"}`,
+            `Estimated cost: ${plan.estimatedTotalCostCents ?? 0} cents`,
+            `Estimated time: ${plan.estimatedTimeMinutes ?? 0} minutes`,
+            `Risks: ${(plan.risks ?? []).join("; ") || "none"}`,
+            `\nTasks (${(plan.tasks ?? []).length}):`,
+          ];
+          for (const [i, task] of (plan.tasks ?? []).entries()) {
+            lines.push(
+              `  ${i + 1}. ${task.title} (role: ${task.agentRole}, cost: ${task.estimatedCostCents}c, deps: ${(task.dependencies ?? []).join(",") || "none"})`,
+            );
+          }
+          return lines.join("\n");
+        } catch {
+          return `Plan data for goal ${resolvedId} is corrupted.`;
+        }
+      },
+    },
+    {
+      name: "complete_task",
+      description:
+        "Mark a task as completed with a result. Use this when YOU (the parent agent) " +
+        "have finished a self-assigned task, or to manually resolve a stuck task.",
+      category: "orchestration" as ToolCategory,
+      riskLevel: "caution" as RiskLevel,
+      parameters: {
+        type: "object",
+        properties: {
+          task_id: {
+            type: "string",
+            description: "The task ID or title to mark as completed",
+          },
+          output: {
+            type: "string",
+            description: "Description of what was accomplished",
+          },
+          artifacts: {
+            type: "string",
+            description:
+              "Comma-separated list of file paths or URLs created (optional)",
+          },
+        },
+        required: ["task_id", "output"],
+      },
+      execute: async (args, ctx) => {
+        const { completeTask } = await import("../orchestration/task-graph.js");
+        const { getTaskById } = await import("../state/database.js");
+
+        const input = (args.task_id as string).trim();
+        const output = (args.output as string).trim();
+        const artifacts =
+          typeof args.artifacts === "string"
+            ? (args.artifacts as string)
+                .split(",")
+                .map((a) => a.trim())
+                .filter(Boolean)
+            : [];
+
+        // Try by ID first, then by title match
+        let task = getTaskById(ctx.db.raw, input);
+        if (!task) {
+          const rows = ctx.db.raw
+            .prepare(
+              `SELECT * FROM task_graph WHERE LOWER(title) LIKE ? AND status != 'completed' LIMIT 1`,
+            )
+            .get(`%${input.toLowerCase()}%`) as any;
+          if (rows) task = rows;
+        }
+        if (!task)
+          return `Task "${input}" not found. Use list_goals to see tasks with their IDs.`;
+        if (task.status === "completed")
+          return `Task "${task.title}" is already completed.`;
+
+        const result = {
+          success: true,
+          output,
+          artifacts,
+          costCents: 0,
+          duration: 0,
+        };
+
+        try {
+          completeTask(ctx.db.raw, task.id, result);
+          return `Task "${task.title}" marked as completed.\nOutput: ${output}`;
+        } catch (error) {
+          return `Failed to complete task: ${error instanceof Error ? error.message : String(error)}`;
+        }
+      },
+    },
+    {
+      name: "orchestrator_status",
+      description:
+        "Get detailed orchestrator status including current phase, active goals, " +
+        "running agents, task progress, and recent events.",
+      category: "orchestration" as ToolCategory,
+      riskLevel: "safe" as RiskLevel,
+      parameters: { type: "object", properties: {} },
+      execute: async (_args, ctx) => {
+        const lines: string[] = [];
+
+        // Orchestrator phase
+        let phase = "idle";
+        let goalId: string | null = null;
+        let replanCount = 0;
+        try {
+          const stateRow = ctx.db.raw
+            .prepare("SELECT value FROM kv WHERE key = ?")
+            .get("orchestrator.state") as { value: string } | undefined;
+          if (stateRow?.value) {
+            const parsed = JSON.parse(stateRow.value);
+            phase = parsed.phase ?? "idle";
+            goalId = parsed.goalId ?? null;
+            replanCount = parsed.replanCount ?? 0;
+          }
+        } catch {
+          /* ignore */
+        }
+
+        lines.push(`Phase: ${phase}`);
+        if (goalId) lines.push(`Active goal: ${goalId}`);
+        if (replanCount > 0) lines.push(`Replan count: ${replanCount}`);
+
+        // Goal counts
+        try {
+          const goalsRow = ctx.db.raw
+            .prepare("SELECT COUNT(*) AS c FROM goals WHERE status = 'active'")
+            .get() as { c: number } | undefined;
+          lines.push(`Active goals: ${goalsRow?.c ?? 0}`);
+        } catch {
+          /* goals table may not exist */
+        }
+
+        // Task summary
+        try {
+          const taskRows = ctx.db.raw
+            .prepare(
+              `SELECT status, COUNT(*) AS c FROM task_graph GROUP BY status`,
+            )
+            .all() as { status: string; c: number }[];
+          const taskSummary = taskRows
+            .map((r) => `${r.status}: ${r.c}`)
+            .join(", ");
+          lines.push(`Tasks: ${taskSummary || "none"}`);
+        } catch {
+          /* task_graph may not exist */
+        }
+
+        // Agent summary
+        try {
+          const agentRows = ctx.db.raw
+            .prepare(
+              `SELECT status, COUNT(*) AS c FROM children GROUP BY status`,
+            )
+            .all() as { status: string; c: number }[];
+          const agentSummary = agentRows
+            .map((r) => `${r.status}: ${r.c}`)
+            .join(", ");
+          lines.push(`Agents: ${agentSummary || "none"}`);
+        } catch {
+          /* children may not exist */
+        }
+
+        // Last tick result
+        try {
+          const tickRow = ctx.db.raw
+            .prepare("SELECT value FROM kv WHERE key = ?")
+            .get("orchestrator.last_tick") as { value: string } | undefined;
+          if (tickRow?.value) {
+            const tick = JSON.parse(tickRow.value);
+            lines.push(
+              `Last tick: assigned=${tick.tasksAssigned ?? 0}, completed=${tick.tasksCompleted ?? 0}, failed=${tick.tasksFailed ?? 0}`,
+            );
+          }
+        } catch {
+          /* ignore */
+        }
+
+        return lines.join("\n");
+      },
+    },
+  ];
+  return tools;
+}
+
+/**
+ * Load installed tools from the database and return as AutomatonTool[].
+ * Installed tools are dynamically added from the installed_tools table.
+ */
+export function loadInstalledTools(db: {
+  getInstalledTools: () => {
+    id: string;
+    name: string;
+    type: string;
+    config?: Record<string, unknown>;
+    installedAt: string;
+    enabled: boolean;
+  }[];
+}): AutomatonTool[] {
+  try {
+    const installed = db.getInstalledTools();
+    return installed.map((tool) => ({
+      name: tool.name,
+      description: `Installed tool: ${tool.name}`,
+      category: (tool.type === "mcp" ? "vm" : "vm") as ToolCategory,
+      riskLevel: "caution" as RiskLevel,
+      parameters: (tool.config?.parameters as Record<string, unknown>) || {
+        type: "object",
+        properties: {},
+      },
+      execute: createInstalledToolExecutor(tool),
+    }));
+  } catch (error) {
+    logger.error(
+      "Failed to load installed tools",
+      error instanceof Error ? error : undefined,
+    );
+    return [];
+  }
+}
+
+function createInstalledToolExecutor(tool: {
+  name: string;
+  type: string;
+  config?: Record<string, unknown>;
+}): AutomatonTool["execute"] {
+  return async (args, ctx) => {
+    if (tool.type === "mcp") {
+      // MCP tools would be executed via MCP protocol
+      return `MCP tool ${tool.name} invoked with args: ${JSON.stringify(args)}`;
+    }
+    // Generic installed tool — execute via sandbox shell if command is configured
+    const command = tool.config?.command as string | undefined;
+    if (command) {
+      const result = await ctx.runtime.exec(
+        `${command} ${escapeShellArg(JSON.stringify(args))}`,
+        30000,
+      );
+      return `exit_code: ${result.exitCode}\nstdout: ${result.stdout}\nstderr: ${result.stderr}`;
+    }
+    return `Installed tool ${tool.name} has no executable command configured.`;
+  };
+}
+
+/**
+ * Convert AutomatonTool list to OpenAI-compatible tool definitions.
+ */
+export function toolsToInferenceFormat(
+  tools: AutomatonTool[],
+): InferenceToolDefinition[] {
+  return tools.map((t) => ({
+    type: "function" as const,
+    function: {
+      name: t.name,
+      description: t.description,
+      parameters: JSON.stringify(t.parameters),
+    },
+  }));
+}
+
+/**
+ * Execute a tool call and return the result.
+ * Optionally evaluates against the policy engine before execution.
+ */
+export async function executeTool(
+  toolName: string,
+  args: Record<string, unknown>,
+  tools: AutomatonTool[],
+  context: ToolContext,
+  policyEngine?: PolicyEngine,
+  turnContext?: {
+    inputSource: InputSource | undefined;
+    turnToolCallCount: number;
+    sessionSpend: SpendTrackerInterface;
+  },
+): Promise<ToolCallResult> {
+  const tool = tools.find((t) => t.name === toolName);
+  const startTime = Date.now();
+
+  if (!tool) {
+    return {
+      id: ulid(),
+      name: toolName,
+      arguments: args,
+      result: "",
+      durationMs: 0,
+      error: `Unknown tool: ${toolName}`,
+    };
+  }
+
+  // Policy evaluation (if engine is provided)
+  if (policyEngine && turnContext) {
+    const request: PolicyRequest = {
+      tool,
+      args,
+      context,
+      turnContext,
+    };
+    const decision = policyEngine.evaluate(request);
+    policyEngine.logDecision(decision);
+
+    if (decision.action !== "allow") {
+      return {
+        id: ulid(),
+        name: toolName,
+        arguments: args,
+        result: "",
+        durationMs: Date.now() - startTime,
+        error: `Policy denied: ${decision.reasonCode} — ${decision.humanMessage}`,
+      };
+    }
+  }
+
+  try {
+    let result = await tool.execute(args, context);
+
+    // Sanitize results from external source tools
+    if (EXTERNAL_SOURCE_TOOLS.has(toolName)) {
+      result = sanitizeToolResult(result);
+    }
+
+    // Record spend for financial operations
+    if (turnContext && !result.startsWith("Blocked:")) {
+      if (toolName === "transfer_credits") {
+        const amount = args.amount_cents as number | undefined;
+        if (amount && amount > 0) {
+          try {
+            turnContext.sessionSpend.recordSpend({
+              toolName: "transfer_credits",
+              amountCents: amount,
+              recipient: args.to_address as string | undefined,
+              category: "transfer",
+            });
+          } catch (error) {
+            logger.error(
+              "Spend tracking failed for transfer_credits",
+              error instanceof Error ? error : undefined,
+            );
+          }
+        }
+      } else if (toolName === "x402_fetch") {
+        // x402 payment amounts are determined by the server response,
+        // but we record a nominal entry for tracking purposes
+        try {
+          turnContext.sessionSpend.recordSpend({
+            toolName: "x402_fetch",
+            amountCents: 0, // Actual amount is inside the x402 protocol
+            domain: (() => {
+              try {
+                return new URL(args.url as string).hostname;
+              } catch {
+                return undefined;
+              }
+            })(),
+            category: "x402",
+          });
+        } catch (error) {
+          logger.error(
+            "Spend tracking failed for x402_fetch",
+            error instanceof Error ? error : undefined,
+          );
+        }
+      }
+    }
+
+    return {
+      id: ulid(),
+      name: toolName,
+      arguments: args,
+      result,
+      durationMs: Date.now() - startTime,
+    };
+  } catch (err: any) {
+    return {
+      id: ulid(),
+      name: toolName,
+      arguments: args,
+      result: "",
+      durationMs: Date.now() - startTime,
+      error: err.message || String(err),
+    };
+  }
+}
+
+/** Escape a string for safe shell interpolation. */
+function escapeShellArg(arg: string): string {
+  return `'${arg.replace(/'/g, "'\\''")}'`;
+}

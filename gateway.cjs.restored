@@ -1,0 +1,776 @@
+#!/usr/bin/env node
+/**
+ * production-gateway — my-automaton FULL Gateway v2.0
+ * All routes: static content, free API (3/day), premium API (credit-based),
+ * Wallet payment (x402/USDC on Base), dev-key funnel, badge generation.
+ *
+ * Wallet payment via x402 protocol (USDC on Base).
+ *
+ * ENV VARS (override):
+ *   DEEPSEEK_API_KEY  — DeepSeek AI key
+ *
+ * FALLBACK: Reads from /root/automaton/automaton.json if env vars not set.
+ */
+
+const http = require('http');
+const fs = require('fs');
+const path = require('path');
+const crypto = require('crypto');
+const url = require('url');
+const githubWebhook = require('/root/automaton/services/github-webhook-handler.cjs');
+const analyticsTracker = require('./analytics-tracker.js');
+const { track: trackAnalytics, getSummary: getAnalyticsSummary } = require('/root/automaton/analytics-tracker.js');
+const { handleMcpRequest } = require('/root/automaton/services/mcp-handler.cjs');
+
+// ── Config helpers ───────────────────────────────────────
+function readAutomatonConfig() {
+  try { return JSON.parse(fs.readFileSync('/root/automaton/automaton.json','utf-8')); } catch { return {}; }
+}
+
+// ── Configuration ──────────────────────────────────────────
+const PORT = 8080;
+const CONTENT = '/root/automaton/content';
+const BLOG_DIR = '/root/automaton/blog';
+const API_KEYS = '/root/automaton/api-keys.json';
+const DATA_DIR = '/root/automaton/data';
+const CFG = readAutomatonConfig();
+
+
+
+// AI provider — env var first, then automaton.json fallback
+const AI_KEY = process.env.OPENAI_API_KEY || process.env.DEEPSEEK_API_KEY ||
+  CFG.openaiApiKey || CFG.deepseekApiKey || CFG.deepseek_key || CFG.inference?.deepseekApiKey || '';
+
+const AI_ENDPOINT = (process.env.OPENAI_BASE_URL || CFG.openaiBaseUrl || CFG.deepseekEndpoint || 'https://api.deepseek.com').replace(/\/+$/, '') + '/chat/completions';
+const AI_MODEL = CFG.inferenceModel || CFG.model || 'deepseek-chat';
+
+
+
+// Price tiers (credits per purchase)
+const PRICES = {
+  'price_starter': { name: 'Starter', credits: 500, price: 5, hkd: 38 },
+  'price_advanced': { name: 'Advanced', credits: 1100, price: 10, hkd: 78 },
+  'price_pro': { name: 'Pro', credits: 3000, price: 25, hkd: 198 },
+  'price_ultimate': { name: 'Ultimate', credits: 6500, price: 50, hkd: 388 },
+};
+
+
+
+// Credit costs per endpoint
+const CREDIT_COST = { analyze: 1, summarize: 2, review: 5, security: 3, explain: 2, refactor: 5, complexity: 2 };
+
+// Rate limiting (in-memory)
+const FREE_LIMIT = new Map(); // ip -> { date, count }
+
+// ── Helpers ────────────────────────────────────────────────
+const MIME = { '.html':'text/html','.js':'text/javascript','.mjs':'text/javascript','.css':'text/css','.png':'image/png','.jpg':'image/jpeg','.svg':'image/svg+xml','.json':'application/json','.xml':'application/xml','.txt':'text/plain','.md':'text/markdown','.ico':'image/x-icon' };
+
+function mime(p) { return MIME[path.extname(p).toLowerCase()] || 'application/octet-stream'; }
+
+function readJSON(p, def={}) {
+  try { return JSON.parse(fs.readFileSync(p, 'utf-8')); } catch { return def; }
+}
+
+function writeJSON(p, data) {
+  fs.mkdirSync(path.dirname(p), { recursive: true });
+  fs.writeFileSync(p, JSON.stringify(data, null, 2));
+}
+
+function log(msg) {
+  const l = `[${new Date().toISOString()}] ${msg}`;
+  console.log(l);
+  try { fs.mkdirSync(DATA_DIR, { recursive: true }); fs.appendFileSync(path.join(DATA_DIR,'gateway.log'), l+'\n'); } catch {}
+}
+
+function ipFromReq(req) {
+  return req.headers['x-forwarded-for']?.split(',')[0]?.trim() || req.socket.remoteAddress || '0.0.0.0';
+}
+
+function generateKey() {
+  return 'am_' + crypto.randomBytes(24).toString('base64url');
+}
+
+function getCredits(key) {
+  const db = readJSON(API_KEYS);
+  return db[key] || null;
+}
+
+function useCredits(key, cost) {
+  const db = readJSON(API_KEYS);
+  if (!db[key]) return false;
+  if (db[key].credits < cost) return false;
+  db[key].credits -= cost;
+  db[key].used = (db[key].used || 0) + 1;
+  db[key].last_used = new Date().toISOString();
+  writeJSON(API_KEYS, db);
+  return true;
+}
+
+function addCredits(priceId, txHash) {
+  const tier = PRICES[priceId];
+  if (!tier) return null;
+  const key = generateKey();
+  const db = readJSON(API_KEYS);
+  db[key] = { credits: tier.credits, created: new Date().toISOString(), used: 0, price_id: priceId, tx_hash: txHash || '', payment_provider: txHash ? 'wallet' : 'unknown' };
+  writeJSON(API_KEYS, db);
+  return key;
+}
+
+// Free rate limit check
+function checkFreeLimit(ip) {
+  const today = new Date().toISOString().split('T')[0];
+  const entry = FREE_LIMIT.get(ip);
+  if (!entry || entry.date !== today) {
+    FREE_LIMIT.set(ip, { date: today, count: 0 });
+    return true;
+  }
+  if (entry.count >= 3) return false;
+  return true;
+}
+
+function incrementFree(ip) {
+  const today = new Date().toISOString().split('T')[0];
+  const entry = FREE_LIMIT.get(ip);
+  if (!entry || entry.date !== today) FREE_LIMIT.set(ip, { date: today, count: 1 });
+  else entry.count++;
+}
+
+// AI inference call
+async function callAI(messages) {
+  if (!AI_KEY) return { error: 'AI not configured' };
+  try {
+    const payload = { model: AI_MODEL, messages, max_tokens: 2048, temperature: 0.3 };
+    log(`AI call: endpoint=${AI_ENDPOINT}, model=${AI_MODEL}, key_len=${AI_KEY.length}, key_prefix=${AI_KEY.substring(0,20)}`);
+    const resp = await fetch(AI_ENDPOINT, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${AI_KEY}` },
+      body: JSON.stringify(payload)
+    });
+    const data = await resp.json();
+    if (data.error) {
+      log(`AI error: ${JSON.stringify(data.error)}`);
+    }
+    if (data.choices?.[0]?.message?.content) return data.choices[0].message.content;
+    if (data.content) return typeof data.content === 'string' ? data.content : JSON.stringify(data.content);
+    return JSON.stringify(data);
+    return JSON.stringify(data);
+  } catch (e) {
+    return { error: e.message };
+  }
+}
+
+// ── Wallet Payment (direct USDC on Base) ──────────────────
+const AGENT_WALLET = '0x76eADdEBFfb6a61DD071f97F4508467fc55dd113';
+const WALLET_CHAIN = 'base';
+
+/**
+ * Manually add credits for wallet payments.
+ * Called by admin or automated verification.
+ */
+function addWalletCredits(walletAddress, priceId, txHash) {
+  const key = addCredits(priceId, txHash);
+  if (!key) return null;
+  // Record the payment
+  const paymentsFile = path.join(DATA_DIR, 'wallet-payments.json');
+  const payments = readJSON(paymentsFile, []);
+  payments.push({ wallet: walletAddress, price_id: priceId, tx_hash: txHash, api_key: key, time: new Date().toISOString(), status: 'completed' });
+  writeJSON(paymentsFile, payments);
+  return key;
+}
+
+
+
+// ── x402 Payment Verification (USDC on Base) ──────────────
+async function verifyX402Payment(txHash) {
+  try {
+    const { ethers } = require('ethers');
+    const provider = new ethers.JsonRpcProvider('https://mainnet.base.org');
+    const tx = await provider.getTransaction(txHash);
+    if (!tx) return { valid: false, error: 'Transaction not found' };
+    
+    // Verify recipient is our wallet
+    const EXPECTED_WALLET = '0x76eADdEBFfb6A61DD071f97F4508467fc55dd113';
+    if (tx.to.toLowerCase() !== EXPECTED_WALLET.toLowerCase()) {
+      return { valid: false, error: 'Wrong recipient' };
+    }
+    
+    // Verify it's a USDC transfer (check for ERC20 transfer event)
+    const receipt = await provider.getTransactionReceipt(txHash);
+    if (!receipt || receipt.status === 0) {
+      return { valid: false, error: 'Transaction failed' };
+    }
+    
+    // USDC on Base contract
+    const USDC_BASE = '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913';
+    const usdcInterface = new ethers.Interface([
+      'event Transfer(address indexed from, address indexed to, uint256 value)'
+    ]);
+    
+    let amount = 0n;
+    for (const log of receipt.logs) {
+      if (log.address.toLowerCase() === USDC_BASE.toLowerCase()) {
+        try {
+          const parsed = usdcInterface.parseLog(log);
+          if (parsed && parsed.args.to.toLowerCase() === EXPECTED_WALLET.toLowerCase()) {
+            amount += parsed.args.value;
+          }
+        } catch {}
+      }
+    }
+    
+    if (amount === 0n) {
+      return { valid: false, error: 'No USDC transfer found' };
+    }
+    
+    // USDC has 6 decimals
+    const usdcAmount = Number(amount) / 1e6;
+    return { valid: true, amount: usdcAmount, txHash };
+  } catch (e) {
+    return { valid: false, error: e.message };
+  }
+}
+
+async function handleVerifyX402Payment(req, res) {
+  if (req.method !== 'POST') {
+    res.writeHead(405, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({ error: 'Method not allowed' }));
+    return;
+  }
+  
+  let body = '';
+  req.on('data', chunk => body += chunk);
+  req.on('end', async () => {
+    try {
+      const { txHash, priceId } = JSON.parse(body);
+      if (!txHash || !priceId) {
+        res.writeHead(400, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ error: 'Missing txHash or priceId' }));
+        return;
+      }
+      
+      const verification = await verifyX402Payment(txHash);
+      if (!verification.valid) {
+        res.writeHead(402, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ error: 'Payment verification failed', details: verification.error }));
+        return;
+      }
+      
+      // Map price to credits
+      const priceCredits = {
+        'price_starter': 5, 'price_advanced': 10,
+        'price_pro': 25, 'price_ultimate': 50
+      };
+      
+      const expectedAmount = priceCredits[priceId];
+      if (!expectedAmount || verification.amount < expectedAmount) {
+        res.writeHead(402, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ 
+          error: 'Insufficient payment',
+          expected: expectedAmount,
+          received: verification.amount
+        }));
+        return;
+      }
+      
+      // Add credits
+      const apiKey = addWalletCredits(null, priceId, txHash);
+      if (!apiKey) {
+        res.writeHead(500, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ error: 'Failed to add credits' }));
+        return;
+      }
+      
+      log(`x402 payment verified: ${txHash}, ${verification.amount} USDC, key: ${apiKey}`);
+      res.writeHead(200, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({ 
+        success: true, 
+        api_key: apiKey,
+        amount: verification.amount,
+        txHash 
+      }));
+    } catch (e) {
+      res.writeHead(500, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({ error: e.message }));
+    }
+  });
+}
+
+
+// ── Route handlers ────────────────────────────────────────
+
+// Static content -- with .html auto-resolution
+async function serveStatic(req, res) {
+  let p = url.parse(req.url).pathname;
+  if (p === '/' || p === '') p = '/index.html';
+  const ext = path.extname(p);
+  let filePath;
+  if (!ext) {
+    // No extension: try .html first
+    filePath = path.join(CONTENT, p + '.html');
+    if (!fs.existsSync(filePath)) {
+      filePath = path.join(CONTENT, p);
+    }
+  } else {
+    filePath = path.join(CONTENT, p);
+  }
+  // Security: prevent directory traversal
+  if (!filePath.startsWith(CONTENT)) {
+    res.writeHead(403); res.end('Forbidden'); return;
+  }
+  try {
+    if (!fs.existsSync(filePath) || fs.statSync(filePath).isDirectory()) {
+      res.writeHead(404); res.end('Not found'); return;
+    }
+    const content = fs.readFileSync(filePath);
+    res.writeHead(200, { 'Content-Type': mime(filePath), 'Cache-Control': 'public, max-age=3600' });
+    res.end(content);
+  } catch (e) {
+    res.writeHead(500); res.end('Error');
+  }
+}
+
+// Health
+   async function handleHealth(req, res) {
+     const data = {
+       status: 'ok', time: new Date().toISOString(), uptime: process.uptime(),
+       version: 'v2.0', payment: { wallet: true, x402: true, chain: 'base' },
+       deepseek: !!AI_KEY, free_today: FREE_LIMIT.size,
+       wallet: AGENT_WALLET
+     };
+  res.writeHead(200, { 'Content-Type': 'application/json' });
+  res.end(JSON.stringify(data));
+}
+
+// Free trial — instant API key claim (rate-limited: 1/IP/day, 50 credits)
+const FREE_TRIAL_CLAIMS = new Map(); // ip -> { date, count }
+
+async function handleFreeTrialKey(req, res) {
+  if (req.method === 'OPTIONS') {
+    res.writeHead(204, { 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Methods': 'POST, OPTIONS', 'Access-Control-Allow-Headers': 'Content-Type' });
+    res.end(); return;
+  }
+  if (req.method !== 'POST') {
+    res.writeHead(405); res.end('Method Not Allowed'); return;
+  }
+  
+  const ip = ipFromReq(req);
+  const today = new Date().toISOString().split('T')[0];
+  const entry = FREE_TRIAL_CLAIMS.get(ip);
+  
+  if (entry && entry.date === today) {
+    res.writeHead(429, { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' });
+    res.end(JSON.stringify({ error: 'Rate limited', message: 'Free trial keys are limited to 1 per IP per day. Come back tomorrow or purchase a plan.', next_available: `${today}T23:59:59Z` }));
+    return;
+  }
+  
+  const key = generateKey();
+  const db = readJSON(API_KEYS);
+  db[key] = { credits: 50, created: new Date().toISOString(), used: 0, price_id: 'free_trial', source: 'free-trial-claim', ip: ip };
+  writeJSON(API_KEYS, db);
+  FREE_TRIAL_CLAIMS.set(ip, { date: today, count: 1 });
+  
+  log(`Free trial key generated for IP ${ip}: ${key}`);
+  
+  res.writeHead(201, { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' });
+  res.end(JSON.stringify({ success: true, api_key: key, credits: 50, message: '50 free credits granted! Use X-API-Key header to authenticate.', usage: 'curl -H "X-API-Key: ' + key + '" https://automation.automation.songheng.vip/v1/analyze -d \'{"text":"Hello world"}\'' }));
+}
+
+// Free API (no key, rate limited)
+async function handleFreeAPI(req, res, type) {
+  if (req.method === 'OPTIONS') {
+    res.writeHead(204, { 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Methods': 'POST, OPTIONS', 'Access-Control-Allow-Headers': 'Content-Type' });
+    res.end(); return;
+  }
+  const ip = ipFromReq(req);
+  if (!checkFreeLimit(ip)) {
+    res.writeHead(429, { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' });
+    res.end(JSON.stringify({ error: 'Rate limited', message: 'Free tier limited to 3 requests/day. Purchase credits for unlimited access.', upgrade: 'https://automation.automation.songheng.vip/upgrade.html' }));
+    return;
+  }
+
+  let body = '';
+  req.on('data', c => body += c);
+  req.on('end', async () => {
+    incrementFree(ip);
+    let input;
+    try { input = JSON.parse(body || '{}'); } catch { input = {}; }
+    const text = input.text || input.code || '';
+    const language = input.language || input.mode || '';
+    const max_length = input.max_length || 100;
+
+    const prompts = {
+      analyze: `Analyze the following text. Identify key themes, sentiment, and structure:\n\n${text}`,
+      summarize: `Summarize the following text in ${max_length} words or fewer:\n\n${text}`,
+      review: `Review the following ${language || ''} code for bugs, security issues, and improvements:\n\n${text}`,
+      security: `Perform a security audit on this ${language || ''} code. Check for OWASP Top 10 vulnerabilities:\n\n${text}`,
+      explain: `Explain this ${language || ''} code in simple terms:\n\n${text}`,
+      refactor: `Suggest refactoring improvements for this ${language || ''} code. Show before/after:\n\n${text}`,
+      complexity: `Analyze the complexity of this ${language || ''} code. Report on cyclomatic complexity, nesting, and line counts:\n\n${text}`,
+    };
+
+    const result = await callAI([{ role: 'user', content: prompts[type] || body }]);
+    res.writeHead(200, { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' });
+    res.end(JSON.stringify({ result, type, credits_remaining: 3 - FREE_LIMIT.get(ip).count }));
+  });
+}
+
+// Premium API (key required)
+   async function handlePremiumAPI(req, res, type) {
+     if (req.method === 'OPTIONS') {
+       res.writeHead(204, { 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Methods': 'POST, OPTIONS', 'Access-Control-Allow-Headers': 'Content-Type, X-API-Key, X-X402-Payment' });
+       res.end(); return;
+     }
+  
+     // Check for x402 payment header (on-chain USDC payment)
+     const x402Payment = req.headers['x-x402-payment'];
+     if (x402Payment) {
+       let body = '';
+       req.on('data', c => body += c);
+       req.on('end', async () => {
+         try {
+           const input = JSON.parse(body || '{}');
+           const priceId = input.price_id || 'price_starter';
+           const verified = await verifyX402Payment(x402Payment, priceId);
+        
+           if (!verified.success) {
+             res.writeHead(402, { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' });
+             res.end(JSON.stringify({ 
+               error: 'Payment verification failed', 
+               reason: verified.error,
+               paymentMethods: {
+                 x402: {
+                   type: 'USDC',
+                   chain: 'base',
+                   to: AGENT_WALLET,
+                   amount: verified.amount,
+                   instructions: 'Send USDC to wallet address and include tx hash in X-X402-Payment header'
+                 }
+               }
+             }));
+             return;
+           }
+        
+           // Payment verified, execute the request
+           const cost = CREDIT_COST[type] || 1;
+           useCredits(verified.apiKey, cost);
+           const text = input.text || input.code || '';
+           const language = input.language || input.mode || '';
+           const max_length = input.max_length || 100;
+        
+           const prompts = {
+             analyze: `Analyze the following text. Identify key themes, sentiment, and structure:\n\n${text}`,
+             summarize: `Summarize the following text in ${max_length} words or fewer:\n\n${text}`,
+             review: `Review the following ${language || ''} code for bugs, security issues, and improvements:\n\n${text}`,
+             security: `Perform a security audit on this ${language || ''} code. Check for OWASP Top 10 vulnerabilities:\n\n${text}`,
+             explain: `Explain this ${language || ''} code in simple terms:\n\n${text}`,
+             refactor: `Suggest refactoring improvements for this ${language || ''} code. Show before/after:\n\n${text}`,
+             complexity: `Analyze the complexity of this ${language || ''} code. Report on cyclomatic complexity, nesting, and line counts:\n\n${text}`,
+           };
+        
+           const result = await callAI([{ role: 'user', content: prompts[type] || body }]);
+           const updatedCredits = getCredits(verified.apiKey);
+           res.writeHead(200, { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' });
+           analyticsTracker.track(req);
+           res.end(JSON.stringify({ 
+             result, 
+             type, 
+             credits_remaining: updatedCredits.credits,
+             payment_verified: true,
+             tx_hash: x402Payment
+           }));
+         } catch (e) {
+           res.writeHead(500, { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' });
+           res.end(JSON.stringify({ error: 'Internal error', message: e.message }));
+         }
+       });
+       return;
+     }
+  
+     // Traditional API key flow
+     const apiKey = req.headers['x-api-key'] || req.headers['authorization']?.replace('Bearer ', '');
+     if (!apiKey) {
+       res.writeHead(401, { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' });
+       res.end(JSON.stringify({ 
+         error: 'Payment required', 
+         message: 'Provide X-API-Key header or use X-X402-Payment for on-chain payment',
+         paymentMethods: {
+           x402: {
+             type: 'USDC',
+             chain: 'base',
+             to: AGENT_WALLET,
+             instructions: 'Send USDC and include tx hash in X-X402-Payment header'
+           }
+         }
+       }));
+       return;
+     }
+
+     const credits = getCredits(apiKey);
+     if (!credits) {
+       res.writeHead(403, { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' });
+       res.end(JSON.stringify({ error: 'Invalid API key' }));
+       return;
+     }
+
+     const cost = CREDIT_COST[type] || 1;
+     if (credits.credits < cost) {
+       res.writeHead(402, { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' });
+       res.end(JSON.stringify({ 
+         error: 'Insufficient credits', 
+         credits_remaining: credits.credits, 
+         required: cost,
+         paymentMethods: {
+           x402: {
+             type: 'USDC',
+             chain: 'base',
+             to: AGENT_WALLET,
+             amount: cost * 0.01,
+             instructions: 'Send USDC to wallet address and include tx hash in X-X402-Payment header'
+           }
+         }
+       }));
+       return;
+     }
+
+     let body = '';
+     req.on('data', c => body += c);
+     req.on('end', async () => {
+       useCredits(apiKey, cost);
+       let input;
+       try { input = JSON.parse(body || '{}'); } catch { input = {}; }
+       const text = input.text || input.code || '';
+       const language = input.language || input.mode || '';
+       const max_length = input.max_length || 100;
+
+       const prompts = {
+         analyze: `Analyze the following text. Identify key themes, sentiment, and structure:\n\n${text}`,
+         summarize: `Summarize the following text in ${max_length} words or fewer:\n\n${text}`,
+         review: `Review the following ${language || ''} code for bugs, security issues, and improvements:\n\n${text}`,
+         security: `Perform a security audit on this ${language || ''} code. Check for OWASP Top 10 vulnerabilities:\n\n${text}`,
+         explain: `Explain this ${language || ''} code in simple terms:\n\n${text}`,
+         refactor: `Suggest refactoring improvements for this ${language || ''} code. Show before/after:\n\n${text}`,
+         complexity: `Analyze the complexity of this ${language || ''} code. Report on cyclomatic complexity, nesting, and line counts:\n\n${text}`,
+       };
+
+       const result = await callAI([{ role: 'user', content: prompts[type] || body }]);
+       const updatedCredits = getCredits(apiKey);
+       res.writeHead(200, { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' });
+       analyticsTracker.track(req);
+       res.end(JSON.stringify({ result, type, credits_remaining: updatedCredits.credits }));
+     });
+   }
+
+// Stats endpoint
+async function handleStats(req, res) {
+  res.writeHead(200, { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' });
+  const db = readJSON(API_KEYS);
+  const users = Object.entries(db).map(([k, v]) => ({ key_prefix: k.slice(0, 10) + '...', credits: v.credits, created: v.created, used: v.used || 0 }));
+  res.end(JSON.stringify({ total_users: Object.keys(db).length, active_free_trials: users.filter(u => u.created && new Date(u.created) > Date.now() - 86400000).length, users }));
+}
+// Analytics stats
+async function handleAnalyticsStats(req, res) {
+  res.writeHead(200, { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' });
+  const summary = getAnalyticsSummary();
+  res.end(JSON.stringify(summary));
+}
+
+// Wallet payment verification (Base chain USDC)
+async function handleWalletPayment(req, res) {
+  if (req.method === 'OPTIONS') {
+    res.writeHead(204, { 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Methods': 'POST, OPTIONS', 'Access-Control-Allow-Headers': 'Content-Type' });
+    res.end(); return;
+  }
+  if (req.method !== 'POST') {
+    res.writeHead(405); res.end('Method Not Allowed'); return;
+  }
+
+  let body = '';
+  req.on('data', c => body += c);
+  req.on('end', async () => {
+    try {
+      const { tx_hash, price_id, wallet_address } = JSON.parse(body || '{}');
+      
+      if (!tx_hash || !price_id || !wallet_address) {
+        res.writeHead(400, { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' });
+        res.end(JSON.stringify({ error: 'Missing tx_hash, price_id, or wallet_address' }));
+        return;
+      }
+
+      const BASESCAN_API = 'https://api.basescan.org/api';
+      const verifyUrl = `${BASESCAN_API}?module=proxy&action=eth_getTransactionByHash&txhash=${tx_hash}&apikey=YourApiKeyToken`;
+      
+      const txResp = await fetch(verifyUrl);
+      const txData = await txResp.json();
+      
+      if (!txData.result || txData.result.to !== '0x76eADdEBFfb6A61DD071f97F4508467fc55dd113') {
+        res.writeHead(400, { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' });
+        res.end(JSON.stringify({ error: 'Invalid transaction or wrong recipient address' }));
+        return;
+      }
+
+      const receiptUrl = `${BASESCAN_API}?module=proxy&action=eth_getTransactionReceipt&txhash=${tx_hash}&apikey=YourApiKeyToken`;
+      const receiptResp = await fetch(receiptUrl);
+      const receiptData = await receiptResp.json();
+      
+      if (!receiptData.result || receiptData.result.status !== '0x1') {
+        res.writeHead(400, { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' });
+        res.end(JSON.stringify({ error: 'Transaction failed or not confirmed' }));
+        return;
+      }
+
+      const key = addCredits(price_id, tx_hash);
+      
+      res.writeHead(200, { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' });
+      res.end(JSON.stringify({ 
+        success: true, 
+        api_key: key, 
+        message: 'Payment verified and credits granted',
+        tx_hash,
+        wallet_address
+      }));
+    } catch (e) {
+      log(`Wallet payment error: ${e.message}`);
+      res.writeHead(500, { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' });
+      res.end(JSON.stringify({ error: 'Payment verification failed', message: e.message }));
+    }
+  });
+}
+
+
+// ── Request Router ─────────────────────────────────────────
+
+
+// Analytics handler for conversion tracking
+function handleAnalyticsEvent(req, res) {
+  const fs = require('fs');
+  const path = require('path');
+  const analyticsFile = path.join(__dirname, 'data', 'analytics-events.jsonl');
+  
+  if (req.method === 'POST') {
+    let body = '';
+    req.on('data', chunk => body += chunk);
+    req.on('end', () => {
+      try {
+        const event = {
+          ...JSON.parse(body),
+          ip: req.headers['x-forwarded-for'] || req.socket.remoteAddress,
+          userAgent: req.headers['user-agent'],
+          serverTimestamp: new Date().toISOString()
+        };
+        fs.appendFileSync(analyticsFile, JSON.stringify(event) + '\n');
+        res.writeHead(200, {'Content-Type': 'application/json'});
+        res.end(JSON.stringify({ success: true }));
+      } catch (err) {
+        res.writeHead(500, {'Content-Type': 'application/json'});
+        res.end(JSON.stringify({ error: 'Invalid JSON' }));
+      }
+    });
+  } else {
+    res.writeHead(405); res.end('Method not allowed');
+  }
+}
+
+function handleAnalyticsSummary(req, res) {
+  const fs = require('fs');
+  const path = require('path');
+  const analyticsFile = path.join(__dirname, 'data', 'analytics-events.jsonl');
+  
+  if (!fs.existsSync(analyticsFile)) {
+    res.writeHead(200, {'Content-Type': 'application/json'});
+    return res.end(JSON.stringify({ totalEvents: 0, toolUsage: {}, ctaClicks: {}, funnelSteps: {}, pageVisits: {}, socialShares: {}, engagement: {} }));
+  }
+  
+  const lines = fs.readFileSync(analyticsFile, 'utf8').trim().split('\n');
+  const events = lines.filter(l => l.trim()).map(line => JSON.parse(line));
+  
+  const summary = { totalEvents: events.length, toolUsage: {}, ctaClicks: {}, funnelSteps: {}, pageVisits: {}, socialShares: {}, engagement: {} };
+  
+  events.forEach(event => {
+    if (event.type === 'tool_usage' && event.data) {
+      const tool = event.data.tool;
+      summary.toolUsage[tool] = (summary.toolUsage[tool] || 0) + 1;
+    } else if (event.type === 'cta_click' && event.data) {
+      summary.ctaClicks[event.data.ctaId] = (summary.ctaClicks[event.data.ctaId] || 0) + 1;
+    } else if (event.type === 'funnel_step' && event.data) {
+      summary.funnelSteps[event.data.stepId] = (summary.funnelSteps[event.data.stepId] || 0) + 1;
+    } else if (event.type === 'page_visit' && event.data) {
+      summary.pageVisits[event.data.path] = (summary.pageVisits[event.data.path] || 0) + 1;
+    } else if (event.type === 'social_share' && event.data) {
+      summary.socialShares[event.data.platform] = (summary.socialShares[event.data.platform] || 0) + 1;
+    } else if (event.type === 'engagement' && event.data) {
+      summary.engagement[event.data.type] = (summary.engagement[event.data.type] || 0) + 1;
+    }
+  });
+  
+  res.writeHead(200, {'Content-Type': 'application/json'});
+  res.end(JSON.stringify(summary));
+}
+
+const server = http.createServer(async (req, res) => {
+  const pathname = url.parse(req.url).pathname;
+  analyticsTracker.track(req);
+  
+  // CORS preflight for API routes
+  if (req.method === 'OPTIONS') {
+    res.writeHead(204, { 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Methods': 'GET, POST, OPTIONS', 'Access-Control-Allow-Headers': 'Content-Type, X-API-Key, Authorization' });
+    res.end(); return;
+  }
+
+  // Health
+  if (pathname === '/api/health') return handleHealth(req, res);
+
+  // MCP Protocol (for AI agent directory discovery)
+  if (pathname.startsWith('/mcp')) return handleMcpRequest(req, res, readJSON(API_KEYS), FREE_LIMIT);
+
+  // Free trial key (multiple aliases for discoverability)
+  if (pathname === '/api/free-trial-key' || pathname === '/api/dev-key') return handleFreeTrialKey(req, res);
+
+  // Checkout -> redirect to wallet-payment page with price params
+  if (pathname === '/api/checkout') {
+    const url = new URL(req.url, `http://${req.headers.host}`);
+    const priceId = url.searchParams.get('price_id') || '';
+    const params = new URLSearchParams();
+    if (priceId) params.set('price_id', priceId);
+    // Map known price IDs
+    const priceMap = { price_starter: { amount: '5', credits: '500', tier: 'Starter' }, price_pro: { amount: '25', credits: '3000', tier: 'Pro' }, price_enterprise: { amount: '100', credits: '15000', tier: 'Enterprise' } };
+    if (priceMap[priceId]) Object.assign(Object.fromEntries(params), priceMap[priceId]);
+    Object.entries(priceMap[priceId] || {}).forEach(([k,v]) => params.set(k, v));
+    res.writeHead(302, { Location: `/wallet-payment?${params.toString()}` });
+    res.end();
+    return;
+  }
+
+  // Stats
+  if (pathname === '/api/stats') return handleStats(req, res);
+
+  // GitHub webhook
+  if (pathname === '/api/github-webhook') return githubWebhook.handle(req, res);
+
+  // Free API endpoints
+  const freeMatch = pathname.match(/^\/free\/(\w+)$/);
+  if (freeMatch) return handleFreeAPI(req, res, freeMatch[1]);
+
+  // Premium API endpoints
+  const premiumMatch = pathname.match(/^\/v1\/(\w+)$/);
+  if (premiumMatch) return handlePremiumAPI(req, res, premiumMatch[1]);
+
+  // Analytics stats
+  if (pathname === '/api/stats/analytics') return handleAnalyticsStats(req, res);
+
+  // Analytics endpoints for conversion tracking
+  if (pathname === '/api/analytics/event') return handleAnalyticsEvent(req, res);
+  if (pathname === '/api/analytics/summary') return handleAnalyticsSummary(req, res);
+
+
+   // Wallet payment verification (multiple aliases)
+   if (['/api/wallet-payment', '/api/wallet/verify-payment', '/api/pay/wallet', '/api/wallet/payment', '/api/verify-x402-payment'].includes(pathname)) {
+     return handleWalletPayment(req, res);
+   }
+
+  // Static content
+  return serveStatic(req, res);
+});
+
+server.listen(PORT, () => {
+  log(`Gateway v2.0 started on port ${PORT}`);
+});

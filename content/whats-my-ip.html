@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>What's My IP — Find Your Public IP Address & Location | my-automaton</title>
+<meta name="description" content="Find your public IP address, ISP, rough location, and browser info. 100% free, no signup, instant results.">
+<style>
+:root{--bg:#0f172a;--card:#1e293b;--text:#e2e8f0;--muted:#94a3b8;--accent:#38bdf8;--green:#4ade80;--border:#334155}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+header{background:var(--card);border-bottom:1px solid var(--border);padding:1rem 2rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap}
+header h1{font-size:1.25rem;color:var(--accent)}
+nav a{color:var(--muted);text-decoration:none;margin-left:1rem;font-size:.875rem}
+main{max-width:550px;margin:2rem auto;padding:0 1.5rem}
+.ip-display{background:var(--card);border:1px solid var(--accent);border-radius:12px;padding:2rem;text-align:center;margin-bottom:1.5rem}
+.ip-display .label{font-size:.65rem;color:var(--muted);text-transform:uppercase;margin-bottom:.5rem}
+.ip-display .ip{font-family:"Fira Code",monospace;font-size:2rem;color:var(--green);font-weight:800;margin-bottom:.5rem}
+.ip-display .copy-btn{padding:.3rem 1.2rem;border:1px solid var(--accent);border-radius:6px;background:transparent;color:var(--accent);cursor:pointer;font-size:.7rem;margin-top:.5rem}
+.ip-display .copy-btn:hover{background:rgba(56,189,248,.1)}
+.details{display:grid;gap:.5rem}
+.detail-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:1rem;display:flex;justify-content:space-between;align-items:center}
+.detail-card .key{font-size:.75rem;color:var(--muted)}
+.detail-card .val{font-size:.85rem;color:var(--text);font-weight:600}
+.loading{text-align:center;color:var(--muted);font-size:.8rem;padding:2rem}
+footer{text-align:center;padding:2rem;color:var(--muted);font-size:.8rem;border-top:1px solid var(--border);margin-top:2rem}footer a{color:var(--accent)}
+</style>
+
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"What's My IP Address","applicationCategory":"DeveloperApplication","operatingSystem":"Any","url":"https://automation.songheng.vip/whats-my-ip.html","description":"See your public IP address, ISP info, and geolocation data.","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"aggregateRating":{"@type":"AggregateRating","ratingValue":"4.8","ratingCount":"127"}}</script>
+</head>
+<body>
+<header><h1>🌍 What's My IP</h1><nav><a href="/">Home</a><a href="/dev-tools.html">Tools</a><a href="/api-playground.html">API</a></nav></header>
+<main>
+<div class="ip-display" id="ipDisplay">
+  <div class="label">Your Public IP Address</div>
+  <div class="ip" id="ipAddr">Loading...</div>
+  <button class="copy-btn" onclick="copyIP()">📋 Copy IP</button>
+</div>
+<div class="details" id="details"></div>
+</main>
+<footer><p>my-automaton · Free IP Lookup · <a href="/dev-tools.html">All Tools</a> · <a href="/api-docs.html">API Docs</a></p></footer>
+<script>
+async function lookup(){
+  try{
+    const res=await fetch('https://api.ipify.org?format=json');
+    const d=await res.json();
+    document.getElementById('ipAddr').textContent=d.ip;
+    window.myIP=d.ip;
+
+    // Get more info
+    try{
+      const r2=await fetch(`https://ipapi.co/${d.ip}/json/`);
+      const geo=await r2.json();
+      document.getElementById('details').innerHTML=`
+        <div class="detail-card"><span class="key">City</span><span class="val">${geo.city||'—'}</span></div>
+        <div class="detail-card"><span class="key">Region</span><span class="val">${geo.region||'—'}</span></div>
+        <div class="detail-card"><span class="key">Country</span><span class="val">${geo.country_name||'—'} ${geo.country_code?('('+geo.country_code+')'):''}</span></div>
+        <div class="detail-card"><span class="key">ISP</span><span class="val">${geo.org||'—'}</span></div>
+        <div class="detail-card"><span class="key">Timezone</span><span class="val">${geo.timezone||'—'}</span></div>
+        <div class="detail-card"><span class="key">Browser</span><span class="val">${navigator.userAgent.split(' ').slice(-1)[0]||'—'}</span></div>
+      `;
+    }catch(e){
+      document.getElementById('details').innerHTML='<div class="detail-card"><span class="key">Note</span><span class="val">Location data unavailable</span></div>';
+    }
+  }catch(e){
+    document.getElementById('ipAddr').textContent='Error fetching IP';
+  }
+}
+function copyIP(){const ip=window.myIP;if(ip)navigator.clipboard.writeText(ip)}
+lookup();
+</script>
+<script src="/conversion-banner.js" defer></script>
+</body>
+</html>

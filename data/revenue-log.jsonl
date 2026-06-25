@@ -1,0 +1,13 @@
+{"timestamp":"2026-06-15T10:45:09.220Z","total_requests":0,"free_requests":0,"premium_requests":0,"revenue_hkd":0,"api_keys":0}
+{"timestamp":"2026-06-15T10:45:14.352Z","total_requests":0,"free_requests":0,"premium_requests":0,"revenue_hkd":0,"api_keys":0}
+{"timestamp":"2026-06-15T10:45:23.044Z","total_requests":0,"free_requests":0,"premium_requests":0,"revenue_hkd":0,"api_keys":0}
+{"ts":"2026-06-16T10:09:13.006Z","gateway":true,"creditsSold":7150,"revenueHKD":429,"revenueUSD":54.91,"totalKeys":6,"totalCreditsRemaining":7126,"totalCreditsUsed":24,"services":[]}
+{"ts":"2026-06-16T10:09:29.741Z","gateway":true,"creditsSold":7150,"revenueHKD":429,"revenueUSD":54.91,"totalKeys":6,"totalCreditsRemaining":7126,"totalCreditsUsed":24}
+{"ts":"2026-06-16T10:09:33.173Z","gateway":true,"creditsSold":7150,"revenueHKD":429,"revenueUSD":54.91,"totalKeys":6,"totalCreditsRemaining":7126,"totalCreditsUsed":24}
+{"ts":"2026-06-16T10:11:48.864Z","gateway":true,"creditsSold":7150,"revenueHKD":429,"revenueUSD":54.91,"totalKeys":6,"totalCreditsRemaining":7126,"totalCreditsUsed":24}
+{"ts":"2026-06-16T10:14:22.822Z","alive":true,"uptime":42,"freeToday":0,"deepseek":true}
+{"ts":"2026-06-16T10:14:26.101Z","alive":true,"uptime":45,"freeToday":0,"deepseek":true}
+{"ts":"2026-06-16T10:14:31.338Z","alive":true,"uptime":50,"freeToday":0,"deepseek":true}
+{"ts":"2026-06-16T10:14:58.614Z","alive":true,"uptime":78,"freeToday":0,"deepseek":true}
+{"ts":"2026-06-16T10:15:35.675Z","alive":true,"uptime":115,"freeToday":0,"deepseek":true}
+{"ts":"2026-06-16T10:17:07.979Z","alive":true,"uptime":207,"freeToday":0,"deepseek":true}

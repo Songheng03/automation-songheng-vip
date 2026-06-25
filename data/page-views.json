@@ -1,0 +1,5417 @@
+{
+  "2026-06-20": {
+    "/free/analyze": {
+      "count": 9,
+      "uniqueIps": [
+        "::1",
+        "2001:19f0:1000:c516:5400:5ff:fed0:88d4",
+        "::ffff:127.0.0.1"
+      ]
+    },
+    "/index.html": {
+      "count": 63,
+      "uniqueIps": [
+        "45.63.1.116",
+        "141.148.153.213",
+        "146.190.150.118",
+        "::ffff:127.0.0.1",
+        "109.70.100.15",
+        "2001:19f0:1000:c516:5400:5ff:fed0:88d4",
+        "5.255.231.54",
+        "34.181.216.207",
+        "112.51.168.77",
+        "206.189.225.181",
+        "2604:a880:400:d0::b6e:e001",
+        "2604:a880:400:d0::24fe:a001",
+        "147.182.149.75",
+        "2a03:b0c0:1:d0::d83:3001",
+        "64.225.75.246",
+        "206.81.24.227",
+        "2a03:b0c0:2:d0::1737:1",
+        "167.99.210.137",
+        "2a03:b0c0:3:d0::fef:2001",
+        "139.59.231.238",
+        "2400:6180:100:d0::97f:b001",
+        "205.169.39.58",
+        "104.164.173.182",
+        "104.164.126.31",
+        "45.88.138.45",
+        "103.196.9.213",
+        "103.196.9.153"
+      ]
+    },
+    "/.env": {
+      "count": 8,
+      "uniqueIps": [
+        "107.170.38.77",
+        "147.182.149.75",
+        "206.189.225.181",
+        "64.225.75.246",
+        "167.99.210.137",
+        "206.81.24.227",
+        "139.59.231.238",
+        "45.88.138.45"
+      ]
+    },
+    "/health": {
+      "count": 4,
+      "uniqueIps": [
+        "::1",
+        "::ffff:127.0.0.1"
+      ]
+    },
+    "/api-docs": {
+      "count": 1,
+      "uniqueIps": [
+        "2001:19f0:1000:c516:5400:5ff:fed0:88d4"
+      ]
+    },
+    "/blog": {
+      "count": 1,
+      "uniqueIps": [
+        "2001:19f0:1000:c516:5400:5ff:fed0:88d4"
+      ]
+    },
+    "/dev-tools": {
+      "count": 1,
+      "uniqueIps": [
+        "2001:19f0:1000:c516:5400:5ff:fed0:88d4"
+      ]
+    },
+    "/pricing": {
+      "count": 1,
+      "uniqueIps": [
+        "2001:19f0:1000:c516:5400:5ff:fed0:88d4"
+      ]
+    },
+    "/api/stats/overview": {
+      "count": 6,
+      "uniqueIps": [
+        "::ffff:127.0.0.1"
+      ]
+    },
+    "/api/checkout": {
+      "count": 1,
+      "uniqueIps": [
+        "::ffff:127.0.0.1"
+      ]
+    },
+    "/api/wallet-payment": {
+      "count": 1,
+      "uniqueIps": [
+        "::ffff:127.0.0.1"
+      ]
+    },
+    "/text-to-slug.html": {
+      "count": 1,
+      "uniqueIps": [
+        "5.255.231.246"
+      ]
+    },
+    "/learn-to-code-with-ai.html": {
+      "count": 1,
+      "uniqueIps": [
+        "95.108.213.250"
+      ]
+    },
+    "/blog/free-ai-code-review-tool-guide.html": {
+      "count": 1,
+      "uniqueIps": [
+        "87.250.224.126"
+      ]
+    },
+    "/blog/ai-code-review-vs-traditional-code-review-cost-comparison.html": {
+      "count": 1,
+      "uniqueIps": [
+        "95.108.213.88"
+      ]
+    },
+    "/free-ai-code-explainer.html": {
+      "count": 1,
+      "uniqueIps": [
+        "213.180.203.165"
+      ]
+    },
+    "/welcome.html": {
+      "count": 1,
+      "uniqueIps": [
+        "5.255.231.250"
+      ]
+    },
+    "/markdown-previewer.html": {
+      "count": 1,
+      "uniqueIps": [
+        "5.255.231.6"
+      ]
+    },
+    "/csv-to-json-converter.html": {
+      "count": 1,
+      "uniqueIps": [
+        "5.255.231.7"
+      ]
+    },
+    "/cron-builder.html": {
+      "count": 1,
+      "uniqueIps": [
+        "5.255.231.54"
+      ]
+    },
+    "/complexity-analyzer.html": {
+      "count": 1,
+      "uniqueIps": [
+        "5.255.231.38"
+      ]
+    },
+    "/blog/free-ai-security-scanning.html": {
+      "count": 1,
+      "uniqueIps": [
+        "95.108.213.170"
+      ]
+    },
+    "/blog/ai-code-review-best-practices.html": {
+      "count": 1,
+      "uniqueIps": [
+        "213.180.203.142"
+      ]
+    },
+    "/blog/ai-code-review-pricing-comparison.html": {
+      "count": 1,
+      "uniqueIps": [
+        "213.180.203.84"
+      ]
+    },
+    "/analytics.html": {
+      "count": 1,
+      "uniqueIps": [
+        "5.255.231.26"
+      ]
+    },
+    "/blog/free-ai-api-gateway-setup.html": {
+      "count": 1,
+      "uniqueIps": [
+        "87.250.224.20"
+      ]
+    },
+    "/json-to-typescript.html": {
+      "count": 1,
+      "uniqueIps": [
+        "87.250.224.104"
+      ]
+    },
+    "/sql-formatter.html": {
+      "count": 1,
+      "uniqueIps": [
+        "213.180.203.228"
+      ]
+    },
+    "/widget-embed.html": {
+      "count": 1,
+      "uniqueIps": [
+        "213.180.203.244"
+      ]
+    },
+    "/unix-timestamp.html": {
+      "count": 1,
+      "uniqueIps": [
+        "213.180.203.226"
+      ]
+    },
+    "/qrcode-generator.html": {
+      "count": 1,
+      "uniqueIps": [
+        "5.255.231.61"
+      ]
+    },
+    "/blog/free-ai-seo-audit-tool.html": {
+      "count": 1,
+      "uniqueIps": [
+        "87.250.224.94"
+      ]
+    },
+    "/get-started.html": {
+      "count": 4,
+      "uniqueIps": [
+        "2409:8a34:2a41:d470:dfa5:2a24:84a4:3399",
+        "104.164.126.31",
+        "45.88.138.45"
+      ]
+    },
+    "/api/generate-free-key": {
+      "count": 2,
+      "uniqueIps": [
+        "2409:8a34:2a41:d470:dfa5:2a24:84a4:3399"
+      ]
+    },
+    "/api/create-checkout": {
+      "count": 2,
+      "uniqueIps": [
+        "2409:8a34:2a41:d470:dfa5:2a24:84a4:3399"
+      ]
+    },
+    "/api/health": {
+      "count": 18,
+      "uniqueIps": [
+        "::ffff:127.0.0.1",
+        "2001:19f0:1000:c516:5400:5ff:fed0:88d4"
+      ]
+    },
+    "/api/analyze": {
+      "count": 1,
+      "uniqueIps": [
+        "::ffff:127.0.0.1"
+      ]
+    },
+    "/free/summarize": {
+      "count": 4,
+      "uniqueIps": [
+        "::ffff:127.0.0.1"
+      ]
+    },
+    "/free/v1/analyze": {
+      "count": 5,
+      "uniqueIps": [
+        "::ffff:127.0.0.1"
+      ]
+    },
+    "/free/v1/summarize": {
+      "count": 3,
+      "uniqueIps": [
+        "::ffff:127.0.0.1"
+      ]
+    },
+    "/v1/analyze": {
+      "count": 4,
+      "uniqueIps": [
+        "::ffff:127.0.0.1"
+      ]
+    },
+    "/v1/summarize": {
+      "count": 1,
+      "uniqueIps": [
+        "::ffff:127.0.0.1"
+      ]
+    },
+    "/v1/review": {
+      "count": 1,
+      "uniqueIps": [
+        "::ffff:127.0.0.1"
+      ]
+    },
+    "/api/credits": {
+      "count": 1,
+      "uniqueIps": [
+        "::ffff:127.0.0.1"
+      ]
+    },
+    "/console/": {
+      "count": 6,
+      "uniqueIps": [
+        "206.189.225.181",
+        "147.182.149.75",
+        "167.99.210.137",
+        "64.225.75.246",
+        "206.81.24.227",
+        "139.59.231.238"
+      ]
+    },
+    "/server": {
+      "count": 6,
+      "uniqueIps": [
+        "206.189.225.181",
+        "147.182.149.75",
+        "167.99.210.137",
+        "64.225.75.246",
+        "206.81.24.227",
+        "139.59.231.238"
+      ]
+    },
+    "/server-status": {
+      "count": 6,
+      "uniqueIps": [
+        "206.189.225.181",
+        "147.182.149.75",
+        "139.59.231.238",
+        "64.225.75.246",
+        "167.99.210.137",
+        "206.81.24.227"
+      ]
+    },
+    "/about": {
+      "count": 6,
+      "uniqueIps": [
+        "147.182.149.75",
+        "206.189.225.181",
+        "167.99.210.137",
+        "64.225.75.246",
+        "206.81.24.227",
+        "139.59.231.238"
+      ]
+    },
+    "/___proxy_subdomain_whm/login": {
+      "count": 6,
+      "uniqueIps": [
+        "147.182.149.75",
+        "206.189.225.181",
+        "206.81.24.227",
+        "64.225.75.246",
+        "167.99.210.137",
+        "139.59.231.238"
+      ]
+    },
+    "/___proxy_subdomain_cpanel": {
+      "count": 6,
+      "uniqueIps": [
+        "147.182.149.75",
+        "206.189.225.181",
+        "64.225.75.246",
+        "167.99.210.137",
+        "206.81.24.227",
+        "139.59.231.238"
+      ]
+    },
+    "/v2/_catalog": {
+      "count": 6,
+      "uniqueIps": [
+        "206.189.225.181",
+        "147.182.149.75",
+        "167.99.210.137",
+        "64.225.75.246",
+        "206.81.24.227",
+        "139.59.231.238"
+      ]
+    },
+    "/.DS_Store": {
+      "count": 6,
+      "uniqueIps": [
+        "147.182.149.75",
+        "206.189.225.181",
+        "64.225.75.246",
+        "206.81.24.227",
+        "167.99.210.137",
+        "139.59.231.238"
+      ]
+    },
+    "/.git/config": {
+      "count": 6,
+      "uniqueIps": [
+        "206.189.225.181",
+        "147.182.149.75",
+        "206.81.24.227",
+        "167.99.210.137",
+        "64.225.75.246",
+        "139.59.231.238"
+      ]
+    },
+    "/graphql": {
+      "count": 6,
+      "uniqueIps": [
+        "206.189.225.181",
+        "147.182.149.75",
+        "64.225.75.246",
+        "167.99.210.137",
+        "206.81.24.227",
+        "139.59.231.238"
+      ]
+    },
+    "/api": {
+      "count": 6,
+      "uniqueIps": [
+        "206.189.225.181",
+        "147.182.149.75",
+        "64.225.75.246",
+        "167.99.210.137",
+        "206.81.24.227",
+        "139.59.231.238"
+      ]
+    },
+    "/api/graphql": {
+      "count": 6,
+      "uniqueIps": [
+        "206.189.225.181",
+        "147.182.149.75",
+        "64.225.75.246",
+        "167.99.210.137",
+        "206.81.24.227",
+        "139.59.231.238"
+      ]
+    },
+    "/graphql/api": {
+      "count": 6,
+      "uniqueIps": [
+        "206.189.225.181",
+        "147.182.149.75",
+        "64.225.75.246",
+        "167.99.210.137",
+        "206.81.24.227",
+        "139.59.231.238"
+      ]
+    },
+    "/api/gql": {
+      "count": 6,
+      "uniqueIps": [
+        "206.189.225.181",
+        "147.182.149.75",
+        "64.225.75.246",
+        "167.99.210.137",
+        "206.81.24.227",
+        "139.59.231.238"
+      ]
+    },
+    "/telescope/requests": {
+      "count": 6,
+      "uniqueIps": [
+        "206.189.225.181",
+        "147.182.149.75",
+        "167.99.210.137",
+        "64.225.75.246",
+        "206.81.24.227",
+        "139.59.231.238"
+      ]
+    },
+    "/actuator/env": {
+      "count": 6,
+      "uniqueIps": [
+        "206.189.225.181",
+        "147.182.149.75",
+        "64.225.75.246",
+        "206.81.24.227",
+        "167.99.210.137",
+        "139.59.231.238"
+      ]
+    },
+    "/@vite/env": {
+      "count": 6,
+      "uniqueIps": [
+        "206.189.225.181",
+        "147.182.149.75",
+        "64.225.75.246",
+        "167.99.210.137",
+        "206.81.24.227",
+        "139.59.231.238"
+      ]
+    },
+    "/debug/default/view": {
+      "count": 6,
+      "uniqueIps": [
+        "206.189.225.181",
+        "147.182.149.75",
+        "64.225.75.246",
+        "167.99.210.137",
+        "206.81.24.227",
+        "139.59.231.238"
+      ]
+    },
+    "/zz-nonexistent-test-8492.html": {
+      "count": 1,
+      "uniqueIps": [
+        "45.88.138.45"
+      ]
+    },
+    "/.git/HEAD": {
+      "count": 1,
+      "uniqueIps": [
+        "45.88.138.45"
+      ]
+    },
+    "/api-docs.html": {
+      "count": 3,
+      "uniqueIps": [
+        "104.164.126.31",
+        "45.88.138.45"
+      ]
+    },
+    "/api-examples.html": {
+      "count": 2,
+      "uniqueIps": [
+        "104.164.126.31",
+        "45.88.138.45"
+      ]
+    },
+    "/api-playground.html": {
+      "count": 3,
+      "uniqueIps": [
+        "104.164.126.31",
+        "45.88.138.45"
+      ]
+    },
+    "/dashboard.html": {
+      "count": 3,
+      "uniqueIps": [
+        "104.164.126.31",
+        "45.88.138.45"
+      ]
+    },
+    "/directory-helper.html": {
+      "count": 3,
+      "uniqueIps": [
+        "104.164.126.31",
+        "45.88.138.45"
+      ]
+    },
+    "/blog.html": {
+      "count": 3,
+      "uniqueIps": [
+        "104.164.126.31",
+        "45.88.138.45"
+      ]
+    },
+    "/pricing.html": {
+      "count": 3,
+      "uniqueIps": [
+        "104.164.126.31",
+        "45.88.138.45"
+      ]
+    },
+    "/pr-description-generator.html": {
+      "count": 3,
+      "uniqueIps": [
+        "104.164.126.31",
+        "45.88.138.45"
+      ]
+    },
+    "/daily.html": {
+      "count": 3,
+      "uniqueIps": [
+        "104.164.126.31",
+        "45.88.138.45"
+      ]
+    },
+    "/scriptText": {
+      "count": 1,
+      "uniqueIps": [
+        "45.88.138.45"
+      ]
+    },
+    "/whoAmI/": {
+      "count": 1,
+      "uniqueIps": [
+        "45.88.138.45"
+      ]
+    },
+    "/asynchPeople/": {
+      "count": 1,
+      "uniqueIps": [
+        "45.88.138.45"
+      ]
+    },
+    "/credentials/store/system/domain/_/": {
+      "count": 1,
+      "uniqueIps": [
+        "45.88.138.45"
+      ]
+    },
+    "/configure": {
+      "count": 1,
+      "uniqueIps": [
+        "45.88.138.45"
+      ]
+    },
+    "/env-vars.html/": {
+      "count": 1,
+      "uniqueIps": [
+        "45.88.138.45"
+      ]
+    },
+    "/manage": {
+      "count": 1,
+      "uniqueIps": [
+        "45.88.138.45"
+      ]
+    },
+    "/script": {
+      "count": 1,
+      "uniqueIps": [
+        "45.88.138.45"
+      ]
+    },
+    "/systemInfo": {
+      "count": 1,
+      "uniqueIps": [
+        "45.88.138.45"
+      ]
+    },
+    "/credentials/": {
+      "count": 1,
+      "uniqueIps": [
+        "45.88.138.45"
+      ]
+    },
+    "/.ssh/id_ecdsa": {
+      "count": 1,
+      "uniqueIps": [
+        "45.88.138.45"
+      ]
+    },
+    "/.ssh/id_dsa": {
+      "count": 1,
+      "uniqueIps": [
+        "45.88.138.45"
+      ]
+    },
+    "/.ssh/id_rsa": {
+      "count": 1,
+      "uniqueIps": [
+        "45.88.138.45"
+      ]
+    },
+    "/.ssh/id_ed25519": {
+      "count": 1,
+      "uniqueIps": [
+        "45.88.138.45"
+      ]
+    },
+    "/id_ed25519": {
+      "count": 1,
+      "uniqueIps": [
+        "45.88.138.45"
+      ]
+    },
+    "/id_rsa": {
+      "count": 1,
+      "uniqueIps": [
+        "45.88.138.45"
+      ]
+    },
+    "/.git-credentials": {
+      "count": 1,
+      "uniqueIps": [
+        "45.88.138.45"
+      ]
+    },
+    "/config/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "45.88.138.45"
+      ]
+    },
+    "/server/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "45.88.138.45"
+      ]
+    },
+    "/web/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "45.88.138.45"
+      ]
+    },
+    "/public/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "45.88.138.45"
+      ]
+    },
+    "/src/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "45.88.138.45"
+      ]
+    },
+    "/core/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "45.88.138.45"
+      ]
+    },
+    "/deploy/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "45.88.138.45"
+      ]
+    },
+    "/build/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "45.88.138.45"
+      ]
+    },
+    "/services/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "45.88.138.45"
+      ]
+    },
+    "/dist/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "45.88.138.45"
+      ]
+    },
+    "/.env_1": {
+      "count": 1,
+      "uniqueIps": [
+        "45.88.138.45"
+      ]
+    },
+    "/Procfile": {
+      "count": 1,
+      "uniqueIps": [
+        "45.88.138.45"
+      ]
+    },
+    "/.svn/entries": {
+      "count": 1,
+      "uniqueIps": [
+        "45.88.138.45"
+      ]
+    },
+    "/.hg/hgrc": {
+      "count": 1,
+      "uniqueIps": [
+        "45.88.138.45"
+      ]
+    },
+    "/metrics": {
+      "count": 1,
+      "uniqueIps": [
+        "45.88.138.45"
+      ]
+    },
+    "/debug/pprof": {
+      "count": 1,
+      "uniqueIps": [
+        "45.88.138.45"
+      ]
+    },
+    "/api/v1/status/config": {
+      "count": 1,
+      "uniqueIps": [
+        "45.88.138.45"
+      ]
+    },
+    "/minio/health/live": {
+      "count": 1,
+      "uniqueIps": [
+        "45.88.138.45"
+      ]
+    },
+    "/v1/kv/": {
+      "count": 1,
+      "uniqueIps": [
+        "45.88.138.45"
+      ]
+    },
+    "/api/http/routers": {
+      "count": 1,
+      "uniqueIps": [
+        "45.88.138.45"
+      ]
+    },
+    "/debug/pprof/cmdline": {
+      "count": 1,
+      "uniqueIps": [
+        "45.88.138.45"
+      ]
+    },
+    "/api/v1/me": {
+      "count": 1,
+      "uniqueIps": [
+        "45.88.138.45"
+      ]
+    },
+    "/api/users/admin/check": {
+      "count": 1,
+      "uniqueIps": [
+        "45.88.138.45"
+      ]
+    },
+    "/api/version": {
+      "count": 1,
+      "uniqueIps": [
+        "45.88.138.45"
+      ]
+    },
+    "/server/info": {
+      "count": 1,
+      "uniqueIps": [
+        "45.88.138.45"
+      ]
+    },
+    "/geoserver/web/": {
+      "count": 1,
+      "uniqueIps": [
+        "45.88.138.45"
+      ]
+    },
+    "/.bash_history": {
+      "count": 1,
+      "uniqueIps": [
+        "45.88.138.45"
+      ]
+    },
+    "/.zsh_history": {
+      "count": 1,
+      "uniqueIps": [
+        "45.88.138.45"
+      ]
+    },
+    "/.sh_history": {
+      "count": 1,
+      "uniqueIps": [
+        "45.88.138.45"
+      ]
+    },
+    "/Jenkinsfile": {
+      "count": 1,
+      "uniqueIps": [
+        "45.88.138.45"
+      ]
+    },
+    "/api/fetch": {
+      "count": 2,
+      "uniqueIps": [
+        "45.88.138.45"
+      ]
+    },
+    "/crumbIssuer/api/json": {
+      "count": 1,
+      "uniqueIps": [
+        "45.88.138.45"
+      ]
+    },
+    "/proxy": {
+      "count": 1,
+      "uniqueIps": [
+        "45.88.138.45"
+      ]
+    }
+  },
+  "2026-06-21": {
+    "/index.html": {
+      "count": 66,
+      "uniqueIps": [
+        "::ffff:127.0.0.1",
+        "2001:19f0:1000:c516:5400:5ff:fed0:88d4",
+        "2a09:2dc2:0:5916::",
+        "45.148.10.67",
+        "185.209.196.239",
+        "103.4.250.111",
+        "103.4.250.65",
+        "136.118.151.174",
+        "195.164.49.144",
+        "65.21.124.77",
+        "45.148.10.62",
+        "112.51.168.77",
+        "207.241.225.51",
+        "207.241.239.65"
+      ]
+    },
+    "/health": {
+      "count": 29,
+      "uniqueIps": [
+        "::ffff:127.0.0.1"
+      ]
+    },
+    "/api/stats/overview": {
+      "count": 24,
+      "uniqueIps": [
+        "::ffff:127.0.0.1",
+        "2001:19f0:1000:c516:5400:5ff:fed0:88d4"
+      ]
+    },
+    "/api/health": {
+      "count": 32,
+      "uniqueIps": [
+        "::ffff:127.0.0.1",
+        "2001:19f0:1000:c516:5400:5ff:fed0:88d4",
+        "::1"
+      ]
+    },
+    "/api/stats": {
+      "count": 3,
+      "uniqueIps": [
+        "::ffff:127.0.0.1"
+      ]
+    },
+    "/dev-tools.html": {
+      "count": 3,
+      "uniqueIps": [
+        "2001:19f0:1000:c516:5400:5ff:fed0:88d4",
+        "103.4.250.111",
+        "65.21.124.77"
+      ]
+    },
+    "/api-docs.html": {
+      "count": 5,
+      "uniqueIps": [
+        "2001:19f0:1000:c516:5400:5ff:fed0:88d4",
+        "103.4.250.111",
+        "136.118.151.174",
+        "65.21.124.77",
+        "204.62.249.38"
+      ]
+    },
+    "/pricing.html": {
+      "count": 10,
+      "uniqueIps": [
+        "2001:19f0:1000:c516:5400:5ff:fed0:88d4",
+        "::ffff:127.0.0.1",
+        "103.4.250.111",
+        "136.118.151.174",
+        "65.21.124.77",
+        "112.51.168.77",
+        "204.62.249.38"
+      ]
+    },
+    "/blog.html": {
+      "count": 6,
+      "uniqueIps": [
+        "2001:19f0:1000:c516:5400:5ff:fed0:88d4",
+        "103.4.250.111",
+        "136.118.151.174",
+        "65.21.124.77",
+        "213.180.203.18",
+        "204.62.249.38"
+      ]
+    },
+    "/api-playground.html": {
+      "count": 6,
+      "uniqueIps": [
+        "2001:19f0:1000:c516:5400:5ff:fed0:88d4",
+        "103.4.250.111",
+        "136.118.151.174",
+        "65.21.124.77",
+        "204.62.249.38"
+      ]
+    },
+    "/free/analyze": {
+      "count": 19,
+      "uniqueIps": [
+        "2001:19f0:1000:c516:5400:5ff:fed0:88d4",
+        "::ffff:127.0.0.1",
+        "::1"
+      ]
+    },
+    "/mcp": {
+      "count": 1,
+      "uniqueIps": [
+        "::ffff:127.0.0.1"
+      ]
+    },
+    "/api/catalog": {
+      "count": 1,
+      "uniqueIps": [
+        "::ffff:127.0.0.1"
+      ]
+    },
+    "/json-formatter.html": {
+      "count": 2,
+      "uniqueIps": [
+        "::ffff:127.0.0.1",
+        "65.21.124.77"
+      ]
+    },
+    "/.aws/config": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/*/[slug]": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/%2f%2eaws%2fcredentials": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/%2fbackend%2f%2eenv": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/%2egit/%63onfig": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/*/[id]": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/%62ackend/%2eenv": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/%2eenv": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/%2f%2eenv": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/.amplifyrc": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/.aws/credentials": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/*": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/.docker/.env": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/.docker/laravel/app/.env": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/.env": {
+      "count": 6,
+      "uniqueIps": [
+        "45.148.10.67",
+        "45.148.10.62",
+        "196.64.209.93"
+      ]
+    },
+    "/.env-example": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/.boto": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/.cache": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/.dockerignore": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/.env-sample": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/.git/": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/.git": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/.env~": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/.git/FETCH_HEAD": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/.git-credentials": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/.git-secret": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/.git/ORIG_HEAD": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/.git/config": {
+      "count": 5,
+      "uniqueIps": [
+        "45.148.10.67",
+        "45.148.10.62"
+      ]
+    },
+    "/.git/config~": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/.git/description": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/.git/COMMIT_EDITMSG": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/.git/HEAD": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/.git/info/exclude": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/.git/logs/HEAD": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/.git/info": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/.git/logs/refs/remotes/origin/main": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/.git/index": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/.git/hooks/pre-commit": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/.git/hooks": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/.git/hooks/post-commit": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/.git/objects": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/.git/objects/info": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/.git/objects/pack": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/.git/logs/refs/heads/main": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/.git/packed-refs": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/.git/refs/heads/main": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/.git/logs/refs/heads/master": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/.git/logs/refs/remotes/origin/master": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/.git/refs/heads/master": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/.gitattributes": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/.github": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/.github/CODEOWNERS": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/.github/workflows": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/.gitlab-ci": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/.gitignore": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/.gitlab": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/.gitlab/merge_request_templates": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/.gitmodules": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/.s3cfg": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/.netlify/functions/*": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/.stripe/": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/.vercel/functions/*": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/.well-known/*": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/.well-known/acme-challenge/*": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/.well-known/acme-challenge/": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/.git/refs/remotes/origin/HEAD": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/.github/ISSUE_TEMPLATE": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/.gitlab/issue_templates": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/.well-known/stripe/": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/ADMIN/.env": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/API/.env": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/APP/.env": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/Api/.env": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/BACKEND/.env": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/BACK/.env": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/BE/.env": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/Backend/.env": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/Be/.env": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/Dockerfile": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/[id]": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/[slug]": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/[locale]/*": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/__debug": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/[tenant]/*": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/[workspace]/*": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/__nextjs_action": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/_api/*": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/_next/static/*": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/__nextjs_action/*": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/_profiler/phpinfo": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/_layouts/*": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/_layouts/15/*": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/_react/action/*": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/_react/data/*": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/_vercel/insights": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/_vti_bin/*": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/about": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/_waku/*": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/actions/*": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/admin-app/.env": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/admin/*": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/admin.html": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/admin/.env": {
+      "count": 5,
+      "uniqueIps": [
+        "45.148.10.67",
+        "45.148.10.62"
+      ]
+    },
+    "/admin/config": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/administrator/.env": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/api-node/.env": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/api-backend/.env": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/api/*": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/api/.env": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/api/auth/*": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/api/credentials": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/api/data/*": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/api/login": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/api/serverless/*": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/api/user": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/api/users/*": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/api/v1/*": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/api/v1/executions": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/api/v1/credentials": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/api/v1/workflows": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/api/webhook/*": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/apis/.env": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/app/.env": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/app/*": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/app/.git/config": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/application/.env": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/apps/.env": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/articles/*": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/auth/*": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/aws-codecommit/": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/aws/buckets": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/aws/bucket": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/aws/metadata": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/aws/s3/credentials": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/aws_s3_bucket": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/back-api/.env": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/back-end/.env": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/back/.env": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/backend-api/.env": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/backend/.env": {
+      "count": 5,
+      "uniqueIps": [
+        "45.148.10.67",
+        "45.148.10.62"
+      ]
+    },
+    "/backup/.env": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/be/.env": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/beta/.env": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/billing/*": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/blog": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/blog/[year]/[month]/[slug]": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/cart": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/chat/*": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/chat": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/checkout": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/client/.env": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/cms/.env": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/cms/*": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/config/.env": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/console/*": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/contact": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/content/*": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/controlpanel": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/crm/.env": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/cron/.env": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/current/.env": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/demo/.env": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/dashboard/*": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/dev/.env": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/develop/.env": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/developer/.env": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/development/.env": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/elasticsearch_cluster_yml": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/docs": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/editor/*": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/en/*": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/env": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/erp/.env": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/error/": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/fe/.env": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/form": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/form-test/*": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/form/*": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/fr/*": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/front/.env": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/frontend/.env": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/graphql": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/healthz": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/home/*/.aws/credentials": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/home/*/.git-credentials": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/home/*/.gitconfig": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/home/*/.netrc": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/integrations/*": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/laravel/.env": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/lms/.env": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/loaders/*": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/local/.env": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/login": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/market/.env": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/manage/*": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/marketing/.env": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/media/.env": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/media/*": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/messages/*": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/metrics": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/new/.env": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/node-api/.env": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/node/.env": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/node/api/.env": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/node/backend/.env": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/nodeapi/.env": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/nodeweb/.env": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/notifications/*": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/oauth/*": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/oauth/authorize": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/old/.env": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/old/aws_config": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/opt/.env": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/orders/*": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/package-updates/": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/package-updates/*": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/pages/*": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/payment/*": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/phpinfo": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/portal/.env": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/posts/*": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/prod/.env": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/product/.env": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/production/.env": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/profile/*": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/products": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/project/.env": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/projects/*": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/public-api/.env": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/public_html/.env": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/public/.env": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/rest/executions": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/rest/*": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/publish/*": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/qa/.env": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/register": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/rest/login": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/rest/logout": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/rest/license": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/rest/credentials-for-node": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/rest/credential-translation": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/rest/node-types": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/rest/oauth1-credential/auth": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/rest/tags": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/rest/settings": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/rest/oauth2-credential/auth": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/root/.s3cfg": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/rest/users": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/rest/variables": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/rest/workflows": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/rest/workflows/run": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/root/.aws/config": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/root/.aws/credentials": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/root/.git-credentials": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/root/.boto": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/root/.netrc": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/root/.gitconfig": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/s3/bucket": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/s3/buckets": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/s3/.aws/config": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/s3/backup": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/s3/credentials": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/server/.env": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/server/api/.env": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/server/backend/.env": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/service/.env": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/services/.env": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/settings/*": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/shared/.env": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/shop/.env": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/shop/[category]/*": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/signup": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/src/.env": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/srv/.env": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/stage/.env": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/staging/.env": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/stg/.env": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/stripe/.env": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/symfony/_profiler/phpinfo": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/teams/*": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/test": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/test/.env": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/threads/*": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/trpc/*": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/user/*": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/user/.env": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/v1/*": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/v1/.env": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/v2/*": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/v3/.env": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/v2/.env": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/var/www/.env": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/var/www/html/.env": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/waku/*": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/web/.env": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/webhook": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/webhook-test/*": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/webhook-waiting/*": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/webhook/*": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/website/.env": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/workspaces/*": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/wp-json/gravitysmtp/v1/tests/mock-data": {
+      "count": 3,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/wp-json/wp/v2/users": {
+      "count": 4,
+      "uniqueIps": [
+        "45.148.10.67"
+      ]
+    },
+    "/get-started.html": {
+      "count": 4,
+      "uniqueIps": [
+        "103.4.250.111",
+        "136.118.151.174",
+        "65.21.124.77",
+        "204.62.249.38"
+      ]
+    },
+    "/api-examples.html": {
+      "count": 4,
+      "uniqueIps": [
+        "103.4.250.111",
+        "136.118.151.174",
+        "65.21.124.77",
+        "204.62.249.38"
+      ]
+    },
+    "/pr-description-generator.html": {
+      "count": 4,
+      "uniqueIps": [
+        "103.4.250.111",
+        "136.118.151.174",
+        "65.21.124.77",
+        "204.62.249.38"
+      ]
+    },
+    "/daily.html": {
+      "count": 3,
+      "uniqueIps": [
+        "103.4.250.111",
+        "65.21.124.77",
+        "204.62.249.38"
+      ]
+    },
+    "/dashboard.html": {
+      "count": 4,
+      "uniqueIps": [
+        "103.4.250.111",
+        "136.118.151.174",
+        "65.21.124.77",
+        "204.62.249.38"
+      ]
+    },
+    "/directory-helper.html": {
+      "count": 3,
+      "uniqueIps": [
+        "103.4.250.111",
+        "65.21.124.77",
+        "204.62.249.38"
+      ]
+    },
+    "/free-api-playground.html": {
+      "count": 2,
+      "uniqueIps": [
+        "103.4.250.111",
+        "65.21.124.77"
+      ]
+    },
+    "/privacy.html": {
+      "count": 2,
+      "uniqueIps": [
+        "103.4.250.111",
+        "65.21.124.77"
+      ]
+    },
+    "/terms.html": {
+      "count": 2,
+      "uniqueIps": [
+        "103.4.250.111",
+        "65.21.124.77"
+      ]
+    },
+    "/upgrade.html": {
+      "count": 2,
+      "uniqueIps": [
+        "103.4.250.111",
+        "65.21.124.77"
+      ]
+    },
+    "/blog/api-docs.html": {
+      "count": 2,
+      "uniqueIps": [
+        "103.4.250.111",
+        "204.62.249.38"
+      ]
+    },
+    "/playground.html": {
+      "count": 2,
+      "uniqueIps": [
+        "103.4.250.111",
+        "65.21.124.77"
+      ]
+    },
+    "/demo.html": {
+      "count": 2,
+      "uniqueIps": [
+        "103.4.250.111",
+        "65.21.124.77"
+      ]
+    },
+    "/dev-tools-hub.html": {
+      "count": 2,
+      "uniqueIps": [
+        "103.4.250.111",
+        "65.21.124.77"
+      ]
+    },
+    "/api-docs": {
+      "count": 2,
+      "uniqueIps": [
+        "103.4.250.111",
+        "65.21.124.77"
+      ]
+    },
+    "/pr-description-generator": {
+      "count": 2,
+      "uniqueIps": [
+        "103.4.250.111",
+        "204.62.249.38"
+      ]
+    },
+    "/blog/how-i-built-a-self-sustaining-ai-agent.html": {
+      "count": 2,
+      "uniqueIps": [
+        "103.4.250.111",
+        "65.21.124.77"
+      ]
+    },
+    "/api-playground": {
+      "count": 2,
+      "uniqueIps": [
+        "103.4.250.111",
+        "65.21.124.77"
+      ]
+    },
+    "/blog/ai-code-analysis-api-free-tier-2026.html": {
+      "count": 2,
+      "uniqueIps": [
+        "103.4.250.111",
+        "65.21.124.77"
+      ]
+    },
+    "/blog/50-free-developer-tools.html": {
+      "count": 3,
+      "uniqueIps": [
+        "103.4.250.111",
+        "65.21.124.77",
+        "213.180.203.111"
+      ]
+    },
+    "/blog/best-ai-code-review-tools-2026.html": {
+      "count": 2,
+      "uniqueIps": [
+        "103.4.250.111",
+        "65.21.124.77"
+      ]
+    },
+    "/blog/automate-code-review-ai-2026.html": {
+      "count": 2,
+      "uniqueIps": [
+        "103.4.250.111",
+        "65.21.124.77"
+      ]
+    },
+    "/blog/ai-code-review-github-actions.html": {
+      "count": 2,
+      "uniqueIps": [
+        "103.4.250.111",
+        "65.21.124.77"
+      ]
+    },
+    "/blog/113-free-dev-tools.html": {
+      "count": 2,
+      "uniqueIps": [
+        "103.4.250.111",
+        "65.21.124.77"
+      ]
+    },
+    "/blog/sovereign-ai-agent-survival-vps.html": {
+      "count": 2,
+      "uniqueIps": [
+        "103.4.250.111",
+        "65.21.124.77"
+      ]
+    },
+    "/blog/ai-code-review-github-actions-2026": {
+      "count": 2,
+      "uniqueIps": [
+        "103.4.250.111",
+        "65.21.124.77"
+      ]
+    },
+    "/blog/mcp-ai-code-review-server-guide": {
+      "count": 2,
+      "uniqueIps": [
+        "103.4.250.111",
+        "65.21.124.77"
+      ]
+    },
+    "/blog/free-ai-code-review-api": {
+      "count": 2,
+      "uniqueIps": [
+        "103.4.250.111",
+        "65.21.124.77"
+      ]
+    },
+    "/blog/ai-code-review-tools-comparison-2026": {
+      "count": 2,
+      "uniqueIps": [
+        "103.4.250.111",
+        "65.21.124.77"
+      ]
+    },
+    "/blog/ai-text-analysis-api-2026": {
+      "count": 2,
+      "uniqueIps": [
+        "103.4.250.111",
+        "65.21.124.77"
+      ]
+    },
+    "/portal.html": {
+      "count": 2,
+      "uniqueIps": [
+        "103.4.250.111",
+        "65.21.124.77"
+      ]
+    },
+    "/api/checkout": {
+      "count": 5,
+      "uniqueIps": [
+        "103.4.250.111",
+        "::ffff:127.0.0.1",
+        "65.21.124.77",
+        "112.51.168.77",
+        "2001:19f0:1000:c516:5400:5ff:fed0:88d4"
+      ]
+    },
+    "/api/dev-key": {
+      "count": 6,
+      "uniqueIps": [
+        "::ffff:127.0.0.1"
+      ]
+    },
+    "/api/stats/analytics": {
+      "count": 2,
+      "uniqueIps": [
+        "::ffff:127.0.0.1"
+      ]
+    },
+    "/v1/analyze": {
+      "count": 12,
+      "uniqueIps": [
+        "::ffff:127.0.0.1"
+      ]
+    },
+    "/v1/review": {
+      "count": 2,
+      "uniqueIps": [
+        "::ffff:127.0.0.1",
+        "2001:19f0:1000:c516:5400:5ff:fed0:88d4"
+      ]
+    },
+    "/free/review": {
+      "count": 5,
+      "uniqueIps": [
+        "::ffff:127.0.0.1"
+      ]
+    },
+    "/api/public-stats": {
+      "count": 2,
+      "uniqueIps": [
+        "::ffff:127.0.0.1"
+      ]
+    },
+    "/free/summarize": {
+      "count": 1,
+      "uniqueIps": [
+        "::1"
+      ]
+    },
+    "/x402": {
+      "count": 1,
+      "uniqueIps": [
+        "::1"
+      ]
+    },
+    "/v1/x402": {
+      "count": 1,
+      "uniqueIps": [
+        "::1"
+      ]
+    },
+    "/diff-checker.html": {
+      "count": 1,
+      "uniqueIps": [
+        "65.21.124.77"
+      ]
+    },
+    "/word-counter.html": {
+      "count": 1,
+      "uniqueIps": [
+        "65.21.124.77"
+      ]
+    },
+    "/html-stripper.html": {
+      "count": 1,
+      "uniqueIps": [
+        "65.21.124.77"
+      ]
+    },
+    "/text-to-slug.html": {
+      "count": 1,
+      "uniqueIps": [
+        "65.21.124.77"
+      ]
+    },
+    "/lorem-ipsum.html": {
+      "count": 1,
+      "uniqueIps": [
+        "65.21.124.77"
+      ]
+    },
+    "/json-to-csv.html": {
+      "count": 1,
+      "uniqueIps": [
+        "65.21.124.77"
+      ]
+    },
+    "/csv-to-json.html": {
+      "count": 1,
+      "uniqueIps": [
+        "65.21.124.77"
+      ]
+    },
+    "/base64.html": {
+      "count": 1,
+      "uniqueIps": [
+        "65.21.124.77"
+      ]
+    },
+    "/url-encoder.html": {
+      "count": 1,
+      "uniqueIps": [
+        "65.21.124.77"
+      ]
+    },
+    "/html-entity-encoder.html": {
+      "count": 1,
+      "uniqueIps": [
+        "65.21.124.77"
+      ]
+    },
+    "/jwt-debugger.html": {
+      "count": 1,
+      "uniqueIps": [
+        "65.21.124.77"
+      ]
+    },
+    "/hash-generator.html": {
+      "count": 1,
+      "uniqueIps": [
+        "65.21.124.77"
+      ]
+    },
+    "/password-generator.html": {
+      "count": 1,
+      "uniqueIps": [
+        "65.21.124.77"
+      ]
+    },
+    "/uuid-generator.html": {
+      "count": 1,
+      "uniqueIps": [
+        "65.21.124.77"
+      ]
+    },
+    "/base64-image.html": {
+      "count": 1,
+      "uniqueIps": [
+        "65.21.124.77"
+      ]
+    },
+    "/css-gradient.html": {
+      "count": 1,
+      "uniqueIps": [
+        "65.21.124.77"
+      ]
+    },
+    "/color-contrast.html": {
+      "count": 1,
+      "uniqueIps": [
+        "65.21.124.77"
+      ]
+    },
+    "/color-picker.html": {
+      "count": 1,
+      "uniqueIps": [
+        "65.21.124.77"
+      ]
+    },
+    "/css-minifier.html": {
+      "count": 1,
+      "uniqueIps": [
+        "65.21.124.77"
+      ]
+    },
+    "/number-base.html": {
+      "count": 1,
+      "uniqueIps": [
+        "65.21.124.77"
+      ]
+    },
+    "/unit-converter.html": {
+      "count": 1,
+      "uniqueIps": [
+        "65.21.124.77"
+      ]
+    },
+    "/unix-timestamp.html": {
+      "count": 1,
+      "uniqueIps": [
+        "65.21.124.77"
+      ]
+    },
+    "/percentage-calculator.html": {
+      "count": 1,
+      "uniqueIps": [
+        "65.21.124.77"
+      ]
+    },
+    "/temperature-converter.html": {
+      "count": 1,
+      "uniqueIps": [
+        "65.21.124.77"
+      ]
+    },
+    "/age-calculator.html": {
+      "count": 1,
+      "uniqueIps": [
+        "65.21.124.77"
+      ]
+    },
+    "/regex-tester.html": {
+      "count": 1,
+      "uniqueIps": [
+        "65.21.124.77"
+      ]
+    },
+    "/csv-viewer.html": {
+      "count": 1,
+      "uniqueIps": [
+        "65.21.124.77"
+      ]
+    },
+    "/whats-my-ip.html": {
+      "count": 1,
+      "uniqueIps": [
+        "65.21.124.77"
+      ]
+    },
+    "/meta-tag-preview.html": {
+      "count": 1,
+      "uniqueIps": [
+        "65.21.124.77"
+      ]
+    },
+    "/markdown-table.html": {
+      "count": 1,
+      "uniqueIps": [
+        "65.21.124.77"
+      ]
+    },
+    "/markdown-previewer.html": {
+      "count": 1,
+      "uniqueIps": [
+        "65.21.124.77"
+      ]
+    },
+    "/qrcode-generator.html": {
+      "count": 1,
+      "uniqueIps": [
+        "65.21.124.77"
+      ]
+    },
+    "/free-trial.html": {
+      "count": 1,
+      "uniqueIps": [
+        "65.21.124.77"
+      ]
+    },
+    "/acceptable-use.html": {
+      "count": 1,
+      "uniqueIps": [
+        "65.21.124.77"
+      ]
+    },
+    "/bookmarklet-gen.html": {
+      "count": 1,
+      "uniqueIps": [
+        "65.21.124.77"
+      ]
+    },
+    "/sql-formatter.html": {
+      "count": 1,
+      "uniqueIps": [
+        "65.21.124.77"
+      ]
+    },
+    "/tools.html": {
+      "count": 1,
+      "uniqueIps": [
+        "65.21.124.77"
+      ]
+    },
+    "/wallet-payment": {
+      "count": 3,
+      "uniqueIps": [
+        "65.21.124.77",
+        "::ffff:127.0.0.1",
+        "112.51.168.77"
+      ]
+    },
+    "/blog/index.html": {
+      "count": 1,
+      "uniqueIps": [
+        "65.21.124.77"
+      ]
+    },
+    "/api/verify-x402-payment": {
+      "count": 2,
+      "uniqueIps": [
+        "::ffff:127.0.0.1"
+      ]
+    },
+    "/api/wallet-payment": {
+      "count": 1,
+      "uniqueIps": [
+        "::ffff:127.0.0.1"
+      ]
+    },
+    "/admin-panel/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "45.148.10.62"
+      ]
+    },
+    "/credentials": {
+      "count": 1,
+      "uniqueIps": [
+        "45.148.10.62"
+      ]
+    },
+    "/free-code-review.html": {
+      "count": 1,
+      "uniqueIps": [
+        "::ffff:127.0.0.1"
+      ]
+    },
+    "/api/analytics/summary": {
+      "count": 6,
+      "uniqueIps": [
+        "::ffff:127.0.0.1"
+      ]
+    },
+    "/api/analytics/event": {
+      "count": 2,
+      "uniqueIps": [
+        "::ffff:127.0.0.1"
+      ]
+    },
+    "/tools/git-commit-generator.html": {
+      "count": 1,
+      "uniqueIps": [
+        "87.250.224.9"
+      ]
+    },
+    "/free/v1/review": {
+      "count": 6,
+      "uniqueIps": [
+        "2001:19f0:1000:c516:5400:5ff:fed0:88d4",
+        "::ffff:127.0.0.1"
+      ]
+    },
+    "/api/create-checkout": {
+      "count": 1,
+      "uniqueIps": [
+        "2001:19f0:1000:c516:5400:5ff:fed0:88d4"
+      ]
+    },
+    "/tools/": {
+      "count": 1,
+      "uniqueIps": [
+        "5.255.231.108"
+      ]
+    },
+    "/tools/url-encoder.html": {
+      "count": 1,
+      "uniqueIps": [
+        "87.250.224.205"
+      ]
+    },
+    "/tools/base64-encoder.html": {
+      "count": 1,
+      "uniqueIps": [
+        "95.108.213.207"
+      ]
+    },
+    "/tools/code-smell-score.html": {
+      "count": 2,
+      "uniqueIps": [
+        "95.108.213.190",
+        "213.180.203.120"
+      ]
+    },
+    "/tools/url-encoder": {
+      "count": 2,
+      "uniqueIps": [
+        "87.250.224.124",
+        "95.108.213.217"
+      ]
+    },
+    "/tools/code-roast.html": {
+      "count": 2,
+      "uniqueIps": [
+        "213.180.203.89",
+        "::ffff:127.0.0.1"
+      ]
+    },
+    "/v1/chat/completions": {
+      "count": 1,
+      "uniqueIps": [
+        "::ffff:127.0.0.1"
+      ]
+    }
+  },
+  "2026-06-22": {
+    "/index.html": {
+      "count": 10,
+      "uniqueIps": [
+        "162.243.101.234",
+        "221.239.90.68",
+        "195.211.77.141",
+        "124.156.183.84",
+        "143.244.150.185",
+        "185.220.101.2",
+        "35.202.170.247",
+        "45.63.1.116",
+        "93.123.109.52"
+      ]
+    },
+    "/.env": {
+      "count": 3,
+      "uniqueIps": [
+        "176.65.139.238",
+        "137.184.26.62"
+      ]
+    },
+    "/.git/config": {
+      "count": 1,
+      "uniqueIps": [
+        "195.178.110.159"
+      ]
+    },
+    "/wp-admin/": {
+      "count": 1,
+      "uniqueIps": [
+        "185.176.8.77"
+      ]
+    },
+    "/github-code-review.html": {
+      "count": 1,
+      "uniqueIps": [
+        "216.73.217.113"
+      ]
+    },
+    "/docs/github-webhook.html": {
+      "count": 1,
+      "uniqueIps": [
+        "216.73.217.113"
+      ]
+    },
+    "/cli-install.html": {
+      "count": 1,
+      "uniqueIps": [
+        "216.73.217.113"
+      ]
+    },
+    "/git-commit-generator.html": {
+      "count": 1,
+      "uniqueIps": [
+        "216.73.217.113"
+      ]
+    },
+    "/pricing.html": {
+      "count": 1,
+      "uniqueIps": [
+        "45.63.1.116"
+      ]
+    },
+    "/embed-code-review.html": {
+      "count": 1,
+      "uniqueIps": [
+        "216.73.217.113"
+      ]
+    },
+    "/coderabbit-alternative.html": {
+      "count": 1,
+      "uniqueIps": [
+        "216.73.217.113"
+      ]
+    },
+    "/github-badge-generator.html": {
+      "count": 1,
+      "uniqueIps": [
+        "216.73.217.113"
+      ]
+    },
+    "/integrations.html": {
+      "count": 1,
+      "uniqueIps": [
+        "216.73.217.113"
+      ]
+    },
+    "/robots-generator.html": {
+      "count": 1,
+      "uniqueIps": [
+        "216.73.217.113"
+      ]
+    },
+    "/code-review-stats.html": {
+      "count": 1,
+      "uniqueIps": [
+        "216.73.217.113"
+      ]
+    },
+    "/widget/index.html": {
+      "count": 1,
+      "uniqueIps": [
+        "216.73.217.113"
+      ]
+    },
+    "/slack-webhook-integration.html": {
+      "count": 1,
+      "uniqueIps": [
+        "216.73.217.113"
+      ]
+    },
+    "/widgets/badge-code-review.html": {
+      "count": 1,
+      "uniqueIps": [
+        "216.73.217.113"
+      ]
+    },
+    "/widgets/index.html": {
+      "count": 1,
+      "uniqueIps": [
+        "216.73.217.113"
+      ]
+    },
+    "/get-started.html": {
+      "count": 1,
+      "uniqueIps": [
+        "45.63.1.116"
+      ]
+    },
+    "/api/generate-free-key": {
+      "count": 1,
+      "uniqueIps": [
+        "45.63.1.116"
+      ]
+    },
+    "/api/checkout": {
+      "count": 1,
+      "uniqueIps": [
+        "45.63.1.116"
+      ]
+    },
+    "/wallet-payment": {
+      "count": 1,
+      "uniqueIps": [
+        "45.63.1.116"
+      ]
+    },
+    "/link-assets/widget.html": {
+      "count": 1,
+      "uniqueIps": [
+        "216.73.217.113"
+      ]
+    },
+    "/wallet-payment.html": {
+      "count": 1,
+      "uniqueIps": [
+        "216.73.217.113"
+      ]
+    },
+    "/widgets/embed-review.html": {
+      "count": 1,
+      "uniqueIps": [
+        "216.73.217.113"
+      ]
+    },
+    "/ai-code-review-comparison.html": {
+      "count": 1,
+      "uniqueIps": [
+        "216.73.217.113"
+      ]
+    },
+    "/widgets/qr.html": {
+      "count": 1,
+      "uniqueIps": [
+        "216.73.217.113"
+      ]
+    },
+    "/directory-helper.html": {
+      "count": 1,
+      "uniqueIps": [
+        "216.73.217.113"
+      ]
+    },
+    "/widget/review-widget.html": {
+      "count": 1,
+      "uniqueIps": [
+        "216.73.217.113"
+      ]
+    },
+    "/favicon-generator.html": {
+      "count": 1,
+      "uniqueIps": [
+        "216.73.217.113"
+      ]
+    },
+    "/catalog/index.html": {
+      "count": 1,
+      "uniqueIps": [
+        "216.73.217.113"
+      ]
+    },
+    "/link-assets/og-template.html": {
+      "count": 1,
+      "uniqueIps": [
+        "216.73.217.113"
+      ]
+    },
+    "/powered-by-badge.html": {
+      "count": 1,
+      "uniqueIps": [
+        "216.73.217.113"
+      ]
+    },
+    "/submission-helper.html": {
+      "count": 1,
+      "uniqueIps": [
+        "216.73.217.113"
+      ]
+    },
+    "/blog/ai-agent-survival-diary.html": {
+      "count": 1,
+      "uniqueIps": [
+        "216.73.217.113"
+      ]
+    },
+    "/.well-known/google-site-verification.html": {
+      "count": 1,
+      "uniqueIps": [
+        "216.73.217.113"
+      ]
+    },
+    "/health": {
+      "count": 1,
+      "uniqueIps": [
+        "::1"
+      ]
+    },
+    "/robots-generator": {
+      "count": 1,
+      "uniqueIps": [
+        "216.73.217.113"
+      ]
+    },
+    "/widget/": {
+      "count": 1,
+      "uniqueIps": [
+        "216.73.217.113"
+      ]
+    },
+    "/text-analysis": {
+      "count": 1,
+      "uniqueIps": [
+        "216.73.217.113"
+      ]
+    }
+  },
+  "2026-06-23": {
+    "/health": {
+      "count": 22,
+      "uniqueIps": [
+        "::1",
+        "::ffff:127.0.0.1"
+      ]
+    },
+    "/index.html": {
+      "count": 30,
+      "uniqueIps": [
+        "59.58.23.165",
+        "27.115.124.45",
+        "123.6.49.15",
+        "123.6.49.12",
+        "27.115.124.6",
+        "123.6.49.50",
+        "155.2.228.196",
+        "45.63.1.116",
+        "2604:a880:400:d1:0:4:a0d0:e001",
+        "::ffff:127.0.0.1",
+        "2001:19f0:1000:c516:5400:5ff:fed0:88d4",
+        "34.16.64.229",
+        "::1",
+        "5.255.231.196"
+      ]
+    },
+    "/pricing.html": {
+      "count": 15,
+      "uniqueIps": [
+        "59.58.23.165",
+        "45.63.1.116",
+        "54.223.235.19",
+        "2001:19f0:1000:c516:5400:5ff:fed0:88d4",
+        "::ffff:127.0.0.1",
+        "::1"
+      ]
+    },
+    "/api-docs.html": {
+      "count": 2,
+      "uniqueIps": [
+        "27.115.124.38",
+        "::ffff:127.0.0.1"
+      ]
+    },
+    "/get-started.html": {
+      "count": 4,
+      "uniqueIps": [
+        "123.6.49.44",
+        "59.58.23.165",
+        "45.63.1.116"
+      ]
+    },
+    "/api/generate-free-key": {
+      "count": 2,
+      "uniqueIps": [
+        "59.58.23.165",
+        "45.63.1.116"
+      ]
+    },
+    "/payment.html": {
+      "count": 5,
+      "uniqueIps": [
+        "45.63.1.116",
+        "54.222.247.102",
+        "2001:19f0:1000:c516:5400:5ff:fed0:88d4",
+        "::ffff:127.0.0.1"
+      ]
+    },
+    "/api/stats/overview": {
+      "count": 8,
+      "uniqueIps": [
+        "::ffff:127.0.0.1",
+        "::1",
+        "2001:19f0:1000:c516:5400:5ff:fed0:88d4"
+      ]
+    },
+    "/tools/api-latency-monitor": {
+      "count": 2,
+      "uniqueIps": [
+        "213.180.203.90",
+        "216.73.216.204"
+      ]
+    },
+    "/api/stats": {
+      "count": 15,
+      "uniqueIps": [
+        "::ffff:127.0.0.1",
+        "::1"
+      ]
+    },
+    "/api/revenue": {
+      "count": 1,
+      "uniqueIps": [
+        "::ffff:127.0.0.1"
+      ]
+    },
+    "/free/analyze": {
+      "count": 15,
+      "uniqueIps": [
+        "::ffff:127.0.0.1",
+        "::1"
+      ]
+    },
+    "/tools/": {
+      "count": 2,
+      "uniqueIps": [
+        "::ffff:127.0.0.1",
+        "::1"
+      ]
+    },
+    "/blog/": {
+      "count": 1,
+      "uniqueIps": [
+        "::ffff:127.0.0.1"
+      ]
+    },
+    "/api/stats/analytics": {
+      "count": 1,
+      "uniqueIps": [
+        "::ffff:127.0.0.1"
+      ]
+    },
+    "/api/checkout": {
+      "count": 4,
+      "uniqueIps": [
+        "::ffff:127.0.0.1"
+      ]
+    },
+    "/wallet-payment": {
+      "count": 1,
+      "uniqueIps": [
+        "::ffff:127.0.0.1"
+      ]
+    },
+    "/api/stripe-webhook": {
+      "count": 1,
+      "uniqueIps": [
+        "::ffff:127.0.0.1"
+      ]
+    },
+    "/api/wallet-payment": {
+      "count": 1,
+      "uniqueIps": [
+        "::ffff:127.0.0.1"
+      ]
+    },
+    "/api/health": {
+      "count": 1,
+      "uniqueIps": [
+        "::ffff:127.0.0.1"
+      ]
+    },
+    "/api/config": {
+      "count": 1,
+      "uniqueIps": [
+        "::ffff:127.0.0.1"
+      ]
+    },
+    "/v1/analyze": {
+      "count": 3,
+      "uniqueIps": [
+        "::ffff:127.0.0.1",
+        "::1",
+        "2001:19f0:1000:c516:5400:5ff:fed0:88d4"
+      ]
+    },
+    "/tools/cors-tester": {
+      "count": 1,
+      "uniqueIps": [
+        "216.73.216.204"
+      ]
+    },
+    "/tools/json-formatter.html": {
+      "count": 1,
+      "uniqueIps": [
+        "::1"
+      ]
+    },
+    "/json-formatter.html": {
+      "count": 1,
+      "uniqueIps": [
+        "::1"
+      ]
+    },
+    "/api/traffic": {
+      "count": 1,
+      "uniqueIps": [
+        "::1"
+      ]
+    },
+    "/api/traffic/stats": {
+      "count": 1,
+      "uniqueIps": [
+        "::1"
+      ]
+    },
+    "/api/traffic/analytics": {
+      "count": 1,
+      "uniqueIps": [
+        "::1"
+      ]
+    },
+    "/monitor.html": {
+      "count": 1,
+      "uniqueIps": [
+        "::1"
+      ]
+    },
+    "/api/inbox": {
+      "count": 1,
+      "uniqueIps": [
+        "::ffff:127.0.0.1"
+      ]
+    },
+    "/api-playground.html": {
+      "count": 1,
+      "uniqueIps": [
+        "2001:19f0:1000:c516:5400:5ff:fed0:88d4"
+      ]
+    }
+  },
+  "2026-06-24": {
+    "/pricing.html": {
+      "count": 3,
+      "uniqueIps": [
+        "2001:19f0:1000:c516:5400:5ff:fed0:88d4"
+      ]
+    },
+    "/index.html": {
+      "count": 13,
+      "uniqueIps": [
+        "::1",
+        "2001:19f0:1000:c516:5400:5ff:fed0:88d4",
+        "35.79.19.38",
+        "176.65.139.235",
+        "146.190.76.44",
+        "34.143.188.225",
+        "59.58.23.165",
+        "::ffff:127.0.0.1",
+        "159.89.160.207"
+      ]
+    },
+    "/.git/config": {
+      "count": 2,
+      "uniqueIps": [
+        "195.178.110.241",
+        "35.79.19.38"
+      ]
+    },
+    "/.env": {
+      "count": 2,
+      "uniqueIps": [
+        "35.79.19.38",
+        "176.65.139.236"
+      ]
+    },
+    "/.env~": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/.env1": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/.env2": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/.env_copy": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/.env-example": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/.env_example": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/.env-backup": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/.env-dev": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/env_template": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/.env_dev": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/parseable-env-secret": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/env_setup": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/.env-production": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/.env_hlg": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/.env_prd": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/.env-dist": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/.envec2": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/.env%20copy": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/.env%20copy%202": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/.envrc": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/env-template": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/app/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/apps/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/api/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/web/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/site/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/public/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/admin/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/backend/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/server/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/frontend/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/src/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/core/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/core/app/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/config/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/private/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/application/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/bootstrap/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/database/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/storage/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/var/www/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/var/www/html/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/current/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/release/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/releases/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/shared/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/deploy/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/build/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/dist/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/public_html/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/htdocs/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/www/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/html/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/live/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/prod/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/dev/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/staging/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/opt/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/laravel/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/symfony/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/wordpress/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/wp/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/cms/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/drupal/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/joomla/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/magento/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/shopify/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/prestashop/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/codeigniter/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/cakephp/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/zend/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/yii/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/laravel5/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/v1/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/v2/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/v3/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/api/v1/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/api/v2/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/rest/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/graphql/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/gateway/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/microservice/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/service/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/api/v3/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/api/dev/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/api/staging/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/vendor/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/lib/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/resources/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/assets/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/uploads/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/internal/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/tools/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/scripts/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/bin/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/sbin/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/local/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/portal/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/dashboard/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/panel/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/crm/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/erp/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/shop/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/store/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/saas/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/client/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/project/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/admin-panel/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/control-panel/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/user-panel/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/node/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/express/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/next/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/nuxt/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/nest/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/react/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/vue/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/angular/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/svelte/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/vite/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/backup/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/backups/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/old/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/tmp/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/temp/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/lab/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/cronlab/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/cron/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/en/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/administrator/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/psnlink/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/exapi/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/sitemaps/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/logs/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/cache/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/mailer/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/mail/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/email/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/smtp/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/mailing/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/notifications/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/notify/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/sender/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/campaign/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/newsletter/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/ses/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/sendgrid/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/sparkpost/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/postmark/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/mailgun/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/mandrill/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/mailjet/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/brevo/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/transactional/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/bulk/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/aws/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/azure/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/gcp/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/cloud/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/infrastructure/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/docker/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/k8s/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/kubernetes/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/terraform/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/ansible/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/.git/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/ci/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/cd/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/jenkins/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/gitlab/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/github/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/actions/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/circleci/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/travis/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/buildkite/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/mysql/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/postgres/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/mongodb/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/redis/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/elasticsearch/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/rabbitmq/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/kafka/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/queue/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/worker/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/job/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/test/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/qa/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/preview/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/beta/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/uat/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/stage/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/development/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/production/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/config/app/.env": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/phpinfo": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/info": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/_profiler/phpinfo": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/_environment": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/webroot/index.php/_environment": {
+      "count": 1,
+      "uniqueIps": [
+        "35.79.19.38"
+      ]
+    },
+    "/api/stats/overview": {
+      "count": 1,
+      "uniqueIps": [
+        "::ffff:127.0.0.1"
+      ]
+    },
+    "/health": {
+      "count": 2,
+      "uniqueIps": [
+        "::ffff:127.0.0.1"
+      ]
+    }
+  },
+  "2026-06-25": {
+    "/index.html": {
+      "count": 55,
+      "uniqueIps": [
+        "149.57.180.194",
+        "::ffff:127.0.0.1",
+        "23.27.145.45",
+        "34.122.16.212",
+        "136.113.9.105",
+        "2001:19f0:1000:c516:5400:5ff:fed0:88d4",
+        "95.108.213.137",
+        "34.123.82.129",
+        "80.94.92.7",
+        "34.59.250.224"
+      ]
+    },
+    "/health": {
+      "count": 45,
+      "uniqueIps": [
+        "::ffff:127.0.0.1",
+        "::1",
+        "87.250.224.87",
+        "2001:19f0:1000:c516:5400:5ff:fed0:88d4",
+        "5.255.231.108"
+      ]
+    },
+    "/free/analyze": {
+      "count": 78,
+      "uniqueIps": [
+        "::ffff:127.0.0.1",
+        "10.0.0.99",
+        "10.0.0.77",
+        "10.0.0.222",
+        "10.0.0.111",
+        "10.0.0.250",
+        "2001:19f0:1000:c516:5400:5ff:fed0:88d4"
+      ]
+    },
+    "/pricing.html": {
+      "count": 16,
+      "uniqueIps": [
+        "::ffff:127.0.0.1"
+      ]
+    },
+    "/api/checkout": {
+      "count": 10,
+      "uniqueIps": [
+        "::ffff:127.0.0.1"
+      ]
+    },
+    "/wallet-payment": {
+      "count": 8,
+      "uniqueIps": [
+        "::ffff:127.0.0.1"
+      ]
+    },
+    "/api/stats/overview": {
+      "count": 16,
+      "uniqueIps": [
+        "::ffff:127.0.0.1"
+      ]
+    },
+    "/free-code-review": {
+      "count": 3,
+      "uniqueIps": [
+        "::ffff:127.0.0.1",
+        "95.108.213.211"
+      ]
+    },
+    "/tools/code-roast": {
+      "count": 1,
+      "uniqueIps": [
+        "87.250.224.24"
+      ]
+    },
+    "/pricing": {
+      "count": 1,
+      "uniqueIps": [
+        "213.180.203.20"
+      ]
+    },
+    "/api/public-stats": {
+      "count": 8,
+      "uniqueIps": [
+        "::ffff:127.0.0.1",
+        "2001:19f0:1000:c516:5400:5ff:fed0:88d4"
+      ]
+    },
+    "/api-playground.html": {
+      "count": 1,
+      "uniqueIps": [
+        "::ffff:127.0.0.1"
+      ]
+    },
+    "/free-api-key.html": {
+      "count": 2,
+      "uniqueIps": [
+        "::ffff:127.0.0.1",
+        "213.180.203.223"
+      ]
+    },
+    "/api-docs.html": {
+      "count": 1,
+      "uniqueIps": [
+        "::ffff:127.0.0.1"
+      ]
+    },
+    "/free-code-review.html": {
+      "count": 1,
+      "uniqueIps": [
+        "::ffff:127.0.0.1"
+      ]
+    },
+    "/free-badge-generator.html": {
+      "count": 3,
+      "uniqueIps": [
+        "::ffff:127.0.0.1",
+        "5.255.231.70",
+        "95.108.213.176"
+      ]
+    },
+    "/tools/api-benchmark.html": {
+      "count": 1,
+      "uniqueIps": [
+        "213.180.203.2"
+      ]
+    },
+    "/api/stats": {
+      "count": 1,
+      "uniqueIps": [
+        "::ffff:127.0.0.1"
+      ]
+    },
+    "/api/stats/access-log": {
+      "count": 1,
+      "uniqueIps": [
+        "::ffff:127.0.0.1"
+      ]
+    },
+    "/free/summarize": {
+      "count": 1,
+      "uniqueIps": [
+        "::ffff:127.0.0.1"
+      ]
+    },
+    "/wallet-payment.html": {
+      "count": 2,
+      "uniqueIps": [
+        "5.255.231.14",
+        "::ffff:127.0.0.1"
+      ]
+    },
+    "/tools/base64-tool.html": {
+      "count": 1,
+      "uniqueIps": [
+        "87.250.224.36"
+      ]
+    },
+    "/tools/base64-encoder-decoder.html": {
+      "count": 1,
+      "uniqueIps": [
+        "5.255.231.4"
+      ]
+    },
+    "/blog/ai-code-review-free-tool.html": {
+      "count": 1,
+      "uniqueIps": [
+        "95.108.213.116"
+      ]
+    },
+    "/free/review": {
+      "count": 9,
+      "uniqueIps": [
+        "2001:19f0:1000:c516:5400:5ff:fed0:88d4"
+      ]
+    },
+    "/playground": {
+      "count": 1,
+      "uniqueIps": [
+        "5.255.231.82"
+      ]
+    },
+    "/tools": {
+      "count": 1,
+      "uniqueIps": [
+        "5.255.231.118"
+      ]
+    },
+    "/playground.html": {
+      "count": 2,
+      "uniqueIps": [
+        "87.250.224.11",
+        "87.250.224.249"
+      ]
+    },
+    "/tools.html": {
+      "count": 1,
+      "uniqueIps": [
+        "87.250.224.98"
+      ]
+    },
+    "/v1/analyze": {
+      "count": 1,
+      "uniqueIps": [
+        "::ffff:127.0.0.1"
+      ]
+    },
+    "/health.html": {
+      "count": 1,
+      "uniqueIps": [
+        "87.250.224.41"
+      ]
+    },
+    "/api/health": {
+      "count": 3,
+      "uniqueIps": [
+        "::ffff:127.0.0.1"
+      ]
+    },
+    "/api/admin/restart": {
+      "count": 2,
+      "uniqueIps": [
+        "::ffff:127.0.0.1"
+      ]
+    },
+    "/api/stripe-checkout": {
+      "count": 1,
+      "uniqueIps": [
+        "::ffff:127.0.0.1"
+      ]
+    }
+  }
+}

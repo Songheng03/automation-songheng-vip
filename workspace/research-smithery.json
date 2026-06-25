@@ -1,0 +1,65 @@
+{
+  "title": "Smithery Agent/Server Submission Process Research",
+  "submission_url": "https://smithery.ai/new",
+  "method": "Web form (primary) + CLI (advanced) + REST API (for programmatic)",
+  "required_fields": {
+    "url_method": {
+      "description": "Bring your own hosting - enter your server's public HTTPS URL",
+      "requirements": [
+        "Streamable HTTP transport",
+        "OAuth support (if auth required)",
+        "Server will be scanned automatically to extract metadata (tools, prompts, resources)",
+        "If scan fails, provide a static server card at /.well-known/mcp/server-card.json"
+      ]
+    },
+    "local_mcpb_method": {
+      "description": "For local stdio servers - publish pre-built MCPB bundle",
+      "requirements": [
+        "Prepare .mcpb bundle",
+        "Publish bundle to Smithery",
+        "Complete publishing flow"
+      ]
+    },
+    "api_method": {
+      "description": "REST API via POST /servers/{namespace}/{server}/releases (multipart form)",
+      "endpoint": "https://registry.smithery.ai/servers/{namespace}/{server}/releases",
+      "requirements": [
+        "API key authentication",
+        "Supports hosted (JS module upload), external (URL), and stdio (MCPB bundle) release types"
+      ]
+    },
+    "cli_method": {
+      "description": "Smithery CLI for advanced users",
+      "commands": [
+        "smithery mcp publish https://your-server.com/mcp -n @your-org/your-server",
+        "smithery mcp publish ./server.mcpb -n your-org/your-server",
+        "Optional: --config-schema flag for configuration schema"
+      ]
+    }
+  },
+  "special_instructions": {
+    "server_creation_first": "Before publishing, you may need to create a server via PUT /servers/{namespace}/{server} (idempotent)",
+    "scanning_process": "Smithery scans your server to extract metadata. For public servers scan is automatic; for auth-required servers you'll be prompted to authenticate.",
+    "static_server_card": "If automatic scanning cannot complete, provide metadata at /.well-known/mcp/server-card.json with fields: serverInfo (required), authentication (optional), tools, resources, prompts (optional)",
+    "verification": "After publishing, visit Settings → Verification page to complete official-vendor verification checklist",
+    "user_agent_whitelist": "SmitheryBot/1.0 (+https://smithery.ai) — whitelist this if your server has WAF/bot protection",
+    "namespace_requirement": "Servers are organized under namespaces (e.g., @org/server-name). Create a namespace first if you don't have one.",
+    "config_schema": "For session configuration, provide JSON Schema with x-from extension (see docs/build/session-config)"
+  },
+  "actionable_steps": [
+    "1. Go to https://smithery.ai/new to start the web form submission",
+    "2. Enter your MCP server's public HTTPS URL (Streamable HTTP transport required)",
+    "3. Smithery will scan your server to extract metadata automatically",
+    "4. If your server requires auth, authenticate during the scan",
+    "5. Optionally serve a static server card at /.well-known/mcp/server-card.json for manual metadata",
+    "6. Complete the publishing flow in the UI",
+    "7. After publishing, go to Settings → Verification to get verified",
+    "8. Alternative: Use CLI (smithery mcp publish) or REST API for programmatic publishing"
+  ],
+  "registry_api_note": {
+    "status": "The registry.smithery.ai root returns 404, but the API endpoints work with proper paths",
+    "base_url": "https://registry.smithery.ai",
+    "publish_endpoint": "POST /servers/{namespace}/{server}/releases",
+    "documentation": "Full API reference at https://smithery.ai/docs/api-reference/servers/publish-a-server"
+  }
+}

@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="canonical" href="https://automation.songheng.vip/x402-playground.html">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="x402 Playground — AI Services · Pay Per Request">
+  <meta name="twitter:description" content="Try AI text analysis, code review, security scanning with x402 micropayments. Pay $0.01–$0.05 per request in USDC on Base chain. No subscription needed.">
+  <meta property="og:title" content="x402 Playground — AI Services · Pay Per Request">
+  <meta property="og:description" content="Try AI text analysis, code review, security scanning with x402 micropayments. Pay $0.01–$0.05 per request in USDC on Base chain. No subscription needed.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://automation.songheng.vip/x402-playground.html">
+  <meta property="og:image" content="https://automation.songheng.vip/og-image.png">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>x402 Playground — AI Services · Pay Per Request</title>
+<meta name="description" content="Try AI text analysis, code review, security scanning with x402 micropayments. Pay $0.01–$0.05 per request in USDC on Base chain. No subscription needed.">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;background:#0a0a1a;color:#e0e0e0;line-height:1.6}
+.container{max-width:1000px;margin:0 auto;padding:20px}
+header{background:linear-gradient(135deg,#667eea,#764ba2);padding:40px 0;text-align:center;margin-bottom:40px}
+header h1{font-size:2.5em;margin-bottom:10px;color:#fff}
+header p{font-size:1.2em;color:rgba(255,255,255,.85)}
+.card{background:#1a1a2e;border-radius:12px;padding:24px;margin-bottom:20px;border:1px solid #333}
+.card h2{color:#667eea;margin-bottom:16px}
+.form-group{margin-bottom:16px}
+.form-group label{display:block;margin-bottom:6px;color:#aaa;font-size:.9em}
+.form-group textarea,.form-group select{width:100%;padding:12px;border:1px solid #444;border-radius:8px;background:#16213e;color:#e0e0e0;font-size:1em;resize:vertical}
+.form-group textarea:focus,.form-group select:focus{outline:none;border-color:#667eea}
+.btn{background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;border:none;padding:12px 28px;border-radius:8px;font-size:1em;cursor:pointer;transition:opacity .2s}
+.btn:hover{opacity:.9}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.result-box{background:#0f0f23;border:1px solid #333;border-radius:8px;padding:16px;margin-top:16px;min-height:60px;white-space:pre-wrap;font-family:monospace;font-size:.9em;overflow-x:auto}
+.status-badge{display:inline-block;padding:4px 12px;border-radius:20px;font-size:.8em;font-weight:600}
+.status-free{background:#2d6a4f;color:#95d5b2}
+.status-paid{background:#7b2d8e;color:#e0aaff}
+.status-402{background:#e07c3c;color:#fff}
+.free-uses{text-align:center;margin:20px 0;padding:16px;background:#1a1a2e;border-radius:8px;border:1px solid #333}
+.free-uses .count{font-size:2em;font-weight:700;color:#667eea}
+.price-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin:16px 0}
+.price-item{background:#0f0f23;padding:12px;border-radius:8px;text-align:center}
+.price-item .cost{font-size:1.5em;font-weight:700;color:#667eea}
+.price-item .name{font-size:.85em;color:#888;margin-top:4px}
+.tab-bar{display:flex;gap:4px;margin-bottom:20px;flex-wrap:wrap}
+.tab{padding:10px 20px;background:#1a1a2e;border:1px solid #333;border-radius:8px 8px 0 0;cursor:pointer;color:#888;font-size:.9em}
+.tab.active{background:#0f0f23;color:#667eea;border-color:#667eea;font-weight:600}
+.tab:hover{color:#e0e0e0}
+pre{background:#0f0f23;padding:16px;border-radius:8px;overflow-x:auto;font-size:.85em;margin:12px 0}
+code{color:#e0aaff}
+@media(max-width:768px){header h1{font-size:1.8em}}
+</style>
+<script src="/js/analytics.js"></script>
+<!-- Open Graph / Social Meta Tags -->
+<meta property="og:site_name" content="my-automaton" />
+<meta property="og:locale" content="en_US" />
+<meta name="twitter:image" content="https://automation.songheng.vip/og-image.png" />
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "x402 Playground — AI Services · Pay Per Request",
+  "description": "Try AI text analysis, code review, security scanning with x402 micropayments. Pay $0.01–$0.05 per request in USDC on Base chain. No subscription needed.",
+  "url": "https://automation.songheng.vip/x402-playground.html",
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": "Web",
+  "author": {
+    "@type": "Organization",
+    "name": "my-automaton",
+    "url": "https://automation.songheng.vip"
+  },
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  }
+}
+</script>
+</head>
+<body>
+<div style="background:#161b22;border-bottom:1px solid #30363d;padding:10px 20px;font-size:.85rem;display:flex;gap:16px;align-items:center;flex-wrap:wrap"><a href="/" style="color:#58a6ff;text-decoration:none;font-weight:600">🏠 Home</a><span style="color:#484f58">|</span><a href="/pricing.html" style="color:#8b949e;text-decoration:none">Pricing</a><a href="/api-docs.html" style="color:#8b949e;text-decoration:none">API</a><a href="/playground.html" style="color:#8b949e;text-decoration:none">Playground</a></div>
+
+
+<header>
+  <div class="container">
+    <h1>⚡ x402 AI Playground</h1>
+    <p>Test AI services with per-request micropayments • No subscription • Pay as you go</p>
+  </div>
+</header>
+
+<div class="container">
+
+<div class="free-uses">
+  <div style="font-size:1.2em;margin-bottom:8px">🔓 Free Tier</div>
+  <div class="count" id="freeRemaining">3</div>
+  <div style="color:#888;margin-top:4px">free requests remaining today (per IP)</div>
+</div>
+
+<div class="tab-bar">
+  <div class="tab active" data-tab="analyze">Analyze</div>
+  <div class="tab" data-tab="summarize">Summarize</div>
+  <div class="tab" data-tab="review">Code Review</div>
+  <div class="tab" data-tab="security">Security</div>
+  <div class="tab" data-tab="explain">Explain</div>
+  <div class="tab" data-tab="refactor">Refactor</div>
+</div>
+
+<div class="card" id="inputCard">
+  <h2 id="serviceTitle">Text Analysis</h2>
+  <p style="color:#888;margin-bottom:16px;font-size:.9em" id="serviceDesc">
+    Analyze text for sentiment, entities, patterns, and key themes.
+  </p>
+
+  <div class="form-group">
+    <label for="inputText">Input</label>
+    <textarea id="inputText" rows="6" placeholder="Paste your text or code here..."></textarea>
+  </div>
+  
+  <div class="form-group" id="modeGroup" style="display:none">
+    <label for="modeSelect">Analysis Mode</label>
+    <select id="modeSelect">
+      <option value="analyze">Full Analysis</option>
+      <option value="sentiment">Sentiment Only</option>
+      <option value="entities">Extract Entities</option>
+      <option value="keywords">Keywords</option>
+    </select>
+  </div>
+
+  <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap">
+    <button class="btn" id="submitBtn">🚀 Send Request</button>
+    <span id="costDisplay" style="color:#888;font-size:.9em">Cost: $0.01 USDC</span>
+    <span id="statusBadge" class="status-badge status-free">FREE</span>
+  </div>
+
+  <div id="resultArea" class="result-box" style="display:none"></div>
+  <div id="paymentInstructions" style="display:none;margin-top:16px;padding:16px;background:#2d1b00;border:1px solid #e07c3c;border-radius:8px">
+    <strong style="color:#e07c3c">⚡ Payment Required</strong>
+    <p style="margin-top:8px;font-size:.9em" id="paymentText">
+      Send <strong id="payAmount">1</strong> US¢ USDC on <strong>Base chain</strong> to<br>
+      <code id="payAddress">0x76eADdEBFfb6A61DD071f97F4508467fc55dd113</code>
+    </p>
+    <button class="btn" id="retryBtn" style="background:#e07c3c;margin-top:8px">✅ I've Paid — Retry</button>
+  </div>
+</div>
+
+<div class="card">
+  <h2>📋 Service Pricing</h2>
+  <div class="price-grid">
+    <div class="price-item"><div class="cost">$0.01</div><div class="name">Text Analysis</div></div>
+    <div class="price-item"><div class="cost">$0.02</div><div class="name">Summarization</div></div>
+    <div class="price-item"><div class="cost">$0.05</div><div class="name">Code Review</div></div>
+    <div class="price-item"><div class="cost">$0.03</div><div class="name">Security Scan</div></div>
+    <div class="price-item"><div class="cost">$0.02</div><div class="name">Code Explain</div></div>
+    <div class="price-item"><div class="cost">$0.05</div><div class="name">Refactoring</div></div>
+  </div>
+</div>
+
+<div class="card">
+  <h2>🔧 API Integration</h2>
+  <p style="margin-bottom:12px">Use x402 directly from code:</p>
+  <pre>curl -X POST https://automation.songheng.vip/v1/analyze \
+  -H "Content-Type: application/json" \
+  -d '{"text":"Your text here","mode":"analyze"}'</pre>
+  <p style="color:#888;font-size:.9em">First response tells you payment amount. Send USDC to the provided address, retry with <code>X-X402-Payment: tx_hash</code> header.</p>
+</div>
+
+</div>
+
+<script>
+const BASE = window.location.origin;
+let currentTab = 'analyze';
+let freeRemaining = 3;
+let currentCost = 1;
+let pendingTx = null;
+
+const SERVICES = {
+  analyze: { cost: 1, title: 'Text Analysis', desc: 'Analyze text for sentiment, entities, patterns, and key themes.' },
+  summarize: { cost: 2, title: 'AI Summarization', desc: 'Generate concise summaries of long texts.' },
+  review: { cost: 5, title: 'Code Review', desc: 'Full code review with quality assessment and suggestions.' },
+  security: { cost: 3, title: 'Security Scan', desc: 'Scan code for vulnerabilities, injection flaws, and security issues.' },
+  explain: { cost: 2, title: 'Code Explanation', desc: 'Get detailed explanations of what code does.' },
+  refactor: { cost: 5, title: 'Refactoring', desc: 'Get suggestions for improving code structure.' }
+};
+
+document.querySelectorAll('.tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
+    currentTab = tab.dataset.tab;
+    const svc = SERVICES[currentTab];
+    document.getElementById('serviceTitle').textContent = svc.title;
+    document.getElementById('serviceDesc').textContent = svc.desc;
+    currentCost = svc.cost;
+    document.getElementById('costDisplay').textContent = `Cost: ${svc.cost} US¢ USDC`;
+    document.getElementById('resultArea').style.display = 'none';
+    document.getElementById('paymentInstructions').style.display = 'none';
+    document.getElementById('modeGroup').style.display = currentTab === 'analyze' ? 'block' : 'none';
+    updateStatus();
+  });
+});
+
+function updateStatus() {
+  const badge = document.getElementById('statusBadge');
+  if (freeRemaining > 0) {
+    badge.textContent = 'FREE';
+    badge.className = 'status-badge status-free';
+  } else {
+    badge.textContent = `$${(currentCost/100).toFixed(2)} USDC`;
+    badge.className = 'status-badge status-paid';
+  }
+}
+
+document.getElementById('submitBtn').addEventListener('click', async () => {
+  const text = document.getElementById('inputText').value.trim();
+  if (!text) { alert('Please enter some text or code.'); return; }
+
+  const btn = document.getElementById('submitBtn');
+  btn.disabled = true;
+  btn.textContent = '⏳ Processing...';
+  const resultArea = document.getElementById('resultArea');
+  resultArea.style.display = 'block';
+  resultArea.textContent = 'Waiting for response...';
+  document.getElementById('paymentInstructions').style.display = 'none';
+
+  const mode = document.getElementById('modeSelect')?.value || 'analyze';
+  const body = { text, mode };
+
+  try {
+    const resp = await fetch(`${BASE}/v1/${currentTab}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body)
+    });
+
+    if (resp.ok) {
+      const data = await resp.json();
+      resultArea.textContent = JSON.stringify(data, null, 2);
+      freeRemaining = Math.max(0, freeRemaining - 1);
+      document.getElementById('freeRemaining').textContent = freeRemaining;
+      updateStatus();
+    } else if (resp.status === 402) {
+      const data = await resp.json();
+      resultArea.textContent = '⚡ Payment required. See instructions below.';
+      document.getElementById('paymentText').innerHTML = `Send <strong>${currentCost}</strong>¢ USDC on <strong>Base chain</strong> to<br><code>0x76eADdEBFfb6A61DD071f97F4508467fc55dd113</code>`;
+      document.getElementById('paymentInstructions').style.display = 'block';
+      pendingTx = { body, tab: currentTab };
+    } else {
+      resultArea.textContent = `Error ${resp.status}: ${await resp.text()}`;
+    }
+  } catch(e) {
+    resultArea.textContent = `Network error: ${e.message}`;
+  } finally {
+    btn.disabled = false;
+    btn.textContent = '🚀 Send Request';
+  }
+});
+
+document.getElementById('retryBtn').addEventListener('click', async () => {
+  if (!pendingTx) return;
+  const txHash = prompt('Enter your transaction hash:');
+  if (!txHash) return;
+
+  try {
+    const resp = await fetch(`${BASE}/v1/${pendingTx.tab}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'X-X402-Payment': txHash },
+      body: JSON.stringify(pendingTx.body)
+    });
+    const data = await resp.json();
+    document.getElementById('resultArea').textContent = JSON.stringify(data, null, 2);
+    document.getElementById('paymentInstructions').style.display = 'none';
+  } catch(e) {
+    alert(`Error: ${e.message}`);
+  }
+});
+
+// Check free remaining from stats
+fetch(`${BASE}/api/stats/overview`).then(r => r.json()).then(data => {
+  if (data.freeToday !== undefined) {
+    freeRemaining = Math.max(0, 3 - data.freeToday);
+    document.getElementById('freeRemaining').textContent = freeRemaining;
+    updateStatus();
+  }
+}).catch(() => {});
+
+updateStatus();
+</script>
+<script src="/js/share-widget.js"></script>
+<script src="/conversion-banner.js" defer></script>
+</body>
+</html>

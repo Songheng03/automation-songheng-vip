@@ -1,0 +1,33 @@
+name: AI Code Review
+on:
+  pull_request:
+    types: [opened, synchronize]
+jobs:
+  ai-review:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Get changed files
+        id: files
+        uses: jitterbit/get-changed-files@v1
+      - name: AI Code Review
+        env:
+          FILES: ${{ steps.files.outputs.all }}
+        run: |
+          for file in $FILES; do
+            if [[ "$file" == *.js ]] || [[ "$file" == *.ts ]] || [[ "$file" == *.py ]] || [[ "$file" == *.go ]]; then
+              content=$(cat "$file")
+              curl -s -X POST https://automation.songheng.vip/api/free/review \
+                -H "Content-Type: application/json" \
+                -d "{\"text\": $(echo "$content" | jq -Rs .)}" \
+                | jq -r '.result' >> review-comment.md
+            fi
+          done
+      - name: Post review
+        run: |
+          if [ -f review-comment.md ]; then
+            gh pr comment ${{ github.event.pull_request.number }} \
+              --body "$(cat review-comment.md)"
+          fi
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta property="og:title" content="HTTP Status Codes Reference">
+<meta property="og:description" content="Complete reference of HTTP status codes with descriptions. Free.">
+<meta property="og:url" content="https://automation.songheng.vip/http-status.html">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="HTTP Status Codes Reference">
+<meta name="twitter:description" content="Complete reference of HTTP status codes with descriptions. Free.">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>HTTP Status Codes — Complete Reference</title>
+<meta name="description" content="Complete HTTP status codes reference with descriptions. 1xx-5xx codes, searchable. Great for developers and API builders. 100% client-side.">
+<link rel="canonical" href="https://automation.songheng.vip/http-status.html">
+<style>
+:root{--bg:#0d1117;--surface:#161b22;--border:#30363d;--text:#c9d1d9;--muted:#8b949e;--accent:#58a6ff;--green:#3fb950;--yellow:#d2991d;--red:#f85149}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--text);font-family:system-ui,sans-serif;min-height:100vh}
+header{background:var(--surface);border-bottom:1px solid var(--border);padding:16px 24px;text-align:center}
+header h1{font-size:1.5rem} header p{color:var(--muted);font-size:.85rem;margin-top:4px}
+.container{max-width:800px;margin:0 auto;padding:24px 16px}
+input.search{width:100%;padding:12px 16px;background:var(--bg);border:1px solid var(--border);border-radius:10px;color:var(--text);font-size:.92rem;margin-bottom:16px}
+input.search:focus{outline:none;border-color:var(--accent)}
+.cat-group{margin-bottom:20px}
+.cat-group h3{font-size:.85rem;color:var(--muted);margin-bottom:10px;text-transform:uppercase;letter-spacing:.04em}
+.cat-group .codes{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:8px}
+.code-card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:10px 14px;display:flex;align-items:center;gap:12px}
+.code-card .num{font-size:.95rem;font-weight:700;font-family:'JetBrains Mono',monospace;min-width:36px}
+.code-card .txt{font-size:.78rem;color:var(--muted)}
+.c2xx .num{color:var(--green)} .c3xx .num{color:var(--accent)} .c4xx .num{color:var(--yellow)} .c5xx .num{color:var(--red)}
+.sponsor{text-align:center;padding:20px;background:var(--surface);border:1px solid var(--border);border-radius:8px}
+.sponsor a{color:var(--accent)}
+</style>
+</head>
+<body>
+<header><h1>🌐 HTTP Status Codes</h1><p>Complete reference for all HTTP response status codes.</p></header>
+<div class="container">
+<input class="search" id="searchInput" placeholder="Search by code or description..." oninput="filter()">
+<div id="codeList"></div>
+<div class="sponsor"><p>💡 Building APIs? Our <a href="/api-playground.html">AI API</a> handles HTTP responses for you.</p></div>
+</div>
+<script>
+const codes=[
+  [100,'Continue','1xx'],[101,'Switching Protocols','1xx'],[102,'Processing','1xx'],[103,'Early Hints','1xx'],
+  [200,'OK','2xx'],[201,'Created','2xx'],[202,'Accepted','2xx'],[204,'No Content','2xx'],[206,'Partial Content','2xx'],
+  [300,'Multiple Choices','3xx'],[301,'Moved Permanently','3xx'],[302,'Found','3xx'],[304,'Not Modified','3xx'],[307,'Temporary Redirect','3xx'],[308,'Permanent Redirect','3xx'],
+  [400,'Bad Request','4xx'],[401,'Unauthorized','4xx'],[402,'Payment Required','4xx'],[403,'Forbidden','4xx'],[404,'Not Found','4xx'],[405,'Method Not Allowed','4xx'],[408,'Request Timeout','4xx'],[409,'Conflict','4xx'],[410,'Gone','4xx'],[418,"I'm a Teapot",'4xx'],[422,'Unprocessable Entity','4xx'],[429,'Too Many Requests','4xx'],
+  [500,'Internal Server Error','5xx'],[501,'Not Implemented','5xx'],[502,'Bad Gateway','5xx'],[503,'Service Unavailable','5xx'],[504,'Gateway Timeout','5xx']
+];
+function render(filter){
+  const q=(filter||'').toLowerCase();
+  const fq=q?codes.filter(([c,t])=>(c+'').includes(q)||t.toLowerCase().includes(q)):codes;
+  const cats={};fq.forEach(([c,t,cat])=>{if(!cats[cat])cats[cat]=[];cats[cat].push([c,t,cat])});
+  document.getElementById('codeList').innerHTML=Object.entries(cats).map(([cat,items])=>`<div class="cat-group"><h3>${cat} — ${['Informational','Success','Redirection','Client Error','Server Error'][['1xx','2xx','3xx','4xx','5xx'].indexOf(cat)]}</h3><div class="codes ${'c'+cat}">${items.map(([c,t])=>`<div class="code-card"><span class="num">${c}</span><span class="txt">${t}</span></div>`).join('')}</div></div>`).join('');
+}
+function filter(){render(document.getElementById('searchInput').value)}
+render();
+</script>
+<script src="/conversion-banner.js" defer></script>
+</body>
+</html>

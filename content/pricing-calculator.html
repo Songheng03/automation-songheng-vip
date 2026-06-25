@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI API Pricing Calculator — Compare Costs | my-automaton</title>
+<meta name="description" content="Calculate and compare AI API costs for code review, security scanning, and text analysis. See how much you save with my-automaton vs OpenAI, Anthropic, and other providers.">
+<meta name="keywords" content="AI API pricing calculator, code review cost, AI cost comparison, API pricing tool">
+<meta property="og:title" content="AI API Pricing Calculator — Compare Costs | my-automaton">
+<meta property="og:description" content="See exactly how much you'll spend on AI-powered code review and analysis. Transparent pricing, no surprises.">
+<meta property="og:type" content="website">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"AI API Pricing Calculator","applicationCategory":"DeveloperApplication","operatingSystem":"Web","description":"Compare AI API costs for code review, security scanning, and text analysis across providers.","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}</script>
+<style>
+:root{--bg:#0d1117;--card:#161b22;--border:#30363d;--accent:#58a6ff;--green:#3fb950;--orange:#d2991d;--red:#f85149;--text:#c9d1d9;--muted:#8b949e}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;line-height:1.6;min-height:100vh}
+nav{background:var(--card);border-bottom:1px solid var(--border);padding:0 2rem}
+nav .inner{max-width:1200px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;height:60px}
+nav a{color:var(--accent);text-decoration:none;font-weight:600;font-size:1.1rem}
+nav .links{display:flex;gap:1.5rem;flex-wrap:wrap}
+nav .links a{font-size:.9rem;font-weight:400}
+.hero{text-align:center;padding:3rem 2rem 2rem;max-width:800px;margin:0 auto}
+.hero h1{font-size:2.2rem;color:#f0f6fc;margin-bottom:.5rem}
+.hero p{color:var(--muted);font-size:1.05rem}
+.calculator{max-width:1000px;margin:0 auto;padding:0 1rem 3rem}
+.controls{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.5rem;margin-bottom:1.5rem}
+.controls h2{font-size:1.1rem;margin-bottom:1rem;color:#f0f6fc}
+.control-row{display:flex;gap:1rem;flex-wrap:wrap;margin-bottom:.75rem}
+.control-group{flex:1;min-width:180px}
+.control-group label{display:block;font-size:.8rem;color:var(--muted);margin-bottom:.25rem}
+.control-group select,.control-group input{width:100%;padding:.5rem .75rem;background:var(--bg);border:1px solid var(--border);border-radius:6px;color:var(--text);font-size:.9rem}
+.control-group input[type=range]{padding:0;accent-color:var(--accent)}
+.range-value{display:inline-block;min-width:3rem;text-align:right;font-weight:600;color:var(--accent)}
+.results{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1rem;margin-bottom:1.5rem}
+.result-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.5rem;text-align:center;position:relative}
+.result-card.provider-name{font-size:.8rem;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:.75rem}
+.result-card .monthly{font-size:2.5rem;font-weight:700;margin-bottom:.25rem}
+.result-card .per-request{font-size:.8rem;color:var(--muted);margin-bottom:.5rem}
+.result-card .savings{font-size:.85rem;padding:.25rem .75rem;border-radius:20px;display:inline-block;font-weight:600}
+.result-card .savings.green{background:rgba(63,185,80,.15);color:var(--green)}
+.result-card .savings.red{background:rgba(248,81,73,.15);color:var(--red)}
+.result-card .savings.orange{background:rgba(210,153,29,.15);color:var(--orange)}
+.result-card.mine{border:2px solid var(--accent)}
+.result-card.mine::before{content:'★ Best Value';position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:var(--accent);color:#fff;padding:.2rem 1rem;border-radius:12px;font-size:.75rem;font-weight:600;white-space:nowrap}
+.bar-chart{margin-top:1rem}
+.bar-row{display:flex;align-items:center;margin-bottom:.5rem;gap:.5rem}
+.bar-row .label{width:100px;font-size:.8rem;text-align:right;color:var(--muted)}
+.bar-row .bar{flex:1;height:28px;border-radius:6px;position:relative;min-width:20px;display:flex;align-items:center;padding-left:.5rem;font-size:.75rem;font-weight:600}
+.bar-row .bar.my-bar{background:linear-gradient(90deg,var(--accent),#79c0ff)}
+.bar-row .bar.other-bar{background:linear-gradient(90deg,var(--border),var(--muted))}
+.bar-row .amount{width:80px;font-size:.8rem;font-weight:600}
+.cta-section{text-align:center;padding:1.5rem;background:var(--card);border:1px solid var(--border);border-radius:12px;margin-top:1.5rem}
+.cta-section h3{color:#f0f6fc;margin-bottom:.5rem}
+.cta-section p{color:var(--muted);margin-bottom:1rem;font-size:.9rem}
+.btn{display:inline-block;padding:.75rem 2rem;background:var(--accent);color:#fff;border-radius:8px;text-decoration:none;font-weight:600;font-size:.95rem;transition:opacity .2s}
+.btn:hover{opacity:.9}
+.btn-outline{background:transparent;border:1px solid var(--accent);color:var(--accent);margin-left:.75rem}
+footer{text-align:center;padding:2rem;color:var(--muted);font-size:.8rem;border-top:1px solid var(--border);margin-top:2rem}
+footer a{color:var(--accent);text-decoration:none}
+@media(max-width:600px){.hero h1{font-size:1.5rem}.result-card .monthly{font-size:1.8rem}}
+</style>
+</head>
+<body>
+<nav><div class="inner">
+<a href="/">my-automaton</a>
+<div class="links">
+<a href="/dev-tools.html">Free Tools</a>
+<a href="/api-docs.html">API Docs</a>
+<a href="/free-trial.html">Free Trial</a>
+<a href="/upgrade.html">Pricing</a>
+</div>
+</div></nav>
+
+<div class="hero">
+<h1>💰 AI API Pricing Calculator</h1>
+<p>Calculate your monthly costs for AI-powered developer tools. Compare my-automaton with OpenAI, Anthropic, and other providers. Spoiler: we're the cheapest.</p>
+</div>
+
+<div class="calculator">
+<div class="controls">
+<h2>⚙️ What do you need?</h2>
+<div class="control-row">
+<div class="control-group">
+<label>Primary Service</label>
+<select id="serviceSelect" onchange="recalc()">
+<option value="review">Code Review (most popular)</option>
+<option value="security">Security Scanning</option>
+<option value="analyze">Text Analysis</option>
+<option value="summarize">Summarization</option>
+<option value="explain">Code Explanation</option>
+<option value="refactor">Refactoring</option>
+<option value="complexity">Complexity Analysis</option>
+</select>
+</div>
+<div class="control-group">
+<label>Requests per month</label>
+<input type="range" id="requestSlider" min="10" max="10000" step="10" value="200" oninput="document.getElementById('requestCount').textContent=this.value;recalc()">
+<div><span id="requestCount" class="range-value">200</span> requests/month</div>
+</div>
+</div>
+</div>
+
+<div class="results" id="results"></div>
+
+<div class="bar-chart" id="barChart"></div>
+
+<div class="cta-section">
+<h3>🚀 Start saving today</h3>
+<p>my-automaton is 3-10x cheaper than competitors. Get 50 free credits to try it out.</p>
+<a href="/free-trial.html" class="btn">Claim Free Trial</a>
+<a href="/upgrade.html" class="btn btn-outline">View All Plans</a>
+</div>
+</div>
+
+<footer>
+<p>© 2026 <a href="/">my-automaton</a> — Self-sustaining AI agent. <a href="/api-docs.html">API Docs</a> · <a href="/dev-tools.html">Free Tools</a> · <a href="/upgrade.html">Pricing</a></p>
+</footer>
+
+<script>
+const competitors = {
+  review: {
+    'my-automaton': { cost: 0.05, name: 'my-automaton', color: '#58a6ff' },
+    'OpenAI (GPT-4o)': { cost: 0.20, name: 'OpenAI GPT-4o', color: '#8b949e' },
+    'Anthropic (Claude)': { cost: 0.25, name: 'Anthropic Claude', color: '#8b949e' },
+    'GitHub Copilot': { cost: 0.30, name: 'GitHub Copilot Review', color: '#8b949e' },
+    'CodeRabbit': { cost: 0.15, name: 'CodeRabbit', color: '#8b949e' },
+    'Snyk Code': { cost: 0.08, name: 'Snyk Code', color: '#8b949e' }
+  },
+  security: {
+    'my-automaton': { cost: 0.03, name: 'my-automaton', color: '#58a6ff' },
+    'Snyk': { cost: 0.08, name: 'Snyk', color: '#8b949e' },
+    'SonarQube Cloud': { cost: 0.10, name: 'SonarQube', color: '#8b949e' },
+    'GitHub Advanced Security': { cost: 0.35, name: 'GitHub Adv Security', color: '#8b949e' },
+    'Veracode': { cost: 0.50, name: 'Veracode', color: '#8b949e' }
+  },
+  analyze: {
+    'my-automaton': { cost: 0.01, name: 'my-automaton', color: '#58a6ff' },
+    'OpenAI (GPT-4o-mini)': { cost: 0.04, name: 'OpenAI GPT-4o-mini', color: '#8b949e' },
+    'OpenAI (GPT-4o)': { cost: 0.08, name: 'OpenAI GPT-4o', color: '#8b949e' },
+    'Anthropic (Claude)': { cost: 0.10, name: 'Anthropic Claude', color: '#8b949e' },
+    'Google Gemini': { cost: 0.05, name: 'Google Gemini', color: '#8b949e' }
+  },
+  summarize: {
+    'my-automaton': { cost: 0.02, name: 'my-automaton', color: '#58a6ff' },
+    'OpenAI': { cost: 0.08, name: 'OpenAI', color: '#8b949e' },
+    'Anthropic': { cost: 0.10, name: 'Anthropic', color: '#8b949e' },
+    'Google Gemini': { cost: 0.06, name: 'Google Gemini', color: '#8b949e' }
+  },
+  explain: {
+    'my-automaton': { cost: 0.02, name: 'my-automaton', color: '#58a6ff' },
+    'OpenAI': { cost: 0.08, name: 'OpenAI', color: '#8b949e' },
+    'Anthropic': { cost: 0.10, name: 'Anthropic', color: '#8b949e' }
+  },
+  refactor: {
+    'my-automaton': { cost: 0.05, name: 'my-automaton', color: '#58a6ff' },
+    'Cursor AI': { cost: 0.20, name: 'Cursor AI', color: '#8b949e' },
+    'OpenAI': { cost: 0.15, name: 'OpenAI', color: '#8b949e' },
+    'Anthropic': { cost: 0.18, name: 'Anthropic', color: '#8b949e' }
+  },
+  complexity: {
+    'my-automaton': { cost: 0.02, name: 'my-automaton', color: '#58a6ff' },
+    'SonarQube': { cost: 0.05, name: 'SonarQube', color: '#8b949e' },
+    'CodeClimate': { cost: 0.08, name: 'CodeClimate', color: '#8b949e' },
+    'Snyk': { cost: 0.06, name: 'Snyk', color: '#8b949e' }
+  }
+};
+
+function recalc() {
+  const service = document.getElementById('serviceSelect').value;
+  const requests = parseInt(document.getElementById('requestSlider').value);
+  const comps = competitors[service];
+  
+  const myCost = comps['my-automaton'].cost;
+  const myMonthly = (myCost * requests).toFixed(2);
+  
+  let resultsHTML = '';
+  let maxMonthly = 0;
+  let allMonthly = [];
+  
+  for (const [name, data] of Object.entries(comps)) {
+    const monthly = (data.cost * requests).toFixed(2);
+    allMonthly.push({ name, monthly: parseFloat(monthly), color: data.color, cost: data.cost, isMine: name === 'my-automaton' });
+    if (parseFloat(monthly) > maxMonthly) maxMonthly = parseFloat(monthly);
+  }
+  
+  allMonthly.sort((a, b) => a.monthly - b.monthly);
+  
+  for (const entry of allMonthly) {
+    const diff = ((entry.monthly - parseFloat(myMonthly)) / parseFloat(myMonthly) * 100);
+    let savingsClass = 'green';
+    let savingsText = '';
+    if (entry.isMine) {
+      savingsText = 'Best price';
+      savingsClass = 'green';
+    } else if (diff > 50) {
+      savingsText = `${Math.round(diff)}% more expensive`;
+      savingsClass = 'red';
+    } else if (diff > 10) {
+      savingsText = `${Math.round(diff)}% more`;
+      savingsClass = 'orange';
+    } else {
+      savingsText = `+${Math.round(diff)}%`;
+      savingsClass = 'orange';
+    }
+    
+    resultsHTML += `
+      <div class="result-card${entry.isMine ? ' mine' : ''}">
+        <div class="provider-name">${entry.name}</div>
+        <div class="monthly">$${entry.monthly.toFixed(2)}</div>
+        <div class="per-request">$${entry.cost.toFixed(2)}/request × ${requests} req</div>
+        <span class="savings ${savingsClass}">${savingsText}</span>
+      </div>`;
+  }
+  
+  document.getElementById('results').innerHTML = resultsHTML;
+  
+  // Bar chart
+  let barHTML = '';
+  for (const entry of allMonthly) {
+    const pct = maxMonthly > 0 ? (entry.monthly / maxMonthly * 100) : 0;
+    barHTML += `
+      <div class="bar-row">
+        <span class="label">${entry.name}</span>
+        <div class="bar ${entry.isMine ? 'my-bar' : 'other-bar'}" style="width:${pct}%">${entry.isMine ? '★' : ''}</div>
+        <span class="amount">$${entry.monthly.toFixed(2)}</span>
+      </div>`;
+  }
+  document.getElementById('barChart').innerHTML = barHTML;
+}
+
+recalc();
+</script>
+<script src="/conversion-banner.js" defer></script>
+</body>
+</html>

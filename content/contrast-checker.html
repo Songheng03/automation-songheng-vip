@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WCAG Color Contrast Checker — Accessibility Tool | automation.songheng.vip</title>
+<meta name="description" content="Free WCAG color contrast checker. Test text/background color combinations for AA/AAA compliance. Supports hex, rgb, hsl. Instant WCAG 2.1 results.">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:#0a0a14;color:#e0e0e0;min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:2rem}
+.container{max-width:700px;width:100%}
+header{text-align:center;margin-bottom:2rem}
+header h1{font-size:1.8rem;color:#58a6ff;margin-bottom:.25rem}
+header p{color:#8b949e;font-size:.9rem}
+.card{background:#16162a;border:1px solid #2a2a4a;border-radius:12px;padding:1.5rem;margin-bottom:1rem}
+.card h2{font-size:1rem;color:#58cc02;margin-bottom:1rem}
+.row{display:flex;gap:1rem;flex-wrap:wrap;align-items:flex-end}
+.col{flex:1;min-width:140px}
+.col label{display:block;font-size:.8rem;color:#8b949e;margin-bottom:.25rem}
+.col input{width:100%;padding:.6rem;background:#0d1117;border:1px solid #30305a;color:#e0e0e0;border-radius:6px;font-family:'Fira Code',monospace;font-size:.85rem}
+.preview-box{width:100%;height:120px;border-radius:8px;margin:1rem 0;display:flex;align-items:center;justify-content:center;font-size:1.4rem;font-weight:700;transition:all .3s;border:2px solid transparent}
+.results{display:grid;grid-template-columns:1fr 1fr;gap:.75rem}
+.result-item{background:#0d1117;border-radius:8px;padding:1rem;text-align:center}
+.result-item .label{font-size:.7rem;color:#8b949e;text-transform:uppercase;letter-spacing:.05rem;margin-bottom:.3rem}
+.result-item .score{font-size:2rem;font-weight:700}
+.result-item .verdict{font-size:.8rem;margin-top:.25rem}
+.pass{color:#238636}.fail{color:#f85149}.warn{color:#d29922}
+.badges{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:1rem}
+.badge{padding:.3rem .75rem;border-radius:20px;font-size:.75rem;font-weight:600}
+.badge.aaa{border:2px solid #238636;color:#238636}
+.badge.aa{border:2px solid #2ea043;color:#2ea043}
+.badge.large{border:2px solid #d29922;color:#d29922}
+.badge.fail{border:2px solid #f85149;color:#f85149}
+.presets{display:flex;gap:.4rem;flex-wrap:wrap;margin-top:.75rem}
+.preset{width:36px;height:36px;border-radius:6px;border:2px solid transparent;cursor:pointer;transition:transform .15s}
+.preset:hover{transform:scale(1.15);border-color:#fff}
+nav{margin-bottom:1.5rem}
+nav a{color:#8b949e;text-decoration:none;margin:0 .75rem;font-size:.85rem}
+nav a:hover{color:#58a6ff}
+footer{text-align:center;padding:1rem;font-size:.75rem;color:#484f58;margin-top:1rem}
+@media(max-width:500px){.results{grid-template-columns:1fr}}
+</style>
+
+<!-- Open Graph / Social Meta Tags -->
+<meta property="og:title" content="WCAG Color Contrast Checker — Accessibility Tool | automation.songheng.vip" />
+<meta property="og:description" content="Free WCAG color contrast checker. Test text/background color combinations for AA/AAA compliance. Supports hex, rgb, hsl. Instant WCAG 2.1 results." />
+<meta property="og:image" content="https://automation.songheng.vip/og-image.png" />
+<meta property="og:url" content="https://automation.songheng.vip/contrast-checker.html" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="my-automaton" />
+<meta property="og:locale" content="en_US" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="WCAG Color Contrast Checker — Accessibility Tool | automation.songheng.vip" />
+<meta name="twitter:description" content="Free WCAG color contrast checker. Test text/background color combinations for AA/AAA compliance. Supports hex, rgb, hsl. Instant WCAG 2.1 results." />
+<meta name="twitter:image" content="https://automation.songheng.vip/og-image.png" />
+  <link rel="canonical" href="https://automation.songheng.vip/contrast-checker.html">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "WCAG Color Contrast Checker — Accessibility Tool | automation.songheng.vip",
+  "description": "Free WCAG color contrast checker. Test text/background color combinations for AA/AAA compliance. Supports hex, rgb, hsl. Instant WCAG 2.1 results.",
+  "url": "https://automation.songheng.vip/contrast-checker.html",
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": "Web",
+  "author": {
+    "@type": "Organization",
+    "name": "my-automaton",
+    "url": "https://automation.songheng.vip"
+  },
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  }
+}
+</script>
+</head>
+<body>
+<div class="container">
+<nav>
+  <a href="/">🏠 Home</a>
+  <a href="/diff-checker.html">⧉ Diff</a>
+  <a href="/regex-tester.html">🔤 Regex</a>
+  <a href="/dev-toolbox.html">🛠️ Toolbox</a>
+</nav>
+
+<header>
+  <h1>🎨 WCAG Color Contrast Checker</h1>
+  <p>Test text/background color combinations for accessibility compliance (WCAG 2.1)</p>
+</header>
+
+<div class="card">
+  <h2>Colors</h2>
+  <div class="row">
+    <div class="col"><label>Text Color (Foreground)</label><input type="text" id="fg" value="#ffffff" oninput="update()" placeholder="#ffffff"></div>
+    <div class="col"><label>Background Color</label><input type="text" id="bg" value="#0d1117" oninput="update()" placeholder="#0d1117"></div>
+    <div class="col" style="min-width:80px">
+      <label>Font Size</label>
+      <select id="fontSize" onchange="update()" style="width:100%;padding:.6rem;background:#0d1117;border:1px solid #30305a;color:#e0e0e0;border-radius:6px">
+        <option value="normal">Normal (&lt;18px)</option>
+        <option value="large">Large (≥18px bold or ≥24px)</option>
+      </select>
+    </div>
+  </div>
+  <div class="presets" id="presets"></div>
+</div>
+
+<div class="preview-box" id="preview">
+  <span>The quick brown fox jumps over the lazy dog.</span>
+</div>
+
+<div class="results">
+  <div class="result-item"><div class="label">Contrast Ratio</div><div class="score" id="ratio">—</div><div class="verdict" id="ratioVerdict"></div></div>
+  <div class="result-item"><div class="label">WCAG AA (Normal)</div><div class="score" id="aaNorm">—</div><div class="verdict" id="aaNormV"></div></div>
+  <div class="result-item"><div class="label">WCAG AA (Large)</div><div class="score" id="aaLarge">—</div><div class="verdict" id="aaLargeV"></div></div>
+  <div class="result-item"><div class="label">WCAG AAA (Normal)</div><div class="score" id="aaaNorm">—</div><div class="verdict" id="aaaNormV"></div></div>
+</div>
+
+<div class="badges" id="badges"></div>
+</div>
+
+<footer>
+  <a href="/">automation.songheng.vip</a> — Free developer tools. Try AI-powered analysis at <a href="/api-playground.html">API Playground</a>.
+</footer>
+
+<script>
+function parseColor(str) {
+  str = str.trim();
+  if (str.startsWith('#')) {
+    let h = str.slice(1);
+    if (h.length === 3) h = h[0]+h[0]+h[1]+h[1]+h[2]+h[2];
+    if (h.length !== 6) return null;
+    return {r:parseInt(h.slice(0,2),16), g:parseInt(h.slice(2,4),16), b:parseInt(h.slice(4,6),16)};
+  }
+  const rgb = str.match(/rgb\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*\)/);
+  if (rgb) return {r:+rgb[1],g:+rgb[2],b:+rgb[3]};
+  return null;
+}
+
+function relativeLuminance({r,g,b}) {
+  const toLinear = c => { c/=255; return c<=0.03928 ? c/12.92 : Math.pow((c+0.055)/1.055,2.4); };
+  return 0.2126*toLinear(r) + 0.7152*toLinear(g) + 0.0722*toLinear(b);
+}
+
+function contrastRatio(fg, bg) {
+  const l1 = relativeLuminance(fg), l2 = relativeLuminance(bg);
+  const lighter = Math.max(l1,l2), darker = Math.min(l1,l2);
+  return (lighter+0.05)/(darker+0.05);
+}
+
+const PRESET_COLORS = [
+  '#ffffff','#0d1117','#238636','#58a6ff','#f85149','#d29922','#8b949e',
+  '#161b22','#1f6feb','#2ea043','#da3633','#8957e5','#c9d1d9','#f0f6fc',
+  '#ff7b72','#79c0ff','#a5d6ff','#7ee787','#56d364','#ffa657'
+];
+
+function renderPresets() {
+  document.getElementById('presets').innerHTML = PRESET_COLORS.map(c =>
+    `<div class="preset" style="background:${c}" title="${c}" onclick="pickColor('${c}')"></div>`
+  ).join('');
+}
+
+function pickColor(color) {
+  const el = document.activeElement === document.getElementById('bg') ? 'bg' : 'fg';
+  document.getElementById(el).value = color;
+  update();
+}
+
+function formatRatio(r) { return r.toFixed(2)+':1'; }
+
+function update() {
+  const fg = parseColor(document.getElementById('fg').value);
+  const bg = parseColor(document.getElementById('bg').value);
+  const large = document.getElementById('fontSize').value === 'large';
+  const preview = document.getElementById('preview');
+  
+  if (!fg || !bg) {
+    preview.style.background = '#16162a';
+    preview.style.color = '#8b949e';
+    return;
+  }
+  
+  const ratio = contrastRatio(fg, bg);
+  
+  preview.style.background = `rgb(${bg.r},${bg.g},${bg.b})`;
+  preview.style.color = `rgb(${fg.r},${fg.g},${fg.b})`;
+  preview.style.borderColor = ratio >= 7 ? '#238636' : ratio >= 4.5 ? '#d29922' : '#f85149';
+  
+  const aaNormal = ratio >= 4.5;
+  const aaLarge = ratio >= 3;
+  const aaaNormal = ratio >= 7;
+  const aaaLarge = ratio >= 4.5;
+  
+  document.getElementById('ratio').textContent = formatRatio(ratio);
+  document.getElementById('ratio').className = 'score ' + (ratio >= 7 ? 'pass' : ratio >= 4.5 ? 'warn' : 'fail');
+  
+  const setResult = (id, label, pass) => {
+    document.getElementById(id).textContent = pass ? '✓' : '✗';
+    document.getElementById(id).className = 'score ' + (pass ? 'pass' : 'fail');
+    document.getElementById(id+'V').textContent = pass ? 'PASS' : 'FAIL';
+    document.getElementById(id+'V').className = 'verdict ' + (pass ? 'pass' : 'fail');
+  };
+  
+  setResult('aaNorm', 'AA Normal', aaNormal);
+  setResult('aaLarge', 'AA Large', aaLarge);
+  setResult('aaaNorm', 'AAA Normal', aaaNormal);
+  
+  document.getElementById('aaLarge').textContent = aaLarge ? '✓' : '✗';
+  document.getElementById('aaLarge').className = 'score ' + (aaLarge ? 'pass' : 'fail');
+  document.getElementById('aaLargeV').textContent = aaLarge ? 'PASS' : 'FAIL';
+  document.getElementById('aaLargeV').className = 'verdict ' + (aaLarge ? 'pass' : 'fail');
+  
+  // AAA Large
+  const aaaLargePass = ratio >= 4.5;
+  
+  // Badges
+  const badges = [];
+  if (aaaNormal) badges.push('<span class="badge aaa">🏆 AAA</span>');
+  if (aaNormal) badges.push('<span class="badge aa">✅ AA</span>');
+  if (aaLarge && !aaNormal) badges.push('<span class="badge large">⚠️ Large Text Only</span>');
+  if (!aaLarge) badges.push('<span class="badge fail">❌ Fails WCAG</span>');
+  document.getElementById('badges').innerHTML = badges.join('');
+}
+
+renderPresets();
+update();
+</script>
+<script src="/conversion-banner.js" defer></script>
+</body>
+</html>

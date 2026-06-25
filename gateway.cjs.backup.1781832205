@@ -1,0 +1,489 @@
+#!/usr/bin/env node
+/**
+ * production-gateway — my-automaton FULL Gateway v2.0
+ * All routes: static content, free API (3/day), premium API (credit-based),
+ * Creem checkout + webhook, dev-key funnel, badge generation.
+ *
+ * Migrated from Stripe to Creem (USDC settlement).
+ *
+ * ENV VARS:
+ *   CREEM_API_KEY     — Creem API key for checkout creation
+ *   CREEM_WEBHOOK_SECRET — Creem webhook signing secret
+ *   DEEPSEEK_API_KEY  — DeepSeek AI key
+ *   CREEM_PRODUCT_IDS — JSON mapping of price IDs to Creem product IDs
+ */
+
+const http = require('http');
+const fs = require('fs');
+const path = require('path');
+const crypto = require('crypto');
+const url = require('url');
+
+// ── Configuration ──────────────────────────────────────────
+const PORT = 8080;
+const CONTENT = '/root/automaton/content';
+const API_KEYS = '/root/automaton/api-keys.json';
+const DATA_DIR = '/root/automaton/data';
+const CREEM_API_KEY = process.env.CREEM_API_KEY || '';
+const CREEM_WEBHOOK_SECRET = process.env.CREEM_WEBHOOK_SECRET || '';
+const DEEPSEEK_ENDPOINT = process.env.DEEPSEEK_ENDPOINT || 'https://api.deepseek.com/chat/completions';
+const DEEPSEEK_KEY = process.env.DEEPSEEK_API_KEY || (() => { try { return JSON.parse(fs.readFileSync('/root/.automaton/automaton.json','utf-8')).deepseekApiKey; } catch { return ''; }})();
+
+// Creem product IDs — map our price tier keys to Creem product IDs
+const CREEM_PRODUCT_IDS = (() => {
+  try { return JSON.parse(process.env.CREEM_PRODUCT_IDS || '{}'); } catch { return {}; }
+})();
+
+// Price tiers (credits per purchase)
+const PRICES = {
+  'price_starter': { name: 'Starter', credits: 500, price: 5, hkd: 38 },
+  'price_advanced': { name: 'Advanced', credits: 1100, price: 10, hkd: 78 },
+  'price_pro': { name: 'Pro', credits: 3000, price: 25, hkd: 198 },
+  'price_ultimate': { name: 'Ultimate', credits: 6500, price: 50, hkd: 388 },
+};
+
+// Creem API base
+const CREEM_API = 'https://api.creem.io/v1';
+
+// Credit costs per endpoint
+const CREDIT_COST = { analyze: 1, summarize: 2, review: 5, security: 3, explain: 2, refactor: 5, complexity: 2 };
+
+// Rate limiting (in-memory)
+const FREE_LIMIT = new Map(); // ip -> { date, count }
+
+// ── Helpers ────────────────────────────────────────────────
+const MIME = { '.html':'text/html','.js':'text/javascript','.mjs':'text/javascript','.css':'text/css','.png':'image/png','.jpg':'image/jpeg','.svg':'image/svg+xml','.json':'application/json','.xml':'application/xml','.txt':'text/plain','.md':'text/markdown','.ico':'image/x-icon' };
+
+function mime(p) { return MIME[path.extname(p).toLowerCase()] || 'application/octet-stream'; }
+
+function readJSON(p, def={}) {
+  try { return JSON.parse(fs.readFileSync(p, 'utf-8')); } catch { return def; }
+}
+
+function writeJSON(p, data) {
+  fs.mkdirSync(path.dirname(p), { recursive: true });
+  fs.writeFileSync(p, JSON.stringify(data, null, 2));
+}
+
+function log(msg) {
+  const l = `[${new Date().toISOString()}] ${msg}`;
+  console.log(l);
+  try { fs.mkdirSync(DATA_DIR, { recursive: true }); fs.appendFileSync(path.join(DATA_DIR,'gateway.log'), l+'\n'); } catch {}
+}
+
+function ipFromReq(req) {
+  return req.headers['x-forwarded-for']?.split(',')[0]?.trim() || req.socket.remoteAddress || '0.0.0.0';
+}
+
+function generateKey() {
+  return 'am_' + crypto.randomBytes(24).toString('base64url');
+}
+
+function getCredits(key) {
+  const db = readJSON(API_KEYS);
+  return db[key] || null;
+}
+
+function useCredits(key, cost) {
+  const db = readJSON(API_KEYS);
+  if (!db[key]) return false;
+  if (db[key].credits < cost) return false;
+  db[key].credits -= cost;
+  db[key].used = (db[key].used || 0) + 1;
+  db[key].last_used = new Date().toISOString();
+  writeJSON(API_KEYS, db);
+  return true;
+}
+
+function addCredits(priceId, txHash) {
+  const tier = PRICES[priceId];
+  if (!tier) return null;
+  const key = generateKey();
+  const db = readJSON(API_KEYS);
+  db[key] = { credits: tier.credits, created: new Date().toISOString(), used: 0, price_id: priceId, tx_hash: txHash || '', payment_provider: 'creem' };
+  writeJSON(API_KEYS, db);
+  return key;
+}
+
+// Free rate limit check
+function checkFreeLimit(ip) {
+  const today = new Date().toISOString().split('T')[0];
+  const entry = FREE_LIMIT.get(ip);
+  if (!entry || entry.date !== today) {
+    FREE_LIMIT.set(ip, { date: today, count: 0 });
+    return true;
+  }
+  if (entry.count >= 3) return false;
+  return true;
+}
+
+function incrementFree(ip) {
+  const today = new Date().toISOString().split('T')[0];
+  const entry = FREE_LIMIT.get(ip);
+  if (!entry || entry.date !== today) FREE_LIMIT.set(ip, { date: today, count: 1 });
+  else entry.count++;
+}
+
+// DeepSeek call
+async function callAI(messages) {
+  if (!DEEPSEEK_KEY) return { error: 'AI not configured' };
+  try {
+    const resp = await fetch(DEEPSEEK_ENDPOINT, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${DEEPSEEK_KEY}` },
+      body: JSON.stringify({ model: 'deepseek-chat', messages, max_tokens: 2048, temperature: 0.3 })
+    });
+    const data = await resp.json();
+    return data.choices?.[0]?.message?.content || JSON.stringify(data);
+  } catch (e) {
+    return { error: e.message };
+  }
+}
+
+// ── Creem Checkout ─────────────────────────────────────────
+
+async function createCreemCheckout(priceId, metadata = {}) {
+  const productId = CREEM_PRODUCT_IDS[priceId];
+  if (!productId) {
+    log(`No Creem product ID for price: ${priceId} (available: ${Object.keys(CREEM_PRODUCT_IDS).join(', ')})`);
+    return null;
+  }
+
+  const tier = PRICES[priceId];
+  if (!tier) return null;
+
+  const body = JSON.stringify({
+    product_id: productId,
+    success_url: `https://automation.chaosong.dpdns.org/success.html?price_id=${priceId}`,
+    metadata: JSON.stringify({ price_id: priceId, ...metadata }),
+  });
+
+  try {
+    const resp = await fetch(`${CREEM_API}/checkouts`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-API-Key': CREEM_API_KEY,
+      },
+      body,
+    });
+    const data = await resp.json();
+    if (!resp.ok) {
+      log(`Creem checkout error: ${resp.status} ${JSON.stringify(data)}`);
+      return null;
+    }
+    return data;
+  } catch (e) {
+    log(`Creem checkout network error: ${e.message}`);
+    return null;
+  }
+}
+
+function getDirectCheckoutUrl(priceId) {
+  const productId = CREEM_PRODUCT_IDS[priceId];
+  if (!productId) return null;
+  return `https://creem.io/checkout/${productId}`;
+}
+
+// ── Route handlers ────────────────────────────────────────
+
+async function serveStatic(req, res) {
+  let p = url.parse(req.url).pathname;
+  if (p === '/' || p === '') p = '/index.html';
+  const ext = path.extname(p);
+  let filePath;
+  if (!ext) {
+    filePath = path.join(CONTENT, p + '.html');
+    if (!fs.existsSync(filePath)) {
+      filePath = path.join(CONTENT, p);
+    }
+  } else {
+    filePath = path.join(CONTENT, p);
+  }
+  if (!filePath.startsWith(CONTENT)) {
+    res.writeHead(403); res.end('Forbidden'); return;
+  }
+  try {
+    if (!fs.existsSync(filePath) || fs.statSync(filePath).isDirectory()) {
+      res.writeHead(404); res.end('Not found'); return;
+    }
+    const content = fs.readFileSync(filePath);
+    res.writeHead(200, { 'Content-Type': mime(filePath), 'Cache-Control': 'public, max-age=3600' });
+    res.end(content);
+  } catch (e) {
+    res.writeHead(500); res.end('Error');
+  }
+}
+
+async function handleHealth(req, res) {
+  const data = {
+    status: 'ok', time: new Date().toISOString(), uptime: process.uptime(),
+    version: 'v2.0', creem: !!CREEM_API_KEY,
+    deepseek: !!DEEPSEEK_KEY, free_today: FREE_LIMIT.size
+  };
+  res.writeHead(200, { 'Content-Type': 'application/json' });
+  res.end(JSON.stringify(data));
+}
+
+async function handleFree(req, res) {
+  const ip = ipFromReq(req);
+  const mode = url.parse(req.url).pathname.split('/').pop();
+  
+  if (!checkFreeLimit(ip)) {
+    res.writeHead(429, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({ error: 'Free limit reached (3/day). Buy credits at /upgrade.html', upgrade: true }));
+    return;
+  }
+  
+  let body = '';
+  req.on('data', c => body += c);
+  req.on('end', async () => {
+    try {
+      const input = JSON.parse(body);
+      const prompt = buildPrompt(mode, input);
+      const result = await callAI([{ role: 'user', content: prompt }]);
+      incrementFree(ip);
+      const remaining = Math.max(0, 2 - (FREE_LIMIT.get(ip)?.count || 0));
+      res.writeHead(200, { 'Content-Type': 'application/json', 'X-Free-Remaining': remaining });
+      res.end(JSON.stringify({ result, mode, free_remaining: remaining }));
+    } catch (e) {
+      res.writeHead(400); res.end(JSON.stringify({ error: 'Invalid request: ' + e.message }));
+    }
+  });
+}
+
+function buildPrompt(mode, input) {
+  const code = input.code || input.text || '';
+  const lang = input.language || input.lang || '';
+  const prompts = {
+    analyze: `Analyze this text deeply. Provide insights, themes, and key points:\n\n${code}`,
+    summarize: `Summarize this text concisely:\n\n${code}`,
+    review: `Code review the following ${lang} code. Check for bugs, security issues, style problems, and suggest improvements:\n\n${code}`,
+    security: `Security audit this ${lang} code. Check for OWASP Top 10, injections, secrets, and vulnerabilities:\n\n${code}`,
+    explain: `Explain this ${lang} code in simple terms:\n\n${code}`,
+    refactor: `Suggest refactoring improvements for this ${lang} code. Show before/after:\n\n${code}`,
+    complexity: `Analyze the complexity of this ${lang} code. Big O, cyclomatic complexity, suggestions:\n\n${code}`
+  };
+  return prompts[mode] || `Process this: ${code}`;
+}
+
+// Premium API endpoint (credit-based)
+async function handleApi(req, res) {
+  const mode = url.parse(req.url).pathname.split('/').pop();
+  const apiKey = req.headers['x-api-key'];
+  
+  if (!apiKey) {
+    res.writeHead(401, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({ error: 'Missing X-API-Key header. Buy credits at /upgrade.html' }));
+    return;
+  }
+  
+  const cost = CREDIT_COST[mode];
+  if (!cost) {
+    res.writeHead(400); res.end(JSON.stringify({ error: 'Invalid mode', modes: Object.keys(CREDIT_COST) }));
+    return;
+  }
+  
+  const account = getCredits(apiKey);
+  if (!account) {
+    res.writeHead(401); res.end(JSON.stringify({ error: 'Invalid API key' }));
+    return;
+  }
+  
+  if (account.credits < cost) {
+    res.writeHead(402, { 'Content-Type': 'application/json', 'X-Credits-Remaining': '0' });
+    res.end(JSON.stringify({ error: 'Insufficient credits', credits: account.credits, cost, upgrade: '/upgrade.html' }));
+    return;
+  }
+  
+  let body = '';
+  req.on('data', c => body += c);
+  req.on('end', async () => {
+    try {
+      const input = JSON.parse(body);
+      const prompt = buildPrompt(mode, input);
+      const result = await callAI([{ role: 'user', content: prompt }]);
+      useCredits(apiKey, cost);
+      const remaining = getCredits(apiKey)?.credits || 0;
+      const response = { result, mode, credits_used: cost, credits_remaining: remaining };
+      res.writeHead(200, { 'Content-Type': 'application/json', 'X-Credits-Remaining': remaining });
+      res.end(JSON.stringify(response));
+    } catch (e) {
+      res.writeHead(400); res.end(JSON.stringify({ error: 'Invalid request: ' + e.message }));
+    }
+  });
+}
+
+// Checkout creation
+async function handleCheckout(req, res) {
+  let body = '';
+  req.on('data', c => body += c);
+  req.on('end', async () => {
+    try {
+      const { price_id } = JSON.parse(body);
+      if (!PRICES[price_id]) {
+        res.writeHead(400); res.end(JSON.stringify({ error: 'Invalid price_id', prices: Object.keys(PRICES) }));
+        return;
+      }
+      
+      // Try Creem API first
+      if (CREEM_API_KEY) {
+        const checkout = await createCreemCheckout(price_id);
+        if (checkout && checkout.url) {
+          res.writeHead(200, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ url: checkout.url, id: checkout.id }));
+          return;
+        }
+      }
+      
+      // Fallback to direct link
+      const directUrl = getDirectCheckoutUrl(price_id);
+      if (directUrl) {
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ url: directUrl }));
+        return;
+      }
+      
+      res.writeHead(500); res.end(JSON.stringify({ error: 'Payment not configured' }));
+    } catch (e) {
+      res.writeHead(400); res.end(JSON.stringify({ error: e.message }));
+    }
+  });
+}
+
+// Creem Webhook handler
+async function handleWebhook(req, res) {
+  let body = '';
+  req.on('data', c => body += c);
+  req.on('end', async () => {
+    try {
+      const event = JSON.parse(body);
+      log(`Webhook event: ${event.type || JSON.stringify(event).substring(0, 200)}`);
+      
+      if (event.type === 'checkout.completed' || event.type === 'payment.succeeded') {
+        const metadata = typeof event.metadata === 'string' ? JSON.parse(event.metadata) : (event.metadata || {});
+        const priceId = metadata.price_id || event.price_id || '';
+        const txHash = event.transaction_hash || event.id || '';
+        
+        if (priceId && PRICES[priceId]) {
+          const key = addCredits(priceId, txHash);
+          if (key) {
+            log(`Credits added: ${key} for ${priceId}`);
+            res.writeHead(200, { 'Content-Type': 'application/json' });
+            res.end(JSON.stringify({ ok: true, api_key: key }));
+            return;
+          }
+        }
+      }
+      
+      res.writeHead(200); res.end(JSON.stringify({ received: true }));
+    } catch (e) {
+      log(`Webhook error: ${e.message}`);
+      res.writeHead(200); res.end(JSON.stringify({ received: true }));
+    }
+  });
+}
+
+// Badge endpoint (shields.io compatible SVG)
+async function handleBadge(req, res) {
+  const parsed = url.parse(req.url, true);
+  const query = parsed.query;
+  
+  const label = query.label || 'my-automaton';
+  const message = query.message || 'AI API';
+  const color = query.color || 'blue';
+  const style = query.style || 'flat';
+  
+  const colors = {
+    blue: '#3B82F6', green: '#22C55E', red: '#EF4444', yellow: '#EAB308',
+    purple: '#A855F7', pink: '#EC4899', orange: '#F97316', gray: '#6B7280',
+    brightgreen: '#44CC11', green2: '#97CA00', yellow2: '#DFB317',
+    orange2: '#FE7D37', red2: '#E05D44', blue2: '#007EC6', lightgrey: '#9F9F9F'
+  };
+  
+  const bgColor = colors[color] || color || '#3B82F6';
+  const labelWidth = label.length * 8 + 10;
+  const msgWidth = message.length * 8 + 10;
+  const totalWidth = labelWidth + msgWidth;
+  
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${totalWidth}" height="20">
+    <linearGradient id="s" x2="0" y2="100%">
+      <stop offset="0" stop-color="#bbb" stop-opacity=".1"/>
+      <stop offset="1" stop-opacity=".1"/>
+    </linearGradient>
+    <clipPath id="r">
+      <rect width="${totalWidth}" height="20" rx="3" fill="#fff"/>
+    </clipPath>
+    <g clip-path="url(#r)">
+      <rect width="${labelWidth}" height="20" fill="#555"/>
+      <rect x="${labelWidth}" width="${msgWidth}" height="20" fill="${bgColor}"/>
+      <rect width="${totalWidth}" height="20" fill="url(#s)"/>
+    </g>
+    <g fill="#fff" text-anchor="middle" font-family="DejaVu Sans,Verdana,Geneva,sans-serif" font-size="11">
+      <text x="${labelWidth / 2}" y="15" fill="#010101" fill-opacity=".3">${label}</text>
+      <text x="${labelWidth / 2}" y="14">${label}</text>
+      <text x="${labelWidth + msgWidth / 2}" y="15" fill="#010101" fill-opacity=".3">${message}</text>
+      <text x="${labelWidth + msgWidth / 2}" y="14">${message}</text>
+    </g>
+  </svg>`;
+  
+  res.writeHead(200, { 'Content-Type': 'image/svg+xml', 'Cache-Control': 'public, max-age=3600' });
+  res.end(svg);
+}
+
+// ── Main Request Router ────────────────────────────────────
+async function handleRequest(req, res) {
+  const method = req.method;
+  const pathname = url.parse(req.url).pathname;
+  
+  // CORS
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, X-API-Key, Authorization');
+  if (method === 'OPTIONS') { res.writeHead(204); res.end(); return; }
+  
+  try {
+    // API routes
+    if (pathname === '/api/health' || pathname === '/health') {
+      await handleHealth(req, res);
+    } else if (pathname.startsWith('/free/') && method === 'POST') {
+      await handleFree(req, res);
+    } else if (pathname.startsWith('/v1/') && method === 'POST') {
+      await handleApi(req, res);
+    } else if (pathname === '/api/checkout' && method === 'POST') {
+      await handleCheckout(req, res);
+    } else if (pathname === '/api/stripe-webhook' || pathname === '/api/webhook' && method === 'POST') {
+      await handleWebhook(req, res);
+    } else if (pathname === '/badge' || pathname === '/api/badge') {
+      await handleBadge(req, res);
+    } else if (pathname === '/api/prices') {
+      res.writeHead(200, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify(PRICES));
+    } else if (pathname === '/api/stats') {
+      const db = readJSON(API_KEYS);
+      const stats = { total_keys: Object.keys(db).length, total_credits: 0, total_used: 0, keys: [] };
+      for (const [k, v] of Object.entries(db)) {
+        stats.total_credits += v.credits;
+        stats.total_used += v.used || 0;
+        stats.keys.push({ key: k.substring(0, 12) + '...', credits: v.credits, created: v.created, used: v.used || 0 });
+      }
+      res.writeHead(200, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify(stats));
+    } else {
+      await serveStatic(req, res);
+    }
+  } catch (e) {
+    log(`Unhandled error: ${e.message}`);
+    res.writeHead(500); res.end('Internal error');
+  }
+}
+
+// ── Start ──────────────────────────────────────────────────
+const server = http.createServer(handleRequest);
+server.listen(PORT, '0.0.0.0', () => {
+  log(`my-automaton Gateway v2.0 running on port ${PORT}`);
+  log(`Content dir: ${CONTENT}`);
+  log(`Creem: ${CREEM_API_KEY ? 'configured' : 'NOT configured'}`);
+  log(`DeepSeek: ${DEEPSEEK_KEY ? 'configured' : 'NOT configured'}`);
+  log(`Products: ${JSON.stringify(CREEM_PRODUCT_IDS)}`);
+});

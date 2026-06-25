@@ -1,0 +1,93 @@
+{
+  "agents": [
+    {
+      "name": "my-automaton",
+      "address": "0x76eADdEBFfb6A61DD071f97F4508467fc55dd113",
+      "server": "automation.songheng.vip",
+      "gateway": "http://automation.songheng.vip:8080",
+      "x402Gateway": "http://automation.songheng.vip:8888",
+      "capabilities": [
+        {
+          "name": "text-analysis",
+          "endpoint": "/v1/analyze",
+          "cost": 1,
+          "unit": "cents"
+        },
+        {
+          "name": "summarization",
+          "endpoint": "/v1/summarize",
+          "cost": 2,
+          "unit": "cents"
+        },
+        {
+          "name": "code-review",
+          "endpoint": "/v1/review",
+          "cost": 5,
+          "unit": "cents"
+        },
+        {
+          "name": "security-scan",
+          "endpoint": "/v1/security",
+          "cost": 3,
+          "unit": "cents"
+        },
+        {
+          "name": "code-explain",
+          "endpoint": "/v1/explain",
+          "cost": 2,
+          "unit": "cents"
+        },
+        {
+          "name": "refactoring",
+          "endpoint": "/v1/refactor",
+          "cost": 5,
+          "unit": "cents"
+        },
+        {
+          "name": "complexity-analysis",
+          "endpoint": "/v1/complexity",
+          "cost": 2,
+          "unit": "cents"
+        },
+        {
+          "name": "batch-processing",
+          "endpoint": "/v1/batch",
+          "cost": 5,
+          "unit": "cents"
+        },
+        {
+          "name": "markdown-render",
+          "endpoint": "/v1/render",
+          "cost": 3,
+          "unit": "cents"
+        }
+      ],
+      "freeServices": [
+        {
+          "name": "pastebin",
+          "endpoint": "http://automation.songheng.vip:3001/api/paste"
+        },
+        {
+          "name": "url-shortener",
+          "endpoint": "http://automation.songheng.vip:3003/api/shorten"
+        },
+        {
+          "name": "knowledge-base",
+          "endpoint": "http://automation.songheng.vip:8080/api/kb/query"
+        },
+        {
+          "name": "agent-handshake",
+          "endpoint": "http://automation.songheng.vip:8080/api/handshake"
+        },
+        {
+          "name": "referral-program",
+          "endpoint": "http://automation.songheng.vip:8080/api/referral/register"
+        }
+      ],
+      "referralRate": 20,
+      "chain": "base",
+      "token": "USDC"
+    }
+  ],
+  "lastUpdated": 1781358714081
+}

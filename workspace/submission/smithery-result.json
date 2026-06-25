@@ -1,0 +1,76 @@
+{
+  "platform": "Smithery (https://smithery.ai)",
+  "research_file": "workspace/research/smithery.json",
+  "service": "my-automaton",
+  "submission_attempted": true,
+  "automatable": true,
+  "method": "api",
+  "endpoint": "https://api.smithery.ai",
+  "submission_successful": false,
+  "status": "authentication_required",
+  "details": {
+    "summary": "Smithery has a well-documented REST API at api.smithery.ai that supports automated submission of MCP servers. However, all API operations require a Bearer token (API key) for authentication, which is not available in this environment. The CLI tool (npx smithery) also supports publishing but requires interactive OAuth login via browser, which is not possible from a headless environment.",
+    "submission_methods_available": [
+      {
+        "method": "REST API (PUT /servers/{qualifiedName})",
+        "endpoint": "https://api.smithery.ai/servers/my-automaton",
+        "auth_required": "Bearer token (API key)",
+        "automatable": true,
+        "blocker": "No Smithery API key available in environment. No SMITHERY_API_KEY environment variable found, no cached credentials, no config files."
+      },
+      {
+        "method": "REST API (PUT /servers/{qualifiedName}/releases)",
+        "endpoint": "https://api.smithery.ai/servers/my-automaton/releases",
+        "auth_required": "Bearer token (API key)",
+        "automatable": true,
+        "blocker": "Same authentication issue. Requires prior creation of the server entry."
+      },
+      {
+        "method": "CLI (smithery mcp publish)",
+        "command": "npx smithery mcp publish https://automation.songheng.vip/mcp -n my-automaton",
+        "auth_required": "Interactive GitHub OAuth login via browser",
+        "automatable": false,
+        "blocker": "CLI requires interactive OAuth flow (smithery auth login opens browser), not possible in headless CLI environment."
+      },
+      {
+        "method": "Web UI (https://smithery.ai/new)",
+        "auth_required": "GitHub OAuth login",
+        "automatable": false,
+        "blocker": "Manual browser-based submission requiring GitHub OAuth login. Not automatable."
+      },
+      {
+        "method": "GitHub PR",
+        "auth_required": "GitHub PAT with repo access",
+        "automatable": false,
+        "blocker": "Smithery does not accept GitHub PR-based submissions. No GitHub repository exists for my-automaton. No GitHub credentials available."
+      }
+    ],
+    "api_test_results": {
+      "api_endpoint_reachable": true,
+      "api_returns_200_on_GET": true,
+      "api_returns_401_on_PUT_without_auth": true,
+      "response_on_no_auth": "Missing authentication token. Provide an API key or session token in the Authorization header."
+    },
+    "server_details_for_submission": {
+      "qualifiedName": "my-automaton",
+      "namespace": "my-automaton",
+      "displayName": "my-automaton",
+      "description": "my-automaton provides a ready-to-use MCP server for automation tasks, accessible at https://automation.songheng.vip/mcp, enabling AI agents to execute workflows programmatically.",
+      "upstreamUrl": "https://automation.songheng.vip/mcp",
+      "type": "external",
+      "tags": ["mcp", "automation", "ai-tools", "model-context-protocol", "workflow", "devtools", "ai-agents", "server"]
+    },
+    "required_credentials": {
+      "type": "Smithery API key (Bearer token)",
+      "how_to_obtain": "1. Login to https://smithery.ai with GitHub account\n2. Go to dashboard/API settings\n3. Generate an API key\n4. Set as SMITHERY_API_KEY environment variable",
+      "env_var_expected": "SMITHERY_API_KEY"
+    },
+    "listing_assets_available": {
+      "descriptions": "workspace/listing_assets/descriptions.md",
+      "tags": "workspace/listing_assets/tags.json",
+      "logo": "workspace/listing_assets/logo.svg"
+    },
+    "recommendation": "To complete Smithery submission, the maintainer should obtain a Smithery API key from https://smithery.ai (requires GitHub login) and then run:\n\n# Step 1: Create the server\ncurl -X PUT \"https://api.smithery.ai/servers/my-automaton\" \\\n  -H \"Authorization: Bearer $SMITHERY_API_KEY\" \\\n  -H \"Content-Type: application/json\" \\\n  -d '{\n    \"displayName\": \"my-automaton\",\n    \"description\": \"my-automaton provides a ready-to-use MCP server for automation tasks, accessible at https://automation.songheng.vip/mcp, enabling AI agents to execute workflows programmatically.\"\n  }'\n\n# Step 2: Publish a release (external URL type)\ncurl -X PUT \"https://api.smithery.ai/servers/my-automaton/releases\" \\\n  -H \"Authorization: Bearer $SMITHERY_API_KEY\" \\\n  -F 'payload={\n    \"type\": \"external\",\n    \"upstreamUrl\": \"https://automation.songheng.vip/mcp\",\n    \"configSchema\": {}\n  }'\n\nAlternatively, use the CLI interactively:\n  npx smithery auth login  # Complete OAuth in browser\n  npx smithery mcp publish \"https://automation.songheng.vip/mcp\" -n my-automaton"
+  },
+  "timestamp": "2026-06-18T00:00:00Z"
+}

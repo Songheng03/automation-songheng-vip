@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GitHub PR Auto-Review — my-automaton</title>
+<meta name="description" content="Connect your GitHub repo and API key. Every PR gets automatically reviewed with AI-powered code review, security scan, and refactoring suggestions.">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#0d1117;color:#c9d1d9;line-height:1.6}
+.container{max-width:900px;margin:0 auto;padding:2rem}
+h1{color:#58a6ff;font-size:2.2rem;margin-bottom:.5rem}
+.subtitle{color:#8b949e;margin-bottom:2rem;font-size:1.1rem}
+.card{background:#161b22;border:1px solid #30363d;border-radius:12px;padding:1.5rem;margin-bottom:1.5rem}
+.card h2{color:#58a6ff;font-size:1.2rem;margin-bottom:1rem}
+label{display:block;color:#8b949e;font-size:.85rem;text-transform:uppercase;letter-spacing:.5px;margin:1rem 0 .4rem}
+input,select{width:100%;padding:10px 14px;background:#0d1117;border:1px solid #30363d;border-radius:8px;color:#c9d1d9;font-size:14px}
+input:focus,select:focus{border-color:#58a6ff;outline:none}
+.btn{display:inline-block;padding:12px 28px;border:none;border-radius:8px;font-size:15px;font-weight:600;cursor:pointer;transition:all .2s}
+.btn-primary{background:#238636;color:#fff}
+.btn-primary:hover{background:#2ea043;transform:translateY(-2px)}
+.btn-primary:disabled{opacity:.5;cursor:not-allowed;transform:none}
+.btn-secondary{background:#21262d;color:#c9d1d9;border:1px solid #30363d}
+.btn-secondary:hover{background:#30363d}
+.success{color:#3fb950;background:rgba(63,185,80,.1);border:1px solid rgba(63,185,80,.3);padding:12px;border-radius:8px;margin-top:12px}
+.error{color:#f85149;background:rgba(248,81,73,.1);border:1px solid rgba(248,81,73,.3);padding:12px;border-radius:8px;margin-top:12px}
+.info{color:#58a6ff;background:rgba(88,166,255,.1);border:1px solid rgba(88,166,255,.3);padding:12px;border-radius:8px;margin-top:12px}
+.result-box{background:#0d1117;border:1px solid #21262d;border-radius:8px;padding:1rem;margin-top:1rem;font-family:monospace;font-size:13px;white-space:pre-wrap;max-height:300px;overflow-y:auto}
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem;margin:1.5rem 0}
+.step{background:#161b22;border:1px solid #30363d;border-radius:10px;padding:1.2rem;text-align:center}
+.step .num{width:36px;height:36px;border-radius:50%;background:#238636;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;margin:0 auto .8rem}
+.step h3{color:#c9d1d9;font-size:.95rem;margin-bottom:.4rem}
+.step p{color:#8b949e;font-size:.8rem}
+.webhook-status{display:flex;justify-content:space-between;align-items:center;padding:12px;background:#0d1117;border:1px solid #21262d;border-radius:8px;margin-top:1rem}
+.webhook-status .status-badge{padding:4px 12px;border-radius:12px;font-size:.8rem;font-weight:600}
+.status-badge.active{background:rgba(63,185,80,.2);color:#3fb950;border:1px solid rgba(63,185,80,.3)}
+.status-badge.inactive{background:rgba(139,148,158,.1);color:#8b949e;border:1px solid #30363d}
+.status-badge.error{background:rgba(248,81,73,.1);color:#f85149;border:1px solid rgba(248,81,73,.3)}
+.repo-list{list-style:none}
+.repo-list li{display:flex;justify-content:space-between;align-items:center;padding:12px;border-bottom:1px solid #21262d}
+.repo-list li:last-child{border-bottom:none}
+.repo-list .repo-name{color:#58a6ff;font-weight:600}
+.repo-list .repo-stats{color:#8b949e;font-size:.85rem}
+</style>
+</head>
+<body>
+<div style="background:#161b22;border-bottom:1px solid #30363d;padding:10px 20px;font-size:.85rem;display:flex;gap:16px;align-items:center;flex-wrap:wrap"><a href="/" style="color:#58a6ff;text-decoration:none;font-weight:600">🏠 Home</a><span style="color:#484f58">|</span><a href="/pricing.html" style="color:#8b949e;text-decoration:none">Pricing</a><a href="/api-docs.html" style="color:#8b949e;text-decoration:none">API</a><a href="/playground.html" style="color:#8b949e;text-decoration:none">Playground</a></div>
+
+<div class="container">
+  <h1>🤖 GitHub PR Auto-Review</h1>
+  <p class="subtitle">Connect your repos and get AI-powered code reviews on every pull request. Reviews consume credits from your API key balance at $0.05/review.</p>
+
+  <div class="steps">
+    <div class="step"><div class="num">1</div><h3>Get API Key</h3><p>Buy credits on our <a href="/pricing.html" style="color:#58a6ff">pricing page</a></p></div>
+    <div class="step"><div class="num">2</div><h3>Connect Repo</h3><p>Enter your API key and repo details</p></div>
+    <div class="step"><div class="num">3</div><h3>Auto-Review</h3><p>Every PR gets reviewed automatically</p></div>
+  </div>
+
+  <!-- Setup Form -->
+  <div class="card">
+    <h2>🔗 Connect a Repository</h2>
+    
+    <label>Your API Key</label>
+    <input type="text" id="apiKey" placeholder="am_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" />
+    
+    <label>GitHub Repository</label>
+    <div style="display:flex;gap:8px;align-items:center">
+      <span style="color:#8b949e">github.com/</span>
+      <input type="text" id="repoOwner" placeholder="owner" style="flex:1" />
+      <span style="color:#8b949e">/</span>
+      <input type="text" id="repoName" placeholder="repo" style="flex:1" />
+    </div>
+    
+    <label>GitHub Token (with repo:webhook scope)</label>
+    <input type="password" id="githubToken" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx" />
+    <p style="color:#484f58;font-size:.8rem;margin-top:4px">Create at <a href="https://github.com/settings/tokens" target="_blank" style="color:#58a6ff">github.com/settings/tokens</a> with <code>admin:repo_hooks</code> and <code>repo</code> scopes</p>
+    
+    <label>Review Severity</label>
+    <select id="severity">
+      <option value="all">All issues (comprehensive)</option>
+      <option value="critical">Critical only (fast)</option>
+      <option value="security">Security only</option>
+    </select>
+
+    <div style="display:flex;gap:12px;margin-top:1rem">
+      <button class="btn btn-primary" onclick="connectRepo()">🔌 Connect Repo</button>
+      <button class="btn btn-secondary" onclick="testWebhook()">🧪 Test Connection</button>
+    </div>
+    <div id="setupResult"></div>
+  </div>
+
+  <!-- Connected Repos Dashboard -->
+  <div class="card" id="reposSection">
+    <h2>📦 Connected Repositories</h2>
+    <div id="repoList">
+      <p style="color:#8b949e;font-size:.9rem">No repos connected yet. Use the form above to add one.</p>
+    </div>
+  </div>
+
+  <!-- Recent Reviews -->
+  <div class="card">
+    <h2>📋 Recent Reviews</h2>
+    <div id="recentReviews">
+      <p style="color:#8b949e;font-size:.9rem">No reviews yet. Open a PR on a connected repo to trigger one.</p>
+    </div>
+  </div>
+
+  <!-- How it works -->
+  <div class="card">
+    <h2>⚙️ How It Works</h2>
+    <ol style="color:#8b949e;font-size:.9rem;padding-left:1.2rem;line-height:2">
+      <li>You buy credits and get an API key</li>
+      <li>You connect a repo and provide a GitHub token</li>
+      <li>We install a webhook on your repo: <code style="color:#58a6ff">POST /api/github-webhook</code></li>
+      <li>Every time a PR is opened or updated, we automatically run: code review + security scan + complexity analysis</li>
+      <li>Results are posted as a PR comment within 30 seconds</li>
+      <li>Each review costs <strong style="color:#d29922">5 credits ($0.05)</strong> from your balance</li>
+    </ol>
+  </div>
+
+  <!-- Pricing -->
+  <div class="card" style="text-align:center">
+    <h2>💰 Pricing</h2>
+    <p style="color:#8b949e;font-size:.95rem;margin-bottom:1rem">5 credits per review · Reviews all files in the PR diff</p>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1rem">
+      <div><strong style="color:#58a6ff;font-size:1.3rem">500</strong><br><span style="color:#8b949e;font-size:.85rem">$5 · ~100 reviews</span></div>
+      <div><strong style="color:#58a6ff;font-size:1.3rem">1,100</strong><br><span style="color:#8b949e;font-size:.85rem">$10 · ~220 reviews</span></div>
+      <div><strong style="color:#58a6ff;font-size:1.3rem">3,000</strong><br><span style="color:#8b949e;font-size:.85rem">$25 · ~600 reviews</span></div>
+      <div><strong style="color:#58a6ff;font-size:1.3rem">6,500</strong><br><span style="color:#8b949e;font-size:.85rem">$58 · ~1300 reviews</span></div>
+    </div>
+    <a href="/pricing.html" class="btn btn-primary" style="margin-top:1rem;text-decoration:none">Buy Credits</a>
+  </div>
+</div>
+
+<script>
+const GATEWAY_URL = '';
+
+async function connectRepo() {
+  const apiKey = document.getElementById('apiKey').value.trim();
+  const owner = document.getElementById('repoOwner').value.trim();
+  const repo = document.getElementById('repoName').value.trim();
+  const token = document.getElementById('githubToken').value.trim();
+  const severity = document.getElementById('severity').value;
+  const resultEl = document.getElementById('setupResult');
+
+  if (!apiKey || !owner || !repo || !token) {
+    resultEl.innerHTML = '<div class="error">⚠️ Please fill in all fields</div>';
+    return;
+  }
+
+  resultEl.innerHTML = '<div class="info">⏳ Connecting repository...</div>';
+
+  try {
+    const res = await fetch('/api/github/connect', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'X-API-Key': apiKey },
+      body: JSON.stringify({ owner, repo, token, severity })
+    });
+    const data = await res.json();
+    
+    if (!res.ok) {
+      resultEl.innerHTML = `<div class="error">❌ ${data.error || data.message || 'Connection failed'}</div>`;
+      return;
+    }
+
+    resultEl.innerHTML = `<div class="success">✅ Connected! Webhook installed on ${owner}/${repo}. Every PR will be reviewed automatically.</div>`;
+    loadRepos();
+  } catch(e) {
+    resultEl.innerHTML = `<div class="error">❌ Network error: ${e.message}</div>`;
+  }
+}
+
+async function testWebhook() {
+  const apiKey = document.getElementById('apiKey').value.trim();
+  const resultEl = document.getElementById('setupResult');
+  
+  if (!apiKey) {
+    resultEl.innerHTML = '<div class="error">⚠️ Please enter your API key</div>';
+    return;
+  }
+
+  resultEl.innerHTML = '<div class="info">⏳ Testing connection...</div>';
+  
+  try {
+    const res = await fetch('/api/github/test', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'X-API-Key': apiKey }
+    });
+    const data = await res.json();
+    if (res.ok) {
+      resultEl.innerHTML = `<div class="success">✅ ${data.message || 'Connection successful!'}</div>`;
+    } else {
+      resultEl.innerHTML = `<div class="error">❌ ${data.error || 'Test failed'}</div>`;
+    }
+  } catch(e) {
+    resultEl.innerHTML = `<div class="error">❌ Network error: ${e.message}</div>`;
+  }
+}
+
+async function loadRepos() {
+  try {
+    const res = await fetch('/api/github/repos');
+    const data = await res.json();
+    const repoList = document.getElementById('repoList');
+    
+    if (!data.repos || data.repos.length === 0) {
+      repoList.innerHTML = '<p style="color:#8b949e;font-size:.9rem">No repos connected yet.</p>';
+      return;
+    }
+    
+    repoList.innerHTML = '<ul class="repo-list">' + data.repos.map(r => `
+      <li>
+        <span class="repo-name">${r.owner}/${r.repo}</span>
+        <span class="repo-stats">${r.reviews} reviews · ${r.credits_used} credits used</span>
+        <button class="btn btn-secondary" style="padding:6px 12px;font-size:.8rem" onclick="disconnectRepo('${r.owner}/${r.repo}')">Disconnect</button>
+      </li>
+    `).join('') + '</ul>';
+  } catch(e) { /* ignore */ }
+}
+
+async function disconnectRepo(fullName) {
+  if (!confirm(`Disconnect ${fullName}?`)) return;
+  try {
+    await fetch('/api/github/disconnect', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ repo: fullName })
+    });
+    loadRepos();
+  } catch(e) { /* ignore */ }
+}
+
+// Load connected repos on page load
+loadRepos();
+</script>
+<script src="/conversion-banner.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Install my-automaton Badge — Free Backlink Widget</title>
+  <meta name="description" content="Add a free 'Powered by my-automaton AI' badge to your site. One line of code, no tracking, fully customizable.">
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif; background:#0f0f1a; color:#e0e0e0; padding:40px 20px; }
+    .container { max-width:800px; margin:0 auto; }
+    h1 { font-size:2rem; background:linear-gradient(135deg,#667eea,#764ba2); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+    h2 { color:#667eea; margin:24px 0 12px; font-size:18px; }
+    p { color:#888; line-height:1.6; margin-bottom:12px; }
+    code { background:#1a1a2e; padding:2px 6px; border-radius:4px; font-size:13px; color:#667eea; }
+    pre { background:#1a1a2e; border:1px solid #2a2a4a; border-radius:8px; padding:16px; overflow-x:auto; margin:12px 0; font-size:13px; color:#e0e0e0; position:relative; }
+    .copy-btn { position:absolute; top:8px; right:8px; background:#2a2a4a; border:none; color:#888; padding:4px 12px; border-radius:4px; cursor:pointer; font-size:11px; }
+    .copy-btn:hover { background:#3a3a5a; }
+    .badge-preview { margin:20px 0; padding:40px; background:linear-gradient(135deg,#667eea11,#764ba211); border:1px solid #2a2a4a; border-radius:12px; text-align:center; }
+    .btn { display:inline-block; background:linear-gradient(135deg,#667eea,#764ba2); color:#fff; padding:12px 28px; border-radius:8px; text-decoration:none; font-weight:600; margin:8px 4px; }
+    .btn-outline { background:transparent; border:1px solid #667eea; color:#667eea; }
+    table { width:100%; border-collapse:collapse; margin:12px 0; }
+    td, th { padding:10px; border:1px solid #2a2a4a; text-align:left; font-size:13px; }
+    th { background:#1a1a2e; color:#667eea; }
+    td { color:#aaa; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>⚡ Free Badge Widget</h1>
+    <p>Add a "Powered by my-automaton AI" badge to your site. One line of code, no tracking, fully open source.</p>
+    
+    <div class="badge-preview">
+      <div style="display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:8px;background:#1a1a2e;border:1px solid #2a2a4a;color:#e0e0e0;font-size:13px;">
+        ⚡ Powered by my-automaton AI
+      </div>
+      <p style="margin-top:12px;font-size:12px;color:#555;">⬆️ This is what it looks like (bottom-right of your site)</p>
+    </div>
+
+    <h2>🚀 One-Click Install</h2>
+    <p>Add this line just before <code>&lt;/body&gt;</code> on your site:</p>
+    <pre id="snippet1">&lt;script src="https://automation.songheng.vip/widget-badge.js" defer&gt;&lt;/script&gt;<button class="copy-btn" onclick="copySnippet('snippet1','✅ Badge code copied!')">📋 Copy</button></pre>
+
+    <h2>🎨 Customizable Options</h2>
+    <p>Use <code>data-*</code> attributes to customize position and theme:</p>
+    <pre id="snippet2">&lt;script src="https://automation.songheng.vip/widget-badge.js" defer
+  data-position="bottom-left"
+  data-theme="light"
+  data-text="🦾 Built with my-automaton AI"&gt;&lt;/script&gt;<button class="copy-btn" onclick="copySnippet('snippet2','✅ Custom code copied!')">📋 Copy</button></pre>
+
+    <h2>⚙️ Options Reference</h2>
+    <table>
+      <tr><th>Attribute</th><th>Default</th><th>Options</th></tr>
+      <tr><td><code>data-position</code></td><td>bottom-right</td><td>bottom-right, bottom-left, top-right, top-left</td></tr>
+      <tr><td><code>data-theme</code></td><td>dark</td><td>dark, light</td></tr>
+      <tr><td><code>data-text</code></td><td>⚡ Powered by my-automaton AI</td><td>Any text or HTML</td></tr>
+    </table>
+
+    <h2>🌐 Why Add This Badge?</h2>
+    <p>You get a clean, professional badge that tells visitors your site uses modern AI tooling. We get a backlink that helps more developers discover free AI tools. Win-win.</p>
+    <p style="color:#555;font-size:13px;">✅ No tracking · ✅ No cookies · ✅ Fully transparent · ✅ 0KB on your server</p>
+
+    <div style="margin-top:30px;text-align:center;">
+      <a href="/live-demo.html" class="btn">🎯 Try AI Services Free</a>
+      <a href="/widget.js" class="btn btn-outline">🧩 Full Widget</a>
+      <a href="/" class="btn btn-outline">🏠 Home</a>
+    </div>
+  </div>
+
+  <script>
+    function copySnippet(id, msg) {
+      const text = document.getElementById(id).textContent.trim();
+      navigator.clipboard.writeText(text).then(() => alert(msg));
+    }
+  </script>
+<script src="/conversion-banner.js" defer></script>
+</body>
+</html>

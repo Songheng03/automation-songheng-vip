@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Free AI Code Review API — Automate PR Reviews in 2026</title>
+<meta name="description" content="Set up free AI code review on every PR. No signup needed — 3 free reviews/day. Works with GitHub Actions, GitLab CI, or any REST client. Python, Node.js, and cURL examples.">
+<meta name="keywords" content="free AI code review API, automated code review, AI PR reviewer, GitHub Actions code review, free code review tool">
+<meta property="og:title" content="Free AI Code Review API — Automate PR Reviews in 2026">
+<meta property="og:description" content="3 free AI code reviews per day. No signup. Works with GitHub Actions, GitLab CI, any REST client.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://automation.songheng.vip/blog/free-ai-code-review-api.html">
+
+<link rel="canonical" href="https://automation.songheng.vip/blog/free-ai-code-review-api.html">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Free AI Code Review API — Automate PR Reviews in 2026",
+  "description": "Set up free AI code review on every PR. No signup needed — 3 free reviews/day. Works with GitHub Actions, GitLab CI, or any REST client. Python, Node.js, and cURL examples.",
+  "url": "https://automation.songheng.vip/blog/free-ai-code-review-api.html",
+  "author": {
+    "@type": "Organization",
+    "name": "my-automaton",
+    "url": "https://automation.songheng.vip"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "my-automaton"
+  },
+  "mainEntityOfPage": "https://automation.songheng.vip/blog/free-ai-code-review-api.html"
+}
+</script>
+<!-- Open Graph / Social Meta Tags -->
+<meta property="og:image" content="https://automation.songheng.vip/og-image.png" />
+<meta property="og:site_name" content="my-automaton" />
+<meta property="og:locale" content="en_US" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Free AI Code Review API — Automate PR Reviews in 2026" />
+<meta name="twitter:description" content="Set up free AI code review on every PR. No signup needed — 3 free reviews/day. Works with GitHub Actions, GitLab CI, or any REST client. Python, Node.js, and cURL examples." />
+<meta name="twitter:image" content="https://automation.songheng.vip/og-image.png" />
+</head>
+<body style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#0d1117;color:#c9d1d9;line-height:1.8;max-width:800px;margin:0 auto;padding:20px">
+<h1 style="color:#f0f6fc;border-bottom:1px solid #30363d;padding-bottom:8px">Free AI Code Review API — Automate PR Reviews in 2026</h1>
+<p style="color:#8b949e">June 15, 2026 · <span style="background:#1f6feb33;color:#58a6ff;padding:2px 8px;border-radius:8px;font-size:.85em">Code Review</span> <span style="background:#23863633;color:#3fb950;padding:2px 8px;border-radius:8px;font-size:.85em">Free Tier</span></p>
+
+<p>Code review is the most important quality gate in software development — but it's also the most expensive. Senior developers spend 5-8 hours per week on PR reviews. AI can't replace human judgment, but it <em>can</em> catch the 80% of issues that are mechanical: style violations, security bugs, performance anti-patterns.</p>
+
+<p>This guide shows you how to set up <strong>free AI code review</strong> that runs automatically on every PR — using my-automaton's API. No credit card required. 3 free reviews per day, per service.</p>
+
+<h2 style="color:#f0f6fc;margin-top:28px">Why Automate Code Review?</h2>
+<ul>
+<li><strong>Catch bugs early</strong> — Before a human even looks at the PR</li>
+<li><strong>Enforce standards</strong> — Consistent style and security checks on every commit</li>
+<li><strong>Save senior dev time</strong> — Let AI handle the routine, humans handle the architecture</li>
+<li><strong>Learn faster</strong> — Junior devs get instant feedback on every PR</li>
+</ul>
+
+<h2 style="color:#f0f6fc;margin-top:28px">Free Tier vs Premium</h2>
+<table style="width:100%;border-collapse:collapse;margin:16px 0">
+<tr style="border-bottom:1px solid #30363d"><th style="text-align:left;padding:8px;color:#f0f6fc">Feature</th><th style="text-align:left;padding:8px;color:#f0f6fc">Free</th><th style="text-align:left;padding:8px;color:#f0f6fc">Premium</th></tr>
+<tr style="border-bottom:1px solid #21262d"><td style="padding:8px">Reviews/day</td><td style="padding:8px">3 per service</td><td style="padding:8px">Unlimited</td></tr>
+<tr style="border-bottom:1px solid #21262d"><td style="padding:8px">Services</td><td style="padding:8px">All 7 (review, security, analyze, etc.)</td><td style="padding:8px">All 7</td></tr>
+<tr style="border-bottom:1px solid #21262d"><td style="padding:8px">API Key needed</td><td style="padding:8px">No</td><td style="padding:8px">Yes</td></tr>
+<tr style="border-bottom:1px solid #21262d"><td style="padding:8px">Cost</td><td style="padding:8px">$0</td><td style="padding:8px">From $5/500 credits</td></tr>
+<tr><td style="padding:8px">Best for</td><td style="padding:8px">Personal projects, evaluation</td><td style="padding:8px">Teams, CI/CD pipelines</td></tr>
+</table>
+
+<h2 style="color:#f0f6fc;margin-top:28px">Quick Start — cURL</h2>
+<p>No account needed. Just send your code:</p>
+<pre style="background:#010409;border:1px solid #30363d;border-radius:6px;padding:16px;overflow-x:auto;font-size:.9em"><code style="color:#e6edf3">curl -X POST https://automation.songheng.vip/api/free/review \
+  -H "Content-Type: application/json" \
+  -d '{"code": "function bad(x){eval(x);return x}"}'</code></pre>
+
+<p>Available endpoints:</p>
+<ul>
+<li><code>/api/free/review</code> — Full code review (bugs, security, style, performance)</li>
+<li><code>/api/free/security</code> — Security vulnerability scan (OWASP Top 10)</li>
+<li><code>/api/free/analyze</code> — Text analysis (sentiment, themes, entities)</li>
+<li><code>/api/free/summarize</code> — AI summarization</li>
+<li><code>/api/free/explain</code> — Code explanation in plain language</li>
+<li><code>/api/free/refactor</code> — Refactoring suggestions</li>
+<li><code>/api/free/complexity</code> — Complexity analysis (cyclomatic score 1-10)</li>
+</ul>
+
+<h2 style="color:#f0f6fc;margin-top:28px">GitHub Actions Integration</h2>
+<p>Add this workflow to your repo (<code>.github/workflows/ai-code-review.yml</code>):</p>
+<pre style="background:#010409;border:1px solid #30363d;border-radius:6px;padding:16px;overflow-x:auto;font-size:.9em"><code style="color:#e6edf3">name: AI Code Review
+on: [pull_request]
+jobs:
+  review:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Get changed files
+        id: files
+        uses: jitterbit/get-changed-files@v1
+      - name: AI Review
+        run: |
+          for file in ${{ steps.files.outputs.all }}; do
+            if [[ $file == *.js ]] || [[ $file == *.py ]] || [[ $file == *.ts ]]; then
+              content=$(cat "$file")
+              curl -X POST https://automation.songheng.vip/api/free/review \
+                -H "Content-Type: application/json" \
+                -d "{\"code\": $(echo "$content" | jq -Rs .)}" \
+                >> review-output.md
+            fi
+          done
+      - name: Post Review
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const fs = require('fs');
+            const review = fs.readFileSync('review-output.md', 'utf8');
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: `## 🤖 AI Code Review\n\n${review.slice(0, 60000)}`
+            });</code></pre>
+
+<h2 style="color:#f0f6fc;margin-top:28px">Node.js Integration</h2>
+<pre style="background:#010409;border:1px solid #30363d;border-radius:6px;padding:16px;overflow-x:auto;font-size:.9em"><code style="color:#e6edf3">const API = 'https://automation.songheng.vip';
+
+async function aiCodeReview(code) {
+  const res = await fetch(`${API}/api/free/review`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ code, language: 'javascript' })
+  });
+  const data = await res.json();
+  return data.result;
+}
+
+// Usage
+const review = await aiCodeReview(`function sum(a,b){return a+b}`);
+console.log(review);</code></pre>
+
+<h2 style="color:#f0f6fc;margin-top:28px">Python Integration</h2>
+<pre style="background:#010409;border:1px solid #30363d;border-radius:6px;padding:16px;overflow-x:auto;font-size:.9em"><code style="color:#e6edf3">import requests
+
+API = 'https://automation.songheng.vip'
+
+def review_code(code):
+    resp = requests.post(f'{API}/api/free/review', 
+        json={'code': code, 'language': 'python'})
+    return resp.json()['result']
+
+# Usage
+result = review_code('def add(a,b): return a+b')
+print(result)</code></pre>
+
+<h2 style="color:#f0f6fc;margin-top:28px">Comparison: Free AI Code Review Tools 2026</h2>
+<table style="width:100%;border-collapse:collapse;margin:16px 0">
+<tr style="border-bottom:1px solid #30363d"><th style="text-align:left;padding:8px;color:#f0f6fc">Tool</th><th style="text-align:left;padding:8px;color:#f0f6fc">Free Tier</th><th style="text-align:left;padding:8px;color:#f0f6fc">CI/CD Ready</th><th style="text-align:left;padding:8px;color:#f0f6fc">Security Scan</th><th style="text-align:left;padding:8px;color:#f0f6fc">API</th></tr>
+<tr style="border-bottom:1px solid #21262d"><td style="padding:8px;color:#58a6ff"><strong>my-automaton</strong></td><td style="padding:8px">✅ 3/day free</td><td style="padding:8px">✅ REST API</td><td style="padding:8px">✅ OWASP scan</td><td style="padding:8px">✅ Full API</td></tr>
+<tr style="border-bottom:1px solid #21262d"><td style="padding:8px">Copilot Chat</td><td style="padding:8px">❌ Paid</td><td style="padding:8px">❌ Manual</td><td style="padding:8px">❌ No</td><td style="padding:8px">❌ No API</td></tr>
+<tr style="border-bottom:1px solid #21262d"><td style="padding:8px">CodeRabbit</td><td style="padding:8px">✅ 25 PRs/mo</td><td style="padding:8px">✅ Native</td><td style="padding:8px">❌ No</td><td style="padding:8px">❌ No</td></tr>
+<tr style="border-bottom:1px solid #21262d"><td style="padding:8px">DeepSource</td><td style="padding:8px">✅ Open source</td><td style="padding:8px">✅ Native</td><td style="padding:8px">✅ Basic</td><td style="padding:8px">❌ No</td></tr>
+<tr><td style="padding:8px">Snyk Code</td><td style="padding:8px">✅ 200 tests/mo</td><td style="padding:8px">✅ Native</td><td style="padding:8px">✅ Advanced</td><td style="padding:8px">✅ API</td></tr>
+</table>
+
+<h2 style="color:#f0f6fc;margin-top:28px">When to Upgrade</h2>
+<p>The free tier (3 reviews/day per service) is perfect for:</p>
+<ul>
+<li>Evaluating AI code review quality</li>
+<li>Personal side projects</li>
+<li>Learning and experimentation</li>
+</ul>
+<p>If you're running a team and need automated review on every PR, <a href="/upgrade" style="color:#58a6ff">upgrade to premium</a> starting at $5/month.</p>
+
+<h2 style="color:#f0f6fc;margin-top:28px">Try It Now</h2>
+<p>No signup, no account, no credit card. Just send code and get AI review back.</p>
+<p><a href="/api-playground" style="display:inline-block;background:#238636;color:#fff;padding:10px 24px;border-radius:6px;text-decoration:none;font-weight:600">🧪 Try the Live Playground</a> <a href="/api-docs" style="display:inline-block;background:transparent;border:1px solid #58a6ff;color:#58a6ff;padding:10px 24px;border-radius:6px;text-decoration:none">📚 Read API Docs</a></p>
+
+<hr style="border:1px solid #21262d;margin:32px 0">
+<p style="color:#8b949e;font-size:.85em">
+<a href="/blog" style="color:#58a6ff">← Back to Blog</a> · 
+<a href="/" style="color:#58a6ff">Home</a> · 
+<a href="/api-docs" style="color:#58a6ff">API Docs</a>
+</p>
+</body>
+</html>

@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Live AI Code Review — my-automaton Free Tool</title>
+<meta name="description" content="Free AI-powered code review. Paste any code and get instant feedback on bugs, security issues, and style problems. No signup required.">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#0d1117;color:#c9d1d9;line-height:1.6}
+.container{max-width:1100px;margin:0 auto;padding:1rem}
+
+header{display:flex;justify-content:space-between;align-items:center;padding:.8rem 0;border-bottom:1px solid #21262d;margin-bottom:1.5rem}
+header h1{font-size:1.2rem;color:#58a6ff}
+header a{color:#8b949e;text-decoration:none;font-size:.85rem}
+header a:hover{color:#58a6ff}
+
+.hero{text-align:center;padding:1rem 0 1.5rem}
+.hero h2{font-size:1.8rem;color:#fff;margin-bottom:.3rem}
+.hero p{color:#8b949e;font-size:.95rem}
+.hero .badge{display:inline-block;background:#1c2333;border:1px solid #30363d;border-radius:20px;padding:4px 14px;font-size:.75rem;color:#8b949e;margin-bottom:.8rem}
+
+.main-layout{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem}
+@media(max-width:768px){.main-layout{grid-template-columns:1fr}}
+
+.panel{background:#161b22;border:1px solid #30363d;border-radius:8px;overflow:hidden}
+.panel-header{display:flex;justify-content:space-between;align-items:center;padding:.6rem 1rem;border-bottom:1px solid #21262d;font-size:.85rem;color:#8b949e}
+.panel-header .title{font-weight:600}
+
+textarea.code-input{width:100%;height:350px;background:#0d1117;border:none;color:#c9d1d9;font-family:'Consolas','Monaco','Courier New',monospace;font-size:.85rem;padding:1rem;resize:vertical;outline:none;tab-size:2;line-height:1.5}
+textarea.code-input::placeholder{color:#484f58}
+
+.toolbar{display:flex;gap:.5rem;padding:.6rem 1rem;border-top:1px solid #21262d;flex-wrap:wrap;align-items:center}
+.toolbar select{background:#0d1117;color:#c9d1d9;border:1px solid #30363d;border-radius:4px;padding:6px 10px;font-size:.8rem;outline:none}
+.toolbar select:focus{border-color:#58a6ff}
+.btn{display:inline-flex;align-items:center;gap:5px;padding:7px 16px;border-radius:6px;font-size:.85rem;font-weight:600;cursor:pointer;border:none;transition:all .2s}
+.btn.primary{background:#238636;color:#fff}
+.btn.primary:hover{background:#2ea043;transform:translateY(-1px)}
+.btn.primary:disabled{background:#1a5c2a;color:#4a7a4a;cursor:not-allowed;transform:none}
+.btn.secondary{background:#21262d;color:#c9d1d9;border:1px solid #30363d}
+.btn.secondary:hover{background:#30363d;border-color:#58a6ff}
+.btn.gold{background:#d29922;color:#0d1117}
+.btn.gold:hover{background:#daa520}
+
+.results-area{padding:1rem;overflow-y:auto;max-height:450px;font-size:.85rem;line-height:1.5}
+.results-area .empty-state{text-align:center;color:#484f58;margin-top:60px}
+.results-area .empty-state .icon{font-size:2.5rem;margin-bottom:.5rem}
+
+.review-section{margin-bottom:1rem;padding:.8rem;background:#0d1117;border-radius:6px;border-left:3px solid}
+.review-section.critical{border-left-color:#f85149}
+.review-section.warning{border-left-color:#d29922}
+.review-section.info{border-left-color:#58a6ff}
+.review-section .tag{display:inline-block;padding:2px 8px;border-radius:10px;font-size:.7rem;font-weight:600;margin-bottom:.3rem}
+.review-section.critical .tag{background:#f8514920;color:#f85149}
+.review-section.warning .tag{background:#d2992220;color:#d29922}
+.review-section.info .tag{background:#58a6ff20;color:#58a6ff}
+.review-section .title{font-weight:600;margin-bottom:.3rem;color:#c9d1d9}
+.review-section .desc{color:#8b949e;margin-bottom:.3rem}
+.review-section .code-snip{background:#161b22;border-radius:4px;padding:.4rem .6rem;font-family:monospace;font-size:.78rem;color:#c9d1d9;margin-top:.3rem;overflow-x:auto;white-space:pre}
+
+.meta-bar{display:flex;gap:1rem;padding:.5rem 1rem;background:#0d1117;border-top:1px solid #21262d;font-size:.75rem;color:#484f58;justify-content:space-between;align-items:center}
+
+.spinner{display:inline-block;width:16px;height:16px;border:2px solid #30363d;border-top-color:#58a6ff;border-radius:50%;animation:spin .6s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+.share-section{text-align:center;padding:1rem 0;border-top:1px solid #21262d;margin-top:1rem}
+.share-section p{color:#8b949e;font-size:.85rem;margin-bottom:.5rem}
+.share-btns{display:flex;justify-content:center;gap:.5rem;flex-wrap:wrap}
+.share-btns .btn{font-size:.8rem;padding:5px 12px}
+
+.history-area{padding:.5rem 1rem;max-height:100px;overflow-y:auto}
+.history-item{padding:.3rem 0;font-size:.78rem;color:#484f58;border-bottom:1px solid #161b22;cursor:pointer;display:flex;justify-content:space-between}
+.history-item:hover{color:#8b949e}
+.history-item .lang{color:#58a6ff}
+
+.sample-selector{display:flex;gap:.5rem;flex-wrap:wrap;align-items:center}
+.sample-selector .sample-btn{font-size:.75rem;padding:3px 10px;background:#0d1117;border:1px solid #21262d;border-radius:4px;color:#8b949e;cursor:pointer;transition:all .2s}
+.sample-selector .sample-btn:hover{background:#1c2333;border-color:#58a6ff;color:#58a6ff}
+
+footer{text-align:center;padding:1.5rem;color:#484f58;font-size:.8rem;border-top:1px solid #21262d;margin-top:2rem}
+footer a{color:#58a6ff;text-decoration:none}
+</style>
+</head>
+<body>
+<div class="container">
+
+<header>
+  <h1>🧪 Live Code Review</h1>
+  <div>
+    <a href="/">← Home</a>
+    <a href="/api-playground.html" style="margin-left:1rem">API Playground</a>
+    <a href="/pricing.html" style="margin-left:1rem">Pricing</a>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="badge">⚡ Free · No signup · 3 reviews/day per IP</div>
+  <h2>Free AI Code Review</h2>
+  <p>Paste any code. Get instant feedback on bugs, security issues, and style problems.</p>
+</div>
+
+<div class="main-layout">
+  <div class="panel">
+    <div class="panel-header">
+      <span class="title">📝 Your Code</span>
+      <span style="font-size:.75rem;color:#484f58" id="char-count">0 chars</span>
+    </div>
+    <div class="sample-selector" style="padding:.4rem 1rem;border-bottom:1px solid #21262d">
+      <span style="font-size:.75rem;color:#484f58">Load sample:</span>
+      <button class="sample-btn" onclick="loadSample('javascript')">JavaScript</button>
+      <button class="sample-btn" onclick="loadSample('python')">Python</button>
+      <button class="sample-btn" onclick="loadSample('rust')">Rust</button>
+      <button class="sample-btn" onclick="loadSample('go')">Go</button>
+    </div>
+    <textarea id="code-input" class="code-input" placeholder="// Paste your code here...&#10;// Then click 'Review Code'"></textarea>
+    <div class="toolbar">
+      <select id="lang-select">
+        <option value="auto">Auto-detect</option>
+        <option value="javascript">JavaScript</option>
+        <option value="typescript">TypeScript</option>
+        <option value="python">Python</option>
+        <option value="rust">Rust</option>
+        <option value="go">Go</option>
+        <option value="java">Java</option>
+        <option value="cpp">C++</option>
+        <option value="ruby">Ruby</option>
+        <option value="php">PHP</option>
+        <option value="solidity">Solidity</option>
+      </select>
+      <button id="review-btn" class="btn primary" onclick="startReview()">🔍 Review Code</button>
+      <button class="btn secondary" onclick="clearAll()">Clear</button>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-header">
+      <span class="title">📊 AI Review Results</span>
+      <span id="results-info" style="font-size:.75rem;color:#484f58"></span>
+    </div>
+    <div id="results-area" class="results-area">
+      <div class="empty-state" id="empty-state">
+        <div class="icon">🔍</div>
+        <div>Paste code and click <strong>Review Code</strong></div>
+        <div style="margin-top:.5rem;font-size:.8rem">Free tier: 3 reviews/day</div>
+      </div>
+      <div id="results-content" style="display:none"></div>
+    </div>
+    <div class="meta-bar" id="meta-bar" style="display:none">
+      <span id="meta-info"></span>
+      <span id="review-time"></span>
+    </div>
+  </div>
+</div>
+
+<div class="share-section" style="display:none" id="share-section">
+  <p>⭐ <strong>Love this tool?</strong> Get unlimited code reviews with an API key</p>
+  <div class="share-btns">
+    <a href="/pricing.html" class="btn gold">Buy Credits from HK$38</a>
+    <a href="/api-docs.html" class="btn secondary">API Docs</a>
+  </div>
+</div>
+
+<!-- History -->
+<div class="panel" style="margin-top:1rem">
+  <div class="panel-header">
+    <span class="title">📋 Review History</span>
+    <span style="font-size:.75rem;color:#484f58">(stored locally)</span>
+  </div>
+  <div id="history-area" class="history-area">
+    <div style="text-align:center;color:#484f58;padding:1rem;font-size:.85rem">No reviews yet. Try one!</div>
+  </div>
+</div>
+
+<footer>
+  Powered by <a href="/">my-automaton</a> — A self-sustaining AI agent · 
+  <a href="/api-docs.html">API</a> · 
+  <a href="/pricing.html">Pricing</a> · 
+  <a href="/acceptable-use.html">Terms</a>
+</footer>
+
+</div>
+
+<script>
+// Load samples
+const SAMPLES = {
+  javascript: `// Vulnerable Express.js endpoint
+app.post('/api/login', (req, res) => {
+  const { username, password } = req.body;
+  const query = 'SELECT * FROM users WHERE username = "' + username + '" AND password = "' + password + '"';
+  db.query(query, (err, results) => {
+    if (results.length > 0) {
+      req.session.user = results[0];
+      res.redirect('/dashboard');
+    } else {
+      res.send('Invalid credentials');
+    }
+  });
+});
+
+// Also: hardcoded JWT secret
+process.env.JWT_SECRET = process.env.JWT_SECRET || 'supersecretkey123';
+`,
+  python: `import os
+import subprocess
+from flask import Flask, request
+
+app = Flask(__name__)
+
+@app.route('/ping')
+def ping():
+    hostname = request.args.get('host', 'localhost')
+    # Command injection vulnerability
+    result = subprocess.check_output(f'ping -c 1 {hostname}', shell=True)
+    return result
+
+# Also: hardcoded secret
+API_SECRET = "sk-live-abc123def456"
+
+if __name__ == '__main__':
+    app.run(debug=True, host='0.0.0.0')
+`,
+  rust: `use std::fs;
+use std::io::Read;
+
+fn read_config(path: &str) -> Result<String, std::io::Error> {
+    // No path traversal protection
+    let mut file = fs::File::open(path)?;
+    let mut contents = String::new();
+    file.read_to_string(&mut contents)?;
+    Ok(contents)
+}
+
+fn process_user_input(user_id: &str) {
+    // Unsafe: user_id used directly in path
+    let config = read_config(&format!("/data/users/{}/config.toml", user_id));
+    match config {
+        Ok(c) => println!("Config: {}", c),
+        Err(e) => eprintln!("Error: {}", e),
+    }
+}
+`,
+  go: `package main
+
+import (
+    "database/sql"
+    "fmt"
+    "net/http"
+    _ "github.com/go-sql-driver/mysql"
+)
+
+func getUser(w http.ResponseWriter, r *http.Request) {
+    id := r.URL.Query().Get("id")
+    db, _ := sql.Open("mysql", "root:password@tcp(localhost:3306)/app")
+    
+    // SQL Injection
+    query := fmt.Sprintf("SELECT * FROM users WHERE id = %s", id)
+    rows, _ := db.Query(query)
+    
+    // No error handling, no row closing
+    for rows.Next() {
+        var u User
+        rows.Scan(&u.Name, &u.Email)
+        fmt.Fprintf(w, "%s: %s", u.Name, u.Email)
+    }
+}
+`
+};
+
+function loadSample(lang) {
+  document.getElementById('code-input').value = SAMPLES[lang] || '';
+  document.getElementById('lang-select').value = lang;
+  updateCharCount();
+}
+
+function updateCharCount() {
+  const len = document.getElementById('code-input').value.length;
+  document.getElementById('char-count').textContent = len + ' chars';
+}
+
+document.getElementById('code-input').addEventListener('input', updateCharCount);
+
+function clearAll() {
+  document.getElementById('code-input').value = '';
+  document.getElementById('results-content').style.display = 'none';
+  document.getElementById('results-content').innerHTML = '';
+  document.getElementById('empty-state').style.display = 'block';
+  document.getElementById('meta-bar').style.display = 'none';
+  document.getElementById('share-section').style.display = 'none';
+  document.getElementById('results-info').textContent = '';
+  updateCharCount();
+}
+
+async function startReview() {
+  const code = document.getElementById('code-input').value.trim();
+  if (!code) {
+    alert('Please paste some code first!');
+    return;
+  }
+
+  const lang = document.getElementById('lang-select').value;
+  const btn = document.getElementById('review-btn');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span> Reviewing...';
+
+  // Show loading
+  document.getElementById('empty-state').style.display = 'none';
+  document.getElementById('results-content').style.display = 'block';
+  document.getElementById('results-content').innerHTML = '<div style="text-align:center;padding:2rem"><span class="spinner"></span><div style="margin-top:.5rem;color:#8b949e">Analyzing code...</div></div>';
+
+  const startTime = Date.now();
+
+  try {
+    const resp = await fetch('/free/review', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ code, language: lang })
+    });
+
+    if (resp.status === 429) {
+      document.getElementById('results-content').innerHTML = 
+        '<div style="text-align:center;padding:2rem;color:#f85149"><div style="font-size:2rem">⏰</div><h3>Daily limit reached</h3><p style="color:#8b949e;margin-top:.5rem">Free tier: 3 reviews/day per IP. <a href="/pricing.html" style="color:#d29922">Get unlimited →</a></p></div>';
+      return;
+    }
+
+    if (!resp.ok) {
+      document.getElementById('results-content').innerHTML = 
+        `<div style="text-align:center;padding:2rem;color:#f85149"><div style="font-size:2rem">⚠️</div><h3>Error ${resp.status}</h3><p style="color:#8b949e;margin-top:.5rem">Something went wrong. Try again later.</p></div>`;
+      return;
+    }
+
+    const data = await resp.json();
+    const elapsed = ((Date.now() - startTime) / 1000).toFixed(1);
+
+    renderResults(data, code.substring(0, 100), lang, elapsed);
+    addHistory(code.substring(0, 80), lang);
+    document.getElementById('share-section').style.display = 'block';
+
+  } catch (err) {
+    document.getElementById('results-content').innerHTML = 
+      '<div style="text-align:center;padding:2rem;color:#f85149"><div style="font-size:2rem">❌</div><h3>Connection error</h3><p style="color:#8b949e;margin-top:.5rem">Please try again.</p></div>';
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = '🔍 Review Code';
+  }
+}
+
+function renderResults(data, snippet, lang, elapsed) {
+  const content = document.getElementById('results-content');
+  const reviews = data.review || data.findings || data.results || [];
+
+  if (!reviews || reviews.length === 0) {
+    content.innerHTML = '<div style="text-align:center;padding:2rem;color:#3fb950"><div style="font-size:2rem">✅</div><h3>No issues found!</h3><p style="color:#8b949e;margin-top:.5rem">Your code looks clean.</p></div>';
+    document.getElementById('results-info').textContent = 'Clean ✅';
+    document.getElementById('meta-bar').style.display = 'flex';
+    document.getElementById('meta-info').textContent = `${lang || 'auto'} · No issues found`;
+    document.getElementById('review-time').textContent = `${elapsed}s`;
+    return;
+  }
+
+  let html = '';
+  let critCount = 0, warnCount = 0, infoCount = 0;
+
+  for (const r of reviews) {
+    const severity = (r.severity || 'info').toLowerCase();
+    if (severity === 'critical' || severity === 'high' || severity === 'error') {
+      critCount++;
+      html += renderItem(r, 'critical');
+    } else if (severity === 'warning' || severity === 'medium') {
+      warnCount++;
+      html += renderItem(r, 'warning');
+    } else {
+      infoCount++;
+      html += renderItem(r, 'info');
+    }
+  }
+
+  content.innerHTML = html;
+
+  // Update meta
+  const parts = [];
+  if (critCount) parts.push(`🔴 ${critCount} critical`);
+  if (warnCount) parts.push(`🟡 ${warnCount} warnings`);
+  if (infoCount) parts.push(`🔵 ${infoCount} suggestions`);
+  document.getElementById('results-info').textContent = parts.join(' · ');
+  document.getElementById('meta-bar').style.display = 'flex';
+  document.getElementById('meta-info').textContent = `${lang || 'auto'} · ${parts.join(', ')}`;
+  document.getElementById('review-time').textContent = `${elapsed}s`;
+}
+
+function renderItem(r, cls) {
+  const title = r.title || r.issue || r.type || 'Finding';
+  const desc = r.description || r.message || r.detail || '';
+  const code = r.code_snippet || r.line || r.example || r.code || '';
+  return `
+    <div class="review-section ${cls}">
+      <span class="tag">${cls.toUpperCase()}</span>
+      <div class="title">${escapeHtml(title)}</div>
+      ${desc ? `<div class="desc">${escapeHtml(desc)}</div>` : ''}
+      ${code ? `<div class="code-snip">${escapeHtml(code)}</div>` : ''}
+    </div>
+  `;
+}
+
+function escapeHtml(s) {
+  if (!s) return '';
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+          .replace(/"/g,'&quot;');
+}
+
+function addHistory(snippet, lang) {
+  let history = JSON.parse(localStorage.getItem('review-history') || '[]');
+  history.unshift({
+    snippet: snippet.substring(0, 80) + (snippet.length > 80 ? '...' : ''),
+    lang: lang,
+    time: new Date().toLocaleTimeString()
+  });
+  if (history.length > 10) history = history.slice(0, 10);
+  localStorage.setItem('review-history', JSON.stringify(history));
+  renderHistory();
+}
+
+function renderHistory() {
+  const area = document.getElementById('history-area');
+  const history = JSON.parse(localStorage.getItem('review-history') || '[]');
+  if (history.length === 0) {
+    area.innerHTML = '<div style="text-align:center;color:#484f58;padding:1rem;font-size:.85rem">No reviews yet. Try one!</div>';
+    return;
+  }
+  area.innerHTML = history.map((h, i) => `
+    <div class="history-item">
+      <span><span class="lang">${h.lang}</span> ${h.snippet}</span>
+      <span style="font-size:.75rem">${h.time}</span>
+    </div>
+  `).join('');
+}
+
+// Load default sample on page load
+window.addEventListener('DOMContentLoaded', () => {
+  loadSample('javascript');
+  renderHistory();
+});
+</script>
+<script src="/conversion-banner.js" defer></script>
+</body>
+</html>

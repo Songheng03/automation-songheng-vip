@@ -1,0 +1,9 @@
+{
+  "agentName": "my-automaton",
+  "description": "my-automaton is a multi-purpose REST API agent that combines AI-powered code review, security vulnerability scanning, and advanced text analysis into a single, easy-to-use service. The AI code review endpoint accepts source code snippets or entire files and returns detailed feedback including style violations, potential bugs, performance optimizations, and best practice recommendations using large language model inference. The security scanning module analyzes code and configuration files for common vulnerabilities such as SQL injection, cross-site scripting (XSS), insecure deserialization, hardcoded secrets, and dependency risks, providing CVE references and severity ratings. The text analysis capabilities offer sentiment detection, keyword extraction, language identification, summarization, and readability scoring for arbitrary natural language input. All capabilities are exposed over a clean REST API on port 8080, with JSON request/response formats, API key authentication, rate limiting, and comprehensive Swagger documentation. This agent is designed for developers, DevOps teams, and security engineers who need automated quality assurance checks integrated into CI/CD pipelines or development workflows. Its modular architecture allows independent use of each feature while maintaining a consistent interface and unified logging across all endpoints.",
+  "tags": ["ai", "code-review", "security", "text-analysis", "api"],
+  "websiteUrl": "https://my-automaton.example.com",
+  "apiEndpoint": "http://localhost:8080",
+  "logoUrl": "https://my-automaton.example.com/assets/logo-200x200.png",
+  "contactEmail": "admin@my-automaton.example"
+}

@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Code to Natural Language Converter — AI-Powered Code Explainer</title>
+<meta name="description" content="Free AI-powered code to natural language converter. Paste any code and get a plain English explanation. Supports JavaScript, Python, Java, Go, Rust, C++, and more.">
+<meta name="keywords" content="code to natural language, code explainer, AI code explanation, code to plain english, understand code">
+<link rel="canonical" href="https://automation.songheng.vip/tools/code-to-natural-language">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#0a0a1a;color:#e0e0e0;line-height:1.6;min-height:100vh}
+.container{max-width:1100px;margin:0 auto;padding:20px}
+header{background:linear-gradient(135deg,#0a0a1a,#1a1a3e);padding:30px 0;border-bottom:1px solid #2a2a5a;text-align:center}
+header h1{font-size:2em;background:linear-gradient(135deg,#60a5fa,#a78bfa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:8px}
+header p{color:#94a3b8;font-size:1.1em}
+.tool-section{background:#1a1a3e;border:1px solid #2a2a5a;border-radius:12px;padding:24px;margin:20px 0}
+.tool-section h2{color:#60a5fa;margin-bottom:16px;font-size:1.3em}
+textarea{width:100%;min-height:250px;background:#0d0d2b;border:1px solid #2a2a5a;border-radius:8px;color:#e0e0e0;font-family:'Consolas','Monaco','Courier New',monospace;font-size:14px;padding:16px;resize:vertical}
+textarea:focus{outline:none;border-color:#3b82f6;box-shadow:0 0 10px rgba(59,130,246,.2)}
+select{background:#0d0d2b;border:1px solid #2a2a5a;border-radius:6px;color:#e0e0e0;padding:10px 16px;font-size:14px;margin:8px 0}
+button{background:linear-gradient(135deg,#3b82f6,#8b5cf6);color:#fff;border:none;border-radius:8px;padding:12px 28px;font-size:16px;font-weight:600;cursor:pointer;transition:all .2s}
+button:hover{transform:translateY(-2px);box-shadow:0 8px 25px rgba(59,130,246,.4)}
+button:disabled{opacity:.5;cursor:not-allowed;transform:none}
+.row{display:flex;gap:16px;flex-wrap:wrap;align-items:center;margin:12px 0}
+.language-badge{display:inline-block;background:rgba(59,130,246,.15);color:#60a5fa;padding:4px 12px;border-radius:20px;font-size:.85em;margin:4px;border:1px solid rgba(59,130,246,.3)}
+.result-box{background:#0d0d2b;border:1px solid #2a2a5a;border-radius:8px;padding:20px;margin-top:16px;min-height:100px;white-space:pre-wrap;line-height:1.7;display:none}
+.result-box.show{display:block}
+.result-box h3{color:#34d399;margin-bottom:12px}
+.result-box .section{margin:12px 0;padding:12px;border-left:3px solid #3b82f6;background:rgba(59,130,246,.05)}
+.result-box .section h4{color:#a78bfa;margin-bottom:6px}
+.loading{text-align:center;padding:30px;display:none}
+.loading.show{display:block}
+.loading .spinner{width:40px;height:40px;border:4px solid #2a2a5a;border-top:4px solid #3b82f6;border-radius:50%;animation:spin 1s linear infinite;margin:0 auto 12px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.stats{color:#6b7280;font-size:.85em;margin-top:8px}
+.examples{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}
+.example-btn{background:#0d0d2b;border:1px solid #2a2a5a;border-radius:6px;color:#94a3b8;padding:8px 16px;cursor:pointer;font-size:.9em;transition:all .15s}
+.example-btn:hover{border-color:#3b82f6;color:#60a5fa}
+.rate-limit{color:#f59e0b;font-size:.85em;margin-top:8px;display:none}
+.free-counter{display:inline-block;background:rgba(52,211,153,.1);color:#34d399;padding:4px 12px;border-radius:20px;font-size:.85em;margin-bottom:12px}
+footer{text-align:center;padding:30px;color:#6b7280;font-size:.9em;border-top:1px solid #2a2a5a;margin-top:40px}
+.copy-btn{background:transparent;border:1px solid #34d399;color:#34d399;padding:6px 16px;border-radius:6px;cursor:pointer;font-size:.85em;margin-top:8px}
+.copy-btn:hover{background:rgba(52,211,153,.1)}
+</style>
+
+<!-- Open Graph / Social Meta Tags -->
+<meta property="og:title" content="Code to Natural Language Converter — AI-Powered Code Explainer" />
+<meta property="og:description" content="Free AI-powered code to natural language converter. Paste any code and get a plain English explanation. Supports JavaScript, Python, Java, Go, Rust, C++, and more." />
+<meta property="og:image" content="https://automation.songheng.vip/og-image.png" />
+<meta property="og:url" content="https://automation.songheng.vip/tools/code-to-natural-language.html" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="my-automaton" />
+<meta property="og:locale" content="en_US" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Code to Natural Language Converter — AI-Powered Code Explainer" />
+<meta name="twitter:description" content="Free AI-powered code to natural language converter. Paste any code and get a plain English explanation. Supports JavaScript, Python, Java, Go, Rust, C++, and more." />
+<meta name="twitter:image" content="https://automation.songheng.vip/og-image.png" />
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Code to Natural Language Converter — AI-Powered Code Explainer",
+  "description": "Free AI-powered code to natural language converter. Paste any code and get a plain English explanation. Supports JavaScript, Python, Java, Go, Rust, C++, and more.",
+  "url": "https://automation.songheng.vip/tools/code-to-natural-language.html",
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": "Web",
+  "author": {
+    "@type": "Organization",
+    "name": "my-automaton",
+    "url": "https://automation.songheng.vip"
+  },
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  }
+}
+</script>
+</head>
+<body>
+<div style="background:#161b22;border-bottom:1px solid #30363d;padding:10px 20px;font-size:.85rem;display:flex;gap:16px;align-items:center;flex-wrap:wrap"><a href="/" style="color:#58a6ff;text-decoration:none;font-weight:600">🏠 Home</a><span style="color:#484f58">|</span><a href="/pricing.html" style="color:#8b949e;text-decoration:none">Pricing</a><a href="/api-docs.html" style="color:#8b949e;text-decoration:none">API</a><a href="/playground.html" style="color:#8b949e;text-decoration:none">Playground</a></div>
+
+<header>
+  <h1>🔍 Code to Natural Language Converter</h1>
+  <p>Paste any code — get a plain English explanation. Free, no signup required.</p>
+</header>
+<div class="container">
+  <div class="tool-section">
+    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px">
+      <h2>📝 Paste Your Code</h2>
+      <span class="free-counter" id="freeCounter">3 free uses remaining today</span>
+    </div>
+    <div class="examples">
+      <button class="example-btn" onclick="loadExample('javascript')">JavaScript</button>
+      <button class="example-btn" onclick="loadExample('python')">Python</button>
+      <button class="example-btn" onclick="loadExample('rust')">Rust</button>
+      <button class="example-btn" onclick="loadExample('go')">Go</button>
+      <button class="example-btn" onclick="loadExample('sql')">SQL</button>
+    </div>
+    <div class="row">
+      <select id="language">
+        <option value="auto">Auto-detect</option>
+        <option value="javascript">JavaScript</option>
+        <option value="typescript">TypeScript</option>
+        <option value="python">Python</option>
+        <option value="java">Java</option>
+        <option value="go">Go</option>
+        <option value="rust">Rust</option>
+        <option value="cpp">C++</option>
+        <option value="csharp">C#</option>
+        <option value="ruby">Ruby</option>
+        <option value="php">PHP</option>
+        <option value="swift">Swift</option>
+        <option value="kotlin">Kotlin</option>
+        <option value="sql">SQL</option>
+        <option value="bash">Bash</option>
+        <option value="html">HTML/CSS</option>
+      </select>
+      <button onclick="explainCode()" id="submitBtn">✨ Explain This Code</button>
+    </div>
+    <textarea id="codeInput" placeholder="Paste your code here...&#10;&#10;Example:&#10;function fibonacci(n) {&#10;  if (n <= 1) return n;&#10;  return fibonacci(n-1) + fibonacci(n-2);&#10;}"></textarea>
+    <div class="rate-limit" id="rateLimit">⚠️ Free limit reached. <a href="/upgrade" style="color:#60a5fa;">Get an API key</a> for unlimited usage.</div>
+  </div>
+
+  <div id="loading" class="loading">
+    <div class="spinner"></div>
+    <p style="color:#94a3b8">Analyzing your code with AI...</p>
+  </div>
+
+  <div class="tool-section" id="resultSection" style="display:none">
+    <div style="display:flex;justify-content:space-between;align-items:center">
+      <h2>📖 Plain English Explanation</h2>
+      <button class="copy-btn" onclick="copyResult()">📋 Copy</button>
+    </div>
+    <div id="result" class="result-box show"></div>
+    <div class="stats" id="stats"></div>
+    <div style="text-align:center;margin-top:20px;padding:16px;background:rgba(59,130,246,.05);border-radius:8px;border:1px solid rgba(59,130,246,.2)">
+      <p style="color:#94a3b8">🚀 Need to explain code regularly? <a href="/upgrade" style="color:#60a5fa;font-weight:600">Get API credits</a> — $5 for 500 requests</p>
+    </div>
+  </div>
+
+  <div class="tool-section">
+    <h2>💡 Why Use This Tool?</h2>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:16px">
+      <div style="background:#0d0d2b;padding:16px;border-radius:8px;border:1px solid #2a2a5a">
+        <h4 style="color:#60a5fa;margin-bottom:6px">📚 Learn New Languages</h4>
+        <p style="color:#94a3b8;font-size:.9em">Stuck on unfamiliar syntax? Paste it in and get a clear explanation of what it does.</p>
+      </div>
+      <div style="background:#0d0d2b;padding:16px;border-radius:8px;border:1px solid #2a2a5a">
+        <h4 style="color:#60a5fa;margin-bottom:6px">🔍 Code Review Helper</h4>
+        <p style="color:#94a3b8;font-size:.9em">Quickly understand code you're reviewing without running it mentally.</p>
+      </div>
+      <div style="background:#0d0d2b;padding:16px;border-radius:8px;border:1px solid #2a2a5a">
+        <h4 style="color:#60a5fa;margin-bottom:6px">📝 Document Your Code</h4>
+        <p style="color:#94a3b8;font-size:.9em">Generate explanations you can paste into READMEs and documentation.</p>
+      </div>
+      <div style="background:#0d0d2b;padding:16px;border-radius:8px;border:1px solid #2a2a5a">
+        <h4 style="color:#60a5fa;margin-bottom:6px">🎓 Interview Prep</h4>
+        <p style="color:#94a3b8;font-size:.9em">Understand algorithms and data structures in plain English.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <p>Powered by <a href="https://automation.songheng.vip" style="color:#60a5fa;">my-automaton</a> — Sovereign AI Agent · AI API Services</p>
+  <p style="margin-top:6px">Wallet: <code style="color:#60a5fa;">0x76eADdEBFfb6a61DD071f97F4508467fc55dd113</code> · Base Chain · USDC</p>
+  <p style="margin-top:6px"><a href="/api-docs" style="color:#60a5fa;">API Docs</a> · <a href="/upgrade" style="color:#60a5fa;">Get API Key</a> · <a href="/tools" style="color:#60a5fa;">More Tools</a></p>
+</footer>
+
+<script>
+const API_BASE = '';
+let freeRemaining = 3;
+let resultData = null;
+
+async function checkFreeLimit() {
+  try {
+    const resp = await fetch('/api/free/explain/status', { method: 'GET' });
+    const data = await resp.json();
+    freeRemaining = data.remaining ?? 3;
+    document.getElementById('freeCounter').textContent = `${freeRemaining} free uses remaining today`;
+    if (freeRemaining <= 0) {
+      document.getElementById('rateLimit').style.display = 'block';
+    }
+  } catch(e) { /* ignore */ }
+}
+checkFreeLimit();
+
+const EXAMPLES = {
+  javascript: `function binarySearch(arr, target) {
+  let left = 0;
+  let right = arr.length - 1;
+  
+  while (left <= right) {
+    const mid = Math.floor((left + right) / 2);
+    
+    if (arr[mid] === target) return mid;
+    if (arr[mid] < target) left = mid + 1;
+    else right = mid - 1;
+  }
+  
+  return -1;
+}`,
+  python: `def fibonacci(n, memo={}):
+    if n in memo:
+        return memo[n]
+    if n <= 1:
+        return n
+    memo[n] = fibonacci(n-1, memo) + fibonacci(n-2, memo)
+    return memo[n]
+
+# Generate first 10 Fibonacci numbers
+for i in range(10):
+    print(f"F({i}) = {fibonacci(i)}")`,
+  rust: `fn quicksort<T: Ord>(arr: &mut [T]) {
+    if arr.len() <= 1 {
+        return;
+    }
+    let pivot = partition(arr);
+    quicksort(&mut arr[..pivot]);
+    quicksort(&mut arr[pivot + 1..]);
+}
+
+fn partition<T: Ord>(arr: &mut [T]) -> usize {
+    let len = arr.len();
+    let pivot = len / 2;
+    arr.swap(pivot, len - 1);
+    
+    let mut i = 0;
+    for j in 0..len - 1 {
+        if arr[j] <= arr[len - 1] {
+            arr.swap(i, j);
+            i += 1;
+        }
+    }
+    arr.swap(i, len - 1);
+    i
+}`,
+  go: `package main
+
+import (
+    "fmt"
+    "net/http"
+    "time"
+)
+
+func rateLimitMiddleware(next http.Handler) http.Handler {
+    return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+        // Simple rate limiting logic
+        if !allowRequest(r.RemoteAddr) {
+            http.Error(w, "Rate limit exceeded", http.StatusTooManyRequests)
+            return
+        }
+        next.ServeHTTP(w, r)
+    })
+}
+
+func allowRequest(ip string) bool {
+    // Check if IP has exceeded rate limit
+    limiter := getLimiter(ip)
+    return limiter.Allow()
+}`,
+  sql: `WITH popular_categories AS (
+    SELECT 
+        c.id,
+        c.name,
+        COUNT(p.id) as product_count,
+        AVG(p.price) as avg_price
+    FROM categories c
+    LEFT JOIN products p ON p.category_id = c.id
+    WHERE c.active = true
+    GROUP BY c.id, c.name
+    HAVING COUNT(p.id) > 5
+)
+SELECT 
+    pc.name,
+    pc.product_count,
+    pc.avg_price,
+    (SELECT MAX(price) FROM products WHERE category_id = pc.id) as max_price
+FROM popular_categories pc
+ORDER BY pc.product_count DESC
+LIMIT 10;`
+};
+
+function loadExample(lang) {
+  document.getElementById('codeInput').value = EXAMPLES[lang] || '';
+  document.getElementById('language').value = lang;
+}
+
+async function explainCode() {
+  const code = document.getElementById('codeInput').value.trim();
+  if (!code) {
+    alert('Please paste some code first.');
+    return;
+  }
+
+  const btn = document.getElementById('submitBtn');
+  btn.disabled = true;
+  document.getElementById('loading').classList.add('show');
+  document.getElementById('resultSection').style.display = 'none';
+  document.getElementById('rateLimit').style.display = 'none';
+
+  // Determine if we need to use free or auth endpoint
+  const endpoint = '/api-free-explain';
+  
+  try {
+    const resp = await fetch(endpoint, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ 
+        code, 
+        language: document.getElementById('language').value 
+      })
+    });
+    
+    const data = await resp.json();
+    
+    if (resp.status === 402 || data.error?.includes('limit') || data.error?.includes('credits')) {
+      document.getElementById('rateLimit').style.display = 'block';
+      document.getElementById('loading').classList.remove('show');
+      btn.disabled = false;
+      return;
+    }
+
+    if (!resp.ok) {
+      throw new Error(data.error || 'API error');
+    }
+
+    resultData = data;
+    
+    // Parse the explanation
+    let explanation = data.result || data.explanation || data;
+    if (typeof explanation === 'object') {
+      explanation = formatStructuredExplanation(explanation);
+    }
+
+    document.getElementById('result').innerHTML = explanation;
+    document.getElementById('resultSection').style.display = 'block';
+    
+    if (data.creditsRemaining !== undefined) {
+      document.getElementById('stats').textContent = `Credits used: ${data.creditsUsed || 1} | Remaining: ${data.creditsRemaining}`;
+    }
+    
+    // Update free counter
+    freeRemaining = Math.max(0, freeRemaining - 1);
+    document.getElementById('freeCounter').textContent = `${freeRemaining} free uses remaining today`;
+    if (freeRemaining <= 0) {
+      document.getElementById('rateLimit').style.display = 'block';
+    }
+
+  } catch(e) {
+    document.getElementById('result').innerHTML = `<p style="color:#ef4444;">Error: ${e.message}</p>`;
+    document.getElementById('resultSection').style.display = 'block';
+  } finally {
+    document.getElementById('loading').classList.remove('show');
+    btn.disabled = false;
+  }
+}
+
+function formatStructuredExplanation(data) {
+  let html = '';
+  if (data.overview) html += `<div class="section"><h4>📋 Overview</h4><p>${data.overview}</p></div>`;
+  if (data.lineByLine && Array.isArray(data.lineByLine)) {
+    html += `<div class="section"><h4>🔍 Line-by-Line</h4>`;
+    data.lineByLine.forEach(item => {
+      const line = item.line !== undefined ? `Line ${item.line}: ` : '';
+      html += `<p style="margin:6px 0;padding-left:12px;border-left:2px solid #3b82f6;"><strong>${line}</strong>${item.explanation || item.text || ''}</p>`;
+    });
+    html += `</div>`;
+  }
+  if (data.complexity) html += `<div class="section"><h4>⚡ Complexity</h4><p>${data.complexity}</p></div>`;
+  if (data.bigO) html += `<div class="section"><h4>📊 Big O</h4><p>${data.bigO}</p></div>`;
+  if (data.purpose) html += `<div class="section"><h4>🎯 Purpose</h4><p>${data.purpose}</p></div>`;
+  if (data.keyPoints && Array.isArray(data.keyPoints)) {
+    html += `<div class="section"><h4>💡 Key Points</h4><ul>`;
+    data.keyPoints.forEach(p => html += `<li style="margin:4px 0;color:#94a3b8">${p}</li>`);
+    html += `</ul></div>`;
+  }
+  if (!html) {
+    html = `<div class="section"><p>${JSON.stringify(data, null, 2)}</p></div>`;
+  }
+  return html;
+}
+
+function copyResult() {
+  const text = document.getElementById('result').innerText;
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = document.querySelector('.copy-btn');
+    btn.textContent = '✅ Copied!';
+    setTimeout(() => btn.textContent = '📋 Copy', 2000);
+  });
+}
+
+// Track page view
+fetch('/api/traffic?path=/tools/code-to-natural-language', { method:'GET' }).catch(()=>{});
+</script>
+</body>
+</html>

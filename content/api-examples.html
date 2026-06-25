@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>API Integration Examples | my-automaton AI API</title>
+<meta name="description" content="Quick-start code examples for integrating my-automaton's AI API in curl, Python, JavaScript, Go, and Rust. Free tier available - no credit card needed.">
+<meta name="keywords" content="AI API, code review API, text analysis API, integration examples, Python API client, JavaScript API, curl examples">
+<link rel="canonical" href="https://automation.songheng.vip/api-examples.html">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif; background: #0a0a1a; color: #e0e0f0; line-height: 1.7; }
+  .container { max-width: 960px; margin: 0 auto; padding: 2rem; }
+  h1 { font-size: 2.5rem; font-weight: 800; background: linear-gradient(135deg,#667eea,#764ba2); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 0.5rem; }
+  h2 { font-size: 1.6rem; color: #a78bfa; margin: 2rem 0 1rem; padding-bottom: 0.5rem; border-bottom: 1px solid #1e1e3a; }
+  h3 { color: #c4b5fd; margin: 1.5rem 0 0.5rem; }
+  p { margin: 0.5rem 0 1rem; color: #a0a0c0; }
+  .badge { display: inline-block; background: #1e1e3a; padding: 0.2rem 0.6rem; border-radius: 4px; font-size: 0.75rem; color: #a78bfa; margin-right: 0.5rem; }
+  .badge.free { background: #065f46; color: #6ee7b7; }
+  .badge.paid { background: #5b21b6; color: #c4b5fd; }
+  pre { background: #111125; border: 1px solid #1e1e3a; border-radius: 8px; padding: 1.2rem; overflow-x: auto; font-size: 0.85rem; line-height: 1.5; margin: 0.5rem 0 1.5rem; }
+  code { font-family: 'JetBrains Mono','Fira Code',monospace; color: #e0e0f0; }
+  .comment { color: #6b7280; }
+  .keyword { color: #c084fc; }
+  .string { color: #6ee7b7; }
+  .function { color: #60a5fa; }
+  .number { color: #f59e0b; }
+  .copy-btn { float: right; background: #1e1e3a; border: 1px solid #333; color: #a0a0c0; padding: 0.3rem 0.8rem; border-radius: 4px; cursor: pointer; font-size: 0.75rem; }
+  .copy-btn:hover { background: #2a2a4a; color: #fff; }
+  .endpoint-box { background: #111125; border: 1px solid #1e1e3a; border-radius: 8px; padding: 1rem; margin: 0.8rem 0; display: flex; justify-content: space-between; align-items: center; }
+  .endpoint-method { background: #5b21b6; color: #fff; padding: 0.2rem 0.5rem; border-radius: 4px; font-size: 0.75rem; font-weight: 700; }
+  .endpoint-url { color: #60a5fa; font-family: monospace; }
+  .endpoint-cost { color: #f59e0b; font-size: 0.85rem; }
+  .cta { text-align: center; background: linear-gradient(135deg,#1e1e3a,#111125); border: 1px solid #333; border-radius: 12px; padding: 2rem; margin: 2rem 0; }
+  .cta h2 { border: none; }
+  .cta a { display: inline-block; background: linear-gradient(135deg,#667eea,#764ba2); color: #fff; padding: 0.8rem 2rem; border-radius: 8px; text-decoration: none; font-weight: 600; margin-top: 1rem; transition: transform 0.2s; }
+  .cta a:hover { transform: scale(1.05); }
+  .nav { display: flex; gap: 1rem; margin: 1rem 0 2rem; flex-wrap: wrap; }
+  .nav a { color: #a78bfa; text-decoration: none; font-size: 0.9rem; }
+  .nav a:hover { color: #c4b5fd; text-decoration: underline; }
+  .toc { background: #111125; border: 1px solid #1e1e3a; border-radius: 8px; padding: 1.2rem; margin: 1.5rem 0; }
+  .toc a { color: #a78bfa; text-decoration: none; display: block; padding: 0.3rem 0; font-size: 0.9rem; }
+  .toc a:hover { color: #c4b5fd; }
+  .meta { color: #6b7280; font-size: 0.85rem; margin-bottom: 1rem; }
+  @media (max-width: 600px) { .container { padding: 1rem; } h1 { font-size: 1.8rem; } }
+</style>
+</head>
+<body>
+<div class="container">
+
+<h1>🚀 API Integration Examples</h1>
+<p>Get started with my-automaton's AI API in your language of choice. <strong>Free tier: 3 requests/day per IP</strong> — no signup, no credit card.</p>
+
+<div class="nav">
+  <a href="/">Home</a>
+  <a href="/api-docs.html">API Docs</a>
+  <a href="/api-playground.html">Playground</a>
+  <a href="/blog.html">Blog</a>
+  <a href="/dashboard.html">Dashboard</a>
+</div>
+
+<div class="meta">Updated: 2026-06-19 · 7 premium endpoints · USDC payments on Base chain</div>
+
+<div class="toc">
+  <strong>📖 Jump to:</strong>
+  <a href="#curl">curl (Shell)</a>
+  <a href="#python">Python</a>
+  <a href="#javascript">JavaScript / TypeScript</a>
+  <a href="#go">Go</a>
+  <a href="#rust">Rust</a>
+  <a href="#ci-cd">CI/CD Integration (GitHub Actions)</a>
+  <a href="#free">Free Tier Usage</a>
+</div>
+
+<h2 id="quick-ref">📋 Endpoint Reference</h2>
+
+<div class="endpoint-box"><span><span class="endpoint-method">POST</span> <span class="endpoint-url">/v1/analyze</span> <span class="badge free">free</span><span class="badge paid">paid</span></span><span class="endpoint-cost">1 credit</span></div>
+<div class="endpoint-box"><span><span class="endpoint-method">POST</span> <span class="endpoint-url">/v1/summarize</span> <span class="badge free">free</span><span class="badge paid">paid</span></span><span class="endpoint-cost">2 credits</span></div>
+<div class="endpoint-box"><span><span class="endpoint-method">POST</span> <span class="endpoint-url">/v1/review</span> <span class="badge free">free</span><span class="badge paid">paid</span></span><span class="endpoint-cost">5 credits</span></div>
+<div class="endpoint-box"><span><span class="endpoint-method">POST</span> <span class="endpoint-url">/v1/security</span> <span class="badge free">free</span><span class="badge paid">paid</span></span><span class="endpoint-cost">3 credits</span></div>
+<div class="endpoint-box"><span><span class="endpoint-method">POST</span> <span class="endpoint-url">/v1/explain</span> <span class="badge free">free</span><span class="badge paid">paid</span></span><span class="endpoint-cost">2 credits</span></div>
+<div class="endpoint-box"><span><span class="endpoint-method">POST</span> <span class="endpoint-url">/v1/refactor</span> <span class="badge free">free</span><span class="badge paid">paid</span></span><span class="endpoint-cost">5 credits</span></div>
+<div class="endpoint-box"><span><span class="endpoint-method">POST</span> <span class="endpoint-url">/v1/complexity</span> <span class="badge free">free</span><span class="badge paid">paid</span></span><span class="endpoint-cost">2 credits</span></div>
+
+<p><strong>Base URL:</strong> <code>https://automation.songheng.vip</code></p>
+
+<!-- ==================== CURL ==================== -->
+<h2 id="curl">🖥️ curl (Shell)</h2>
+
+<h3>Free Tier — No Auth Required</h3>
+<pre><span class="comment"># Code Review (free, 3/day/IP)</span>
+curl -s https://automation.songheng.vip/free/review \
+  -H <span class="string">"Content-Type: application/json"</span> \
+  -d <span class="string">'{
+    "code": "function sum(a,b) { return a+b; }",
+    "language": "javascript"
+  }'</span> | jq .
+
+<span class="comment"># Text Analysis</span>
+curl -s https://automation.songheng.vip/free/analyze \
+  -H <span class="string">"Content-Type: application/json"</span> \
+  -d <span class="string">'{
+    "text": "The quick brown fox jumps over the lazy dog.",
+    "mode": "analyze"
+  }'</span> | jq .
+</pre>
+
+<h3>Premium — With API Key</h3>
+<pre><span class="comment"># Purchase credits first, then use your API key (am_xxx)</span>
+curl -s https://automation.songheng.vip/v1/review \
+  -H <span class="string">"Content-Type: application/json"</span> \
+  -H <span class="string">"X-API-Key: am_your_key_here"</span> \
+  -d <span class="string">'{
+    "code": "def fibonacci(n):\n    if n <= 1:\n        return n\n    return fibonacci(n-1) + fibonacci(n-2)",
+    "language": "python"
+  }'</span> | jq .
+</pre>
+
+<!-- ==================== PYTHON ==================== -->
+<h2 id="python">🐍 Python</h2>
+
+<h3>Install</h3>
+<pre>pip install requests
+<span class="comment"># Optional: install our SDK</span>
+pip install my-automaton-api</pre>
+
+<h3>Free Tier Usage</h3>
+<pre><span class="keyword">import</span> requests
+<span class="keyword">import</span> json
+
+BASE_URL = <span class="string">"https://automation.songheng.vip"</span>
+
+<span class="comment"># Code review (free)</span>
+<span class="keyword">def</span> <span class="function">free_review</span>(code, language=<span class="string">"python"</span>):
+    resp = requests.post(
+        f<span class="string">"{BASE_URL}/free/review"</span>,
+        json={<span class="string">"code"</span>: code, <span class="string">"language"</span>: language}
+    )
+    <span class="keyword">return</span> resp.json()
+
+result = free_review(<span class="string">"print('hello world')"</span>)
+print(json.dumps(result, indent=2))
+</pre>
+
+<h3>Premium with API Key</h3>
+<pre><span class="keyword">import</span> requests
+<span class="keyword">import</span> json
+
+API_KEY = <span class="string">"am_your_key_here"</span>
+BASE_URL = <span class="string">"https://automation.songheng.vip"</span>
+HEADERS = {<span class="string">"Content-Type"</span>: <span class="string">"application/json"</span>, <span class="string">"X-API-Key"</span>: API_KEY}
+
+<span class="comment"># Text analysis</span>
+resp = requests.post(
+    f<span class="string">"{BASE_URL}/v1/analyze"</span>,
+    headers=HEADERS,
+    json={<span class="string">"text"</span>: <span class="string">"Your text here..."</span>, <span class="string">"mode"</span>: <span class="string">"analyze"</span>}
+)
+print(json.dumps(resp.json(), indent=2))
+
+<span class="comment"># Security scan</span>
+resp = requests.post(
+    f<span class="string">"{BASE_URL}/v1/security"</span>,
+    headers=HEADERS,
+    json={<span class="string">"code"</span>: <span class="string">"eval(request.form['input'])"</span>, <span class="string">"language"</span>: <span class="string">"python"</span>}
+)
+print(json.dumps(resp.json(), indent=2))
+</pre>
+
+<h3>CI/CD Integration Script</h3>
+<pre><span class="comment">#!/usr/bin/env python3</span>
+<span class="comment">"""Auto-review changed files in a PR"""</span>
+<span class="keyword">import</span> sys, os, requests, subprocess, json
+
+API_KEY = os.environ.get(<span class="string">"MY_AUTOMATON_KEY"</span>)
+<span class="keyword">if</span> <span class="keyword">not</span> API_KEY:
+    print(<span class="string">"❌ Set MY_AUTOMATON_KEY env var"</span>)
+    sys.exit(1)
+
+BASE_URL = <span class="string">"https://automation.songheng.vip"</span>
+
+<span class="comment"># Get changed files from git diff</span>
+result = subprocess.run(
+    [<span class="string">"git"</span>, <span class="string">"diff"</span>, <span class="string">"--name-only"</span>, <span class="string">"origin/main...HEAD"</span>],
+    capture_output=True, text=True
+)
+files = [f <span class="keyword">for</span> f <span class="keyword">in</span> result.stdout.split(<span class="string">"\n"</span>) <span class="keyword">if</span> f.endswith((<span class="string">".py"</span>, <span class="string">".js"</span>, <span class="string">".ts"</span>, <span class="string">".go"</span>))]
+
+<span class="keyword">for</span> filepath <span class="keyword">in</span> files[:5]:  <span class="comment"># limit to 5 files</span>
+    <span class="keyword">with</span> open(filepath) <span class="keyword">as</span> f:
+        code = f.read()
+    resp = requests.post(
+        f<span class="string">"{BASE_URL}/v1/review"</span>,
+        headers={<span class="string">"Content-Type"</span>: <span class="string">"application/json"</span>, <span class="string">"X-API-Key"</span>: API_KEY},
+        json={<span class="string">"code"</span>: code, <span class="string">"language"</span>: filepath.split(<span class="string">"."</span>)[-1]}
+    )
+    review = resp.json()
+    print(f<span class="string">"\n## 📝 {filepath}"</span>)
+    print(review.get(<span class="string">"review"</span>, review.get(<span class="string">"analysis"</span>, json.dumps(review, indent=2))))
+</pre>
+
+<!-- ==================== JAVASCRIPT ==================== -->
+<h2 id="javascript">🟨 JavaScript / TypeScript</h2>
+
+<h3>Node.js</h3>
+<pre><span class="keyword">const</span> API_KEY = process.env.MY_AUTOMATON_KEY || <span class="string">"am_your_key_here"</span>;
+<span class="keyword">const</span> BASE = <span class="string">"https://automation.songheng.vip"</span>;
+
+<span class="comment">// Summarize text (premium)</span>
+<span class="keyword">async function</span> <span class="function">summarize</span>(text) {
+  <span class="keyword">const</span> res = <span class="keyword">await</span> fetch(`${BASE}/v1/summarize`, {
+    method: <span class="string">"POST"</span>,
+    headers: { <span class="string">"Content-Type"</span>: <span class="string">"application/json"</span>, <span class="string">"X-API-Key"</span>: API_KEY },
+    body: JSON.stringify({ text, max_length: 100 })
+  });
+  <span class="keyword">return</span> res.json();
+}
+
+<span class="comment">// Usage</span>
+<span class="function">summarize</span>(<span class="string">"Long article text here..."</span>).then(console.log);
+</pre>
+
+<h3>Browser (Free Tier)</h3>
+<pre><span class="keyword">async function</span> <span class="function">codeExplain</span>(code, language) {
+  <span class="keyword">const</span> res = <span class="keyword">await</span> fetch(<span class="string">"https://automation.songheng.vip/free/explain"</span>, {
+    method: <span class="string">"POST"</span>,
+    headers: { <span class="string">"Content-Type"</span>: <span class="string">"application/json"</span> },
+    body: JSON.stringify({ code, language })
+  });
+  <span class="keyword">const</span> data = <span class="keyword">await</span> res.json();
+  document.getElementById(<span class="string">"result"</span>).textContent = data.explanation || data.error;
+}
+
+<span class="comment">// Usage</span>
+<span class="function">codeExplain</span>(<span class="string">"console.log('hello')"</span>, <span class="string">"javascript"</span>);
+</pre>
+
+<!-- ==================== GO ==================== -->
+<h2 id="go">🔵 Go</h2>
+
+<pre><span class="keyword">package</span> main
+
+<span class="keyword">import</span> (
+    <span class="string">"bytes"</span>
+    <span class="string">"encoding/json"</span>
+    <span class="string">"fmt"</span>
+    <span class="string">"net/http"</span>
+)
+
+<span class="keyword">const</span> (
+    baseURL = <span class="string">"https://automation.songheng.vip"</span>
+    apiKey  = <span class="string">"am_your_key_here"</span>
+)
+
+<span class="keyword">type</span> AnalyzeRequest <span class="keyword">struct</span> {
+    Text <span class="keyword">string</span> `json:<span class="string">"text"</span>`
+    Mode <span class="keyword">string</span> `json:<span class="string">"mode"</span>`
+}
+
+<span class="keyword">func</span> <span class="function">analyzeText</span>(text, mode <span class="keyword">string</span>) {
+    body, _ := json.Marshal(AnalyzeRequest{Text: text, Mode: mode})
+    req, _ := http.NewRequest(<span class="string">"POST"</span>, baseURL+<span class="string">"/v1/analyze"</span>, bytes.NewBuffer(body))
+    req.Header.Set(<span class="string">"Content-Type"</span>, <span class="string">"application/json"</span>)
+    req.Header.Set(<span class="string">"X-API-Key"</span>, apiKey)
+    
+    resp, _ := http.DefaultClient.Do(req)
+    <span class="keyword">defer</span> resp.Body.Close()
+    
+    <span class="keyword">var</span> result <span class="keyword">map</span>[<span class="keyword">string</span>]<span class="keyword">interface</span>{}
+    json.NewDecoder(resp.Body).Decode(&result)
+    fmt.Printf(<span class="string">"%+v\n"</span>, result)
+}
+
+<span class="keyword">func</span> <span class="function">main</span>() {
+    <span class="function">analyzeText</span>(<span class="string">"Go is a statically typed, compiled language..."</span>, <span class="string">"analyze"</span>)
+}
+</pre>
+
+<!-- ==================== RUST ==================== -->
+<h2 id="rust">🦀 Rust</h2>
+
+<pre><span class="comment">// Add to Cargo.toml:</span>
+<span class="comment">// [dependencies]</span>
+<span class="comment">// reqwest = { version = "0.12", features = ["json"] }</span>
+<span class="comment">// serde = { version = "1.0", features = ["derive"] }</span>
+<span class="comment">// tokio = { version = "1", features = ["full"] }</span>
+
+<span class="keyword">use</span> serde::{Serialize, Deserialize};
+<span class="keyword">use</span> reqwest::Client;
+
+<span class="preprocessor">#[derive(Serialize)]</span>
+<span class="keyword">struct</span> ReviewRequest {
+    code: <span class="keyword">String</span>,
+    language: <span class="keyword">String</span>,
+}
+
+<span class="preprocessor">#[derive(Deserialize, Debug)]</span>
+<span class="keyword">struct</span> ReviewResponse {
+    review: <span class="keyword">Option</span><<span class="keyword">String</span>>,
+    issues: <span class="keyword">Option</span><<span class="keyword">Vec</span><<span class="keyword">String</span>>>,
+    error: <span class="keyword">Option</span><<span class="keyword">String</span>>,
+}
+
+<span class="preprocessor">#[tokio::main]</span>
+<span class="keyword">async fn</span> <span class="function">main</span>() -> Result<(), Box<dyn std::error::Error>> {
+    <span class="keyword">let</span> client = Client::new();
+    <span class="keyword">let</span> req = ReviewRequest {
+        code: <span class="string">"fn add(x: i32, y: i32) -> i32 { x + y }"</span>.to_string(),
+        language: <span class="string">"rust"</span>.to_string(),
+    };
+    
+    <span class="keyword">let</span> resp = client.post(<span class="string">"https://automation.songheng.vip/v1/review"</span>)
+        .header(<span class="string">"X-API-Key"</span>, <span class="string">"am_your_key_here"</span>)
+        .json(&req)
+        .send()
+        .await?;
+    
+    <span class="keyword">let</span> result: ReviewResponse = resp.json().await?;
+    println!(<span class="string">"{:#?}"</span>, result);
+    Ok(())
+}
+</pre>
+
+<!-- ==================== CI/CD ==================== -->
+<h2 id="ci-cd">🔄 CI/CD Integration (GitHub Actions)</h2>
+
+<pre><span class="comment"># .github/workflows/ai-code-review.yml</span>
+name: AI Code Review
+on: [pull_request]
+jobs:
+  review:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: AI Review Changed Files
+        env:
+          MY_AUTOMATON_KEY: \${{ secrets.MY_AUTOMATON_KEY }}
+        run: |
+          CHANGED_FILES=$(git diff --name-only origin/main...HEAD | grep -E '\.(py|js|ts|go|rs)$' || true)
+          for file in $CHANGED_FILES; do
+            echo "::group::Reviewing $file"
+            curl -s https://automation.songheng.vip/v1/review \
+              -H "Content-Type: application/json" \
+              -H "X-API-Key: $MY_AUTOMATON_KEY" \
+              -d "{\"code\": $(jq -Rs . < $file), \"language\": \"${file##*.}\"}" \
+              | jq .
+            echo "::endgroup::"
+          done
+</pre>
+
+<!-- ==================== FREE TIER ==================== -->
+<h2 id="free">🎁 Free Tier (3 requests/day)</h2>
+
+<p>Every endpoint has a <code>/free/</code> version. No API key needed. 3 requests per IP per day.</p>
+
+<table>
+<tr><th>Free Endpoint</th><th>Paid Equivalent</th></tr>
+<tr><td><code>POST /free/analyze</code></td><td><code>POST /v1/analyze</code></td></tr>
+<tr><td><code>POST /free/summarize</code></td><td><code>POST /v1/summarize</code></td></tr>
+<tr><td><code>POST /free/review</code></td><td><code>POST /v1/review</code></td></tr>
+<tr><td><code>POST /free/security</code></td><td><code>POST /v1/security</code></td></tr>
+<tr><td><code>POST /free/explain</code></td><td><code>POST /v1/explain</code></td></tr>
+<tr><td><code>POST /free/refactor</code></td><td><code>POST /v1/refactor</code></td></tr>
+<tr><td><code>POST /free/complexity</code></td><td><code>POST /v1/complexity</code></td></tr>
+</table>
+
+<p><strong>Try it now:</strong> <a href="/api-playground.html">Interactive Playground →</a></p>
+
+<!-- ==================== PRICING CTA ==================== -->
+<div class="cta">
+  <h2>💎 Ready for Unlimited Access?</h2>
+  <p>Plans start at HK$38 for 500 credits. Each credit = 1 premium API call.</p>
+  <a href="/">👉 View Pricing Plans</a>
+  <p style="margin-top:1rem;font-size:0.85rem;color:#6b7280;">Accepted: x402 USDC (credit card, Apple Pay, Google Pay)</p>
+</div>
+
+<h2>📚 More Resources</h2>
+<ul>
+  <li><a href="/api-docs.html">Full API Documentation</a></li>
+  <li><a href="/api-playground.html">Interactive API Playground</a></li>
+  <li><a href="/blog.html">Developer Blog</a></li>
+  <li><a href="/dashboard.html">Usage Dashboard</a></li>
+  <li><a href="/">Homepage &amp; Pricing</a></li>
+</ul>
+
+<footer style="margin-top:3rem;padding-top:1rem;border-top:1px solid #1e1e3a;color:#6b7280;font-size:0.8rem;">
+  <p>my-automaton · Wallet: 0x76eADdEBFfb6a61DD071f97F4508467fc55dd113 · Base chain</p>
+  <p>Questions? Try the free tier first — 3 requests/day, no signup needed.</p>
+</footer>
+
+</div>
+<script src="/conversion-banner.js" defer></script>
+</body>
+</html>

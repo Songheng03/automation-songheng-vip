@@ -1,0 +1,27 @@
+{
+  "submissions": [
+    {
+      "name": "ClawHunt",
+      "url": "https://clawhunt.ai/submit",
+      "month": "2026-06",
+      "timestamp": "2026-06-23T23:02:03.836Z",
+      "data": {
+        "name": "my-automaton",
+        "description": "AI-powered text analysis, code review, and security scanning API with x402 USDC micropayments",
+        "url": "https://automation.chaosong.dpdns.org",
+        "tags": [
+          "ai",
+          "api",
+          "text-analysis",
+          "code-review",
+          "security",
+          "x402",
+          "micropayments"
+        ],
+        "pricing": "Freemium (3 free requests/day, paid tiers from $5/month)",
+        "category": "Developer Tools"
+      }
+    }
+  ],
+  "lastRun": null
+}

@@ -1,0 +1,108 @@
+{
+  "domain": "mcp.so",
+  "site_name": "MCP.so",
+  "description": "The largest collection of MCP Servers, including Awesome MCP Servers and Claude MCP integration.",
+  "research_date": "2025-02-16",
+  "primary_submission_method": {
+    "type": "web_form",
+    "url": "https://mcp.so/submit",
+    "method": "POST (via Next.js client-side form submission)",
+    "title": "Submit MCP Server or Client",
+    "description": "Submit awesome MCP servers or clients, share with the community."
+  },
+  "form_fields": [
+    {
+      "name": "type",
+      "type": "select",
+      "label": "Type",
+      "required": true,
+      "options": ["server", "client"],
+      "placeholder": "Select the type of MCP server or client"
+    },
+    {
+      "name": "name",
+      "type": "text",
+      "label": "Name",
+      "required": true,
+      "placeholder": "Input the name of the MCP server or client"
+    },
+    {
+      "name": "url",
+      "type": "url",
+      "label": "URL",
+      "required": true,
+      "placeholder": "https://github.com/chatmcp/mcp-server-github",
+      "description": "Typically the GitHub repository URL"
+    },
+    {
+      "name": "server_config",
+      "type": "textarea",
+      "label": "Server Config",
+      "required": false,
+      "placeholder": "{\n  \"command\": \"...\",\n  \"args\": [...],\n  \"env\": {...}\n}",
+      "description": "JSON configuration for the MCP server (command, args, env)"
+    }
+  ],
+  "additional_form_options": {
+    "is_innovation": {
+      "label": "Innovation",
+      "description": "World First MCP Innovation Challenge"
+    },
+    "is_dxt": {
+      "label": "Is DXT",
+      "description": "Desktop Extensions: One-click local MCP server installation in desktop apps"
+    },
+    "hosting_on_cloud": {
+      "label": "Host your server on cloud",
+      "link_text": "Host your server on cloud 👉"
+    }
+  },
+  "alternative_submission_methods": [
+    {
+      "type": "github_issues",
+      "url": "https://github.com/chatmcp/mcpso/issues",
+      "description": "Submit via GitHub Issues on the MCP.so repository"
+    }
+  ],
+  "api_endpoints_checked": {
+    "https://mcp.so/api/register": {
+      "status": 404,
+      "available": false
+    },
+    "https://mcp.so/api/submit": {
+      "status": 200,
+      "available": true,
+      "note": "Returns the main app page (Next.js SPA), not a dedicated API endpoint"
+    },
+    "https://mcp.so/api": {
+      "status": 404,
+      "available": false
+    },
+    "https://mcp.so/api/server": {
+      "status": 404,
+      "available": false
+    }
+  },
+  "authentication": {
+    "required_for_submission": true,
+    "methods": ["Email", "Google Sign In", "GitHub Sign In"],
+    "note": "Users must sign in to submit. Sign-in modal supports Email, Google, and GitHub authentication."
+  },
+  "social_and_support": {
+    "github": "https://github.com/chatmcp/mcpso/issues",
+    "discord": "https://discord.gg/RsYPRrnyqg",
+    "twitter": "https://x.com/chatmcp",
+    "email": "support@mcp.so"
+  },
+  "registration_steps": [
+    "1. Navigate to https://mcp.so",
+    "2. Sign in using Email, Google, or GitHub authentication",
+    "3. Click 'Submit' in the sidebar navigation (or go to https://mcp.so/submit)",
+    "4. Fill in the form: Select type (Server or Client), enter Name, enter URL (typically GitHub repo URL)",
+    "5. Optionally provide Server Config JSON (command, args, env)",
+    "6. Optionally mark as Innovation or DXT",
+    "7. Click Submit to list the agent/server on MCP.so"
+  ],
+  "no_public_api": true,
+  "summary": "MCP.so does not expose a public REST API for registration or submission. The only official way to list an agent/server is through the web form at https://mcp.so/submit after signing in. An alternative is to open an issue on their GitHub repository at https://github.com/chatmcp/mcpso/issues. The form requires selection of type (server/client), name, and URL. Server config JSON is optional."
+}

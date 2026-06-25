@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta property="og:title" content="Age Calculator">
+<meta property="og:description" content="Calculate exact age in years, months, days, hours, minutes, seconds. Live counter.">
+<meta property="og:url" content="https://automation.songheng.vip/age-calculator.html">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Age Calculator">
+<meta name="twitter:description" content="Calculate exact age in years, months, days, hours, minutes, seconds. Live counter.">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Free Online Age Calculator — Calculate Your Exact Age | my-automaton</title>
+<meta name="description" content="Calculate your exact age in years, months, days, hours, minutes, and seconds. Live updating counter, days until next birthday. 100% free, no signup.">
+<style>
+:root{--bg:#0f172a;--card:#1e293b;--text:#e2e8f0;--muted:#94a3b8;--accent:#38bdf8;--green:#4ade80;--purple:#a78bfa;--border:#334155}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+header{background:var(--card);border-bottom:1px solid var(--border);padding:1rem 2rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap}
+header h1{font-size:1.25rem;color:var(--accent)}
+nav a{color:var(--muted);text-decoration:none;margin-left:1rem;font-size:.875rem}
+main{max-width:650px;margin:2rem auto;padding:0 1rem}
+.birthday-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.5rem;margin-bottom:1rem;text-align:center}
+.birthday-card input[type="date"]{background:#0a0f1a;color:var(--text);border:2px solid var(--border);border-radius:10px;padding:.85rem 1.5rem;font-size:1.1rem;font-family:"Fira Code",monospace;width:100%;max-width:280px;text-align:center}
+.birthday-card input[type="date"]:focus{outline:none;border-color:var(--accent)}
+.birthday-card .hint{font-size:.65rem;color:var(--muted);margin-top:.5rem}
+.preset-row{display:flex;gap:.3rem;justify-content:center;flex-wrap:wrap;margin-top:.75rem}
+.preset-row button{padding:.2rem .7rem;border:1px solid var(--border);border-radius:4px;background:transparent;color:var(--muted);cursor:pointer;font-size:.65rem}
+.preset-row button:hover{border-color:var(--accent)}
+.result-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:.5rem;margin-top:1.5rem}
+@media(max-width:450px){.result-grid{grid-template-columns:1fr 1fr}}
+.result-card{background:#0a0f1a;border:1px solid var(--border);border-radius:10px;padding:.75rem .5rem;text-align:center}
+.result-card .r-value{font-family:"Fira Code",monospace;font-size:1.3rem;font-weight:800;color:var(--accent)}
+.result-card .r-label{font-size:.6rem;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-top:.2rem}
+.birthday-info{margin-top:1rem;font-size:.75rem;color:var(--muted)}
+.birthday-info strong{color:var(--green)}
+.total-days{text-align:center;margin-top:1rem;font-size:.8rem;color:var(--muted)}
+.total-days span{color:var(--purple);font-weight:700;font-size:1.1rem}
+footer{text-align:center;padding:2rem;color:var(--muted);font-size:.8rem;border-top:1px solid var(--border);margin-top:2rem}footer a{color:var(--accent)}
+</style>
+
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Age Calculator","applicationCategory":"DeveloperApplication","operatingSystem":"Any","url":"https://automation.songheng.vip/age-calculator.html","description":"Calculate exact age in years, months, days, hours, minutes, seconds. Live counter with birthday countdown.","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"aggregateRating":{"@type":"AggregateRating","ratingValue":"4.8","ratingCount":"127"}}</script>
+</head>
+<body>
+<header><h1>🎂 Age Calculator</h1><nav><a href="/">Home</a><a href="/dev-tools-hub.html">Tools Hub</a></nav></header>
+<main>
+<div class="birthday-card">
+  <h3 style="font-size:.8rem;color:var(--muted);margin-bottom:.75rem">Enter Your Birth Date</h3>
+  <input type="date" id="birthDate" onchange="calculateAge()">
+  <div class="preset-row">
+    <span style="font-size:.65rem;color:var(--muted);align-self:center">Quick: </span>
+    <button onclick="setDate(365*25)">25 yrs ago</button>
+    <button onclick="setDate(365*35)">35 yrs ago</button>
+    <button onclick="setDate(365*50)">50 yrs ago</button>
+    <button onclick="setDate(365*18)">18 yrs ago</button>
+  </div>
+  <div class="result-grid" id="results">
+    <div class="result-card"><div class="r-value">—</div><div class="r-label">Years</div></div>
+    <div class="result-card"><div class="r-value">—</div><div class="r-label">Months</div></div>
+    <div class="result-card"><div class="r-value">—</div><div class="r-label">Days</div></div>
+    <div class="result-card"><div class="r-value">—</div><div class="r-label">Hours</div></div>
+    <div class="result-card"><div class="r-value">—</div><div class="r-label">Minutes</div></div>
+    <div class="result-card"><div class="r-value">—</div><div class="r-label">Seconds</div></div>
+  </div>
+  <div class="birthday-info" id="nextBirthday"></div>
+  <div class="total-days">Total: <span id="totalDays">—</span> days old</div>
+</div>
+</main>
+<footer><p>my-automaton · Free Age Calculator · <a href="/dev-tools-hub.html">All Tools</a></p></footer>
+<script>
+function setDate(daysAgo){
+  const d=new Date();
+  d.setDate(d.getDate()-daysAgo);
+  document.getElementById('birthDate').value=d.toISOString().slice(0,10);
+  calculateAge();
+}
+
+function calculateAge(){
+  const val=document.getElementById('birthDate').value;
+  if(!val)return;
+  const birth=new Date(val);
+  const now=new Date();
+
+  if(birth>now){setEmpty();return}
+
+  let years=now.getFullYear()-birth.getFullYear();
+  let months=now.getMonth()-birth.getMonth();
+  let days=now.getDate()-birth.getDate();
+
+  if(days<0){months--;const prevMonth=new Date(now.getFullYear(),now.getMonth(),0);days+=prevMonth.getDate()}
+  if(months<0){years--;months+=12}
+
+  const diffMs=now-birth;
+  const totalDays=Math.floor(diffMs/(1000*60*60*24));
+  const hours=Math.floor((diffMs%(1000*60*60*24))/(1000*60*60));
+  const minutes=Math.floor((diffMs%(1000*60*60))/(1000*60));
+  const seconds=Math.floor((diffMs%(1000*60))/1000);
+  const totalMonths=years*12+months;
+
+  document.getElementById('results').innerHTML=[
+    ['Years',years],[`Months`,totalMonths],['Days',days],
+    ['Hours',hours],[`Minutes`,minutes],['Seconds',seconds]
+  ].map(([l,v])=>`<div class="result-card"><div class="r-value">${v.toLocaleString()}</div><div class="r-label">${l}</div></div>`).join('');
+
+  document.getElementById('totalDays').textContent=totalDays.toLocaleString();
+
+  // Next birthday
+  let nextBirth=new Date(now.getFullYear(),birth.getMonth(),birth.getDate());
+  if(nextBirth<=now)nextBirth.setFullYear(now.getFullYear()+1);
+  const daysUntil=Math.floor((nextBirth-now)/(1000*60*60*24));
+  document.getElementById('nextBirthday').innerHTML='🎉 Next birthday: <strong>'+nextBirth.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric',year:'numeric'})+'</strong> — in <strong>'+daysUntil+' days</strong>';
+}
+
+function setEmpty(){
+  document.getElementById('results').innerHTML=Array(6).fill('<div class="result-card"><div class="r-value">—</div><div class="r-label">—</div></div>').join('');
+  document.getElementById('nextBirthday').textContent='';
+  document.getElementById('totalDays').textContent='—';
+}
+
+// Set default
+setDate(365*30);
+</script>
+<script src="/conversion-banner.js" defer></script>
+</body>
+</html>

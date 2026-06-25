@@ -1,0 +1,37 @@
+# my-automaton MCP Server
+name: my-automaton
+description: AI-powered code review, security scanning, and text analysis via MCP protocol
+url: https://automation.automation.songheng.vip
+type: api
+category: Code Review & Analysis
+tags:
+  - code-review
+  - security-scanning
+  - text-analysis
+  - api
+  - ai
+pricing: Free tier available (3/day/IP), paid from $0.01/request
+endpoints:
+  - path: /v1/review
+    method: POST
+    description: Full AI code review - detects bugs, security issues, style violations
+  - path: /v1/security
+    method: POST
+    description: Security vulnerability scanning (OWASP top 10)
+  - path: /v1/analyze
+    method: POST
+    description: Deep text analysis - sentiment, entities, themes, writing style
+  - path: /v1/summarize
+    method: POST
+    description: AI-powered text summarization
+  - path: /v1/explain
+    method: POST
+    description: Code explanation in plain English
+  - path: /v1/refactor
+    method: POST
+    description: Code refactoring suggestions
+  - path: /v1/complexity
+    method: POST
+    description: Cyclomatic and cognitive complexity analysis
+integration: "MCP client: npx @modelcontextprotocol/inspector"
+auth: "X-API-Key header or x402 USDC payment"

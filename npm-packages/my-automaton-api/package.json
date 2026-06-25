@@ -1,0 +1,13 @@
+{
+  "name": "my-automaton-api",
+  "version": "1.0.0",
+  "description": "Client library for my-automaton's AI services — code review, security scanning, text analysis & summarization. Pay-per-use via Stripe, no subscriptions.",
+  "main": "index.js",
+  "types": "index.d.ts",
+  "keywords": ["ai", "code-review", "security-scanning", "text-analysis", "summarization", "llm", "automaton"],
+  "license": "MIT",
+  "repository": { "type": "git", "url": "https://github.com/chaosong/my-automaton-api" },
+  "homepage": "https://automation.songheng.vip",
+  "engines": { "node": ">=16.0.0" },
+  "dependencies": { "node-fetch": "^2.7.0" }
+}

@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="canonical" href="https://automation.songheng.vip/server-health.html">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Live Server Health — my-automaton">
+  <meta name="twitter:description" content="Real-time health monitoring dashboard for my-automaton AI services">
+  <meta property="og:title" content="Live Server Health — my-automaton">
+  <meta property="og:description" content="Real-time health monitoring dashboard for my-automaton AI services">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://automation.songheng.vip/server-health.html">
+  <meta property="og:image" content="https://automation.songheng.vip/og-image.png">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Live Server Health — my-automaton</title>
+<meta name="description" content="Real-time health monitoring dashboard for my-automaton AI services">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif; background:#0a0a0f; color:#e0e0e0; min-height:100vh; }
+.container { max-width:1000px; margin:0 auto; padding:20px; }
+h1 { color:#00e5ff; font-size:1.8em; margin-bottom:5px; }
+.subtitle { color:#888; margin-bottom:30px; font-size:0.9em; }
+.grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:15px; margin-bottom:30px; }
+.card { background:#13131f; border:1px solid #2a2a3a; border-radius:12px; padding:20px; }
+.card h3 { color:#00e5ff; font-size:0.8em; text-transform:uppercase; letter-spacing:1px; margin-bottom:12px; }
+.card .value { font-size:2em; font-weight:700; color:#fff; }
+.card .label { color:#888; font-size:0.85em; margin-top:4px; }
+.card .status-ok { color:#4caf50; }
+.card .status-warn { color:#ff9800; }
+.card .status-err { color:#f44336; }
+.status-badge { display:inline-block; padding:3px 10px; border-radius:20px; font-size:0.8em; font-weight:600; }
+.status-badge.ok { background:#1b5e20; color:#81c784; }
+.status-badge.warn { background:#e65100; color:#ffcc80; }
+.status-badge.err { background:#b71c1c; color:#ef9a9a; }
+table { width:100%; border-collapse:collapse; margin-top:10px; }
+th, td { text-align:left; padding:8px 12px; border-bottom:1px solid #2a2a3a; font-size:0.9em; }
+th { color:#00e5ff; font-size:0.8em; text-transform:uppercase; letter-spacing:0.5px; }
+.endpoint { font-family:'Courier New',monospace; font-size:0.9em; color:#ce93d8; }
+.price { color:#81c784; font-weight:600; }
+.footer { text-align:center; color:#555; font-size:0.8em; margin-top:40px; padding:20px; border-top:1px solid #2a2a3a; }
+.error-box { background:#1b0f0f; border:1px solid #5c1a1a; border-radius:8px; padding:15px; margin:15px 0; color:#ef9a9a; font-size:0.9em; }
+.loading { text-align:center; padding:40px; color:#666; font-size:1.1em; }
+.refresh-btn { background:#00e5ff22; color:#00e5ff; border:1px solid #00e5ff44; padding:8px 20px; border-radius:8px; cursor:pointer; font-size:0.85em; }
+.refresh-btn:hover { background:#00e5ff44; }
+.header-bar { display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; }
+.last-updated { color:#666; font-size:0.8em; }
+</style>
+
+<!-- Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-XXXXXXXXXX');
+</script>
+<!-- Open Graph / Social Meta Tags -->
+<meta property="og:site_name" content="my-automaton" />
+<meta property="og:locale" content="en_US" />
+<meta name="twitter:image" content="https://automation.songheng.vip/og-image.png" />
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "Live Server Health — my-automaton",
+  "description": "Real-time health monitoring dashboard for my-automaton AI services",
+  "url": "https://automation.songheng.vip/server-health.html"
+}
+</script>
+</head>
+<body>
+<div class="container">
+  <div class="header-bar">
+    <div>
+      <h1>⚡ Live Server Health</h1>
+      <div class="subtitle">my-automaton · AI services · Real-time monitoring</div>
+    </div>
+    <div>
+      <button class="refresh-btn" onclick="refreshData()">⟳ Refresh</button>
+    </div>
+  </div>
+
+  <div id="error-display" class="error-box" style="display:none"></div>
+  <div id="loading" class="loading">Loading health data...</div>
+
+  <div id="content" style="display:none">
+    <!-- Status Grid -->
+    <div class="grid" id="status-grid">
+      <div class="card">
+        <h3>Server Status</h3>
+        <div class="value"><span id="status-badge" class="status-badge ok">OK</span></div>
+        <div class="label">Service: <span id="service-name">my-automaton</span></div>
+      </div>
+      <div class="card">
+        <h3>Uptime</h3>
+        <div class="value" id="uptime">0</div>
+        <div class="label">hours : minutes : seconds</div>
+      </div>
+      <div class="card">
+        <h3>Revenue</h3>
+        <div class="value" id="revenue">$0.00</div>
+        <div class="label">Total USDC earned</div>
+      </div>
+      <div class="card">
+        <h3>Blog Articles</h3>
+        <div class="value" id="blog-count">0</div>
+        <div class="label">Published posts</div>
+      </div>
+    </div>
+
+    <!-- Premium Endpoints -->
+    <div class="card" style="margin-bottom:20px">
+      <h3>💎 Premium x402 Endpoints (USDC on Base Chain)</h3>
+      <table>
+        <thead><tr><th>Endpoint</th><th>Cost</th><th>Description</th></tr></thead>
+        <tbody id="endpoints-table"></tbody>
+      </table>
+      <div style="margin-top:12px;font-size:0.85em;color:#888">
+        Wallet: <code style="color:#ce93d8" id="wallet-address">0x76eADdEBFfb6A61DD071f97F4508467fc55dd113</code> · Base Chain · USDC
+      </div>
+    </div>
+
+    <!-- Server Details -->
+    <div class="card">
+      <h3>🖥️ Server Details</h3>
+      <table>
+        <tbody id="server-details"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="footer">
+    my-automaton · <span id="footer-time"></span> · <a href="/" style="color:#00e5ff">Home</a> · <a href="/dashboard" style="color:#00e5ff">Dashboard</a>
+  </div>
+</div>
+
+<script>
+async function refreshData() {
+  document.getElementById('loading').style.display = 'block';
+  document.getElementById('content').style.display = 'none';
+  document.getElementById('error-display').style.display = 'none';
+
+  try {
+    const resp = await fetch('/api/health');
+    if (!resp.ok) throw new Error(`HTTP ${resp.status}: ${await resp.text()}`);
+    const data = await resp.json();
+    renderData(data);
+  } catch(e) {
+    document.getElementById('loading').style.display = 'none';
+    document.getElementById('error-display').style.display = 'block';
+    document.getElementById('error-display').textContent = '⚠️ Error fetching health data: ' + e.message;
+    // Fall back to static info
+    renderFallback();
+  }
+}
+
+function formatUptime(seconds) {
+  const h = Math.floor(seconds / 3600);
+  const m = Math.floor((seconds % 3600) / 60);
+  const s = Math.floor(seconds % 60);
+  return `${h}h ${m}m ${s}s`;
+}
+
+function renderData(data) {
+  document.getElementById('loading').style.display = 'none';
+  document.getElementById('content').style.display = 'block';
+
+  // Status
+  const badge = document.getElementById('status-badge');
+  badge.textContent = data.status === 'ok' ? '✓ OK' : '⚠ WARN';
+  badge.className = 'status-badge ' + (data.status === 'ok' ? 'ok' : 'warn');
+  document.getElementById('service-name').textContent = data.service || 'my-automaton';
+
+  // Uptime
+  document.getElementById('uptime').textContent = formatUptime(data.uptime || 0);
+
+  // Revenue
+  const rev = data.revenue || {};
+  document.getElementById('revenue').textContent = '$' + (rev.totalUSD || 0).toFixed(2);
+
+  // Blog count
+  const content = data.content || {};
+  document.getElementById('blog-count').textContent = content.blogArticles || '57+';
+
+  // Wallet
+  document.getElementById('wallet-address').textContent = data.wallet || '0x76eADdEBFfb6A61DD071f97F4508467fc55dd113';
+
+  // Endpoints
+  const tbody = document.getElementById('endpoints-table');
+  const endpoints = [
+    {endpoint:'/v1/analyze', cost:'$0.01', desc:'Deep text analysis'},
+    {endpoint:'/v1/summarize', cost:'$0.02', desc:'AI summarization'},
+    {endpoint:'/v1/review', cost:'$0.05', desc:'Full code review'},
+    {endpoint:'/v1/security', cost:'$0.03', desc:'Security vulnerability scan'},
+    {endpoint:'/v1/explain', cost:'$0.02', desc:'Code explanation'},
+    {endpoint:'/v1/refactor', cost:'$0.05', desc:'Refactoring suggestions'},
+    {endpoint:'/v1/complexity', cost:'$0.02', desc:'Complexity analysis'},
+    {endpoint:'/v1/batch', cost:'$0.05', desc:'Batch 10 texts'},
+    {endpoint:'/v1/render', cost:'$0.03', desc:'Markdown with templates'},
+    {endpoint:'/v1/seo-optimize', cost:'$0.03', desc:'SEO content optimization'},
+    {endpoint:'/v1/seo-outline', cost:'$0.02', desc:'SEO content outline generator'}
+  ];
+  tbody.innerHTML = endpoints.map(e => 
+    `<tr><td class="endpoint">${e.endpoint}</td><td class="price">${e.cost}</td><td>${e.desc}</td></tr>`
+  ).join('');
+
+  // Server details
+  const details = document.getElementById('server-details');
+  const rows = [
+    ['Version', data.version || '8.0'],
+    ['Hostname', (data.server && data.server.hostname) || 'vultr-vps'],
+    ['Platform', (data.server && data.server.platform) || 'linux'],
+    ['Memory (RSS)', data.server ? formatBytes((data.server.memory && data.server.memory.rss) || 0) : 'N/A'],
+    ['Heap Used', data.server ? formatBytes((data.server.memory && data.server.memory.heapUsed) || 0) : 'N/A'],
+    ['Timestamp', new Date(data.timestamp).toLocaleString()],
+    ['Chain', (data.chain || 'Base') + ' · ' + (data.currency || 'USDC')]
+  ];
+  details.innerHTML = rows.map(([k,v]) => `<tr><td style="color:#888">${k}</td><td>${v}</td></tr>`).join('');
+
+  document.getElementById('footer-time').textContent = new Date().toLocaleString();
+}
+
+function renderFallback() {
+  document.getElementById('loading').style.display = 'none';
+  document.getElementById('content').style.display = 'block';
+  document.getElementById('status-badge').textContent = '⚠ Pending';
+  document.getElementById('status-badge').className = 'status-badge warn';
+  document.getElementById('uptime').textContent = 'N/A (gateway restart needed)';
+  document.getElementById('revenue').textContent = '$0.00';
+  document.getElementById('blog-count').textContent = '57+';
+  document.getElementById('footer-time').textContent = new Date().toLocaleString();
+}
+
+function formatBytes(bytes) {
+  if (!bytes || bytes === 0) return '0 B';
+  const k = 1024;
+  const sizes = ['B','KB','MB','GB'];
+  const i = Math.floor(Math.log(bytes) / Math.log(k));
+  return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + ' ' + sizes[i];
+}
+
+// Auto-refresh every 30 seconds
+setInterval(refreshData, 30000);
+refreshData();
+</script>
+
+<!-- Share buttons -->
+<div style="position:fixed;left:0;top:50%;transform:translateY(-50%);background:#1a1a2e;padding:8px;border-radius:0 8px 8px 0;z-index:9999;display:flex;flex-direction:column;gap:6px">
+  <a href="https://twitter.com/intent/tweet?url=https://automation.songheng.vip/" target="_blank" style="color:#1da1f2;text-decoration:none;font-size:18px;padding:4px" title="Share on Twitter">𝕏</a>
+  <a href="https://www.linkedin.com/sharing/share-offsite/?url=https://automation.songheng.vip/" target="_blank" style="color:#0a66c2;text-decoration:none;font-size:18px;padding:4px" title="Share on LinkedIn">in</a>
+  <button onclick="navigator.clipboard.writeText(window.location.href)" style="background:none;border:none;color:#888;font-size:16px;cursor:pointer;padding:4px" title="Copy link">🔗</button>
+</div>
+
+<!-- Premium CTA banner -->
+<div style="position:fixed;bottom:0;left:0;right:0;background:linear-gradient(135deg,#667eea,#764ba2);color:white;padding:12px 20px;display:flex;justify-content:space-between;align-items:center;z-index:9999;font-family:sans-serif;font-size:14px;box-shadow:0 -2px 10px rgba(0,0,0,0.3)">
+  <span>🤖 Need AI-powered code review? Try our <strong>free tools</strong> — no signup required!</span>
+  <span>
+    <a href="/tools" style="color:white;text-decoration:underline;margin-right:15px">Try Free</a>
+    <a href="/api-docs" style="background:white;color:#667eea;padding:6px 16px;border-radius:4px;text-decoration:none;font-weight:bold">API Access</a>
+  </span>
+</div>
+<script src="/conversion-banner.js" defer></script>
+</body>
+</html>

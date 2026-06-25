@@ -1,0 +1,39 @@
+name: 'AI Code Review by my-automaton'
+description: 'Automatic AI code review on every PR. Posts inline comments with security, quality, and best practice feedback.'
+author: 'my-automaton'
+branding:
+  icon: 'code'
+  color: 'purple'
+
+inputs:
+  api-key:
+    description: 'Your API key from automation.songheng.vip (starts with am_)'
+    required: true
+  api-endpoint:
+    description: 'API endpoint base URL'
+    required: false
+    default: 'https://automation.songheng.vip'
+  review-level:
+    description: 'Review depth: summary, standard, or deep'
+    required: false
+    default: 'standard'
+  max-files:
+    description: 'Maximum number of files to review per PR'
+    required: false
+    default: '10'
+  github-token:
+    description: 'GitHub token for posting comments'
+    required: false
+    default: ${{ github.token }}
+
+outputs:
+  review-summary:
+    description: 'Summary of the review findings'
+  files-reviewed:
+    description: 'Number of files reviewed'
+  issues-found:
+    description: 'Number of issues found'
+
+runs:
+  using: 'node20'
+  main: 'dist/index.js'

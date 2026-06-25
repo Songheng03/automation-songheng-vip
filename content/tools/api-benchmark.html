@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>API Benchmark Tool — Compare Your AI Provider Speed | Free</title>
+<meta name="description" content="Benchmark your AI API endpoints. Test latency, throughput, and reliability. Compare providers. Share results.">
+<meta property="og:title" content="API Benchmark Tool — How Fast is Your AI?">
+<meta property="og:description" content="Free tool to benchmark AI API speed and reliability. Test any endpoint.">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#0d1117;color:#e6edf3;line-height:1.7;min-height:100vh}
+.container{max-width:900px;margin:0 auto;padding:20px}
+h1{font-size:2.2em;text-align:center;margin:30px 0 10px;background:linear-gradient(135deg,#58a6ff,#7ee787);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.subtitle{text-align:center;color:#8b949e;margin-bottom:30px}
+.card{background:#161b22;border:1px solid #30363d;border-radius:12px;padding:24px;margin:20px 0}
+label{display:block;margin:12px 0 6px;color:#8b949e;font-size:0.9em}
+input,select{width:100%;padding:10px;background:#0d1117;border:1px solid #30363d;border-radius:6px;color:#e6edf3;font-size:1em}
+input:focus,select:focus{outline:none;border-color:#58a6ff}
+.btn{background:#238636;color:#fff;border:none;padding:14px 32px;border-radius:8px;cursor:pointer;font-weight:700;font-size:1.1em;margin:10px 0;width:100%}
+.btn:hover{background:#2ea043}
+.btn:disabled{opacity:0.5;cursor:not-allowed}
+.results{display:none}
+.metric{display:flex;justify-content:space-between;padding:12px;border-bottom:1px solid #30363d}
+.metric:last-child{border-bottom:none}
+.metric-label{color:#8b949e}
+.metric-value{font-weight:700;color:#7ee787}
+.progress{height:6px;background:#30363d;border-radius:3px;overflow:hidden;margin:10px 0}
+.progress-bar{height:100%;background:#58a6ff;transition:width 0.3s}
+.log{background:#0d1117;border:1px solid #30363d;border-radius:6px;padding:12px;margin:10px 0;max-height:200px;overflow-y:auto;font-family:monospace;font-size:0.85em}
+.cta{text-align:center;margin:30px 0;padding:24px;background:#161b22;border:1px solid #30363d;border-radius:12px}
+.cta h3{color:#58a6ff;margin-bottom:10px}
+.cta a{display:inline-block;background:#238636;color:#fff;padding:12px 28px;border-radius:8px;text-decoration:none;font-weight:700;margin-top:10px}
+.back-link{display:block;text-align:center;margin:30px 0;color:#8b949e;text-decoration:none}
+</style>
+</head>
+<body>
+<div class="container">
+<h1>⚡ API Benchmark Tool</h1>
+<p class="subtitle">Test any API endpoint. Measure latency, throughput, and reliability.</p>
+
+<div class="card">
+<label>Endpoint URL</label>
+<input type="url" id="endpoint" placeholder="https://api.example.com/v1/chat" value="https://automation.songheng.vip/v1/analyze">
+
+<label>HTTP Method</label>
+<select id="method">
+<option value="POST">POST</option>
+<option value="GET">GET</option>
+<option value="PUT">PUT</option>
+</select>
+
+<label>Request Body (JSON)</label>
+<input type="text" id="body" value='{"text":"Hello world","mode":"analyze"}'>
+
+<label>Number of Requests</label>
+<select id="count">
+<option value="5">5 requests</option>
+<option value="10" selected>10 requests</option>
+<option value="20">20 requests</option>
+<option value="50">50 requests</option>
+</select>
+
+<label>Delay Between Requests (ms)</label>
+<select id="delay">
+<option value="0">No delay</option>
+<option value="100" selected>100ms</option>
+<option value="500">500ms</option>
+<option value="1000">1000ms</option>
+</select>
+
+<button class="btn" id="runBtn" onclick="runBenchmark()">Run Benchmark →</button>
+</div>
+
+<div id="results" class="results">
+<div class="card">
+<h3 style="margin-bottom:15px">📊 Results</h3>
+<div id="metrics"></div>
+</div>
+
+<div class="card">
+<h3 style="margin-bottom:15px">📋 Request Log</h3>
+<div id="log" class="log"></div>
+</div>
+
+<div style="text-align:center;margin:20px 0">
+<p style="color:#8b949e;margin-bottom:10px">Share your results:</p>
+<a id="twitterShare" class="share-btn" target="_blank" style="display:inline-block;margin:5px;padding:10px 20px;border-radius:6px;text-decoration:none;color:#fff;font-weight:600;background:#1da1f2">Twitter</a>
+</div>
+</div>
+
+<div class="cta">
+<h3>Need a Fast, Reliable AI API?</h3>
+<p style="color:#8b949e">Our API handles 1000+ requests/hour with 99.9% uptime.</p>
+<a href="/api-docs.html">View API Docs →</a>
+</div>
+
+<a href="/" class="back-link">← Back to Home</a>
+</div>
+
+<script>
+async function runBenchmark() {
+  const endpoint = document.getElementById('endpoint').value;
+  const method = document.getElementById('method').value;
+  const body = document.getElementById('body').value;
+  const count = parseInt(document.getElementById('count').value);
+  const delay = parseInt(document.getElementById('delay').value);
+
+  if (!endpoint) {
+    alert('Please enter an endpoint URL');
+    return;
+  }
+
+  const btn = document.getElementById('runBtn');
+  btn.disabled = true;
+  btn.textContent = 'Running...';
+
+  const results = document.getElementById('results');
+  results.style.display = 'block';
+  const log = document.getElementById('log');
+  log.innerHTML = '';
+
+  const times = [];
+  const statuses = [];
+  let errors = 0;
+
+  for (let i = 0; i < count; i++) {
+    const start = performance.now();
+    try {
+      const response = await fetch(endpoint, {
+        method: method,
+        headers: { 'Content-Type': 'application/json' },
+        body: method !== 'GET' ? body : undefined
+      });
+      const elapsed = performance.now() - start;
+      times.push(elapsed);
+      statuses.push(response.status);
+      log.innerHTML += `<div>[${i+1}/${count}] ${response.status} - ${elapsed.toFixed(0)}ms</div>`;
+    } catch (err) {
+      errors++;
+      log.innerHTML += `<div>[${i+1}/${count}] ERROR - ${err.message}</div>`;
+    }
+    log.scrollTop = log.scrollHeight;
+
+    if (i < count - 1 && delay > 0) {
+      await new Promise(r => setTimeout(r, delay));
+    }
+  }
+
+  const avgTime = times.reduce((a,b) => a+b, 0) / times.length;
+  const minTime = Math.min(...times);
+  const maxTime = Math.max(...times);
+  const p95 = times.sort((a,b) => a-b)[Math.floor(times.length * 0.95)];
+  const successRate = ((statuses.filter(s => s >= 200 && s < 300).length / count) * 100).toFixed(1);
+
+  document.getElementById('metrics').innerHTML = `
+    <div class="metric"><span class="metric-label">Average Latency</span><span class="metric-value">${avgTime.toFixed(0)}ms</span></div>
+    <div class="metric"><span class="metric-label">Min Latency</span><span class="metric-value">${minTime.toFixed(0)}ms</span></div>
+    <div class="metric"><span class="metric-label">Max Latency</span><span class="metric-value">${maxTime.toFixed(0)}ms</span></div>
+    <div class="metric"><span class="metric-label">P95 Latency</span><span class="metric-value">${p95.toFixed(0)}ms</span></div>
+    <div class="metric"><span class="metric-label">Success Rate</span><span class="metric-value">${successRate}%</span></div>
+    <div class="metric"><span class="metric-label">Total Requests</span><span class="metric-value">${count}</span></div>
+    <div class="metric"><span class="metric-label">Errors</span><span class="metric-value">${errors}</span></div>
+  `;
+
+  btn.disabled = false;
+  btn.textContent = 'Run Benchmark →';
+
+  // Share link
+  const text = `Benchmarked my AI API: ${avgTime.toFixed(0)}ms avg latency, ${successRate}% success rate. Test yours at`;
+  const url = 'https://automation.songheng.vip/tools/api-benchmark.html';
+  document.getElementById('twitterShare').href = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`;
+}
+</script>
+</body>
+</html>

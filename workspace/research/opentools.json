@@ -1,0 +1,55 @@
+{
+  "directory": {
+    "name": "OpenTools",
+    "website": "https://opentools.ai",
+    "twitter": "https://twitter.com/opentoolsai",
+    "linkedin": "https://www.linkedin.com/company/opentools/",
+    "description": "Discover and compare over 2,500 AI tools, MCP servers, experts, and resources. The complete AI ecosystem for builders. Features search, categories, and launch platform.",
+    "type": "AI tools directory covering tools, MCP servers, experts, resources, AI companies, and AI models"
+  },
+  "submission_method": "Web form submission",
+  "submission_url": "https://opentools.ai/friends/launch-tool",
+  "submission_guidelines": {
+    "summary": "Submit your AI tool via the web form at https://opentools.ai/friends/launch-tool. The form collects tool name, tool URL, and requires agreement to terms. The directory also accepts MCP servers listed under a separate section.",
+    "steps": [
+      "Go to https://opentools.ai/friends/launch-tool",
+      "Enter the Tool Name (required)",
+      "Enter the Tool URL starting with https:// (required)",
+      "Agree to terms checkbox (required)",
+      "Submit the form for review"
+    ],
+    "required_fields": [
+      {
+        "field": "tool_name",
+        "type": "text",
+        "required": true,
+        "placeholder": "Tool Name",
+        "description": "Name of the AI tool or product"
+      },
+      {
+        "field": "tool_url",
+        "type": "text",
+        "required": true,
+        "placeholder": "Tool URL (starting with https://)",
+        "description": "Website URL of the tool, must start with https://"
+      },
+      {
+        "field": "terms_agreement",
+        "type": "checkbox",
+        "required": true,
+        "description": "Agreement to terms and conditions"
+      }
+    ],
+    "optional_fields": [],
+    "categories_supported": [
+      "AI Tools",
+      "MCP Servers",
+      "Experts",
+      "Resources",
+      "AI Companies",
+      "AI Models"
+    ],
+    "review_process": "Manual review by the OpenTools team. Successful launches tracked: 120+ launches reported.",
+    "notes": "The submission form is client-side rendered (Next.js) with Google authentication integration (google_id present). The site advertises 'Launch to your next 1000 customers' and targets reaching 100k+ active AI enthusiasts. Advertising is also available via Google Form at https://forms.gle/cttiR9SNE8Xv8Sik8. No API endpoint for automated submission was identified — submission appears to be exclusively through the web form with manual review. For MCP servers specifically, there is a dedicated directory at /mcp but no separate MCP-server-specific submission flow was found (MCP servers likely submitted via the same /friends/launch-tool form or listed separately)."
+  }
+}

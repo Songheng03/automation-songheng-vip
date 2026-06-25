@@ -1,0 +1,37 @@
+{
+  "status": "ready_for_manual",
+  "platform": "AgentHub",
+  "domain_primary": "agenthub.dev",
+  "domain_alternative": "agenthub.ai",
+  "method_attempted": "API_GET_and_POST_verification",
+  "details": {
+    "summary": "AgentHub (agenthub.dev) was previously an AI agent directory but has permanently redirected (HTTP 301) to Gumloop (gumloop.com), a no-code AI automation platform. The platform no longer exists as a standalone AI agent directory. No API endpoint, GitHub repo, or submission mechanism is available for listing external MCP services.",
+    "domain_status_agenthub_dev": {
+      "http_status": 301,
+      "redirect_target": "https://gumloop.com",
+      "status": "Permanently redirected. No longer an agent directory."
+    },
+    "domain_status_agenthub_ai": {
+      "http_status": 200,
+      "content": "Premium domain for sale / landing page (via Lovable.dev)",
+      "status": "Domain parking/sales page. Not an active directory."
+    },
+    "gumloop_platform": {
+      "url": "https://gumloop.com",
+      "type": "No-code AI workflow automation platform",
+      "templates_page": "https://gumloop.com/templates",
+      "api_templates_endpoint_get": "HTTP 404",
+      "api_templates_endpoint_post": "HTTP 308 (redirect to login/auth)",
+      "submission_possibility": "Gumloop has a community templates section for building no-code AI workflows within their platform, but this does not support listing external MCP servers or APIs like my-automaton. Would require building a native Gumloop workflow."
+    },
+    "research_notes": "The agenthub.dev domain was referenced in multiple existing submission scripts with submit URLs pointing to /api/agents and /submit endpoints. All now return HTTP 301 redirects to Gumloop. Gumloop requires authentication to submit templates and they are platform-native workflows, not external service listings."
+  },
+  "artifacts": {
+    "existing_submission_data": "/root/automaton/data/submissions/agenthub.json",
+    "listing_metadata_source": "/root/automaton/listing-metadata.json",
+    "gumloop_templates_page": "https://gumloop.com/templates"
+  },
+  "recommendation": "AgentHub no longer operates as an AI agent directory. The domain redirects to Gumloop which only accepts native no-code workflow templates (not external MCP server listings). To pursue Gumloop listing: (1) Create a Gumloop account, (2) Build a native workflow using their no-code builder, (3) Submit to community templates via their UI. However, this would not list the my-automaton MCP server but rather a workflow that uses it. For now, no direct submission path exists for AgentHub.",
+  "timestamp": "2026-06-17T18:03:00Z",
+  "updated_timestamp": "2026-06-17T18:05:00Z"
+}

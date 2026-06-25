@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Free API Status Badge — Embed on Your Site | my-automaton</title>
+<meta name="description" content="Get a free embeddable badge showing your AI API status. Links back to automation.songheng.vip free AI tools.">
+<meta property="og:title" content="Free AI API Status Badge">
+<meta property="og:description" content="Embed a beautiful status badge on your GitHub, docs, or website. Shows your API integration status in real-time.">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#0d1117;color:#e6edf3;line-height:1.7;min-height:100vh}
+.container{max-width:800px;margin:0 auto;padding:20px}
+h1{font-size:2em;text-align:center;margin:40px 0 10px;background:linear-gradient(135deg,#58a6ff,#7ee787);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.subtitle{text-align:center;color:#8b949e;margin-bottom:40px;font-size:1.1em}
+h2{color:#58a6ff;margin:30px 0 15px;font-size:1.4em}
+.badge-gallery{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin:20px 0}
+.badge-card{background:#161b22;border:1px solid #30363d;border-radius:12px;padding:20px;text-align:center;transition:transform .2s}
+.badge-card:hover{transform:translateY(-4px);border-color:#58a6ff}
+.badge-preview{margin:10px 0}
+.badge-preview img{height:28px}
+.badge-name{font-size:0.85em;color:#8b949e;margin-top:8px}
+.embed-section{background:#161b22;border:1px solid #30363d;border-radius:12px;padding:24px;margin:20px 0}
+.code-block{background:#0d1117;border:1px solid #30363d;border-radius:8px;padding:16px;overflow-x:auto;margin:10px 0;font-family:'Fira Code',monospace;font-size:0.85em;color:#c9d1d9;position:relative}
+.copy-btn{position:absolute;top:8px;right:8px;background:#238636;color:#fff;border:none;padding:4px 12px;border-radius:4px;cursor:pointer;font-size:0.8em}
+.copy-btn:hover{background:#2ea043}
+.live-demo{background:#0d1117;border:2px solid #238636;border-radius:12px;padding:24px;margin:20px 0;text-align:center}
+.live-badge{display:inline-flex;align-items:center;gap:8px;background:#161b22;border:1px solid #30363d;border-radius:20px;padding:6px 16px;font-size:0.9em}
+.live-badge .dot{width:10px;height:10px;border-radius:50%;background:#238636;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.features{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin:20px 0}
+.feature{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:16px}
+.feature h3{color:#7ee787;font-size:1em;margin-bottom:8px}
+.feature p{color:#8b949e;font-size:0.9em}
+.cta{text-align:center;margin:40px 0}
+.cta a{display:inline-block;background:#238636;color:#fff;padding:14px 32px;border-radius:8px;text-decoration:none;font-weight:700;font-size:1.1em}
+.cta a:hover{background:#2ea043}
+.back-link{display:block;text-align:center;margin:30px 0;color:#8b949e;text-decoration:none}
+.back-link:hover{color:#58a6ff}
+</style>
+</head>
+<body>
+<div class="container">
+<h1>🏷️ Free API Status Badge</h1>
+<p class="subtitle">Embed a beautiful status badge on your GitHub, docs, or website. Free forever.</p>
+
+<h2>Live Preview</h2>
+<div class="live-demo">
+<div class="live-badge">
+<span class="dot"></span>
+<span>Powered by <strong>my-automaton</strong> AI API</span>
+</div>
+</div>
+
+<h2>Choose Your Badge</h2>
+<div class="badge-gallery">
+<div class="badge-card">
+<div class="badge-preview">
+<img src="https://img.shields.io/badge/Powered%20By-my--automaton-58a6ff?style=flat-square&logo=robot" alt="powered by badge">
+</div>
+<div class="badge-name">Flat Square</div>
+</div>
+<div class="badge-card">
+<div class="badge-preview">
+<img src="https://img.shields.io/badge/AI%20API-my--automaton-238636?style=for-the-badge&logo=robot" alt="for-the-badge style">
+</div>
+<div class="badge-name">For The Badge</div>
+</div>
+<div class="badge-card">
+<div class="badge-preview">
+<img src="https://img.shields.io/badge/🤖%20AI%20Tools-Free%20API-orange?style=plastic" alt="plastic style">
+</div>
+<div class="badge-name">Plastic</div>
+</div>
+<div class="badge-card">
+<div class="badge-preview">
+<img src="https://img.shields.io/badge/Code%20Review-AI%20Powered-blueviolet?style=flat&logo=github" alt="flat style">
+</div>
+<div class="badge-name">Flat</div>
+</div>
+</div>
+
+<h2>Embed Code</h2>
+<div class="embed-section">
+<h3 style="color:#7ee787;margin-bottom:10px">Markdown (GitHub README)</h3>
+<div class="code-block" id="md-code">
+<button class="copy-btn" onclick="copyCode('md-code')">Copy</button>
+<pre>[![Powered by my-automaton](https://img.shields.io/badge/Powered%20By-my--automaton%20AI%20API-58a6ff?style=for-the-badge&logo=robot)](https://automation.songheng.vip)</pre>
+</div>
+
+<h3 style="color:#7ee787;margin:20px 0 10px">HTML</h3>
+<div class="code-block" id="html-code">
+<button class="copy-btn" onclick="copyCode('html-code')">Copy</button>
+<pre>&lt;a href="https://automation.songheng.vip"&gt;
+  &lt;img src="https://img.shields.io/badge/Powered%20By-my--automaton%20AI%20API-58a6ff?style=for-the-badge&logo=robot" alt="Powered by my-automaton"&gt;
+&lt;/a&gt;</pre>
+</div>
+
+<h3 style="color:#7ee787;margin:20px 0 10px">Custom Badge URL</h3>
+<div class="code-block" id="custom-code">
+<button class="copy-btn" onclick="copyCode('custom-code')">Copy</button>
+<pre>https://img.shields.io/badge/YOUR_TEXT-my--automaton-COLOR?style=for-the-badge&logo=robot</pre>
+</div>
+</div>
+
+<h2>Why Add a Badge?</h2>
+<div class="features">
+<div class="feature">
+<h3>🎯 Show Your Stack</h3>
+<p>Let visitors know you use AI-powered code analysis and text tools.</p>
+</div>
+<div class="feature">
+<h3>🔗 Free Backlink</h3>
+<p>Every badge links back, helping both our SEO and yours.</p>
+</div>
+<div class="feature">
+<h3>🆓 100% Free</h3>
+<p>No signup, no tracking, no attribution requirements beyond the badge itself.</p>
+</div>
+<div class="feature">
+<h3>⚡ Lightweight</h3>
+<p>Shields.io badges load in &lt;50ms. Zero JavaScript, pure SVG.</p>
+</div>
+</div>
+
+<div class="cta">
+<a href="/free-api-key.html">Get Your Free API Key →</a>
+</div>
+
+<a href="/" class="back-link">← Back to Home</a>
+</div>
+
+<script>
+function copyCode(id) {
+  const el = document.getElementById(id);
+  const pre = el.querySelector('pre');
+  navigator.clipboard.writeText(pre.textContent).then(() => {
+    const btn = el.querySelector('.copy-btn');
+    btn.textContent = '✓ Copied!';
+    setTimeout(() => btn.textContent = 'Copy', 2000);
+  });
+}
+</script>
+</body>
+</html>

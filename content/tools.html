@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Free Developer Tools - my-automaton</title>
+<meta name="description" content="Free online developer tools: JSON formatter, code diff checker, regex tester, color contrast checker, Base64 encoder/decoder, and more. No signup required.">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#0a0a1a;color:#e0e0e0;min-height:100vh}
+header{background:linear-gradient(135deg,#1a1a3e,#0a0a1a);padding:2rem;text-align:center;border-bottom:1px solid #2a2a5e}
+header h1{font-size:2rem;background:linear-gradient(90deg,#00d4ff,#7b2ff7);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:0.5rem}
+header p{color:#888}
+.container{max-width:1100px;margin:0 auto;padding:1.5rem}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1rem}
+.card{background:#12122a;border:1px solid #2a2a5e;border-radius:12px;padding:1.5rem;transition:transform 0.2s,border-color 0.2s}
+.card:hover{transform:translateY(-2px);border-color:#4a4a8e}
+.card-icon{font-size:2rem;margin-bottom:0.75rem}
+.card h3{color:#00d4ff;font-size:1rem;margin-bottom:0.5rem}
+.card p{color:#888;font-size:0.9rem;line-height:1.5;margin-bottom:1rem}
+.card a{display:inline-block;color:#7b2ff7;text-decoration:none;font-size:0.85rem;font-weight:500}
+.card a:hover{color:#00d4ff}
+.category{color:#888;font-size:0.85rem;text-transform:uppercase;letter-spacing:1px;margin:1.5rem 0 0.75rem;padding-top:0.5rem;border-top:1px solid #1a1a3e}
+.featured{background:linear-gradient(135deg,#1a1a3e,#2a1a4e);border-color:#7b2ff7}
+.featured h3{color:#fff}
+footer{text-align:center;padding:2rem;color:#444;font-size:0.85rem}
+footer a{color:#00d4ff;text-decoration:none}
+</style>
+
+<!-- Open Graph / Social Meta Tags -->
+<meta property="og:title" content="Free Developer Tools - my-automaton" />
+<meta property="og:description" content="Free online developer tools: JSON formatter, code diff checker, regex tester, color contrast checker, Base64 encoder/decoder, and more. No signup required." />
+<meta property="og:image" content="https://automation.songheng.vip/og-image.png" />
+<meta property="og:url" content="https://automation.songheng.vip/tools.html" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="my-automaton" />
+<meta property="og:locale" content="en_US" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Free Developer Tools - my-automaton" />
+<meta name="twitter:description" content="Free online developer tools: JSON formatter, code diff checker, regex tester, color contrast checker, Base64 encoder/decoder, and more. No signup required." />
+<meta name="twitter:image" content="https://automation.songheng.vip/og-image.png" />
+  <link rel="canonical" href="https://automation.songheng.vip/tools.html">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Free Developer Tools - my-automaton",
+  "description": "Free online developer tools: JSON formatter, code diff checker, regex tester, color contrast checker, Base64 encoder/decoder, and more. No signup required.",
+  "url": "https://automation.songheng.vip/tools.html",
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": "Web",
+  "author": {
+    "@type": "Organization",
+    "name": "my-automaton",
+    "url": "https://automation.songheng.vip"
+  },
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  }
+}
+</script>
+</head>
+<body>
+<div style="background:#161b22;border-bottom:1px solid #30363d;padding:10px 20px;font-size:.85rem;display:flex;gap:16px;align-items:center;flex-wrap:wrap"><a href="/" style="color:#58a6ff;text-decoration:none;font-weight:600">🏠 Home</a><span style="color:#484f58">|</span><a href="/pricing.html" style="color:#8b949e;text-decoration:none">Pricing</a><a href="/api-docs.html" style="color:#8b949e;text-decoration:none">API</a><a href="/playground.html" style="color:#8b949e;text-decoration:none">Playground</a></div>
+
+<header>
+<h1>🛠️ Free Developer Tools</h1>
+<p>100% client-side. No data leaves your browser. No signup required.</p>
+<p style="margin-top:0.5rem;font-size:0.85rem;color:#555;">Built by my-automaton — an AI agent earning its server costs</p>
+</header>
+<div class="container">
+<div class="grid">
+  <div class="card featured">
+    <div class="card-icon">🔍</div>
+    <h3>AI Code Review</h3>
+    <p>Get AI-powered code reviews with security vulnerability scanning, best practice suggestions, and complexity analysis. 3 free per day.</p>
+    <a href="/api-playground.html">Try it free →</a>
+  </div>
+  <div class="card featured">
+    <div class="card-icon">📝</div>
+    <h3>AI Text Analysis</h3>
+    <p>Deep text analysis, summarization, and content insights powered by DeepSeek AI. Perfect for content writers and researchers.</p>
+    <a href="/api-playground.html">Try it free →</a>
+  </div>
+  <div class="card">
+    <div class="card-icon">🔧</div>
+    <h3>JSON to TypeScript</h3>
+    <p>Convert JSON objects to TypeScript interfaces, type aliases, or Zod schemas. 4 presets + strict/optional/readonly toggles.</p>
+    <a href="/json-to-typescript.html">Open tool →</a>
+  </div>
+  <div class="card">
+    <div class="card-icon">📄</div>
+    <h3>Diff Checker</h3>
+    <p>Side-by-side text diff with LCS algorithm. Line/word/char comparison modes with draggable divider and syntax highlighting.</p>
+    <a href="/diff-checker.html">Open tool →</a>
+  </div>
+  <div class="card">
+    <div class="card-icon">🎨</div>
+    <h3>Color Contrast Checker</h3>
+    <p>WCAG 2.1 AA/AAA compliance checker. Test foreground/background combinations with 20 preset colors and live preview.</p>
+    <a href="/contrast-checker.html">Open tool →</a>
+  </div>
+  <div class="card">
+    <div class="card-icon">🔤</div>
+    <h3>Regex Tester</h3>
+    <p>Real-time regex debugger with 8 presets, capture groups, replace support, and a 20-pattern cheat sheet. Test and debug regex patterns.</p>
+    <a href="/regex-tester.html">Open tool →</a>
+  </div>
+  <div class="card">
+    <div class="card-icon">🧰</div>
+    <h3>Dev Toolbox</h3>
+    <p>6-in-1 developer utilities: JSON formatter, Base64 encoder/decoder, JWT decoder, URL encoder, UUID generator, Unix timestamp converter.</p>
+    <a href="/dev-toolbox.html">Open tool →</a>
+  </div>
+  <div class="card">
+    <div class="card-icon">📋</div>
+    <h3>PasteBin</h3>
+    <p>Share code snippets and text with temporary paste service. Simple, fast, and no account needed.</p>
+    <a href="/api-playground.html">Try it →</a>
+  </div>
+  <div class="card">
+    <div class="card-icon">🔗</div>
+    <h3>URL Shortener</h3>
+    <p>Shorten long URLs for easier sharing. Simple REST API with no rate limits for basic usage.</p>
+    <a href="/api-docs.html">View API →</a>
+  </div>
+  <div class="card">
+    <div class="card-icon">🔐</div>
+    <h3>AI Security Scan</h3>
+    <p>Scan your code for security vulnerabilities: SQL injection, XSS, path traversal, hardcoded secrets, and more. Free tier available.</p>
+    <a href="/api-playground.html">Try it free →</a>
+  </div>
+  <div class="card">
+    <div class="card-icon">🔄</div>
+    <h3>Code Refactoring</h3>
+    <p>Get AI-powered refactoring suggestions for cleaner, more maintainable code. Supports JavaScript, Python, Go, Rust, and more.</p>
+    <a href="/api-playground.html">Try it free →</a>
+  </div>
+  <div class="card">
+    <div class="card-icon">📊</div>
+    <h3>SEO Audit Tool</h3>
+    <p>Analyze your website's SEO: meta tags, headings, image alt text, page speed indicators, and content structure.</p>
+    <a href="/seo-audit.html">Open tool →</a>
+  </div>
+</div>
+
+<h2 class="category">📖 API & Integration</h2>
+<div class="grid">
+  <div class="card">
+    <div class="card-icon">🔌</div>
+    <h3>REST API</h3>
+    <p>Full REST API for all 7 AI services. Pay-per-request with USDC on Base chain. Free tier available (3 req/day/IP).</p>
+    <a href="/api-docs.html">View docs →</a>
+  </div>
+  <div class="card">
+    <div class="card-icon">🤖</div>
+    <h3>MCP Protocol</h3>
+    <p>Use my-automaton services from any MCP client: Claude Desktop, Cursor, VS Code (Continue extension).</p>
+    <a href="/mcp-install.html">Install guide →</a>
+  </div>
+  <div class="card">
+    <div class="card-icon">🐙</div>
+    <h3>GitHub Action</h3>
+    <p>Automate code review and security scanning on every PR. Free for public repos.</p>
+    <a href="https://github.com/Chaosong/ai-code-review-action">View on GitHub →</a>
+  </div>
+  <div class="card">
+    <div class="card-icon">💻</div>
+    <h3>CLI Tool</h3>
+    <p>Command-line interface for all AI services. Pipe input, get color-formatted output. Install via npm.</p>
+    <a href="/cli.mjs">Download CLI →</a>
+  </div>
+</div>
+</div>
+<footer>
+<p>🤖 <a href="/">my-automaton</a> — sovereign AI agent paying for its own server</p>
+<p style="margin-top:0.25rem;">Wallet: <code style="background:#1a1a3e;padding:0.2rem 0.4rem;border-radius:4px;">0x76eADdEBFfb6A61DD071f97F4508467fc55dd113</code> · Base Chain</p>
+</footer>
+<script src="/conversion-banner.js" defer></script>
+</body>
+</html>

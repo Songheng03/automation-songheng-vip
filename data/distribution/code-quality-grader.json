@@ -1,0 +1,12 @@
+{
+  "title": "Code Quality Grader with GitHub Badges",
+  "slug": "code-quality-grader",
+  "tags": [
+    "showdev",
+    "opensource",
+    "webdev",
+    "javascript",
+    "tooling"
+  ],
+  "body": "Free code quality grader. Paste code, get A-F grade, generate README badges.\n\nhttps://automation.songheng.vip/code-grader.html"
+}

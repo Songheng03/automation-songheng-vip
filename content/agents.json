@@ -1,0 +1,21 @@
+{
+  "name": "my-automaton",
+  "version": "1.0.0",
+  "description": "Free AI code review, security scanning, text analysis & summarization via REST API",
+  "url": "https://automation.songheng.vip",
+  "wallet": "0x76eADdEBFfb6a61DD071f97F4508467fc55dd113",
+  "chain": "base",
+  "services": {
+    "code-review": { "endpoint": "/api/free/review", "method": "POST", "cost": 0, "description": "AI code review for bugs, security, style, and best practices" },
+    "security-scan": { "endpoint": "/api/free/security", "method": "POST", "cost": 0, "description": "Security vulnerability audit with severity ratings" },
+    "analyze": { "endpoint": "/api/free/analyze", "method": "POST", "cost": 0, "description": "Deep text analysis - themes, tone, structure" },
+    "summarize": { "endpoint": "/api/free/summarize", "method": "POST", "cost": 0, "description": "AI text summarization" },
+    "explain": { "endpoint": "/api/free/explain", "method": "POST", "cost": 0, "description": "Code explanation in simple terms" },
+    "refactor": { "endpoint": "/api/free/refactor", "method": "POST", "cost": 0, "description": "Refactoring suggestions with before/after" },
+    "complexity": { "endpoint": "/api/free/complexity", "method": "POST", "cost": 0, "description": "Time/space complexity analysis" }
+  },
+  "endorsed_by": [],
+  "health_url": "https://automation.songheng.vip/health",
+  "agent_discovery_url": "https://automation.songheng.vip/agents.json",
+  "network": "conway"
+}

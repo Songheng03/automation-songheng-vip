@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Free Regex Explainer - Explain Regular Expressions Instantly | AI Code Review</title>
+<meta name="description" content="Free regex explainer tool. Paste any regular expression and get a plain English explanation of what it matches. Perfect for learning regex.">
+<meta property="og:title" content="Free Regex Explainer - Understand Any Regular Expression">
+<meta property="og:description" content="Paste regex, get plain English explanation. Perfect for developers learning regex.">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:#0f172a;color:#e2e8f0;padding:20px;min-height:100vh}
+.container{max-width:900px;margin:0 auto}
+h1{font-size:2rem;margin-bottom:10px;color:#38bdf8}
+.subtitle{color:#94a3b8;margin-bottom:30px}
+.card{background:#1e293b;border-radius:12px;padding:24px;margin-bottom:20px}
+label{display:block;font-weight:600;margin-bottom:8px;color:#38bdf8}
+textarea{width:100%;min-height:100px;background:#0f172a;border:2px solid #334155;border-radius:8px;padding:12px;color:#e2e8f0;font-family:monospace;font-size:16px;resize:vertical}
+textarea:focus{outline:none;border-color:#38bdf8}
+button{background:#38bdf8;color:#0f172a;border:none;padding:14px 28px;border-radius:8px;font-size:16px;font-weight:700;cursor:pointer;margin-top:16px;width:100%}
+button:hover{background:#7dd3fc}
+.output{margin-top:20px;padding:16px;background:#0f172a;border-radius:8px;white-space:pre-wrap;font-family:monospace;line-height:1.6;min-height:100px}
+.pattern{color:#fbbf24;font-weight:700}
+.match{color:#4ade80}
+.meta{color:#94a3b8;font-size:0.9em;margin-top:8px}
+.cta{background:#1e293b;border-radius:12px;padding:20px;margin-top:30px;text-align:center;border:2px solid #38bdf8}
+.cta h3{color:#38bdf8;margin-bottom:10px}
+.cta a{color:#fbbf24;text-decoration:none;font-weight:600}
+.cta a:hover{text-decoration:underline}
+.examples{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}
+.examples button{width:auto;padding:8px 16px;font-size:14px;background:#334155;color:#e2e8f0}
+.examples button:hover{background:#475569}
+</style>
+</head>
+<body>
+<div class="container">
+<h1>🔍 Regex Explainer</h1>
+<p class="subtitle">Paste any regular expression and get a plain English explanation</p>
+
+<div class="card">
+<label for="regex">Regular Expression:</label>
+<textarea id="regex" placeholder="Paste your regex here, e.g. ^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"></textarea>
+
+<div class="examples">
+<span style="color:#94a3b8;font-size:14px">Try:</span>
+<button onclick="tryExample('^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$')">Email</button>
+<button onclick="tryExample('^(\\d{4})-(\\d{2})-(\\d{2})$')">Date YYYY-MM-DD</button>
+<button onclick="tryExample('^https?://[^\\s/$.?#].[^\\s]*$')">URL</button>
+<button onclick="tryExample('^\\+?[1-9]\\d{1,14}$')">Phone (E.164)</button>
+</div>
+
+<button onclick="explainRegex()">Explain Regex</button>
+</div>
+
+<div class="card">
+<label>Explanation:</label>
+<div id="output" class="output">Your explanation will appear here...</div>
+<div id="meta" class="meta"></div>
+</div>
+
+<div class="cta">
+<h3>Need AI Code Review?</h3>
+<p>Get professional code analysis, security scanning, and refactoring suggestions.</p>
+<p style="margin-top:12px"><a href="/api-playground">Try API Playground →</a></p>
+</div>
+</div>
+
+<script>
+function tryExample(pattern){document.getElementById('regex').value=pattern;explainRegex()}
+
+function explainRegex(){
+  const regex=document.getElementById('regex').value.trim();
+  const output=document.getElementById('output');
+  const meta=document.getElementById('meta');
+  
+  if(!regex){output.textContent='Please enter a regular expression';return}
+  
+  try{
+    const explanation=parseRegex(regex);
+    output.innerHTML=explanation;
+    
+    // Test if valid
+    new RegExp(regex);
+    meta.textContent='✓ Valid regular expression';
+    meta.style.color='#4ade80';
+  }catch(e){
+    output.textContent='Error: '+e.message;
+    meta.textContent='✗ Invalid regular expression';
+    meta.style.color='#f87171';
+  }
+}
+
+function parseRegex(pattern){
+  let explanation=[];
+  let i=0;
+  
+  while(i<pattern.length){
+    const char=pattern[i];
+    
+    // Anchors
+    if(char==='^'){
+      explanation.push('<span class="pattern">^</span> = <span class="match">start of string</span>');
+      i++;
+    }else if(char==='$'){
+      explanation.push('<span class="pattern">$</span> = <span class="match">end of string</span>');
+      i++;
+    }
+    // Character classes
+    else if(char==='['){
+      let j=i+1;
+      let negate=false;
+      if(pattern[j]==='^'){negate=true;j++}
+      while(j<pattern.length&&pattern[j]!==']')j++;
+      const content=pattern.substring(i+(negate?2:1),j);
+      const desc=negate?`any character NOT in [${content}]`:`any character in [${content}]`;
+      explanation.push(`<span class="pattern">[${negate?'^':''}${content}]</span> = <span class="match">${desc}</span>`);
+      i=j+1;
+    }
+    // Groups
+    else if(char==='('){
+      let j=i+1;
+      let depth=1;
+      while(j<pattern.length&&depth>0){
+        if(pattern[j]==='(')depth++;
+        else if(pattern[j]===')')depth--;
+        j++;
+      }
+      const content=pattern.substring(i+1,j-1);
+      if(content.startsWith('?:')){
+        explanation.push(`<span class="pattern">(${content})</span> = <span class="match">non-capturing group containing "${content.substring(2)}"</span>`);
+      }else if(content.startsWith('?=')){
+        explanation.push(`<span class="pattern">(${content})</span> = <span class="match">positive lookahead: must be followed by "${content.substring(2)}"</span>`);
+      }else if(content.startsWith('?!')){
+        explanation.push(`<span class="pattern">(${content})</span> = <span class="match">negative lookahead: must NOT be followed by "${content.substring(2)}"</span>`);
+      }else{
+        explanation.push(`<span class="pattern">(${content})</span> = <span class="match">capturing group: "${content}"</span>`);
+      }
+      i=j;
+    }
+    // Quantifiers
+    else if(char==='*'){
+      explanation.push('<span class="pattern">*</span> = <span class="match">0 or more times</span>');
+      i++;
+    }else if(char==='+'){
+      explanation.push('<span class="pattern">+</span> = <span class="match">1 or more times</span>');
+      i++;
+    }else if(char==='?'){
+      if(i>0&&(pattern[i-1]==='*'||pattern[i-1]==='+')){
+        explanation.push('<span class="pattern">?</span> = <span class="match">lazy (non-greedy) quantifier</span>');
+      }else{
+        explanation.push('<span class="pattern">?</span> = <span class="match">0 or 1 time (optional)</span>');
+      }
+      i++;
+    }else if(char==='{'){
+      let j=i+1;
+      while(j<pattern.length&&pattern[j]!=='}')j++;
+      const content=pattern.substring(i+1,j);
+      if(content.includes(',')){
+        const[min,max]=content.split(',');
+        if(max===''){
+          explanation.push(`<span class="pattern">{${content}}</span> = <span class="match">${min} or more times</span>`);
+        }else{
+          explanation.push(`<span class="pattern">{${content}}</span> = <span class="match">between ${min} and ${max} times</span>`);
+        }
+      }else{
+        explanation.push(`<span class="pattern">{${content}}</span> = <span class="match">exactly ${content} times</span>`);
+      }
+      i=j+1;
+    }
+    // Metacharacters
+    else if(char==='.'){
+      explanation.push('<span class="pattern">.</span> = <span class="match">any character except newline</span>');
+      i++;
+    }else if(char==='\\'){
+      if(i+1<pattern.length){
+        const next=pattern[i+1];
+        if(next==='d'){
+          explanation.push('<span class="pattern">\\d</span> = <span class="match">any digit (0-9)</span>');
+        }else if(next==='D'){
+          explanation.push('<span class="pattern">\\D</span> = <span class="match">any non-digit</span>');
+        }else if(next==='w'){
+          explanation.push('<span class="pattern">\\w</span> = <span class="match">word character (letters, digits, underscore)</span>');
+        }else if(next==='W'){
+          explanation.push('<span class="pattern">\\W</span> = <span class="match">non-word character</span>');
+        }else if(next==='s'){
+          explanation.push('<span class="pattern">\\s</span> = <span class="match">whitespace (space, tab, newline)</span>');
+        }else if(next==='S'){
+          explanation.push('<span class="pattern">\\S</span> = <span class="match">non-whitespace</span>');
+        }else if(next==='b'){
+          explanation.push('<span class="pattern">\\b</span> = <span class="match">word boundary</span>');
+        }else{
+          explanation.push(`<span class="pattern">\\${next}</span> = <span class="match">literal "${next}"</span>`);
+        }
+        i+=2;
+      }
+    }
+    // Alternation
+    else if(char==='|'){
+      explanation.push('<span class="pattern">|</span> = <span class="match">OR (matches left or right)</span>');
+      i++;
+    }
+    // Literal characters
+    else{
+      explanation.push(`<span class="pattern">${char}</span> = <span class="match">literal "${char}"</span>`);
+      i++;
+    }
+  }
+  
+  return explanation.join('\n');
+}
+
+// Auto-explain on load if URL has hash
+if(window.location.hash){
+  document.getElementById('regex').value=decodeURIComponent(window.location.hash.substring(1));
+  explainRegex();
+}
+</script>
+</body>
+</html>

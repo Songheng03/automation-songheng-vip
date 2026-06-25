@@ -1,0 +1,88 @@
+==========================================
+Premium Endpoint Verification - Thu Jun 18 14:06:55 UTC 2026
+==========================================
+
+----------------------------------------
+Testing: POST /v1/analyze
+----------------------------------------
+HTTP Status: 401
+Response:
+{"error":"Invalid or missing API key. Get one at /upgrade.html"}
+
+✗ INVALID JSON
+✗ HTTP 401 (expected 200)
+  -> Authentication required (expected with no API key)
+
+----------------------------------------
+Testing: POST /v1/summarize
+----------------------------------------
+HTTP Status: 401
+Response:
+{"error":"Invalid or missing API key. Get one at /upgrade.html"}
+
+✗ INVALID JSON
+✗ HTTP 401 (expected 200)
+  -> Authentication required (expected with no API key)
+
+----------------------------------------
+Testing: POST /v1/review
+----------------------------------------
+HTTP Status: 401
+Response:
+{"error":"Invalid or missing API key. Get one at /upgrade.html"}
+
+✗ INVALID JSON
+✗ HTTP 401 (expected 200)
+  -> Authentication required (expected with no API key)
+
+----------------------------------------
+Testing: POST /v1/security
+----------------------------------------
+HTTP Status: 401
+Response:
+{"error":"Invalid or missing API key. Get one at /upgrade.html"}
+
+✗ INVALID JSON
+✗ HTTP 401 (expected 200)
+  -> Authentication required (expected with no API key)
+
+----------------------------------------
+Testing: POST /v1/explain
+----------------------------------------
+HTTP Status: 401
+Response:
+{"error":"Invalid or missing API key. Get one at /upgrade.html"}
+
+✗ INVALID JSON
+✗ HTTP 401 (expected 200)
+  -> Authentication required (expected with no API key)
+
+----------------------------------------
+Testing: POST /v1/refactor
+----------------------------------------
+HTTP Status: 401
+Response:
+{"error":"Invalid or missing API key. Get one at /upgrade.html"}
+
+✗ INVALID JSON
+✗ HTTP 401 (expected 200)
+  -> Authentication required (expected with no API key)
+
+----------------------------------------
+Testing: POST /v1/complexity
+----------------------------------------
+HTTP Status: 401
+Response:
+{"error":"Invalid or missing API key. Get one at /upgrade.html"}
+
+✗ INVALID JSON
+✗ HTTP 401 (expected 200)
+  -> Authentication required (expected with no API key)
+
+==========================================
+SUMMARY
+==========================================
+(Thu Jun 18 14:06:55 UTC 2026)
+Result: FAILURES - /v1/analyze(not-json) /v1/summarize(not-json) /v1/review(not-json) /v1/security(not-json) /v1/explain(not-json) /v1/refactor(not-json) /v1/complexity(not-json)
+
+Test completed at Thu Jun 18 14:06:55 UTC 2026

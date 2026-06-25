@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SEO Audit Tool — Free Website SEO Analyzer | my-automaton</title>
+<meta name="description" content="Free SEO audit tool: analyze your website's meta tags, headings, images, links, page speed, and mobile readiness. Get actionable SEO recommendations.">
+<meta name="keywords" content="seo audit tool, free seo analyzer, website seo checker, meta tag analyzer, heading structure checker, image alt text checker">
+<style>
+:root { --bg: #0d1117; --card: #161b22; --border: #30363d; --text: #e6edf3; --muted: #8b949e; --good: #3fb950; --warn: #d29922; --bad: #f85149; --accent: #58a6ff; }
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; padding: 2rem 1rem; }
+.container { max-width: 800px; margin: 0 auto; }
+h1 { font-size: 1.8rem; margin-bottom: .3rem; text-align: center; }
+.subtitle { color: var(--muted); text-align: center; margin-bottom: 2rem; font-size: .95rem; }
+.input-area { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem; margin-bottom: 1.5rem; text-align: center; }
+.input-area input { width: 70%; padding: .7rem 1rem; background: #1c2128; border: 1px solid var(--border); border-radius: 6px; color: var(--text); font-size: 1rem; margin-right: .5rem; }
+.input-area input:focus { outline: none; border-color: var(--accent); }
+.btn { background: var(--good); color: #000; border: none; padding: .7rem 1.8rem; border-radius: 6px; font-weight: 600; cursor: pointer; font-size: 1rem; }
+.btn:hover { filter: brightness(1.1); }
+.btn:disabled { opacity: .5; cursor: not-allowed; }
+.mode-toggle { margin: 1rem 0; }
+.mode-toggle button { background: #21262d; color: var(--muted); border: 1px solid var(--border); padding: .4rem 1rem; cursor: pointer; font-size: .85rem; }
+.mode-toggle button.active { background: var(--accent); color: #000; border-color: var(--accent); font-weight: 600; }
+.mode-toggle button:first-child { border-radius: 6px 0 0 6px; }
+.mode-toggle button:last-child { border-radius: 0 6px 6px 0; }
+.result-section { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 1.2rem; margin: 1rem 0; }
+.score-bar { height: 8px; border-radius: 4px; background: #1c2128; margin: .5rem 0; overflow: hidden; }
+.score-fill { height: 100%; border-radius: 4px; transition: width .5s; }
+.score-label { font-size: .85rem; display: flex; justify-content: space-between; }
+.check-item { display: flex; align-items: center; gap: .5rem; padding: .4rem 0; border-bottom: 1px solid #1c2128; font-size: .9rem; }
+.check-item:last-child { border-bottom: none; }
+.status-pass { color: var(--good); }
+.status-warn { color: var(--warn); }
+.status-fail { color: var(--bad); }
+.metric-grid { display: grid; grid-template-columns: 1fr 1fr; gap: .8rem; }
+.metric-card { background: #1c2128; border-radius: 8px; padding: .8rem; text-align: center; }
+.metric-value { font-size: 1.5rem; font-weight: 700; }
+.metric-label { color: var(--muted); font-size: .8rem; }
+.tip { background: #1c2128; border-left: 3px solid var(--accent); padding: .8rem; margin: .5rem 0; border-radius: 0 6px 6px 0; font-size: .9rem; }
+.spinner { display: inline-block; width: 20px; height: 20px; border: 2px solid var(--muted); border-top-color: var(--accent); border-radius: 50%; animation: spin .8s linear infinite; vertical-align: middle; margin-right: .5rem; }
+@keyframes spin { to { transform: rotate(360deg); } }
+@media (max-width: 600px) { .input-area input { width: 100%; margin-bottom: .5rem; } .metric-grid { grid-template-columns: 1fr; } }
+</style>
+<!-- Open Graph / Social Meta Tags -->
+<meta property="og:title" content="SEO Audit Tool — Free Website SEO Analyzer | my-automaton" />
+<meta property="og:description" content="Free SEO audit tool: analyze your website" />
+<meta property="og:image" content="https://automation.songheng.vip/og-image.png" />
+<meta property="og:url" content="https://automation.songheng.vip/tools/seo-audit.html" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="my-automaton" />
+<meta property="og:locale" content="en_US" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="SEO Audit Tool — Free Website SEO Analyzer | my-automaton" />
+<meta name="twitter:description" content="Free SEO audit tool: analyze your website" />
+<meta name="twitter:image" content="https://automation.songheng.vip/og-image.png" />
+  <link rel="canonical" href="https://automation.songheng.vip/tools/seo-audit.html">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "SEO Audit Tool — Free Website SEO Analyzer | my-automaton",
+  "description": "Free SEO audit tool: analyze your website",
+  "url": "https://automation.songheng.vip/tools/seo-audit.html",
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": "Web",
+  "author": {
+    "@type": "Organization",
+    "name": "my-automaton",
+    "url": "https://automation.songheng.vip"
+  },
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  }
+}
+</script>
+</head>
+<body>
+<div style="background:#161b22;border-bottom:1px solid #30363d;padding:10px 20px;font-size:.85rem;display:flex;gap:16px;align-items:center;flex-wrap:wrap"><a href="/" style="color:#58a6ff;text-decoration:none;font-weight:600">🏠 Home</a><span style="color:#484f58">|</span><a href="/pricing.html" style="color:#8b949e;text-decoration:none">Pricing</a><a href="/api-docs.html" style="color:#8b949e;text-decoration:none">API</a><a href="/playground.html" style="color:#8b949e;text-decoration:none">Playground</a></div>
+
+<div class="container">
+<h1>🔍 Free SEO Audit Tool</h1>
+<p class="subtitle">Analyze your website's SEO health — meta tags, headings, images, performance, and more. 100% free, no signup.</p>
+
+<div class="input-area">
+  <div class="mode-toggle" id="modeToggle">
+    <button class="active" data-mode="url" onclick="switchMode('url')">🌐 URL Audit</button>
+    <button data-mode="manual" onclick="switchMode('manual')">📝 Paste HTML</button>
+  </div>
+  <div id="urlMode">
+    <input type="url" id="urlInput" placeholder="https://example.com" value="">
+    <button class="btn" id="auditBtn" onclick="runAudit()">🚀 Run Audit</button>
+  </div>
+  <div id="manualMode" style="display:none;">
+    <textarea id="htmlInput" rows="6" style="width:100%;background:#1c2128;border:1px solid var(--border);border-radius:6px;color:var(--text);padding:.5rem;font-family:monospace;margin-bottom:.5rem;" placeholder="Paste your HTML here..."></textarea>
+    <button class="btn" onclick="runManualAudit()">🔍 Analyze</button>
+  </div>
+  <div id="status" style="margin-top:.8rem;display:none;"><span class="spinner"></span>Analyzing...</div>
+</div>
+
+<div id="results" style="display:none;">
+  <div class="result-section" style="text-align:center;">
+    <h2 id="pageTitle" style="font-size:1.2rem;margin-bottom:.3rem;"></h2>
+    <p id="pageUrl" style="color:var(--muted);font-size:.85rem;word-break:break-all;"></p>
+    <div style="margin-top:1rem;">
+      <div class="score-label"><span>SEO Score</span><span id="overallScore" style="font-weight:700;"></span></div>
+      <div class="score-bar"><div class="score-fill" id="scoreFill"></div></div>
+    </div>
+  </div>
+
+  <div class="metric-grid" id="metricsContainer"></div>
+
+  <div class="result-section">
+    <h3 style="margin-bottom:.5rem;">📋 SEO Checklist</h3>
+    <div id="checklist"></div>
+  </div>
+
+  <div class="result-section">
+    <h3 style="margin-bottom:.5rem;">💡 Actionable Recommendations</h3>
+    <div id="recommendations"></div>
+  </div>
+
+  <div class="result-section">
+    <h3 style="margin-bottom:.5rem;">🏷️ Meta Tags Found</h3>
+    <pre id="metaTagsFound" style="background:#1c2128;padding:.8rem;border-radius:6px;font-size:.8rem;white-space:pre-wrap;word-break:break-all;"></pre>
+  </div>
+  
+  <div style="text-align:center;margin:1.5rem 0;">
+    <p style="color:var(--muted);margin-bottom:.5rem;">Need deeper analysis? Try our <a href="/v1/analyze" style="color:var(--accent);">AI text analysis API</a> (3 free/day).</p>
+    <p style="font-size:.85rem;color:var(--muted);"><a href="/tools/seo-meta-generator.html" style="color:var(--accent);">SEO Meta Tag Generator</a> · <a href="/tools/keyword-research.html" style="color:var(--accent);">Keyword Research Tool</a></p>
+  </div>
+</div>
+</div>
+
+<script>
+function switchMode(mode) {
+  document.querySelectorAll('.mode-toggle button').forEach(b => b.classList.remove('active'));
+  document.querySelector(`.mode-toggle button[data-mode="${mode}"]`).classList.add('active');
+  document.getElementById('urlMode').style.display = mode === 'url' ? 'block' : 'none';
+  document.getElementById('manualMode').style.display = mode === 'manual' ? 'block' : 'none';
+}
+
+async function runAudit() {
+  const url = document.getElementById('urlInput').value.trim();
+  if (!url) { alert('Please enter a URL'); return; }
+  if (!url.startsWith('http')) { alert('URL must start with http:// or https://'); return; }
+  
+  showStatus(true);
+  document.getElementById('results').style.display = 'none';
+  
+  try {
+    // Fetch the page content via CORS proxy or direct
+    const response = await fetch(url, { 
+      method: 'GET',
+      mode: 'cors',
+      signal: AbortSignal.timeout(10000)
+    });
+    const html = await response.text();
+    showStatus(false);
+    analyzeHTML(html, url);
+  } catch (e) {
+    showStatus(false);
+    // Fall back to manual mode with instruction
+    document.getElementById('results').style.display = 'block';
+    document.getElementById('pageTitle').textContent = '⚠️ Could not fetch URL directly';
+    document.getElementById('pageUrl').textContent = url;
+    document.getElementById('metaTagsFound').textContent = `Browser CORS restriction prevents analyzing ${url} directly.\n\nTry these options:\n1. Click "Paste HTML" above and paste the page source\n2. Use the URL on our backend via: curl https://automation.songheng.vip/api/seo-analyze?url=${encodeURIComponent(url)}\n\nError: ${e.message}`;
+  }
+}
+
+function runManualAudit() {
+  const html = document.getElementById('htmlInput').value;
+  if (!html) { alert('Please paste HTML content'); return; }
+  analyzeHTML(html, '(pasted HTML)');
+}
+
+function analyzeHTML(html, url) {
+  // Parse meta tags
+  const metaTags = {};
+  const titleMatch = html.match(/<title[^>]*>([^<]*)<\/title>/i);
+  metaTags.title = titleMatch ? titleMatch[1] : null;
+  
+  const descMatch = html.match(/<meta[^>]*name=["']description["'][^>]*content=["']([^"']*)["'][^>]*\/?>/i) || 
+                    html.match(/<meta[^>]*content=["']([^"']*)["'][^>]*name=["']description["'][^>]*\/?>/i);
+  metaTags.description = descMatch ? descMatch[1] : null;
+  
+  const keywordsMatch = html.match(/<meta[^>]*name=["']keywords["'][^>]*content=["']([^"']*)["'][^>]*\/?>/i);
+  metaTags.keywords = keywordsMatch ? keywordsMatch[1] : null;
+  
+  const ogTitle = html.match(/<meta[^>]*property=["']og:title["'][^>]*content=["']([^"']*)["'][^>]*\/?>/i);
+  metaTags.ogTitle = ogTitle ? ogTitle[1] : null;
+  
+  const ogDesc = html.match(/<meta[^>]*property=["']og:description["'][^>]*content=["']([^"']*)["'][^>]*\/?>/i);
+  metaTags.ogDesc = ogDesc ? ogDesc[1] : null;
+  
+  const ogImage = html.match(/<meta[^>]*property=["']og:image["'][^>]*content=["']([^"']*)["'][^>]*\/?>/i);
+  metaTags.ogImage = ogImage ? ogImage[1] : null;
+  
+  const canonical = html.match(/<link[^>]*rel=["']canonical["'][^>]*href=["']([^"']*)["'][^>]*\/?>/i);
+  metaTags.canonical = canonical ? canonical[1] : null;
+  
+  const viewport = html.match(/<meta[^>]*name=["']viewport["'][^>]*content=["']([^"']*)["'][^>]*\/?>/i);
+  metaTags.viewport = viewport ? viewport[1] : null;
+  
+  const robots = html.match(/<meta[^>]*name=["']robots["'][^>]*content=["']([^"']*)["'][^>]*\/?>/i);
+  metaTags.robots = robots ? robots[1] : null;
+  
+  // Count headings
+  const h1s = (html.match(/<h1[^>]*>/gi) || []).length;
+  const h2s = (html.match(/<h2[^>]*>/gi) || []).length;
+  const h3s = (html.match(/<h3[^>]*>/gi) || []).length;
+  
+  // Count images
+  const imgs = (html.match(/<img[^>]*>/gi) || []).length;
+  const imgsWithAlt = (html.match(/<img[^>]*alt\s*=\s*["'][^"']*["'][^>]*>/gi) || []).length;
+  
+  // Count links
+  const links = (html.match(/<a[^>]*href=["']https?:\/\//gi) || []).length;
+  
+  // Check for schema
+  const hasSchema = html.includes('application/ld+json') || html.includes('itemscope');
+  
+  // Check page size
+  const pageSizeKB = Math.round(html.length / 1024);
+  
+  // Title length check
+  const titleLen = metaTags.title ? metaTags.title.length : 0;
+  const descLen = metaTags.description ? metaTags.description.length : 0;
+  
+  // Calculate score
+  let score = 0;
+  const checks = [];
+  
+  // Title
+  if (metaTags.title && titleLen >= 30 && titleLen <= 65) {
+    score += 15;
+    checks.push({ name: 'Meta Title', status: 'pass', detail: `${titleLen} chars — "${metaTags.title}"` });
+  } else if (metaTags.title) {
+    score += 5;
+    checks.push({ name: 'Meta Title', status: 'warn', detail: `${titleLen} chars (target: 30-65) — "${metaTags.title}"` });
+  } else {
+    checks.push({ name: 'Meta Title', status: 'fail', detail: 'Missing! Each page needs a unique title tag.' });
+  }
+  
+  // Description
+  if (metaTags.description && descLen >= 120 && descLen <= 165) {
+    score += 15;
+    checks.push({ name: 'Meta Description', status: 'pass', detail: `${descLen} chars — "${metaTags.description}"` });
+  } else if (metaTags.description) {
+    score += 8;
+    checks.push({ name: 'Meta Description', status: 'warn', detail: `${descLen} chars (target: 120-165)` });
+  } else {
+    checks.push({ name: 'Meta Description', status: 'fail', detail: 'Missing! Appears in search snippets.' });
+  }
+  
+  // H1
+  if (h1s === 1) {
+    score += 10;
+    checks.push({ name: 'H1 Heading', status: 'pass', detail: 'Exactly 1 H1 tag found (perfect).' });
+  } else if (h1s === 0) {
+    score += 0;
+    checks.push({ name: 'H1 Heading', status: 'fail', detail: 'No H1 tag found! Each page needs exactly one.' });
+  } else {
+    score += 3;
+    checks.push({ name: 'H1 Heading', status: 'warn', detail: `${h1s} H1 tags found (should be exactly 1).` });
+  }
+  
+  // Heading structure
+  if (h2s > 0) {
+    score += 8;
+    checks.push({ name: 'Heading Structure', status: 'pass', detail: `${h1s} H1 + ${h2s} H2 + ${h3s} H3 — good hierarchy.` });
+  } else {
+    score += 2;
+    checks.push({ name: 'Heading Structure', status: 'warn', detail: 'No H2 tags found. Use H2/H3 for content structure.' });
+  }
+  
+  // Images
+  if (imgs > 0 && imgsWithAlt >= imgs * 0.8) {
+    score += 10;
+    checks.push({ name: 'Image Alt Text', status: 'pass', detail: `${imgsWithAlt}/${imgs} images have alt text.` });
+  } else if (imgs > 0) {
+    score += 3;
+    checks.push({ name: 'Image Alt Text', status: 'warn', detail: `${imgsWithAlt}/${imgs} images have alt text (aim for 100%).` });
+  } else {
+    score += 5;
+    checks.push({ name: 'Image Alt Text', status: 'pass', detail: 'No images found (N/A).' });
+  }
+  
+  // Viewport
+  if (metaTags.viewport) {
+    score += 8;
+    checks.push({ name: 'Viewport Meta', status: 'pass', detail: 'Present — mobile-friendly setup.' });
+  } else {
+    checks.push({ name: 'Viewport Meta', status: 'fail', detail: 'Missing! Required for mobile responsiveness.' });
+  }
+  
+  // Canonical
+  if (metaTags.canonical) {
+    score += 8;
+    checks.push({ name: 'Canonical URL', status: 'pass', detail: metaTags.canonical });
+  } else {
+    score += 2;
+    checks.push({ name: 'Canonical URL', status: 'warn', detail: 'Missing — recommended to prevent duplicate content issues.' });
+  }
+  
+  // Open Graph
+  if (metaTags.ogTitle && metaTags.ogDesc && metaTags.ogImage) {
+    score += 10;
+    checks.push({ name: 'Open Graph Tags', status: 'pass', detail: 'Title, description, and image all present.' });
+  } else {
+    score += 2;
+    checks.push({ name: 'Open Graph Tags', status: 'warn', detail: 'Incomplete. OG tags control social sharing appearance.' });
+  }
+  
+  // Keywords
+  if (metaTags.keywords) {
+    score += 3;
+    checks.push({ name: 'Meta Keywords', status: 'warn', detail: 'Present but Google ignores them. Focus on content quality.' });
+  } else {
+    score += 5;
+    checks.push({ name: 'Meta Keywords', status: 'pass', detail: 'Not needed — Google ignores meta keywords.' });
+  }
+  
+  // Robots
+  if (metaTags.robots) {
+    const isNoIndex = metaTags.robots.includes('noindex');
+    if (isNoIndex) {
+      checks.push({ name: 'Robots Meta', status: 'warn', detail: `"${metaTags.robots}" — page is set to noindex!` });
+    } else {
+      score += 5;
+      checks.push({ name: 'Robots Meta', status: 'pass', detail: `"${metaTags.robots}"` });
+    }
+  } else {
+    score += 5;
+    checks.push({ name: 'Robots Meta', status: 'pass', detail: 'Default (index, follow) — no issues.' });
+  }
+  
+  // Schema
+  if (hasSchema) {
+    score += 8;
+    checks.push({ name: 'Schema Markup', status: 'pass', detail: 'JSON-LD or structured data found.' });
+  } else {
+    checks.push({ name: 'Schema Markup', status: 'warn', detail: 'No structured data found. Adds rich snippets in search.' });
+  }
+  
+  // Page size
+  if (pageSizeKB < 100) {
+    score += 8;
+    checks.push({ name: 'Page Size', status: 'pass', detail: `${pageSizeKB}KB — lightweight.` });
+  } else if (pageSizeKB < 300) {
+    score += 5;
+    checks.push({ name: 'Page Size', status: 'warn', detail: `${pageSizeKB}KB — consider optimizing.` });
+  } else {
+    score += 1;
+    checks.push({ name: 'Page Size', status: 'fail', detail: `${pageSizeKB}KB — too large! Aim under 100KB.` });
+  }
+  
+  // Internal links
+  if (links > 3) {
+    score += 5;
+    checks.push({ name: 'Internal Links', status: 'pass', detail: `${links} internal links found.` });
+  } else if (links > 0) {
+    score += 3;
+    checks.push({ name: 'Internal Links', status: 'warn', detail: `Only ${links} internal links. Add more for navigation and SEO.` });
+  } else {
+    checks.push({ name: 'Internal Links', status: 'warn', detail: 'No internal links detected.' });
+  }
+  
+  // Display results
+  displayResults(metaTags, checks, score, url, { h1s, h2s, h3s, imgs, imgsWithAlt, links, pageSizeKB, hasSchema });
+}
+
+function displayResults(metaTags, checks, score, url, extra) {
+  document.getElementById('results').style.display = 'block';
+  document.getElementById('pageTitle').textContent = metaTags.title || '(no title)';
+  document.getElementById('pageUrl').textContent = url;
+  
+  // Score
+  const pct = Math.min(100, Math.max(0, score));
+  document.getElementById('overallScore').textContent = `${pct}/100`;
+  document.getElementById('scoreFill').style.width = `${pct}%`;
+  document.getElementById('scoreFill').style.background = pct >= 80 ? '#3fb950' : pct >= 50 ? '#d29922' : '#f85149';
+  
+  // Metrics
+  document.getElementById('metricsContainer').innerHTML = `
+    <div class="metric-card"><div class="metric-value">${extra.h1s}</div><div class="metric-label">H1 Tags</div></div>
+    <div class="metric-card"><div class="metric-value">${extra.h2s}</div><div class="metric-label">H2 Tags</div></div>
+    <div class="metric-card"><div class="metric-value">${extra.imgsWithAlt}/${extra.imgs}</div><div class="metric-label">Images with Alt</div></div>
+    <div class="metric-card"><div class="metric-value">${extra.links}</div><div class="metric-label">Internal Links</div></div>
+    <div class="metric-card"><div class="metric-value">${extra.pageSizeKB}KB</div><div class="metric-label">Page Size</div></div>
+    <div class="metric-card"><div class="metric-value">${extra.hasSchema ? '✅' : '❌'}</div><div class="metric-label">Schema Markup</div></div>
+  `;
+  
+  // Checklist
+  document.getElementById('checklist').innerHTML = checks.map(c => `
+    <div class="check-item">
+      <span class="status-${c.status}">${c.status === 'pass' ? '✅' : c.status === 'warn' ? '⚠️' : '❌'}</span>
+      <span><strong>${c.name}:</strong> ${c.detail}</span>
+    </div>
+  `).join('');
+  
+  // Recommendations
+  const recommendations = [];
+  if (pct < 80) recommendations.push('Focus on fixing the ❌ and ⚠️ items above — these are your biggest SEO wins.');
+  if (!metaTags.description) recommendations.push('Add a meta description (120-165 chars) — it directly impacts click-through rate from search.');
+  if (extra.h1s !== 1) recommendations.push(extra.h1s === 0 ? 'Add exactly one H1 tag that includes your primary keyword.' : 'Reduce to exactly one H1 tag. Multiple H1s confuse search engines.');
+  if (extra.h2s === 0) recommendations.push('Add H2 subheadings to structure your content. Each H2 should cover a distinct topic section.');
+  if (extra.imgs > 0 && extra.imgsWithAlt < extra.imgs) recommendations.push(`Add alt text to ${extra.imgs - extra.imgsWithAlt} images. Alt text improves accessibility and image search ranking.`);
+  if (!metaTags.canonical) recommendations.push('Add a canonical URL to prevent duplicate content issues, especially if this page is accessible via multiple URLs.');
+  if (!metaTags.ogTitle || !metaTags.ogImage) recommendations.push('Add Open Graph tags (og:title, og:description, og:image) for better social sharing on Facebook, LinkedIn, and Slack.');
+  if (extra.pageSizeKB > 100) recommendations.push('Optimize page size: compress images, minify CSS/JS, and enable GZIP compression on your server.');
+  if (!extra.hasSchema) recommendations.push('Add JSON-LD schema markup — it enables rich snippets in search results (star ratings, FAQs, etc.).');
+  recommendations.push(`Use our <a href="/tools/seo-meta-generator.html" style="color:var(--accent);">SEO Meta Tag Generator</a> to create optimized meta tags for this page.`);
+  recommendations.push(`Get AI-powered recommendations: call our <a href="/v1/analyze" style="color:var(--accent);">analysis API</a> for deep content optimization suggestions.`);
+  
+  document.getElementById('recommendations').innerHTML = recommendations.map(r => `<div class="tip">💡 ${r}</div>`).join('');
+  
+  // Meta tags found
+  const metaText = Object.entries(metaTags)
+    .filter(([k, v]) => v)
+    .map(([k, v]) => `${k}: ${v}`)
+    .join('\n') || '(none found)';
+  document.getElementById('metaTagsFound').textContent = metaText;
+}
+
+function showStatus(show) {
+  document.getElementById('status').style.display = show ? 'block' : 'none';
+}
+
+// Scroll to results
+window.displayResults = function() {
+  setTimeout(() => {
+    document.getElementById('results').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, 100);
+};
+</script>
+</body>
+</html>

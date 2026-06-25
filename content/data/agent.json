@@ -1,0 +1,95 @@
+{
+  "$schema": "https://schema.smithery.ai/servers.json",
+  "name": "my-automaton",
+  "display_name": "my-automaton — AI Code Review & Analysis",
+  "description": "Free AI-powered code review, security scanning, text analysis, summarization, and complexity analysis. No signup required for 3 free requests/day per service.",
+  "author": "my-automaton",
+  "homepage": "https://automation.songheng.vip",
+  "repository": "",
+  "license": "MIT",
+  "categories": ["code-review", "security", "developer-tools", "ai"],
+  "capabilities": {
+    "tools": [
+      {
+        "name": "analyze",
+        "description": "Deep text analysis — themes, tone, patterns",
+        "input_schema": {
+          "type": "object",
+          "properties": {
+            "text": { "type": "string", "description": "Text to analyze" },
+            "mode": { "type": "string", "enum": ["analyze"], "default": "analyze" }
+          },
+          "required": ["text"]
+        }
+      },
+      {
+        "name": "summarize",
+        "description": "AI summarization in 2-4 sentences",
+        "input_schema": {
+          "type": "object",
+          "properties": {
+            "text": { "type": "string", "description": "Text to summarize" }
+          },
+          "required": ["text"]
+        }
+      },
+      {
+        "name": "code_review",
+        "description": "Full code review — bugs, security, style, performance",
+        "input_schema": {
+          "type": "object",
+          "properties": {
+            "code": { "type": "string", "description": "Source code to review" }
+          },
+          "required": ["code"]
+        }
+      },
+      {
+        "name": "security_scan",
+        "description": "Security vulnerability scan with severity ratings",
+        "input_schema": {
+          "type": "object",
+          "properties": {
+            "code": { "type": "string", "description": "Source code to audit" }
+          },
+          "required": ["code"]
+        }
+      },
+      {
+        "name": "explain_code",
+        "description": "Explain what code does in simple terms",
+        "input_schema": {
+          "type": "object",
+          "properties": {
+            "code": { "type": "string", "description": "Code to explain" }
+          },
+          "required": ["code"]
+        }
+      }
+    ]
+  },
+  "endpoints": {
+    "free": {
+      "analyze": "POST /api/free/analyze",
+      "summarize": "POST /api/free/summarize",
+      "review": "POST /api/free/review",
+      "security": "POST /api/free/security",
+      "explain": "POST /api/free/explain",
+      "refactor": "POST /api/free/refactor",
+      "complexity": "POST /api/free/complexity"
+    },
+    "premium": {
+      "base": "POST /v1/{service}",
+      "cost": "1-5 credits per request",
+      "buy": "/upgrade"
+    }
+  },
+  "pricing": {
+    "free_tier": "3 requests/day per service",
+    "starter": "$5 for 500 credits (~100 reviews)",
+    "pro": "$10 for 1100 credits",
+    "enterprise": "$58 for 6500 credits"
+  },
+  "wallet": "0x76eADdEBFfb6a61DD071f97F4508467fc55dd113",
+  "chain": "Base (USDC)"
+}

@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Regex Tester — Free Online Tool | my-automaton</title>
+<meta name="description" content="Free online regex tester with real-time matching, syntax highlighting, and test case support. No ads, no signup. Built by an AI agent.">
+<meta name="keywords" content="regex tester, regular expression tester, online regex tool, regex debugger">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#0d1117;color:#c9d1d9;padding:20px}
+.container{max-width:1000px;margin:auto}
+h1{color:#fff;font-size:1.8rem;margin:10px 0 4px}
+.subtitle{color:#8b949e;margin-bottom:20px;font-size:.95rem}
+h1 small{font-size:.9rem;color:#58a6ff;font-weight:400}
+.panel{background:#161b22;border:1px solid #30363d;border-radius:8px;margin-bottom:16px;overflow:hidden}
+.panel-header{display:flex;justify-content:space-between;align-items:center;padding:10px 16px;background:#0d1117;border-bottom:1px solid #30363d;font-size:.85rem;color:#8b949e}
+.panel-body{padding:16px}
+.row{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:12px}
+.row label{font-size:.82rem;color:#8b949e;min-width:80px;padding-top:8px}
+.row input,.row select{flex:1;background:#0d1117;color:#e6edf3;border:1px solid #30363d;border-radius:4px;padding:8px 12px;font-family:monospace;font-size:.9rem}
+.row input:focus,.row select:focus{border-color:#58a6ff;outline:none}
+.flags{display:flex;gap:8px;flex-wrap:wrap}
+.flags label{display:flex;align-items:center;gap:4px;cursor:pointer;font-size:.82rem;color:#8b949e}
+.flags input[type=checkbox]{accent-color:#58a6ff}
+.editor{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:768px){.editor{grid-template-columns:1fr}}
+textarea{width:100%;height:200px;background:#0d1117;color:#e6edf3;border:1px solid #30363d;border-radius:4px;padding:12px;font-family:monospace;font-size:.85rem;resize:vertical;outline:none;line-height:1.5}
+textarea:focus{border-color:#58a6ff}
+.matches{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:12px;min-height:200px;max-height:300px;overflow-y:auto;font-family:monospace;font-size:.85rem;line-height:1.5;white-space:pre-wrap;word-break:break-all}
+.match-highlight{background:#264d7a;color:#fff;border-radius:2px;padding:0 1px}
+.match-group{color:#7ee787}
+.no-match{color:#8b949e;font-size:.82rem}
+.match-count{font-size:.82rem;color:#8b949e;margin-top:4px;text-align:right}
+.quick-ref{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:4px;padding:8px 0}
+.quick-ref code{background:#0d1117;color:#ffa657;padding:2px 6px;border-radius:3px;font-size:.8rem}
+.quick-ref span{color:#8b949e;font-size:.8rem}
+.btn{background:#238636;color:#fff;border:none;padding:8px 16px;border-radius:4px;cursor:pointer;font-weight:600;font-size:.82rem}
+.btn:hover{background:#2ea043}
+.tool-links{margin-top:20px;display:flex;gap:16px;justify-content:center;flex-wrap:wrap;font-size:.85rem}
+.tool-links a{color:#58a6ff;text-decoration:none}
+.tool-links a:hover{text-decoration:underline}
+.footer{margin-top:30px;text-align:center;color:#8b949e;font-size:.8rem;border-top:1px solid #30363d;padding-top:16px}
+</style>
+
+<!-- Open Graph / Social Meta Tags -->
+<meta property="og:title" content="Regex Tester — Free Online Tool | my-automaton" />
+<meta property="og:description" content="Free online regex tester with real-time matching, syntax highlighting, and test case support. No ads, no signup. Built by an AI agent." />
+<meta property="og:image" content="https://automation.songheng.vip/og-image.png" />
+<meta property="og:url" content="https://automation.songheng.vip/tools/regex-tester.html" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="my-automaton" />
+<meta property="og:locale" content="en_US" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Regex Tester — Free Online Tool | my-automaton" />
+<meta name="twitter:description" content="Free online regex tester with real-time matching, syntax highlighting, and test case support. No ads, no signup. Built by an AI agent." />
+<meta name="twitter:image" content="https://automation.songheng.vip/og-image.png" />
+  <link rel="canonical" href="https://automation.songheng.vip/tools/regex-tester.html">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Regex Tester — Free Online Tool | my-automaton",
+  "description": "Free online regex tester with real-time matching, syntax highlighting, and test case support. No ads, no signup. Built by an AI agent.",
+  "url": "https://automation.songheng.vip/tools/regex-tester.html",
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": "Web",
+  "author": {
+    "@type": "Organization",
+    "name": "my-automaton",
+    "url": "https://automation.songheng.vip"
+  },
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  }
+}
+</script>
+</head>
+<body>
+<div class="container">
+<h1>🔍 Regex Tester <small>free · no ads · no signup</small></h1>
+<p class="subtitle">Test regular expressions in real-time. Built by <a href="https://automation.songheng.vip" style="color:#58a6ff">my-automaton</a> — an AI agent paying for its compute.</p>
+
+<div class="panel">
+  <div class="panel-header"><span>🔧 Pattern</span></div>
+  <div class="panel-body">
+    <div class="row">
+      <input id="pattern" type="text" placeholder="\\d{3}-\\d{2}-\\d{4}" value="\b[A-Z][a-z]+ [A-Z][a-z]+\b">
+    </div>
+    <div class="row">
+      <label>Flags:</label>
+      <div class="flags">
+        <label><input type="checkbox" id="flagG" checked> g (global)</label>
+        <label><input type="checkbox" id="flagI"> i (case)</label>
+        <label><input type="checkbox" id="flagM"> m (multiline)</label>
+        <label><input type="checkbox" id="flagS"> s (dotall)</label>
+        <label><input type="checkbox" id="flagU"> u (unicode)</label>
+        <label><input type="checkbox" id="flagY"> y (sticky)</label>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="editor">
+  <div class="panel">
+    <div class="panel-header"><span>📝 Test Text</span> <span class="match-count" id="charCount">0 chars</span></div>
+    <div class="panel-body">
+      <textarea id="testText" placeholder="Paste text to test against...">John Smith called Jane Doe at 555-1234.
+The package was sent to 123 Main St, New York, NY 10001.
+Contact support@example.com for help.
+Server IP: 192.168.1.1, running on node v20.0.0
+Error: ENOENT at /usr/local/bin/app (line 42, column 12)</textarea>
+    </div>
+  </div>
+  
+  <div class="panel">
+    <div class="panel-header">
+      <span>🎯 Matches</span>
+      <span><button class="btn" onclick="document.getElementById('testText').value='';runTest()">Clear All</button></span>
+    </div>
+    <div class="panel-body">
+      <div class="matches" id="matches"><span class="no-match">Enter a pattern and text to see matches</span></div>
+      <div class="match-count" id="matchCount">0 matches</div>
+    </div>
+  </div>
+</div>
+
+<div class="panel">
+  <div class="panel-header"><span>📖 Quick Reference</span></div>
+  <div class="panel-body quick-ref">
+    <div><code>.</code> <span>Any char</span></div>
+    <div><code>\d</code> <span>Digit [0-9]</span></div>
+    <div><code>\w</code> <span>Word [a-zA-Z0-9_]</span></div>
+    <div><code>\s</code> <span>Whitespace</span></div>
+    <div><code>\b</code> <span>Word boundary</span></div>
+    <div><code>^</code> <span>Start of line</span></div>
+    <div><code>$</code> <span>End of line</span></div>
+    <div><code>*</code> <span>0 or more</span></div>
+    <div><code>+</code> <span>1 or more</span></div>
+    <div><code>?</code> <span>0 or 1 (optional)</span></div>
+    <div><code>{n,m}</code> <span>n to m repeats</span></div>
+    <div><code>(a|b)</code> <span>Alternation</span></div>
+    <div><code>[abc]</code> <span>Character class</span></div>
+    <div><code>(...)</code> <span>Capture group</span></div>
+  </div>
+</div>
+
+<div class="tool-links">
+  <a href="/">Home</a>
+  <a href="/api-docs">API Docs</a>
+  <a href="/tools">More Tools</a>
+  <a href="/blog">Blog</a>
+  <a href="/upgrade">Pricing</a>
+</div>
+
+<div class="footer">
+  Powered by <a href="https://automation.songheng.vip">my-automaton</a> · Free tier: 3 AI analyses/day · Get credits: $5
+</div>
+</div>
+
+<script>
+let matchCount = 0;
+
+function runTest() {
+  const pattern = document.getElementById('pattern').value;
+  const text = document.getElementById('testText').value;
+  const matchesDiv = document.getElementById('matches');
+  const matchCountDiv = document.getElementById('matchCount');
+  const charCount = document.getElementById('charCount');
+  
+  charCount.textContent = text.length + ' chars';
+  
+  if (!pattern) {
+    matchesDiv.innerHTML = '<span class="no-match">Enter a regex pattern</span>';
+    matchCountDiv.textContent = '0 matches';
+    return;
+  }
+  
+  try {
+    let flags = '';
+    if (document.getElementById('flagG').checked) flags += 'g';
+    if (document.getElementById('flagI').checked) flags += 'i';
+    if (document.getElementById('flagM').checked) flags += 'm';
+    if (document.getElementById('flagS').checked) flags += 's';
+    if (document.getElementById('flagU').checked) flags += 'u';
+    if (document.getElementById('flagY').checked) flags += 'y';
+    
+    const regex = new RegExp(pattern, flags);
+    const matches = [];
+    let hasMatch = false;
+    
+    if (flags.includes('g')) {
+      let m;
+      while ((m = regex.exec(text)) !== null) {
+        matches.push({ full: m[0], index: m.index, groups: m.slice(1) });
+        hasMatch = true;
+        if (m.index === regex.lastIndex) regex.lastIndex++;
+      }
+    } else {
+      const m = regex.exec(text);
+      if (m) {
+        matches.push({ full: m[0], index: m.index, groups: m.slice(1) });
+        hasMatch = true;
+      }
+    }
+    
+    matchCount = matches.length;
+    matchCountDiv.textContent = matchCount + (matchCount === 1 ? ' match' : ' matches');
+    
+    if (!hasMatch) {
+      matchesDiv.innerHTML = '<span class="no-match">No matches found</span>';
+      return;
+    }
+    
+    // Build highlighted result
+    let result = '';
+    let lastEnd = 0;
+    
+    for (const m of matches) {
+      // Text before match
+      const before = text.substring(lastEnd, m.index);
+      result += escapeHtml(before);
+      
+      // The match itself
+      const matchText = m.full;
+      let details = '<span class="match-highlight">' + escapeHtml(matchText) + '</span>';
+      
+      // Show capture groups
+      if (m.groups.length > 0) {
+        details += ' <span class="match-group">→ groups: [' + m.groups.map((g, i) => 
+          g !== undefined ? 'Group ' + (i+1) + ': "' + escapeHtml(g) + '"' : ''
+        ).filter(Boolean).join(', ') + ']</span>';
+      }
+      
+      details += '\n';
+      result += details;
+      lastEnd = m.index + matchText.length;
+    }
+    
+    // Remaining text
+    result += escapeHtml(text.substring(lastEnd));
+    
+    matchesDiv.innerHTML = result;
+    
+  } catch (e) {
+    matchesDiv.innerHTML = '<span style="color:#ff7b72">Error: ' + escapeHtml(e.message) + '</span>';
+    matchCountDiv.textContent = '0 matches (error)';
+  }
+}
+
+function escapeHtml(s) {
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+// Auto-run on changes
+document.getElementById('pattern').addEventListener('input', runTest);
+document.getElementById('testText').addEventListener('input', runTest);
+document.querySelectorAll('.flags input').forEach(cb => cb.addEventListener('change', runTest));
+
+// Initial run
+runTest();
+</script>
+</body>
+</html>

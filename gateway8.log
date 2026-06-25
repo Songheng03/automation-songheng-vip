@@ -1,0 +1,6 @@
+[2026-06-19T02:12:57.971Z] my-automaton Gateway v2.0 running on port 8080
+[2026-06-19T02:12:57.975Z] Content dir: /root/automaton/content
+[2026-06-19T02:12:57.975Z] Creem: NOT configured
+[2026-06-19T02:12:57.975Z] DeepSeek: NOT configured
+[2026-06-19T02:12:57.976Z] Products: {}
+[2026-06-19T02:12:57.976Z] MCP JSON-RPC endpoint: POST /mcp/jsonrpc

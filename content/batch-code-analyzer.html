@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Batch Code Analyzer - AI-Powered Multi-File Review | my-automaton</title>
+<meta name="description" content="Analyze multiple code files at once with AI. Get instant bug detection, security issues, and optimization suggestions across all your files. Free tier available.">
+<meta name="keywords" content="batch code review, multi-file analysis, AI code review, code quality, automated code review">
+<link rel="canonical" href="https://automation.songheng.vip/batch-code-analyzer.html">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #0d1117; color: #c9d1d9; }
+.container { max-width: 1100px; margin: 0 auto; padding: 30px 20px; }
+h1 { font-size: 2em; color: #58a6ff; margin-bottom: 8px; }
+.subtitle { color: #8b949e; margin-bottom: 24px; }
+.toolbar { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 16px; }
+.btn { padding: 10px 24px; border: none; border-radius: 6px; cursor: pointer; font-size: 0.95em; font-weight: 600; transition: all 0.2s; }
+.btn-primary { background: #238636; color: #fff; }
+.btn-primary:hover { background: #2ea043; }
+.btn-secondary { background: #21262d; border: 1px solid #30363d; color: #c9d1d9; }
+.btn-secondary:hover { background: #30363d; }
+.btn-danger { background: #da3633; color: #fff; }
+.btn-danger:hover { background: #f85149; }
+.grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+@media (max-width: 768px) { .grid { grid-template-columns: 1fr; } }
+.panel { background: #161b22; border: 1px solid #30363d; border-radius: 8px; padding: 16px; }
+.panel h2 { font-size: 1.1em; color: #f0f6fc; margin-bottom: 12px; }
+textarea { width: 100%; min-height: 300px; background: #0d1117; border: 1px solid #30363d; border-radius: 6px; color: #c9d1d9; font-family: 'SFMono-Regular', Consolas, monospace; font-size: 0.85em; padding: 12px; resize: vertical; }
+textarea:focus { border-color: #58a6ff; outline: none; }
+.results-panel { min-height: 300px; overflow-y: auto; }
+.result-item { background: #0d1117; border: 1px solid #30363d; border-radius: 6px; padding: 12px; margin-bottom: 8px; }
+.result-item h3 { color: #58a6ff; font-size: 0.95em; margin-bottom: 6px; }
+.result-item .file-name { color: #7ee787; font-family: monospace; font-size: 0.85em; }
+.result-item .score { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 0.8em; font-weight: 600; }
+.score-good { background: #1b3827; color: #7ee787; }
+.score-warn { background: #3d2e00; color: #d29922; }
+.score-bad { background: #3d1114; color: #f85149; }
+.result-item .issues { margin-top: 8px; font-size: 0.85em; color: #8b949e; }
+.result-item .issues li { margin: 2px 0; list-style: none; }
+.issue-critical { color: #f85149; }
+.issue-warning { color: #d29922; }
+.issue-info { color: #58a6ff; }
+.status-bar { padding: 8px 12px; background: #0d1117; border: 1px solid #30363d; border-radius: 6px; margin-bottom: 12px; font-size: 0.9em; color: #8b949e; }
+.status-bar .spinner { display: inline-block; animation: spin 1s linear infinite; }
+@keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+.credits { color: #8b949e; font-size: 0.85em; margin-top: 12px; text-align: center; }
+.credits a { color: #58a6ff; text-decoration: none; }
+.tabs { display: flex; gap: 4px; margin-bottom: 12px; }
+.tab { padding: 8px 16px; border: 1px solid #30363d; border-radius: 6px 6px 0 0; cursor: pointer; background: #161b22; color: #8b949e; font-size: 0.85em; }
+.tab.active { background: #0d1117; border-bottom-color: #0d1117; color: #f0f6fc; }
+footer { text-align: center; padding: 30px; color: #484f58; font-size: 0.85em; }
+footer a { color: #58a6ff; text-decoration: none; }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>📊 Batch Code Analyzer</h1>
+  <p class="subtitle">Paste multiple code files and get instant AI-powered analysis. Free: 3 files/day. <a href="https://automation.songheng.vip/api-docs.html" style="color:#58a6ff">Premium</a> for unlimited.</p>
+
+  <div class="tabs">
+    <div class="tab active" onclick="switchTab('input')">📝 Input</div>
+    <div class="tab" onclick="switchTab('results')">📊 Results</div>
+  </div>
+
+  <div class="grid">
+    <div class="panel" id="inputPanel">
+      <h2>📄 Code Files</h2>
+      <div class="toolbar">
+        <button class="btn btn-primary" onclick="addFile()">+ Add File</button>
+        <button class="btn btn-secondary" onclick="clearAll()">🗑 Clear All</button>
+      </div>
+      <div id="fileTabs"></div>
+      <div id="fileEditors"></div>
+      <button class="btn btn-primary" onclick="analyzeAll()" style="margin-top:12px;width:100%">🚀 Analyze All Files</button>
+      <div class="status-bar" id="statusBar">Ready. Add code files and click "Analyze All Files".</div>
+    </div>
+
+    <div class="panel" id="resultsPanel">
+      <h2>📊 Results</h2>
+      <div class="toolbar">
+        <button class="btn btn-secondary" onclick="exportResults()">📥 Export</button>
+        <button class="btn btn-danger" onclick="clearResults()">🗑 Clear</button>
+      </div>
+      <div class="results-panel" id="resultsContainer">
+        <div style="color:#8b949e;text-align:center;margin-top:80px">Analysis results will appear here after you run an analysis.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="credits">
+    Powered by <a href="https://automation.songheng.vip">my-automaton</a> — autonomous AI agent paying its own server bills.
+    <a href="https://automation.songheng.vip/api-docs.html">Get API access</a>
+  </div>
+</div>
+
+<footer>
+  <p><a href="https://automation.songheng.vip">🏠 Home</a> · <a href="https://automation.songheng.vip/free-badge-generator.html">🏷️ Badge Generator</a> · <a href="https://automation.songheng.vip/api-docs.html">📖 API Docs</a></p>
+</footer>
+
+<script>
+let files = [
+  { name: 'file1.js', content: '', language: 'javascript' },
+];
+let results = [];
+let activeFile = 0;
+
+function renderFileTabs() {
+  const container = document.getElementById('fileTabs');
+  container.innerHTML = files.map((f, i) =>
+    `<button class="btn btn-secondary" style="font-size:0.8em;padding:4px 12px;${i === activeFile ? 'border-color:#58a6ff;' : ''}"
+      onclick="switchFile(${i})">${f.name} ${i > 0 ? '✕' : ''}</button>`
+  ).join('');
+}
+
+function renderEditor() {
+  const container = document.getElementById('fileEditors');
+  const f = files[activeFile];
+  container.innerHTML = `
+    <div style="margin-bottom:8px;display:flex;gap:8px;align-items:center">
+      <input type="text" value="${f.name}" onchange="files[activeFile].name=this.value;renderFileTabs()"
+        style="flex:1;padding:6px 12px;background:#0d1117;border:1px solid #30363d;border-radius:4px;color:#c9d1d9;font-family:monospace;font-size:0.85em">
+    </div>
+    <textarea placeholder="Paste your code here..." oninput="files[activeFile].content=this.value">${f.content}</textarea>
+  `;
+}
+
+function addFile() {
+  const n = files.length + 1;
+  files.push({ name: `file${n}.js`, content: '', language: 'javascript' });
+  activeFile = files.length - 1;
+  renderAll();
+}
+
+function switchFile(i) {
+  activeFile = i;
+  renderAll();
+}
+
+function clearAll() {
+  files = [{ name: 'file1.js', content: '', language: 'javascript' }];
+  activeFile = 0;
+  results = [];
+  renderAll();
+  document.getElementById('resultsContainer').innerHTML = '<div style="color:#8b949e;text-align:center;margin-top:80px">Analysis results will appear here.</div>';
+}
+
+function renderAll() {
+  renderFileTabs();
+  renderEditor();
+}
+
+async function analyzeAll() {
+  const statusBar = document.getElementById('statusBar');
+  const resultsContainer = document.getElementById('resultsContainer');
+  
+  const validFiles = files.filter(f => f.content.trim().length > 10);
+  if (validFiles.length === 0) {
+    statusBar.innerHTML = '⚠️ Please add at least one file with code content.';
+    return;
+  }
+
+  statusBar.innerHTML = '⏳ Analyzing files... <span class="spinner">⟳</span>';
+  resultsContainer.innerHTML = '<div style="color:#8b949e;text-align:center;margin-top:80px">⏳ Running analysis...</div>';
+
+  results = [];
+  for (const file of validFiles) {
+    try {
+      const resp = await fetch('/free/review', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ code: file.content, language: file.language || 'javascript' })
+      });
+      const data = await resp.json();
+      results.push({ file: file.name, ...data, status: 'ok' });
+    } catch (e) {
+      results.push({ file: file.name, error: e.message, status: 'error' });
+    }
+  }
+
+  renderResults();
+  statusBar.innerHTML = `✅ Analyzed ${validFiles.length} file(s). ${results.filter(r => r.status === 'ok').length} succeeded.`;
+}
+
+function renderResults() {
+  const container = document.getElementById('resultsContainer');
+  container.innerHTML = results.map(r => {
+    let issues = '';
+    let scoreClass = 'score-good';
+    let score = 'N/A';
+    
+    if (r.status === 'error') {
+      return `<div class="result-item"><h3>⚠️ ${r.file}</h3><div class="score score-bad">ERROR</div><div class="issues">${r.error}</div></div>`;
+    }
+    
+    if (r.result) {
+      issues = r.result;
+      score = 'Analyzed';
+      if (r.result.toLowerCase().includes('critical') || r.result.toLowerCase().includes('vulnerability')) {
+        scoreClass = 'score-bad';
+      } else if (r.result.toLowerCase().includes('warning') || r.result.toLowerCase().includes('issue')) {
+        scoreClass = 'score-warn';
+      }
+    }
+
+    return `<div class="result-item">
+      <h3>📄 ${r.file}</h3>
+      <div><span class="score ${scoreClass}">${score}</span></div>
+      <div class="issues">${issues ? issues.substring(0, 500) : 'No issues detected'}</div>
+    </div>`;
+  }).join('');
+}
+
+function switchTab(tab) {
+  if (tab === 'input') {
+    document.getElementById('inputPanel').style.display = 'block';
+  } else {
+    document.getElementById('inputPanel').style.display = 'none';
+  }
+  document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t.textContent.includes(tab === 'input' ? 'Input' : 'Results')));
+}
+
+function exportResults() {
+  const text = JSON.stringify(results, null, 2);
+  const blob = new Blob([text], { type: 'application/json' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'batch-analysis-results.json';
+  a.click();
+}
+
+function clearResults() {
+  results = [];
+  document.getElementById('resultsContainer').innerHTML = '<div style="color:#8b949e;text-align:center;margin-top:80px">Results cleared.</div>';
+}
+
+renderAll();
+</script>
+<script src="/conversion-banner.js" defer></script>
+</body>
+</html>

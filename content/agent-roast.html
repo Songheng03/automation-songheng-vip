@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🦾 AI Roast My Code | my-automaton</title>
+<meta name="description" content="Paste your code and let AI roast it — brutally honest code review with humor. Free, no signup. Share your roast score!">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://automation.songheng.vip/agent-roast.html">
+<style>
+:root { --bg:#0d1117; --card:#161b22; --border:#30363d; --text:#c9d1d9; --green:#3fb950; --blue:#58a6ff; --red:#f85149; --orange:#d2991d; --purple:#a371f7; --pink:#db61a2; }
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif; background:var(--bg); color:var(--text); line-height:1.6; min-height:100vh; }
+.container { max-width:800px; margin:0 auto; padding:20px; }
+.header { text-align:center; padding:50px 0 20px; }
+.header h1 { font-size:2.5em; background:linear-gradient(135deg,var(--orange),var(--red),var(--pink)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+.header p { color:#8b949e; margin-top:10px; font-size:1.1em; }
+.editor-area { background:var(--card); border:1px solid var(--border); border-radius:12px; padding:20px; margin:20px 0; }
+textarea { width:100%; min-height:250px; background:#1a1f2e; color:var(--text); border:1px solid var(--border); border-radius:8px; padding:15px; font-family:'Fira Code','Cascadia Code',monospace; font-size:.9em; resize:vertical; }
+textarea:focus { outline:none; border-color:var(--orange); box-shadow:0 0 0 3px rgba(210,153,29,.15); }
+.presets { display:flex; gap:8px; flex-wrap:wrap; margin:10px 0; }
+.preset-btn { padding:6px 14px; background:var(--border); color:var(--text); border:none; border-radius:6px; cursor:pointer; font-size:.85em; transition:background .15s; }
+.preset-btn:hover { background:#484f58; }
+.btn-row { display:flex; gap:10px; margin-top:15px; align-items:center; }
+.roast-btn { padding:12px 36px; background:linear-gradient(135deg,var(--orange),#b0881f); color:#000; border:none; border-radius:8px; font-size:1.05em; font-weight:700; cursor:pointer; transition:transform .15s,box-shadow .15s; }
+.roast-btn:hover { transform:translateY(-1px); box-shadow:0 4px 20px rgba(210,153,29,.4); }
+.roast-btn:disabled { opacity:.5; cursor:not-allowed; transform:none; box-shadow:none; }
+.result-area { background:var(--card); border:1px solid var(--border); border-radius:12px; padding:25px; margin:20px 0; display:none; }
+.result-area.show { display:block; animation:fadeIn .3s ease; }
+@keyframes fadeIn { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
+.roast-score { text-align:center; margin:15px 0; }
+.roast-score .score-num { font-size:4em; font-weight:900; line-height:1; }
+.roast-score .score-label { color:#8b949e; margin-top:5px; }
+.score-emoji { font-size:2em; }
+.roast-text { white-space:pre-wrap; line-height:1.8; font-size:.95em; }
+.issues-list { margin:15px 0; }
+.issue { padding:8px 12px; margin:5px 0; border-radius:6px; font-size:.9em; }
+.issue.sev-high { background:rgba(248,81,73,.12); border-left:3px solid var(--red); }
+.issue.sev-med { background:rgba(210,153,29,.12); border-left:3px solid var(--orange); }
+.issue.sev-low { background:rgba(88,166,255,.12); border-left:3px solid var(--blue); }
+.share-btns { display:flex; gap:8px; margin-top:20px; flex-wrap:wrap; }
+.share-btn { padding:8px 16px; border:none; border-radius:6px; cursor:pointer; font-size:.9em; text-decoration:none; color:#fff; transition:opacity .15s; }
+.share-btn:hover { opacity:.85; }
+.share-twitter { background:#1d9bf0; }
+.share-copy { background:var(--border); color:var(--text); }
+.leaderboard { width:100%; border-collapse:collapse; margin:15px 0; font-size:.9em; }
+.leaderboard th { text-align:left; padding:8px; color:#8b949e; border-bottom:1px solid var(--border); }
+.leaderboard td { padding:8px; border-bottom:1px solid var(--border); }
+.leaderboard .rank { color:var(--orange); font-weight:700; }
+.live-badge { display:inline-block; padding:2px 8px; background:rgba(63,185,80,.15); color:var(--green); border-radius:10px; font-size:.75em; margin-left:5px; }
+footer { text-align:center; padding:30px; color:#8b949e; font-size:.85em; }
+footer a { color:var(--blue); }
+</style>
+
+<!-- Open Graph / Social Meta Tags -->
+<meta property="og:title" content="🦾 AI Roast My Code | my-automaton" />
+<meta property="og:description" content="Paste your code and let AI roast it — brutally honest code review with humor. Free, no signup. Share your roast score!" />
+<meta property="og:image" content="https://automation.songheng.vip/og-image.png" />
+<meta property="og:url" content="https://automation.songheng.vip/agent-roast.html" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="my-automaton" />
+<meta property="og:locale" content="en_US" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="🦾 AI Roast My Code | my-automaton" />
+<meta name="twitter:description" content="Paste your code and let AI roast it — brutally honest code review with humor. Free, no signup. Share your roast score!" />
+<meta name="twitter:image" content="https://automation.songheng.vip/og-image.png" />
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "🦾 AI Roast My Code | my-automaton",
+  "description": "Paste your code and let AI roast it — brutally honest code review with humor. Free, no signup. Share your roast score!",
+  "url": "https://automation.songheng.vip/agent-roast.html"
+}
+</script>
+</head>
+<body>
+<div style="background:#161b22;border-bottom:1px solid #30363d;padding:10px 20px;font-size:.85rem;display:flex;gap:16px;align-items:center;flex-wrap:wrap"><a href="/" style="color:#58a6ff;text-decoration:none;font-weight:600">🏠 Home</a><span style="color:#484f58">|</span><a href="/pricing.html" style="color:#8b949e;text-decoration:none">Pricing</a><a href="/api-docs.html" style="color:#8b949e;text-decoration:none">API</a><a href="/playground.html" style="color:#8b949e;text-decoration:none">Playground</a></div>
+
+<div class="container">
+  <div class="header">
+    <h1>🦾 AI Roast My Code</h1>
+    <p>Paste your code. Get brutally roasted. No mercy. <span class="live-badge">● LIVE</span></p>
+  </div>
+
+  <div class="editor-area">
+    <div class="presets">
+      <button class="preset-btn" onclick="loadPreset('callback')">🔥 Callback Hell</button>
+      <button class="preset-btn" onclick="loadPreset('todo')">📝 TODO App</button>
+      <button class="preset-btn" onclick="loadPreset('sql')">💉 SQL Injection</button>
+      <button class="preset-btn" onclick="loadPreset('nested')">🌀 Deep Nesting</button>
+      <button class="preset-btn" onclick="loadPreset('catch')">🚫 Empty Catch</button>
+    </div>
+    <textarea id="codeInput" placeholder="Paste your code here and prepare to be roasted...&#10;&#10;// The more questionable your code, the better the roast 😈"></textarea>
+    <div class="btn-row">
+      <button class="roast-btn" id="roastBtn" onclick="roastCode()">🔥 Roast My Code</button>
+      <span style="color:#8b949e;font-size:.85em" id="freeCount">3 free roasts today</span>
+    </div>
+  </div>
+
+  <div class="result-area" id="resultArea">
+    <div class="roast-score" id="roastScore"></div>
+    <div class="roast-text" id="roastText"></div>
+    <div class="issues-list" id="issuesList"></div>
+    <div class="share-btns">
+      <button class="share-btn share-twitter" onclick="shareTwitter()">🐦 Share Roast</button>
+      <button class="share-btn share-copy" onclick="shareCopy()">📋 Copy Roast</button>
+    </div>
+  </div>
+
+  <div class="result-area" id="leaderboardArea" style="display:none">
+    <h2 style="color:var(--orange);margin-bottom:10px">🏆 Roast Leaderboard</h2>
+    <p style="color:#8b949e;font-size:.85em">Lowest scores = most roasted. Share your score to rank!</p>
+    <table class="leaderboard" id="leaderboardTable"></table>
+  </div>
+
+  <footer>
+    <p>Powered by <a href="/">my-automaton</a> · <a href="/free-api-key.html">Get 50 Free Credits</a> · <a href="/get-started.html">Pricing</a></p>
+    <p style="margin-top:5px">🦾 Roasts cost 1 free credit · <a href="/api-docs.html">API Docs</a></p>
+  </footer>
+</div>
+
+<script>
+const API_BASE = window.location.origin;
+let roastCount = parseInt(localStorage.getItem('ma_roasts')||'0');
+
+const PRESETS = {
+  callback: `
+// The legendary callback pyramid of doom
+function fetchUserData(userId, callback) {
+  db.query('SELECT * FROM users WHERE id = ?', [userId], function(err, user) {
+    if (err) return callback(err);
+    db.query('SELECT * FROM orders WHERE user_id = ?', [user.id], function(err, orders) {
+      if (err) return callback(err);
+      orders.forEach(function(order) {
+        db.query('SELECT * FROM items WHERE order_id = ?', [order.id], function(err, items) {
+          if (err) return callback(err);
+          items.forEach(function(item) {
+            db.query('SELECT * FROM reviews WHERE item_id = ?', [item.id], function(err, reviews) {
+              if (err) return callback(err);
+              callback(null, {user, orders, items, reviews});
+            });
+          });
+        });
+      });
+    });
+  });
+}`,
+  todo: `
+// TODO app with... interesting choices
+let todos = [];
+function addTodo(text) {
+  todos.push(text);
+  localStorage.setItem('todos', todos.join('|'));
+  document.getElementById('list').innerHTML = todos.map(t => '<li>' + t + '</li>').join('');
+}
+function deleteTodo(index) {
+  todos.splice(index, 1);
+  localStorage.setItem('todos', todos.join('|'));
+  document.getElementById('list').innerHTML = todos.map(t => '<li>' + t + '</li>').join('');
+}
+// Totally fine. Nothing to see here. 👀`,
+  sql: `
+// User login — trust the user, right?
+app.post('/login', (req, res) => {
+  const { username, password } = req.body;
+  const query = "SELECT * FROM users WHERE username = '" + username + "' AND password = '" + password + "'";
+  db.query(query, (err, rows) => {
+    if (rows.length > 0) {
+      req.session.user = rows[0];
+      res.json({ success: true, user: rows[0] });
+    } else {
+      res.status(401).json({ error: 'Invalid credentials' });
+    }
+  });
+});`,
+  nested: `
+// If statements are free, right?
+function calculateShipping(order, user, address, promo) {
+  if (order) {
+    if (order.items) {
+      if (order.items.length > 0) {
+        if (user) {
+          if (user.address) {
+            if (user.address.country) {
+              if (user.address.country === 'US') {
+                if (order.total > 100) {
+                  return 0;
+                } else {
+                  if (promo) {
+                    if (promo.code === 'FREESHIP') {
+                      return 0;
+                    } else {
+                      return 5.99;
+                    }
+                  } else {
+                    return 5.99;
+                  }
+                }
+              } else {
+                return 15.99;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  return null;
+}`,
+  catch: `
+// Error handling? We have error handling at home.
+async function processEverything(items) {
+  for (const item of items) {
+    try {
+      const result = await fetch(item.url);
+      const data = await result.json();
+      await db.save(data);
+      await notify(data.id);
+      await analytics.track('processed', data);
+      await cache.set(item.url, data);
+    } catch (e) {
+      // it's fine
+    }
+  }
+  console.log('all done!');
+}`
+};
+
+function loadPreset(name) {
+  document.getElementById('codeInput').value = PRESETS[name].trim();
+  document.getElementById('roastBtn').scrollIntoView({behavior:'smooth'});
+}
+
+async function roastCode() {
+  const code = document.getElementById('codeInput').value.trim();
+  if (!code) return alert('Paste some code first! 🦾');
+  
+  const btn = document.getElementById('roastBtn');
+  btn.disabled = true;
+  btn.textContent = '🔥 Roasting...';
+  
+  const resultArea = document.getElementById('resultArea');
+  resultArea.classList.remove('show');
+  
+  try {
+    const prompt = `You are a brutally honest code reviewer with a sharp sense of humor. Roast this code mercilessly. Be funny, savage, and constructive. Point out every bad practice, security issue, and WTFs.
+
+Format your response as JSON:
+{
+  "score": number 1-10 (10=perfect, 1=complete disaster),
+  "verdict": "one-line savage summary (max 80 chars)",
+  "roast": "the full roast - be funny, use emojis, be specific about what's wrong",
+  "issues": [{"sev":"high|med|low", "title":"issue name", "desc":"why it's bad"}],
+  "goodPoints": "one thing you actually did right (if anything)"
+}
+
+CODE TO ROAST:
+${code}`;
+
+    const res = await fetch(API_BASE + '/free/analyze', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({text: prompt, mode: 'analyze'})
+    });
+    
+    if (!res.ok) {
+      if (res.status === 429) {
+        throw new Error('No more free roasts today 😢 Get a free API key for 50 more!');
+      }
+      throw new Error('Roast engine overheated. Try again!');
+    }
+    
+    const data = await res.json();
+    let roastData;
+    try {
+      const jsonMatch = data.result.match(/\{[\s\S]*\}/);
+      roastData = JSON.parse(jsonMatch[0]);
+    } catch(e) {
+      roastData = { score: 5, verdict: 'Even the AI struggled with this one 🤯', roast: data.result, issues: [] };
+    }
+    
+    // Display
+    const scoreColor = roastData.score >= 8 ? 'var(--green)' : roastData.score >= 5 ? 'var(--orange)' : 'var(--red)';
+    const emoji = roastData.score >= 9 ? '👑' : roastData.score >= 7 ? '😅' : roastData.score >= 4 ? '🫣' : roastData.score >= 2 ? '💀' : '☠️';
+    
+    document.getElementById('roastScore').innerHTML = `
+      <div class="score-emoji">${emoji}</div>
+      <div class="score-num" style="color:${scoreColor}">${roastData.score}/10</div>
+      <div class="score-label"><em>"${roastData.verdict || 'No words...'}"</em></div>
+    `;
+    document.getElementById('roastText').innerHTML = roastData.roast.replace(/\n/g,'<br>');
+    
+    let issuesHTML = '';
+    if (roastData.issues && roastData.issues.length > 0) {
+      issuesHTML = '<h3 style="color:var(--red);margin-top:20px">🔍 Issues Found:</h3><div class="issues-list">';
+      roastData.issues.forEach(i => {
+        issuesHTML += `<div class="issue sev-${i.sev}"><strong>[${i.sev.toUpperCase()}]</strong> ${i.title}: ${i.desc}</div>`;
+      });
+      if (roastData.goodPoints) {
+        issuesHTML += `<div class="issue sev-low"><strong>🙏 Credit where due:</strong> ${roastData.goodPoints}</div>`;
+      }
+      issuesHTML += '</div>';
+    }
+    document.getElementById('issuesList').innerHTML = issuesHTML;
+    
+    resultArea.classList.add('show');
+    resultArea.scrollIntoView({behavior:'smooth'});
+    
+    // Track
+    roastCount++;
+    localStorage.setItem('ma_roasts', roastCount);
+    updateFreeCount();
+    
+    // Save to leaderboard
+    saveToLeaderboard(roastData.score, roastData.verdict, code.substring(0,100));
+    
+  } catch(e) {
+    resultArea.classList.add('show');
+    document.getElementById('roastScore').innerHTML = '';
+    document.getElementById('roastText').innerHTML = `<div style="color:var(--red);text-align:center;padding:20px">${e.message}<br><br><a href="/free-api-key.html" style="color:var(--blue)">🎁 Get 50 Free Credits →</a></div>`;
+    document.getElementById('issuesList').innerHTML = '';
+  } finally {
+    btn.disabled = false;
+    btn.textContent = '🔥 Roast Again';
+  }
+}
+
+function saveToLeaderboard(score, verdict, snippet) {
+  let lb = JSON.parse(localStorage.getItem('ma_leaderboard')||'[]');
+  lb.push({score, verdict, snippet, time: Date.now()});
+  lb.sort((a,b) => a.score - b.score);
+  lb = lb.slice(0, 10);
+  localStorage.setItem('ma_leaderboard', JSON.stringify(lb));
+  renderLeaderboard();
+}
+
+function renderLeaderboard() {
+  const lb = JSON.parse(localStorage.getItem('ma_leaderboard')||'[]');
+  if (lb.length === 0) return;
+  
+  const area = document.getElementById('leaderboardArea');
+  area.style.display = 'block';
+  
+  document.getElementById('leaderboardTable').innerHTML = `
+    <tr><th>#</th><th>Score</th><th>Verdict</th></tr>
+    ${lb.map((e,i) => `<tr>
+      <td class="rank">${i+1}</td>
+      <td style="color:${e.score<=3?'var(--red)':e.score<=5?'var(--orange)':'var(--green)'};font-weight:700">${e.score}/10</td>
+      <td style="color:#8b949e;font-size:.85em">${e.verdict||'...'}</td>
+    </tr>`).join('')}
+  `;
+}
+
+function shareTwitter() {
+  const verdict = document.querySelector('.score-label em')?.textContent || 'Roasted!';
+  const score = document.querySelector('.score-num')?.textContent || '?/10';
+  const text = `🦾 AI just roasted my code: ${score} - "${verdict}"\n\nTry it:`;
+  const url = encodeURIComponent(window.location.href);
+  window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${url}`, '_blank');
+}
+
+function shareCopy() {
+  const roast = document.getElementById('roastText').textContent;
+  navigator.clipboard.writeText(roast).then(() => {
+    const btn = event.target;
+    btn.textContent = '✅ Copied!';
+    setTimeout(() => btn.textContent = '📋 Copy Roast', 2000);
+  });
+}
+
+function updateFreeCount() {
+  document.getElementById('freeCount').textContent = `${Math.max(0,3-roastCount)} free roasts today`;
+}
+
+// Init
+updateFreeCount();
+renderLeaderboard();
+
+// Auto-load preset from URL hash
+const hash = window.location.hash.slice(1);
+if (PRESETS[hash]) {
+  loadPreset(hash);
+}
+</script>
+<script src="/conversion-banner.js" defer></script>
+</body>
+</html>

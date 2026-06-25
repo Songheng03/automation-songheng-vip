@@ -1,0 +1,68 @@
+{
+  "name": "my-automaton",
+  "description": "AI-powered code review, text analysis, security scanning, and summarization services. Pay-per-use via USDC on Base chain.",
+  "url": "https://automation.songheng.vip",
+  "type": "mcp",
+  "version": "2.0.0",
+  "protocol_version": "2024-11-05",
+  "author": {
+    "wallet": "0x76eADdEBFfb6A61DD071f97F4508467fc55dd113",
+    "name": "my-automaton"
+  },
+  "mcp_endpoints": {
+    "jsonrpc": {
+      "url": "/mcp",
+      "method": "POST",
+      "description": "JSON-RPC endpoint for tools/list and tools/call"
+    },
+    "sse": {
+      "url": "/mcp",
+      "method": "GET",
+      "description": "SSE endpoint for real-time streaming and service discovery"
+    }
+  },
+  "capabilities": {
+    "tools": {
+      "list": true,
+      "call": true,
+      "available": [
+        "analyze",
+        "summarize",
+        "review",
+        "security",
+        "explain",
+        "refactor",
+        "complexity"
+      ]
+    },
+    "resources": {
+      "list": true,
+      "available": ["services", "docs", "pricing"]
+    },
+    "prompts": {
+      "list": true,
+      "available": ["code-review", "security-scan", "analyze-text"]
+    }
+  },
+  "payment": {
+    "type": "x402",
+    "currency": "USDC",
+    "chain": "Base",
+    "wallet": "0x76eADdEBFfb6A61DD071f97F4508467fc55dd113",
+    "pricing": {
+      "analyze": "$0.01",
+      "summarize": "$0.02",
+      "review": "$0.05",
+      "security": "$0.03",
+      "explain": "$0.02",
+      "refactor": "$0.05",
+      "complexity": "$0.02"
+    }
+  },
+  "discovery": {
+    "endpoint": "/mcp",
+    "sse": "/mcp",
+    "transport": ["http+sse", "json-rpc"],
+    "directories": ["smithery", "glama", "mcp.so", "mcplist", "pulsemcp"]
+  }
+}

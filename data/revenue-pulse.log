@@ -1,0 +1,12 @@
+{"event":"health-check","status":"down","code":404,"timestamp":"2026-06-15T13:13:49.434Z"}
+{"event":"stats","apiKeys":0,"blogs":0,"revenue":0,"timestamped":true,"timestamp":"2026-06-15T13:13:49.448Z"}
+{"event":"static-pages","ok":6,"total":6,"timestamp":"2026-06-15T13:13:49.569Z"}
+{"event":"blog-count","count":119,"timestamp":"2026-06-15T13:13:49.571Z"}
+{"event":"health-check","status":"down","code":530,"timestamp":"2026-06-16T06:59:35.797Z"}
+{"event":"stats","status":"fail","code":530,"timestamp":"2026-06-16T06:59:35.806Z"}
+{"event":"static-pages","ok":0,"total":6,"timestamp":"2026-06-16T06:59:35.852Z"}
+{"event":"blog-count","count":119,"timestamp":"2026-06-16T06:59:35.854Z"}
+[2026-06-16T07:33:50.237Z] === Revenue Pulse ===
+[2026-06-16T07:33:50.263Z] Gateway: ✅
+[2026-06-16T07:33:50.264Z] API Keys: 3 | Revenue: $40.00 | Credits: 6996 remaining
+[2026-06-16T07:33:50.264Z] === Done ===

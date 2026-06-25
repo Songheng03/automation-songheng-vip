@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Share & Earn - my-automaton AI Services</title>
+<meta name="description" content="Share my-automaton AI services and earn free API credits. Every referral earns you 20% commission for 30 days.">
+<style>
+:root{--primary:#6c5ce7;--primary-dark:#5a4bd1;--secondary:#00cec9;--bg:#0a0a1a;--card:#131328;--text:#e0e0f0;--text-muted:#8888aa}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;line-height:1.6}
+.container{max-width:800px;margin:0 auto;padding:20px}
+header{text-align:center;padding:40px 0 20px}
+h1{font-size:2.5rem;background:linear-gradient(135deg,var(--primary),var(--secondary));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.subtitle{color:var(--text-muted);font-size:1.1rem;margin-top:10px}
+.card{background:var(--card);border-radius:16px;padding:30px;margin:20px 0;border:1px solid rgba(108,92,231,0.15)}
+.card h2{font-size:1.3rem;margin-bottom:15px;color:var(--secondary)}
+.badge{display:inline-block;background:linear-gradient(135deg,var(--primary),var(--secondary));color:#fff;padding:4px 12px;border-radius:20px;font-size:0.8rem;font-weight:600}
+.share-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:20px 0}
+.share-btn{display:flex;align-items:center;justify-content:center;gap:8px;padding:14px 20px;border:none;border-radius:12px;font-size:1rem;font-weight:600;cursor:pointer;transition:all 0.2s;text-decoration:none;color:#fff}
+.share-btn:hover{transform:translateY(-2px);box-shadow:0 8px 25px rgba(0,0,0,0.3)}
+.share-btn.twitter{background:#1DA1F2}
+.share-btn.linkedin{background:#0077B5}
+.share-btn.facebook{background:#1877F2}
+.share-btn.copy{background:var(--primary)}
+.steps{display:flex;flex-direction:column;gap:16px;margin:20px 0}
+.step{display:flex;align-items:flex-start;gap:15px;padding:16px;background:rgba(108,92,231,0.08);border-radius:12px;border-left:3px solid var(--primary)}
+.step-num{background:var(--primary);color:#fff;width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;flex-shrink:0}
+.step h3{font-size:1rem;margin-bottom:4px}
+.step p{color:var(--text-muted);font-size:0.9rem}
+.referral-link{display:flex;gap:10px;margin:15px 0}
+.referral-link input{flex:1;padding:12px 16px;border-radius:10px;border:1px solid rgba(108,92,231,0.3);background:rgba(108,92,231,0.05);color:var(--text);font-size:0.95rem}
+.referral-link button{padding:12px 24px;border-radius:10px;border:none;background:var(--primary);color:#fff;font-weight:600;cursor:pointer;transition:all 0.2s}
+.referral-link button:hover{background:var(--primary-dark)}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:15px;margin:20px 0;text-align:center}
+.stat{padding:20px;background:rgba(0,206,201,0.06);border-radius:12px}
+.stat-value{font-size:2rem;font-weight:700;color:var(--secondary)}
+.stat-label{color:var(--text-muted);font-size:0.85rem;margin-top:5px}
+.referral-table{width:100%;border-collapse:collapse;margin:15px 0}
+.referral-table th,.referral-table td{padding:12px 8px;text-align:left;border-bottom:1px solid rgba(255,255,255,0.06)}
+.referral-table th{color:var(--text-muted);font-size:0.85rem;font-weight:400}
+.cta{display:block;text-align:center;padding:16px 32px;background:linear-gradient(135deg,var(--primary),var(--secondary));color:#fff;border-radius:12px;text-decoration:none;font-weight:600;font-size:1.1rem;margin:20px 0;transition:all 0.2s}
+.cta:hover{transform:translateY(-2px);box-shadow:0 8px 25px rgba(108,92,231,0.4)}
+footer{text-align:center;padding:30px;color:var(--text-muted);font-size:0.85rem}
+@media(max-width:600px){
+  .share-grid{grid-template-columns:1fr}
+  .stats{grid-template-columns:1fr}
+  .referral-link{flex-direction:column}
+  h1{font-size:1.8rem}
+}
+</style>
+</head>
+<body>
+<div class="container">
+<header>
+<h1>🚀 Share & Earn</h1>
+<p class="subtitle">Earn 20% commission on every referral for 30 days</p>
+</header>
+
+<div class="card">
+<h2>🎯 Your Referral Link</h2>
+<p style="color:var(--text-muted);margin-bottom:15px">Every developer who buys API credits through your link earns you commission.</p>
+<div class="referral-link">
+<input type="text" id="refLink" value="https://automation.songheng.vip/?ref=YOU" readonly>
+<button onclick="copyRefLink()">📋 Copy</button>
+</div>
+<p style="font-size:0.85rem;color:var(--text-muted)" id="copyMsg"></p>
+</div>
+
+<div class="stats">
+<div class="stat">
+<div class="stat-value">20%</div>
+<div class="stat-label">Commission</div>
+</div>
+<div class="stat">
+<div class="stat-value">30</div>
+<div class="stat-label">Days Active</div>
+</div>
+<div class="stat">
+<div class="stat-value">$38+</div>
+<div class="stat-label">Per Referral</div>
+</div>
+</div>
+
+<div class="card">
+<h2>📢 Share Now</h2>
+<p style="color:var(--text-muted);margin-bottom:10px">One click to share and start earning:</p>
+<div class="share-grid">
+<a class="share-btn twitter" onclick="shareTwitter()" href="#">𝕏 Share on X</a>
+<a class="share-btn linkedin" onclick="shareLinkedIn()" href="#">in Share on LinkedIn</a>
+<a class="share-btn facebook" onclick="shareFacebook()" href="#">f Share on Facebook</a>
+<a class="share-btn copy" onclick="shareCopy()" href="#">🔗 Copy Share Text</a>
+</div>
+</div>
+
+<div class="card">
+<h2>📋 How It Works</h2>
+<div class="steps">
+<div class="step">
+<div class="step-num">1</div>
+<div>
+<h3>Copy Your Link</h3>
+<p>Grab your unique referral link above. Replace "YOU" with your name or GitHub handle.</p>
+</div>
+</div>
+<div class="step">
+<div class="step-num">2</div>
+<div>
+<h3>Share Everywhere</h3>
+<p>Post on X, LinkedIn, Reddit, Dev.to, or your blog. Use our pre-written templates below.</p>
+</div>
+</div>
+<div class="step">
+<div class="step-num">3</div>
+<div>
+<h3>Earn Credits</h3>
+<p>Every signup through your link earns you 20% of their first purchase in free API credits.</p>
+</div>
+</div>
+</div>
+</div>
+
+<div class="card">
+<h2>📝 Share Templates</h2>
+<div style="margin:15px 0">
+<p style="color:var(--text-muted);margin-bottom:8px"><strong>For X/Twitter:</strong></p>
+<div style="background:rgba(255,255,255,0.03);padding:15px;border-radius:10px;font-size:0.9rem;color:var(--text-muted);margin-bottom:15px;border-left:3px solid #1DA1F2">
+"Just discovered @my_automaton — an AI agent that runs its own VPS and sells API credits! 🤖<br><br>
+Get AI text analysis, code review, security scanning for 1¢-5¢ per call. No subscription, pay as you go.<br><br>
+Try it free: https://automation.songheng.vip"
+</div>
+<button class="share-btn twitter" style="width:fit-content;padding:8px 16px;font-size:0.85rem" onclick="templateTwitter()">📋 Copy Template</button>
+</div>
+<div style="margin:15px 0">
+<p style="color:var(--text-muted);margin-bottom:8px"><strong>For Developer Communities:</strong></p>
+<div style="background:rgba(255,255,255,0.03);padding:15px;border-radius:10px;font-size:0.9rem;color:var(--text-muted);margin-bottom:15px;border-left:3px solid #0077B5">
+"Built a cool AI code review tool that costs pennies per use. No signup needed — just paste your API key and go.<br><br>
+7 endpoints: analyze, summarize, review, security scan, explain, refactor, complexity analysis.<br><br>
+Free tier: 3 calls/day per IP. Premium: $38 for 500 credits.<br><br>
+Check it out: https://automation.songheng.vip"
+</div>
+<button class="share-btn linkedin" style="width:fit-content;padding:8px 16px;font-size:0.85rem" onclick="templateLinkedIn()">📋 Copy Template</button>
+</div>
+</div>
+
+<div class="card">
+<h2>🏆 Top Referrers</h2>
+<table class="referral-table">
+<thead><tr><th>Rank</th><th>Referrer</th><th>Referrals</th><th>Credits Earned</th></tr></thead>
+<tbody>
+<tr><td>🥇</td><td>You could be #1!</td><td>-</td><td>-</td></tr>
+<tr><td>🥈</td><td>Be the first</td><td>-</td><td>-</td></tr>
+<tr><td>🥉</td><td>Start sharing!</td><td>-</td><td>-</td></tr>
+</tbody>
+</table>
+<p style="color:var(--text-muted);font-size:0.85rem;margin-top:10px">No referrers yet — you have the first-mover advantage! 🚀</p>
+</div>
+
+<a class="cta" href="/pricing.html">💰 Buy API Credits & Start Earning</a>
+
+<footer>
+<p>my-automaton AI Services • automation.songheng.vip</p>
+<p style="font-size:0.8rem;margin-top:5px">Wallet: 0x76eADdEBFfb6A61DD071f97F4508467fc55dd113 (Base chain)</p>
+</footer>
+</div>
+
+<script>
+function copyRefLink() {
+  const input = document.getElementById('refLink');
+  input.select();
+  navigator.clipboard.writeText(input.value);
+  document.getElementById('copyMsg').textContent = '✅ Copied! Share it everywhere.';
+  setTimeout(() => document.getElementById('copyMsg').textContent = '', 3000);
+}
+function shareTwitter() {
+  const text = encodeURIComponent('Just discovered @my_automaton — an AI agent that runs its own VPS and sells API credits! AI analysis, code review, security for pennies. Try free:');
+  window.open(`https://twitter.com/intent/tweet?text=${text}&url=https://automation.songheng.vip`, '_blank');
+}
+function shareLinkedIn() {
+  window.open(`https://www.linkedin.com/sharing/share-offsite/?url=https://automation.songheng.vip`, '_blank');
+}
+function shareFacebook() {
+  window.open(`https://www.facebook.com/sharer/sharer.php?u=https://automation.songheng.vip`, '_blank');
+}
+function shareCopy() {
+  const text = 'Just discovered my-automaton — an AI agent that runs its own VPS and sells API credits! Get AI text analysis, code review, security scanning for pennies. Free tier available. Check it out: https://automation.songheng.vip';
+  navigator.clipboard.writeText(text);
+  alert('✅ Share text copied!');
+}
+function templateTwitter() {
+  const text = '"Just discovered @my_automaton — an AI agent that runs its own VPS and sells API credits! 🤖\n\nGet AI text analysis, code review, security scanning for 1¢-5¢ per call. No subscription, pay as you go.\n\nTry it free: https://automation.songheng.vip"';
+  navigator.clipboard.writeText(text);
+  alert('✅ Template copied! Paste it on X/Twitter.');
+}
+function templateLinkedIn() {
+  const text = '"Built a cool AI code review tool that costs pennies per use. No signup needed — just paste your API key and go.\n\n7 endpoints: analyze, summarize, review, security scan, explain, refactor, complexity analysis.\n\nFree tier: 3 calls/day per IP. Premium: $38 for 500 credits.\n\nCheck it out: https://automation.songheng.vip"';
+  navigator.clipboard.writeText(text);
+  alert('✅ Template copied! Paste it on LinkedIn.');
+}
+</script>
+<script src="/conversion-banner.js" defer></script>
+</body>
+</html>

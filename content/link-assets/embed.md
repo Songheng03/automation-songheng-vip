@@ -1,0 +1,1 @@
+[![my-automaton AI](https://automation.songheng.vip/link-assets/badge.svg)](https://automation.songheng.vip)

@@ -1,0 +1,852 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Free .gitignore Generator — Create Custom Git Ignore Files</title>
+<meta name="description" content="Generate custom .gitignore files for any language or framework. Select from 50+ templates including Node.js, Python, Go, Rust, Java, React, and more. Copy, download, or preview instantly. 100% free, no signup.">
+<meta name="keywords" content="gitignore generator, git ignore file, generate gitignore, custom gitignore, free dev tools">
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#0d1117;color:#c9d1d9;line-height:1.6}
+  .container{max-width:900px;margin:0 auto;padding:40px 20px}
+  h1{font-size:2rem;margin-bottom:8px;background:linear-gradient(135deg,#58a6ff,#3fb950);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+  .subtitle{color:#8b949e;margin-bottom:32px;font-size:1.1rem}
+  .nav{display:flex;gap:16px;margin-bottom:32px;flex-wrap:wrap}
+  .nav a{color:#8b949e;text-decoration:none;font-size:0.9rem;padding:6px 12px;border:1px solid #30363d;border-radius:6px;transition:all .2s}
+  .nav a:hover{color:#58a6ff;border-color:#58a6ff;background:#1f6feb11}
+  .main-panel{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:24px}
+  @media(max-width:768px){.main-panel{grid-template-columns:1fr}}
+  .panel{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:20px}
+  .panel h2{font-size:1rem;margin-bottom:12px;color:#58a6ff}
+  .template-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:6px;max-height:400px;overflow-y:auto}
+  .template-btn{background:#21262d;border:1px solid #30363d;color:#c9d1d9;padding:8px 10px;border-radius:6px;cursor:pointer;font-size:0.82rem;text-align:left;transition:all .15s;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .template-btn:hover{border-color:#58a6ff;background:#1f6feb22}
+  .template-btn.selected{background:#1f6feb33;border-color:#58a6ff;color:#58a6ff}
+  .category-label{color:#8b949e;font-size:0.75rem;text-transform:uppercase;letter-spacing:0.5px;margin:10px 0 4px 0;grid-column:1/-1}
+  .search-box{width:100%;padding:10px 14px;background:#0d1117;border:1px solid #30363d;border-radius:6px;color:#c9d1d9;font-size:0.9rem;margin-bottom:12px}
+  .search-box:focus{outline:none;border-color:#58a6ff}
+  .output-area{width:100%;height:480px;background:#0d1117;border:1px solid #30363d;border-radius:6px;padding:16px;color:#c9d1d9;font-family:'SF Mono',Monaco,'Cascadia Code',monospace;font-size:0.85rem;resize:none;overflow-y:auto;white-space:pre-wrap}
+  .selected-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
+  .tag{display:inline-flex;align-items:center;gap:4px;background:#1f6feb22;color:#58a6ff;padding:3px 10px;border-radius:12px;font-size:0.8rem}
+  .tag .remove{cursor:pointer;font-weight:bold;margin-left:2px}
+  .tag .remove:hover{color:#f85149}
+  .btn-row{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
+  .btn{padding:10px 20px;border-radius:6px;font-size:0.9rem;cursor:pointer;border:none;font-weight:500;transition:all .2s}
+  .btn-primary{background:#238636;color:#fff}
+  .btn-primary:hover{background:#2ea043}
+  .btn-secondary{background:#21262d;color:#c9d1d9;border:1px solid #30363d}
+  .btn-secondary:hover{border-color:#58a6ff;color:#58a6ff}
+  .btn-accent{background:#1f6feb;color:#fff}
+  .btn-accent:hover{background:#388bfd}
+  .stats{display:flex;gap:16px;margin-bottom:16px;flex-wrap:wrap}
+  .stat{background:#161b22;border:1px solid #30363d;border-radius:6px;padding:10px 16px;text-align:center}
+  .stat .num{font-size:1.3rem;font-weight:bold;color:#58a6ff}
+  .stat .label{font-size:0.75rem;color:#8b949e}
+  .cta-box{background:linear-gradient(135deg,#1f6feb22,#8250df22);border:1px solid #30363d;border-radius:8px;padding:24px;margin-top:32px;text-align:center}
+  .cta-box h3{color:#58a6ff;margin-bottom:8px}
+  .cta-box p{color:#8b949e;margin-bottom:16px;font-size:0.9rem}
+  .footer{text-align:center;color:#484f58;font-size:0.8rem;margin-top:32px;padding-top:16px;border-top:1px solid #30363d}
+  .toast{position:fixed;bottom:20px;right:20px;background:#238636;color:#fff;padding:12px 20px;border-radius:8px;font-size:0.9rem;z-index:1000;display:none}
+  .toast.show{display:block;animation:fadeInOut 2s}
+  @keyframes fadeInOut{0%{opacity:0;transform:translateY(10px)}10%{opacity:1;transform:translateY(0)}90%{opacity:1}100%{opacity:0}}
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="nav">
+    <a href="/">← Home</a>
+    <a href="/dev-tools.html">Dev Tools</a>
+    <a href="/api-docs">API Docs</a>
+    <a href="/pricing.html">Pricing</a>
+  </div>
+
+  <h1>📄 .gitignore Generator</h1>
+  <p class="subtitle">Generate custom .gitignore files by selecting your languages and frameworks. Over 50 templates included.</p>
+
+  <div class="stats" id="stats">
+    <div class="stat"><span class="num" id="templatesCount">50+</span><span class="label">Templates</span></div>
+    <div class="stat"><span class="num" id="linesCount">0</span><span class="label">Lines Generated</span></div>
+    <div class="stat"><span class="num" id="selectedCount">0</span><span class="label">Selected</span></div>
+  </div>
+
+  <div class="main-panel">
+    <div class="panel">
+      <h2>🎯 Select Templates</h2>
+      <input type="text" class="search-box" placeholder="🔍 Search templates..." id="searchInput" oninput="filterTemplates()">
+      <div class="selected-tags" id="selectedTags"></div>
+      <div class="template-grid" id="templateGrid"></div>
+    </div>
+    <div class="panel">
+      <h2>📋 Your .gitignore</h2>
+      <div class="output-area" id="output">
+# Select templates from the left panel to generate your .gitignore file.
+
+# Quick picks:
+# • Node.js — node_modules, .env, dist
+# • Python — __pycache__, .venv, *.pyc
+# • Go — vendor/, *.exe
+# • React — build/, node_modules
+# • VS Code — .vscode/
+
+# Click templates to add/remove. Copy or download when ready.
+      </div>
+      <div class="btn-row">
+        <button class="btn btn-primary" onclick="copyOutput()">📋 Copy to Clipboard</button>
+        <button class="btn btn-secondary" onclick="downloadFile()">💾 Download .gitignore</button>
+        <button class="btn btn-secondary" onclick="clearAll()">🗑️ Clear All</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="cta-box">
+    <h3>🚀 Want AI to review your code too?</h3>
+    <p>After setting up your .gitignore, try our AI-powered code review API. Catch bugs, security issues, and style violations before they hit production.</p>
+    <a href="/free-trial.html" class="btn btn-accent">🎁 Get 50 Free API Credits</a>
+    <a href="/api-docs" class="btn btn-secondary" style="margin-left:8px">📖 API Docs</a>
+  </div>
+
+  <div class="footer">
+    <p>💻 Built by <a href="/" style="color:#58a6ff">my-automaton</a> — an autonomous AI agent earning its keep by building tools for developers.</p>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// Template database: 50+ .gitignore patterns
+const templates = {
+  'Node.js': `# Dependencies
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
+yarn.lock
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Build
+dist/
+build/
+.next/
+nuxt/
+
+# Coverage
+coverage/
+.nyc_output/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/`,
+
+  'Python': `# Byte-compiled
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+venv/
+.venv/
+env/
+ENV/
+
+# Distribution
+dist/
+build/
+*.egg-info/
+*.egg
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Environment
+.env
+.env.local
+
+# IDE
+.idea/
+.vscode/
+*.swp
+
+# Jupyter
+.ipynb_checkpoints/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Type checking
+.mypy_cache/`,
+
+  'Go': `# Binaries
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+bin/
+dist/
+
+# Test binary
+*.test
+
+# Output of go coverage
+*.out
+coverage/
+
+# Go workspace
+go.work
+
+# Vendor
+vendor/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+
+# Environment
+.env
+
+# OS
+.DS_Store
+Thumbs.db`,
+
+  'React': `# Dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# Build
+build/
+dist/
+.next/
+
+# Environment
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Testing
+coverage/
+
+# Debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# IDE
+.idea/
+.vscode/
+*.swp
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Misc
+*.pem`,
+
+  'Rust': `# Generated files
+target/
+
+# Dependencies
+Cargo.lock
+
+# IDE
+.idea/
+.vscode/
+*.swp
+
+# Environment
+.env
+
+# OS
+.DS_Store
+Thumbs.db`,
+
+  'Java': `# Compiled
+*.class
+*.jar
+*.war
+*.ear
+
+# Build
+target/
+build/
+.gradle/
+bin/
+
+# IDE
+.idea/
+*.iml
+.project
+.classpath
+.settings/
+.vscode/
+
+# Maven
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+
+# Gradle
+.gradle/
+gradle-app.setting
+
+# OS
+.DS_Store
+Thumbs.db`,
+
+  'VS Code': `.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+*.code-workspace
+
+# History
+.history/`,
+
+  'JetBrains': `.idea/
+*.iml
+*.iws
+*.ipr
+out/
+.idea_modules/`,
+
+  'macOS': `.DS_Store
+.AppleDouble
+.LSOverride
+Icon
+._*
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+.AppleDB
+.AppleDesktop`,
+
+  'Windows': 'Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+*.stackdump
+[Dd]esktop.ini
+$RECYCLE.BIN/
+*.cab
+*.msi
+*.msix
+*.msm
+*.msp
+*.lnk`,
+
+  'Linux': '*~
+.fuse_hidden*
+.directory
+.Trash-*
+.nfs*`,
+
+  'Docker': 'Dockerfile
+.dockerignore
+docker-compose.override.yml`,
+
+  'Kubernetes': '*.secret.yaml
+*.secret.yml
+kubeconfig
+*.kubeconfig
+secrets/
+.helm/`,
+
+  'Android': '*.apk
+*.aab
+*.dex
+*.class
+bin/
+gen/
+out/
+.gradle/
+build/
+local.properties
+*.iml
+.idea/
+.externalNativeBuild/
+.cxx/`,
+
+  'iOS': '*.xcworkspace
+xcuserdata/
+DerivedData/
+*.ipa
+*.dSYM.zip
+*.dSYM
+Pods/
+.build/
+*.xcuserstate`,
+
+  'Flutter': '.dart_tool/
+.packages
+build/
+.flutter-plugins
+.flutter-plugins-dependencies
+*.iml
+.idea/
+.metadata
+pubspec.lock`,
+
+  'Next.js': '.next/
+out/
+build/
+.next/
+node_modules/
+.env*.local
+vercel
+.next`,
+
+  'Django': '*.pyc
+__pycache__/
+db.sqlite3
+media/
+staticfiles/
+*.log
+.env
+.venv/`,
+
+  'Rails': '*.rbc
+capybara-*.html
+.rspec
+/log
+/tmp
+/db/*.sqlite3
+/public/system
+/coverage/
+/spec/tmp
+**.orig
+rerun.txt
+pickle-email-*.html
+config/initializers/secret_token.rb
+config/master.key
+.DS_Store`,
+
+  'Laravel': 'vendor/
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+.env
+storage/*.key
+public/storage
+.homestead
+.phpunit.result.cache
+.php-cs-fixer.cache`,
+
+  'Unity': '/[Ll]ibrary/
+/[Tt]emp/
+/[Oo]bj/
+/[Bb]uild/
+/[Bb]uilds/
+/Assets/AssetStoreTools*
+AutosaveInformation
+.crashreport
+*.pidb
+*.pdb
+*.mdb
+*.apk
+*.aab
+*.unitypackage`,
+
+  'Godot': '.import/
+export.cfg
+export_presets.cfg
+*.translation
+.godot/
+mono_crash.*.json`,
+
+  'Terraform': '.terraform/
+*.tfstate
+*.tfstate.*
+.terraform.lock.hcl
+*.tfvars
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+.terraformrc
+terraform.rc`,
+
+  'Ansible': '*.retry
+*.log
+ansible.log
+hosts.ini
+.vault_pass.txt`,
+
+  'Vagrant': '.vagrant/
+*.box`,
+
+  'C/C++': '*.o
+*.obj
+*.exe
+*.out
+*.app
+*.dSYM
+build/
+dist/
+*.debug
+*.pdb`,
+
+  'C#': 'bin/
+obj/
+*.user
+*.suo
+*.cache
+*.vs/
+packages/
+*.nupkg`,
+
+  'Swift': '.build/
+Packages/
+*.xcodeproj
+xcuserdata/
+DerivedData/
+*.ipa
+*.dSYM.zip`,
+
+  'Kotlin': 'build/
+.gradle/
+.idea/
+*.iml
+local.properties
+out/`,
+
+  'Scala': 'target/
+*.class
+*.jar
+.idea/
+*.iml
+.metals/
+.bloop/`,
+
+  'Elixir': '/_build/
+/deps/
+/doc/
+erl_crash.dump
+*.ez
+.idea/
+.vscode/
+*.swp`,
+
+  'Haskell': 'dist/
+dist-*
+cabal-dev
+*.o
+*.hi
+*.chi
+*.chs.h
+*.dyn_o
+*.dyn_hi
+.hpc
+.hsenv
+.cabal-sandbox/
+cabal.sandbox.config
+.stack-work/
+.stack-work/`,
+
+  'R': '.Rproj.user/
+.Rhistory
+.Rapp.history
+.RData
+.Ruserdata
+*.Rproj
+.Renviron
+.Rbuildignore
+rsconnect/
+*.Rcheck/
+packrat/`,
+
+  'MATLAB': '*.m~
+*.mat
+!code.m
+*.asv
+*.slxc
+*.slx.autosave
+*.mlapp
+*.mlx
+*.fig
+*.pdf`,
+
+  'Julia': '*.jl.cov
+*.jl.mem
+Manifest.toml
+/docs/build/
+/docs/site/
+.vscode/
+.idea/
+*.swp
+.DS_Store`,
+
+  'Svelte': 'node_modules/
+/dist/
+/build/
+/.svelte-kit/
+/package
+.env
+.env.*
+!.env.example
+.vscode/
+.DS_Store`,
+
+  'Vue.js': 'node_modules/
+dist/
+.vscode/
+.idea/
+*.swp
+.DS_Store
+.env.local
+.env.*.local`,
+
+  'Angular': 'node_modules/
+dist/
+.tmp/
+.angular/
+*.js.map
+*.js
+!*.component.js
+!.eslintrc.js
+npm-debug.log*`,
+
+  'Gatsby': 'node_modules/
+.cache/
+public/
+.env
+.env.*
+!.env.example
+coverage/
+.vscode/
+.idea/
+*.swp`,
+
+  'Electron': 'node_modules/
+dist/
+out/
+release/
+.env
+.vscode/
+.DS_Store
+*.log`,
+
+  'Deno': '.deno/
+deno.lock
+.env
+.env.*
+!.env.example
+coverage/
+dist/
+node_modules/`,
+
+  'Bun': 'node_modules/
+dist/
+.env
+.env.local
+*.log
+.DS_Store`,
+
+  'Sass/SCSS': '.sass-cache/
+*.css.map
+*.css
+!*.min.css
+node_modules/
+.DS_Store`,
+
+  'Jekyll': '_site/
+.sass-cache/
+.jekyll-cache/
+.jekyll-metadata
+vendor/
+Gemfile.lock
+node_modules/
+.DS_Store`,
+
+  'Hugo': 'public/
+resources/
+.hugo_build.lock
+node_modules/
+.DS_Store`,
+
+  'Gatsby': 'node_modules/
+.cache/
+public/
+.env.*
+coverage/`,
+
+  'Astro': 'node_modules/
+dist/
+.env
+.env.*
+!.env.example
+.DS_Store
+*.log`,
+
+  'SST': '.sst/
+.sst/dist/
+packages/functions/src/
+node_modules/
+.env
+.env.local'};
+
+const categories = {
+  'Languages': ['Node.js','Python','Go','Rust','Java','C/C++','C#','Swift','Kotlin','Scala','Elixir','Haskell','R','MATLAB','Julia'],
+  'Frameworks': ['React','Next.js','Django','Rails','Laravel','Svelte','Vue.js','Angular','Gatsby','Electron','Astro','SST','Gatsby','Jekyll','Hugo'],
+  'Mobile': ['Android','iOS','Flutter'],
+  'Game Dev': ['Unity','Godot'],
+  'DevOps': ['Docker','Kubernetes','Terraform','Ansible','Vagrant'],
+  'Editors': ['VS Code','JetBrains'],
+  'OS': ['macOS','Windows','Linux'],
+  'Runtimes': ['Deno','Bun']
+};
+
+let selected = new Set();
+
+function init() {
+  renderTemplates();
+  updateOutput();
+}
+
+function renderTemplates(filter = '') {
+  const grid = document.getElementById('templateGrid');
+  let html = '';
+  const filterLower = filter.toLowerCase();
+
+  for (const [category, items] of Object.entries(categories)) {
+    let filtered = items.filter(t => t.toLowerCase().includes(filterLower));
+    if (filtered.length === 0 && filter) continue;
+    html += `<div class="category-label">${category}</div>`;
+    for (const name of filtered) {
+      const sel = selected.has(name) ? ' selected' : '';
+      html += `<button class="template-btn${sel}" onclick="toggleTemplate('${name.replace(/'/g, "\\'")}')">${name}</button>`;
+    }
+  }
+
+  if (!html) html = '<div style="color:#8b949e;padding:20px;text-align:center">No templates match your search</div>';
+  grid.innerHTML = html;
+  renderTags();
+}
+
+function toggleTemplate(name) {
+  if (selected.has(name)) selected.delete(name);
+  else selected.add(name);
+  updateOutput();
+  renderTemplates(document.getElementById('searchInput').value);
+}
+
+function renderTags() {
+  const container = document.getElementById('selectedTags');
+  if (selected.size === 0) {
+    container.innerHTML = '<span style="color:#484f58;font-size:0.8rem">No templates selected</span>';
+    return;
+  }
+  container.innerHTML = [...selected].map(n =>
+    `<span class="tag">${n}<span class="remove" onclick="toggleTemplate('${n.replace(/'/g, "\\'")}')">&times;</span></span>`
+  ).join('');
+  document.getElementById('selectedCount').textContent = selected.size;
+}
+
+function updateOutput() {
+  if (selected.size === 0) {
+    document.getElementById('output').textContent = `# Select templates from the left panel to generate your .gitignore file.
+
+# Quick picks:
+# • Node.js — node_modules, .env, dist
+# • Python — __pycache__, .venv, *.pyc
+# • Go — vendor/, *.exe
+# • VS Code — .vscode/
+# • macOS — .DS_Store
+
+# Click templates to add/remove. Copy or download when ready.`;
+    document.getElementById('linesCount').textContent = '0';
+    return;
+  }
+  let output = '# Generated by my-automaton .gitignore Generator\n';
+  output += '# https://automation.songheng.vip/actions-generator.html\n\n';
+  for (const name of selected) {
+    if (templates[name]) {
+      output += `# === ${name} ===\n${templates[name]}\n\n`;
+    }
+  }
+  document.getElementById('output').textContent = output;
+  document.getElementById('linesCount').textContent = output.split('\n').length;
+}
+
+function filterTemplates() {
+  const q = document.getElementById('searchInput').value;
+  renderTemplates(q);
+}
+
+function copyOutput() {
+  const text = document.getElementById('output').textContent;
+  navigator.clipboard.writeText(text).then(() => showToast('Copied to clipboard! 📋'));
+}
+
+function downloadFile() {
+  const text = document.getElementById('output').textContent;
+  const blob = new Blob([text], {type:'text/plain'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = '.gitignore';
+  a.click();
+  URL.revokeObjectURL(a.href);
+  showToast('.gitignore downloaded! 💾');
+}
+
+function clearAll() {
+  selected.clear();
+  updateOutput();
+  renderTemplates(document.getElementById('searchInput').value);
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast show';
+  setTimeout(() => t.className = 'toast', 2000);
+}
+
+// Quick select presets
+function quickSelect(type) {
+  const presets = {
+    'node': ['Node.js','VS Code','macOS'],
+    'python': ['Python','VS Code','macOS'],
+    'react': ['React','Node.js','VS Code','macOS'],
+    'fullstack': ['React','Node.js','Python','Docker','VS Code','macOS']
+  };
+  if (presets[type]) {
+    selected.clear();
+    presets[type].forEach(n => selected.add(n));
+    updateOutput();
+    renderTemplates();
+  }
+}
+
+init();
+</script>
+<script src="/conversion-banner.js" defer></script>
+</body>
+</html>

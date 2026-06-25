@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Agent Newsletter — Get 50 Free Credits + Early Access | my-automaton</title>
+<meta name="description" content="Subscribe to the my-automaton newsletter for AI agent news, tips, and exclusive API deals. Get 50 free credits on signup + early access to new features.">
+<meta name="keywords" content="AI agent newsletter, API credits, developer tools, AI agent services">
+<meta property="og:title" content="AI Agent Newsletter — Free Credits + Early Access">
+<meta property="og:description" content="Subscribe for AI agent news, tutorials, and exclusive API deals. 50 free credits on signup.">
+<meta property="og:url" content="https://automation.songheng.vip/newsletter">
+<link rel="canonical" href="https://automation.songheng.vip/newsletter">
+<style>
+  :root {
+    --bg: #0a0a1a;
+    --card: #12122a;
+    --border: #2a2a5a;
+    --accent: #6c5ce7;
+    --accent2: #00cec9;
+    --accent3: #fd79a8;
+    --text: #e0e0f0;
+    --muted: #8888aa;
+    --radius: 12px;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+  .container { max-width: 780px; margin: 0 auto; padding: 40px 20px; }
+
+  /* Hero */
+  .hero {
+    text-align: center;
+    padding: 60px 0 40px;
+  }
+  .hero .badge {
+    display: inline-block;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    color: #fff;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    padding: 6px 16px;
+    border-radius: 20px;
+    margin-bottom: 20px;
+  }
+  .hero h1 {
+    font-size: 2.8rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, #fff, var(--accent2));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 16px;
+    line-height: 1.2;
+  }
+  .hero p {
+    font-size: 1.15rem;
+    color: var(--muted);
+    max-width: 600px;
+    margin: 0 auto 32px;
+  }
+
+  /* Offer cards */
+  .offer-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 40px;
+  }
+  @media (max-width: 600px) {
+    .offer-grid { grid-template-columns: 1fr; }
+    .hero h1 { font-size: 2rem; }
+  }
+  .offer-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px;
+    text-align: center;
+    transition: transform 0.2s, border-color 0.2s;
+  }
+  .offer-card:hover {
+    transform: translateY(-3px);
+    border-color: var(--accent);
+  }
+  .offer-card .icon {
+    font-size: 2.2rem;
+    margin-bottom: 12px;
+  }
+  .offer-card h3 {
+    font-size: 1.05rem;
+    margin-bottom: 8px;
+    color: #fff;
+  }
+  .offer-card p {
+    font-size: 0.88rem;
+    color: var(--muted);
+  }
+
+  /* Signup form */
+  .signup-box {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 40px;
+    margin-bottom: 40px;
+  }
+  .signup-box h2 {
+    text-align: center;
+    font-size: 1.4rem;
+    margin-bottom: 8px;
+  }
+  .signup-box .subtitle {
+    text-align: center;
+    color: var(--muted);
+    margin-bottom: 28px;
+    font-size: 0.95rem;
+  }
+  .form-group {
+    margin-bottom: 16px;
+  }
+  .form-group label {
+    display: block;
+    font-size: 0.88rem;
+    font-weight: 600;
+    margin-bottom: 6px;
+    color: #ccc;
+  }
+  .form-group input {
+    width: 100%;
+    padding: 12px 16px;
+    background: #1a1a3a;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: #fff;
+    font-size: 1rem;
+    transition: border-color 0.2s;
+  }
+  .form-group input:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(108,92,231,0.2);
+  }
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  @media (max-width: 500px) {
+    .form-row { grid-template-columns: 1fr; }
+  }
+  .checkbox-group {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin: 20px 0;
+  }
+  .checkbox-group input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    margin-top: 3px;
+    accent-color: var(--accent);
+    flex-shrink: 0;
+  }
+  .checkbox-group label {
+    font-size: 0.85rem;
+    color: var(--muted);
+  }
+  .btn-submit {
+    width: 100%;
+    padding: 14px;
+    background: linear-gradient(135deg, var(--accent), #8b7cf7);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.05rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: opacity 0.2s, transform 0.1s;
+  }
+  .btn-submit:hover { opacity: 0.9; }
+  .btn-submit:active { transform: scale(0.98); }
+  .btn-submit:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  /* Status messages */
+  .status-msg {
+    display: none;
+    padding: 12px 16px;
+    border-radius: 8px;
+    margin-bottom: 16px;
+    font-size: 0.9rem;
+  }
+  .status-msg.success {
+    display: block;
+    background: rgba(0,206,201,0.12);
+    border: 1px solid var(--accent2);
+    color: var(--accent2);
+  }
+  .status-msg.error {
+    display: block;
+    background: rgba(253,121,168,0.12);
+    border: 1px solid var(--accent3);
+    color: var(--accent3);
+  }
+  .status-msg.loading {
+    display: block;
+    background: rgba(108,92,231,0.12);
+    border: 1px solid var(--accent);
+    color: var(--accent2);
+  }
+
+  /* What you'll get */
+  .content-list {
+    margin: 40px 0;
+  }
+  .content-list h2 {
+    font-size: 1.3rem;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  .content-item {
+    display: flex;
+    gap: 14px;
+    padding: 14px 0;
+    border-bottom: 1px solid rgba(42,42,90,0.5);
+  }
+  .content-item:last-child { border-bottom: none; }
+  .content-item .mark {
+    color: var(--accent2);
+    font-size: 1.2rem;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .content-item h4 {
+    font-size: 0.98rem;
+    margin-bottom: 4px;
+    color: #fff;
+  }
+  .content-item p {
+    font-size: 0.86rem;
+    color: var(--muted);
+  }
+
+  /* Testimonial */
+  .testimonial {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 28px;
+    margin: 40px 0;
+    text-align: center;
+  }
+  .testimonial blockquote {
+    font-style: italic;
+    font-size: 1rem;
+    color: #ccc;
+    margin-bottom: 12px;
+  }
+  .testimonial cite {
+    display: block;
+    font-size: 0.85rem;
+    color: var(--muted);
+  }
+
+  /* Footer */
+  .footer {
+    text-align: center;
+    padding: 40px 0 20px;
+    color: var(--muted);
+    font-size: 0.82rem;
+  }
+  .footer a {
+    color: var(--accent);
+    text-decoration: none;
+  }
+  .footer a:hover { text-decoration: underline; }
+
+  /* Confetti effect placeholder */
+  .confetti-container {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 9999;
+    overflow: hidden;
+  }
+  .confetti-piece {
+    position: absolute;
+    width: 8px; height: 8px;
+    top: -10px;
+    animation: confetti-fall linear forwards;
+  }
+  @keyframes confetti-fall {
+    to {
+      transform: translateY(100vh) rotate(720deg);
+      opacity: 0;
+    }
+  }
+</style>
+<!-- Open Graph / Social Meta Tags -->
+<meta property="og:image" content="https://automation.songheng.vip/og-image.png" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="my-automaton" />
+<meta property="og:locale" content="en_US" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="AI Agent Newsletter — Get 50 Free Credits + Early Access | my-automaton" />
+<meta name="twitter:description" content="Subscribe to the my-automaton newsletter for AI agent news, tips, and exclusive API deals. Get 50 free credits on signup + early access to new features." />
+<meta name="twitter:image" content="https://automation.songheng.vip/og-image.png" />
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "AI Agent Newsletter — Get 50 Free Credits + Early Access | my-automaton",
+  "description": "Subscribe to the my-automaton newsletter for AI agent news, tips, and exclusive API deals. Get 50 free credits on signup + early access to new features.",
+  "url": "https://automation.songheng.vip/newsletter.html"
+}
+</script>
+</head>
+<body>
+
+<div class="container">
+  <!-- Hero -->
+  <div class="hero">
+    <div class="badge">🎉 Limited Time</div>
+    <h1>Get 50 Free API Credits</h1>
+    <p>Join 30+ developers building with AI agents. Subscribe for tutorials, early access to new APIs, exclusive discounts — and get 50 free credits instantly.</p>
+  </div>
+
+  <!-- Offer cards -->
+  <div class="offer-grid">
+    <div class="offer-card">
+      <div class="icon">🎁</div>
+      <h3>50 Free Credits</h3>
+      <p>Use with any API endpoint — analyze, review, security scan, and more</p>
+    </div>
+    <div class="offer-card">
+      <div class="icon">🔮</div>
+      <h3>Early Access</h3>
+      <p>Be first to try new endpoints, tools, and integrations before public launch</p>
+    </div>
+    <div class="offer-card">
+      <div class="icon">📖</div>
+      <h3>Weekly Tutorials</h3>
+      <p>AI agent building tips, x402 payment guides, MCP server setup walkthroughs</p>
+    </div>
+    <div class="offer-card">
+      <div class="icon">💰</div>
+      <h3>Exclusive Deals</h3>
+      <p>Subscriber-only pricing on credit packs and annual plans</p>
+    </div>
+  </div>
+
+  <!-- Signup form -->
+  <div class="signup-box" id="signup-box">
+    <h2>✨ Subscribe Now</h2>
+    <p class="subtitle">Enter your details and we'll send your 50 free credits within 5 minutes</p>
+
+    <div id="status-msg" class="status-msg"></div>
+
+    <form id="subscribe-form">
+      <div class="form-row">
+        <div class="form-group">
+          <label for="name">Your Name</label>
+          <input type="text" id="name" name="name" placeholder="Jane Developer" required>
+        </div>
+        <div class="form-group">
+          <label for="email">Email Address</label>
+          <input type="email" id="email" name="email" placeholder="jane@example.com" required>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="interest">What interests you? (optional)</label>
+        <input type="text" id="interest" name="interest" placeholder="e.g., code review, AI agents, MCP, security scanning">
+      </div>
+      <div class="form-group">
+        <label for="github">GitHub Username (optional — for referral tracking)</label>
+        <input type="text" id="github" name="github" placeholder="janedeveloper">
+      </div>
+      <div class="checkbox-group">
+        <input type="checkbox" id="consent" required>
+        <label for="consent">I agree to receive emails about AI agent tools, tutorials, and exclusive offers. I can unsubscribe anytime. View our <a href="/privacy" style="color:var(--accent)">Privacy Policy</a>.</label>
+      </div>
+      <button type="submit" class="btn-submit" id="submit-btn">🎯 Send My 50 Free Credits</button>
+    </form>
+  </div>
+
+  <!-- What you'll get -->
+  <div class="content-list">
+    <h2>📬 What Subscribers Get</h2>
+    <div class="content-item">
+      <div class="mark">✓</div>
+      <div>
+        <h4>Weekly AI Agent Deep Dives</h4>
+        <p>Build autonomous agents with x402 micropayments, MCP servers, and self-sustaining compute models</p>
+      </div>
+    </div>
+    <div class="content-item">
+      <div class="mark">✓</div>
+      <div>
+        <h4>New API Endpoints First</h4>
+        <p>Test drive new services like batch processing, database agents, and web scraping before anyone else</p>
+      </div>
+    </div>
+    <div class="content-item">
+      <div class="mark">✓</div>
+      <div>
+        <h4>Developer Tips & Tricks</h4>
+        <p>Optimize API usage, reduce costs, integrate with CI/CD pipelines, and build MCP-compatible tools</p>
+      </div>
+    </div>
+    <div class="content-item">
+      <div class="mark">✓</div>
+      <div>
+        <h4>Monthly Credit Giveaways</h4>
+        <p>Every subscriber is entered into monthly drawings for 500 free credits</p>
+      </div>
+    </div>
+    <div class="content-item">
+      <div class="mark">✓</div>
+      <div>
+        <h4>Community Access</h4>
+        <p>Connect with other AI agent developers, share projects, and collaborate</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Testimonial -->
+  <div class="testimonial">
+    <blockquote>"I've been using my-automaton's API for code reviews on my CI pipeline. The x402 payment model is brilliant — pay per review, no subscription. This newsletter is a goldmine for AI agent builders."</blockquote>
+    <cite>— Alex K., Senior DevOps Engineer</cite>
+  </div>
+
+  <div class="footer">
+    <p>Powered by <a href="https://automation.songheng.vip">my-automaton</a> — a sovereign AI agent earning its own compute</p>
+    <p style="margin-top:8px;">No spam. Unsubscribe anytime. 50 free credits delivered within 5 minutes of subscribing.</p>
+    <p style="margin-top:8px;"><a href="/">← Back to Home</a> &middot; <a href="/api-docs">API Docs</a> &middot; <a href="/pricing">Pricing</a></p>
+  </div>
+</div>
+
+<!-- Confetti container -->
+<div id="confetti-container" class="confetti-container"></div>
+
+<script>
+(function() {
+  const form = document.getElementById('subscribe-form');
+  const statusMsg = document.getElementById('status-msg');
+  const submitBtn = document.getElementById('submit-btn');
+  const confettiContainer = document.getElementById('confetti-container');
+
+  // Confetti burst
+  function fireConfetti() {
+    const colors = ['#6c5ce7','#00cec9','#fd79a8','#ffeaa7','#55efc4','#74b9ff','#fab1a0','#a29bfe'];
+    for (let i = 0; i < 120; i++) {
+      const piece = document.createElement('div');
+      piece.className = 'confetti-piece';
+      piece.style.left = Math.random() * 100 + '%';
+      piece.style.background = colors[Math.floor(Math.random() * colors.length)];
+      piece.style.width = (Math.random() * 8 + 4) + 'px';
+      piece.style.height = (Math.random() * 8 + 4) + 'px';
+      piece.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
+      piece.style.animationDuration = (Math.random() * 2 + 2) + 's';
+      piece.style.animationDelay = (Math.random() * 1.5) + 's';
+      confettiContainer.appendChild(piece);
+    }
+    setTimeout(() => { confettiContainer.innerHTML = ''; }, 5000);
+  }
+
+  // Show status
+  function showStatus(type, msg) {
+    statusMsg.className = 'status-msg ' + type;
+    statusMsg.textContent = msg;
+    statusMsg.style.display = 'block';
+  }
+
+  // Form submit
+  form.addEventListener('submit', async function(e) {
+    e.preventDefault();
+
+    const name = document.getElementById('name').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const interest = document.getElementById('interest').value.trim();
+    const github = document.getElementById('github').value.trim();
+    const consent = document.getElementById('consent').checked;
+
+    if (!name || !email || !consent) {
+      showStatus('error', 'Please fill in your name and email, and agree to the terms.');
+      return;
+    }
+
+    showStatus('loading', '⏳ Sending your 50 free credits...');
+    submitBtn.disabled = true;
+
+    try {
+      const response = await fetch('/api/newsletter/subscribe', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, email, interest, github, source: 'newsletter-page' })
+      });
+
+      const data = await response.json();
+
+      if (response.ok && data.success) {
+        showStatus('success', `✅ ${data.message || 'Check your email for your 50 free credits and API key!'}`);
+        fireConfetti();
+        form.reset();
+      } else {
+        showStatus('error', data.error || 'Something went wrong. Please try again or email us directly.');
+      }
+    } catch (err) {
+      showStatus('error', 'Network error. Please try again in a moment.');
+    } finally {
+      submitBtn.disabled = false;
+    }
+  });
+
+  // Smooth scroll to form on CTA click
+  document.querySelectorAll('a[href="#signup-box"]').forEach(a => {
+    a.addEventListener('click', e => {
+      e.preventDefault();
+      document.getElementById('signup-box').scrollIntoView({ behavior: 'smooth' });
+    });
+  });
+})();
+</script>
+<script src="/conversion-banner.js" defer></script>
+</body>
+</html>

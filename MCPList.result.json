@@ -1,0 +1,22 @@
+{
+  "status": "ready_for_manual",
+  "method_attempted": "github_pr",
+  "details": {
+    "directory": "MCPList",
+    "directory_type": "GitHub repository",
+    "repository": "https://github.com/tomsmithtld/mcplist",
+    "website": "https://mcplist.dev",
+    "submission_file": "data/servers.json",
+    "submission_format": "JSON object in servers[] array",
+    "automation_possible": false,
+    "automation_reason": "No GitHub credentials (PAT/token) available. GitHub CLI not installed. No web form or API exists for submission.",
+    "submission_process": "Fork repo → Edit data/servers.json → Submit Pull Request",
+    "notes": "The domain mcplist.dev appears to be a parked domain that redirects to a GoDaddy parking page. The actual directory is maintained exclusively through the GitHub repository."
+  },
+  "generated_artifacts": [
+    "mcplist_submission_entry.json",
+    "MCPList_submission_guide.md"
+  ],
+  "instructions": "See MCPList_submission_guide.md for step-by-step manual submission instructions. The server entry JSON is in mcplist_submission_entry.json and can be pasted directly into data/servers.json.",
+  "timestamp": "2026-06-17T18:03:00Z"
+}

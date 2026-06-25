@@ -1,0 +1,41 @@
+{
+  "name": "Smithery",
+  "url": "https://smithery.ai",
+  "automatable": true,
+  "method": "api",
+  "endpoint": "https://api.smithery.ai",
+  "requiredFields": {
+    "authentication": {
+      "type": "Bearer token (API key)",
+      "description": "Smithery API key passed as Bearer token in Authorization header"
+    },
+    "create_server": {
+      "method": "PUT",
+      "path": "/servers/{qualifiedName}",
+      "contentType": "application/json",
+      "fields": {
+        "qualifiedName": "string (e.g. 'namespace/server' or 'namespace', encode / as %2F)",
+        "displayName": "string (optional, server display name)",
+        "description": "string (optional, server description)"
+      },
+      "notes": "Idempotent - returns success if server already exists"
+    },
+    "publish_release": {
+      "method": "PUT",
+      "path": "/servers/{qualifiedName}/releases",
+      "contentType": "multipart/form-data",
+      "fields": {
+        "payload": "string (JSON-encoded release payload - required)",
+        "module": "file (JavaScript module for hosted releases - optional)",
+        "sourcemap": "file (source map file for hosted releases - optional)",
+        "bundle": "file (MCPB bundle for stdio releases - optional)"
+      },
+      "notes": "Supports hosted (JS module), external (URL), and stdio (MCPB bundle) release types"
+    },
+    "cli_publish": {
+      "command": "smithery mcp publish <url|mcpb-file> -n @org/server",
+      "notes": "CLI also supports publishing with --config-schema for URL-based servers"
+    }
+  },
+  "notes": "Smithery has a fully documented REST API at api.smithery.ai. The API requires authentication via Bearer token (API key). Two main endpoints exist: PUT /servers/{qualifiedName} to create/update a server, and PUT /servers/{qualifiedName}/releases to publish a release. A web form is also available at smithery.ai/new for manual URL-based submissions. Additionally, the CLI tool (@smithery/cli) supports publishing via 'smithery mcp publish'. The API supports three release types: hosted (JS module upload), external (URL-based), and stdio (MCPB bundle). OpenAPI spec available at https://app.stainless.com/api/spec/documented/smithery/openapi.documented.yml. Official JS SDK available (@smithery/api)."
+}

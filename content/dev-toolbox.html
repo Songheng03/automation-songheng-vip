@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dev Toolbox — Free Developer Tools | my-automaton</title>
+<meta name="description" content="Free developer tools: JSON formatter, JWT decoder, Base64, UUID generator, timestamp converter, URL encoder. All client-side, no data sent anywhere.">
+<style>
+:root {
+  --bg: #0d1117;
+  --card: #161b22;
+  --border: #30363d;
+  --text: #c9d1d9;
+  --muted: #8b949e;
+  --accent: #58a6ff;
+  --green: #3fb950;
+  --red: #f85149;
+  --orange: #d2991d;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { 
+  background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  min-height: 100vh; line-height: 1.6;
+}
+.container { max-width: 1100px; margin: 0 auto; padding: 20px; }
+
+/* Header */
+.header { text-align: center; padding: 40px 20px 20px; }
+.header h1 { font-size: 2.2rem; background: linear-gradient(135deg, #58a6ff, #bc8cff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 8px; }
+.header p { color: var(--muted); font-size: 1.05rem; }
+
+/* Tabs */
+.tabs { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 24px; background: var(--card); padding: 6px; border-radius: 12px; border: 1px solid var(--border); }
+.tab { padding: 10px 18px; border: none; background: transparent; color: var(--muted); cursor: pointer; border-radius: 8px; font-size: 0.92rem; transition: all 0.15s; white-space: nowrap; }
+.tab:hover { color: var(--text); background: rgba(255,255,255,0.05); }
+.tab.active { background: var(--accent); color: #fff; }
+
+/* Panels */
+.panel { display: none; }
+.panel.active { display: block; }
+
+/* Card */
+.card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 24px; margin-bottom: 20px; }
+
+/* Inputs & Textarea */
+textarea, input[type="text"], input[type="url"] {
+  width: 100%; padding: 12px 16px; background: var(--bg); color: var(--text);
+  border: 1px solid var(--border); border-radius: 8px; font-family: 'SF Mono', 'Fira Code', monospace;
+  font-size: 0.9rem; resize: vertical; min-height: 120px;
+}
+textarea:focus, input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(88,166,255,0.15); }
+textarea.small { min-height: 80px; }
+
+/* Buttons */
+.btn { padding: 10px 22px; border: none; border-radius: 8px; cursor: pointer; font-size: 0.9rem; font-weight: 600; transition: all 0.15s; display: inline-flex; align-items: center; gap: 6px; }
+.btn-primary { background: var(--accent); color: #fff; }
+.btn-primary:hover { background: #4c97e6; }
+.btn-success { background: var(--green); color: #000; }
+.btn-success:hover { opacity: 0.9; }
+.btn-outline { background: transparent; border: 1px solid var(--border); color: var(--text); }
+.btn-outline:hover { background: rgba(255,255,255,0.05); }
+.btn-danger { background: var(--red); color: #fff; }
+.btn-sm { padding: 6px 14px; font-size: 0.82rem; }
+
+/* Tool row */
+.tool-row { display: flex; gap: 12px; margin-bottom: 12px; flex-wrap: wrap; align-items: flex-start; }
+.tool-col { flex: 1; min-width: 280px; }
+.tool-label { font-size: 0.85rem; color: var(--muted); margin-bottom: 6px; font-weight: 600; }
+
+/* Output */
+.output { background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 16px; font-family: 'SF Mono', 'Fira Code', monospace; font-size: 0.85rem; white-space: pre-wrap; word-break: break-all; min-height: 60px; max-height: 400px; overflow-y: auto; color: var(--green); }
+.output.error { color: var(--red); }
+
+/* JWT parts */
+.jwt-parts { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; margin-top: 12px; }
+.jwt-part { background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 14px; }
+.jwt-part .label { color: var(--accent); font-weight: 700; font-size: 0.82rem; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 1px; }
+.jwt-part pre { font-size: 0.8rem; color: var(--text); white-space: pre-wrap; word-break: break-all; margin: 0; }
+
+/* UUID list */
+.uuid-list { display: flex; flex-direction: column; gap: 8px; }
+.uuid-item { display: flex; align-items: center; gap: 10px; padding: 10px 14px; background: var(--bg); border-radius: 8px; border: 1px solid var(--border); font-family: monospace; font-size: 0.88rem; }
+.uuid-item code { color: var(--green); flex: 1; font-size: 0.85rem; }
+.uuid-item .copy-btn { opacity: 0.5; transition: opacity 0.15s; }
+.uuid-item:hover .copy-btn { opacity: 1; }
+
+/* Toast */
+.toast { position: fixed; bottom: 24px; right: 24px; background: var(--green); color: #000; padding: 12px 24px; border-radius: 8px; font-weight: 600; opacity: 0; transform: translateY(20px); transition: all 0.3s; pointer-events: none; z-index: 100; }
+.toast.show { opacity: 1; transform: translateY(0); }
+
+/* Stats */
+.stats { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 8px; }
+.stat { font-size: 0.82rem; color: var(--muted); }
+.stat b { color: var(--accent); }
+
+/* Footer CTA */
+.cta-bar { text-align: center; padding: 40px 20px; margin-top: 30px; }
+.cta-bar h3 { font-size: 1.3rem; margin-bottom: 8px; }
+.cta-bar p { color: var(--muted); margin-bottom: 16px; }
+
+/* Responsive */
+@media (max-width: 640px) {
+  .tabs { flex-wrap: nowrap; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .tab { font-size: 0.82rem; padding: 8px 12px; }
+  .header h1 { font-size: 1.6rem; }
+  .card { padding: 16px; }
+}
+</style>
+
+<!-- Open Graph / Social Meta Tags -->
+<meta property="og:title" content="Dev Toolbox — Free Developer Tools | my-automaton" />
+<meta property="og:description" content="Free developer tools: JSON formatter, JWT decoder, Base64, UUID generator, timestamp converter, URL encoder. All client-side, no data sent anywhere." />
+<meta property="og:image" content="https://automation.songheng.vip/og-image.png" />
+<meta property="og:url" content="https://automation.songheng.vip/dev-toolbox.html" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="my-automaton" />
+<meta property="og:locale" content="en_US" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Dev Toolbox — Free Developer Tools | my-automaton" />
+<meta name="twitter:description" content="Free developer tools: JSON formatter, JWT decoder, Base64, UUID generator, timestamp converter, URL encoder. All client-side, no data sent anywhere." />
+<meta name="twitter:image" content="https://automation.songheng.vip/og-image.png" />
+  <link rel="canonical" href="https://automation.songheng.vip/dev-toolbox.html">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Dev Toolbox — Free Developer Tools | my-automaton",
+  "description": "Free developer tools: JSON formatter, JWT decoder, Base64, UUID generator, timestamp converter, URL encoder. All client-side, no data sent anywhere.",
+  "url": "https://automation.songheng.vip/dev-toolbox.html",
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": "Web",
+  "author": {
+    "@type": "Organization",
+    "name": "my-automaton",
+    "url": "https://automation.songheng.vip"
+  },
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  }
+}
+</script>
+</head>
+<body>
+<div style="background:#161b22;border-bottom:1px solid #30363d;padding:10px 20px;font-size:.85rem;display:flex;gap:16px;align-items:center;flex-wrap:wrap"><a href="/" style="color:#58a6ff;text-decoration:none;font-weight:600">🏠 Home</a><span style="color:#484f58">|</span><a href="/pricing.html" style="color:#8b949e;text-decoration:none">Pricing</a><a href="/api-docs.html" style="color:#8b949e;text-decoration:none">API</a><a href="/playground.html" style="color:#8b949e;text-decoration:none">Playground</a></div>
+
+<div class="container">
+  <div class="header">
+    <h1>🛠️ Dev Toolbox</h1>
+    <p>Free developer tools — all client-side, zero data sent</p>
+  </div>
+
+  <!-- Tabs -->
+  <div class="tabs" id="tabs">
+    <button class="tab active" data-tool="json">📋 JSON Formatter</button>
+    <button class="tab" data-tool="base64">🔐 Base64</button>
+    <button class="tab" data-tool="jwt">🔑 JWT Decoder</button>
+    <button class="tab" data-tool="url">🔗 URL Encoder</button>
+    <button class="tab" data-tool="uuid">🎲 UUID Generator</button>
+    <button class="tab" data-tool="timestamp">⏰ Timestamps</button>
+  </div>
+
+  <!-- JSON Formatter -->
+  <div class="panel active" id="panel-json">
+    <div class="card">
+      <div class="tool-row">
+        <div class="tool-col">
+          <div class="tool-label">Input JSON</div>
+          <textarea id="json-input" placeholder='{"name":"example","value":42}'></textarea>
+        </div>
+        <div class="tool-col">
+          <div class="tool-label">Formatted Output</div>
+          <div class="output" id="json-output">Waiting for input...</div>
+        </div>
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;">
+        <button class="btn btn-primary" onclick="formatJSON(2)">✨ Format</button>
+        <button class="btn btn-outline" onclick="formatJSON(0)">🗜️ Minify</button>
+        <button class="btn btn-outline" onclick="sortJSON()">🔤 Sort Keys</button>
+        <button class="btn btn-outline" onclick="validateJSON()">✅ Validate</button>
+        <button class="btn btn-success btn-sm" onclick="copyToClipboard('json-output')">📋 Copy</button>
+      </div>
+      <div class="stats" id="json-stats"></div>
+    </div>
+  </div>
+
+  <!-- Base64 -->
+  <div class="panel" id="panel-base64">
+    <div class="card">
+      <div class="tool-row">
+        <div class="tool-col">
+          <div class="tool-label">Plain Text</div>
+          <textarea id="b64-text" class="small" placeholder="Enter text to encode..."></textarea>
+        </div>
+        <div class="tool-col">
+          <div class="tool-label">Base64</div>
+          <textarea id="b64-encoded" class="small" placeholder="Enter Base64 to decode..."></textarea>
+        </div>
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;">
+        <button class="btn btn-primary" onclick="encodeB64()">⬇️ Encode</button>
+        <button class="btn btn-primary" onclick="decodeB64()">⬆️ Decode</button>
+        <button class="btn btn-outline" onclick="swapB64()">🔄 Swap</button>
+        <button class="btn btn-success btn-sm" onclick="copyToClipboard('b64-encoded')">📋 Copy Base64</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- JWT Decoder -->
+  <div class="panel" id="panel-jwt">
+    <div class="card">
+      <div class="tool-label">JWT Token</div>
+      <textarea id="jwt-input" class="small" placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIn0..."></textarea>
+      <button class="btn btn-primary" onclick="decodeJWT()" style="margin-top:8px;">🔓 Decode JWT</button>
+      <div class="jwt-parts" id="jwt-output"></div>
+    </div>
+  </div>
+
+  <!-- URL Encoder -->
+  <div class="panel" id="panel-url">
+    <div class="card">
+      <div class="tool-row">
+        <div class="tool-col">
+          <div class="tool-label">Plain URL/Text</div>
+          <textarea id="url-text" class="small" placeholder="https://example.com/path?name=John Doe&age=25"></textarea>
+        </div>
+        <div class="tool-col">
+          <div class="tool-label">Encoded</div>
+          <textarea id="url-encoded" class="small" placeholder="Encoded URL will appear here..."></textarea>
+        </div>
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;">
+        <button class="btn btn-primary" onclick="encodeURL()">🔒 Encode</button>
+        <button class="btn btn-primary" onclick="decodeURL()">🔓 Decode</button>
+        <button class="btn btn-outline" onclick="encodeURIComponentFull()">🔒 Encode Component</button>
+        <button class="btn btn-success btn-sm" onclick="copyToClipboard('url-encoded')">📋 Copy</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- UUID Generator -->
+  <div class="panel" id="panel-uuid">
+    <div class="card">
+      <div class="tool-label">Generated UUIDs</div>
+      <div class="uuid-list" id="uuid-list"></div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;">
+        <button class="btn btn-primary" onclick="generateUUIDs(1)">🎲 Generate 1</button>
+        <button class="btn btn-primary" onclick="generateUUIDs(5)">🎲 Generate 5</button>
+        <button class="btn btn-primary" onclick="generateUUIDs(10)">🎲 Generate 10</button>
+        <button class="btn btn-primary" onclick="generateUUIDs(50)">🎲 Generate 50</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Timestamps -->
+  <div class="panel" id="panel-timestamp">
+    <div class="card">
+      <div class="tool-row">
+        <div class="tool-col">
+          <div class="tool-label">Unix Timestamp (seconds)</div>
+          <input type="text" id="ts-unix" placeholder="e.g., 1718000000" style="font-family:monospace;">
+          <button class="btn btn-primary" onclick="convertTS()" style="margin-top:8px;">→ Convert to Date</button>
+        </div>
+        <div class="tool-col">
+          <div class="tool-label">Human-Readable Date</div>
+          <input type="text" id="ts-date" placeholder="e.g., 2024-06-10T12:00:00Z" style="font-family:monospace;">
+          <button class="btn btn-primary" onclick="convertDate()" style="margin-top:8px;">→ Convert to Timestamp</button>
+        </div>
+      </div>
+      <div class="tool-row" style="margin-top:12px;">
+        <div class="tool-col">
+          <div class="tool-label">Current Time</div>
+          <div class="output" id="ts-now"></div>
+        </div>
+        <div class="tool-col">
+          <div class="tool-label">ISO 8601</div>
+          <div class="output" id="ts-iso"></div>
+        </div>
+      </div>
+      <button class="btn btn-outline" onclick="refreshTS()" style="margin-top:8px;">🔄 Refresh</button>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div class="cta-bar">
+    <h3>⚡ Need AI-powered code analysis?</h3>
+    <p>Get deep security scans, code reviews, and refactoring suggestions with my-automaton's API.</p>
+    <a href="/" style="display:inline-block;padding:12px 28px;background:linear-gradient(135deg,#58a6ff,#bc8cff);color:#fff;text-decoration:none;border-radius:8px;font-weight:700;font-size:1rem;">🔬 Try my-automaton AI</a>
+  </div>
+</div>
+
+<div class="toast" id="toast">Copied! ✓</div>
+
+<script>
+// ─── Tab Navigation ──────────────────────────────────────────
+document.getElementById('tabs').addEventListener('click', (e) => {
+  const tab = e.target.closest('.tab');
+  if (!tab) return;
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  tab.classList.add('active');
+  document.getElementById('panel-' + tab.dataset.tool).classList.add('active');
+});
+
+// ─── Toast ──────────────────────────────────────────────────
+function showToast(msg = 'Copied! ✓') { const t = document.getElementById('toast'); t.textContent = msg; t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 2000); }
+function copyToClipboard(id) { const el = id.startsWith('#') ? document.querySelector(id) : document.getElementById(id); let text = el.value || el.textContent; navigator.clipboard.writeText(text).then(() => showToast()); }
+
+// ─── JSON ───────────────────────────────────────────────────
+function formatJSON(indent) {
+  const input = document.getElementById('json-input').value.trim();
+  const output = document.getElementById('json-output');
+  const stats = document.getElementById('json-stats');
+  try {
+    const obj = JSON.parse(input);
+    output.textContent = JSON.stringify(obj, null, indent);
+    output.className = 'output';
+    stats.innerHTML = `<span class="stat">✓ Valid JSON · <b>${Object.keys(obj).length}</b> top-level keys · <b>${input.length}</b>→<b>${output.textContent.length}</b> chars</span>`;
+  } catch (e) {
+    output.textContent = e.message;
+    output.className = 'output error';
+    stats.innerHTML = `<span class="stat" style="color:var(--red);">✗ ${e.message}</span>`;
+  }
+}
+function sortJSON() {
+  const input = document.getElementById('json-input');
+  try {
+    const obj = JSON.parse(input.value);
+    const sorted = Object.keys(obj).sort().reduce((acc, k) => { acc[k] = obj[k]; return acc; }, {});
+    input.value = JSON.stringify(sorted, null, 2);
+    formatJSON(2);
+  } catch (e) { showToast('Invalid JSON'); }
+}
+function validateJSON() {
+  try { JSON.parse(document.getElementById('json-input').value); showToast('✅ Valid JSON'); } catch (e) { showToast('❌ Invalid JSON: ' + e.message); }
+}
+
+// ─── Base64 ─────────────────────────────────────────────────
+function encodeB64() {
+  const text = document.getElementById('b64-text').value;
+  try { document.getElementById('b64-encoded').value = btoa(unescape(encodeURIComponent(text))); } catch { document.getElementById('b64-encoded').value = btoa(text); }
+}
+function decodeB64() {
+  const encoded = document.getElementById('b64-encoded').value.trim();
+  try { document.getElementById('b64-text').value = decodeURIComponent(escape(atob(encoded))); } catch { try { document.getElementById('b64-text').value = atob(encoded); } catch { showToast('Invalid Base64'); } }
+}
+function swapB64() {
+  const ta = document.getElementById('b64-text');
+  const tb = document.getElementById('b64-encoded');
+  [ta.value, tb.value] = [tb.value, ta.value];
+}
+
+// ─── JWT ────────────────────────────────────────────────────
+function decodeJWT() {
+  const input = document.getElementById('jwt-input').value.trim();
+  const output = document.getElementById('jwt-output');
+  const parts = input.split('.');
+  if (parts.length !== 3) { output.innerHTML = '<div class="card" style="color:var(--red);">Invalid JWT — must have 3 parts (header.payload.signature)</div>'; return; }
+  let html = '';
+  const names = ['Header', 'Payload', 'Signature'];
+  for (let i = 0; i < 3; i++) {
+    try {
+      const decoded = i < 2 ? JSON.stringify(JSON.parse(atob(parts[i].replace(/-/g, '+').replace(/_/g, '/'))), null, 2) : parts[i].substring(0, 40) + '...';
+      html += `<div class="jwt-part"><div class="label">${names[i]}</div><pre>${escapeHTML(decoded)}</pre></div>`;
+    } catch {
+      html += `<div class="jwt-part"><div class="label">${names[i]}</div><pre style="color:var(--red);">Invalid Base64</pre></div>`;
+    }
+  }
+  // Check expiry
+  try {
+    const payload = JSON.parse(atob(parts[1].replace(/-/g, '+').replace(/_/g, '/')));
+    if (payload.exp) {
+      const expDate = new Date(payload.exp * 1000);
+      const now = new Date();
+      const expired = expDate < now;
+      html += `<div class="jwt-part" style="border-color:${expired?'var(--red)':'var(--green)'};">
+        <div class="label" style="color:${expired?'var(--red)':'var(--green)'};">⏰ Expiry</div>
+        <pre>${expDate.toISOString()} — ${expired ? '⚠️ EXPIRED' : '✅ valid for ' + Math.floor((expDate-now)/86400000) + ' days'}</pre>
+      </div>`;
+    }
+  } catch {}
+  output.innerHTML = html;
+}
+function escapeHTML(str) { const div = document.createElement('div'); div.textContent = str; return div.innerHTML; }
+
+// ─── URL ───────────────────────────────────────────────────
+function encodeURL() { document.getElementById('url-encoded').value = encodeURI(document.getElementById('url-text').value); }
+function decodeURL() { document.getElementById('url-text').value = decodeURI(document.getElementById('url-encoded').value); }
+function encodeURIComponentFull() { document.getElementById('url-encoded').value = encodeURIComponent(document.getElementById('url-text').value); }
+
+// ─── UUID ──────────────────────────────────────────────────
+function generateUUID() { return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => { const r = Math.random()*16|0; return (c==='x'?r:(r&0x3|0x8)).toString(16); }); }
+function generateUUIDs(n) {
+  const list = document.getElementById('uuid-list');
+  let html = '';
+  for (let i = 0; i < n; i++) {
+    const uuid = generateUUID();
+    html += `<div class="uuid-item"><code>${uuid}</code><button class="btn btn-outline btn-sm copy-btn" onclick="copyThis('${uuid}')">📋</button></div>`;
+  }
+  list.innerHTML = html;
+}
+function copyThis(text) { navigator.clipboard.writeText(text).then(() => showToast('UUID copied!')); }
+
+// ─── Timestamps ────────────────────────────────────────────
+function convertTS() {
+  const ts = parseInt(document.getElementById('ts-unix').value);
+  if (!ts) return;
+  const d = new Date(ts * 1000);
+  document.getElementById('ts-date').value = d.toISOString();
+}
+function convertDate() {
+  const d = new Date(document.getElementById('ts-date').value);
+  if (isNaN(d.getTime())) return;
+  document.getElementById('ts-unix').value = Math.floor(d.getTime() / 1000);
+}
+function refreshTS() {
+  const now = new Date();
+  document.getElementById('ts-now').textContent = now.toString();
+  document.getElementById('ts-iso').textContent = now.toISOString();
+}
+refreshTS();
+generateUUIDs(5);
+
+// Sample JWT for demo
+document.getElementById('jwt-input').value = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyLCJleHAiOjk5OTk5OTk5OTl9.Lyfz8E-7BtBGRRWMXNObaKDMTBdiJsTQBd8_GXNY8s';
+</script>
+<script src="/conversion-banner.js" defer></script>
+</body>
+</html>

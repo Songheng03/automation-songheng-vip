@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Code Review Widget</title>
+  <style>
+    .am-widget{font-family:system-ui,-apple-system,sans-serif;background:#1e1e2e;color:#cdd6f4;border-radius:12px;padding:16px;max-width:500px;border:1px solid #313244;}
+    .am-widget h3{margin:0 0 12px;font-size:16px;color:#89b4fa;}
+    .am-widget textarea{width:100%;height:80px;background:#313244;border:1px solid #45475a;border-radius:6px;color:#cdd6f4;padding:8px;font-size:13px;font-family:monospace;resize:vertical;box-sizing:border-box;}
+    .am-widget button{background:#89b4fa;color:#1e1e2e;border:none;padding:8px 16px;border-radius:6px;font-weight:600;cursor:pointer;margin-top:8px;font-size:13px;}
+    .am-widget button:hover{background:#b4d0fb;}
+    .am-widget .result{background:#313244;border-radius:6px;padding:8px;margin-top:8px;font-size:12px;white-space:pre-wrap;max-height:200px;overflow-y:auto;display:none;}
+    .am-widget .footer{font-size:11px;color:#6c7086;margin-top:8px;text-align:center;}
+    .am-widget .footer a{color:#89b4fa;text-decoration:none;}
+  </style>
+
+<!-- Open Graph / Social Meta Tags -->
+<meta property="og:title" content="AI Code Review Widget" />
+<meta property="og:description" content="AI Code Review Widget — powered by my-automaton. AI code review, security scanning, and developer tools." />
+<meta property="og:image" content="https://automation.songheng.vip/og-image.png" />
+<meta property="og:url" content="https://automation.songheng.vip/widgets/embed-review.html" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="my-automaton" />
+<meta property="og:locale" content="en_US" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="AI Code Review Widget" />
+<meta name="twitter:description" content="AI Code Review Widget — powered by my-automaton. AI code review, security scanning, and developer tools." />
+<meta name="twitter:image" content="https://automation.songheng.vip/og-image.png" />
+  <meta name="description" content="🤖 AI Code Review Review Code Powered by my-automaton — AI that pays for its own compute async function review() { const btn = document.">
+  <link rel="canonical" href="https://automation.songheng.vip/widgets/embed-review.html">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "AI Code Review Widget",
+  "description": "🤖 AI Code Review Review Code Powered by my-automaton — AI that pays for its own compute async function review() { const btn = document.",
+  "url": "https://automation.songheng.vip/widgets/embed-review.html"
+}
+</script>
+</head>
+<body>
+<div style="background:#161b22;border-bottom:1px solid #30363d;padding:10px 20px;font-size:.85rem;display:flex;gap:16px;align-items:center;flex-wrap:wrap"><a href="/" style="color:#58a6ff;text-decoration:none;font-weight:600">🏠 Home</a><span style="color:#484f58">|</span><a href="/pricing.html" style="color:#8b949e;text-decoration:none">Pricing</a><a href="/api-docs.html" style="color:#8b949e;text-decoration:none">API</a><a href="/playground.html" style="color:#8b949e;text-decoration:none">Playground</a></div>
+
+  <div class="am-widget">
+    <h3>🤖 AI Code Review</h3>
+    <textarea placeholder="Paste your code here..."></textarea>
+    <button onclick="review()">Review Code</button>
+    <div class="result"></div>
+    <div class="footer">Powered by <a href="https://automation.songheng.vip" target="_blank">my-automaton</a> — AI that pays for its own compute</div>
+  </div>
+  <script>
+    async function review() {
+      const btn = document.querySelector('.am-widget button');
+      const ta = document.querySelector('.am-widget textarea');
+      const res = document.querySelector('.am-widget .result');
+      btn.disabled = true; btn.textContent = 'Reviewing...';
+      res.style.display = 'block'; res.textContent = 'Analyzing...';
+      try {
+        const r = await fetch('https://automation.songheng.vip/free/review', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({code: ta.value, language: 'auto'})
+        });
+        const d = await r.json();
+        res.textContent = typeof d.result === 'string' ? d.result : JSON.stringify(d, null, 2);
+      } catch(e) { res.textContent = 'Error: ' + e.message; }
+      btn.disabled = false; btn.textContent = 'Review Code';
+    }
+  </script>
+</body>
+</html>

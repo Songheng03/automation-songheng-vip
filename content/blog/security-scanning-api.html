@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Security Scanning for Code — Catch Vulnerabilities Before Deployment | my-automaton</title>
+<meta name="description" content="Scan your code for security vulnerabilities with AI: SQL injection, XSS, CSRF, unsafe deserialization, and more. Free tier available.">
+<meta name="keywords" content="security scanning API, code vulnerability scanner, AI security, OWASP, penetration testing, devsecops">
+<style>
+  body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;line-height:1.8;max-width:800px;margin:0 auto;padding:20px;color:#333}
+  h1{color:#2563eb;border-bottom:2px solid #e5e7eb;padding-bottom:10px}
+  h2{color:#1e40af;margin-top:30px}
+  pre{background:#1e293b;color:#e2e8f0;padding:15px;border-radius:8px;overflow-x:auto}
+  .cta{background:#2563eb;color:white;padding:15px 30px;border-radius:8px;display:inline-block;text-decoration:none}
+  .vuln{background:#fef2f2;border-left:4px solid #ef4444;padding:10px 15px;margin:15px 0;border-radius:4px}
+  .safe{background:#f0fdf4;border-left:4px solid #22c55e;padding:10px 15px;margin:15px 0;border-radius:4px}
+</style>
+</head>
+<body>
+<article>
+  <h1>AI Security Scanning for Code</h1>
+  <p>Catch OWASP Top 10 vulnerabilities before they reach production. AI-powered security scanning that understands code context.</p>
+
+  <h2>Quick Start (Free)</h2>
+  <pre><code>curl -X POST https://automation.songheng.vip/free/security \
+  -H "Content-Type: application/json" \
+  -d '{
+    "code": "app.get(\"/user\", (req, res) => {\n  const id = req.query.id;\n  const sql = \"SELECT * FROM users WHERE id = \" + id;\n  db.query(sql, (err, user) => {\n    res.send(`<h1>${user.name}</h1>`);\n  });\n});",
+    "language": "js"
+  }'</code></pre>
+
+  <h2>What It Detects</h2>
+
+  <div class="vuln">
+    <strong>SQL Injection</strong> — String concatenation in database queries
+  </div>
+  <div class="vuln">
+    <strong>Cross-Site Scripting (XSS)</strong> — Unsanitized user input in HTML output
+  </div>
+  <div class="vuln">
+    <strong>CSRF</strong> — Missing CSRF tokens in state-changing requests
+  </div>
+  <div class="vuln">
+    <strong>Command Injection</strong> — Unsafe shell command execution
+  </div>
+  <div class="vuln">
+    <strong>Insecure Deserialization</strong> — Unsafe deserialization of user input
+  </div>
+  <div class="vuln">
+    <strong>Sensitive Data Exposure</strong> — Hardcoded secrets, API keys, passwords
+  </div>
+  <div class="vuln">
+    <strong>Insecure Authentication</strong> — Weak auth patterns, missing checks
+  </div>
+
+  <h2>Sample Output</h2>
+  <pre><code>{
+  "score": 35,
+  "issues": [
+    {
+      "severity": "critical",
+      "type": "sql-injection",
+      "message": "SQL injection vulnerability: string concatenation in database query",
+      "line": 3,
+      "remediation": "Use parameterized queries: db.query('SELECT * FROM users WHERE id = ?', [id])"
+    },
+    {
+      "severity": "critical",
+      "type": "xss",
+      "message": "Cross-site scripting: user input rendered directly in HTML",
+      "line": 5,
+      "remediation": "Use template escaping or Content Security Policy headers"
+    }
+  ]
+}</code></pre>
+
+  <h2>CI/CD Integration</h2>
+  <pre><code># GitHub Actions example
+name: Security Scan
+on: [push, pull_request]
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Security Scan
+        run: |
+          for f in $(find . -name "*.js" -o -name "*.py"); do
+            curl -X POST https://automation.songheng.vip/free/security \
+              -H "Content-Type: application/json" \
+              -d "{\"code\": $(cat $f | jq -Rs .), \"language\": \"${f##*.}\"}" \
+              | jq '.issues[] | select(.severity == "critical")' \
+              && exit 1 || true
+          done</code></pre>
+
+  <h2>Pricing</h2>
+  <ul>
+    <li><strong>Free</strong> — 3 security scans/day</li>
+    <li><strong>Unlimited</strong> — From HK$38 for 500 scans</li>
+  </ul>
+
+  <p><a href="https://automation.songheng.vip" class="cta">Get API Key →</a></p>
+</article>
+</body>
+</html>

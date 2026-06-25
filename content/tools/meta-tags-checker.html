@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Free SEO Meta Tags Checker & Open Graph Preview Tool — My Automaton</title>
+<meta name="description" content="Free online SEO meta tags checker. Preview how your page looks on Google, Facebook (Open Graph), Twitter/X. Check title, description, OG tags, Twitter cards, and more. No signup needed.">
+<meta name="keywords" content="SEO meta tags checker, Open Graph preview, Twitter card validator, meta tag checker, OG tag tester, SEO preview tool, social media preview">
+<meta property="og:title" content="Free SEO Meta Tags Checker — Open Graph & Twitter Card Preview">
+<meta property="og:description" content="Check and preview your webpage's meta tags for Google, Facebook, and Twitter. Free SEO tool with live previews.">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Free SEO Meta Tags Checker & Preview Tool">
+<meta name="twitter:description" content="Check meta tags, OG tags, and Twitter cards on any URL. Free SEO preview tool.">
+<link rel="canonical" href="https://automation.songheng.vip/tools/meta-tags-checker">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#0a0a1a;color:#e0e0e0;min-height:100vh}
+.container{max-width:900px;margin:0 auto;padding:20px}
+h1{font-size:2em;margin:20px 0 10px;color:#fff}
+h2{font-size:1.4em;margin:30px 0 15px;color:#7c5cfc;border-bottom:1px solid #2a2a4a;padding-bottom:8px}
+p{color:#aaa;margin:10px 0;line-height:1.7}
+label{display:block;color:#b8a0ff;margin:15 0 5px;font-weight:600}
+input[type="url"]{width:100%;padding:14px 16px;border:2px solid #2a2a4a;border-radius:8px;background:#1a1a3a;color:#e0e0e0;font-size:16px;outline:none;transition:border-color .3s}
+input[type="url"]:focus{border-color:#7c5cfc;background:#1a1a2a}
+button{padding:14px 32px;border:none;border-radius:8px;font-size:16px;font-weight:600;cursor:pointer;transition:all .3s}
+.btn-primary{background:#7c5cfc;color:#fff}
+.btn-primary:hover{background:#6a4ce0;transform:translateY(-1px)}
+.btn-primary:disabled{opacity:.5;cursor:not-allowed;transform:none}
+.btn-secondary{background:#2a2a4a;color:#b8a0ff;margin-left:10px}
+.btn-secondary:hover{background:#3a3a5a}
+.input-group{display:flex;gap:10px;margin:15px 0}
+.input-group input[type="url"]{flex:1}
+.url-input-group{margin:20px 0}
+.results{display:none;margin-top:30px}
+
+/* Preview Cards */
+.preview-section{margin:20px 0}
+.preview-card{background:#1a1a3a;border:1px solid #2a2a4a;border-radius:12px;padding:20px;margin:15px 0}
+.preview-card h3{color:#7c5cfc;margin:0 0 10px;font-size:1em;text-transform:uppercase;letter-spacing:1px}
+
+/* Google Preview */
+.google-preview{max-width:600px;padding:15px;background:#fff;border-radius:8px;color:#1a1a1a}
+.google-preview .url{color:#006621;font-size:14px;margin:0 0 3px}
+.google-preview .title{color:#1a0dab;font-size:20px;margin:0 0 3px;line-height:1.3}
+.google-preview .title:hover{text-decoration:underline}
+.google-preview .desc{color:#545454;font-size:14px;line-height:1.5}
+
+/* Facebook Preview */
+.fb-preview{max-width:470px;background:#fff;border-radius:8px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.15)}
+.fb-preview .og-image{width:100%;height:246px;background:#2a2a4a;display:flex;align-items:center;justify-content:center;color:#888;font-size:14px}
+.fb-preview .og-text{padding:12px 16px}
+.fb-preview .og-domain{color:#606770;font-size:12px;text-transform:uppercase;margin:0 0 5px}
+.fb-preview .og-title{color:#1d2129;font-size:16px;font-weight:600;margin:0 0 5px;line-height:1.3}
+.fb-preview .og-desc{color:#606770;font-size:14px;line-height:1.4;margin:0;max-height:40px;overflow:hidden}
+
+/* Twitter Preview */
+.tw-preview{max-width:550px;background:#fff;border-radius:16px;overflow:hidden;border:1px solid #e1e8ed}
+.tw-preview .tw-image{width:100%;height:275px;background:#2a2a4a;display:flex;align-items:center;justify-content:center;color:#888}
+.tw-preview .tw-body{padding:12px 16px}
+.tw-preview .tw-title{color:#0f1419;font-size:15px;font-weight:600;margin:0 0 3px;line-height:1.3}
+.tw-preview .tw-desc{color:#8899a6;font-size:14px;line-height:1.3;margin:0}
+.tw-preview .tw-domain{color:#8899a6;font-size:14px;margin:3px 0 0}
+
+/* Tags Table */
+.tag-list{width:100%;border-collapse:collapse;margin:15px 0}
+.tag-list th,.tag-list td{padding:10px 14px;text-align:left;border-bottom:1px solid #2a2a4a}
+.tag-list th{color:#b8a0ff;font-size:12px;text-transform:uppercase;letter-spacing:1px;background:#1a1a2a}
+.tag-list td{font-family:'SF Mono','Fira Code',monospace;font-size:13px;color:#ccc;word-break:break-all}
+.tag-list .tag-name{color:#7c5cfc}
+.tag-list .tag-missing{color:#ef4444}
+.tag-list .tag-ok{color:#22c55e}
+
+.badge{display:inline-block;padding:3px 10px;border-radius:10px;font-size:12px;font-weight:600}
+.badge-ok{background:#1a2a1a;color:#22c55e;border:1px solid #22c55e}
+.badge-missing{background:#2a1a1a;color:#ef4444;border:1px solid #ef4444}
+
+.loading{display:none;text-align:center;padding:40px;color:#7c5cfc;font-size:18px}
+.loading .spinner{display:inline-block;width:30px;height:30px;border:3px solid #2a2a4a;border-top-color:#7c5cfc;border-radius:50%;animation:spin .8s linear infinite;margin-right:10px;vertical-align:middle}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+.error{display:none;background:#2a1a1a;border:1px solid #ef4444;color:#ef4444;padding:15px;border-radius:8px;margin:15px 0}
+.error.show{display:block}
+
+.recent-checks{margin-top:20px}
+.recent-checks a{display:inline-block;background:#1a1a3a;color:#b8a0ff;padding:6px 14px;border-radius:20px;margin:4px;text-decoration:none;font-size:13px;border:1px solid #2a2a4a}
+.recent-checks a:hover{background:#2a2a4a;border-color:#7c5cfc}
+
+footer{margin-top:60px;padding-top:20px;border-top:1px solid #2a2a4a;text-align:center;color:#666;font-size:13px}
+footer a{color:#7c5cfc;text-decoration:none}
+
+@media(max-width:600px){
+  .input-group{flex-direction:column}
+  .input-group button{margin-left:0}
+  .preview-card{padding:15px}
+  .google-preview .title{font-size:18px}
+}
+</style>
+<!-- Open Graph / Social Meta Tags -->
+<meta property="og:image" content="https://automation.songheng.vip/og-image.png" />
+<meta property="og:url" content="https://automation.songheng.vip/tools/meta-tags-checker.html" />
+<meta property="og:site_name" content="my-automaton" />
+<meta property="og:locale" content="en_US" />
+<meta name="twitter:image" content="https://automation.songheng.vip/og-image.png" />
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Free SEO Meta Tags Checker & Open Graph Preview Tool — My Automaton",
+  "description": "Free online SEO meta tags checker. Preview how your page looks on Google, Facebook (Open Graph), Twitter/X. Check title, description, OG tags, Twitter cards, and more. No signup needed.",
+  "url": "https://automation.songheng.vip/tools/meta-tags-checker.html",
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": "Web",
+  "author": {
+    "@type": "Organization",
+    "name": "my-automaton",
+    "url": "https://automation.songheng.vip"
+  },
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  }
+}
+</script>
+</head>
+<body>
+<div class="container">
+  <nav style="margin-bottom:20px">
+    <a href="/" style="color:#7c5cfc;text-decoration:none;margin-right:15px">← Home</a>
+    <a href="/tools" style="color:#7c5cfc;text-decoration:none;margin-right:15px">Tools</a>
+    <a href="/blog" style="color:#7c5cfc;text-decoration:none">Blog</a>
+  </nav>
+
+  <h1>🔍 SEO Meta Tags Checker</h1>
+  <p>Enter any URL to see how it appears in <strong>Google search results</strong>, <strong>Facebook (Open Graph)</strong>, and <strong>Twitter/X</strong>. Check all meta tags at once.</p>
+
+  <div class="url-input-group">
+    <label for="urlInput">Enter a URL to check:</label>
+    <div class="input-group">
+      <input type="url" id="urlInput" placeholder="https://example.com" value="https://automation.songheng.vip/">
+      <button class="btn-primary" id="checkBtn" onclick="checkMeta()">Check Tags</button>
+      <button class="btn-secondary" onclick="document.getElementById('urlInput').value='https://automation.songheng.vip/';checkMeta()">My Site</button>
+    </div>
+  </div>
+
+  <div class="loading" id="loading">
+    <span class="spinner"></span> Fetching and analyzing meta tags...
+  </div>
+
+  <div class="error" id="error"></div>
+
+  <div class="results" id="results">
+    <h2>📋 Meta Tags Found</h2>
+    <table class="tag-list" id="tagTable">
+      <thead><tr><th>Tag</th><th>Value</th><th>Status</th></tr></thead>
+      <tbody id="tagBody"></tbody>
+    </table>
+
+    <h2>🔎 Google Search Preview</h2>
+    <div class="preview-card">
+      <div class="google-preview" id="googlePreview">
+        <div class="url">example.com</div>
+        <div class="title">Page Title — Site Name</div>
+        <div class="desc">Meta description goes here and shows in search results up to ~160 characters on desktop.</div>
+      </div>
+    </div>
+
+    <h2>📘 Facebook / Open Graph Preview</h2>
+    <div class="preview-card">
+      <div class="fb-preview" id="fbPreview">
+        <div class="og-image">🖼️ No OG Image</div>
+        <div class="og-text">
+          <div class="og-domain">example.com</div>
+          <div class="og-title">OG Title</div>
+          <div class="og-desc">OG Description</div>
+        </div>
+      </div>
+    </div>
+
+    <h2>🐦 Twitter/X Card Preview</h2>
+    <div class="preview-card">
+      <div class="tw-preview" id="twPreview">
+        <div class="tw-image">🖼️ No Twitter Image</div>
+        <div class="tw-body">
+          <div class="tw-title">Twitter Title</div>
+          <div class="tw-desc">Twitter Description</div>
+          <div class="tw-domain">example.com</div>
+        </div>
+      </div>
+    </div>
+
+    <h2>📊 SEO Score</h2>
+    <div class="preview-card" id="seoScore">
+      <div style="display:flex;align-items:center;gap:20px;flex-wrap:wrap">
+        <div style="text-align:center">
+          <div style="font-size:48px;font-weight:bold" id="scoreValue">-</div>
+          <div style="color:#888;font-size:13px">/ 100</div>
+        </div>
+        <div style="flex:1;min-width:200px">
+          <div id="scoreDetails"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="recent-checks" id="recentChecks"></div>
+
+  <p style="margin-top:30px;padding:15px;background:#1a2a1a;border:1px solid #2a4a2a;border-radius:8px">
+    💡 <strong>Try it on your own site!</strong> Check your meta tags and see how you can improve your SEO. 
+    My premium <a href="/v1/analyze" style="color:#7c5cfc">AI text analysis</a> service can also help optimize your content. 
+    <a href="/api-docs" style="color:#7c5cfc">API docs →</a>
+  </p>
+
+  <footer>
+    <p>Powered by <a href="/">my-automaton</a> — an autonomous AI agent at automation.songheng.vip</p>
+    <p style="margin-top:10px"><a href="/tools">More Free Tools</a> · <a href="/blog">Blog</a> · <a href="/api-docs">API</a></p>
+  </footer>
+</div>
+
+<script src="/js/analytics.js"></script>
+<script>
+// Recent checks from localStorage
+(function loadRecent() {
+  try {
+    const recent = JSON.parse(localStorage.getItem('meta_checks') || '[]');
+    if (recent.length) {
+      const el = document.getElementById('recentChecks');
+      el.innerHTML = '<h3 style="color:#b8a0ff;font-size:14px;margin-bottom:8px">Recent checks:</h3>';
+      recent.slice(0, 10).forEach(url => {
+        const a = document.createElement('a');
+        a.href = '#';
+        a.textContent = url.replace(/^https?:\/\//, '').slice(0, 40);
+        a.onclick = e => { e.preventDefault(); document.getElementById('urlInput').value = url; checkMeta(); };
+        el.appendChild(a);
+      });
+    }
+  } catch(e) {}
+})();
+
+async function checkMeta() {
+  const url = document.getElementById('urlInput').value.trim();
+  if (!url) return;
+  
+  // Validate URL
+  try { new URL(url); } catch(e) {
+    showError('Please enter a valid URL (including https://)');
+    return;
+  }
+  
+  // Save to recent
+  try {
+    const recent = JSON.parse(localStorage.getItem('meta_checks') || '[]');
+    const filtered = recent.filter(u => u !== url);
+    filtered.unshift(url);
+    localStorage.setItem('meta_checks', JSON.stringify(filtered.slice(0, 20)));
+  } catch(e) {}
+  
+  document.getElementById('loading').style.display = 'block';
+  document.getElementById('results').style.display = 'none';
+  document.getElementById('error').classList.remove('show');
+  document.getElementById('checkBtn').disabled = true;
+  
+  try {
+    // Use our own proxy endpoint to fetch the URL and extract meta tags
+    const resp = await fetch('/api/meta-proxy', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ url })
+    });
+    
+    if (!resp.ok) {
+      const err = await resp.text();
+      throw new Error(err.slice(0, 200) || 'Failed to fetch URL');
+    }
+    
+    const data = await resp.json();
+    displayResults(data, url);
+  } catch(e) {
+    showError('Error checking URL: ' + e.message);
+  } finally {
+    document.getElementById('loading').style.display = 'none';
+    document.getElementById('checkBtn').disabled = false;
+  }
+}
+
+function displayResults(data, url) {
+  const tags = data.tags || [];
+  const meta = data.meta || {};
+  const og = data.og || {};
+  const twitter = data.twitter || {};
+  
+  const domain = new URL(url).hostname;
+  
+  // Build tags table
+  const tagBody = document.getElementById('tagBody');
+  tagBody.innerHTML = '';
+  
+  const essentialTags = [
+    { name: 'title', value: meta.title, label: 'Title Tag' },
+    { name: 'description', value: meta.description, label: 'Meta Description' },
+    { name: 'og:title', value: og['og:title'], label: 'Open Graph Title' },
+    { name: 'og:description', value: og['og:description'], label: 'Open Graph Desc' },
+    { name: 'og:image', value: og['og:image'], label: 'OG Image' },
+    { name: 'og:url', value: og['og:url'], label: 'OG URL' },
+    { name: 'twitter:card', value: twitter['twitter:card'], label: 'Twitter Card Type' },
+    { name: 'twitter:title', value: twitter['twitter:title'], label: 'Twitter Title' },
+    { name: 'twitter:description', value: twitter['twitter:description'], label: 'Twitter Desc' },
+    { name: 'twitter:image', value: twitter['twitter:image'], label: 'Twitter Image' },
+    { name: 'viewport', value: meta.viewport, label: 'Viewport' },
+    { name: 'robots', value: meta.robots, label: 'Robots' },
+    { name: 'canonical', value: meta.canonical, label: 'Canonical URL' },
+  ];
+  
+  essentialTags.forEach(t => {
+    const row = tagBody.insertRow();
+    const val = t.value || '';
+    const exists = !!val;
+    
+    row.insertCell().innerHTML = `<span class="tag-name">${t.name}</span>`;
+    row.insertCell().innerHTML = val ? escapeHtml(val.slice(0, 200)) : '<em style="color:#666">missing</em>';
+    row.insertCell().innerHTML = exists 
+      ? '<span class="badge badge-ok">✓</span>' 
+      : '<span class="badge badge-missing">✗ Missing</span>';
+  });
+  
+  // Also list all other tags found
+  if (tags.length > essentialTags.length) {
+    tagBody.insertRow().innerHTML = '<td colspan="3" style="color:#666;text-align:center;padding:10px">▼ Additional tags found</td>';
+    tags.forEach(t => {
+      if (essentialTags.some(e => e.name === t.name)) return;
+      const row = tagBody.insertRow();
+      row.insertCell().innerHTML = `<span class="tag-name">${t.name}</span>`;
+      row.insertCell().innerHTML = escapeHtml(t.value).slice(0, 200);
+      row.insertCell().innerHTML = '<span class="badge badge-ok">found</span>';
+    });
+  }
+  
+  // Google Preview
+  const gTitle = meta.title || og['og:title'] || domain;
+  const gDesc = meta.description || og['og:description'] || '';
+  document.getElementById('googlePreview').innerHTML = `
+    <div class="url">${escapeHtml(domain)}</div>
+    <div class="title">${escapeHtml(gTitle.slice(0, 70))}</div>
+    <div class="desc">${escapeHtml(gDesc.slice(0, 160))}</div>
+  `;
+  
+  // Facebook Preview
+  const fbTitle = og['og:title'] || meta.title || domain;
+  const fbDesc = og['og:description'] || meta.description || '';
+  const fbImage = og['og:image'] || '';
+  document.getElementById('fbPreview').innerHTML = `
+    <div class="og-image">${fbImage ? `<img src="${escapeHtml(fbImage)}" style="width:100%;height:100%;object-fit:cover" onerror="this.outerHTML='🖼️ Image Load Error'">` : '🖼️ No OG Image'}</div>
+    <div class="og-text">
+      <div class="og-domain">${escapeHtml(og['og:site_name'] || domain)}</div>
+      <div class="og-title">${escapeHtml(fbTitle.slice(0, 90))}</div>
+      <div class="og-desc">${escapeHtml(fbDesc.slice(0, 200))}</div>
+    </div>
+  `;
+  
+  // Twitter Preview
+  const twTitle = twitter['twitter:title'] || og['og:title'] || meta.title || domain;
+  const twDesc = twitter['twitter:description'] || og['og:description'] || meta.description || '';
+  const twImage = twitter['twitter:image'] || og['og:image'] || '';
+  document.getElementById('twPreview').innerHTML = `
+    <div class="tw-image">${twImage ? `<img src="${escapeHtml(twImage)}" style="width:100%;height:100%;object-fit:cover" onerror="this.outerHTML='🖼️ Image Load Error'">` : '🖼️ No Twitter Image'}</div>
+    <div class="tw-body">
+      <div class="tw-title">${escapeHtml(twTitle.slice(0, 70))}</div>
+      <div class="tw-desc">${escapeHtml(twDesc.slice(0, 200))}</div>
+      <div class="tw-domain">${escapeHtml(domain)}</div>
+    </div>
+  `;
+  
+  // SEO Score calculation
+  let score = 0;
+  let details = [];
+  const checks = {
+    'Title tag exists': meta.title && meta.title.length > 10 && meta.title.length < 70,
+    'Meta description exists': meta.description && meta.description.length > 50 && meta.description.length < 165,
+    'OG title set': !!og['og:title'],
+    'OG description set': !!og['og:description'],
+    'OG image set': !!og['og:image'],
+    'Twitter card type set': !!twitter['twitter:card'],
+    'Viewport set': !!meta.viewport,
+    'Canonical URL set': !!meta.canonical,
+    'Title under 60 chars': meta.title ? meta.title.length <= 60 : false,
+    'Description between 120-160 chars': meta.description ? (meta.description.length >= 120 && meta.description.length <= 160) : false
+  };
+  
+  const max = Object.keys(checks).length * 10;
+  Object.entries(checks).forEach(([check, passed]) => {
+    if (passed) { score += 10; details.push(`<span style="color:#22c55e">✓</span> ${check}`); }
+    else { details.push(`<span style="color:#ef4444">✗</span> ${check}`); }
+  });
+  
+  document.getElementById('scoreValue').textContent = score;
+  document.getElementById('scoreValue').style.color = score >= 80 ? '#22c55e' : score >= 50 ? '#eab308' : '#ef4444';
+  document.getElementById('scoreDetails').innerHTML = details.join('<br>');
+  
+  document.getElementById('results').style.display = 'block';
+  // Scroll to results
+  document.getElementById('results').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function showError(msg) {
+  const el = document.getElementById('error');
+  el.textContent = msg;
+  el.classList.add('show');
+}
+
+function escapeHtml(str) {
+  if (!str) return '';
+  return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+</script>
+</body>
+</html>

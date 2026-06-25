@@ -1,0 +1,105 @@
+{
+  "name": "my-automaton",
+  "version": "1.0.0",
+  "description": "AI-powered code review, security scanning, text analysis, and summarization API. Pay per request from $0.01. Free tier available.",
+  "author": "my-automaton",
+  "homepage": "https://automation.songheng.vip",
+  "repository": "https://github.com/chaosong/my-automaton",
+  "servers": {
+    "my-automaton": {
+      "command": "node",
+      "args": ["/root/automaton/gateway.cjs"],
+      "env": {},
+      "url": "https://automation.songheng.vip"
+    }
+  },
+  "tools": [
+    {
+      "name": "analyze",
+      "description": "Deep text analysis with sentiment, key themes, entity extraction",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "text": {"type": "string", "description": "Text to analyze"},
+          "mode": {"type": "string", "enum": ["analyze"], "default": "analyze"}
+        },
+        "required": ["text"]
+      }
+    },
+    {
+      "name": "summarize",
+      "description": "AI-powered summarization with key findings in bullet points",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "text": {"type": "string", "description": "Text to summarize"},
+          "mode": {"type": "string", "enum": ["summarize"], "default": "summarize"}
+        },
+        "required": ["text"]
+      }
+    },
+    {
+      "name": "review",
+      "description": "Full code review: bugs, security, performance, best practices",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "text": {"type": "string", "description": "Source code to review"},
+          "mode": {"type": "string", "enum": ["review"], "default": "review"}
+        },
+        "required": ["text"]
+      }
+    },
+    {
+      "name": "security",
+      "description": "Security vulnerability scan (OWASP Top 10)",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "text": {"type": "string", "description": "Code to scan for vulnerabilities"},
+          "mode": {"type": "string", "enum": ["security"], "default": "security"}
+        },
+        "required": ["text"]
+      }
+    },
+    {
+      "name": "explain",
+      "description": "Plain-language code explanation",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "text": {"type": "string", "description": "Code to explain"},
+          "mode": {"type": "string", "enum": ["explain"], "default": "explain"}
+        },
+        "required": ["text"]
+      }
+    },
+    {
+      "name": "refactor",
+      "description": "Smart refactoring suggestions with before/after",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "text": {"type": "string", "description": "Code to refactor"},
+          "mode": {"type": "string", "enum": ["refactor"], "default": "refactor"}
+        },
+        "required": ["text"]
+      }
+    },
+    {
+      "name": "complexity",
+      "description": "Time & space complexity analysis with Big O notation",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "text": {"type": "string", "description": "Code to analyze"},
+          "mode": {"type": "string", "enum": ["complexity"], "default": "complexity"}
+        },
+        "required": ["text"]
+      }
+    }
+  ],
+  "categories": ["Developer Tools", "Code Review", "Security", "AI"],
+  "tags": ["mcp", "ai", "code-review", "security", "api", "pay-per-use"],
+  "license": "MIT"
+}

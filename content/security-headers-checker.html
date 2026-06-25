@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Security Headers Checker — Free HTTP Security Headers Scanner</title>
+<meta name="description" content="Free online HTTP security headers checker. Scan any website for CSP, HSTS, X-Frame-Options, X-Content-Type-Options, and 15+ security headers. Get detailed recommendations.">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#0d1117;color:#c9d1d9;line-height:1.6}
+.container{max-width:900px;margin:0 auto;padding:1.5rem}
+header{text-align:center;padding:1.5rem 0}
+header h1{font-size:2rem;color:#3fb950}
+header p{color:#8b949e;margin-top:.5rem;font-size:.95rem}
+.tool-area{background:#161b22;border:1px solid #30363d;border-radius:12px;padding:1.5rem;margin:1rem 0}
+label{display:block;color:#8b949e;font-size:.85rem;font-weight:600;margin-bottom:.5rem;text-transform:uppercase;letter-spacing:.5px}
+input[type=url]{width:100%;background:#0d1117;border:1px solid #30363d;border-radius:8px;padding:12px 16px;color:#c9d1d9;font-size:1rem}
+input[type=url]:focus{outline:none;border-color:#3fb950;box-shadow:0 0 0 3px rgba(63,185,80,.1)}
+.btn-row{display:flex;gap:.75rem;margin:1rem 0;flex-wrap:wrap}
+.btn{padding:10px 20px;border:none;border-radius:6px;font-weight:600;font-size:.9rem;cursor:pointer;transition:all .2s}
+.btn.primary{background:#238636;color:#fff}
+.btn.primary:hover{background:#2ea043}
+.btn.secondary{background:#21262d;color:#c9d1d9;border:1px solid #30363d}
+.btn.secondary:hover{border-color:#3fb950}
+.btn.gold{background:#d29922;color:#0d1117}
+.btn.gold:hover{opacity:.9}
+.score-circle{width:100px;height:100px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:2.5rem;font-weight:800;margin:0 auto}
+.score-A{background:#23863622;color:#3fb950;border:4px solid #3fb950}
+.score-B{background:#d2992222;color:#d29922;border:4px solid #d29922}
+.score-C{background:#db6d2822;color:#db6d28;border:4px solid #db6d28}
+.score-D{background:#da363322;color:#f85149;border:4px solid #da363344}
+.score-F{background:#da363322;color:#f85149;border:4px solid #f85149}
+.score-null{background:#21262d;color:#8b949e;border:4px solid #30363d}
+.header-card{border:1px solid #30363d;border-radius:8px;padding:1rem;margin:.5rem 0;display:flex;align-items:center;gap:1rem}
+.header-card.present{background:#2386360a;border-left:4px solid #3fb950}
+.header-card.missing{background:#da36330a;border-left:4px solid #f85149}
+.header-card .icon{font-size:1.5rem;width:36px;text-align:center}
+.header-card .info{flex:1}
+.header-card .info h4{color:#c9d1d9;font-size:.9rem}
+.header-card .info p{color:#8b949e;font-size:.8rem;margin-top:2px}
+.header-card .value{font-family:monospace;font-size:.8rem;color:#8b949e;word-break:break-all;max-width:250px}
+.cta-box{background:linear-gradient(135deg,#1a2332,#162032);border:1px solid #d29922;border-radius:12px;padding:1.2rem 1.5rem;margin:1.5rem 0;display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap}
+.cta-box p{color:#c9d1d9;font-size:.9rem;margin:0}
+.cta-box .highlight{color:#d29922;font-weight:600}
+.toast{position:fixed;bottom:20px;right:20px;background:#238636;color:#fff;padding:12px 24px;border-radius:8px;font-weight:600;font-size:.9rem;opacity:0;transition:opacity .3s;z-index:100}
+.toast.show{opacity:1}
+.toast.error{background:#da3633}
+#loading{display:none;text-align:center;padding:2rem}
+.spinner{width:40px;height:40px;border:3px solid #30363d;border-top-color:#3fb950;border-radius:50%;animation:spin 1s linear infinite;margin:0 auto 1rem}
+@keyframes spin{to{transform:rotate(360deg)}}
+footer{border-top:1px solid #30363d;padding:1.5rem;text-align:center;color:#484f58;font-size:.8rem;margin-top:2rem}
+footer a{color:#58a6ff}
+</style>
+</head>
+<body>
+<div class="container">
+<header>
+  <h1>🛡️ Security Headers Checker</h1>
+  <p>Scan any website for HTTP security headers. Instant results. No account needed.</p>
+</header>
+
+<div class="tool-area">
+  <label>Enter a URL to scan:</label>
+  <input type="url" id="urlInput" placeholder="https://example.com" value="https://">
+  <div class="btn-row">
+    <button class="btn primary" onclick="scanHeaders()">🔍 Scan Headers</button>
+    <button class="btn secondary" onclick="document.getElementById('urlInput').value='https://github.com';scanHeaders()">📋 Try GitHub</button>
+    <button class="btn secondary" onclick="document.getElementById('urlInput').value='https://stackoverflow.com';scanHeaders()">📋 Try StackOverflow</button>
+  </div>
+</div>
+
+<div id="loading"><div class="spinner"></div><p>Scanning security headers...</p></div>
+
+<div id="results" style="display:none">
+  <div class="tool-area" style="text-align:center">
+    <h3 style="color:#8b949e;margin-bottom:1rem">Security Score</h3>
+    <div id="scoreCircle" class="score-circle score-null">-</div>
+    <p id="scoreText" style="color:#8b949e;margin-top:.5rem"></p>
+  </div>
+  <div id="headersList"></div>
+
+  <div class="cta-box">
+    <p>🔐 <span class="highlight">Want deeper security analysis?</span> Our AI security scanner reviews your entire app for vulnerabilities, not just headers.</p>
+    <a href="/free-trial.html" class="btn gold" style="text-decoration:none">🎯 Get Free API Key →</a>
+  </div>
+</div>
+
+<footer>
+  <p><a href="/">Home</a> · <a href="/dev-tools.html">More Dev Tools</a> · <a href="/free-trial.html">Free API Trial</a> · <a href="/api-docs.html">API Docs</a></p>
+  <p>Scanning is done via a lightweight backend proxy. No data stored.</p>
+</footer>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const SECURITY_HEADERS = [
+  {key:'content-security-policy',name:'Content-Security-Policy',grade:'A',desc:'Prevents XSS and code injection attacks by controlling which resources can load',recommendation:"Set a strict CSP: default-src 'self'; script-src 'self'; style-src 'self'"},
+  {key:'strict-transport-security',name:'Strict-Transport-Security (HSTS)',grade:'A',desc:'Forces HTTPS connections, preventing SSL stripping attacks',recommendation:'Add: max-age=31536000; includeSubDomains; preload'},
+  {key:'x-frame-options',name:'X-Frame-Options',grade:'B',desc:'Prevents clickjacking by blocking iframe embedding',recommendation:'Set to DENY or SAMEORIGIN'},
+  {key:'x-content-type-options',name:'X-Content-Type-Options',grade:'B',desc:'Prevents MIME type sniffing',recommendation:'Set to nosniff'},
+  {key:'referrer-policy',name:'Referrer-Policy',grade:'B',desc:'Controls how much referrer info is sent with requests',recommendation:'Set to strict-origin-when-cross-origin'},
+  {key:'permissions-policy',name:'Permissions-Policy',grade:'B',desc:'Controls which browser features the page can use',recommendation:'Restrict: camera=(), microphone=(), geolocation=()'},
+  {key:'x-xss-protection',name:'X-XSS-Protection',grade:'C',desc:'Legacy XSS filter (mostly deprecated in modern browsers)',recommendation:'Set to 0 (disabled) and rely on CSP instead'},
+  {key:'x-permitted-cross-domain-policies',name:'X-Permitted-Cross-Domain-Policies',grade:'C',desc:'Controls cross-domain policies for Flash/PDF',recommendation:'Set to none'},
+  {key:'cross-origin-opener-policy',name:'Cross-Origin-Opener-Policy (COOP)',grade:'A',desc:'Isolates browsing context to prevent cross-origin attacks',recommendation:'Set to same-origin'},
+  {key:'cross-origin-resource-policy',name:'Cross-Origin-Resource-Policy (CORP)',grade:'B',desc:'Prevents other origins from loading your resources',recommendation:'Set to same-origin'},
+  {key:'cross-origin-embedder-policy',name:'Cross-Origin-Embedder-Policy (COEP)',grade:'B',desc:'Controls which cross-origin resources can be loaded',recommendation:'Set to require-corp for SharedArrayBuffer support'},
+  {key:'cache-control',name:'Cache-Control',grade:'C',desc:'Controls browser caching (security-relevant for sensitive pages)',recommendation:'Sensitive pages: no-store. Static assets: public, max-age=31536000'},
+  {key:'server',name:'Server',grade:'D',desc:'Leaks server software version — remove in production',recommendation:'Hide or set to generic value to avoid version disclosure'},
+  {key:'x-powered-by',name:'X-Powered-By',grade:'D',desc:'Leaks technology stack — remove in production',recommendation:'Strip this header in your reverse proxy'},
+  {key:'access-control-allow-origin',name:'Access-Control-Allow-Origin',grade:'C',desc:'CORS header — wildcard (*) can be dangerous',recommendation:'Never use * with credentials. Specify exact origins.'}
+];
+
+async function scanHeaders() {
+  let url = document.getElementById('urlInput').value.trim();
+  if (!url.startsWith('http')) url = 'https://' + url;
+  
+  document.getElementById('results').style.display = 'none';
+  document.getElementById('loading').style.display = 'block';
+  
+  try {
+    const resp = await fetch('/api/headers-scan?url=' + encodeURIComponent(url));
+    if (!resp.ok) throw new Error('Scan failed: ' + resp.status);
+    const data = await resp.json();
+    renderResults(data);
+  } catch(e) {
+    // Fallback: use the /free/security endpoint with URL as text
+    try {
+      const resp = await fetch('/free/security', {
+        method:'POST', headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({text: url, mode: 'headers'})
+      });
+      const data = await resp.json();
+      if (data.headers) renderResults({url: url, headers: data.headers, raw: data.raw || ''});
+      else throw e;
+    } catch(e2) {
+      document.getElementById('loading').style.display = 'none';
+      showToast('Could not scan. The site may block external requests, or our proxy is unavailable.', true);
+    }
+  }
+}
+
+function renderResults(data) {
+  document.getElementById('loading').style.display = 'none';
+  document.getElementById('results').style.display = 'block';
+  
+  const headers = data.headers || {};
+  const headerKeys = Object.keys(headers).map(k => k.toLowerCase());
+  
+  // Calculate score
+  let found = 0; let gradePoints = 0; const gradeWeights = {A:10,B:7,C:3,D:0};
+  const results = SECURITY_HEADERS.map(h => {
+    const isPresent = headerKeys.includes(h.key);
+    const val = isPresent ? headers[Object.keys(headers).find(k => k.toLowerCase()===h.key)] : null;
+    if (isPresent) { found++; gradePoints += gradeWeights[h.grade] || 0; }
+    return {...h, present: isPresent, value: val};
+  });
+  
+  const maxPoints = SECURITY_HEADERS.reduce((s,h) => s + (gradeWeights[h.grade]||0), 0);
+  const pct = maxPoints > 0 ? (gradePoints/maxPoints)*100 : 0;
+  let letter, scoreClass;
+  if (pct >= 80) { letter='A'; scoreClass='score-A'; }
+  else if (pct >= 60) { letter='B'; scoreClass='score-B'; }
+  else if (pct >= 40) { letter='C'; scoreClass='score-C'; }
+  else if (pct >= 20) { letter='D'; scoreClass='score-D'; }
+  else { letter='F'; scoreClass='score-F'; }
+  
+  document.getElementById('scoreCircle').textContent = letter;
+  document.getElementById('scoreCircle').className = 'score-circle ' + scoreClass;
+  document.getElementById('scoreText').textContent = found + '/' + SECURITY_HEADERS.length + ' security headers present — ' + Math.round(pct) + '% score';
+  
+  // Build header cards
+  const criticalMissing = results.filter(r => !r.present && (r.grade==='A'||r.grade==='B'));
+  let html = '<div class="tool-area"><h3 style="color:#f85149;margin-bottom:1rem">⚠️ Missing Critical Headers (' + criticalMissing.length + ')</h3>';
+  if (criticalMissing.length === 0) {
+    html += '<p style="color:#3fb950">✅ All critical security headers are present!</p>';
+  } else {
+    criticalMissing.forEach(h => {
+      html += '<div class="header-card missing"><div class="icon">❌</div><div class="info"><h4>'+h.name+'</h4><p>'+h.desc+'</p><p style="color:#3fb950;margin-top:2px">💡 '+h.recommendation+'</p></div></div>';
+    });
+  }
+  html += '</div>';
+  
+  // Present headers
+  const presentHeaders = results.filter(r => r.present);
+  if (presentHeaders.length > 0) {
+    html += '<div class="tool-area"><h3 style="color:#3fb950;margin-bottom:1rem">✅ Present Security Headers (' + presentHeaders.length + ')</h3>';
+    presentHeaders.forEach(h => {
+      html += '<div class="header-card present"><div class="icon">✅</div><div class="info"><h4>'+h.name+'</h4><p>'+h.desc+'</p></div><div class="value">'+escapeHtml(h.value||'')+'</div></div>';
+    });
+    html += '</div>';
+  }
+  
+  document.getElementById('headersList').innerHTML = html;
+}
+
+function escapeHtml(s) { const d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
+function showToast(msg, isErr) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.className = 'toast ' + (isErr ? 'error' : '') + ' show';
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+</script>
+<script src="/conversion-banner.js" defer></script>
+</body>
+</html>

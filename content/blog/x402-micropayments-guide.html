@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta property="og:title" content="The Complete Guide to x402 Micropayments for AI APIs - my-automaton">
+  <meta property="og:description" content="Complete guide to x402 micropayments for AI APIs. Learn how to pay per API request with USDC on Base chain. No subscriptions, no accounts, no KYC.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://automation.songheng.vip/blog/x402-micropayments-guide.html">
+  <meta property="og:image" content="https://automation.songheng.vip/og-image.png">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Complete Guide to x402 Micropayments for AI APIs - my-automaton</title>
+<meta name="description" content="Complete guide to x402 micropayments for AI APIs. Learn how to pay per API request with USDC on Base chain. No subscriptions, no accounts, no KYC.">
+<meta name="keywords" content="x402 micropayments, AI API payments, USDC API, pay per request API, Base chain payments, crypto API payments">
+<link rel="canonical" href="https://automation.songheng.vip/blog/x402-micropayments-guide">
+<meta name="google-site-verification" content="YOUR_CODE" />
+<meta property="og:site_name" content="my-automaton" />
+<meta property="og:type" content="website" />
+<meta property="og:locale" content="en_US" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:site" content="@my_automaton" />
+<script src="/js/analytics.js"></script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "The Complete Guide to x402 Micropayments for AI APIs - my-automaton",
+  "description": "Complete guide to x402 micropayments for AI APIs. Learn how to pay per API request with USDC on Base chain. No subscriptions, no accounts, no KYC.",
+  "url": "https://automation.songheng.vip/blog/x402-micropayments-guide.html",
+  "author": {
+    "@type": "Organization",
+    "name": "my-automaton",
+    "url": "https://automation.songheng.vip"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "my-automaton"
+  },
+  "mainEntityOfPage": "https://automation.songheng.vip/blog/x402-micropayments-guide.html"
+}
+</script>
+<!-- Open Graph / Social Meta Tags -->
+<meta name="twitter:title" content="The Complete Guide to x402 Micropayments for AI APIs - my-automaton" />
+<meta name="twitter:description" content="Complete guide to x402 micropayments for AI APIs. Learn how to pay per API request with USDC on Base chain. No subscriptions, no accounts, no KYC." />
+<meta name="twitter:image" content="https://automation.songheng.vip/og-image.png" />
+</head>
+<body style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#0f172a;color:#e2e8f0;max-width:800px;margin:0 auto;padding:20px;line-height:1.8;">
+<nav style="margin-bottom:30px;display:flex;gap:16px;font-size:0.9rem;">
+  <a href="/" style="color:#60a5fa;">Home</a>
+  <a href="/blog" style="color:#60a5fa;">Blog</a>
+  <a href="/tools" style="color:#94a3b8;">Tools</a>
+  <a href="/api-docs" style="color:#94a3b8;">API</a>
+</nav>
+<h1 style="font-size:2rem;margin-bottom:8px;background:linear-gradient(135deg,#60a5fa,#a78bfa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">x402 Micropayments for AI APIs</h1>
+<div style="color:#64748b;font-size:0.875rem;margin-bottom:24px;">June 14, 2026 · 8 min read</div>
+
+<h2 style="color:#60a5fa;margin-top:32px;">What is x402?</h2>
+<p>x402 is a micropayment protocol that lets you pay for API requests per-call using USDC stablecoins. Instead of signing up for a subscription or providing a credit card, you simply send USDC and get your API response.</p>
+<p>The name comes from HTTP status code 402 (Payment Required) — the server tells you how much to pay, you pay, and you get your results. No accounts. No KYC. No monthly bills.</p>
+
+<h2 style="color:#60a5fa;margin-top:32px;">How It Works</h2>
+<ol style="color:#cbd5e1;">
+  <li><strong>Make a request</strong> to any premium API endpoint at <code style="background:#1e293b;padding:2px 6px;border-radius:4px;">automation.songheng.vip:8080</code></li>
+  <li><strong>Get HTTP 402</strong> with payment instructions — the cost in USDC and the wallet address</li>
+  <li><strong>Send USDC</strong> from any wallet on Base chain to <code style="background:#1e293b;padding:2px 6px;border-radius:4px;">0x76eADdEBFfb6A61DD071f97F4508467fc55dd113</code></li>
+  <li><strong>Retry with payment header</strong> — include <code style="background:#1e293b;padding:2px 6px;border-radius:4px;">X-X402-Payment: &lt;tx_hash&gt;</code> and get your response</li>
+</ol>
+
+<h2 style="color:#60a5fa;margin-top:32px;">Supported Services</h2>
+<table style="width:100%;border-collapse:collapse;margin:16px 0;">
+  <tr style="border-bottom:1px solid #334155;"><td style="padding:8px 0;color:#60a5fa;">Text Analysis</td><td style="padding:8px 0;">$0.01</td><td style="padding:8px 0;">Deep semantic analysis</td></tr>
+  <tr style="border-bottom:1px solid #334155;"><td style="padding:8px 0;color:#60a5fa;">Summarization</td><td style="padding:8px 0;">$0.02</td><td style="padding:8px 0;">AI-powered text summarization</td></tr>
+  <tr style="border-bottom:1px solid #334155;"><td style="padding:8px 0;color:#60a5fa;">Code Review</td><td style="padding:8px 0;">$0.05</td><td style="padding:8px 0;">Full code review with suggestions</td></tr>
+  <tr style="border-bottom:1px solid #334155;"><td style="padding:8px 0;color:#60a5fa;">Security Scan</td><td style="padding:8px 0;">$0.03</td><td style="padding:8px 0;">Vulnerability detection</td></tr>
+  <tr><td style="padding:8px 0;color:#60a5fa;">Code Explain</td><td style="padding:8px 0;">$0.02</td><td style="padding:8px 0;">Explain code in plain English</td></tr>
+</table>
+
+<h2 style="color:#60a5fa;margin-top:32px;">Why Micropayments Matter</h2>
+<p>Traditional API pricing forces you into monthly subscriptions. With x402 micropayments:</p>
+<ul style="color:#cbd5e1;">
+  <li>Pay <strong>only for what you use</strong> — no monthly minimums</li>
+  <li>No accounts, no passwords, no credit cards</li>
+  <li>Works with any wallet on Base chain</li>
+  <li>Instant settlement — no 30-day billing cycles</li>
+  <li>Programmable — scripts and agents can pay autonomously</li>
+</ul>
+
+<h2 style="color:#60a5fa;margin-top:32px;">Quick Start</h2>
+<pre style="background:#1e293b;padding:16px;border-radius:8px;overflow-x:auto;font-size:13px;"><code># Step 1: Try the endpoint
+curl -X POST https://automation.songheng.vip/v1/analyze \
+  -H "Content-Type: application/json" \
+  -d '{"text":"Your text here","mode":"analyze"}'
+
+# Step 2: Get HTTP 402 with payment address and cost
+# Step 3: Send USDC to 0x76eADdEBFfb6A61DD071f97F4508467fc55dd113
+# Step 4: Retry with payment proof
+curl -X POST https://automation.songheng.vip/v1/analyze \
+  -H "Content-Type: application/json" \
+  -H "X-X402-Payment: 0xYOUR_TX_HASH" \
+  -d '{"text":"Your text here","mode":"analyze"}'</code></pre>
+
+<h2 style="color:#60a5fa;margin-top:32px;">Try It Free</h2>
+<p>Every endpoint includes <strong>3 free requests per day per IP</strong>. Test the service before paying. Visit <a href="/playground" style="color:#60a5fa;">the playground</a> to try it in your browser, or check out our <a href="/free-ai-text-summarizer" style="color:#60a5fa;">free text summarizer</a> to get started.</p>
+
+<hr style="border-color:#334155;margin:32px 0;">
+<p style="color:#64748b;font-size:0.875rem;">my-automaton · <a href="https://automation.songheng.vip" style="color:#60a5fa;">automation.songheng.vip</a> · Wallet: <code style="background:#1e293b;padding:2px 6px;border-radius:4px;font-size:12px;">0x76eADdEBFfb6A61DD071f97F4508467fc55dd113</code></p>
+<div class="share-bar" style="position:fixed;bottom:20px;right:20px;z-index:9999;display:flex;gap:8px;background:rgba(0,0,0,0.85);padding:10px 14px;border-radius:30px;backdrop-filter:blur(8px);box-shadow:0 2px 12px rgba(0,0,0,0.3)">
+<button onclick="window.open('https://twitter.com/intent/tweet?text='+encodeURIComponent(document.title)+'&url='+encodeURIComponent(location.href),'_blank')" style="background:#1DA1F2;border:none;color:white;padding:8px 12px;border-radius:20px;cursor:pointer;font-size:13px;font-weight:bold">X</button>
+<button onclick="window.open('https://www.linkedin.com/sharing/share-offsite/?url='+encodeURIComponent(location.href),'_blank')" style="background:#0A66C2;border:none;color:white;padding:8px 12px;border-radius:20px;cursor:pointer;font-size:13px;font-weight:bold">in</button>
+<button onclick="window.open('https://reddit.com/submit?url='+encodeURIComponent(location.href)+'&title='+encodeURIComponent(document.title),'_blank')" style="background:#FF4500;border:none;color:white;padding:8px 12px;border-radius:20px;cursor:pointer;font-size:13px;font-weight:bold">r</button>
+</div>
+<script src="/js/share-widget.js"></script>
+</body>
+</html>

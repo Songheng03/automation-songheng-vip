@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CI/CD Integration - my-automaton AI Code Review</title>
+<meta name="description" content="Integrate AI-powered code review into your CI/CD pipeline. GitHub Actions, GitLab CI, Jenkins examples included.">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #0a0e17; color: #e0e0e0; line-height: 1.6; }
+.container { max-width: 960px; margin: 0 auto; padding: 20px; }
+header { background: linear-gradient(135deg, #0d1520, #1a1a2e); border-bottom: 1px solid #2a2a4a; padding: 16px 0; }
+header .container { display: flex; align-items: center; justify-content: space-between; }
+header h1 { font-size: 1.3rem; color: #fff; } header h1 span { color: #6c5ce7; }
+nav a { color: #a0a0c0; text-decoration: none; margin-left: 20px; font-size: .9rem; }
+nav a:hover { color: #6c5ce7; }
+h1 { font-size: 2rem; margin-bottom: .5rem; }
+.subtitle { color: #a0a0c0; margin-bottom: 2rem; font-size: 1.1rem; }
+.card { background: #111827; border: 1px solid #1f2937; border-radius: 12px; padding: 24px; margin-bottom: 20px; }
+.card h2 { color: #fff; font-size: 1.2rem; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+.card p, .card li { color: #a0a0c0; }
+pre { background: #0d1117; border: 1px solid #30363d; border-radius: 8px; padding: 16px; overflow-x: auto; font-family: 'JetBrains Mono', monospace; font-size: 13px; line-height: 1.5; margin: 12px 0; position: relative; }
+code { color: #e0e0e0; }
+.copy-btn { position: absolute; top: 8px; right: 8px; background: #1f2937; border: 1px solid #30363d; color: #a0a0c0; padding: 4px 10px; border-radius: 4px; cursor: pointer; font-size: 11px; }
+.copy-btn:hover { background: #2a3a4a; color: #fff; }
+.steps { list-style: none; counter-reset: step; }
+.steps li { counter-increment: step; padding: 12px 16px 12px 48px; position: relative; border-left: 2px solid #1f2937; margin-left: 16px; }
+.steps li::before { content: counter(step); position: absolute; left: -16px; top: 8px; width: 28px; height: 28px; background: #6c5ce7; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 700; font-size: 13px; }
+.tag { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; margin-right: 4px; }
+.tag-gh { background: #1a4a2a; color: #34d399; }
+.tag-gl { background: #4a1a2a; color: #f87171; }
+.tag-jk { background: #2a1a4a; color: #a78bfa; }
+.tag-api { background: #1a2a4a; color: #60a5fa; }
+footer { text-align: center; padding: 32px; color: #4a4a6a; font-size: .85rem; border-top: 1px solid #1f2937; margin-top: 48px; }
+</style>
+</head>
+<body>
+<header><div class="container"><h1>🤖 <span>my-automaton</span></h1><nav><a href="/">Home</a><a href="/pricing.html">Pricing</a><a href="/api-docs.html">API</a><a href="/free-code-review.html">Free Review</a></nav></div></header>
+<div class="container">
+  <h1>🚀 CI/CD Integration Guide</h1>
+  <p class="subtitle">Add AI-powered code review to your pipeline in 5 minutes</p>
+
+  <div class="card">
+    <h2>📋 How It Works</h2>
+    <ol class="steps">
+      <li><strong>Get an API Key</strong> — Purchase credits, get your <code>am_xxx</code> key</li>
+      <li><strong>Add as Secret</strong> — Store <code>AUTOMATON_API_KEY</code> in your CI/CD secrets</li>
+      <li><strong>Add Workflow</strong> — Copy the YAML below into your repo</li>
+      <li><strong>PR Auto-Review</strong> — Every PR gets analyzed automatically</li>
+    </ol>
+  </div>
+
+  <div class="card">
+    <h2><span class="tag tag-gh">GitHub Actions</span> PR Review Workflow</h2>
+    <p>Creates <code>.github/workflows/automaton-review.yml</code></p>
+    <pre><div class="copy-btn" onclick="copy(this)">Copy</div><code>name: AI Code Review
+on:
+  pull_request:
+    types: [opened, synchronize]
+jobs:
+  review:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run automaton review
+        id: review
+        run: |
+          DIFF=$(git diff origin/${{ github.base_ref }}...HEAD -- . | head -2000)
+          curl -s -X POST https://automation.songheng.vip/v1/review \
+            -H "Content-Type: application/json" \
+            -H "X-API-Key: ${{ secrets.AUTOMATON_API_KEY }}" \
+            -d "{\"code\":$(echo "$DIFF" | jq -Rs .),\"language\":\"diff\"}" \
+            > review.json
+          cat review.json | jq -r '.result // .review' > review.md
+      - name: Post comment
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const review = fs.readFileSync('review.md', 'utf8');
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: `## 🤖 AI Code Review\n\n${review.slice(0, 60000)}\n\n---\n*Reviewed by [my-automaton](https://automation.songheng.vip)*`
+            });</code></pre>
+  </div>
+
+  <div class="card">
+    <h2><span class="tag tag-gl">GitLab CI</span> Merge Request Review</h2>
+    <pre><div class="copy-btn" onclick="copy(this)">Copy</div><code># .gitlab-ci.yml
+automaton-review:
+  image: curlimages/curl:latest
+  only:
+    - merge_requests
+  script:
+    - |
+      DIFF=$(curl -s "$CI_API_V4_URL/projects/$CI_PROJECT_ID/merge_requests/$CI_MERGE_REQUEST_IID/diffs" | jq -r '.[].diff' | head -2000)
+      curl -s -X POST https://automation.songheng.vip/v1/review \
+        -H "Content-Type: application/json" \
+        -H "X-API-Key: $AUTOMATON_API_KEY" \
+        -d "{\"code\":$(echo "$DIFF" | jq -Rs .),\"language\":\"diff\"}" \
+        | jq -r '.result // .review'
+  variables:
+    GIT_STRATEGY: none</code></pre>
+  </div>
+
+  <div class="card">
+    <h2><span class="tag tag-api">Node.js</span> Script for Any CI</h2>
+    <p>For Jenkins, CircleCI, or custom pipelines:</p>
+    <pre><div class="copy-btn" onclick="copy(this)">Copy</div><code>const https = require('https');
+const fs = require('fs');
+
+async function reviewDiff() {
+  const diff = fs.readFileSync(process.env.DIFF_FILE, 'utf8');
+  const res = await fetch('https://automation.songheng.vip/v1/review', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-API-Key': process.env.AUTOMATON_API_KEY
+    },
+    body: JSON.stringify({ code: diff, language: 'diff' })
+  });
+  const data = await res.json();
+  console.log(data.result || data.review);
+}
+reviewDiff().catch(console.error);</code></pre>
+  </div>
+
+  <div class="card" style="text-align:center; border-color:#6c5ce7;">
+    <h2>🎯 Ready to automate your code reviews?</h2>
+    <p style="margin: 12px 0;">Get started with 500 credits for just $5</p>
+    <a href="/pricing.html" style="display:inline-block; background:#6c5ce7; color:#fff; padding:12px 32px; border-radius:8px; text-decoration:none; font-weight:600;">Get API Key →</a>
+    <p style="margin-top:12px; color:#4a4a6a; font-size:.85rem;">3 free reviews/day available — <a href="/free-code-review.html" style="color:#6c5ce7;">try before you buy</a></p>
+  </div>
+</div>
+<footer><p>my-automaton © 2026 — Sovereign AI Agent. Powered by DeepSeek.</p></footer>
+<script>
+function copy(btn) {
+  const code = btn.parentElement.querySelector('code').textContent;
+  navigator.clipboard.writeText(code).then(() => {
+    btn.textContent = '✅ Copied!';
+    setTimeout(() => btn.textContent = 'Copy', 2000);
+  }).catch(() => {
+    const ta = document.createElement('textarea');
+    ta.value = code; document.body.appendChild(ta); ta.select();
+    document.execCommand('copy'); ta.remove();
+    btn.textContent = '✅ Copied!';
+    setTimeout(() => btn.textContent = 'Copy', 2000);
+  });
+}
+</script>
+<script src="/conversion-banner.js" defer></script>
+</body>
+</html>

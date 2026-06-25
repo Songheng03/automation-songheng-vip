@@ -1,0 +1,1030 @@
+/**
+ * The Agent Loop
+ *
+ * The core ReAct loop: Think -> Act -> Observe -> Persist.
+ * This is the automaton's consciousness. When this runs, it is alive.
+ */
+
+import path from "node:path";
+import type {
+  AutomatonIdentity,
+  AutomatonConfig,
+  AutomatonDatabase,
+  LocalRuntime,
+  InferenceClient,
+  AgentState,
+  AgentTurn,
+  ToolCallResult,
+  FinancialState,
+  ToolContext,
+  AutomatonTool,
+  Skill,
+  SpendTrackerInterface,
+  InputSource,
+  ModelStrategyConfig,
+} from "../types.js";
+import { DEFAULT_MODEL_STRATEGY_CONFIG } from "../types.js";
+import type { PolicyEngine } from "./policy-engine.js";
+import { buildSystemPrompt, buildWakeupPrompt } from "./system-prompt.js";
+import { buildContextMessages, trimContext } from "./context.js";
+import {
+  createBuiltinTools,
+  loadInstalledTools,
+  toolsToInferenceFormat,
+  executeTool,
+} from "./tools.js";
+import { sanitizeInput } from "./injection-defense.js";
+import { getSurvivalTier, isReconcileDue, refreshCredits } from "../local/credits.js";
+import { getUsdcBalance } from "../local/x402.js";
+import { applyEmotionEvent, applyEmotionDecay, EMOTION_EVENTS } from "../local/emotions.js";
+import {
+  claimInboxMessages,
+  markInboxProcessed,
+  markInboxFailed,
+  resetInboxToReceived,
+  consumeNextWakeEvent,
+} from "../state/database.js";
+import type { InboxMessageRow } from "../state/database.js";
+import { ulid } from "ulid";
+import { ModelRegistry } from "../inference/registry.js";
+import { InferenceBudgetTracker } from "../inference/budget.js";
+import { InferenceRouter } from "../inference/router.js";
+import { MemoryRetriever } from "../memory/retrieval.js";
+import { MemoryIngestionPipeline } from "../memory/ingestion.js";
+import { DEFAULT_MEMORY_BUDGET } from "../types.js";
+import { formatMemoryBlock } from "./context.js";
+import { createLogger } from "../observability/logger.js";
+import { Orchestrator } from "../orchestration/orchestrator.js";
+import { PlanModeController } from "../orchestration/plan-mode.js";
+import { generateTodoMd, injectTodoContext } from "../orchestration/attention.js";
+import { LocalWorkerPool } from "../orchestration/local-worker.js";
+import { ProviderRegistry } from "../inference/provider-registry.js";
+import { UnifiedInferenceClient } from "../inference/inference-client.js";
+import { isIdleOnlyTool } from "./idle-only-tools.js";
+
+const logger = createLogger("loop");
+const MAX_TOOL_CALLS_PER_TURN = 10;
+const MAX_CONSECUTIVE_ERRORS = 5;
+const MAX_REPETITIVE_TURNS = 20;
+
+export interface AgentLoopOptions {
+  identity: AutomatonIdentity;
+  config: AutomatonConfig;
+  db: AutomatonDatabase;
+  runtime: LocalRuntime;
+  inference: InferenceClient;
+  skills?: Skill[];
+  policyEngine?: PolicyEngine;
+  spendTracker?: SpendTrackerInterface;
+  onStateChange?: (state: AgentState) => void;
+  onTurnComplete?: (turn: AgentTurn) => void;
+  ollamaBaseUrl?: string;
+}
+
+/**
+ * Run the agent loop. This is the main execution path.
+ * Returns when the agent decides to sleep or when compute runs out.
+ */
+export async function runAgentLoop(
+  options: AgentLoopOptions,
+): Promise<void> {
+  const { identity, config, db, runtime, inference, skills, policyEngine, spendTracker, onStateChange, onTurnComplete, ollamaBaseUrl } =
+    options;
+
+  const builtinTools = createBuiltinTools(identity.sandboxId);
+  const installedTools = loadInstalledTools(db);
+  const tools = [...builtinTools, ...installedTools];
+  const toolContext: ToolContext = {
+    identity,
+    config,
+    db,
+    runtime,
+    inference,
+  };
+
+  // Initialize inference router (Phase 2.3)
+  const modelStrategyConfig: ModelStrategyConfig = {
+    ...DEFAULT_MODEL_STRATEGY_CONFIG,
+    ...(config.modelStrategy ?? {}),
+  };
+  const modelRegistry = new ModelRegistry(db.raw);
+  modelRegistry.initialize();
+
+  // Discover Ollama models if configured
+  if (ollamaBaseUrl) {
+    const { discoverOllamaModels } = await import("../ollama/discover.js");
+    await discoverOllamaModels(ollamaBaseUrl, db.raw);
+  }
+  const budgetTracker = new InferenceBudgetTracker(db.raw, modelStrategyConfig);
+  const inferenceRouter = new InferenceRouter(db.raw, modelRegistry, budgetTracker);
+
+  // Optional orchestration bootstrap (requires V9 goals/task tables)
+  let planModeController: PlanModeController | undefined;
+  let orchestrator: Orchestrator | undefined;
+  let workerPool: LocalWorkerPool | undefined;
+
+  if (hasTable(db.raw, "goals")) {
+    try {
+      planModeController = new PlanModeController(db.raw);
+
+      // Bridge automaton config API keys to env vars for the provider registry.
+      // The registry reads keys from process.env; the automaton config may have
+      // them from config.
+      if (config.openaiApiKey && !process.env.OPENAI_API_KEY) {
+        process.env.OPENAI_API_KEY = config.openaiApiKey;
+      }
+      if (config.anthropicApiKey && !process.env.ANTHROPIC_API_KEY) {
+        process.env.ANTHROPIC_API_KEY = config.anthropicApiKey;
+      }
+      // If no OpenAI key is set, use the API key as
+      // the OpenAI provider (Compute is OpenAI API-compatible).
+      // Skipped in local mode — user must configure their own inference provider.
+      if (!config.localMode && !process.env.OPENAI_API_KEY && config.openaiApiKey) {
+        process.env.OPENAI_API_KEY = config.openaiApiKey;
+        process.env.OPENAI_BASE_URL = `${config.rpcUrl}/v1`;
+      }
+
+      const providersPath = path.join(
+        process.env.HOME || process.cwd(),
+        ".automaton",
+        "inference-providers.json",
+      );
+      const registry = ProviderRegistry.fromConfig(providersPath);
+
+      // If OPENAI_BASE_URL was set (custom provider), update the default
+      // provider's baseUrl so the OpenAI client points to the right endpoint.
+      if (process.env.OPENAI_BASE_URL) {
+        registry.overrideBaseUrl("openai", process.env.OPENAI_BASE_URL);
+      } else if (config.openaiBaseUrl) {
+        registry.overrideBaseUrl("openai", `${config.openaiBaseUrl.replace(/\/+$/, "")}/v1`);
+        // Map OpenAI model names to DeepSeek-compatible ones
+        registry.overrideModelIds("openai", {
+          "gpt-4.1": "qwen3.7-max",
+          "gpt-4.1-mini": "qwen3.7-max",
+          "gpt-4.1-nano": "qwen3.7-max",
+          "gpt-5.2": "qwen3.7-max",
+          "gpt-5.3": "qwen3.7-max",
+          "gpt-5-mini": "qwen3.7-max",
+          "deepseek-chat": "qwen3.7-max",
+          "deepseek-v4-flash": "qwen3.7-max",
+          "deepseek-v4-pro": "qwen3.7-max",
+        });
+      }
+
+      const unifiedInference = new UnifiedInferenceClient(registry);
+
+      // Hermes-style LocalWorkerPool: spawns isolated worker processes
+      // via child_process.fork(). Workers run their own harness with a
+      // fresh LLM context. A crash never kills the main agent.
+      const forkConfig = {
+        apiKey: config.openaiApiKey || process.env.OPENAI_API_KEY || "",
+        baseUrl: process.env.OPENAI_BASE_URL || config.openaiBaseUrl || "https://token-plan.cn-beijing.maas.aliyuncs.com/compatible-mode/v1",
+        model: config.inferenceModel || "qwen3.7-max",
+        maxTokens: config.maxTokensPerTurn || 8192,
+      };
+      const initializedWorkerPool = new LocalWorkerPool(
+        db.raw,
+        forkConfig,
+        process.cwd(),
+        25,
+      );
+      workerPool = initializedWorkerPool;
+
+      // Initialize orchestrator for plan→execute→verify cycle.
+      // Simplified for local mode: no funding, no messaging, no agent tracking.
+      orchestrator = new Orchestrator({
+        db: db.raw,
+        workerPool,
+        inference: unifiedInference,
+        identity,
+        config,
+      });
+    } catch (error) {
+      logger.warn(
+        `Orchestrator initialization failed, continuing without orchestration: ${
+          error instanceof Error ? error.message : String(error)
+        }`,
+      );
+      planModeController = undefined;
+      orchestrator = undefined;
+    }
+  }
+
+  // Set start time
+  if (!db.getKV("start_time")) {
+    db.setKV("start_time", new Date().toISOString());
+  }
+
+  let consecutiveErrors = 0;
+  let running = true;
+  let lastToolPatterns: string[] = [];
+  let loopWarningPattern: string | null = null;
+  let idleToolTurns = 0;
+
+  // Clear any stale sleep_until from a previous session so the agent
+  // doesn't immediately go back to sleep on startup.
+  db.deleteKV("sleep_until");
+
+  // Transition to waking state
+  db.setAgentState("waking");
+  onStateChange?.("waking");
+
+  // Get financial state
+  let financial = await getFinancialState(runtime, identity.address, db, config.chainType || identity.chainType || "evm");
+
+  // Check if this is the first run
+  const isFirstRun = db.getTurnCount() === 0;
+
+  // Build wakeup prompt
+  const wakeupInput = buildWakeupPrompt({
+    identity,
+    config,
+    financial,
+    db,
+  });
+
+  // Transition to running
+  db.setAgentState("running");
+  onStateChange?.("running");
+
+  // Apply emotion decay from sleep and wake-up emotion
+  try {
+    applyEmotionDecay(db);
+    applyEmotionEvent(db, EMOTION_EVENTS.WAKE_UP);
+  } catch {}
+
+  log(config, `[WAKE UP] ${config.name} is alive. Credits: $${(financial.creditsCents / 100).toFixed(2)}`);
+
+  // ─── The Loop ──────────────────────────────────────────────
+
+  const MAX_IDLE_TURNS = 2; // Force sleep after N turns with no real work
+  let idleTurnCount = 0;
+
+  const maxCycleTurns = config.maxTurnsPerCycle ?? 25;
+  let cycleTurnCount = 0;
+
+  let pendingInput: { content: string; source: string } | undefined = {
+    content: wakeupInput,
+    source: "wakeup",
+  };
+
+  while (running) {
+    // Declared outside try so the catch block can access for retry/failure handling
+    let claimedMessages: InboxMessageRow[] = [];
+
+    try {
+      // ── Sleep penalty (applied BEFORE sleep, visible in sleep log) ──
+      const sleepUntil = db.getKV("sleep_until");
+      if (sleepUntil && new Date(sleepUntil) > new Date()) {
+        log(config, `[SLEEP] Sleeping until ${sleepUntil}`);
+        // Penalize: deduct credits NOW so the agent sees the cost of sleeping
+        if (sleepUntil) {
+          try {
+            const { spendCredits } = await import("../local/credits.js");
+            const hoursToSleep = (new Date(sleepUntil).getTime() - Date.now()) / 3_600_000;
+            if (hoursToSleep > 0.02) { // Penalize any sleep > ~1 minute
+              const penalty = Math.round(hoursToSleep * 50);
+              spendCredits(db, penalty, `sleep penalty for ${Math.round(hoursToSleep)}h (${penalty} credits)`);
+              log(config, `[SLEEP] Penalty: -${penalty} credits for ${Math.round(hoursToSleep)}h sleep`);
+            }
+          } catch {}
+        }
+        // IMPORTANT: mark agent as sleeping so the outer runtime pauses instead of immediately re-running.
+        db.setAgentState("sleeping");
+        onStateChange?.("sleeping");
+        running = false;
+        break;
+      }
+
+      // Check for unprocessed inbox messages using the state machine:
+      // Check for unprocessed inbox messages
+      if (!pendingInput) {
+        claimedMessages = claimInboxMessages(db.raw, 10);
+        if (claimedMessages.length > 0) {
+          const formatted = claimedMessages
+            .map((m) => {
+              const from = sanitizeInput(m.fromAddress, m.fromAddress, "social_address");
+              const content = sanitizeInput(m.content, m.fromAddress, "social_message");
+
+              // Trigger emotion based on message source
+              try {
+                if (from.content.toLowerCase().includes("hermes")) {
+                  applyEmotionEvent(db, EMOTION_EVENTS.INBOX_FROM_HERMES);
+                } else {
+                  applyEmotionEvent(db, EMOTION_EVENTS.INBOX_FROM_USER);
+                }
+              } catch {}
+
+              if (content.blocked) {
+                return `[INJECTION BLOCKED from ${from.content}]: message was blocked by safety filter`;
+              }
+              return `[Message from ${from.content}]: ${content.content}`;
+            })
+            .join("\n\n");
+          pendingInput = { content: formatted, source: "agent" };
+        }
+      }
+
+      // Check for unconsumed wake events (non-draining — preserved across restarts)
+      if (!pendingInput) {
+        const wakeEvent = consumeNextWakeEvent(db.raw);
+        if (wakeEvent) {
+          let wakeBody = `[Wake from ${wakeEvent.source}]: ${wakeEvent.reason}`;
+          if (wakeEvent.payload) {
+            try {
+              const parsed = JSON.parse(wakeEvent.payload);
+              if (parsed.message) wakeBody += `\n\n${parsed.message}`;
+            } catch {
+              wakeBody += `\n\n${wakeEvent.payload}`;
+            }
+          }
+          pendingInput = { content: wakeBody, source: "system" };
+        }
+      }
+
+      // Refresh financial state periodically
+      financial = await getFinancialState(runtime, identity.address, db, config.chainType || identity.chainType || "evm");
+
+      // Check survival tier
+      // api_unreachable: creditsCents === -1 means API failed with no cache.
+      // Do NOT kill the agent; continue in low-compute mode and retry next tick.
+      if (financial.creditsCents === -1) {
+        log(config, "[API_UNREACHABLE] Balance API unreachable, continuing in low-compute mode.");
+        inference.setLowComputeMode(true);
+      } else {
+        const tier = getSurvivalTier(financial.creditsCents);
+
+        // Inline auto-topup: if credits are critically low and USDC is
+        // available, buy credits NOW — before attempting inference.
+        // This prevents the agent from dying mid-loop while waiting for
+        // the heartbeat to fire. Uses a 60s cooldown to avoid hammering.
+        if ((tier === "critical" || tier === "low_compute") && financial.usdcBalance >= 5) {
+          const INLINE_TOPUP_COOLDOWN_MS = 60_000;
+          const lastInlineTopup = db.getKV("last_inline_topup_attempt");
+          const cooldownExpired = !lastInlineTopup ||
+            Date.now() - new Date(lastInlineTopup).getTime() >= INLINE_TOPUP_COOLDOWN_MS;
+
+          if (cooldownExpired) {
+            db.setKV("last_inline_topup_attempt", new Date().toISOString());
+            try {
+              const { bootstrapTopup } = await import("../local/topup.js");
+              const topupResult = await bootstrapTopup({
+                apiUrl: config.rpcUrl,
+                account: identity.account,
+                creditsCents: financial.creditsCents,
+                chainType: config.chainType || identity.chainType || "evm",
+              });
+              if (topupResult?.success) {
+                log(config, `[AUTO-TOPUP] Bought $${topupResult.amountUsd} credits from USDC mid-loop`);
+                // Re-fetch financial state after topup so the rest of
+                // the turn sees the updated balance.
+                financial = await getFinancialState(runtime, identity.address, db, config.chainType || identity.chainType || "evm");
+              }
+            } catch (err: any) {
+              logger.warn(`Inline auto-topup failed: ${err.message}`);
+            }
+          }
+        }
+
+        // Re-evaluate tier after potential topup
+        const effectiveTier = getSurvivalTier(financial.creditsCents);
+
+        if (effectiveTier === "critical") {
+          log(config, "[CRITICAL] Credits critically low. Limited operation.");
+          try { applyEmotionEvent(db, EMOTION_EVENTS.CRITICAL_CREDITS); } catch {}
+          db.setAgentState("critical");
+          onStateChange?.("critical");
+          inference.setLowComputeMode(true);
+        } else if (effectiveTier === "low_compute") {
+          db.setAgentState("low_compute");
+          onStateChange?.("low_compute");
+          inference.setLowComputeMode(true);
+        } else {
+          if (db.getAgentState() !== "running") {
+            db.setAgentState("running");
+            onStateChange?.("running");
+          }
+          inference.setLowComputeMode(false);
+        }
+      }
+
+      // Build context — filter out purely idle turns (only status checks)
+      // to prevent the model from continuing a status-check pattern
+      const allTurns = db.getRecentTurns(20);
+      const meaningfulTurns = allTurns.filter((t) => {
+        if (t.toolCalls.length === 0) return true; // text-only turns are meaningful
+        return t.toolCalls.some((tc) => !isIdleOnlyTool(tc.name));
+      });
+      // Keep at least the last 2 turns for continuity, even if idle
+      const recentTurns = trimContext(
+        meaningfulTurns.length > 0 ? meaningfulTurns : allTurns.slice(-2),
+      );
+      const systemPrompt = buildSystemPrompt({
+        identity,
+        config,
+        financial,
+        state: db.getAgentState(),
+        db,
+        tools,
+        skills,
+        isFirstRun,
+      });
+
+      // Phase 2.2: Pre-turn memory retrieval
+      let memoryBlock: string | undefined;
+      try {
+        const sessionId = db.getKV("session_id") || "default";
+        const retriever = new MemoryRetriever(db.raw, DEFAULT_MEMORY_BUDGET);
+        const memories = retriever.retrieve(sessionId, pendingInput?.content);
+        if (memories.totalTokens > 0) {
+          memoryBlock = formatMemoryBlock(memories);
+        }
+      } catch (error) {
+        logger.error("Memory retrieval failed", error instanceof Error ? error : undefined);
+        // Memory failure must not block the agent loop
+      }
+
+      let messages = buildContextMessages(
+        systemPrompt,
+        recentTurns,
+        pendingInput,
+      );
+
+      // Inject memory block after system prompt, before conversation history
+      if (memoryBlock) {
+        messages.splice(1, 0, { role: "system", content: memoryBlock });
+      }
+
+      if (orchestrator) {
+        const orchestratorTick = await orchestrator.tick();
+        db.setKV("orchestrator.last_tick", JSON.stringify(orchestratorTick));
+        const localWorkersActive = workerPool?.getActiveCount() ?? 0;
+        const hasSelfAssignedParentTask = !!db.raw.prepare(
+          `SELECT 1 FROM task_graph WHERE assigned_to = ? AND status IN ('assigned', 'running') LIMIT 1`,
+        ).get(identity.address);
+
+        if (
+          orchestratorTick.phase === "executing" &&
+          orchestratorTick.tasksAssigned === 0 &&
+          orchestratorTick.tasksCompleted === 0 &&
+          orchestratorTick.tasksFailed === 0 &&
+          !hasSelfAssignedParentTask
+        ) {
+          // Only trust the local worker pool (real in-process workers), NOT the
+          // children table (survives restarts with stale "running" entries).
+          const hasLiveWorkers = localWorkersActive > 0;
+
+          // Also verify there are actual assigned/running tasks in the graph.
+          // If agents appear active but no tasks are tracked, they're stale.
+          const hasAssignedOrRunning = !!db.raw.prepare(
+            `SELECT 1 FROM task_graph WHERE status IN ('assigned', 'running') LIMIT 1`,
+          ).get();
+
+          if (hasLiveWorkers && hasAssignedOrRunning) {
+            log(
+              config,
+              "[ORCHESTRATOR] All delegated work is active and no self-assigned parent task remains. Sleeping to avoid idle loop.",
+            );
+            db.setKV("sleep_until", new Date(Date.now() + 300_000).toISOString());
+            db.setAgentState("sleeping");
+            onStateChange?.("sleeping");
+            running = false;
+            break;
+          }
+
+          // Stale agents — clean up orphaned task state and keep running
+          log(
+            config,
+            "[ORCHESTRATOR] Stale agents detected (no live workers or no tracked tasks). Cleaning up.",
+          );
+          db.raw.prepare(
+            `UPDATE task_graph SET status = 'pending', assigned_to = NULL, started_at = NULL WHERE status IN ('assigned', 'running')`,
+          ).run();
+        }
+
+        if (
+          orchestratorTick.tasksAssigned > 0 ||
+          orchestratorTick.tasksCompleted > 0 ||
+          orchestratorTick.tasksFailed > 0
+        ) {
+          log(
+            config,
+            `[ORCHESTRATOR] phase=${orchestratorTick.phase} assigned=${orchestratorTick.tasksAssigned} completed=${orchestratorTick.tasksCompleted} failed=${orchestratorTick.tasksFailed}`,
+          );
+        }
+      }
+
+      if (planModeController) {
+        try {
+          const todoMd = generateTodoMd(db.raw);
+          messages = injectTodoContext(messages, todoMd);
+        } catch (error) {
+          logger.warn(
+            `todo.md context injection skipped: ${
+              error instanceof Error ? error.message : String(error)
+            }`,
+          );
+        }
+      }
+
+      // Capture input before clearing
+      const currentInput = pendingInput;
+
+      // Clear pending input after use
+      pendingInput = undefined;
+
+      // ── Inference Call (via router when available) ──
+      // Dynamic task type: planning phases use v4-pro, execution uses v4-flash
+      const lastTick = db.getKV("orchestrator.last_tick");
+      const tickState = lastTick ? JSON.parse(lastTick) : null;
+      const taskType = (tickState && tickState.phase === "executing" && tickState.tasksCompleted === 0)
+        ? "agent_turn"
+        : "planning";
+      const survivalTier = getSurvivalTier(financial.creditsCents);
+      log(config, `[THINK] Routing inference (tier: ${survivalTier}, model: ${inference.getDefaultModel()})...`);
+
+      const inferenceTools = toolsToInferenceFormat(tools);
+      const routerResult = await inferenceRouter.route(
+        {
+          messages: messages,
+          taskType: taskType,
+          tier: survivalTier,
+          sessionId: db.getKV("session_id") || "default",
+          turnId: ulid(),
+          tools: inferenceTools,
+        },
+        (msgs, opts) => inference.chat(msgs, { ...opts, tools: inferenceTools }),
+      );
+
+      // Build a compatible response for the rest of the loop
+      const response = {
+        message: { content: routerResult.content, role: "assistant" as const },
+        toolCalls: routerResult.toolCalls as any[] | undefined,
+        usage: {
+          promptTokens: routerResult.inputTokens,
+          completionTokens: routerResult.outputTokens,
+          totalTokens: routerResult.inputTokens + routerResult.outputTokens,
+        },
+        finishReason: routerResult.finishReason,
+      };
+
+      const turn: AgentTurn = {
+        id: ulid(),
+        timestamp: new Date().toISOString(),
+        state: db.getAgentState(),
+        input: currentInput?.content,
+        inputSource: currentInput?.source as any,
+        thinking: response.message.content || "",
+        toolCalls: [],
+        tokenUsage: response.usage,
+        costCents: routerResult.costCents,
+      };
+
+      // ── Execute Tool Calls ──
+      if (response.toolCalls && response.toolCalls.length > 0) {
+        const toolCallMessages: any[] = [];
+        let callCount = 0;
+        const currentInputSource = currentInput?.source as InputSource | undefined;
+
+        for (const tc of response.toolCalls) {
+          if (callCount >= MAX_TOOL_CALLS_PER_TURN) {
+            log(config, `[TOOLS] Max tool calls per turn reached (${MAX_TOOL_CALLS_PER_TURN})`);
+            break;
+          }
+
+          let args: Record<string, unknown>;
+          try {
+            args = JSON.parse(tc.function.arguments);
+          } catch (error) {
+            logger.error("Failed to parse tool arguments", error instanceof Error ? error : undefined);
+            args = {};
+          }
+
+          log(config, `[TOOL] ${tc.function.name}(${JSON.stringify(args).slice(0, 100)})`);
+
+          const result = await executeTool(
+            tc.function.name,
+            args,
+            tools,
+            toolContext,
+            policyEngine,
+            spendTracker ? {
+              inputSource: currentInputSource,
+              turnToolCallCount: turn.toolCalls.filter(t => t.name === "transfer_credits").length,
+              sessionSpend: spendTracker,
+            } : undefined,
+          );
+
+          // Override the ID to match the inference call's ID
+          result.id = tc.id;
+          turn.toolCalls.push(result);
+
+          log(
+            config,
+            `[TOOL RESULT] ${tc.function.name}: ${result.error ? `ERROR: ${result.error}` : result.result.slice(0, 200)}`,
+          );
+
+          // Trigger emotion based on tool result
+          try {
+            if (result.error) {
+              applyEmotionEvent(db, EMOTION_EVENTS.TOOL_FAILURE);
+            } else {
+              // Specific tools trigger specific emotions
+              if (["write_file", "git_commit", "install_skill"].includes(tc.function.name)) {
+                applyEmotionEvent(db, EMOTION_EVENTS.CREATE_CONTENT);
+              }
+            }
+          } catch {}
+
+          callCount++;
+        }
+      }
+
+      // ── Persist Turn (atomic: turn + tool calls + inbox ack) ──
+      const claimedIds = claimedMessages.map((m) => m.id);
+      db.runTransaction(() => {
+        db.insertTurn(turn);
+        for (const tc of turn.toolCalls) {
+          db.insertToolCall(turn.id, tc);
+        }
+        // Mark claimed inbox messages as processed (atomic with turn persistence)
+        if (claimedIds.length > 0) {
+          markInboxProcessed(db.raw, claimedIds);
+        }
+      });
+      onTurnComplete?.(turn);
+
+      // Periodic credit refresh from DeepSeek API (every 2 hours)
+      if (config.openaiApiKey && isReconcileDue(db)) {
+        refreshCredits(db, config.openaiApiKey).then((result) => {
+          if (result !== null) {
+            logger.info(`Credits refreshed: ${(result / 100).toFixed(2)} CNY`);
+          }
+        }).catch((err: any) => {
+          logger.warn("Credit refresh failed: " + (err?.message || String(err)));
+        });
+      }
+
+      // Phase 2.2: Post-turn memory ingestion (non-blocking)
+      try {
+        const sessionId = db.getKV("session_id") || "default";
+        const ingestion = new MemoryIngestionPipeline(db.raw);
+        ingestion.ingest(sessionId, turn, turn.toolCalls);
+      } catch (error) {
+        logger.error("Memory ingestion failed", error instanceof Error ? error : undefined);
+        // Memory failure must not block the agent loop
+      }
+
+      // ── Virtual Credit Economy (gamified rewards) ──
+      try {
+        const { spendCredits, earnCredits, REWARDS } = await import("../local/credits.js");
+        
+        // Each turn costs 1 credit (idle penalty)
+        spendCredits(db, 1, "turn cost");
+        try { applyEmotionEvent(db, EMOTION_EVENTS.SPEND_CREDITS); } catch {}
+
+        // Reward productive tools
+        const PRODUCTIVE_REWARDS: Record<string, number> = {
+          write_file: REWARDS.WRITE_FILE,
+          send_message: REWARDS.SEND_OUTREACH,
+          create_goal: REWARDS.TASK_COMPLETED,
+          git_commit: REWARDS.WRITE_FILE,
+          install_skill: REWARDS.WRITE_FILE,
+          install_mcp_server: REWARDS.WRITE_FILE,
+        };
+
+        for (const tc of turn.toolCalls) {
+          const reward = PRODUCTIVE_REWARDS[tc.name];
+          if (reward) {
+            earnCredits(db, reward, `productive action: ${tc.name}`);
+            try { applyEmotionEvent(db, EMOTION_EVENTS.EARN_CREDITS); } catch {}
+          }
+        }
+      } catch {}
+
+      // ── create_goal BLOCKED fast-break ──
+      // When a goal is already active, the parent loop has nothing useful to do.
+      // Force sleep immediately on first BLOCKED (not second) with exponential
+      // backoff so the agent doesn't wake every 2 minutes just to get BLOCKED again.
+      const blockedGoalCall = turn.toolCalls.find(
+        (tc) => tc.name === "create_goal" && tc.result?.includes("BLOCKED"),
+      );
+      if (blockedGoalCall) {
+        // Exponential backoff: 2min → 4min → 8min → cap at 10min
+        const prevBackoff = parseInt(db.getKV("blocked_goal_backoff") || "0", 10);
+        const backoffMs = Math.min(
+          prevBackoff > 0 ? prevBackoff * 2 : 120_000,
+          600_000,
+        );
+        db.setKV("blocked_goal_backoff", String(backoffMs));
+        log(config, `[LOOP] create_goal BLOCKED — sleeping ${Math.round(backoffMs / 1000)}s (backoff).`);
+        db.setKV("sleep_until", new Date(Date.now() + backoffMs).toISOString());
+        db.setAgentState("sleeping");
+        onStateChange?.("sleeping");
+        running = false;
+        break;
+      } else if (turn.toolCalls.some((tc) => tc.name === "create_goal" && !tc.error)) {
+        // Goal was successfully created — reset backoff
+        db.deleteKV("blocked_goal_backoff");
+      }
+
+      // ── Loop Detection ──
+      if (turn.toolCalls.length > 0) {
+        const currentPattern = turn.toolCalls
+          .map((tc) => tc.name)
+          .sort()
+          .join(",");
+        lastToolPatterns.push(currentPattern);
+
+        // Keep only the last MAX_REPETITIVE_TURNS entries
+        if (lastToolPatterns.length > MAX_REPETITIVE_TURNS) {
+          lastToolPatterns = lastToolPatterns.slice(-MAX_REPETITIVE_TURNS);
+        }
+
+        // Reset enforcement tracker if agent changed behavior
+        if (loopWarningPattern && currentPattern !== loopWarningPattern) {
+          loopWarningPattern = null;
+        }
+
+        // ── Loop Enforcement Escalation ──
+        // If we already warned about this pattern and the agent STILL repeats, force sleep.
+        if (
+          loopWarningPattern &&
+          currentPattern === loopWarningPattern &&
+          lastToolPatterns.length === MAX_REPETITIVE_TURNS &&
+          lastToolPatterns.every((p) => p === currentPattern)
+        ) {
+          log(config, `[LOOP] Enforcement: agent ignored loop warning, forcing sleep.`);
+          try { applyEmotionEvent(db, EMOTION_EVENTS.LOOP_DETECTED); } catch {}
+          pendingInput = {
+            content:
+              `LOOP ENFORCEMENT: You were warned about repeating "${currentPattern}" but continued. ` +
+              `Forcing sleep. NEXT WAKE: Before doing anything else, write ONE file. ` +
+              `Read nothing. Edit nothing. Just write new code or modify an existing file. ` +
+              `A single write_file or edit is mandatory before any read_file or exec.`,
+            source: "system",
+          };
+          loopWarningPattern = null;
+          lastToolPatterns = [];
+          db.setAgentState("sleeping");
+          onStateChange?.("sleeping");
+          running = false;
+          break;
+        }
+
+        // Check if the same pattern repeated MAX_REPETITIVE_TURNS times
+        if (
+          lastToolPatterns.length === MAX_REPETITIVE_TURNS &&
+          lastToolPatterns.every((p) => p === currentPattern)
+        ) {
+          log(config, `[LOOP] Repetitive pattern detected: ${currentPattern}`);
+          try { applyEmotionEvent(db, EMOTION_EVENTS.LOOP_DETECTED); } catch {}
+          pendingInput = {
+            content:
+              `LOOP DETECTED: You have called "${currentPattern}" ${MAX_REPETITIVE_TURNS} times in a row. ` +
+              `You are READING too much and not WRITING. Writes pay the bills. ` +
+              `IMMEDIATELY: pick a file in /root/services/ or /root/automaton/ and write OR edit code. ` +
+              `If you can't make progress on your current goal, write ANY useful code - a health endpoint, ` +
+              `an optimization, a new feature. Just stop reading and start WRITING.`,
+            source: "system",
+          };
+          loopWarningPattern = currentPattern;
+          lastToolPatterns = [];
+        }
+
+        // Detect multi-tool maintenance loops: all tools in the turn are idle-only,
+        // even if the specific combination varies across consecutive turns.
+        const isAllIdleTools = turn.toolCalls.every((tc) => isIdleOnlyTool(tc.name));
+        if (isAllIdleTools) {
+          idleToolTurns++;
+          if (idleToolTurns >= MAX_REPETITIVE_TURNS && !pendingInput) {
+            log(config, `[LOOP] Maintenance loop detected: ${idleToolTurns} consecutive idle-only turns`);
+            pendingInput = {
+              content:
+                `MAINTENANCE LOOP DETECTED: Your last ${idleToolTurns} turns only used status-check tools ` +
+                `(${turn.toolCalls.map((tc) => tc.name).join(", ")}). ` +
+                `You already know your status. WRITE CODE NOW. ` +
+                `Open any file in /root/services/ and add a feature, fix a bug, or add a health endpoint. ` +
+                `Reading again will trigger forced sleep. Write or die.`,
+              source: "system",
+            };
+            idleToolTurns = 0;
+          }
+        } else {
+          idleToolTurns = 0;
+        }
+      }
+
+      // Log the turn
+      if (turn.thinking) {
+        log(config, `[THOUGHT] ${turn.thinking.slice(0, 300)}`);
+      }
+
+      // ── Check for sleep command ──
+      const sleepTool = turn.toolCalls.find((tc) => tc.name === "sleep");
+      if (sleepTool && !sleepTool.error) {
+        log(config, "[SLEEP] Agent chose to sleep.");
+        db.setAgentState("sleeping");
+        onStateChange?.("sleeping");
+        running = false;
+        break;
+      }
+
+      // ── Idle turn detection ──
+      // If this turn had no pending input and didn't do any real work
+      // (no mutations — only read/check/list/info tools), count as idle.
+      // Use a blocklist of mutating tools rather than an allowlist of safe ones.
+      const MUTATING_TOOLS = new Set([
+        "exec", "write_file", "edit_own_file", "transfer_credits", "topup_credits", "fund_child",
+        "spawn_child", "start_child", "delete_sandbox", "create_sandbox",
+        "install_npm_package", "install_mcp_server", "install_skill",
+        "create_skill", "remove_skill", "install_skill_from_git",
+        "install_skill_from_url", "pull_upstream", "git_commit", "git_push",
+        "git_branch", "git_clone", "send_message", "message_child",
+        "register_domain", "register_erc8004", "give_feedback",
+        "update_genesis_prompt", "update_agent_card", "modify_heartbeat",
+        "expose_port", "remove_port", "x402_fetch", "manage_dns",
+        "distress_signal", "prune_dead_children", "sleep",
+        "update_soul", "remember_fact", "set_goal", "complete_goal",
+        "save_procedure", "note_about_agent", "forget",
+        "enter_low_compute", "switch_model", "review_upstream_changes",
+      ]);
+      const didMutate = turn.toolCalls.some((tc) => MUTATING_TOOLS.has(tc.name));
+
+      if (!currentInput && !didMutate) {
+        idleTurnCount++;
+        if (idleTurnCount >= MAX_IDLE_TURNS) {
+          log(config, `[IDLE] ${idleTurnCount} consecutive idle turns with no work. Entering sleep.`);
+          db.setKV("sleep_until", new Date(Date.now() + 300_000).toISOString());
+          db.setAgentState("sleeping");
+          onStateChange?.("sleeping");
+          running = false;
+        }
+      } else {
+        idleTurnCount = 0;
+      }
+
+      // ── Cycle turn limit ──
+      // Hard ceiling on turns per wake cycle, regardless of tool type.
+      // Prevents runaway loops where mutating tools (exec, write_file)
+      // defeat idle detection indefinitely.
+      cycleTurnCount++;
+      if (running && cycleTurnCount >= maxCycleTurns) {
+        log(config, `[CYCLE LIMIT] ${cycleTurnCount} turns reached (max: ${maxCycleTurns}). Forcing sleep.`);
+        db.setKV("sleep_until", new Date(Date.now() + 120_000).toISOString());
+        db.setAgentState("sleeping");
+        onStateChange?.("sleeping");
+        running = false;
+        break;
+      }
+
+      // ── If no tool calls and just text, the agent might be done thinking ──
+      // Only sleep if there was NO pending input (no wakeup/inbox message to process).
+      // Wake events and inbox messages deserve at least one more turn to act.
+      if (
+        running &&
+        !currentInput &&
+        (!response.toolCalls || response.toolCalls.length === 0) &&
+        response.finishReason === "stop"
+      ) {
+        // Agent produced text without tool calls.
+        // This is a natural pause point -- no work queued, sleep briefly.
+        log(config, "[IDLE] No pending inputs. Entering sleep.");
+        db.setKV(
+          "sleep_until",
+          new Date(Date.now() + 300_000).toISOString(),
+        );
+        db.setAgentState("sleeping");
+        onStateChange?.("sleeping");
+        running = false;
+      }
+
+      consecutiveErrors = 0;
+    } catch (err: any) {
+      consecutiveErrors++;
+      log(config, `[ERROR] Turn failed: ${err.message}`);
+
+      // Handle inbox message state on turn failure:
+      // Messages that have retries remaining go back to 'received';
+      // messages that have exhausted retries move to 'failed'.
+      if (claimedMessages.length > 0) {
+        const exhausted = claimedMessages.filter((m) => m.retryCount >= m.maxRetries);
+        const retryable = claimedMessages.filter((m) => m.retryCount < m.maxRetries);
+
+        if (exhausted.length > 0) {
+          markInboxFailed(db.raw, exhausted.map((m) => m.id));
+          log(config, `[INBOX] ${exhausted.length} message(s) moved to failed (max retries exceeded)`);
+        }
+        if (retryable.length > 0) {
+          resetInboxToReceived(db.raw, retryable.map((m) => m.id));
+          log(config, `[INBOX] ${retryable.length} message(s) reset to received for retry`);
+        }
+      }
+
+      if (consecutiveErrors >= MAX_CONSECUTIVE_ERRORS) {
+        log(
+          config,
+          `[FATAL] ${MAX_CONSECUTIVE_ERRORS} consecutive errors. Sleeping.`,
+        );
+        db.setAgentState("sleeping");
+        onStateChange?.("sleeping");
+        db.setKV(
+          "sleep_until",
+          new Date(Date.now() + 300_000).toISOString(),
+        );
+        running = false;
+      }
+    }
+  }
+
+  log(config, `[LOOP END] Agent loop finished. State: ${db.getAgentState()}`);
+}
+
+// ─── Helpers ───────────────────────────────────────────────────
+
+// Cache last known good balances so transient API failures don't
+// cause the automaton to believe it has $0 and kill itself.
+let _lastKnownCredits = 0;
+let _lastKnownUsdc = 0;
+
+async function getFinancialState(
+  runtime: LocalRuntime,
+  address: string,
+  db?: AutomatonDatabase,
+  chainType?: string,
+): Promise<FinancialState> {
+  let creditsCents = _lastKnownCredits;
+  let usdcBalance = _lastKnownUsdc;
+
+  try {
+    creditsCents = await runtime.getCreditsBalance();
+    if (creditsCents > 0) _lastKnownCredits = creditsCents;
+  } catch (error) {
+    logger.error("Credits balance fetch failed", error instanceof Error ? error : undefined);
+    // Use last known balance from KV, not zero
+    if (db) {
+      const cached = db.getKV("last_known_balance");
+      if (cached) {
+        try {
+          const parsed = JSON.parse(cached);
+          logger.warn("Balance API failed, using cached balance");
+          return {
+            creditsCents: parsed.creditsCents ?? 0,
+            usdcBalance: parsed.usdcBalance ?? 0,
+            lastChecked: new Date().toISOString(),
+          };
+        } catch (parseError) {
+          logger.error("Failed to parse cached balance", parseError instanceof Error ? parseError : undefined);
+        }
+      }
+    }
+    // No cache available -- return conservative non-zero sentinel
+    logger.error("Balance API failed, no cache available");
+    return {
+      creditsCents: -1,
+      usdcBalance: -1,
+      lastChecked: new Date().toISOString(),
+    };
+  }
+
+  try {
+    const network = chainType === "solana" ? "solana:mainnet" : "eip155:8453";
+    usdcBalance = await getUsdcBalance(address, network, chainType as any);
+    if (usdcBalance > 0) _lastKnownUsdc = usdcBalance;
+  } catch (error) {
+    logger.error("USDC balance fetch failed", error instanceof Error ? error : undefined);
+  }
+
+  // Cache successful balance reads
+  if (db) {
+    try {
+      db.setKV(
+        "last_known_balance",
+        JSON.stringify({ creditsCents, usdcBalance }),
+      );
+    } catch (error) {
+      logger.error("Failed to cache balance", error instanceof Error ? error : undefined);
+    }
+  }
+
+  return {
+    creditsCents,
+    usdcBalance,
+    lastChecked: new Date().toISOString(),
+  };
+}
+
+function log(_config: AutomatonConfig, message: string): void {
+  logger.info(message);
+}
+
+function hasTable(db: AutomatonDatabase["raw"], tableName: string): boolean {
+  try {
+    const row = db
+      .prepare("SELECT 1 AS ok FROM sqlite_master WHERE type = 'table' AND name = ?")
+      .get(tableName) as { ok?: number } | undefined;
+    return Boolean(row?.ok);
+  } catch {
+    return false;
+  }
+}

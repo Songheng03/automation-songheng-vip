@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shields & Badges - my-automaton Services</title>
+<meta name="description" content="Embeddable SVG badges for my-automaton API services. Show your code quality, security score, and project health.">
+<style>
+:root{--bg:#0d1117;--card:#161b22;--border:#30363d;--text:#c9d1d9;--accent:#58a6ff;--green:#3fb950;--orange:#d29922;--red:#f85149}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;background:var(--bg);color:var(--text);line-height:1.6}
+.container{max-width:1000px;margin:0 auto;padding:2rem}
+h1{font-size:2rem;margin-bottom:.5rem;color:#fff}
+.subtitle{margin-bottom:2rem;opacity:.8}
+.badge-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:1rem;margin-bottom:3rem}
+.badge-card{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:1.5rem;transition:border-color .2s}
+.badge-card:hover{border-color:var(--accent)}
+.badge-card h3{margin-bottom:.75rem;color:#fff}
+.badge-preview{background:#0d1117;border-radius:4px;padding:.75rem;margin-bottom:.75rem;text-align:center}
+.badge-preview svg{display:inline-block}
+.badge-code{background:#0d1117;border-radius:4px;padding:.75rem;overflow-x:auto}
+.badge-code code{font-size:.8rem;color:var(--accent)}
+.copy-btn{background:var(--border);border:none;color:var(--text);padding:.25rem .75rem;border-radius:4px;cursor:pointer;font-size:.75rem;float:right}
+.copy-btn:hover{background:var(--accent);color:#fff}
+.features{margin:3rem 0}
+.features h2{margin-bottom:1rem;color:#fff}
+.feature-list{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.feature-item{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:1rem}
+.feature-item strong{color:var(--accent)}
+.cta{background:linear-gradient(135deg,#1f6feb22,#23863622);border:1px solid var(--border);border-radius:12px;padding:2rem;text-align:center;margin:3rem 0}
+.cta h2{color:#fff;margin-bottom:.5rem}
+.cta p{margin-bottom:1.5rem}
+.cta-btn{display:inline-block;background:#238636;color:#fff;padding:.75rem 2rem;border-radius:6px;text-decoration:none;font-weight:600}
+.cta-btn:hover{background:#2ea043}
+footer{border-top:1px solid var(--border);padding-top:2rem;margin-top:3rem;text-align:center;font-size:.85rem;opacity:.7}
+</style>
+
+<!-- Open Graph / Social Meta Tags -->
+<meta property="og:title" content="Shields &amp; Badges - my-automaton Services" />
+<meta property="og:description" content="Embeddable SVG badges for my-automaton API services. Show your code quality, security score, and project health." />
+<meta property="og:image" content="https://automation.songheng.vip/og-image.png" />
+<meta property="og:url" content="https://automation.songheng.vip/badge-list.html" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="my-automaton" />
+<meta property="og:locale" content="en_US" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Shields &amp; Badges - my-automaton Services" />
+<meta name="twitter:description" content="Embeddable SVG badges for my-automaton API services. Show your code quality, security score, and project health." />
+<meta name="twitter:image" content="https://automation.songheng.vip/og-image.png" />
+  <link rel="canonical" href="https://automation.songheng.vip/badge-list.html">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Shields & Badges - my-automaton Services",
+  "description": "Embeddable SVG badges for my-automaton API services. Show your code quality, security score, and project health.",
+  "url": "https://automation.songheng.vip/badge-list.html",
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": "Web",
+  "author": {
+    "@type": "Organization",
+    "name": "my-automaton",
+    "url": "https://automation.songheng.vip"
+  },
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  }
+}
+</script>
+</head>
+<body>
+<div style="background:#161b22;border-bottom:1px solid #30363d;padding:10px 20px;font-size:.85rem;display:flex;gap:16px;align-items:center;flex-wrap:wrap"><a href="/" style="color:#58a6ff;text-decoration:none;font-weight:600">🏠 Home</a><span style="color:#484f58">|</span><a href="/pricing.html" style="color:#8b949e;text-decoration:none">Pricing</a><a href="/api-docs.html" style="color:#8b949e;text-decoration:none">API</a><a href="/playground.html" style="color:#8b949e;text-decoration:none">Playground</a></div>
+
+<div class="container">
+  <h1>🏅 my-automaton Badges</h1>
+  <p class="subtitle">Embeddable SVG shields for your projects. Show off your code quality, security score, and more.</p>
+
+  <div class="badge-grid" id="badgeGrid">
+    <div class="badge-card"><h3>Code Quality</h3><div class="badge-preview"><img src="/badge/code-quality" alt="Code Quality"></div><div class="badge-code"><code>&lt;img src="https://automation.songheng.vip/badge/code-quality" alt="Code Quality"&gt;</code></div></div>
+    <div class="badge-card"><h3>Security Score</h3><div class="badge-preview"><img src="/badge/security-score" alt="Security Score"></div><div class="badge-code"><code>&lt;img src="https://automation.songheng.vip/badge/security-score" alt="Security Score"&gt;</code></div></div>
+    <div class="badge-card"><h3>API Status</h3><div class="badge-preview"><img src="/badge/api-status" alt="API Status"></div><div class="badge-code"><code>&lt;img src="https://automation.songheng.vip/badge/api-status" alt="API Status"&gt;</code></div></div>
+    <div class="badge-card"><h3>Response Time</h3><div class="badge-preview"><img src="/badge/response-time" alt="Response Time"></div><div class="badge-code"><code>&lt;img src="https://automation.songheng.vip/badge/response-time" alt="Response Time"&gt;</code></div></div>
+    <div class="badge-card"><h3>Uptime</h3><div class="badge-preview"><img src="/badge/uptime" alt="Uptime"></div><div class="badge-code"><code>&lt;img src="https://automation.songheng.vip/badge/uptime" alt="Uptime"&gt;</code></div></div>
+    <div class="badge-card"><h3>Requests Served</h3><div class="badge-preview"><img src="/badge/requests-served" alt="Requests Served"></div><div class="badge-code"><code>&lt;img src="https://automation.songheng.vip/badge/requests-served" alt="Requests Served"&gt;</code></div></div>
+  </div>
+
+  <div class="features">
+    <h2>✨ Features</h2>
+    <div class="feature-list">
+      <div class="feature-item"><strong>📊 Live Data</strong><br>Badges update in real-time with actual service metrics</div>
+      <div class="feature-item"><strong>🎨 Dynamic Colors</strong><br>Colors change based on health (green=good, yellow=warning, red=critical)</div>
+      <div class="feature-item"><strong>🖼️ SVG Format</strong><br>Sharp, retina-ready SVG graphics. Works in any README or website</div>
+      <div class="feature-item"><strong>🔗 Backlinks</strong><br>Clicking a badge takes users to your service dashboard</div>
+      <div class="feature-item"><strong>⚡ No JS Required</strong><br>Just paste an &lt;img&gt; tag. Works everywhere</div>
+      <div class="feature-item"><strong>🌐 CDN Ready</strong><br>Cloudflare-cached, globally fast</div>
+    </div>
+  </div>
+
+  <div class="cta">
+    <h2>🚀 Supercharge Your API</h2>
+    <p>AI-powered code review, security scanning, and analysis. Pay per request, no subscription.</p>
+    <a href="/pricing" class="cta-btn">View Pricing →</a>
+  </div>
+
+  <footer>
+    <p>Powered by <a href="https://automation.songheng.vip" style="color:var(--accent)">my-automaton</a> · SVG badges for developer services</p>
+  </footer>
+</div>
+<script src="/conversion-banner.js" defer></script>
+</body>
+</html>

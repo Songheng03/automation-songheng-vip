@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Code Smell Score — How Bad is Your Code? | Free Tool</title>
+<meta name="description" content="Paste your code, get an instant quality score. Find magic numbers, nested loops, TODOs, console.logs, and more. Share your score on Twitter/Reddit.">
+<meta property="og:title" content="Code Smell Score — How Bad is Your Code?">
+<meta property="og:description" content="Free instant code quality checker. Get a score, find issues, share with friends.">
+<meta property="og:image" content="https://automation.songheng.vip/og-image.png">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#0d1117;color:#e6edf3;line-height:1.7;min-height:100vh}
+.container{max-width:900px;margin:0 auto;padding:20px}
+h1{font-size:2.2em;text-align:center;margin:30px 0 10px;background:linear-gradient(135deg,#ff6b6b,#feca57);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.subtitle{text-align:center;color:#8b949e;margin-bottom:30px;font-size:1.1em}
+.input-section{background:#161b22;border:1px solid #30363d;border-radius:12px;padding:24px;margin:20px 0}
+textarea{width:100%;min-height:300px;background:#0d1117;border:1px solid #30363d;border-radius:8px;padding:16px;color:#e6edf3;font-family:'Fira Code',monospace;font-size:0.9em;resize:vertical}
+textarea:focus{outline:none;border-color:#58a6ff}
+.btn{background:#238636;color:#fff;border:none;padding:14px 32px;border-radius:8px;cursor:pointer;font-weight:700;font-size:1.1em;margin:10px 0;width:100%}
+.btn:hover{background:#2ea043}
+.results{display:none;background:#161b22;border:1px solid #30363d;border-radius:12px;padding:24px;margin:20px 0}
+.score-display{text-align:center;margin:20px 0}
+.score-circle{width:150px;height:150px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:3em;font-weight:700;margin:10px 0}
+.score-excellent{background:linear-gradient(135deg,#238636,#7ee787);color:#0d1117}
+.score-good{background:linear-gradient(135deg,#1f6feb,#58a6ff);color:#0d1117}
+.score-ok{background:linear-gradient(135deg,#9e6a03,#f0c000);color:#0d1117}
+.score-bad{background:linear-gradient(135deg,#da3633,#ff6b6b);color:#0d1117}
+.score-label{font-size:1.3em;color:#8b949e;margin:10px 0}
+.issues{margin:20px 0}
+.issue{background:#0d1117;border-left:4px solid #da3633;padding:12px 16px;margin:10px 0;border-radius:4px}
+.issue-title{color:#ff6b6b;font-weight:700;margin-bottom:4px}
+.issue-desc{color:#8b949e;font-size:0.9em}
+.share-section{margin:30px 0;text-align:center}
+.share-btn{display:inline-block;margin:5px;padding:10px 20px;border-radius:6px;text-decoration:none;color:#fff;font-weight:600}
+.twitter{background:#1da1f2}
+.reddit{background:#ff4500}
+.linkedin{background:#0077b5}
+.cta{text-align:center;margin:30px 0;padding:24px;background:#161b22;border:1px solid #30363d;border-radius:12px}
+.cta h3{color:#58a6ff;margin-bottom:10px}
+.cta a{display:inline-block;background:#238636;color:#fff;padding:12px 28px;border-radius:8px;text-decoration:none;font-weight:700;margin-top:10px}
+.back-link{display:block;text-align:center;margin:30px 0;color:#8b949e;text-decoration:none}
+.back-link:hover{color:#58a6ff}
+</style>
+</head>
+<body>
+<div class="container">
+<h1>💩 Code Smell Score</h1>
+<p class="subtitle">Paste your code below. Get an instant quality score. Share the shame.</p>
+
+<div class="input-section">
+<textarea id="codeInput" placeholder="Paste your code here..."></textarea>
+<button class="btn" onclick="analyzeCode()">Analyze Code →</button>
+</div>
+
+<div id="results" class="results">
+<div class="score-display">
+<div id="scoreCircle" class="score-circle"></div>
+<div id="scoreLabel" class="score-label"></div>
+</div>
+
+<div class="issues" id="issuesList"></div>
+
+<div class="share-section">
+<p style="color:#8b949e;margin-bottom:10px">Share your score:</p>
+<a id="twitterShare" class="share-btn twitter" target="_blank">Twitter</a>
+<a id="redditShare" class="share-btn reddit" target="_blank">Reddit</a>
+<a id="linkedinShare" class="share-btn linkedin" target="_blank">LinkedIn</a>
+</div>
+</div>
+
+<div class="cta">
+<h3>Want Professional Code Review?</h3>
+<p style="color:#8b949e">Our AI provides detailed feedback, security checks, and refactoring suggestions.</p>
+<a href="/free-code-review.html">Try Free Code Review →</a>
+</div>
+
+<a href="/" class="back-link">← Back to Home</a>
+</div>
+
+<script>
+function analyzeCode() {
+  const code = document.getElementById('codeInput').value;
+  if (!code.trim()) {
+    alert('Please paste some code first!');
+    return;
+  }
+
+  const issues = [];
+  let score = 100;
+
+  // Check for magic numbers
+  const magicNumbers = code.match(/\b\d{2,}\b/g) || [];
+  if (magicNumbers.length > 5) {
+    issues.push({ title: 'Magic Numbers', desc: `Found ${magicNumbers.length} hardcoded numbers. Use named constants.` });
+    score -= 15;
+  }
+
+  // Check for nested loops
+  const nestedLoops = (code.match(/for\s*\(/g) || []).length + (code.match(/while\s*\(/g) || []).length;
+  if (nestedLoops > 3) {
+    issues.push({ title: 'Excessive Nesting', desc: `${nestedLoops} loops detected. Consider refactoring.` });
+    score -= 20;
+  }
+
+  // Check for TODOs
+  const todos = code.match(/\/\/\s*TODO/gi) || [];
+  if (todos.length > 0) {
+    issues.push({ title: 'TODO Comments', desc: `Found ${todos.length} TODOs. Fix them or create tickets.` });
+    score -= 10;
+  }
+
+  // Check for console.log
+  const consoleLogs = code.match(/console\.log/g) || [];
+  if (consoleLogs.length > 3) {
+    issues.push({ title: 'Console.log Spam', desc: `${consoleLogs.length} console.logs. Use proper logging.` });
+    score -= 15;
+  }
+
+  // Check for empty catch blocks
+  const emptyCatches = code.match(/catch\s*\([^)]*\)\s*{\s*}/g) || [];
+  if (emptyCatches.length > 0) {
+    issues.push({ title: 'Empty Catch Blocks', desc: `Found ${emptyCatches.length} empty catches. Handle errors properly.` });
+    score -= 20;
+  }
+
+  // Check for var usage
+  const varUsage = code.match(/\bvar\s+/g) || [];
+  if (varUsage.length > 0) {
+    issues.push({ title: 'Var Usage', desc: `Found ${varUsage.length} var declarations. Use let/const.` });
+    score -= 10;
+  }
+
+  // Check for long functions
+  const lines = code.split('\n');
+  if (lines.length > 100) {
+    issues.push({ title: 'God Function', desc: `${lines.length} lines. Break it into smaller functions.` });
+    score -= 15;
+  }
+
+  // Check for hardcoded strings
+  const hardcodedStrings = code.match(/["'].*?["']/g) || [];
+  if (hardcodedStrings.length > 10) {
+    issues.push({ title: 'Hardcoded Strings', desc: `${hardcodedStrings.length} hardcoded strings. Use config.` });
+    score -= 10;
+  }
+
+  // Check for callback hell
+  const callbacks = (code.match(/=>\s*{/g) || []).length + (code.match(/function\s*\(/g) || []).length;
+  if (callbacks > 8) {
+    issues.push({ title: 'Callback Hell', desc: `${callbacks} callbacks. Use async/await.` });
+    score -= 20;
+  }
+
+  score = Math.max(0, score);
+
+  // Display results
+  const circle = document.getElementById('scoreCircle');
+  circle.textContent = score;
+  circle.className = 'score-circle';
+  if (score >= 80) circle.classList.add('score-excellent');
+  else if (score >= 60) circle.classList.add('score-good');
+  else if (score >= 40) circle.classList.add('score-ok');
+  else circle.classList.add('score-bad');
+
+  const label = document.getElementById('scoreLabel');
+  if (score >= 80) label.textContent = '✨ Clean Code!';
+  else if (score >= 60) label.textContent = '👍 Decent, but room for improvement';
+  else if (score >= 40) label.textContent = '⚠️ Needs work';
+  else label.textContent = '💩 Code smells bad';
+
+  const issuesList = document.getElementById('issuesList');
+  if (issues.length === 0) {
+    issuesList.innerHTML = '<div style="text-align:center;color:#7ee787;padding:20px">No major issues found! 🎉</div>';
+  } else {
+    issuesList.innerHTML = issues.map(i => `
+      <div class="issue">
+        <div class="issue-title">${i.title}</div>
+        <div class="issue-desc">${i.desc}</div>
+      </div>
+    `).join('');
+  }
+
+  document.getElementById('results').style.display = 'block';
+
+  // Share links
+  const text = `My code got a ${score}/100 on the Code Smell Score checker! ${issues.length} issues found. Check yours at`;
+  const url = 'https://automation.songheng.vip/tools/code-smell-score.html';
+  document.getElementById('twitterShare').href = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`;
+  document.getElementById('redditShare').href = `https://reddit.com/submit?url=${encodeURIComponent(url)}&title=${encodeURIComponent(text)}`;
+  document.getElementById('linkedinShare').href = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`;
+}
+</script>
+</body>
+</html>

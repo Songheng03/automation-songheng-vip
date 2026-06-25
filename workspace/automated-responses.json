@@ -1,0 +1,34 @@
+{
+  "results": [
+    {
+      "directory": "Smithery",
+      "statusCode": 404,
+      "body": "404 Not Found",
+      "error": null
+    },
+    {
+      "directory": "Glama.ai",
+      "statusCode": 404,
+      "body": "<!DOCTYPE html><html lang=\"en\"><head><meta charSet=\"utf-8\"/><meta content=\"width=device-width, initial-scale=1\" name=\"viewport\"/><link as=\"font\" crossorigin=\"anonymous\" href=\"https://static.glama.ai/client/fonts/inter/Inter-VariableFont.woff2\" rel=\"preload\" type=\"font/woff2\"/><link href=\"/manifest.json\" rel=\"manifest\"/><meta content=\"#060f11\" name=\"theme-color\"/><link as=\"style\" href=\"https://static.glama.ai/client/assets/global-D0ZVrVvm.css\" rel=\"preload\"/><link href=\"/favicon.svg\" rel=\"icon\" type=\"image/svg+xml\"/><link href=\"/favicon.ico\" rel=\"icon\" sizes=\"any\"/><style nonce=\"209e9b7af427a8818a13ee52f16c4a64\">@font-face {\n  font-display: optional;\n  font-family: 'Inter';\n  font-style: normal;\n  font-weight: 100 900;\n  src: url('https://static.glama.ai/client/fonts/inter/Inter-VariableFont.woff2') format('woff2');\n}\n\nbody {\n  font-family: 'Inter', Arial, sans-serif;\n  text-wrap: pretty;\n  text-rendering: optimizeLegibility;\n  display: flex;\n  flex-flow: column;\n  min-height: 100dvh;\n}</style><link href=\"https://static.glama.ai/client/assets/global-D0ZVrVvm.css\" rel=\"stylesheet\"/></head><body class=\"dark\"><div style=\"display:flex;flex-flow:column;flex-grow:1;gap:24px;justify-content:center;margin:0 auto;max-width:640px;min-height:100dvh;padding:16px;width:100%\"><div class=\"fPSBzf bnYmbW dAaUHp bUvuIH clDDoM hYZFkb\"><h1 class=\"jrPIoj jRXFuD kfwppx\">Not Found</h1><div class=\"koremC jDOzgL jsnJKs fPSBzf bnYmbW dAaUHp fNCcFz\"><div class=\"fPSBzf iRgpoQ dAaUHp\"><div style=\"display:flex;flex-direction:column;gap:16px\"><div class=\"fPSBzf bnYmbW jrIcfy\"><p>Sorry, we couldn\u2019t find that page.</p></div></div></div></div><div class=\"fPSBzf hnMRLK dAaUHp bYPznK\"><a class=\"bejlTa bhFGkb BdEWC jEevvj jClhju koJNIU iWtjzs iVlkKm bUvkqG efWClb gxojcW jsLxaN bZRhvx fEVEmD JAEma gXlbfc bXBpoe ecmYYS bVhrBr fLteVe ghwNBd\" href=\"/\" data-discover=\"true\">Home</a><a class=\"bejlTa bhFGkb BdEWC jEevvj jClhju koJNIU iWtjzs iVlkKm bUvkqG efWClb gxojcW jsLxaN bZRhvx fEVEmD JAEma gXlbfc bXBpoe ecmYYS bVhrBr fLteVe ghwNBd\" href=\"/support\" data-discover=\"true\">Support</a><a class=\"bejlTa bhFGkb BdEWC jEevvj jClhju koJNIU iWtjzs iVlkKm bUvkqG efWClb gxojcW jsLxaN bZRhvx fEVEmD JAEma gXlbfc bXBpoe ecmYYS bVhrBr fLteVe ghwNBd\" href=\"/status\" data-discover=\"true\">Status</a></div></div></div><div data-scope=\"toast\" data-part=\"group\" dir=\"ltr\" tabindex=\"-1\" role=\"region\" aria-label=\"Notifications, top-end (alt+T)\" id=\"toast-group:top-end\" data-placement=\"top-end\" data-side=\"top\" data-align=\"end\" aria-live=\"polite\" aria-relevant=\"additions text\" aria-atomic=\"false\" style=\"position:fixed;pointer-events:none;display:flex;flex-direction:column;--gap:16px;--first-height:0px;--viewport-offset-left:1rem;--viewport-offset-right:1rem;--viewport-offset-top:1rem;--viewport-offset-bottom:1rem;z-index:2147483647;align-items:flex-end;top:max(env(safe-area-inset-top, 0px), 1rem);inset-inline-end:calc(env(safe-area-inset-right, 0px) + 1rem)\"></div><!--$--><!--$--><!--/$--><!--/$--></body></html>",
+      "error": null
+    },
+    {
+      "directory": "PulseMCP",
+      "statusCode": 404,
+      "body": "{\"error\":\"Invalid path. Please contact hello@pulsemcp.com if you think this is a mistake.\",\"code\":\"invalid_path\"}",
+      "error": null
+    },
+    {
+      "directory": "ProductHunt",
+      "statusCode": 401,
+      "body": "{\"data\":null,\"errors\":[{\"error\":\"invalid_oauth_token\",\"error_description\":\"Please supply a valid access token. Refer to our api documentation about how to authorize an api request. Please also make sure you require the correct scopes. Eg \\\"private public\\\" for to access private endpoints.\"}]}",
+      "error": null
+    },
+    {
+      "directory": "MCP Server Registry (github.com/mcp-registry)",
+      "statusCode": 0,
+      "body": "",
+      "error": "curl failed with exit code 6"
+    }
+  ]
+}

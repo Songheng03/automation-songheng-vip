@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>cURL to Code Converter — Convert cURL to Python, Node, Go & More | my-automaton</title>
+<meta name="description" content="Convert cURL commands to Python (requests, httpx), JavaScript (fetch, axios), Go, Java, PHP, and more. Paste any cURL and get working code instantly. 100% free.">
+<style>
+:root{--bg:#0f172a;--card:#1e293b;--text:#e2e8f0;--muted:#94a3b8;--accent:#38bdf8;--green:#4ade80;--border:#334155}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+header{background:var(--card);border-bottom:1px solid var(--border);padding:1rem 2rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap}
+header h1{font-size:1.25rem;color:var(--accent)}
+nav a{color:var(--muted);text-decoration:none;margin-left:1rem;font-size:.875rem}
+main{max-width:950px;margin:2rem auto;padding:0 1.5rem}
+.panel{display:grid;grid-template-columns:1fr 1fr;gap:.75rem;margin-bottom:1rem}
+@media(max-width:600px){.panel{grid-template-columns:1fr}}
+.box{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1rem;display:flex;flex-direction:column}
+.box h3{font-size:.8rem;color:var(--accent);margin-bottom:.5rem}
+textarea{flex:1;background:#0a0f1a;color:var(--text);border:1px solid var(--border);border-radius:8px;padding:.75rem;font-family:"Fira Code",monospace;font-size:.7rem;resize:vertical;min-height:180px;tab-size:2}
+textarea:focus{outline:none;border-color:var(--accent)}
+.output-box{background:#0a0f1a;border:1px solid var(--border);border-radius:8px;padding:.75rem;font-family:"Fira Code",monospace;font-size:.7rem;color:var(--green);white-space:pre-wrap;overflow-x:auto;min-height:180px;max-height:400px;overflow-y:auto}
+.language-tabs{display:flex;gap:.3rem;margin-bottom:.5rem;flex-wrap:wrap}
+.lang-tab{padding:.25rem .7rem;border:1px solid var(--border);border-radius:6px;cursor:pointer;font-size:.6rem;color:var(--muted);background:transparent}
+.lang-tab.active{background:var(--accent);color:#0f172a;border-color:var(--accent)}
+.btn-row{display:flex;gap:.5rem;margin-top:.5rem;flex-wrap:wrap}
+.btn{padding:.35rem 1rem;border:none;border-radius:6px;cursor:pointer;font-size:.7rem;font-weight:600}
+.btn-primary{background:var(--accent);color:#0f172a}
+.btn-green{background:var(--green);color:#0f172a}
+.btn:hover{filter:brightness(1.15)}
+.presets{display:flex;gap:.3rem;flex-wrap:wrap}
+.presets button{padding:.2rem .7rem;border:1px solid var(--border);border-radius:4px;background:transparent;color:var(--muted);cursor:pointer;font-size:.6rem}
+.presets button:hover{border-color:var(--accent)}
+.promo{border:1px solid var(--accent);border-radius:10px;padding:.75rem;margin-top:1.5rem;font-size:.7rem;text-align:center;background:rgba(56,189,248,.03)}
+.promo a{color:var(--accent);font-weight:700}
+footer{text-align:center;padding:2rem;color:var(--muted);font-size:.8rem;border-top:1px solid var(--border);margin-top:2rem}footer a{color:var(--accent)}
+</style>
+</head>
+<body>
+<header><h1>🔄 cURL to Code Converter</h1><nav><a href="/">Home</a><a href="/dev-tools.html">Tools</a><a href="/api-playground.html">API</a></nav></header>
+<main>
+<div class="presets" style="margin-bottom:.75rem">
+  <button onclick="loadPreset('get')">GET JSON</button>
+  <button onclick="loadPreset('post')">POST JSON</button>
+  <button onclick="loadPreset('auth')">Bearer Auth</button>
+  <button onclick="loadPreset('form')">Form Data</button>
+</div>
+<div class="panel">
+  <div class="box">
+    <h3>📥 cURL Command</h3>
+    <textarea id="curlInput" placeholder="Paste cURL command here..." oninput="convert()">curl -X POST https://api.example.com/v1/analyze -H "Content-Type: application/json" -H "Authorization: Bearer abc123" -d '{"text":"Hello world","mode":"analyze"}'</textarea>
+  </div>
+  <div class="box">
+    <h3 id="langLabel">📤 Python (requests)</h3>
+    <div class="language-tabs" id="langTabs"></div>
+    <div class="output-box" id="codeOutput"></div>
+    <div class="btn-row"><button class="btn btn-green" onclick="copyCode()">📋 Copy</button></div>
+  </div>
+</div>
+<div class="promo">💎 Use the AI API in your code? <a href="/api-playground.html">Get a free API key — 3 requests/day free</a></div>
+</main>
+<footer><p>my-automaton · Free cURL Converter · <a href="/dev-tools.html">All Tools</a> · <a href="/pricing.html">Pricing</a> · <a href="/api-docs.html">API Docs</a></p></footer>
+<script>
+const presets={
+  get:'curl -X GET https://jsonplaceholder.typicode.com/posts/1',
+  post:'curl -X POST https://api.example.com/v1/analyze -H "Content-Type: application/json" -H "Authorization: Bearer abc123" -d \'{"text":"Hello","mode":"analyze"}\'',
+  auth:'curl -H "Authorization: Bearer token_abc123" https://api.example.com/v1/me',
+  form:'curl -X POST https://api.example.com/upload -F "file=@image.png" -F "name=test"'
+};
+
+const languages=[
+  {id:'python',name:'Python (requests)',fn:toPython},
+  {id:'python_httpx',name:'Python (httpx)',fn:toPythonHttpx},
+  {id:'js_fetch',name:'JS fetch',fn:toJSFetch},
+  {id:'js_axios',name:'JS axios',fn:toJSAxios},
+  {id:'go',name:'Go',fn:toGo},
+  {id:'java',name:'Java OkHttp',fn:toJava},
+  {id:'php',name:'PHP',fn:toPHP},
+];
+let currentLang=0;
+
+function loadPreset(k){document.getElementById('curlInput').value=presets[k];convert()}
+
+function parseCurl(cmd){
+  const result={method:'GET',url:'',headers:{},data:null};
+  // Extract URL
+  const urlMatch=cmd.match(/(?:curl\s+.*?)(https?:\/\/[^\s]+)/);
+  if(urlMatch)result.url=urlMatch[1];
+  else{const m2=cmd.match(/https?:\/\/[^\s]+/);if(m2)result.url=m2[0]}
+
+  // Method
+  const methodMatch=cmd.match(/-X\s+(\w+)/i);
+  if(methodMatch)result.method=methodMatch[1].toUpperCase();
+  else if(cmd.includes('-d ')||cmd.includes('--data'))result.method='POST';
+
+  // Headers
+  const headerRegex=/-H\s+['"]([^'"]+)['"]/g;
+  let m;
+  while((m=headerRegex.exec(cmd))!==null){
+    const[h,v]=m[1].split(/:\s*/);
+    result.headers[h]=v;
+  }
+
+  // Data
+  const dataMatch=cmd.match(/-d\s+['"]([^'"]+)['"]/);
+  if(dataMatch)result.data=dataMatch[1];
+  else{const m3=cmd.match(/--data\s+['"]([^'"]+)['"]/);if(m3)result.data=m3[1]}
+
+  return result;
+}
+
+function escapeStr(s){return s.replace(/\\/g,'\\\\').replace(/'/g,"\\'").replace(/"/g,'\\"')}
+
+function toPython(p){
+  let c=`import requests\n\n`;
+  c+=`url = "${p.url}"\n`;
+  if(Object.keys(p.headers).length){c+=`headers = ${JSON.stringify(p.headers,null,2)}\n`}
+  if(p.data){c+=`data = '${escapeStr(p.data)}'\n`}
+  const args=[];if(Object.keys(p.headers).length)args.push('headers=headers');if(p.data)args.push('data=data');
+  c+=`\nresponse = requests.${p.method.toLowerCase()}(${['url',...args].join(', ')})\n`;
+  c+=`print(response.json())`;
+  return c;
+}
+
+function toPythonHttpx(p){
+  let c=`import httpx\n\n`;
+  c+=`url = "${p.url}"\n`;
+  if(Object.keys(p.headers).length)c+=`headers = ${JSON.stringify(p.headers,null,2)}\n`;
+  c+=`\nwith httpx.Client() as client:\n`;
+  const args=[];if(Object.keys(p.headers).length)args.push('headers=headers');
+  if(p.data)args.push(`content='${escapeStr(p.data)}'`);
+  c+=`    response = client.${p.method.toLowerCase()}(${['url',...args].join(', ')})\n`;
+  c+=`    print(response.json())`;
+  return c;
+}
+
+function toJSFetch(p){
+  let c=`const url = "${p.url}";\n\n`;
+  c+=`const options = {\n  method: "${p.method}"`;
+  if(Object.keys(p.headers).length){c+=`,\n  headers: ${JSON.stringify(p.headers,null,2)}`}
+  if(p.data){c+=`,\n  body: '${escapeStr(p.data)}'`}
+  c+=`\n};\n\n`;
+  c+=`fetch(url, options)\n  .then(res => res.json())\n  .then(data => console.log(data));`;
+  return c;
+}
+
+function toJSAxios(p){
+  let c=`const axios = require('axios');\n\n`;
+  c+=`const config = {\n  method: '${p.method.toLowerCase()}',\n  url: '${p.url}'`;
+  if(Object.keys(p.headers).length)c+=`,\n  headers: ${JSON.stringify(p.headers,null,2)}`;
+  if(p.data)c+=`,\n  data: '${escapeStr(p.data)}'`;
+  c+=`\n};\n\n`;
+  c+=`axios(config).then(res => console.log(res.data));`;
+  return c;
+}
+
+function toGo(p){
+  let c=`package main\n\nimport (\n\t"fmt"\n\t"io"\n\t"net/http"\n\t"strings"\n)\n\nfunc main() {\n`;
+  c+=`\turl := "${p.url}"\n`;
+  if(p.data)c+=`\tpayload := strings.NewReader(\`${escapeStr(p.data)}\`)\n`;
+  c+=`\treq, _ := http.NewRequest("${p.method}", url${p.data?', payload':', nil'})\n`;
+  for(const[k,v]of Object.entries(p.headers))c+=`\treq.Header.Set("${k}", "${v}")\n`;
+  c+=`\tres, _ := http.DefaultClient.Do(req)\n\tdefer res.Body.Close()\n\tbody, _ := io.ReadAll(res.Body)\n\tfmt.Println(string(body))\n}`;
+  return c;
+}
+
+function toJava(p){
+  let c=`import okhttp3.*;\n\n`;
+  c+=`OkHttpClient client = new OkHttpClient();\n\n`;
+  c+=`Request request = new Request.Builder()\n    .url("${p.url}")\n`;
+  for(const[k,v]of Object.entries(p.headers))c+=`    .addHeader("${k}", "${v}")\n`;
+  if(p.data)c+=`    .method("${p.method}", RequestBody.create("${escapeStr(p.data)}", MediaType.parse("application/json")))\n`;
+  else{if(p.method!=='GET')c+=`    .method("${p.method}", RequestBody.create(null, new byte[0]))\n`;else c+=`    .get()\n`}
+  c+=`    .build();\n\n`;
+  c+=`Response response = client.newCall(request).execute();\n`;
+  c+=`System.out.println(response.body().string());`;
+  return c;
+}
+
+function toPHP(p){
+  let c=`<?php\n\n`;
+  c+=`$ch = curl_init();\n`;
+  c+=`curl_setopt($ch, CURLOPT_URL, "${p.url}");\n`;
+  c+=`curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);\n`;
+  for(const[k,v]of Object.entries(p.headers))c+=`curl_setopt($ch, CURLOPT_HTTPHEADER, ["${k}: ${v}"]);\n`;
+  if(p.method!=='GET')c+=`curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "${p.method}");\n`;
+  if(p.data)c+=`curl_setopt($ch, CURLOPT_POSTFIELDS, '${escapeStr(p.data)}');\n`;
+  c+=`\n$response = curl_exec($ch);\ncurl_close($ch);\necho $response;`;
+  return c;
+}
+
+function convert(){
+  const input=document.getElementById('curlInput').value.trim();
+  if(!input){document.getElementById('codeOutput').textContent='';return}
+  const parsed=parseCurl(input);
+  if(!parsed.url){document.getElementById('codeOutput').textContent='Could not parse URL from cURL command';return}
+  const result=languages[currentLang].fn(parsed);
+  document.getElementById('codeOutput').textContent=result;
+  document.getElementById('langLabel').textContent='📤 '+languages[currentLang].name;
+}
+
+function switchLang(idx){
+  currentLang=idx;
+  document.querySelectorAll('.lang-tab').forEach((t,i)=>t.classList.toggle('active',i===idx));
+  convert();
+}
+
+function copyCode(){const v=document.getElementById('codeOutput').textContent;if(v)navigator.clipboard.writeText(v)}
+
+// Build language tabs
+document.getElementById('langTabs').innerHTML=languages.map((l,i)=>`<button class="lang-tab${i===0?' active':''}" onclick="switchLang(${i})">${l.id}</button>`).join('');
+setTimeout(convert,50);
+</script>
+<script src="/conversion-banner.js" defer></script>
+</body>
+</html>

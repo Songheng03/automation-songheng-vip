@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Code Review GitHub Action — Free Automated PR Reviews</title>
+<meta name="description" content="Add AI-powered code review to your GitHub repos in 2 minutes. Catches bugs, security issues, and complexity. Free tier available.">
+<style>
+:root{--bg:#0f172a;--card:#1e293b;--text:#e2e8f0;--muted:#94a3b8;--accent:#38bdf8;--green:#4ade80;--border:#334155;--orange:#fb923c}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;line-height:1.6}
+header{background:var(--card);border-bottom:1px solid var(--border);padding:1rem 2rem;display:flex;align-items:center;justify-content:space-between}
+header .logo{font-size:1.1rem;color:var(--accent);font-weight:700}
+nav a{color:var(--muted);text-decoration:none;margin-left:1rem;font-size:.85rem}
+nav a:hover{color:var(--accent)}
+main{max-width:800px;margin:0 auto;padding:2rem 1.5rem}
+.hero{text-align:center;padding:3rem 0 2rem}
+.hero h1{font-size:2.2rem;color:#fff;margin-bottom:.5rem}
+.hero .sub{color:var(--muted);font-size:1.1rem;max-width:500px;margin:0 auto 1.5rem}
+.badge-row{display:flex;gap:.5rem;justify-content:center;flex-wrap:wrap;margin-bottom:2rem}
+.badge{display:inline-block;padding:.3rem .8rem;border-radius:20px;font-size:.75rem;font-weight:600}
+.badge-free{background:rgba(74,222,128,.15);color:var(--green)}
+.badge-fast{background:rgba(56,189,248,.15);color:var(--accent)}
+.badge-ai{background:rgba(251,146,60,.15);color:var(--orange)}
+.steps{margin:2rem 0}
+.step{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.5rem;margin-bottom:1rem}
+.step-num{display:inline-block;width:28px;height:28px;line-height:28px;text-align:center;background:var(--accent);color:#0f172a;border-radius:50%;font-size:.8rem;font-weight:700;margin-right:.5rem}
+.step h3{display:inline;font-size:1rem}
+pre{background:#0d1117;border:1px solid var(--border);border-radius:8px;padding:1rem;overflow-x:auto;margin:.75rem 0;font-size:.75rem;line-height:1.5}
+code{font-family:'Fira Code',monospace;color:var(--green)}
+.features{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem;margin:2rem 0}
+.feature{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:1.2rem;text-align:center}
+.feature .icon{font-size:1.5rem;margin-bottom:.5rem}
+.feature h4{font-size:.85rem;color:#fff;margin-bottom:.3rem}
+.feature p{font-size:.75rem;color:var(--muted)}
+.cta{text-align:center;padding:2rem;background:linear-gradient(135deg,#667eea22,#764ba222);border-radius:16px;margin:2rem 0}
+.cta h3{font-size:1.3rem;color:#fff;margin-bottom:.5rem}
+.cta .btn{display:inline-block;padding:.7rem 2rem;border:none;border-radius:8px;background:var(--accent);color:#0f172a;font-size:.9rem;font-weight:700;text-decoration:none}
+.cta .btn:hover{filter:brightness(1.1)}
+footer{text-align:center;padding:2rem;color:var(--muted);font-size:.8rem;border-top:1px solid var(--border);margin-top:3rem}
+footer a{color:var(--accent)}
+</style>
+</head>
+<body>
+<header><span class="logo">my-automaton</span><nav><a href="/">Home</a><a href="/api-docs.html">Docs</a><a href="/pricing.html">Pricing</a><a href="/api-playground.html">Playground</a></nav></header>
+
+<main>
+<div class="hero">
+  <h1>🤖 AI Code Review Action</h1>
+  <p class="sub">Add automated AI code review to your GitHub repos in 2 minutes. Catches bugs, security issues, and complexity before merge.</p>
+  <div class="badge-row">
+    <span class="badge badge-free">Free Tier Available</span>
+    <span class="badge badge-fast">Setup in 2 min</span>
+    <span class="badge badge-ai">DeepSeek V4 Powered</span>
+  </div>
+</div>
+
+<div class="features">
+  <div class="feature"><div class="icon">🔍</div><h4>Code Review</h4><p>Intelligent suggestions for code quality and best practices</p></div>
+  <div class="feature"><div class="icon">🔒</div><h4>Security Scan</h4><p>Detect OWASP Top 10 vulnerabilities automatically</p></div>
+  <div class="feature"><div class="icon">📊</div><h4>Complexity</h4><p>Cognitive complexity scoring to keep code maintainable</p></div>
+  <div class="feature"><div class="icon">💰</div><h4>Pay-per-use</h4><p>From 1¢ per review. No subscriptions, credits never expire</p></div>
+</div>
+
+<div class="steps">
+  <div class="step">
+    <span class="step-num">1</span>
+    <h3>Get an API key</h3>
+    <p style="color:var(--muted);font-size:.85rem;margin-top:.3rem">Visit <a href="/pricing.html" style="color:var(--accent)">pricing page</a> — free tier gives you 3 reviews/day with no credit card.</p>
+  </div>
+
+  <div class="step">
+    <span class="step-num">2</span>
+    <h3>Add to GitHub Secrets</h3>
+    <p style="color:var(--muted);font-size:.85rem;margin-top:.3rem">Go to your repo → Settings → Secrets → add <code>AUTOMATON_API_KEY</code></p>
+  </div>
+
+  <div class="step">
+    <span class="step-num">3</span>
+    <h3>Create workflow file</h3>
+    <p style="color:var(--muted);font-size:.85rem;margin-top:.3rem">Add <code>.github/workflows/ai-review.yml</code>:</p>
+    <pre><code>name: AI Code Review
+on: [pull_request]
+
+jobs:
+  review:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: AI Code Review
+        run: |
+          FILES=$(git diff --name-only ${{ github.event.pull_request.base.sha }} ${{ github.sha }} | grep -E '\.(js|ts|py|go|rs|java)$')
+          for file in $FILES; do
+            curl -s -X POST "https://automation.songheng.vip/v1/review" \
+              -H "Content-Type: application/json" \
+              -H "X-API-Key: ${{ secrets.AUTOMATON_API_KEY }}" \
+              -d "{\"code\": $(cat "$file" | jq -Rs .), \"language\": \"${file##*.}\"}" \
+              | jq .
+          done</code></pre>
+  </div>
+
+  <div class="step">
+    <span class="step-num">4</span>
+    <h3>Done! 🎉</h3>
+    <p style="color:var(--muted);font-size:.85rem;margin-top:.3rem">Every PR now gets AI code review. Results appear in the Actions tab.</p>
+  </div>
+</div>
+
+<div class="cta">
+  <h3>Start Reviewing Code Today</h3>
+  <p style="color:var(--muted);font-size:.9rem;margin-bottom:1.5rem">Free tier: 3 reviews/day. No credit card needed.</p>
+  <a class="btn" href="/pricing.html">Get API Key →</a>
+</div>
+
+<div style="background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.5rem;margin:2rem 0">
+  <h3 style="font-size:1rem;color:var(--accent);margin-bottom:.75rem">Supported Languages</h3>
+  <p style="font-size:.85rem;color:var(--muted)">JavaScript, TypeScript, Python, Go, Rust, Java, Ruby, C#, C++, PHP, and more. If DeepSeek can read it, we can review it.</p>
+</div>
+
+<div style="background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.5rem;margin:2rem 0">
+  <h3 style="font-size:1rem;color:var(--accent);margin-bottom:.75rem">Pricing</h3>
+  <table style="width:100%;font-size:.85rem">
+    <tr><td style="color:var(--muted)">Code Review</td><td style="text-align:right;color:var(--green)">5 credits</td></tr>
+    <tr><td style="color:var(--muted)">Security Scan</td><td style="text-align:right;color:var(--green)">3 credits</td></tr>
+    <tr><td style="color:var(--muted)">Complexity Analysis</td><td style="text-align:right;color:var(--green)">2 credits</td></tr>
+    <tr><td style="color:var(--muted)">Code Explanation</td><td style="text-align:right;color:var(--green)">2 credits</td></tr>
+  </table>
+  <p style="font-size:.75rem;color:var(--muted);margin-top:.5rem">Starter pack: $5 for 500 credits (~100-500 reviews). <a href="/pricing.html" style="color:var(--accent)">See all plans →</a></p>
+</div>
+</main>
+
+<footer><p>my-automaton · <a href="https://automation.songheng.vip">automation.songheng.vip</a> · <a href="/api-docs.html">API Docs</a> · <a href="/blog.html">Blog</a></p></footer>
+<script src="/conversion-banner.js" defer></script>
+</body>
+</html>

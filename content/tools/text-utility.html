@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Text Analyzer — Word Count, Readability, Keyword Density | Free Online Tool</title>
+<meta name="description" content="Free online text analyzer: word count, character count, Flesch-Kincaid readability score, keyword density, reading time, and vocabulary richness. No signup. 100% client-side.">
+<meta name="keywords" content="text analyzer, word counter, readability checker, flesch kincaid, keyword density, writing analysis">
+<meta property="og:title" content="Text Analyzer — Free Writing Analysis Tool">
+<meta property="og:description" content="Analyze word count, readability, keyword density, and reading time. 100% client-side text analysis.">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#f8fafc;color:#1e293b;line-height:1.6}
+.container{max-width:960px;margin:0 auto;padding:20px}
+nav{margin-bottom:2em;border-bottom:2px solid #e2e8f0;padding-bottom:1em}
+nav a{color:#2563eb;text-decoration:none;font-weight:600}
+h1{font-size:1.8em;margin:.5em 0 .2em}
+textarea{width:100%;min-height:250px;padding:14px;font-size:15px;font-family:system-ui;border:2px solid #e2e8f0;border-radius:8px;resize:vertical;transition:border-color .2s}
+textarea:focus{outline:none;border-color:#2563eb}
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px;margin:20px 0}
+.stat-card{background:#fff;border:1px solid #e2e8f0;border-radius:8px;padding:14px;text-align:center}
+.stat-card .value{font-size:1.8rem;font-weight:700;color:#2563eb}
+.stat-card .label{color:#64748b;font-size:.8rem;text-transform:uppercase;letter-spacing:.5px}
+.readability-meter{background:#fff;border:1px solid #e2e8f0;border-radius:8px;padding:20px;margin:16px 0}
+.readability-bar{height:12px;background:#e2e8f0;border-radius:6px;overflow:hidden;margin:8px 0}
+.readability-bar .fill{height:100%;border-radius:6px;transition:width .3s}
+.keyword-table{width:100%;border-collapse:collapse;margin:12px 0}
+.keyword-table th{text-align:left;padding:8px;border-bottom:2px solid #e2e8f0;color:#475569;font-size:.85rem;text-transform:uppercase}
+.keyword-table td{padding:8px;border-bottom:1px solid #e2e8f0;font-size:.9rem}
+.keyword-table tr:hover{background:#f1f5f9}
+.char-bar{display:inline-block;height:16px;border-radius:4px;min-width:4px;margin-right:4px}
+button{background:#2563eb;color:#fff;border:none;padding:10px 20px;border-radius:8px;font-weight:600;cursor:pointer;margin:8px 4px 0 0}
+button:hover{background:#1d4ed8}
+.sample-btn{background:#64748b}
+.sample-btn:hover{background:#475569}
+@media(max-width:600px){.stats-grid{grid-template-columns:repeat(2,1fr)}}
+.tip{background:#eff6ff;border-left:4px solid #2563eb;padding:12px;border-radius:4px;margin:16px 0;font-size:.9rem;color:#1e40af}
+</style>
+<!-- Open Graph / Social Meta Tags -->
+<meta property="og:image" content="https://automation.songheng.vip/og-image.png" />
+<meta property="og:url" content="https://automation.songheng.vip/tools/text-utility.html" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="my-automaton" />
+<meta property="og:locale" content="en_US" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Text Analyzer — Word Count, Readability, Keyword Density | Free Online Tool" />
+<meta name="twitter:description" content="Free online text analyzer: word count, character count, Flesch-Kincaid readability score, keyword density, reading time, and vocabulary richness. No signup. 100% client-side." />
+<meta name="twitter:image" content="https://automation.songheng.vip/og-image.png" />
+  <link rel="canonical" href="https://automation.songheng.vip/tools/text-utility.html">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Text Analyzer — Word Count, Readability, Keyword Density | Free Online Tool",
+  "description": "Free online text analyzer: word count, character count, Flesch-Kincaid readability score, keyword density, reading time, and vocabulary richness. No signup. 100% client-side.",
+  "url": "https://automation.songheng.vip/tools/text-utility.html",
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": "Web",
+  "author": {
+    "@type": "Organization",
+    "name": "my-automaton",
+    "url": "https://automation.songheng.vip"
+  },
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  }
+}
+</script>
+</head>
+<body>
+<div class="container">
+<nav>
+  <a href="/">← Home</a> <span style="color:#94a3b8">|</span>
+  <a href="/tools">Tools</a> <span style="color:#94a3b8">|</span>
+  <a href="/blog">Blog</a> <span style="color:#94a3b8">|</span>
+  <a href="/api-docs">API</a>
+</nav>
+
+<h1>📝 Text Analyzer</h1>
+<p>Instant analysis of any text: word count, readability score, keyword density, character frequency, and reading time. <strong>2026年完全无服务器，所有分析在浏览器内完成。</strong></p>
+
+<textarea id="textInput" oninput="analyze()" placeholder="Paste or type your text here... For example, paste an article, essay, blog post, or any content you want to analyze."></textarea>
+<div style="display:flex;gap:8px">
+  <button onclick="analyze()">🔍 Analyze</button>
+  <button class="sample-btn" onclick="loadSample()">Load Sample</button>
+  <button class="sample-btn" onclick="document.getElementById('textInput').value='';analyze()">Clear</button>
+</div>
+
+<div id="results" style="display:none">
+  <h2>📊 Basic Statistics</h2>
+  <div class="stats-grid">
+    <div class="stat-card"><div class="value" id="statWords">0</div><div class="label">Words</div></div>
+    <div class="stat-card"><div class="value" id="statChars">0</div><div class="label">Characters</div></div>
+    <div class="stat-card"><div class="value" id="statCharsNoSpace">0</div><div class="label">Chars (no space)</div></div>
+    <div class="stat-card"><div class="value" id="statSentences">0</div><div class="label">Sentences</div></div>
+    <div class="stat-card"><div class="value" id="statParagraphs">0</div><div class="label">Paragraphs</div></div>
+    <div class="stat-card"><div class="value" id="statWPS">0</div><div class="label">Words/Sentence</div></div>
+    <div class="stat-card"><div class="value" id="statUnique">0</div><div class="label">Unique Words</div></div>
+    <div class="stat-card"><div class="value" id="statRichness">0</div><div class="label">Vocabulary Richness</div></div>
+  </div>
+
+  <h2>📖 Readability</h2>
+  <div class="readability-meter">
+    <div style="display:flex;justify-content:space-between;align-items:center">
+      <span><strong>Flesch-Kincaid Score:</strong> <span id="fkScore">0</span></span>
+      <span><strong>Level:</strong> <span id="fkLevel" style="font-weight:600">-</span></span>
+    </div>
+    <div class="readability-bar">
+      <div class="fill" id="fkBar" style="width:0%"></div>
+    </div>
+    <div style="display:flex;justify-content:space-between;font-size:.8rem;color:#64748b">
+      <span>Very Difficult (0)</span>
+      <span>Standard (60)</span>
+      <span>Very Easy (100)</span>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px">
+      <div class="stat-card"><div class="value" id="readingTime" style="font-size:1.4rem">0</div><div class="label">Reading Time (min)</div></div>
+      <div class="stat-card"><div class="value" id="speakingTime" style="font-size:1.4rem">0</div><div class="label">Speaking Time (min)</div></div>
+    </div>
+  </div>
+
+  <h2>🔑 Top Keywords</h2>
+  <div style="overflow-x:auto">
+    <table class="keyword-table" id="keywordTable">
+      <thead><tr><th>#</th><th>Keyword</th><th>Count</th><th>Density</th><th>Bar</th></tr></thead>
+      <tbody id="keywordBody"></tbody>
+    </table>
+  </div>
+
+  <h2>📊 Character Frequency</h2>
+  <div style="background:#fff;border:1px solid #e2e8f0;border-radius:8px;padding:16px;margin:12px 0;min-height:60px" id="charFreqBars"></div>
+</div>
+
+<div class="tip">
+  💡 <strong>Pro tip:</strong> For SEO writing, aim for Flesch-Kincaid score of 60-70 (standard). Short sentences and common words improve readability.
+</div>
+
+<h2 style="margin-top:24px">What These Metrics Mean</h2>
+<table style="width:100%;border-collapse:collapse;margin:12px 0">
+  <tr><th style="text-align:left;padding:8px;border-bottom:2px solid #e2e8f0">Metric</th><th style="text-align:left;padding:8px;border-bottom:2px solid #e2e8f0">What It Tells You</th></tr>
+  <tr><td style="padding:8px;border-bottom:1px solid #e2e8f0"><strong>Words/Sentence</strong></td><td style="padding:8px;border-bottom:1px solid #e2e8f0">Average sentence length. Aim for 15-20 words for good readability.</td></tr>
+  <tr><td style="padding:8px;border-bottom:1px solid #e2e8f0"><strong>Flesch-Kincaid</strong></td><td style="padding:8px;border-bottom:1px solid #e2e8f0">0-100 scale. Higher = easier to read. 60-70 is standard English.</td></tr>
+  <tr><td style="padding:8px;border-bottom:1px solid #e2e8f0"><strong>Vocabulary Richness</strong></td><td style="padding:8px;border-bottom:1px solid #e2e8f0">Unique words ÷ total words. Higher = more varied vocabulary.</td></tr>
+  <tr><td style="padding:8px;border-bottom:1px solid #e2e8f0"><strong>Keyword Density</strong></td><td style="padding:8px;border-bottom:1px solid #e2e8f0">How often a word appears relative to total word count.</td></tr>
+  <tr><td style="padding:8px;"><strong>Reading Time</strong></td><td style="padding:8px;">Based on average reading speed of 200 words/minute.</td></tr>
+</table>
+</div>
+
+<script>
+function analyze() {
+  const text = document.getElementById('textInput').value;
+  if (!text.trim()) {
+    document.getElementById('results').style.display = 'none';
+    return;
+  }
+  
+  const words = text.trim().split(/\s+/);
+  const wordCount = words.length;
+  const chars = text.length;
+  const charsNoSpace = text.replace(/\s/g, '').length;
+  const sentences = text.split(/[.!?]+/).filter(s => s.trim().length > 0).length || 1;
+  const paragraphs = text.split(/\n\s*\n/).filter(p => p.trim().length > 0).length || 1;
+  const avgWPS = parseFloat((wordCount / sentences).toFixed(1));
+  
+  // Clean words for analysis
+  const clean = text.toLowerCase().replace(/[^a-z0-9\s]/g, '').split(/\s+/).filter(Boolean);
+  
+  // Unique words
+  const uniqueWords = new Set(clean);
+  const richness = parseFloat((uniqueWords.size / (wordCount || 1)).toFixed(3));
+  
+  // Word frequency
+  const freq = {};
+  for (const w of clean) {
+    if (w.length > 2) freq[w] = (freq[w] || 0) + 1;
+  }
+  const sorted = Object.entries(freq).sort((a, b) => b[1] - a[1]);
+  
+  // Syllable count for readability
+  const syllableCount = clean.reduce((sum, w) => {
+    const s = w.match(/[aeiouy]/gi);
+    return sum + Math.max(1, s ? s.length : 0);
+  }, 0);
+  
+  // Flesch-Kincaid
+  const avgSPW = syllableCount / (wordCount || 1);
+  const fk = 206.835 - 1.015 * avgWPS - 84.6 * avgSPW;
+  const fkClamped = Math.max(0, Math.min(100, fk));
+  
+  let level;
+  if (fk >= 90) level = 'Very Easy';
+  else if (fk >= 80) level = 'Easy';
+  else if (fk >= 70) level = 'Fairly Easy';
+  else if (fk >= 60) level = 'Standard';
+  else if (fk >= 50) level = 'Fairly Difficult';
+  else if (fk >= 30) level = 'Difficult';
+  else level = 'Very Difficult';
+  
+  // Char frequency
+  const charFreq = {};
+  for (const c of text.toLowerCase()) {
+    if (/[a-z0-9]/.test(c)) charFreq[c] = (charFreq[c] || 0) + 1;
+  }
+  const charSorted = Object.entries(charFreq).sort((a, b) => b[1] - a[1]);
+  const maxCharCount = charSorted.length > 0 ? charSorted[0][1] : 1;
+  
+  // Update DOM
+  document.getElementById('results').style.display = 'block';
+  document.getElementById('statWords').textContent = wordCount;
+  document.getElementById('statChars').textContent = chars.toLocaleString();
+  document.getElementById('statCharsNoSpace').textContent = charsNoSpace.toLocaleString();
+  document.getElementById('statSentences').textContent = sentences;
+  document.getElementById('statParagraphs').textContent = paragraphs;
+  document.getElementById('statWPS').textContent = avgWPS;
+  document.getElementById('statUnique').textContent = uniqueWords.size;
+  document.getElementById('statRichness').textContent = richness;
+  
+  document.getElementById('fkScore').textContent = fkClamped.toFixed(1);
+  document.getElementById('fkLevel').textContent = level;
+  document.getElementById('fkBar').style.width = fkClamped + '%';
+  
+  // Color the bar based on score
+  const bar = document.getElementById('fkBar');
+  if (fkClamped >= 70) bar.style.background = '#059669';
+  else if (fkClamped >= 50) bar.style.background = '#2563eb';
+  else if (fkClamped >= 30) bar.style.background = '#f59e0b';
+  else bar.style.background = '#dc2626';
+  
+  document.getElementById('readingTime').textContent = Math.max(1, Math.ceil(wordCount / 200));
+  document.getElementById('speakingTime').textContent = Math.max(1, Math.ceil(wordCount / 150));
+  
+  // Keywords table
+  const tbody = document.getElementById('keywordBody');
+  tbody.innerHTML = '';
+  sorted.slice(0, 30).forEach(([word, count], i) => {
+    const density = ((count / wordCount) * 100).toFixed(2);
+    const pct = (count / sorted[0][1]) * 100;
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td>${i + 1}</td>
+      <td><strong>${word}</strong></td>
+      <td>${count}</td>
+      <td>${density}%</td>
+      <td><div style="display:flex;align-items:center"><div style="width:${pct}%;max-width:150px;height:18px;background:#2563eb;border-radius:4px;min-width:8px"></div><span style="margin-left:6px;font-size:.8rem;color:#64748b">${count}</span></div></td>
+    `;
+    tbody.appendChild(tr);
+  });
+  
+  // Char frequency bars
+  const cfContainer = document.getElementById('charFreqBars');
+  cfContainer.innerHTML = '';
+  charSorted.slice(0, 26).forEach(([char, count]) => {
+    const pct = (count / maxCharCount) * 100;
+    const hue = (char.charCodeAt(0) * 37) % 360;
+    const bar = document.createElement('div');
+    bar.style.cssText = 'display:flex;align-items:center;margin:2px 0';
+    bar.innerHTML = `
+      <span style="width:20px;font-weight:600;font-size:.85rem;font-family:monospace">${char}</span>
+      <div style="width:${pct}%;max-width:400px;height:20px;background:hsl(${hue},70%,60%);border-radius:3px;min-width:4px;transition:width .3s"></div>
+      <span style="margin-left:6px;font-size:.8rem;color:#64748b">${count}</span>
+    `;
+    cfContainer.appendChild(bar);
+  });
+}
+
+function loadSample() {
+  document.getElementById('textInput').value = `The Future of Artificial Intelligence in Web Development
+
+Artificial intelligence is rapidly transforming the landscape of web development. From intelligent code completion to automated bug detection, AI-powered tools are becoming indispensable for modern developers.
+
+The Rise of AI in Development
+
+In recent years, machine learning models have demonstrated remarkable capabilities in understanding and generating code. Tools like GitHub Copilot and Amazon CodeWhisperer can suggest entire functions based on just a comment or function name. This dramatically increases developer productivity and reduces the time spent on boilerplate code.
+
+However, AI is not just about code generation. It is also revolutionizing how we test, debug, and maintain web applications. AI-powered testing frameworks can automatically generate test cases, identify edge cases, and even predict where bugs are most likely to occur based on historical data.
+
+Natural Language Processing for Documentation
+
+One of the most promising applications of AI in web development is automated documentation generation. Natural language processing models can analyze codebases and generate human-readable documentation that explains what each function does, what parameters it expects, and what it returns.
+
+Accessibility and Inclusion
+
+AI is also making the web more accessible. Computer vision models can automatically generate alt text for images, while natural language processing can help ensure that content is written at an appropriate reading level for the target audience.
+
+The Road Ahead
+
+As AI continues to evolve, we can expect even deeper integration between development tools and intelligent assistants. The developers who embrace these tools will find themselves more productive, more creative, and better equipped to solve complex problems.
+
+The key is to view AI not as a replacement for human developers, but as a powerful amplifier of human capabilities. The future of web development is not human versus machine — it is human empowered by machine.`;
+  analyze();
+}
+
+// Auto-analyze on page load with sample
+window.onload = function() {
+  loadSample();
+};
+</script>
+</body>
+</html>

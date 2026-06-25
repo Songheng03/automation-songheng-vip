@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Submission Helper — Submit Your Site to Search Engines & Directories</title>
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, sans-serif;
+            background: #f4f6f9;
+            color: #1a1a2e;
+            line-height: 1.6;
+            padding: 20px;
+        }
+        .container {
+            max-width: 780px;
+            margin: 0 auto;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 2px 16px rgba(0,0,0,0.07);
+            padding: 40px 36px;
+        }
+        h1 {
+            font-size: 1.85rem;
+            color: #16213e;
+            margin-bottom: 6px;
+        }
+        .subtitle {
+            color: #5a5a7a;
+            margin-bottom: 28px;
+            font-size: 0.95rem;
+        }
+        .domain-box {
+            background: #eef2ff;
+            border: 1px solid #c7d2fe;
+            border-radius: 8px;
+            padding: 14px 18px;
+            margin-bottom: 26px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .domain-box label {
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: #3730a3;
+            white-space: nowrap;
+        }
+        .domain-box input {
+            flex: 1;
+            min-width: 200px;
+            padding: 8px 12px;
+            border: 1px solid #a5b4fc;
+            border-radius: 6px;
+            font-size: 0.95rem;
+            font-family: monospace;
+            outline: none;
+            transition: border 0.15s;
+        }
+        .domain-box input:focus {
+            border-color: #4f46e5;
+            box-shadow: 0 0 0 3px rgba(79,70,229,0.12);
+        }
+        .domain-box button {
+            padding: 8px 18px;
+            background: #4f46e5;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: background 0.15s;
+        }
+        .domain-box button:hover { background: #4338ca; }
+
+        h2 {
+            font-size: 1.25rem;
+            margin: 28px 0 12px;
+            color: #16213e;
+            border-bottom: 2px solid #e0e7ff;
+            padding-bottom: 6px;
+        }
+        ol { padding-left: 20px; margin-bottom: 20px; }
+        ol li { margin-bottom: 8px; }
+
+        .engines {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 14px;
+            margin-bottom: 28px;
+        }
+        .engine-card {
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 18px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 14px;
+            flex-wrap: wrap;
+            transition: box-shadow 0.15s, border-color 0.15s;
+            background: #fafbff;
+        }
+        .engine-card:hover {
+            box-shadow: 0 4px 14px rgba(0,0,0,0.06);
+            border-color: #c7d2fe;
+        }
+        .engine-info h3 {
+            font-size: 1.05rem;
+            color: #1e1b4b;
+            margin-bottom: 2px;
+        }
+        .engine-info .desc {
+            font-size: 0.82rem;
+            color: #6b7280;
+        }
+        .engine-card a {
+            display: inline-block;
+            padding: 9px 20px;
+            background: #4f46e5;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 0.88rem;
+            white-space: nowrap;
+            transition: background 0.15s;
+        }
+        .engine-card a:hover { background: #3730a3; }
+
+        .share-section {
+            background: #fef9e7;
+            border: 1px solid #fde68a;
+            border-radius: 10px;
+            padding: 22px 24px;
+            margin-top: 10px;
+            text-align: center;
+        }
+        .share-section h2 {
+            border: none;
+            margin-top: 0;
+            padding-bottom: 0;
+            margin-bottom: 10px;
+        }
+        .share-section p {
+            margin-bottom: 12px;
+            color: #92400e;
+            font-size: 0.95rem;
+        }
+        .share-btns {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .share-btns a {
+            padding: 9px 16px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.88rem;
+            color: #fff;
+            transition: opacity 0.15s;
+        }
+        .share-btns a:hover { opacity: 0.85; }
+        .share-twitter { background: #1d9bf0; }
+        .share-facebook { background: #1877f2; }
+        .share-linkedin { background: #0a66c2; }
+        .share-email { background: #ea580c; }
+
+        .footer-note {
+            margin-top: 30px;
+            text-align: center;
+            font-size: 0.78rem;
+            color: #9ca3af;
+        }
+
+        @media (max-width: 500px) {
+            .container { padding: 24px 16px; }
+            .engine-card { flex-direction: column; align-items: flex-start; }
+            .engine-card a { width: 100%; text-align: center; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>🚀 Submission Helper</h1>
+    <p class="subtitle">Submit your website to search engines and web directories in one click — links are pre-filled with your domain.</p>
+
+    <!-- Domain input -->
+    <div class="domain-box">
+        <label for="domain">🌐 Your Domain:</label>
+        <input type="text" id="domain" value="example.com" placeholder="e.g. mywebsite.com">
+        <button onclick="updateLinks()">Update All Links</button>
+    </div>
+
+    <!-- Instructions -->
+    <h2>📋 How to Use</h2>
+    <ol>
+        <li>Enter your full domain above (e.g. <code>mybusiness.com</code>).</li>
+        <li>Click <strong>"Update All Links"</strong> — every submission link updates instantly.</li>
+        <li>Click each link below to open the search engine's submission page with your domain pre-filled.</li>
+        <li>Follow the on-page instructions for each engine to complete the submission.</li>
+        <li><strong>Share this page</strong> with colleagues so they can submit too!</li>
+    </ol>
+
+    <!-- Search engines & directories -->
+    <h2>🔍 Search Engines &amp; Directories</h2>
+    <div class="engines" id="engines">
+        <!-- Populated by JS -->
+    </div>
+
+    <!-- Call to share -->
+    <div class="share-section">
+        <h2>📢 Share This Page!</h2>
+        <p>Know someone launching a website? Send them this tool to help them get indexed faster.</p>
+        <div class="share-btns">
+            <a class="share-twitter" href="https://twitter.com/intent/tweet?text=Check%20out%20this%20free%20submission%20helper%20to%20get%20your%20website%20listed%20on%20search%20engines%20%26%20directories!&url=" target="_blank" rel="noopener">🐦 Share on Twitter</a>
+            <a class="share-facebook" href="https://www.facebook.com/sharer/sharer.php?u=" target="_blank" rel="noopener">📘 Share on Facebook</a>
+            <a class="share-linkedin" href="https://www.linkedin.com/sharing/share-offsite/?url=" target="_blank" rel="noopener">💼 Share on LinkedIn</a>
+            <a class="share-email" href="mailto:?subject=Free%20Submission%20Helper%20Tool&body=Check%20out%20this%20free%20tool%20to%20submit%20your%20site%20to%20search%20engines%3A%20" target="_blank" rel="noopener">✉️ Share via Email</a>
+        </div>
+    </div>
+
+    <p class="footer-note">✨ Bookmark this page and come back whenever you launch a new site. No sign-up required.</p>
+</div>
+
+<script>
+    /**
+     * List of search engines / directories with their submission URLs.
+     * The token {DOMAIN} will be replaced with the user-provided domain.
+     *
+     * Each entry:
+     *   - name:       Display name
+     *   - desc:       Short description
+     *   - url:        Submission URL with {DOMAIN} placeholder
+     *   - color:      Accent color for the button (optional override)
+     */
+    const ENGINES = [
+        {
+            name: "Google Search Console",
+            desc: "The world's largest search engine. Submit your URL for indexing.",
+            url: "https://search.google.com/search-console?resource_id={DOMAIN}",
+            color: "#4285f4"
+        },
+        {
+            name: "Bing Webmaster Tools",
+            desc: "Microsoft's search engine. Add your site to get indexed on Bing & Yahoo.",
+            url: "https://www.bing.com/webmasters/submit?url=https://{DOMAIN}",
+            color: "#008373"
+        },
+        {
+            name: "Yandex Webmaster",
+            desc: "Russia's leading search engine with significant global reach.",
+            url: "https://webmaster.yandex.com/site/https://{DOMAIN}/",
+            color: "#fc3f1d"
+        },
+        {
+            name: "DuckDuckGo",
+            desc: "Privacy-focused search engine. Submit for inclusion in results.",
+            url: "https://duckduckgo.com/?q=site%3A{DOMAIN}&t=h_",
+            color: "#de5833"
+        },
+        {
+            name: "Yahoo",
+            desc: "Submit via Bing, but use this direct search check to confirm indexing.",
+            url: "https://search.yahoo.com/search?p=site%3A{DOMAIN}",
+            color: "#6001d2"
+        },
+        {
+            name: "Baidu Zhanzhang",
+            desc: "China's dominant search engine. Essential if you want visibility in China.",
+            url: "https://ziyuan.baidu.com/linksubmit/url?sitename=https://{DOMAIN}",
+            color: "#2932e1"
+        },
+        {
+            name: "Hotfrog Directory",
+            desc: "Free international business directory listing.",
+            url: "https://www.hotfrog.com/AddYourBusiness.aspx?url={DOMAIN}",
+            color: "#2d8c3c"
+        },
+        {
+            name: "EbaumsWorld",
+            desc: "Well-established web directory. Submit your site for review.",
+            url: "https://www.ebaumsworld.com/submit/?url=https://{DOMAIN}",
+            color: "#e05a00"
+        }
+    ];
+
+    const domainInput = document.getElementById('domain');
+    const enginesContainer = document.getElementById('engines');
+
+    function renderEngines(domain) {
+        const cleanDomain = domain.replace(/^https?:\/\//, '').replace(/\/$/, '').trim() || 'example.com';
+        enginesContainer.innerHTML = ENGINES.map((eng, idx) => {
+            const filledUrl = eng.url.replace(/\{DOMAIN\}/g, encodeURIComponent(cleanDomain));
+            const btnStyle = eng.color ? `background:${eng.color};` : '';
+            return `
+                <div class="engine-card">
+                    <div class="engine-info">
+                        <h3>${idx + 1}. ${eng.name}</h3>
+                        <span class="desc">${eng.desc}</span>
+                    </div>
+                    <a href="${filledUrl}" target="_blank" rel="noopener" style="${btnStyle}">
+                        Submit → ${cleanDomain}
+                    </a>
+                </div>`;
+        }).join('');
+    }
+
+    function updateLinks() {
+        renderEngines(domainInput.value);
+    }
+
+    // Update share URLs with current page URL
+    function updateShareLinks() {
+        const pageUrl = encodeURIComponent(window.location.href);
+        document.querySelectorAll('.share-section a').forEach(a => {
+            // Append page URL to each share link
+            if (a.href.includes('?url=') && !a.href.endsWith('=')) {
+                // already has url param with value, replace it
+                a.href = a.href.replace(/(\?url=)[^&]*/, '$1' + pageUrl);
+            } else if (a.href.endsWith('=')) {
+                a.href += pageUrl;
+            } else if (a.href.includes('&url=')) {
+                a.href = a.href.replace(/(&url=)[^&]*/, '$1' + pageUrl);
+            } else if (a.href.includes('&body=')) {
+                a.href += pageUrl;
+            }
+        });
+    }
+
+    // Initialize on load
+    document.addEventListener('DOMContentLoaded', () => {
+        renderEngines(domainInput.value);
+        updateShareLinks();
+    });
+
+    // Allow pressing Enter in domain field to update
+    domainInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') updateLinks();
+    });
+</script>
+
+</body>
+</html>

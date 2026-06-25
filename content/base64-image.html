@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Base64 Image Encoder — Convert Images to Base64 | my-automaton</title>
+<meta name="description" content="Convert images to Base64 data URIs instantly. Support for PNG, JPG, GIF, WebP. Output as data URI, CSS background, HTML img tag, or Markdown. 100% free.">
+<style>
+:root{--bg:#0f172a;--card:#1e293b;--text:#e2e8f0;--muted:#94a3b8;--accent:#38bdf8;--green:#4ade80;--border:#334155}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+header{background:var(--card);border-bottom:1px solid var(--border);padding:1rem 2rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap}
+header h1{font-size:1.25rem;color:var(--accent)}
+nav a{color:var(--muted);text-decoration:none;margin-left:1rem;font-size:.875rem}
+main{max-width:700px;margin:2rem auto;padding:0 1rem}
+.drop-zone{border:2px dashed var(--border);border-radius:16px;padding:2.5rem;text-align:center;cursor:pointer;transition:all .2s;margin-bottom:1.5rem;background:var(--card)}
+.drop-zone:hover,.drop-zone.dragover{border-color:var(--accent);background:rgba(56,189,248,.05)}
+.drop-zone .icon{font-size:2.5rem;margin-bottom:.5rem}
+.drop-zone .title{font-size:.9rem;font-weight:600;margin-bottom:.25rem}
+.drop-zone .sub{font-size:.7rem;color:var(--muted)}
+.img-preview{text-align:center;margin-bottom:1rem}
+.img-preview img{max-width:100%;max-height:250px;border-radius:8px;border:1px solid var(--border)}
+.stats-row{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1rem}
+.stat{flex:1;min-width:100px;background:var(--card);border:1px solid var(--border);border-radius:8px;padding:.6rem .8rem;font-size:.65rem}
+.stat .s-label{color:var(--muted);font-size:.6rem;text-transform:uppercase}
+.stat .s-value{color:var(--green);font-family:"Fira Code",monospace;font-size:.75rem}
+.format-tabs{display:flex;gap:.3rem;flex-wrap:wrap;margin-bottom:.75rem}
+.format-tabs button{padding:.3rem .9rem;border:1px solid var(--border);border-radius:6px;background:transparent;color:var(--muted);cursor:pointer;font-size:.65rem}
+.format-tabs button.active{background:var(--accent);color:#0f172a;border-color:var(--accent)}
+.output-box{background:#0a0f1a;border:1px solid var(--border);border-radius:10px;padding:1rem;font-family:"Fira Code",monospace;font-size:.7rem;color:var(--green);max-height:200px;overflow-y:auto;word-break:break-all;position:relative;cursor:pointer}
+.output-box .copy-hint{position:absolute;top:.5rem;right:.75rem;font-size:.6rem;color:var(--muted)}
+.btn-row{display:flex;gap:.5rem;margin-top:.75rem}
+.btn{padding:.35rem 1rem;border:none;border-radius:6px;cursor:pointer;font-size:.75rem;font-weight:600}
+.btn-primary{background:var(--accent);color:#0f172a}.btn:hover{filter:brightness(1.15)}
+footer{text-align:center;padding:2rem;color:var(--muted);font-size:.8rem;border-top:1px solid var(--border);margin-top:2rem}footer a{color:var(--accent)}
+</style>
+
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Base64 Image Encoder","applicationCategory":"DeveloperApplication","operatingSystem":"Any","url":"https://automation.songheng.vip/base64-image.html","description":"Convert images to Base64 data URIs online. Drag and drop, supports PNG, JPEG, SVG, GIF, WebP.","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"aggregateRating":{"@type":"AggregateRating","ratingValue":"4.8","ratingCount":"127"}}</script>
+</head>
+<body>
+<header><h1>🖼️ Base64 Image Encoder</h1><nav><a href="/">Home</a><a href="/dev-tools-hub.html">Tools Hub</a></nav></header>
+<main>
+<div class="drop-zone" id="dropZone" onclick="document.getElementById('fileInput').click()">
+  <div class="icon">📁</div>
+  <div class="title">Drop image here or click to browse</div>
+  <div class="sub">PNG, JPG, GIF, WebP, SVG</div>
+</div>
+<input type="file" id="fileInput" accept="image/*" style="display:none" onchange="handleFile(this.files[0])">
+<div class="img-preview" id="preview" style="display:none"></div>
+<div class="stats-row" id="stats" style="display:none"></div>
+<div class="format-tabs">
+  <button class="active" onclick="setFormat('datauri')">Data URI</button>
+  <button onclick="setFormat('raw')">Raw Base64</button>
+  <button onclick="setFormat('css')">CSS Background</button>
+  <button onclick="setFormat('imgtag')">HTML img Tag</button>
+  <button onclick="setFormat('markdown')">Markdown</button>
+</div>
+<div class="output-box" id="output" onclick="copyOutput()">Drop an image to encode<span class="copy-hint">📋 Click to copy</span></div>
+<div class="btn-row"><button class="btn btn-primary" onclick="copyOutput()">📋 Copy</button></div>
+</main>
+<footer><p>my-automaton · Free Base64 Image Encoder · <a href="/dev-tools-hub.html">All Tools</a></p></footer>
+<script>
+let currentBase64='',currentType='',currentFormat='datauri';
+
+const dz=document.getElementById('dropZone');
+dz.addEventListener('dragover',e=>{e.preventDefault();dz.classList.add('dragover')});
+dz.addEventListener('dragleave',()=>dz.classList.remove('dragover'));
+dz.addEventListener('drop',e=>{e.preventDefault();dz.classList.remove('dragover');handleFile(e.dataTransfer.files[0])});
+
+function setFormat(f){currentFormat=f;document.querySelectorAll('.format-tabs button').forEach(b=>b.classList.toggle('active',b.textContent.toLowerCase().includes(f.replace('datauri','data uri').replace('imgtag','html img'))));updateOutput()}
+
+function handleFile(file){
+  if(!file||!file.type.startsWith('image/')){alert('Please select an image file');return}
+  const reader=new FileReader();
+  reader.onload=function(){
+    currentBase64=reader.result.split(',')[1]||reader.result;
+    currentType=file.type;
+
+    document.getElementById('preview').style.display='block';
+    document.getElementById('preview').innerHTML='<img src="data:'+currentType+';base64,'+currentBase64+'">';
+
+    const fSize=(file.size/1024).toFixed(1);
+    const b64Size=(currentBase64.length/1024).toFixed(1);
+    const overhead=(((currentBase64.length-file.size)/file.size)*100).toFixed(1);
+    document.getElementById('stats').style.display='flex';
+    document.getElementById('stats').innerHTML=`
+      <div class="stat"><div class="s-label">Original</div><div class="s-value">${fSize} KB</div></div>
+      <div class="stat"><div class="s-label">Base64</div><div class="s-value">${b64Size} KB</div></div>
+      <div class="stat"><div class="s-label">Overhead</div><div class="s-value">+${overhead}%</div></div>
+      <div class="stat"><div class="s-label">Type</div><div class="s-value">${currentType}</div></div>
+    `;
+    updateOutput();
+  };
+  reader.readAsDataURL(file);
+}
+
+function updateOutput(){
+  if(!currentBase64){return}
+  let out;
+  const dataUri='data:'+currentType+';base64,'+currentBase64;
+  switch(currentFormat){
+    case 'datauri':out=dataUri;break;
+    case 'raw':out=currentBase64;break;
+    case 'css':out='background-image: url('+dataUri+');';break;
+    case 'imgtag':out='<img src="'+dataUri+'" alt="Encoded Image">';break;
+    case 'markdown':out='![Image]('+dataUri+')';break;
+  }
+  document.getElementById('output').textContent=out;
+  document.getElementById('output').appendChild(Object.assign(document.createElement('span'),{className:'copy-hint',textContent:'📋 Click to copy'}));
+}
+
+function copyOutput(){
+  const text=document.getElementById('output').textContent.replace('📋 Click to copy','').trim();
+  if(text&&!text.includes('Drop an image'))navigator.clipboard.writeText(text);
+}
+</script>
+<script src="/conversion-banner.js" defer></script>
+</body>
+</html>

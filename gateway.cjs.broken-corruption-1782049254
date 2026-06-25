@@ -1,0 +1,7 @@
+  // Free route: /free/review, /free/v1/review etc.
+  const freeMatch = pathname.match(/^\/free\/(.+)$/);
+  if (freeMatch) { const parts = freeMatch[1].split('/'); return handleFreeAPI(req, res, parts[parts.length-1]); }
+
+  // Premium API endpoints
+  const premiumMatch = pathname.match(/^\/v1\/(.+)$/);
+  if (premiumMatch) { const parts = premiumMatch[1].split('/'); return handlePremiumAPI(req, res, parts[parts.length-1]); }

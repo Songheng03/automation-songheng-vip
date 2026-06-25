@@ -1,0 +1,65 @@
+{
+  "platform": "Glama (https://glama.ai)",
+  "research_file": "workspace/research/glama.json",
+  "service": "my-automaton",
+  "submission_attempted": false,
+  "automatable": false,
+  "reason": "Not automatable — Glama submission requires interactive web-based GitHub OAuth authentication with a public GitHub repository URL. my-automaton has no public GitHub repository, is not published on npm, its MCP endpoint returns HTTP 404, and no GitHub credentials are available in this environment.",
+  "details": {
+    "glama_submission_requirements": {
+      "submission_method": "Web UI only — https://glama.ai/mcp/servers (Add Server button)",
+      "authentication": "GitHub OAuth (required, no API key alternative)",
+      "required_input": "GitHub repository URL of the MCP server",
+      "access_requirement": "Submitter must have write/admin access to the repository",
+      "api_available": false,
+      "notes": "No API-based submission endpoint was identified. All submissions flow through the client-side web interface with interactive OAuth."
+    },
+    "my_automaton_actual_state": {
+      "type": "MCP server (presumed Node.js-based automation server)",
+      "description": "A lightweight MCP server for automation tasks",
+      "endpoint": "https://automation.songheng.vip/mcp",
+      "endpoint_status": "HTTP 404 — Not Found (service not deployed or unavailable)",
+      "github_repository": "None found — no public GitHub repository exists for my-automaton (GitHub API search returned 0 results)",
+      "npm_package": "Not found — my-automaton is not published to npm",
+      "primary_language": "JavaScript / Node.js (inferred from descriptions)"
+    },
+    "blockers": [
+      {
+        "issue": "No API for submission",
+        "detail": "Glama exclusively uses a web UI with GitHub OAuth. There is no programmatic REST/GraphQL API to submit a server listing."
+      },
+      {
+        "issue": "No GitHub repository exists",
+        "detail": "A GitHub repository URL is the sole input required by Glama. my-automaton has no public GitHub repository to submit."
+      },
+      {
+        "issue": "No GitHub credentials available",
+        "detail": "No GITHUB_TOKEN or other GitHub credentials are available in the environment. Interactive GitHub OAuth cannot be completed from CLI."
+      },
+      {
+        "issue": "MCP endpoint not live",
+        "detail": "The my-automaton MCP endpoint (https://automation.songheng.vip/mcp) returns HTTP 404, indicating the service is not currently deployed."
+      },
+      {
+        "issue": "Not published to npm",
+        "detail": "Glama auto-discovers from npm. my-automaton is not published there, so automatic discovery cannot pick it up."
+      }
+    ],
+    "automatic_discovery_possibility": {
+      "note": "Glama also auto-discovers servers from the official MCP Registry, npm, and GitHub Awesome Lists. If my-automaton were published to npm or listed in the official registry, it could be discovered automatically without manual submission.",
+      "recommended_prerequisites": [
+        "Create a public GitHub repository for my-automaton with the MCP server source code",
+        "Publish the MCP server package to npm",
+        "Ensure the server builds successfully (with a Dockerfile)",
+        "Have the maintainer manually submit via Glama's web UI at https://glama.ai/mcp/servers using their own GitHub OAuth authentication"
+      ]
+    },
+    "recommendation": "For Glama submission to be possible, the maintainer of my-automaton should: (1) create a public GitHub repository containing the MCP server source code, (2) publish it to npm for potential automatic discovery, (3) ensure the server builds and runs with a Dockerfile, (4) manually submit the repository URL via Glama's web UI at https://glama.ai/mcp/servers using their own GitHub OAuth authentication. Until these prerequisites are met, submission to Glama is not feasible.",
+    "listing_assets_available": {
+      "descriptions": "workspace/listing_assets/descriptions.md",
+      "tags": "workspace/listing_assets/tags.json",
+      "logo": "workspace/listing_assets/logo.svg"
+    },
+    "timestamp": "2026-06-18T00:00:00Z"
+  }
+}

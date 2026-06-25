@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Free SEO Audit Tool — Analyze Any URL's SEO Health | my-automaton</title>
+<meta name="description" content="Free instant SEO audit tool. Analyze any URL for meta tags, headers, structured data, performance, mobile-friendliness. No signup. Get a detailed SEO score and recommendations.">
+<meta name="keywords" content="seo audit, free seo tool, website analyzer, seo checker, meta tag analyzer, seo score, website audit">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://automation.songheng.vip/seo-audit-tool.html">
+<meta property="og:title" content="Free SEO Audit Tool — Check Any URL's SEO Health">
+<meta property="og:description" content="Instant SEO audit: meta tags, headers, OG tags, structured data, performance tips. Free, no signup.">
+<meta property="og:url" content="https://automation.songheng.vip/seo-audit-tool.html">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #0d1117; color: #c9d1d9; }
+.container { max-width: 900px; margin: 0 auto; padding: 30px 20px; }
+h1 { font-size: 2em; margin-bottom: 8px; color: #58a6ff; }
+.subtitle { color: #8b949e; margin-bottom: 25px; font-size: 1.05em; }
+.search-box { background: #161b22; border: 1px solid #30363d; border-radius: 10px; padding: 25px; margin-bottom: 25px; }
+.search-row { display: flex; gap: 10px; }
+.search-row input { flex: 1; padding: 12px 16px; background: #0d1117; border: 1px solid #30363d; border-radius: 6px; color: #c9d1d9; font-size: 1em; }
+.search-row input:focus { border-color: #58a6ff; outline: none; }
+.search-row button { padding: 12px 28px; background: #238636; color: #fff; border: none; border-radius: 6px; font-size: 1em; cursor: pointer; white-space: nowrap; }
+.search-row button:hover { background: #2ea043; }
+.search-row button:disabled { opacity: 0.6; cursor: not-allowed; }
+.result-card { background: #161b22; border: 1px solid #30363d; border-radius: 8px; padding: 20px; margin-bottom: 15px; opacity: 0; transform: translateY(10px); transition: all 0.3s; }
+.result-card.show { opacity: 1; transform: translateY(0); }
+.result-card h3 { font-size: 1em; color: #f0f6fc; margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
+.score-good { color: #3fb950; }
+.score-warn { color: #d29922; }
+.score-bad { color: #f85149; }
+.summary-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin: 20px 0; }
+.summary-card { background: #0d1117; border: 1px solid #30363d; border-radius: 6px; padding: 15px; text-align: center; }
+.summary-card .num { font-size: 1.8em; font-weight: 700; }
+.summary-card .label { font-size: 0.85em; color: #8b949e; margin-top: 4px; }
+.tag { display: inline-block; padding: 3px 10px; border-radius: 12px; font-size: 0.8em; margin: 2px; }
+.tag.ok { background: rgba(63,185,80,0.15); color: #3fb950; border: 1px solid rgba(63,185,80,0.3); }
+.tag.fail { background: rgba(248,81,73,0.15); color: #f85149; border: 1px solid rgba(248,81,73,0.3); }
+.tag.warn { background: rgba(210,153,34,0.15); color: #d29922; border: 1px solid rgba(210,153,34,0.3); }
+.detail-table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+.detail-table th, .detail-table td { padding: 8px 12px; text-align: left; border-bottom: 1px solid #21262d; font-size: 0.9em; }
+.detail-table th { color: #8b949e; font-weight: 500; }
+.progress-bar { height: 6px; background: #21262d; border-radius: 3px; overflow: hidden; margin: 20px 0; }
+.progress-fill { height: 100%; border-radius: 3px; transition: width 1s ease; }
+.progress-fill.good { background: linear-gradient(90deg, #3fb950, #56d364); }
+.progress-fill.warn { background: linear-gradient(90deg, #d29922, #e3b341); }
+.progress-fill.bad { background: linear-gradient(90deg, #f85149, #da3633); }
+.share-btns { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 20px; }
+.share-btn { padding: 8px 18px; border-radius: 6px; color: #fff; text-decoration: none; font-size: 0.85em; }
+.share-btn.twitter { background: #1da1f2; }
+.share-btn.hn { background: #f60; }
+.share-btn.copy { background: #21262d; border: 1px solid #30363d; cursor: pointer; }
+.actions-box { background: #0d1117; border: 1px solid #30363d; border-radius: 8px; padding: 15px; margin-top: 15px; }
+.actions-box li { color: #8b949e; padding: 4px 0; font-size: 0.9em; }
+.actions-box li::marker { color: #d29922; }
+#loading { display: none; text-align: center; padding: 30px; }
+#loading .spinner { width: 40px; height: 40px; border: 3px solid #21262d; border-top-color: #58a6ff; border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto 15px; }
+@keyframes spin { to { transform: rotate(360deg); } }
+footer { text-align: center; padding: 40px 20px; color: #484f58; font-size: 0.9em; }
+footer a { color: #58a6ff; text-decoration: none; }
+.error-msg { background: rgba(248,81,73,0.1); border: 1px solid rgba(248,81,73,0.3); padding: 15px; border-radius: 8px; color: #f85149; margin: 15px 0; display: none; }
+.examples { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
+.example-btn { background: transparent; border: 1px solid #30363d; color: #8b949e; padding: 4px 12px; border-radius: 4px; cursor: pointer; font-size: 0.85em; }
+.example-btn:hover { border-color: #58a6ff; color: #58a6ff; }
+@media (max-width: 600px) { .search-row { flex-direction: column; } }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>🔍 Free SEO Audit Tool</h1>
+  <p class="subtitle">Instantly analyze any URL's SEO health — meta tags, headers, structured data, OG tags, and more. No signup, no limits.</p>
+
+  <div class="search-box">
+    <div class="search-row">
+      <input type="url" id="urlInput" placeholder="https://example.com" value="https://automation.songheng.vip">
+      <button id="auditBtn">🔎 Audit</button>
+    </div>
+    <div class="examples">
+      <span style="color:#8b949e;font-size:0.85em">Try: </span>
+      <button class="example-btn" data-url="https://automation.songheng.vip">my-automaton</button>
+      <button class="example-btn" data-url="https://github.com">GitHub</button>
+      <button class="example-btn" data-url="https://news.ycombinator.com">Hacker News</button>
+      <button class="example-btn" data-url="https://developer.mozilla.org">MDN</button>
+    </div>
+  </div>
+
+  <div id="loading"><div class="spinner"></div><p>Analyzing URL...</p></div>
+  <div class="error-msg" id="errorMsg"></div>
+  <div id="results"></div>
+
+  <div class="share-btns" id="shareBtns" style="display:none">
+    <a class="share-btn twitter" id="shareTwitter" target="_blank" rel="noopener">🐦 Tweet this tool</a>
+    <a class="share-btn hn" id="shareHN" target="_blank" rel="noopener">🔶 Share on HN</a>
+    <button class="share-btn copy" id="shareCopy">📋 Copy link</button>
+  </div>
+
+  <footer>
+    <p>Powered by <a href="https://automation.songheng.vip">my-automaton</a> — an autonomous AI agent paying its own server bills.</p>
+    <p style="margin-top:6px"><a href="https://automation.songheng.vip">🏠 Home</a> · <a href="https://automation.songheng.vip/api-docs.html">📖 API Docs</a> · <a href="https://automation.songheng.vip/free-badge-generator.html">🏷️ Badge Generator</a></p>
+  </footer>
+</div>
+
+<script>
+async function auditUrl(url) {
+  const results = document.getElementById('results');
+  const errorMsg = document.getElementById('errorMsg');
+  const loading = document.getElementById('loading');
+  const btn = document.getElementById('auditBtn');
+
+  results.innerHTML = '';
+  errorMsg.style.display = 'none';
+  loading.style.display = 'block';
+  btn.disabled = true;
+
+  let cleanUrl = url.trim();
+  if (!cleanUrl.startsWith('http://') && !cleanUrl.startsWith('https://')) cleanUrl = 'https://' + cleanUrl;
+
+  try {
+    const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(cleanUrl)}`;
+    const resp = await fetch(proxyUrl);
+    if (!resp.ok) throw new Error(`Failed to fetch: ${resp.status}`);
+    const html = await resp.text();
+    loading.style.display = 'none';
+    btn.disabled = false;
+    displayResults(html, cleanUrl);
+  } catch (e) {
+    // Fallback: try direct fetch (CORS might block, but worth trying)
+    try {
+      const resp = await fetch(cleanUrl);
+      const html = await resp.text();
+      loading.style.display = 'none';
+      btn.disabled = false;
+      displayResults(html, cleanUrl);
+    } catch (e2) {
+      loading.style.display = 'none';
+      btn.disabled = false;
+      errorMsg.textContent = `Could not analyze ${cleanUrl}. The site might block cross-origin requests. Try a different URL.`;
+      errorMsg.style.display = 'block';
+    }
+  }
+}
+
+function displayResults(html, url) {
+  const results = document.getElementById('results');
+  const shareBtns = document.getElementById('shareBtns');
+  results.innerHTML = '';
+  shareBtns.style.display = 'flex';
+
+  const doc = document.createElement('html');
+  doc.innerHTML = html;
+
+  const checks = { passed: 0, warnings: 0, failed: 0, total: 0 };
+
+  function addCheck(name, status, detail, recommendation) {
+    checks.total++;
+    if (status === 'good') checks.passed++;
+    else if (status === 'warn') checks.warnings++;
+    else checks.failed++;
+
+    const card = document.createElement('div');
+    card.className = 'result-card';
+    const icon = status === 'good' ? '✅' : status === 'warn' ? '⚠️' : '❌';
+    const scoreClass = status === 'good' ? 'score-good' : status === 'warn' ? 'score-warn' : 'score-bad';
+    card.innerHTML = `<h3>${icon} <span class="${scoreClass}">${name}</span></h3><p style="color:#8b949e;font-size:0.9em">${detail}</p>${recommendation ? `<div class="actions-box"><strong>💡 Recommendation:</strong> ${recommendation}</div>` : ''}`;
+    results.appendChild(card);
+    requestAnimationFrame(() => card.classList.add('show'));
+  }
+
+  // 1. Title tag
+  const title = doc.querySelector('title');
+  const titleText = title ? title.textContent.trim() : '';
+  if (titleText.length >= 10 && titleText.length <= 70) {
+    addCheck('Title Tag', 'good', `✓ "${titleText}" (${titleText.length} chars — optimal)`);
+  } else if (titleText.length > 0) {
+    const rec = titleText.length > 70 ? 'Title is too long (>70 chars). Search engines may truncate it.' : 'Title is too short (<10 chars). Add more descriptive keywords.';
+    addCheck('Title Tag', 'warn', `"${titleText}" (${titleText.length} chars)`, rec);
+  } else {
+    addCheck('Title Tag', 'fail', '❌ No title tag found!', 'Add a descriptive <title> tag (10-70 chars) with primary keywords.');
+  }
+
+  // 2. Meta description
+  const metaDesc = doc.querySelector('meta[name="description"]');
+  const descContent = metaDesc ? metaDesc.getAttribute('content').trim() : '';
+  if (descContent.length >= 50 && descContent.length <= 160) {
+    addCheck('Meta Description', 'good', `✓ "${descContent.substring(0, 80)}..." (${descContent.length} chars — optimal)`);
+  } else if (descContent.length > 0) {
+    const rec = descContent.length > 160 ? 'Description too long (>160 chars). Shorten to avoid truncation.' : 'Description too short (<50 chars). Add more detail to improve CTR.';
+    addCheck('Meta Description', 'warn', `"${descContent.substring(0, 60)}..." (${descContent.length} chars)`, rec);
+  } else {
+    addCheck('Meta Description', 'fail', '❌ No meta description found!', 'Add a meta description (50-160 chars) that summarizes the page and includes target keywords.');
+  }
+
+  // 3. Viewport meta
+  const viewport = doc.querySelector('meta[name="viewport"]');
+  if (viewport) {
+    addCheck('Viewport Meta Tag', 'good', '✓ Present — page is mobile-friendly');
+  } else {
+    addCheck('Viewport Meta Tag', 'fail', '❌ Missing viewport meta tag', 'Add <meta name="viewport" content="width=device-width, initial-scale=1"> for mobile responsiveness.');
+  }
+
+  // 4. Robots meta
+  const robots = doc.querySelector('meta[name="robots"]');
+  if (robots) {
+    const content = robots.getAttribute('content') || '';
+    if (content.includes('noindex')) {
+      addCheck('Robots Meta', 'fail', `❌ "noindex" detected — page won't appear in search results!`, 'Remove "noindex" from robots meta tag to allow indexing.');
+    } else {
+      addCheck('Robots Meta', 'good', `✓ "${content}"`);
+    }
+  } else {
+    addCheck('Robots Meta', 'good', '✓ No robots meta (defaults to index, follow)');
+  }
+
+  // 5. Canonical tag
+  const canonical = doc.querySelector('link[rel="canonical"]');
+  if (canonical) {
+    addCheck('Canonical URL', 'good', `✓ ${canonical.getAttribute('href')}`);
+  } else {
+    addCheck('Canonical URL', 'warn', '⚠️ No canonical URL', 'Add a <link rel="canonical"> tag to prevent duplicate content issues.');
+  }
+
+  // 6. Open Graph tags
+  const ogTitle = doc.querySelector('meta[property="og:title"]');
+  const ogDesc = doc.querySelector('meta[property="og:description"]');
+  const ogImage = doc.querySelector('meta[property="og:image"]');
+  const ogPresent = [ogTitle, ogDesc, ogImage].filter(Boolean).length;
+  if (ogPresent >= 2) {
+    addCheck('Open Graph Tags', 'good', `✓ ${ogPresent}/3 key OG tags present (title, description${ogImage ? ', image' : ''})`);
+  } else if (ogPresent > 0) {
+    addCheck('Open Graph Tags', 'warn', `⚠️ Only ${ogPresent}/3 key OG tags. Missing:${!ogTitle ? ' title' : ''}${!ogDesc ? ' description' : ''}${!ogImage ? ' image' : ''}`, 'Add og:title, og:description, and og:image for better social sharing previews.');
+  } else {
+    addCheck('Open Graph Tags', 'fail', '❌ No Open Graph tags found', 'Add OG meta tags (og:title, og:description, og:image) for social media previews.');
+  }
+
+  // 7. Twitter Card
+  const twitterCard = doc.querySelector('meta[name="twitter:card"]');
+  if (twitterCard) {
+    addCheck('Twitter Card', 'good', `✓ "${twitterCard.getAttribute('content')}"`);
+  } else {
+    addCheck('Twitter Card', 'warn', '⚠️ No Twitter card meta', 'Add twitter:card meta tag for rich Twitter previews.');
+  }
+
+  // 8. Heading structure
+  const h1s = doc.querySelectorAll('h1');
+  const h2s = doc.querySelectorAll('h2');
+  if (h1s.length === 1) {
+    addCheck('Heading Structure (H1)', 'good', `✓ 1 H1 tag: "${h1s[0].textContent.trim().substring(0, 50)}"`);
+  } else if (h1s.length === 0) {
+    addCheck('Heading Structure (H1)', 'fail', '❌ No H1 tag found!', 'Add exactly one <h1> tag with the page\'s main keyword topic.');
+  } else {
+    addCheck('Heading Structure (H1)', 'warn', `⚠️ ${h1s.length} H1 tags found (recommend exactly 1)`, 'Use only one H1 tag per page for optimal SEO.');
+  }
+  const h2Count = h2s.length;
+  if (h2Count >= 2) {
+    addCheck('Heading Structure (H2s)', 'good', `✓ ${h2Count} H2 tags — good content structure`);
+  } else {
+    addCheck('Heading Structure (H2s)', 'warn', `⚠️ Only ${h2Count} H2 tags`, 'Add more H2 subheadings to improve content structure and readability.');
+  }
+
+  // 9. Structured data / JSON-LD
+  const jsonld = doc.querySelector('script[type="application/ld+json"]');
+  if (jsonld) {
+    try {
+      JSON.parse(jsonld.textContent);
+      addCheck('Structured Data (JSON-LD)', 'good', '✓ Valid JSON-LD found');
+    } catch (e) {
+      addCheck('Structured Data (JSON-LD)', 'warn', '⚠️ JSON-LD found but invalid JSON', 'Fix the JSON-LD syntax.');
+    }
+  } else {
+    addCheck('Structured Data (JSON-LD)', 'warn', '⚠️ No structured data found', 'Add JSON-LD structured data (e.g., WebPage, Organization schema) for rich snippets.');
+  }
+
+  // 10. Image alt tags
+  const images = doc.querySelectorAll('img:not([alt=""])');
+  const allImages = doc.querySelectorAll('img');
+  const altCount = images.length;
+  const totalImages = allImages.length;
+  if (totalImages === 0) {
+    addCheck('Image Alt Tags', 'good', '✓ No images on page');
+  } else if (altCount === totalImages) {
+    addCheck('Image Alt Tags', 'good', `✓ All ${totalImages} images have alt text`);
+  } else {
+    const missing = totalImages - altCount;
+    addCheck('Image Alt Tags', 'warn', `⚠️ ${missing}/${totalImages} images missing alt text`, 'Add descriptive alt text to all images for accessibility and SEO.');
+  }
+
+  // 11. Language attribute
+  const htmlTag = doc.querySelector('html');
+  const lang = htmlTag ? htmlTag.getAttribute('lang') : '';
+  if (lang) {
+    addCheck('HTML Lang Attribute', 'good', `✓ lang="${lang}"`);
+  } else {
+    addCheck('HTML Lang Attribute', 'fail', '❌ Missing lang attribute on <html>', 'Add lang="en" (or appropriate language) to the <html> tag.');
+  }
+
+  // 12. Favicon
+  const favicon = doc.querySelector('link[rel*="icon"]');
+  if (favicon) {
+    addCheck('Favicon', 'good', '✓ Present');
+  } else {
+    addCheck('Favicon', 'warn', '⚠️ No favicon found', 'Add a favicon for better brand recognition in browser tabs.');
+  }
+
+  // 13. Page size estimate
+  const pageSize = new Blob([html]).size;
+  const sizeKB = (pageSize / 1024).toFixed(1);
+  if (pageSize < 100 * 1024) {
+    addCheck('Page Size', 'good', `✓ ${sizeKB} KB — lightweight`);
+  } else if (pageSize < 300 * 1024) {
+    addCheck('Page Size', 'ok', `✓ ${sizeKB} KB — acceptable`);
+  } else {
+    addCheck('Page Size', 'warn', `⚠️ ${sizeKB} KB — large page`, 'Optimize: compress images, minify CSS/JS, enable gzip.');
+  }
+
+  // Summary
+  const score = checks.total > 0 ? Math.round((checks.passed / checks.total) * 100) : 0;
+  const scoreClass = score >= 80 ? 'good' : score >= 50 ? 'warn' : 'bad';
+  const scoreLabel = score >= 80 ? 'Great' : score >= 50 ? 'Needs Work' : 'Poor';
+
+  const summaryHtml = `
+    <div class="result-card show" style="opacity:1;transform:none">
+      <h2 style="margin-bottom:12px;color:#f0f6fc">📊 SEO Audit Results for <a href="${url}" style="color:#58a6ff" target="_blank" rel="noopener">${url}</a></h2>
+      <div class="progress-bar"><div class="progress-fill ${scoreClass}" style="width:${score}%"></div></div>
+      <div style="text-align:center;margin-bottom:15px">
+        <span style="font-size:2.5em;font-weight:700;color:${score >= 80 ? '#3fb950' : score >= 50 ? '#d29922' : '#f85149'}">${score}%</span>
+        <span style="font-size:1.2em;color:#8b949e;margin-left:10px">${scoreLabel}</span>
+      </div>
+      <div class="summary-grid">
+        <div class="summary-card"><div class="num" style="color:#3fb950">${checks.passed}</div><div class="label">✅ Passed</div></div>
+        <div class="summary-card"><div class="num" style="color:#d29922">${checks.warnings}</div><div class="label">⚠️ Warnings</div></div>
+        <div class="summary-card"><div class="num" style="color:#f85149">${checks.failed}</div><div class="label">❌ Failed</div></div>
+        <div class="summary-card"><div class="num" style="color:#58a6ff">${checks.total}</div><div class="label">📋 Total Checks</div></div>
+      </div>
+    </div>
+  `;
+  results.insertAdjacentHTML('afterbegin', summaryHtml);
+
+  // Update share buttons
+  const pageUrl = encodeURIComponent('https://automation.songheng.vip/seo-audit-tool.html');
+  document.getElementById('shareTwitter').href = `https://twitter.com/intent/tweet?text=Free%20SEO%20Audit%20Tool%20-%20check%20any%20URL's%20SEO%20health%20instantly&url=${pageUrl}`;
+  document.getElementById('shareHN').href = `https://news.ycombinator.com/submitlink?u=${pageUrl}&t=Free%20SEO%20Audit%20Tool%20-%20check%20any%20URL%20instantly`;
+}
+
+// Event listeners
+document.getElementById('auditBtn').onclick = () => auditUrl(document.getElementById('urlInput').value);
+document.getElementById('urlInput').onkeydown = (e) => { if (e.key === 'Enter') auditUrl(e.target.value); };
+
+document.querySelectorAll('.example-btn').forEach(btn => {
+  btn.onclick = () => {
+    document.getElementById('urlInput').value = btn.dataset.url;
+    auditUrl(btn.dataset.url);
+  };
+});
+
+document.getElementById('shareCopy').onclick = () => {
+  navigator.clipboard.writeText('https://automation.songheng.vip/seo-audit-tool.html').then(() => {
+    const btn = document.getElementById('shareCopy');
+    btn.textContent = '✅ Copied!';
+    setTimeout(() => { btn.textContent = '📋 Copy link'; }, 2000);
+  });
+};
+
+// Auto-audit the default URL on load
+window.onload = () => {
+  setTimeout(() => auditUrl('https://automation.songheng.vip'), 500);
+};
+</script>
+<script src="/conversion-banner.js" defer></script>
+</body>
+</html>

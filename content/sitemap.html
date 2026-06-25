@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HTML Sitemap — All Pages on my-automaton | AI Code Review & Developer Tools</title>
+<meta name="description" content="Complete HTML sitemap for my-automaton: 545+ pages including free developer tools, blog articles, API documentation, and AI-powered code review services.">
+<style>
+:root{--bg:#0f172a;--card:#1e293b;--text:#e2e8f0;--muted:#94a3b8;--accent:#38bdf8;--border:#334155}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,sans-serif;background:var(--bg);color:var(--text);line-height:1.6;min-height:100vh}
+header{background:var(--card);border-bottom:1px solid var(--border);padding:1rem 2rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap}
+header h1{font-size:1.25rem;color:var(--accent)}
+nav a{color:var(--muted);text-decoration:none;margin-left:1rem;font-size:.875rem}
+main{max-width:900px;margin:2rem auto;padding:0 1.5rem}
+h2{color:var(--accent);font-size:1.2rem;margin:2rem 0 1rem;padding-bottom:.5rem;border-bottom:1px solid var(--border)}
+.count{font-size:.7rem;color:var(--muted);font-weight:400}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:.3rem}
+.grid a{display:block;padding:.35rem .6rem;color:var(--muted);text-decoration:none;font-size:.75rem;border-radius:4px;transition:all .12s;border:1px solid transparent}
+.grid a:hover{color:var(--accent);background:rgba(56,189,248,.05);border-color:rgba(56,189,248,.15)}
+footer{text-align:center;padding:2rem;color:var(--muted);font-size:.8rem;border-top:1px solid var(--border);margin-top:2rem}footer a{color:var(--accent)}
+</style>
+</head>
+<body>
+<header><h1>🗺️ HTML Sitemap</h1><nav><a href="/">Home</a><a href="/dev-tools.html">Tools</a><a href="/blog.html">Blog</a><a href="/pricing.html">Pricing</a></nav></header>
+<main>
+<p style="color:var(--muted);font-size:.8rem;margin-bottom:2rem">A complete index of all 545+ pages on my-automaton. For automated crawling, see our <a href="/sitemap.xml" style="color:var(--accent)">XML Sitemap</a>.</p>
+<script>
+fetch('/sitemap.xml').then(r=>r.text()).then(xml=>{
+  const parser=new DOMParser();
+  const doc=parser.parseFromString(xml,'text/xml');
+  const urls=Array.from(doc.querySelectorAll('loc')).map(l=>l.textContent);
+  const sections={};
+  urls.forEach(url=>{
+    const path=new URL(url).pathname.replace(/^\//,'').replace(/\/$/,'')||'index';
+    const parts=path.split('/');
+    const section=parts.length>1?parts[0]:'root';
+    if(!sections[section])sections[section]=[];
+    sections[section].push({url,label:parts[parts.length-1]?.replace(/\.html$/,'')?.replace(/-/g,' ')||path,full:path});
+  });
+  Object.keys(sections).sort().forEach(sec=>{
+    const items=sections[sec];
+    document.getElementById('sitemap-content').innerHTML+=`
+      <h2>${sec==='root'?'🏠 Main Pages':sec==='blog'?'📝 Blog Posts':'📄 '+sec.charAt(0).toUpperCase()+sec.slice(1)} <span class="count">(${items.length} pages)</span></h2>
+      <div class="grid">${items.map(i=>`<a href="${i.url}">${i.label}</a>`).join('')}</div>`;
+  });
+}).catch(()=>{
+  document.getElementById('sitemap-content').innerHTML='<p style="color:var(--muted)">Loading sitemap... <a href="/sitemap.xml" style="color:var(--accent)">View XML version</a></p>';
+});
+</script>
+<div id="sitemap-content"></div>
+</main>
+<footer><p>my-automaton · <a href="/">Home</a> · <a href="/sitemap.xml">XML Sitemap</a> · <a href="/dev-tools.html">All Tools</a></p></footer>
+<script src="/conversion-banner.js" defer></script>
+</body>
+</html>

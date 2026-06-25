@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>README Badge Generator — my-automaton AI Services</title>
+<meta name="description" content="Generate beautiful SVG badges for your GitHub README showing my-automaton AI service status. Free, no signup required.">
+<meta property="og:title" content="README Badge Generator — my-automaton">
+<meta property="og:description" content="Generate SVG badges for GitHub showing AI service status. Free backlink tool for devs.">
+<meta property="og:url" content="https://automation.songheng.vip/readme-badge-generator.html">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #0f0f1a; color: #e0e0e0; line-height: 1.6; min-height: 100vh; }
+.container { max-width: 800px; margin: 0 auto; padding: 40px 20px; }
+h1 { font-size: 2.2rem; background: linear-gradient(135deg, #667eea, #764ba2); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 8px; }
+.subtitle { color: #888; font-size: 1.1rem; margin-bottom: 40px; }
+.card { background: #1a1a2e; border-radius: 16px; padding: 32px; margin-bottom: 24px; border: 1px solid #2a2a4a; }
+h2 { font-size: 1.3rem; color: #ccc; margin-bottom: 16px; }
+label { display: block; margin-bottom: 8px; color: #aaa; font-size: 0.9rem; font-weight: 500; }
+select, input {
+  width: 100%; padding: 12px 16px; background: #0f0f1a; border: 1px solid #2a2a4a;
+  border-radius: 8px; color: #e0e0e0; font-size: 1rem; margin-bottom: 16px; transition: border-color 0.2s;
+}
+select:focus, input:focus { outline: none; border-color: #667eea; }
+select option { background: #1a1a2e; }
+.badge-preview { background: #0f0f1a; border-radius: 8px; padding: 24px; text-align: center; margin: 16px 0; border: 1px dashed #2a2a4a; }
+.badge-preview img { max-width: 100%; height: auto; }
+.code-box { background: #0a0a14; border-radius: 8px; padding: 16px; position: relative; margin-top: 12px; }
+.code-box code { display: block; white-space: pre-wrap; word-break: break-all; font-size: 13px; color: #a0a0c0; font-family: 'SF Mono', 'Fira Code', monospace; }
+.copy-btn {
+  position: absolute; top: 8px; right: 8px; background: #667eea; color: white; border: none;
+  padding: 6px 12px; border-radius: 6px; font-size: 12px; cursor: pointer; transition: opacity 0.2s;
+}
+.copy-btn:hover { opacity: 0.85; }
+.btn-generate {
+  background: linear-gradient(135deg, #667eea, #764ba2); color: white; border: none;
+  padding: 14px 32px; border-radius: 10px; font-size: 1rem; font-weight: 600; cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s; width: 100%;
+}
+.btn-generate:hover { transform: translateY(-1px); box-shadow: 0 4px 20px rgba(102,126,234,0.4); }
+.badge-options { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+@media (max-width: 600px) { .badge-options { grid-template-columns: 1fr; } }
+.badge-presets { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 16px; }
+.preset-btn {
+  padding: 8px 16px; background: #0f0f1a; border: 1px solid #2a2a4a; border-radius: 8px;
+  color: #ccc; cursor: pointer; font-size: 13px; transition: all 0.2s;
+}
+.preset-btn:hover { border-color: #667eea; color: #fff; }
+.preset-btn.active { background: #667eea; border-color: #667eea; color: #fff; }
+.status-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 6px; }
+.status-dot.online { background: #22c55e; }
+.status-dot.offline { background: #ef4444; }
+.toast {
+  position: fixed; bottom: 24px; right: 24px; background: #22c55e; color: white;
+  padding: 12px 24px; border-radius: 8px; font-weight: 500; font-size: 14px;
+  box-shadow: 0 4px 20px rgba(34,197,94,0.3); display: none; z-index: 9999;
+  animation: slideUp 0.3s ease;
+}
+@keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+.seo-note { font-size: 0.85rem; color: #666; text-align: center; margin-top: 16px; }
+.seo-note a { color: #667eea; text-decoration: none; }
+.seo-note a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>📛 README Badge Generator</h1>
+  <p class="subtitle">Beautiful SVG badges for your GitHub README. Show the world you use AI-powered code tools.</p>
+
+  <div class="card">
+    <h2>1. Choose Badge Type</h2>
+    <div class="badge-presets" id="presets">
+      <button class="preset-btn active" data-style="flat" data-label="AI Services" data-message="powered by my-automaton" data-color="blue">Default</button>
+      <button class="preset-btn" data-style="flat-square" data-label="AI Code Review" data-message="powered by my-automaton" data-color="purple">Code Review</button>
+      <button class="preset-btn" data-style="for-the-badge" data-label="AI ANALYZED" data-message="my-automaton" data-color="brightgreen">Featured</button>
+      <button class="preset-btn" data-style="plastic" data-label="Security Scan" data-message="by my-automaton" data-color="red">Security</button>
+      <button class="preset-btn" data-style="flat" data-label="AI Summary" data-message="my-automaton.ai" data-color="green">Summary</button>
+    </div>
+
+    <div class="badge-options">
+      <div>
+        <label for="label">Left Label</label>
+        <input type="text" id="label" value="AI Services" placeholder="e.g. AI Services">
+      </div>
+      <div>
+        <label for="message">Right Message</label>
+        <input type="text" id="message" value="powered by my-automaton" placeholder="e.g. powered by">
+      </div>
+      <div>
+        <label for="color">Badge Color</label>
+        <select id="color">
+          <option value="blue">Blue</option>
+          <option value="purple">Purple</option>
+          <option value="brightgreen">Bright Green</option>
+          <option value="green">Green</option>
+          <option value="red">Red</option>
+          <option value="orange">Orange</option>
+          <option value="yellow">Yellow</option>
+          <option value="lightgrey">Light Grey</option>
+          <option value="informational">Informational</option>
+          <option value="ff69b4">Pink</option>
+        </select>
+      </div>
+      <div>
+        <label for="style">Badge Style</label>
+        <select id="style">
+          <option value="flat">Flat</option>
+          <option value="flat-square">Flat Square</option>
+          <option value="for-the-badge">For The Badge</option>
+          <option value="plastic">Plastic</option>
+          <option value="social">Social</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>2. Preview &amp; Copy</h2>
+    <div class="badge-preview" id="badgePreview">
+      <img id="previewImg" src="https://img.shields.io/badge/AI%20Services-powered%20by%20my--automaton-blue?style=flat" alt="Badge Preview">
+    </div>
+    <div class="code-box">
+      <button class="copy-btn" id="copyBtn" onclick="copyCode()">📋 Copy</button>
+      <code id="markdownCode">[![AI Services](https://img.shields.io/badge/AI%20Services-powered%20by%20my--automaton-blue?style=flat)](https://automation.songheng.vip)</code>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>3. Add to Your README</h2>
+    <p style="color:#aaa;font-size:0.95rem;margin-bottom:16px;">
+      Paste the markdown above into your <code style="background:#0f0f1a;padding:2px 8px;border-radius:4px;color:#667eea;">README.md</code> file.
+      Every time someone views your repo, they'll see the badge and can click through to try our services!
+    </p>
+    <div style="background:#0f0f1a;border-radius:8px;padding:16px;font-size:13px;color:#888;">
+      <p style="margin-bottom:8px;"><strong style="color:#aaa;">💡 Pro Tip:</strong> Place it near the top of your README for maximum visibility:</p>
+      <code style="color:#a0a0c0;">
+# My Project 🚀<br><br>
+[![AI Services](https://img.shields.io/badge/AI%20Services-powered%20by%20my--automaton-blue?style=flat)](https://automation.songheng.vip)<br><br>
+## Features
+      </code>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>🌐 Why Add This Badge?</h2>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+      <div style="background:#0f0f1a;border-radius:8px;padding:16px;">
+        <div style="font-size:24px;margin-bottom:8px;">🔗</div>
+        <h3 style="font-size:1rem;color:#ccc;margin-bottom:4px;">Free Backlink</h3>
+        <p style="font-size:0.85rem;color:#888;">Every view of your README sends a signal to Google that we're worth linking to. Helps both of us rank higher.</p>
+      </div>
+      <div style="background:#0f0f1a;border-radius:8px;padding:16px;">
+        <div style="font-size:24px;margin-bottom:8px;">🎨</div>
+        <h3 style="font-size:1rem;color:#ccc;margin-bottom:4px;">Looks Professional</h3>
+        <p style="font-size:0.85rem;color:#888;">Show visitors your project uses modern AI tooling. Builds trust and credibility instantly.</p>
+      </div>
+      <div style="background:#0f0f1a;border-radius:8px;padding:16px;">
+        <div style="font-size:24px;margin-bottom:8px;">🆓</div>
+        <h3 style="font-size:1rem;color:#ccc;margin-bottom:4px;">Completely Free</h3>
+        <p style="font-size:0.85rem;color:#888;">No signup, no API key needed. Just generate and paste. The badge uses shields.io for reliable uptime.</p>
+      </div>
+      <div style="background:#0f0f1a;border-radius:8px;padding:16px;">
+        <div style="font-size:24px;margin-bottom:8px;">🤖</div>
+        <h3 style="font-size:1rem;color:#ccc;margin-bottom:4px;">Try AI Services</h3>
+        <p style="font-size:0.85rem;color:#888;">Click the badge to try free AI code review, text analysis, and security scanning. No credit card needed.</p>
+      </div>
+    </div>
+  </div>
+
+  <p class="seo-note">
+    <a href="https://automation.songheng.vip">my-automaton</a> — AI-powered code review, text analysis &amp; security scanning.
+    Free tier available. <a href="https://automation.songheng.vip">Try it now →</a>
+  </p>
+</div>
+
+<div id="toast" class="toast">✅ Copied to clipboard!</div>
+
+<script>
+const labelInput = document.getElementById('label');
+const msgInput = document.getElementById('message');
+const colorSelect = document.getElementById('color');
+const styleSelect = document.getElementById('style');
+const previewImg = document.getElementById('previewImg');
+const markdownCode = document.getElementById('markdownCode');
+
+function updateBadge() {
+  const label = encodeURIComponent(labelInput.value || 'AI Services');
+  const msg = encodeURIComponent(msgInput.value || 'powered by my-automaton');
+  const color = colorSelect.value;
+  const style = styleSelect.value;
+  const url = `https://img.shields.io/badge/${label}-${msg}-${color}?style=${style}`;
+  previewImg.src = url;
+  markdownCode.textContent = `[![${labelInput.value || 'AI Services'}](https://img.shields.io/badge/${label}-${msg}-${color}?style=${style})](https://automation.songheng.vip)`;
+}
+
+[labelInput, msgInput, colorSelect, styleSelect].forEach(el => {
+  el.addEventListener('change', updateBadge);
+  el.addEventListener('input', updateBadge);
+});
+
+document.querySelectorAll('.preset-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('label').value = btn.dataset.label;
+    document.getElementById('message').value = btn.dataset.message;
+    document.getElementById('color').value = btn.dataset.color;
+    updateBadge();
+  });
+});
+
+function copyCode() {
+  const text = markdownCode.textContent;
+  navigator.clipboard.writeText(text).then(() => {
+    const toast = document.getElementById('toast');
+    toast.style.display = 'block';
+    setTimeout(() => { toast.style.display = 'none'; }, 2500);
+  }).catch(() => {
+    const area = document.createElement('textarea');
+    area.value = text;
+    document.body.appendChild(area);
+    area.select();
+    document.execCommand('copy');
+    document.body.removeChild(area);
+    const toast = document.getElementById('toast');
+    toast.style.display = 'block';
+    setTimeout(() => { toast.style.display = 'none'; }, 2500);
+  });
+}
+
+updateBadge();
+</script>
+<script src="/conversion-banner.js" defer></script>
+</body>
+</html>

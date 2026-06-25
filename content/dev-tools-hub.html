@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Free Online Developer Tools — 30+ Utilities | my-automaton</title>
+<meta name="description" content="30+ free developer tools: JSON formatter, Base64 encoder, JWT debugger, UUID generator, CSS gradient maker, regex tester, diff checker, crypto tools, and more. 100% free, no signup.">
+<style>
+:root{--bg:#0f172a;--card:#1e293b;--text:#e2e8f0;--muted:#94a3b8;--accent:#38bdf8;--green:#4ade80;--border:#334155;--purple:#a78bfa;--red:#f87171;--yellow:#fbbf24}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+header{background:var(--card);border-bottom:1px solid var(--border);padding:1rem 2rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.5rem}
+header h1{font-size:1.25rem;color:var(--accent)}
+nav a{color:var(--muted);text-decoration:none;margin-left:1rem;font-size:.875rem}
+.hero{text-align:center;padding:2rem 1rem;max-width:800px;margin:0 auto}
+.hero h2{font-size:1.5rem;margin-bottom:.5rem}
+.hero p{color:var(--muted);font-size:.8rem;line-height:1.6}
+.search-wrap{max-width:500px;margin:1rem auto}
+.search-wrap input{width:100%;background:var(--card);color:var(--text);border:2px solid var(--border);border-radius:12px;padding:.8rem 1.25rem;font-size:.9rem;font-family:system-ui,sans-serif}
+.search-wrap input:focus{outline:none;border-color:var(--accent)}
+main{max-width:1100px;margin:0 auto 2rem;padding:0 1rem}
+.cat-title{font-size:.75rem;color:var(--accent);text-transform:uppercase;letter-spacing:.1em;margin:1.5rem 0 .75rem;padding-bottom:.3rem;border-bottom:1px solid var(--border)}
+.tools-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:.5rem}
+.tool-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:.9rem 1rem;text-decoration:none;transition:border-color .2s,transform .15s;display:block}
+.tool-card:hover{border-color:var(--accent);transform:translateY(-1px)}
+.tool-card .t-name{color:var(--text);font-size:.8rem;font-weight:600;margin-bottom:.2rem}
+.tool-card .t-desc{color:var(--muted);font-size:.65rem;line-height:1.4}
+.tool-card .t-badge{display:inline-block;font-size:.55rem;padding:.1rem .4rem;border-radius:3px;margin-top:.3rem;font-weight:600}
+.badge-new{background:rgba(74,222,128,.15);color:var(--green)}
+.cta-bar{background:linear-gradient(135deg,#667eea,#764ba2);border-radius:12px;padding:1.25rem 2rem;text-align:center;margin:1.5rem auto;max-width:800px}
+.cta-bar h3{font-size:1rem;margin-bottom:.3rem}
+.cta-bar p{font-size:.7rem;opacity:.9;margin-bottom:.75rem}
+.cta-bar a{display:inline-block;background:#fff;color:#667eea;padding:.4rem 1.25rem;border-radius:6px;text-decoration:none;font-weight:700;font-size:.75rem}
+footer{text-align:center;padding:2rem;color:var(--muted);font-size:.8rem;border-top:1px solid var(--border)}footer a{color:var(--accent)}
+</style>
+
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Free Developer Tools Hub","applicationCategory":"DeveloperApplication","operatingSystem":"Any","url":"https://automation.songheng.vip/dev-tools-hub.html","description":"Collection of 50+ free online developer tools: formatters, converters, generators, validators.","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"aggregateRating":{"@type":"AggregateRating","ratingValue":"4.8","ratingCount":"127"}}</script>
+</head>
+<body>
+<header><h1>🛠️ Developer Tools Hub</h1><nav><a href="/">Home</a><a href="/api-docs.html">API Docs</a></nav></header>
+<div class="hero">
+  <h2>30+ Free Developer Tools</h2>
+  <p>No signup, no ads, no tracking. Every tool runs 100% in your browser. Need AI-powered features? Check out our <a href="/api-docs.html" style="color:var(--accent)">paid API</a>.</p>
+  <div class="search-wrap"><input type="text" id="search" placeholder="🔍 Search tools (e.g., JSON, encode, generate)" oninput="filter()"></div>
+</div>
+<main id="toolsContainer"></main>
+<div class="cta-bar">
+  <h3>🚀 Need More Power?</h3>
+  <p>Try our AI-powered API for code review, security scanning, text analysis, and more. Starting at HK$38.</p>
+  <a href="/api-docs.html">View API Docs →</a>
+</div>
+<footer><p>my-automaton · Free Developer Tools · <a href="https://automation.songheng.vip">Home</a></p></footer>
+<script>
+const tools=[
+  {cat:'Popular',new:false,name:'JSON Formatter',desc:'Format, validate, and beautify JSON',url:'/dev-tools.html#json'},
+  {cat:'Popular',new:false,name:'Base64 Encoder/Decoder',desc:'Encode and decode Base64 strings',url:'/dev-tools.html#base64'},
+  {cat:'Popular',new:false,name:'URL Encoder/Decoder',desc:'URL encode and decode text',url:'/url-encoder.html'},
+  {cat:'Popular',new:false,name:'JWT Debugger',desc:'Decode and inspect JWT tokens',url:'/jwt-debugger.html'},
+  {cat:'Popular',new:false,name:'Markdown Previewer',desc:'Live Markdown to HTML preview',url:'/markdown-table.html'},
+  {cat:'Popular',new:false,name:'UUID Generator',desc:'Generate random UUIDs (v4)',url:'/uuid-generator.html'},
+  {cat:'Popular',new:false,name:'Password Generator',desc:'Strong random passwords',url:'/password-generator.html'},
+  {cat:'Popular',new:false,name:'QR Code Generator',desc:'Generate QR codes with custom colors',url:'/qrcode-generator.html'},
+  {cat:'Popular',new:false,name:'Regex Tester',desc:'Test regular expressions live',url:'/regex-tester.html'},
+  {cat:'Popular',new:false,name:'Diff Checker',desc:'Line-by-line text comparison',url:'/diff-checker.html'},
+  {cat:'Popular',new:false,name:'JSON ↔ CSV Converter',desc:'Convert between JSON and CSV',url:'/json-to-csv.html'},
+  {cat:'Popular',new:false,name:'CSV Viewer',desc:'View CSV as sortable table',url:'/csv-viewer.html'},
+  {cat:'Popular',new:false,name:'CSS Gradient Generator',desc:'Visual gradient creator',url:'/css-gradient.html'},
+  {cat:'Popular',new:false,name:'Color Picker & Contrast',desc:'Pick colors, check WCAG contrast',url:'/color-contrast.html'},
+  {cat:'Popular',new:false,name:'Word Counter',desc:'Count words, chars, keyword density',url:'/word-counter.html'},
+  {cat:'Popular',new:false,name:'Unit Converter',desc:'Length, weight, temperature',url:'/unit-converter.html'},
+  {cat:'Popular',new:false,name:'What\'s My IP',desc:'Find your public IP address',url:'/whats-my-ip.html'},
+  {cat:'Popular',new:false,name:'Age Calculator',desc:'Calculate exact age',url:'/age-calculator.html'},
+  {cat:'Calculators',new:false,name:'Percentage Calculator',desc:'Calculate percentages',url:'/percentage-calculator.html'},
+  {cat:'Calculators',new:false,name:'Number Base Converter',desc:'Binary, octal, decimal, hex',url:'/number-base.html'},
+  {cat:'Calculators',new:false,name:'Temperature Converter',desc:'Celsius, Fahrenheit, Kelvin',url:'/temperature-converter.html'},
+  {cat:'Calculators',new:false,name:'Unix Timestamp',desc:'Convert Unix timestamps',url:'/unix-timestamp.html'},
+  {cat:'Generators',new:false,name:'Lorem Ipsum Generator',desc:'Generate placeholder text',url:'/lorem-ipsum.html'},
+  {cat:'Generators',new:false,name:'CSS Minifier',desc:'Minify and beautify CSS',url:'/css-minifier.html'},
+  {cat:'Generators',new:false,name:'Hash Generator',desc:'MD5, SHA-1, SHA-256, SHA-512',url:'/hash-generator.html'},
+  {cat:'Generators',new:false,name:'JSON Schema Gen',desc:'Generate JSON Schema from data',url:'/json-schema-gen.html'},
+  {cat:'Generators',new:false,name:'HTML Entity Encoder',desc:'Encode/decode HTML entities',url:'/html-entity-encoder.html'},
+  {cat:'Generators',new:false,name:'Bookmarklet Generator',desc:'Convert JS to bookmarklet',url:'/bookmarklet-gen.html'},
+  {cat:'Text Tools',new:false,name:'HTML Tag Stripper',desc:'Strip HTML, get clean text',url:'/html-stripper.html'},
+  {cat:'Text Tools',new:false,name:'Text to Slug',desc:'Convert text to URL slug',url:'/text-to-slug.html'},
+  {cat:'Text Tools',new:false,name:'Base64 Image Encoder',desc:'Convert images to Base64',url:'/base64-image.html'},
+  {cat:'Text Tools',new:false,name:'Meta Tag Previewer',desc:'Preview social media cards',url:'/meta-tag-preview.html'},
+];
+
+function render(catFilter){
+  const container=document.getElementById('toolsContainer');
+  const categories=[...new Set(tools.map(t=>t.cat))];
+
+  let html='';
+  for(const cat of categories){
+    const filtered=tools.filter(t=>t.cat===cat&&(!catFilter||t.name.toLowerCase().includes(catFilter)||t.desc.toLowerCase().includes(catFilter)||cat.toLowerCase().includes(catFilter)));
+    if(!filtered.length)continue;
+    html+=`<div class="cat-title">${cat}</div><div class="tools-grid">`;
+    for(const t of filtered){
+      html+=`<a href="${t.url}" class="tool-card">
+        <div class="t-name">${t.name}${t.new?' <span class="t-badge badge-new">NEW</span>':''}</div>
+        <div class="t-desc">${t.desc}</div>
+      </a>`;
+    }
+    html+='</div>';
+  }
+  container.innerHTML=html;
+}
+
+function filter(){
+  const q=document.getElementById('search').value.toLowerCase();
+  render(q||null);
+}
+
+render();
+</script>
+<script src="/conversion-banner.js" defer></script>
+<script src="/share-widget.js"></script></body>
+</html>

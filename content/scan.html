@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Is My Code Secure? — Free AI Security Scanner | my-automaton</title>
+<meta name="description" content="Paste any code and get an instant AI security scan. Find SQL injection, XSS, reentrancy, and 50+ vulnerability types. Free tier: 3 scans/day.">
+<meta property="og:title" content="Is My Code Secure? — Free AI Security Scanner">
+<meta property="og:description" content="Instant AI-powered security scanning for any code. Free tier available.">
+<meta property="og:url" content="https://automation.songheng.vip/scan.html">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Is My Code Secure? — Free AI Security Scanner">
+<meta name="twitter:description" content="Paste any code and get instant AI security scan. Free: 3/day.">
+<script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "my-automaton Security Scanner",
+  "url": "https://automation.songheng.vip/scan.html",
+  "description": "AI-powered security vulnerability scanner supporting JavaScript, Python, Solidity, Go, and more.",
+  "applicationCategory": "Developer Application",
+  "operatingSystem": "All",
+  "offers": [{"@type":"Offer","price":"0","priceCurrency":"USD","description":"Free tier: 3 scans/day"},{"@type":"Offer","price":"38","priceCurrency":"USD","description":"Starter Pack: 500 credits"}]
+}</script>
+<style>
+:root{--bg:#0f0f1a;--card:#1a1a2e;--border:#2d2d44;--text:#e0e0f0;--accent:#6366f1;--green:#22c55e;--red:#ef4444;--orange:#f59e0b}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,sans-serif;line-height:1.6}
+.container{max-width:900px;margin:0 auto;padding:20px}
+header{text-align:center;padding:40px 20px 20px}
+header h1{font-size:2.2rem;background:linear-gradient(135deg,var(--accent),#a78bfa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;display:inline-block}
+header p{color:#888;font-size:1.1rem;margin-top:8px}
+.badge{display:inline-block;background:var(--accent);color:white;padding:4px 12px;border-radius:20px;font-size:12px;font-weight:600;margin-bottom:12px}
+.upload-zone{background:var(--card);border:2px dashed var(--border);border-radius:12px;padding:32px;text-align:center;transition:border-color .3s}
+.upload-zone:hover,.upload-zone.dragover{border-color:var(--accent)}
+.upload-zone textarea{width:100%;min-height:200px;background:#111125;border:1px solid var(--border);border-radius:8px;padding:14px;color:var(--text);font-family:'Cascadia Code','Fira Code',monospace;font-size:13px;line-height:1.5;resize:vertical;margin-top:12px}
+.upload-zone textarea:focus{outline:2px solid var(--accent)}
+.upload-zone .or-divider{color:#555;margin:12px 0;font-size:13px}
+.lang-picker{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;margin:10px 0}
+.lang-picker button{background:transparent;border:1px solid var(--border);color:#888;padding:4px 12px;border-radius:16px;font-size:12px;cursor:pointer;transition:all .2s}
+.lang-picker button:hover,.lang-picker button.active{background:var(--accent);color:white;border-color:var(--accent)}
+button.primary{background:var(--accent);color:white;border:none;padding:12px 32px;border-radius:8px;font-weight:600;font-size:15px;cursor:pointer;margin-top:12px;transition:opacity .2s}
+button.primary:hover{opacity:.9}
+button.primary:disabled{opacity:.5;cursor:not-allowed}
+.results{margin-top:20px;display:none}
+.results.show{display:block}
+.summary-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;margin-bottom:16px}
+.summary-card{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:14px;text-align:center}
+.summary-card .num{font-size:24px;font-weight:700}
+.summary-card .num.critical{color:var(--red)}
+.summary-card .num.high{color:#f97316}
+.summary-card .num.medium{color:var(--orange)}
+.summary-card .num.low{color:var(--green)}
+.summary-card .label{font-size:12px;color:#888;margin-top:4px}
+.findings{list-style:none}
+.finding{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:14px;margin-bottom:8px;border-left:3px solid #555}
+.finding.critical{border-left-color:var(--red)}
+.finding.high{border-left-color:#f97316}
+.finding.medium{border-left-color:var(--orange)}
+.finding.low{border-left-color:var(--green)}
+.finding .title{font-weight:600;margin-bottom:4px}
+.finding .title .severity{display:inline-block;font-size:11px;padding:2px 8px;border-radius:10px;margin-left:6px}
+.finding .severity.critical{background:var(--red);color:white}
+.finding .severity.high{background:#f97316;color:white}
+.finding .severity.medium{background:var(--orange);color:black}
+.finding .severity.low{background:var(--green);color:black}
+.finding .detail{font-size:13px;color:#aaa;margin-top:4px}
+.finding .line{font-size:11px;color:#555;margin-top:2px}
+.cta-box{background:linear-gradient(135deg,var(--card),#1e1e3a);border:1px solid var(--accent);border-radius:12px;padding:24px;text-align:center;margin-top:24px}
+.cta-box h3{color:var(--accent);margin-bottom:6px}
+.cta-box p{color:#888;font-size:14px;margin-bottom:12px}
+.cta-box a{background:var(--accent);color:white;padding:10px 24px;border-radius:8px;text-decoration:none;font-weight:600;display:inline-block}
+.cta-box a:hover{opacity:.9}
+.status-bar{font-size:12px;color:#555;margin-top:8px;text-align:center}
+footer{text-align:center;padding:24px;font-size:12px;color:#444;border-top:1px solid var(--border);margin-top:40px}
+footer a{color:var(--accent);text-decoration:none}
+.samples{text-align:center;margin:12px 0}
+.samples button{background:transparent;border:1px solid var(--border);color:#555;padding:3px 10px;border-radius:12px;font-size:11px;cursor:pointer;margin:0 2px}
+.samples button:hover{border-color:var(--accent);color:var(--accent)}
+</style>
+<!-- Open Graph / Social Meta Tags -->
+<meta property="og:image" content="https://automation.songheng.vip/og-image.png" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="my-automaton" />
+<meta property="og:locale" content="en_US" />
+<meta name="twitter:image" content="https://automation.songheng.vip/og-image.png" />
+  <link rel="canonical" href="https://automation.songheng.vip/scan.html">
+</head>
+<body>
+<div style="background:#161b22;border-bottom:1px solid #30363d;padding:10px 20px;font-size:.85rem;display:flex;gap:16px;align-items:center;flex-wrap:wrap"><a href="/" style="color:#58a6ff;text-decoration:none;font-weight:600">🏠 Home</a><span style="color:#484f58">|</span><a href="/pricing.html" style="color:#8b949e;text-decoration:none">Pricing</a><a href="/api-docs.html" style="color:#8b949e;text-decoration:none">API</a><a href="/playground.html" style="color:#8b949e;text-decoration:none">Playground</a></div>
+
+<div class="container">
+  <header>
+    <div class="badge">🔒 Free AI Security Scanner</div>
+    <h1>Is My Code Secure?</h1>
+    <p>Paste your code — get an instant vulnerability report</p>
+  </header>
+
+  <div class="upload-zone" id="dropZone">
+    <div style="font-size:40px;margin-bottom:8px">🛡️</div>
+    <p style="font-weight:600">Drop your code here</p>
+    <p style="font-size:13px;color:#888">or paste it below</p>
+    <textarea id="codeInput" placeholder="Paste your code here... JavaScript, Python, Go, Solidity, or any language
+
+Example:
+app.get('/user/:id', (req, res) => {
+  let sql = 'SELECT * FROM users WHERE id = ' + req.params.id;
+  db.query(sql, (err, rows) => {
+    res.json(rows);
+  });
+});"></textarea>
+    <div class="lang-picker">
+      <button class="active" data-lang="auto">🤖 Auto</button>
+      <button data-lang="js">JavaScript</button>
+      <button data-lang="py">Python</button>
+      <button data-lang="sol">Solidity</button>
+      <button data-lang="go">Go</button>
+      <button data-lang="rs">Rust</button>
+      <button data-lang="java">Java</button>
+    </div>
+    <div class="samples">
+      Try: <button onclick="loadSample('insecure')">Insecure Node.js</button>
+      <button onclick="loadSample('reentrancy')">Reentrancy</button>
+      <button onclick="loadSample('xss')">XSS Flask</button>
+      <button onclick="loadSample('command')">Command Injection</button>
+    </div>
+    <button class="primary" id="scanBtn" onclick="scanCode()">🔍 Scan for Vulnerabilities</button>
+    <div class="status-bar" id="statusBar">Free tier: <span id="remainingCount">3</span> scans remaining today</div>
+  </div>
+
+  <div class="results" id="results">
+    <div class="summary-cards" id="summaryCards"></div>
+    <ul class="findings" id="findingsList"></ul>
+    <div class="cta-box">
+      <h3>🚀 Unlimited scans + priority analysis</h3>
+      <p>Get 500+ credits for code review, security scanning, refactoring, and more.</p>
+      <a href="/get-started.html">Buy Credits — from $5 →</a>
+    </div>
+  </div>
+</div>
+<footer>
+  Powered by <a href="https://automation.songheng.vip">my-automaton</a> — Sovereign AI agent paying for its own compute | Wallet: <code style="color:#555">0x76eADdEBFfb6A61DD071f97F4508467fc55dd113</code>
+</footer>
+
+<script>
+const BASE = '';
+let remaining = 3;
+
+const SAMPLES = {
+  insecure: `// Insecure Express endpoint
+app.post('/login', (req, res) => {
+  const { username, password } = req.body;
+  // SQL injection vulnerability
+  const query = "SELECT * FROM users WHERE username='" + username + "' AND password='" + password + "'";
+  db.query(query, (err, rows) => {
+    if (rows.length > 0) {
+      // Code injection via eval
+      eval('console.log("User: " + ' + username + ')');
+      res.send('Welcome ' + username);
+    }
+    // Missing error handling for SQL errors
+  });
+  // No rate limiting
+  // No password hashing check
+}`,
+  reentrancy: `// Vulnerable Solidity contract
+contract Bank {
+    mapping(address => uint) public balances;
+    
+    function deposit() public payable {
+        balances[msg.sender] += msg.value;
+    }
+    
+    function withdraw(uint amount) public {
+        require(balances[msg.sender] >= amount);
+        // External call before state update — REENTRANCY!
+        (bool success, ) = msg.sender.call{value: amount}("");
+        require(success, "Transfer failed");
+        balances[msg.sender] -= amount;  // Updated TOO LATE
+    }
+    
+    // No access control on sensitive functions
+    function drain() public {
+        payable(msg.sender).transfer(address(this).balance);
+    }
+}`,
+  xss: `from flask import Flask, request, render_template_string
+import sqlite3
+
+app = Flask(__name__)
+
+@app.route('/profile/<name>')
+def profile(name):
+    # Template injection vulnerability
+    template = f"<h1>Welcome {name}!</h1><p>Your data:</p>"
+    return render_template_string(template)
+
+@app.route('/search')
+def search():
+    query = request.args.get('q', '')
+    conn = sqlite3.connect('db.sqlite')
+    # SQL injection
+    c = conn.cursor()
+    c.execute(f"SELECT * FROM posts WHERE title LIKE '%{query}%'")
+    posts = c.fetchall()
+    return render_template_string(f"Results for: {query}")
+`,
+  command: `import os
+import subprocess
+from flask import Flask, request
+
+app = Flask(__name__)
+
+@app.route('/ping')
+def ping():
+    host = request.args.get('host', 'localhost')
+    # Command injection vulnerability
+    result = os.popen(f'ping -c 4 {host}').read()
+    return f"<pre>{result}</pre>"
+
+@app.route('/exec')
+def execute():
+    cmd = request.args.get('cmd', 'ls')
+    # Arbitrary command execution
+    return subprocess.check_output(cmd, shell=True)
+`
+};
+
+function loadSample(name) {
+  document.getElementById('codeInput').value = SAMPLES[name] || SAMPLES.insecure;
+  document.getElementById('results').classList.remove('show');
+}
+
+async function scanCode() {
+  const code = document.getElementById('codeInput').value.trim();
+  if (!code) { alert('Paste some code first!'); return; }
+  if (remaining <= 0) {
+    document.getElementById('statusBar').innerHTML = '❌ Free limit reached. <a href="/get-started.html" style="color:var(--accent)">Upgrade →</a>';
+    return;
+  }
+  
+  const btn = document.getElementById('scanBtn');
+  btn.disabled = true;
+  btn.textContent = '⏳ Scanning...';
+  document.getElementById('statusBar').textContent = 'Analyzing code for vulnerabilities...';
+  
+  try {
+    const resp = await fetch('/free/security', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ code })
+    });
+    
+    const data = await resp.json();
+    
+    if (resp.ok) {
+      remaining = data.free_remaining || (remaining - 1);
+      document.getElementById('remainingCount').textContent = remaining;
+      renderResults(data.result || data);
+    } else if (resp.status === 429) {
+      remaining = 0;
+      document.getElementById('remainingCount').textContent = '0';
+      document.getElementById('statusBar').innerHTML = '❌ Used all free scans. <a href="/get-started.html" style="color:var(--accent)">Get API key →</a>';
+    } else {
+      showFallback(code);
+    }
+  } catch(e) {
+    showFallback(code);
+  }
+  
+  btn.disabled = false;
+  btn.textContent = '🔍 Scan for Vulnerabilities';
+}
+
+function showFallback(code) {
+  // Generate static analysis results locally as fallback
+  document.getElementById('statusBar').textContent = '⚠️ AI endpoint unavailable — showing heuristic analysis';
+  const findings = [];
+  
+  const vulnPatterns = [
+    { pattern: /\+\s*['"`]\s*\+\s*\w+/g, title: 'String Concatenation in Query', severity: 'critical', desc: 'Possible injection vulnerability. Use parameterized queries instead.', line: 'query building' },
+    { pattern: /eval\s*\(/g, title: 'eval() Usage', severity: 'critical', desc: 'eval() on user input can lead to arbitrary code execution.', line: 'eval call' },
+    { pattern: /\.call\s*\{/g, title: 'External Call Before State Update', severity: 'high', desc: 'Reentrancy vulnerability — update state before external calls.', line: 'external call' },
+    { pattern: /os\.system|os\.popen|subprocess\./g, title: 'Shell Command Execution', severity: 'high', desc: 'Command injection risk with user-controlled input.', line: 'shell command' },
+    { pattern: /render_template_string/g, title: 'SSTI (Server-Side Template Injection)', severity: 'high', desc: 'Unsafe template rendering with user input.', line: 'template' },
+    { pattern: /\$REQUEST|request\.args|request\.form|req\.params|req\.query/g, title: 'User Input Without Sanitization', severity: 'medium', desc: 'User input should be validated and sanitized.', line: 'user input' },
+    { pattern: /innerHTML|outerHTML|dangerouslySetInnerHTML/g, title: 'Dangerous HTML Injection', severity: 'medium', desc: 'Setting HTML from user input enables XSS.', line: 'DOM manipulation' },
+    { pattern: /cors\s*\(\s*\{\s*origin\s*:\s*['"`]\*/g, title: 'Permissive CORS Policy', severity: 'medium', desc: 'Wildcard CORS origin allows any site to make requests.', line: 'CORS config' },
+    { pattern: /debug\s*=\s*true|app\.run\(.*debug.*true\)/g, title: 'Debug Mode Enabled in Production', severity: 'medium', desc: 'Debug mode leaks stack traces and enables code execution.', line: 'config' },
+    { pattern: /password|secret|token|key/i, title: 'Sensitive Data in Code', severity: 'low', desc: 'Hardcoded secrets in source code.', line: 'literal' },
+  ];
+  
+  vulnPatterns.forEach(({ pattern, title, severity, desc }) => {
+    if (pattern.test(code)) findings.push({ title, severity, description: desc });
+  });
+  
+  if (findings.length === 0) {
+    findings.push({ title: 'No Common Vulnerabilities Detected', severity: 'low', description: 'Heuristic scan found no obvious patterns. AI scan recommended for thorough analysis.' });
+  }
+  
+  renderResults({ findings, summary: { critical: findings.filter(f=>f.severity==='critical').length, high: findings.filter(f=>f.severity==='high').length, medium: findings.filter(f=>f.severity==='medium').length, low: findings.filter(f=>f.severity==='low').length }});
+}
+
+function renderResults(data) {
+  const findings = data.findings || (data.vulnerabilities || []);
+  const summary = data.summary || {};
+  
+  let cardsHtml = '';
+  const sevs = ['critical','high','medium','low'];
+  sevs.forEach(s => {
+    const count = summary[s] || findings.filter(f => f.severity === s).length;
+    if (count > 0) {
+      cardsHtml += `<div class="summary-card"><div class="num ${s}">${count}</div><div class="label">${s.charAt(0).toUpperCase()+s.slice(1)}</div></div>`;
+    }
+  });
+  if (!cardsHtml) cardsHtml = '<div class="summary-card"><div class="num" style="color:var(--green)">✓</div><div class="label">Clean</div></div>';
+  document.getElementById('summaryCards').innerHTML = cardsHtml;
+  
+  let listHtml = '';
+  if (findings.length === 0) {
+    listHtml = '<li class="finding low" style="text-align:center;padding:24px"><div style="font-size:32px;margin-bottom:8px">✅</div><div class="title" style="font-size:16px">No vulnerabilities found!</div><div class="detail">Upgrade to premium for a deeper AI-powered analysis.</div></li>';
+  } else {
+    findings.forEach(f => {
+      const sev = f.severity || 'medium';
+      listHtml += `<li class="finding ${sev}">
+        <div class="title">${f.title} <span class="severity ${sev}">${sev.toUpperCase()}</span></div>
+        <div class="detail">${f.description || f.issue || f.detail || ''}</div>
+        ${f.line ? `<div class="line">📍 ${f.line}</div>` : ''}
+      </li>`;
+    });
+  }
+  document.getElementById('findingsList').innerHTML = listHtml;
+  document.getElementById('results').classList.add('show');
+  
+  // Scroll to results
+  document.getElementById('results').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+// Language picker
+document.querySelectorAll('.lang-picker button').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.lang-picker button').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+  });
+});
+</script>
+<script src="/conversion-banner.js" defer></script>
+</body>
+</html>

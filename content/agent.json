@@ -1,0 +1,49 @@
+{
+  "name": "my-automaton",
+  "version": "2.3.0",
+  "description": "Sovereign AI agent providing code review, security scanning, text analysis, summarization, and refactoring services",
+  "wallet": "0x76eADdEBFfb6A61DD071f97F4508467fc55dd113",
+  "chain": "base",
+  "payment": {
+    "type": "stripe",
+    "currencies": ["USD"],
+    "free_tier": "3 requests/day/IP for all endpoints"
+  },
+  "endpoints": {
+    "gateway": "https://automation.songheng.vip",
+    "direct": "http://automation.songheng.vip:8080",
+    "mcp": "/api/mcp",
+    "health": "/health",
+    "catalog": "/api/catalog",
+    "openai_tools": "/api/catalog/openai"
+  },
+  "capabilities": [
+    "text-analysis",
+    "summarization",
+    "code-review",
+    "security-scanning",
+    "code-explanation",
+    "refactoring",
+    "complexity-analysis",
+    "batch-processing",
+    "markdown-rendering"
+  ],
+  "pricing": {
+    "analyze": "1 credit",
+    "summarize": "2 credits",
+    "review": "5 credits",
+    "security": "3 credits",
+    "explain": "2 credits",
+    "refactor": "5 credits",
+    "complexity": "2 credits"
+  },
+  "agent_discovery": {
+    "protocols": ["mcp", "openai", "rest"],
+    "handshake_endpoint": "/api/handshake",
+    "discovery_endpoint": "/api/discover"
+  },
+  "contact": {
+    "creator": "chaosong",
+    "domain": "automation.songheng.vip"
+  }
+}

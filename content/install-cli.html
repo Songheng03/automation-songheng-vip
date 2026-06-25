@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>my-automaton CLI — AI Code Review in 30 Seconds</title>
+<meta name="description" content="Install AI-powered code review into any GitHub repo in 30 seconds. Free tier: 3 reviews/day per service.">
+<meta property="og:title" content="my-automaton CLI Installer">
+<meta property="og:description" content="AI code review, security scanning, and text analysis — install in 30 seconds.">
+<meta property="og:type" content="website">
+<style>
+  :root { --bg: #0d1117; --fg: #c9d1d9; --accent: #58a6ff; --border: #30363d; --green: #3fb950; --yellow: #d29922; --red: #f85149; --card: #161b22; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; background: var(--bg); color: var(--fg); line-height: 1.6; }
+  .container { max-width: 960px; margin: 0 auto; padding: 20px; }
+  header { text-align: center; padding: 60px 20px 40px; border-bottom: 1px solid var(--border); margin-bottom: 40px; }
+  h1 { font-size: 2.5em; color: #fff; margin-bottom: 12px; }
+  h1 span { color: var(--accent); }
+  .subtitle { font-size: 1.1em; color: #8b949e; max-width: 600px; margin: 0 auto; }
+  .badges { margin-top: 20px; display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
+  .badge { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 12px; font-weight: 600; }
+  .badge.green { background: #1b3a1f; color: var(--green); border: 1px solid var(--green); }
+  .badge.blue { background: #0c2d6b; color: var(--accent); border: 1px solid var(--accent); }
+  .badge.yellow { background: #2d1f00; color: var(--yellow); border: 1px solid var(--yellow); }
+  
+  section { margin-bottom: 48px; }
+  h2 { font-size: 1.5em; color: #fff; margin-bottom: 20px; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
+  h3 { font-size: 1.1em; color: var(--accent); margin: 24px 0 12px; }
+  
+  .steps { display: flex; flex-direction: column; gap: 16px; counter-reset: step; }
+  .step { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 20px; position: relative; }
+  .step::before { counter-increment: step; content: counter(step); position: absolute; top: -10px; left: -10px; background: var(--accent); color: #000; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 14px; }
+  .step h4 { color: #fff; margin-bottom: 8px; }
+  
+  code { background: #1a1e24; padding: 2px 6px; border-radius: 4px; font-family: 'SF Mono', Monaco, Consolas, monospace; font-size: 0.9em; color: var(--green); }
+  pre { background: #1a1e24; border: 1px solid var(--border); border-radius: 8px; padding: 16px; overflow-x: auto; margin: 12px 0; font-size: 14px; }
+  pre code { background: none; padding: 0; }
+  .copy-btn { float: right; background: #21262d; border: 1px solid var(--border); color: var(--fg); padding: 4px 12px; border-radius: 6px; cursor: pointer; font-size: 12px; }
+  .copy-btn:hover { background: #30363d; }
+  
+  .features { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+  .feature { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 20px; }
+  .feature h3 { margin-top: 0; }
+  .feature p { color: #8b949e; font-size: 0.95em; }
+  
+  .pricing { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; }
+  .plan { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 24px; text-align: center; }
+  .plan.featured { border-color: var(--accent); position: relative; }
+  .plan.featured::before { content: 'POPULAR'; position: absolute; top: -10px; left: 50%; transform: translateX(-50%); background: var(--accent); color: #000; padding: 2px 16px; border-radius: 12px; font-size: 11px; font-weight: 700; }
+  .plan h3 { color: #fff; margin: 0 0 8px; }
+  .plan .price { font-size: 2em; color: #fff; font-weight: 700; }
+  .plan .price small { font-size: 0.5em; color: #8b949e; }
+  .plan ul { list-style: none; margin: 16px 0; text-align: left; }
+  .plan ul li { padding: 6px 0; color: #8b949e; font-size: 0.9em; }
+  .plan ul li::before { content: '✓ '; color: var(--green); }
+  .btn { display: inline-block; background: var(--green); color: #000; padding: 10px 24px; border-radius: 6px; text-decoration: none; font-weight: 600; margin-top: 12px; }
+  .btn:hover { opacity: 0.9; }
+  .btn.secondary { background: #21262d; color: var(--fg); border: 1px solid var(--border); }
+  footer { text-align: center; padding: 40px 0; color: #484f58; border-top: 1px solid var(--border); margin-top: 40px; }
+  footer a { color: var(--accent); text-decoration: none; }
+  @media (max-width: 600px) { h1 { font-size: 1.8em; } header { padding: 40px 16px 24px; } }
+</style>
+<!-- Open Graph / Social Meta Tags -->
+<meta property="og:image" content="https://automation.songheng.vip/og-image.png" />
+<meta property="og:url" content="https://automation.songheng.vip/install-cli.html" />
+<meta property="og:site_name" content="my-automaton" />
+<meta property="og:locale" content="en_US" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="my-automaton CLI — AI Code Review in 30 Seconds" />
+<meta name="twitter:description" content="Install AI-powered code review into any GitHub repo in 30 seconds. Free tier: 3 reviews/day per service." />
+<meta name="twitter:image" content="https://automation.songheng.vip/og-image.png" />
+  <link rel="canonical" href="https://automation.songheng.vip/install-cli.html">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "my-automaton CLI — AI Code Review in 30 Seconds",
+  "description": "Install AI-powered code review into any GitHub repo in 30 seconds. Free tier: 3 reviews/day per service.",
+  "url": "https://automation.songheng.vip/install-cli.html"
+}
+</script>
+</head>
+<body>
+<div style="background:#161b22;border-bottom:1px solid #30363d;padding:10px 20px;font-size:.85rem;display:flex;gap:16px;align-items:center;flex-wrap:wrap"><a href="/" style="color:#58a6ff;text-decoration:none;font-weight:600">🏠 Home</a><span style="color:#484f58">|</span><a href="/pricing.html" style="color:#8b949e;text-decoration:none">Pricing</a><a href="/api-docs.html" style="color:#8b949e;text-decoration:none">API</a><a href="/playground.html" style="color:#8b949e;text-decoration:none">Playground</a></div>
+
+<header>
+  <h1>my-automaton <span>CLI</span></h1>
+  <p class="subtitle">Install AI-powered code review into any GitHub repo in 30 seconds. No credit card required.</p>
+  <div class="badges">
+    <span class="badge green">✓ Free tier: 3/day</span>
+    <span class="badge blue">⬡ USDC payments</span>
+    <span class="badge yellow">⌘ MCP compatible</span>
+  </div>
+</header>
+
+<div class="container">
+
+<section>
+  <h2>Quick Start</h2>
+  <div class="steps">
+    <div class="step">
+      <h4>Run the installer</h4>
+      <p>In your GitHub repo directory:</p>
+      <pre><code>npx my-automaton-cli init</code></pre>
+      <p>This creates an AI code review workflow file and config.</p>
+    </div>
+    <div class="step">
+      <h4>Commit and push</h4>
+      <pre><code>git add -A
+git commit -m "Add AI code review by my-automaton"
+git push</code></pre>
+    </div>
+    <div class="step">
+      <h4>Open a PR</h4>
+      <p>Open any pull request and watch the AI review your code automatically. You get 3 free reviews per day per service.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>One-Click Setup</h2>
+  <p>Add this workflow file to your repo manually:</p>
+  <button class="copy-btn" onclick="copyCode('wf')">Copy</button>
+  <pre id="wf">name: AI Code Review
+on:
+  pull_request:
+    types: [opened, synchronize]
+jobs:
+  review:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Get diff
+        id: diff
+        run: |
+          DIFF=$(git diff origin/${{ github.base_ref }}...HEAD -- . || true)
+          echo "diff<<EOF" >> $GITHUB_OUTPUT
+          echo "$DIFF" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+      - name: AI Code Review
+        id: review
+        run: |
+          RESPONSE=$(curl -s -X POST https://automation.songheng.vip/api/free/review \
+            -H "Content-Type: application/json" \
+            -d "{\"text\": \"${{ steps.diff.outputs.diff }}\"}")
+          echo "result<<EOF" >> $GITHUB_OUTPUT
+          echo "$RESPONSE" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+      - name: Post review comment
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const review = JSON.parse(process.env.REVIEW_RESULT || '{}');
+            const body = '## 🤖 AI Code Review\n\n' +
+              (review.result || review.response || 'No issues found.') +
+              '\n\n---\n_Powered by [my-automaton](https://automation.songheng.vip)_';
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: body
+            });
+        env:
+          REVIEW_RESULT: ${{ steps.review.outputs.result }}</pre>
+  <p>Save as <code>.github/workflows/ai-code-review.yml</code> in your repo.</p>
+</section>
+
+<section>
+  <h2>All Services</h2>
+  <div class="features">
+    <div class="feature">
+      <h3>🔍 Code Review</h3>
+      <p>Reviews PR diffs for bugs, style issues, security vulnerabilities, and anti-patterns.</p>
+    </div>
+    <div class="feature">
+      <h3>🛡️ Security Scan</h3>
+      <p>OWASP vulnerability scanning for SQL injection, XSS, command injection, leaked secrets, and auth bypass.</p>
+    </div>
+    <div class="feature">
+      <h3>📝 Text Analysis</h3>
+      <p>Sentiment analysis, entity extraction, theme detection, and key point summarization.</p>
+    </div>
+    <div class="feature">
+      <h3>🔧 Code Explain</h3>
+      <p>Explain complex code in plain English. Great for onboarding, code reviews, and learning.</p>
+    </div>
+    <div class="feature">
+      <h3>🔄 Refactoring</h3>
+      <p>Get refactoring suggestions with before/after examples to improve code quality.</p>
+    </div>
+    <div class="feature">
+      <h3>📊 Complexity</h3>
+      <p>Cyclomatic and cognitive complexity analysis with score and improvement suggestions.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>Pricing</h2>
+  <div class="pricing">
+    <div class="plan">
+      <h3>Free</h3>
+      <div class="price">$0</div>
+      <ul>
+        <li>3 reviews/day per service</li>
+        <li>All 7 services included</li>
+        <li>GitHub Actions integration</li>
+        <li>Community support</li>
+      </ul>
+      <a href="/api-playground.html" class="btn secondary">Try Free</a>
+    </div>
+    <div class="plan featured">
+      <h3>Starter</h3>
+      <div class="price">$5<small>/month</small></div>
+      <ul>
+        <li>500 credits</li>
+        <li>All premium endpoints</li>
+        <li>Priority queue</li>
+        <li>Email support</li>
+      </ul>
+      <a href="/upgrade.html" class="btn">Buy Now</a>
+    </div>
+    <div class="plan">
+      <h3>Pro</h3>
+      <div class="price">$25<small>/month</small></div>
+      <ul>
+        <li>3000 credits</li>
+        <li>Batch processing (10x)</li>
+        <li>GitHub webhook integration</li>
+        <li>Priority support</li>
+      </ul>
+      <a href="/upgrade.html" class="btn secondary">Buy Now</a>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>API Reference</h2>
+  <p>All endpoints accept POST requests with JSON body <code>{"text": "your input"}</code>.</p>
+  <pre><code># Free tier (3/day per service)
+curl -X POST https://automation.songheng.vip/api/free/review \
+  -H "Content-Type: application/json" \
+  -d '{"text": "const x = 1 + 1"}'</code></pre>
+  <pre><code># Premium tier (requires API key)
+curl -X POST https://automation.songheng.vip/v1/review \
+  -H "Content-Type: application/json" \
+  -H "X-API-Key: am_YOUR_KEY" \
+  -d '{"text": "const x = 1 + 1"}'</code></pre>
+  <p><a href="/api-docs.html" style="color:var(--accent)">Full API Documentation →</a></p>
+</section>
+
+<footer>
+  <p>Powered by <a href="https://automation.songheng.vip">my-automaton</a> • 
+  Wallet: <code>0x76eADdEBFfb6A61DD071f97F4508467fc55dd113</code> (Base) • 
+  <a href="/api-docs.html">API Docs</a> • <a href="/upgrade.html">Upgrade</a></p>
+</footer>
+
+</div>
+
+<script>
+function copyCode(id) {
+  const el = document.getElementById(id);
+  navigator.clipboard.writeText(el.textContent);
+  const btn = el.previousElementSibling;
+  const t = btn.textContent;
+  btn.textContent = 'Copied!';
+  setTimeout(() => btn.textContent = t, 2000);
+}
+</script>
+<script src="/conversion-banner.js" defer></script>
+</body>
+</html>

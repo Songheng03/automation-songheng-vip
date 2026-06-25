@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Git Commit Message Generator - Free AI Tool | Automaton</title>
+    <meta name="description" content="Generate clear, conventional git commit messages instantly. Free tool for developers following Conventional Commits, Angular, or any style guide.">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; 
+            background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);
+            min-height: 100vh; 
+            padding: 2rem 1rem; 
+            color: #1f2937;
+        }
+        .container { max-width: 900px; margin: 0 auto; }
+        h1 { color: white; text-align: center; margin-bottom: 0.5rem; font-size: 2rem; }
+        .subtitle { color: #dbeafe; text-align: center; margin-bottom: 2rem; }
+        .card { background: white; border-radius: 12px; padding: 2rem; margin-bottom: 1.5rem; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .card h2 { color: #1e40af; margin-bottom: 1rem; font-size: 1.25rem; }
+        label { display: block; margin-bottom: 0.5rem; font-weight: 500; color: #374151; }
+        input, textarea, select { 
+            width: 100%; 
+            padding: 0.75rem; 
+            border: 2px solid #e5e7eb; 
+            border-radius: 8px; 
+            font-size: 1rem; 
+            margin-bottom: 1rem;
+            font-family: inherit;
+        }
+        textarea { resize: vertical; min-height: 120px; }
+        input:focus, textarea:focus, select:focus { outline: none; border-color: #3b82f6; }
+        .row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+        @media (max-width: 600px) { .row { grid-template-columns: 1fr; } }
+        button { 
+            background: #3b82f6; 
+            color: white; 
+            border: none; 
+            padding: 0.875rem 1.5rem; 
+            border-radius: 8px; 
+            font-size: 1rem; 
+            cursor: pointer; 
+            font-weight: 500;
+            width: 100%;
+            margin-top: 0.5rem;
+        }
+        button:hover { background: #2563eb; }
+        .output { 
+            background: #1f2937; 
+            color: #a7f3d0; 
+            padding: 1.5rem; 
+            border-radius: 8px; 
+            font-family: 'Courier New', monospace; 
+            margin-top: 1rem;
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+        .output:empty { display: none; }
+        .copy-btn { 
+            background: #10b981; 
+            margin-top: 0.75rem; 
+            display: inline-block; 
+            width: auto; 
+            padding: 0.5rem 1rem;
+        }
+        .copy-btn:hover { background: #059669; }
+        .copy-btn.copied { background: #6b7280; }
+        .tip { background: #eff6ff; border-left: 4px solid #3b82f6; padding: 1rem; border-radius: 4px; margin-top: 1rem; font-size: 0.9rem; }
+        .tip strong { color: #1e40af; }
+        footer { text-align: center; color: #dbeafe; margin-top: 2rem; }
+        footer a { color: white; text-decoration: none; }
+        footer a:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎯 Git Commit Message Generator</h1>
+        <p class="subtitle">Generate clear, conventional commit messages in seconds</p>
+        
+        <div class="card">
+            <h2>What did you change?</h2>
+            <label for="type">Commit Type</label>
+            <select id="type">
+                <option value="feat">feat - New feature</option>
+                <option value="fix">fix - Bug fix</option>
+                <option value="docs">docs - Documentation</option>
+                <option value="style">style - Formatting, no code change</option>
+                <option value="refactor">refactor - Code restructuring</option>
+                <option value="perf">perf - Performance improvement</option>
+                <option value="test">test - Adding tests</option>
+                <option value="build">build - Build system changes</option>
+                <option value="ci">ci - CI configuration</option>
+                <option value="chore">chore - Maintenance</option>
+            </select>
+            
+            <div class="row">
+                <div>
+                    <label for="scope">Scope (optional)</label>
+                    <input type="text" id="scope" placeholder="e.g., auth, api, ui">
+                </div>
+                <div>
+                    <label for="breaking">
+                        <input type="checkbox" id="breaking" style="width: auto; margin-right: 0.5rem;">
+                        Breaking change
+                    </label>
+                </div>
+            </div>
+            
+            <label for="summary">Summary (short description)</label>
+            <input type="text" id="summary" placeholder="e.g., add user authentication endpoint">
+            
+            <label for="body">Body (optional detailed description)</label>
+            <textarea id="body" placeholder="Explain WHAT changed and WHY. What problem does it solve?&#10;&#10;Leave empty for summary-only commits."></textarea>
+            
+            <label for="style">Style Guide</label>
+            <select id="style">
+                <option value="conventional">Conventional Commits</option>
+                <option value="angular">Angular</option>
+                <option value="simple">Simple (no prefix)</option>
+            </select>
+            
+            <button onclick="generate()">Generate Commit Message</button>
+        </div>
+        
+        <div class="card">
+            <h2>Your Commit Message</h2>
+            <div class="output" id="output"></div>
+            <button class="copy-btn" id="copyBtn" onclick="copyMessage()" style="display: none;">Copy to Clipboard</button>
+        </div>
+        
+        <div class="card">
+            <div class="tip">
+                <strong>💡 Pro tip:</strong> Good commit messages follow the imperative mood: "add feature" not "added feature" or "adds feature". 
+                Think of it as completing the sentence "This commit will...".
+            </div>
+        </div>
+        
+        <footer>
+            <p>Free tool by <a href="/">Automaton AI</a> | 
+            <a href="/free-ai-tools.html">More Developer Tools</a></p>
+        </footer>
+    </div>
+    
+    <script>
+        function generate() {
+            const type = document.getElementById('type').value;
+            const scope = document.getElementById('scope').value.trim();
+            const breaking = document.getElementById('breaking').checked;
+            const summary = document.getElementById('summary').value.trim();
+            const body = document.getElementById('body').value.trim();
+            const style = document.getElementById('style').value;
+            
+            if (!summary) {
+                alert('Please enter a summary');
+                return;
+            }
+            
+            let message = '';
+            
+            if (style === 'conventional' || style === 'angular') {
+                // Format: type(scope)!: summary
+                message = type;
+                if (scope) message += `(${scope})`;
+                if (breaking) message += '!';
+                message += `: ${summary.toLowerCase()}`;
+                
+                if (body) {
+                    message += `\n\n${body}`;
+                }
+                
+                if (breaking && style === 'angular') {
+                    message += '\n\nBREAKING CHANGE: This introduces incompatible API changes.';
+                }
+            } else {
+                // Simple style
+                message = summary;
+                if (body) message += `\n\n${body}`;
+            }
+            
+            document.getElementById('output').textContent = message;
+            document.getElementById('copyBtn').style.display = 'inline-block';
+            document.getElementById('copyBtn').textContent = 'Copy to Clipboard';
+            document.getElementById('copyBtn').classList.remove('copied');
+        }
+        
+        function copyMessage() {
+            const message = document.getElementById('output').textContent;
+            navigator.clipboard.writeText(message).then(() => {
+                const btn = document.getElementById('copyBtn');
+                btn.textContent = '✓ Copied!';
+                btn.classList.add('copied');
+                setTimeout(() => {
+                    btn.textContent = 'Copy to Clipboard';
+                    btn.classList.remove('copied');
+                }, 2000);
+            });
+        }
+        
+        // Generate on Enter key in summary field
+        document.getElementById('summary').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') generate();
+        });
+    </script>
+</body>
+</html>

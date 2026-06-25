@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>JSON Minifier & Beautifier - Free Online Tool</title>
+<meta name="description" content="Free online JSON minifier and beautifier. Compress JSON to single line or pretty-print with 2/4 space indentation. Validate JSON, copy, clear. 100% client-side.">
+<link rel="canonical" href="https://automation.songheng.vip/json-minifier.html">
+<style>
+:root{--bg:#0d1117;--surface:#161b22;--border:#30363d;--text:#c9d1d9;--muted:#8b949e;--accent:#58a6ff;--green:#3fb950;--red:#f85149}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--text);font-family:system-ui,sans-serif;min-height:100vh}
+header{background:var(--surface);border-bottom:1px solid var(--border);padding:16px 24px;text-align:center}
+header h1{font-size:1.5rem} header p{color:var(--muted);font-size:.85rem;margin-top:4px}
+.container{max-width:900px;margin:0 auto;padding:24px 16px}
+.toolbar{display:flex;gap:10px;margin-bottom:12px;flex-wrap:wrap}
+.btn{padding:10px 20px;border-radius:8px;cursor:pointer;font-size:.85rem;font-weight:600;border:1px solid var(--border);background:var(--surface);color:var(--text);transition:all .15s}
+.btn:hover{transform:translateY(-1px)}
+.btn-primary{background:var(--accent);border-color:var(--accent);color:#fff}
+.btn-green{background:var(--green);border-color:var(--green);color:#fff}
+.samples{display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap}
+.sample-btn{background:var(--surface);border:1px solid var(--border);color:var(--muted);padding:6px 14px;border-radius:8px;cursor:pointer;font-size:.78rem}
+.sample-btn:hover{border-color:var(--text);color:var(--text)}
+.panels{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:600px){.panels{grid-template-columns:1fr}}
+.panel h3{font-size:.78rem;color:var(--muted);margin-bottom:8px}
+textarea{width:100%;height:300px;background:var(--surface);border:1px solid var(--border);color:var(--text);padding:12px;border-radius:8px;font-family:'JetBrains Mono',monospace;font-size:.82rem;resize:vertical}
+textarea:focus{outline:none;border-color:var(--accent)}
+.stats{display:flex;gap:12px;margin:16px 0;flex-wrap:wrap}
+.stat{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:10px 16px;text-align:center;min-width:80px}
+.stat .val{font-size:1.2rem;font-weight:700;font-family:'JetBrains Mono',monospace}
+.stat .label{font-size:.68rem;color:var(--muted);margin-top:2px}
+.error-msg{background:rgba(248,81,73,.1);border:1px solid var(--red);color:var(--red);padding:12px 16px;border-radius:8px;margin-top:12px;display:none;font-size:.85rem;font-family:'JetBrains Mono',monospace}
+.sponsor{text-align:center;margin-top:32px;padding:20px;background:var(--surface);border:1px solid var(--border);border-radius:8px}
+.sponsor p{color:var(--muted);font-size:.85rem;margin-bottom:8px}
+.sponsor a{color:var(--accent)}
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--accent);color:#fff;padding:10px 24px;border-radius:20px;font-size:.85rem;z-index:100;opacity:0;transition:opacity .25s;pointer-events:none}
+.toast.show{opacity:1}
+</style>
+</head>
+<body>
+<header><h1>📦 JSON Minifier & Beautifier</h1><p>Compress JSON to a single line or pretty-print with configurable indentation</p></header>
+<div class="container">
+
+<div class="samples">
+<button class="sample-btn" onclick="loadSample('simple')">Simple JSON</button>
+<button class="sample-btn" onclick="loadSample('nested')">Nested objects</button>
+<button class="sample-btn" onclick="loadSample('array')">Array of objects</button>
+</div>
+
+<div class="toolbar">
+<button class="btn btn-primary" onclick="beautify()">✨ Beautify (2-space)</button>
+<button class="btn" onclick="beautify4()">Beautify 4-space</button>
+<button class="btn" onclick="beautifyTab()">Beautify tab</button>
+<button class="btn" onclick="minify()">🗜️ Minify</button>
+<button class="btn btn-green" onclick="copyOutput()">📋 Copy Output</button>
+<button class="btn" onclick="swapIO()">🔀 Swap</button>
+<button class="btn" onclick="clearAll()">🗑️ Clear</button>
+</div>
+
+<div class="panels">
+<div class="panel"><h3>Input</h3><textarea id="input" placeholder="Paste JSON here..."></textarea></div>
+<div class="panel"><h3>Output</h3><textarea id="output" readonly style="background:var(--bg)"></textarea></div>
+</div>
+
+<div class="error-msg" id="errorBox"></div>
+
+<div class="stats">
+<div class="stat"><div class="val" id="statIn">0</div><div class="label">Input size (bytes)</div></div>
+<div class="stat"><div class="val" id="statOut">0</div><div class="label">Output size (bytes)</div></div>
+<div class="stat"><div class="val" id="statReduction">-</div><div class="label">Reduction</div></div>
+</div>
+
+<div class="sponsor"><p>💡 <strong>Working with APIs?</strong> Get AI-powered code review & JSON schema validation.</p><p><a href="/">Browse API Docs</a> · <a href="/api-playground.html">Try Playground</a></p></div>
+<div class="toast" id="toast"></div>
+</div>
+<script>
+const samples = {
+  simple: '{"name":"Alice","age":30,"city":"New York","hobbies":["reading","coding"]}',
+  nested: '{"company":{"name":"Acme","address":{"street":"123 Main","city":"Springfield","zip":"90210"},"departments":[{"name":"Engineering","employees":50}]}}',
+  array: '[{"id":1,"product":"Widget","price":9.99,"inStock":true},{"id":2,"product":"Gadget","price":19.99,"inStock":false}]'
+};
+
+function loadSample(n) { document.getElementById('input').value = samples[n]; updateStats(); }
+
+function showToast(m) { const t = document.getElementById('toast'); t.textContent = m; t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 1800); }
+
+function hideError() { document.getElementById('errorBox').style.display = 'none'; }
+
+function showError(msg) {
+  const b = document.getElementById('errorBox');
+  b.textContent = '❌ ' + msg; b.style.display = 'block';
+}
+
+function processJSON(indent) {
+  hideError();
+  const input = document.getElementById('input').value.trim();
+  if (!input) { document.getElementById('output').value = ''; updateStats(); return; }
+  try {
+    const obj = JSON.parse(input);
+    document.getElementById('output').value = JSON.stringify(obj, null, indent);
+    updateStats();
+  } catch (e) { showError(e.message); updateStats(); }
+}
+
+function beautify() { processJSON(2); }
+function beautify4() { processJSON(4); }
+function beautifyTab() { processJSON('\t'); }
+function minify() { processJSON(0); }
+
+function updateStats() {
+  const inp = document.getElementById('input').value;
+  const out = document.getElementById('output').value;
+  document.getElementById('statIn').textContent = inp.length;
+  document.getElementById('statOut').textContent = out.length;
+  if (out.length && inp.length) {
+    const pct = ((1 - out.length / inp.length) * 100).toFixed(1);
+    document.getElementById('statReduction').textContent = pct + '%';
+    document.getElementById('statReduction').style.color = parseInt(pct) > 0 ? 'var(--green)' : 'var(--red)';
+  } else { document.getElementById('statReduction').textContent = '-'; }
+}
+
+function copyOutput() {
+  const v = document.getElementById('output').value;
+  if (!v) return;
+  navigator.clipboard.writeText(v).then(() => showToast('✅ Copied!'));
+}
+
+function swapIO() {
+  const i = document.getElementById('input'), o = document.getElementById('output');
+  [i.value, o.value] = [o.value, i.value]; beautify();
+}
+
+function clearAll() { document.getElementById('input').value = ''; document.getElementById('output').value = ''; updateStats(); hideError(); }
+</script>
+<script src="/conversion-banner.js" defer></script>
+</body>
+</html>

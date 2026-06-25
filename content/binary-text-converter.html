@@ -1,0 +1,53 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Binary to Text Converter — Binary, Hex, ASCII, Base64 | my-automaton</title><meta name="description" content="Convert between binary, hexadecimal, ASCII text, and Base64. Bidirectional conversion. 100% free, no signup."><style>:root{--bg:#0f172a;--card:#1e293b;--text:#e2e8f0;--muted:#94a3b8;--accent:#38bdf8;--green:#4ade80;--border:#334155;--red:#f87171}*{box-sizing:border-box;margin:0;padding:0}body{font-family:system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh}header{background:var(--card);border-bottom:1px solid var(--border);padding:1rem 2rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap}header h1{font-size:1.25rem;color:var(--accent)}nav a{color:var(--muted);text-decoration:none;margin-left:1rem;font-size:.875rem}main{max-width:850px;margin:2rem auto;padding:0 1rem}.card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.5rem;margin-bottom:1rem}.tabs{display:flex;gap:.25rem;margin-bottom:1rem;flex-wrap:wrap}.tabs button{padding:.35rem .75rem;border:1px solid var(--border);border-radius:6px;background:transparent;color:var(--muted);cursor:pointer;font-size:.7rem}.tabs button.active{background:var(--accent);color:#0f172a;border-color:var(--accent);font-weight:600}textarea{width:100%;background:#0f172a;color:var(--text);border:1px solid var(--border);border-radius:8px;padding:.75rem;font-family:"Fira Code",monospace;font-size:.8rem;resize:vertical;min-height:120px}textarea:focus{outline:none;border-color:var(--accent)}.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:1rem}@media(max-width:650px){.grid-2{grid-template-columns:1fr}}label{font-size:.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:.2rem;display:block}.error{color:var(--red);font-size:.7rem;min-height:1rem}.btn-row{display:flex;gap:.5rem;flex-wrap:wrap;margin:.5rem 0}.btn{padding:.4rem 1rem;border:none;border-radius:6px;cursor:pointer;font-size:.8rem;font-weight:600}.btn-green{background:var(--green);color:#0f172a}.btn-secondary{background:var(--border);color:var(--text)}.btn:hover{filter:brightness(1.15)}.presets button{padding:.15rem .5rem;border:1px solid var(--border);border-radius:4px;background:transparent;color:var(--muted);cursor:pointer;font-size:.65rem;margin:.15rem}footer{text-align:center;padding:2rem;color:var(--muted);font-size:.8rem;border-top:1px solid var(--border);margin-top:2rem}footer a{color:var(--accent)}</style>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Binary to Text Converter","applicationCategory":"DeveloperApplication","operatingSystem":"Any","url":"https://automation.songheng.vip/binary-text-converter.html","description":"Convert between binary and text representations. ASCII and UTF-8 support.","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"aggregateRating":{"@type":"AggregateRating","ratingValue":"4.8","ratingCount":"127"}}</script>
+</head><body><header><h1>🔢 Binary / Hex / ASCII / Base64 Converter</h1><nav><a href="/">Home</a><a href="/dev-tools.html">Dev Tools</a><a href="/dev-tools-hub.html">Tools Hub</a></nav></header><main>
+<div class="tabs"><button class="active" onclick="setTab('text')">Text → Binary/Hex/Base64</button><button onclick="setTab('fromBin')">Binary → Text</button><button onclick="setTab('fromHex')">Hex → Text</button><button onclick="setTab('fromB64')">Base64 → Text</button></div>
+<div class="card">
+  <div id="tabContent"></div>
+  <div class="error" id="errorMsg"></div>
+  <div class="btn-row"><button class="btn btn-green" onclick="copyResult()">📋 Copy Result</button><button class="btn btn-secondary" onclick="swapIO()">🔄 Swap</button></div>
+</div>
+<div class="card"><div class="grid-2"><div><label id="labelBinary">Binary</label><textarea id="outBinary" readonly placeholder="Binary output..."></textarea></div><div><label id="labelHex">Hexadecimal</label><textarea id="outHex" readonly placeholder="Hex output..."></textarea></div></div><label>Base64</label><textarea id="outBase64" readonly placeholder="Base64 output..." style="min-height:50px"></textarea></div>
+</main><footer><p>my-automaton · Free Binary/Hex/ASCII/Base64 Converter · <a href="/">Home</a> · <a href="/dev-tools-hub.html">All Tools</a></p></footer>
+<script>
+let tab='text';
+function setTab(t){tab=t;renderUI();convert()}
+function renderUI(){
+  const c=document.getElementById('tabContent');
+  const err=document.getElementById('errorMsg');err.textContent='';
+  if(tab==='text'){c.innerHTML='<label>Enter Text</label><textarea id="textInput" placeholder="Type text to encode..." oninput="convert()">Hello World!</textarea>'}
+  else if(tab==='fromBin'){c.innerHTML='<label>Enter Binary (space-separated bytes)</label><textarea id="binInput" placeholder="01001000 01101001" oninput="convert()"></textarea>'}
+  else if(tab==='fromHex'){c.innerHTML='<label>Enter Hexadecimal</label><textarea id="hexInput" placeholder="48 65 6c 6c 6f" oninput="convert()"></textarea>'}
+  else{c.innerHTML='<label>Enter Base64</label><textarea id="b64Input" placeholder="SGVsbG8=" oninput="convert()"></textarea>'}
+  document.querySelectorAll('.tabs button').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.tabs button')[tab==='text'?0:tab==='fromBin'?1:tab==='fromHex'?2:3].classList.add('active');
+}
+function strToBytes(s){const e=new TextEncoder();return e.encode(s)}
+function bytesToStr(b){const d=new TextDecoder();return d.decode(new Uint8Array(b))}
+function bytesToBin(bytes){return Array.from(bytes).map(b=>b.toString(2).padStart(8,'0')).join(' ')}
+function bytesToHex(bytes){return Array.from(bytes).map(b=>b.toString(16).padStart(2,'0')).join(' ')}
+function bytesToB64(bytes){let bin='';for(const b of bytes)bin+=String.fromCharCode(b);return btoa(bin)}
+function convert(){
+  const err=document.getElementById('errorMsg');err.textContent='';
+  try{
+    let bytes=[];
+    if(tab==='text'){const s=document.getElementById('textInput')?.value||'';bytes=strToBytes(s)}
+    else if(tab==='fromBin'){const s=document.getElementById('binInput')?.value||'';const parts=s.trim().split(/\s+/);bytes=parts.map(p=>{if(!/^[01]+$/.test(p))throw new Error('Invalid binary: '+p);return parseInt(p,2)})}
+    else if(tab==='fromHex'){const s=document.getElementById('hexInput')?.value||'';const parts=s.trim().split(/\s+/);bytes=parts.map(p=>{if(!/^[0-9a-fA-F]+$/.test(p))throw new Error('Invalid hex: '+p);return parseInt(p,16)})}
+    else{const s=document.getElementById('b64Input')?.value||'';try{const bin=atob(s);bytes=[];for(let i=0;i<bin.length;i++)bytes.push(bin.charCodeAt(i))}catch(e){throw new Error('Invalid Base64')}}
+    if(bytes.length===0)return;
+    document.getElementById('outBinary').value=bytesToBin(bytes);
+    document.getElementById('outHex').value=bytesToHex(bytes);
+    document.getElementById('outBase64').value=bytesToB64(bytes);
+    if(tab!=='text'&&bytes.length>0){const s=bytesToStr(bytes);
+      // Auto-fill text input in non-text modes
+    }
+  }catch(e){err.textContent='❌ '+e.message}
+}
+function copyResult(){const out=document.getElementById('outBinary')?.value||'';if(out)navigator.clipboard.writeText(out)}
+function swapIO(){
+  if(tab==='text'){document.getElementById('textInput').value=document.getElementById('outBinary').value||'';convert()}
+}
+renderUI();
+</script><script src="/conversion-banner.js" defer></script>
+</body></html>

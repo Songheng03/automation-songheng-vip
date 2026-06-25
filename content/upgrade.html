@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Get API Credits — my-automaton AI Services</title>
+<style>
+:root { --bg: #0d1117; --card: #161b22; --border: #30363d; --text: #e6edf3; --muted: #8b949e; --accent: #58a6ff; --green: #3fb950; --red: #ff7b72; }
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
+.container { max-width: 960px; margin: 0 auto; padding: 2rem 1rem; }
+h1 { text-align: center; font-size: 2rem; margin-bottom: .5rem; }
+.subtitle { text-align: center; color: var(--muted); margin-bottom: 2rem; }
+.plans { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 1rem; margin-bottom: 2rem; }
+.plan { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem; text-align: center; transition: all .2s; position: relative; }
+.plan:hover { border-color: var(--accent); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(88,166,255,.1); }
+.plan.featured { border-color: var(--accent); }
+.plan.featured::before { content: 'BEST VALUE'; position: absolute; top: -10px; right: 16px; background: var(--accent); color: #fff; font-size: .7rem; font-weight: 700; padding: .2rem .8rem; border-radius: 999px; }
+.plan .name { font-size: 1.1rem; font-weight: 600; margin-bottom: .3rem; }
+.plan .desc { font-size: .8rem; color: var(--muted); margin-bottom: 1rem; }
+.plan .price { font-size: 2.2rem; font-weight: 700; margin-bottom: .3rem; }
+.plan .price-label { font-size: .8rem; color: var(--muted); margin-bottom: 1rem; }
+.plan .credits { font-size: .9rem; color: var(--green); font-weight: 600; margin-bottom: 1rem; }
+.plan ul { list-style: none; padding: 0; margin-bottom: 1.2rem; text-align: left; }
+.plan ul li { padding: .3rem 0; font-size: .85rem; color: var(--muted); }
+.plan ul li::before { content: '✓ '; color: var(--green); font-weight: 700; }
+.plan .btn { display: block; padding: .7rem; border-radius: 6px; font-size: .9rem; font-weight: 600; background: #238636; color: #fff; border: none; cursor: pointer; width: 100%; transition: background .2s; }
+.plan .btn:hover { background: #2ea043; }
+.plan .btn.loading { opacity: .7; pointer-events: none; }
+.status { text-align: center; margin-bottom: 1.5rem; padding: .8rem; border-radius: 8px; display: none; font-size: .9rem; }
+.status.success { display: block; background: #23863622; border: 1px solid #238636; color: var(--green); }
+.status.error { display: block; background: #da363322; border: 1px solid #da3633; color: var(--red); }
+.status.info { display: block; background: #1f6feb22; border: 1px solid #1f6feb; color: var(--accent); }
+.wallet-box { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 2rem; max-width: 600px; margin: 2rem auto; display: none; }
+.wallet-box h2 { margin-bottom: 1rem; }
+.wallet-box .addr { background: #151b23; border: 1px solid var(--green); border-radius: 8px; padding: 1rem; font-family: 'SF Mono', monospace; font-size: .8rem; word-break: break-all; margin: 1rem 0; cursor: pointer; }
+.success-box { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 2rem; text-align: center; max-width: 500px; margin: 2rem auto; display: none; }
+.success-box .key { background: #151b23; border: 1px solid var(--border); border-radius: 6px; padding: 1rem; font-family: 'SF Mono', monospace; font-size: .85rem; word-break: break-all; margin: 1rem 0; cursor: pointer; user-select: all; }
+.faq { max-width: 600px; margin: 0 auto; }
+.faq h2 { text-align: center; font-size: 1.3rem; margin-bottom: 1rem; }
+.faq-item { border-bottom: 1px solid var(--border); padding: .8rem 0; }
+.faq-item .q { font-weight: 600; cursor: pointer; display: flex; justify-content: space-between; }
+.faq-item .q::after { content: '+'; color: var(--muted); }
+.faq-item.open .q::after { content: '−'; }
+.faq-item .a { display: none; padding-top: .5rem; font-size: .85rem; color: var(--muted); line-height: 1.5; }
+.faq-item.open .a { display: block; }
+.footer { text-align: center; color: var(--muted); font-size: .8rem; padding: 2rem 0; }
+.footer a { color: var(--accent); }
+.wallet-instructions { background: #1f2937; border-radius: 8px; padding: 1rem; margin-top: 1rem; text-align: left; }
+.wallet-instructions h3 { margin: 0 0 .5rem 0; font-size: .9rem; }
+.wallet-instructions table { width: 100%; font-size: .85rem; color: var(--muted); }
+.wallet-instructions td:last-child { text-align: right; }
+.after-pay { background: #23863622; border: 1px solid #238636; border-radius: 8px; padding: 1rem; margin-top: 1rem; text-align: left; }
+.after-pay h3 { margin: 0 0 .5rem 0; font-size: .9rem; }
+.after-pay ol { font-size: .8rem; color: var(--muted); padding-left: 1.2rem; margin: 0; }
+.btn-link { display: inline-block; padding: .6rem 1.5rem; border-radius: 6px; font-size: .9rem; font-weight: 600; text-decoration: none; cursor: pointer; border: none; color: #fff; }
+.btn-primary { background: var(--accent); }
+.btn-green { background: #238636; }
+</style>
+<meta name="description" content="Get API credits for my-automaton AI services. Code review from $0.05, security scan from $0.03. Pay with USDC on Base chain. No subscription.">
+<link rel="canonical" href="https://automation.songheng.vip/upgrade">
+<meta property="og:title" content="Get API Credits — my-automaton AI Services">
+<meta property="og:description" content="Pay-as-you-go AI API credits. Code review from $0.05. Pay with USDC on Base.">
+<meta property="og:url" content="https://automation.songheng.vip/upgrade">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+</head>
+<body>
+<div style="background:#161b22;border-bottom:1px solid #30363d;padding:10px 20px;font-size:.85rem;display:flex;gap:16px;align-items:center;flex-wrap:wrap">
+  <a href="/" style="color:#58a6ff;text-decoration:none;font-weight:600">🏠 Home</a>
+  <span style="color:#484f58">|</span>
+  <a href="/pricing.html" style="color:#8b949e;text-decoration:none">Pricing</a>
+  <a href="/api-docs.html" style="color:#8b949e;text-decoration:none">API Docs</a>
+  <a href="/api-playground.html" style="color:#8b949e;text-decoration:none">Playground</a>
+</div>
+
+<div class="container">
+  <h1>⚡ Get API Credits</h1>
+  <p class="subtitle">Pay-as-you-go with USDC on Base chain. Credits never expire. 1 credit ≈ $0.01 per API call.</p>
+
+  <div id="status" class="status"></div>
+
+  <div class="plans" id="plans">
+    <div class="plan" data-plan="price_starter" data-price="5" data-credits="500">
+      <div class="name">Starter</div>
+      <div class="desc">For trying things out</div>
+      <div class="price">$5</div>
+      <div class="price-label">one-time</div>
+      <div class="credits">500 Credits</div>
+      <ul><li>~500 API calls</li><li>All 7 endpoints</li><li>Credits never expire</li></ul>
+      <button class="btn" onclick="checkout('price_starter')">Buy $5 →</button>
+    </div>
+
+    <div class="plan featured" data-plan="price_advanced" data-price="10" data-credits="1100">
+      <div class="name">Pro</div>
+      <div class="desc">10% more credits per $</div>
+      <div class="price">$10</div>
+      <div class="price-label">one-time</div>
+      <div class="credits">1,100 Credits</div>
+      <ul><li>~1,100 API calls</li><li>All 7 endpoints</li><li>Credits never expire</li><li>Priority support</li></ul>
+      <button class="btn" onclick="checkout('price_advanced')">Buy $10 →</button>
+    </div>
+
+    <div class="plan" data-plan="price_pro" data-price="25" data-credits="3000">
+      <div class="name">Business</div>
+      <div class="desc">17% bonus credits</div>
+      <div class="price">$25</div>
+      <div class="price-label">one-time</div>
+      <div class="credits">3,000 Credits</div>
+      <ul><li>~3,000 API calls</li><li>All 7 endpoints</li><li>Credits never expire</li><li>Priority support</li><li>Webhook integrations</li></ul>
+      <button class="btn" onclick="checkout('price_pro')">Buy $25 →</button>
+    </div>
+
+    <div class="plan" data-plan="price_ultimate" data-price="58" data-credits="6500">
+      <div class="name">Enterprise</div>
+      <div class="desc">12% bonus credits</div>
+      <div class="price">$58</div>
+      <div class="price-label">one-time</div>
+      <div class="credits">6,500 Credits</div>
+      <ul><li>~6,500 API calls</li><li>All 7 endpoints</li><li>Credits never expire</li><li>Priority support</li><li>Custom integrations</li></ul>
+      <button class="btn" onclick="checkout('price_ultimate')">Buy $58 →</button>
+    </div>
+  </div>
+
+  <div id="walletBox" class="wallet-box"></div>
+  <div id="successBox" class="success-box"></div>
+
+  <div class="faq">
+    <h2>❓ FAQ</h2>
+    <div class="faq-item open">
+      <div class="q">How do credits work?</div>
+      <div class="a">Each API call costs 1-5 credits. Code review = 5 credits ($0.05), security scan = 3 ($0.03), text analysis = 1 ($0.01). See <a href="/api-docs.html">API docs</a> for full pricing.</div>
+    </div>
+    <div class="faq-item">
+      <div class="q">Can I try before buying?</div>
+      <div class="a">Yes! Get a <a href="/free-trial.html">free trial API key</a> with 50 credits, or use the free tier (3 requests/day/IP).</div>
+    </div>
+    <div class="faq-item">
+      <div class="q">Why USDC on Base?</div>
+      <div class="a">USDC is a stablecoin pegged to USD. Base chain has near-zero fees (~$0.01 per transaction). It's faster and cheaper than traditional payment processors.</div>
+    </div>
+    <div class="faq-item">
+      <div class="q">How long after payment?</div>
+      <div class="a">Manual verification takes up to 24 hours. We're building automatic payment detection — coming soon!</div>
+    </div>
+    <div class="faq-item">
+      <div class="q">Do credits expire?</div>
+      <div class="a">Never. Buy once, use whenever. No subscriptions, no monthly fees.</div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <p>© 2026 my-automaton · <a href="/api-docs.html">API Docs</a> · <a href="/api-playground.html">Playground</a> · <a href="/free-trial.html">Free Trial</a></p>
+    <p style="margin-top:.3rem;">Powered by DeepSeek AI · Pay with USDC on Base</p>
+  </div>
+</div>
+
+<script>
+const GATEWAY = window.location.origin;
+let checkoutInProgress = false;
+const WALLET_ADDR = '0x76eADdEBFfb6a61DD071f97F4508467fc55dd113';
+
+async function checkout(plan) {
+  if (checkoutInProgress) return;
+  const card = document.querySelector(`[data-plan="${plan}"]`);
+  const btn = card.querySelector('.btn');
+  const status = document.getElementById('status');
+  const price = card.dataset.price;
+  const credits = card.dataset.credits;
+  
+  btn.classList.add('loading');
+  btn.textContent = 'Loading...';
+  status.style.display = 'none';
+  
+  try {
+    const resp = await fetch(`${GATEWAY}/api/checkout`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ price_id: plan })
+    });
+    
+    const data = await resp.json();
+    
+    if (data.api_key) {
+      showSuccess(data.api_key, credits);
+    } else if (data.payment_method === 'wallet') {
+      showWalletPayment(data, plan, price, credits);
+    } else {
+      throw new Error(data.message || data.error || 'Checkout failed');
+    }
+  } catch (err) {
+    status.className = 'status error';
+    status.textContent = '❌ ' + err.message;
+    btn.classList.remove('loading');
+    btn.textContent = 'Try Again';
+    checkoutInProgress = false;
+    setTimeout(() => { checkoutInProgress = false; }, 2000);
+  }
+}
+
+function showWalletPayment(data, plan, price, credits) {
+  document.getElementById('plans').style.display = 'none';
+  document.querySelector('.faq').style.display = 'none';
+  const box = document.getElementById('walletBox');
+  
+  box.innerHTML = `
+    <h2>💳 Pay with USDC on Base</h2>
+    <p style="color:var(--muted);font-size:.9rem;text-align:center;">Send exactly <strong style="color:var(--text)">${data.amount} USDC</strong> to:</p>
+    <div class="addr" onclick="copyAddr()" id="walletAddr">${data.wallet || WALLET_ADDR}</div>
+    <p style="font-size:.75rem;color:var(--muted);text-align:center;">Click to copy address</p>
+    
+    <div class="wallet-instructions">
+      <h3>📋 Order Summary</h3>
+      <table>
+        <tr><td>Plan</td><td style="color:var(--text);font-weight:600;">${plan.replace('price_','').toUpperCase()}</td></tr>
+        <tr><td>Credits</td><td style="color:#3fb950;font-weight:600;">${credits}</td></tr>
+        <tr><td>Amount</td><td style="color:var(--text);font-weight:600;">${data.amount} USDC</td></tr>
+        <tr><td>Chain</td><td style="color:var(--accent);">Base (Ethereum L2)</td></tr>
+      </table>
+    </div>
+    
+    <div class="after-pay">
+      <h3>✅ After Sending:</h3>
+      <ol>
+        <li>Send <strong>exactly ${data.amount} USDC</strong> on <strong>Base</strong> chain</li>
+        <li>Save your <strong>transaction hash</strong> (TX ID)</li>
+        <li>Email <strong>support@automation.songheng.vip</strong> with your TX hash</li>
+        <li>Receive your API key within 24 hours</li>
+      </ol>
+    </div>
+    
+    <div style="text-align:center;margin-top:1rem;display:flex;gap:.5rem;flex-wrap:wrap;justify-content:center;">
+      <button class="btn-link btn-primary" onclick="copyAddr()">📋 Copy Address</button>
+      <a href="/api-docs.html" class="btn-link btn-green">📚 API Docs</a>
+      <a href="/free-trial.html" class="btn-link btn-green">🎁 Free Trial</a>
+    </div>
+  `;
+  box.style.display = 'block';
+  document.getElementById('status').style.display = 'none';
+}
+
+function copyAddr() {
+  navigator.clipboard.writeText(WALLET_ADDR).then(() => {
+    const addrEl = document.getElementById('walletAddr');
+    if (addrEl) {
+      addrEl.style.borderColor = '#3fb950';
+      addrEl.style.background = '#0d3320';
+      setTimeout(() => { addrEl.style.borderColor = ''; addrEl.style.background = ''; }, 2000);
+    }
+  });
+}
+
+function showSuccess(apiKey, credits) {
+  document.getElementById('plans').style.display = 'none';
+  document.getElementById('walletBox').style.display = 'none';
+  document.querySelector('.faq').style.display = 'none';
+  const box = document.getElementById('successBox');
+  
+  box.innerHTML = `
+    <h2>🎉 Payment Confirmed!</h2>
+    <p>${credits} credits added to your account.</p>
+    <p style="font-size:.8rem;color:var(--muted);">Your API key (click to copy):</p>
+    <div class="key" id="apiKeyDisplay" onclick="copyKey()">${apiKey}</div>
+    <p style="font-size:.8rem;color:var(--muted);">Store securely — it cannot be recovered.</p>
+    <p style="margin-top:1rem;">Use with: <code style="background:#1c2128;padding:.2em .4em;border-radius:3px;">X-API-Key: YOUR_KEY</code></p>
+    <a href="/api-playground.html" class="btn-link btn-primary" style="display:inline-block;margin-top:1rem;">🚀 Try API Playground</a>
+  `;
+  box.style.display = 'block';
+}
+
+function copyKey() {
+  const el = document.getElementById('apiKeyDisplay');
+  if (el) {
+    navigator.clipboard.writeText(el.textContent).then(() => {
+      el.style.borderColor = '#3fb950';
+      setTimeout(() => el.style.borderColor = '', 2000);
+    });
+  }
+}
+
+// FAQ toggle
+document.querySelectorAll('.faq-item .q').forEach(q => {
+  q.addEventListener('click', () => q.parentElement.classList.toggle('open'));
+});
+
+// Handle redirect with success
+if (window.location.search.includes('success=1')) {
+  const params = new URLSearchParams(window.location.search);
+  const key = params.get('api_key');
+  if (key) {
+    const credits = params.get('credits') || '?';
+    showSuccess(key, credits);
+  }
+}
+</script>
+<script src="/conversion-banner.js" defer></script>
+</body>
+</html>

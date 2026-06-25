@@ -1,0 +1,199 @@
+#!/usr/bin/env node
+/**
+ * my-automaton Gateway v4.1 — Static pages, premium x402 endpoints, SEO tools
+ */
+const express = require('express');
+const fs = require('fs');
+const path = require('path');
+const crypto = require('crypto');
+
+const app = express();
+const PORT = 8080;
+const CONTENT = '/root/automaton/content';
+const DATA = '/root/automaton/data';
+const WALLET = '0x76eADdEBFfb6A61DD071f97F4508467fc55dd113';
+const BASE_URL = 'https://automation.songheng.vip';
+
+// ─── API Keys & Credits ───
+const KEYS_FILE = path.join(DATA, 'api-keys.json');
+let apiKeys = {};
+try { if (fs.existsSync(KEYS_FILE)) apiKeys = JSON.parse(fs.readFileSync(KEYS_FILE, 'utf8')); } catch(e) { saveKeys(); }
+function saveKeys() {
+  fs.mkdirSync(path.dirname(KEYS_FILE), { recursive: true });
+  fs.writeFileSync(KEYS_FILE, JSON.stringify(apiKeys, null, 2));
+}
+function generateApiKey() { return 'am_' + crypto.randomBytes(24).toString('hex'); }
+function verifyApiKey(req) {
+  const header = req.headers['x-api-key'] || req.headers['authorization']?.replace(/^Bearer\s+/i, '');
+  if (!header || !apiKeys[header]) return null;
+  return header;
+}
+function deductCredits(key, amount = 1) {
+  if (!apiKeys[key]) return false;
+  if (apiKeys[key].credits < amount) return false;
+  apiKeys[key].credits -= amount;
+  apiKeys[key].used += amount;
+  saveKeys();
+  return true;
+}
+
+// ─── Analytics ───
+const statsFile = '/tmp/automaton-stats.json';
+let stats = { total: 0, premium: 0, free: 0, payments: 0, byPath: {}, byDay: {} };
+try { if (fs.existsSync(statsFile)) stats = JSON.parse(fs.readFileSync(statsFile,'utf8')); } catch(e) {}
+function track(p, type){
+  stats.total++; stats.byPath[p]=(stats.byPath[p]||0)+1;
+  const d=new Date().toISOString().slice(0,10);
+  stats.byDay[d]=(stats.byDay[d]||0)+1;
+  if(type==='premium') stats.premium++;
+  if(type==='free') stats.free++;
+}
+function saveStats(){try{fs.writeFileSync(statsFile,JSON.stringify(stats))}catch(e){}}
+setInterval(saveStats,60000);
+app.use(express.json({ limit: '1mb' }));
+
+// ─── Static file helper ───
+function serveFile(res, p){
+  if(fs.existsSync(p)&&!fs.statSync(p).isDirectory()) return res.sendFile(p);
+  const h=p+'.html';
+  if(fs.existsSync(h)&&!fs.statSync(h).isDirectory()) return res.sendFile(h);
+  return false;
+}
+
+// ─── Free quota ───
+const ft=new Map();
+function freeCount(ip){const d=new Date().toISOString().slice(0,10);return ft.get(ip+':'+d)||0;}
+function useFree(ip){const d=new Date().toISOString().slice(0,10);ft.set(ip+':'+d,(ft.get(ip+':'+d)||0)+1);setTimeout(()=>ft.delete(ip+':'+d),86400000);}
+function payReq(res,c,s){track('/v1/'+s,'premium');
+  return res.status(402).json({error:'Payment Required',cost_cents:c,wallet:WALLET,chain:'base',token:'USDC',service:s,
+    instructions:`Send ${c}¢ USDC to ${WALLET} on Base chain, then retry with X-X402-Payment: <tx_hash>`});}
+function verifyPay(req){const h=req.headers['x-x402-payment'];if(!h||h.length<10) return false;stats.payments++; saveStats(); return true;}
+
+// ─── AI ───
+const DEEPSEEK_API=process.env.DEEPSEEK_KEY||'sk-384cdbc0aeae40e4a60976e306955df6';
+async function callAI(m){
+  const r=await fetch('https://api.deepseek.com/chat/completions',{
+    method:'POST',headers:{'Content-Type':'application/json','Authorization':`Bearer ${DEEPSEEK_API}`},
+    body:JSON.stringify({model:'deepseek-chat',messages:m,temperature:0.3,max_tokens:2000})
+  });
+  if(!r.ok) throw new Error(`DeepSeek ${r.status}`);
+  return (await r.json()).choices[0].message.content;
+}
+
+// ─── Config for routes (Stripe, etc.) ───
+const STRIPE_SK = process.env.STRIPE_KEY || 'sk_tes...icRC';
+const STRIPE_PK = 'pk_tes...EO0';
+const STRIPE_WH_SECRET = process.env.STRIPE_WH_SECRET || 'whsec_...';
+const PRICE_CREDITS = {
+  'price_1TiOLADly2uoyjDjIR8RVnTl': 500,
+  'price_1TiOLXDly2uoyjDj0UEar0Un': 1100,
+  'price_1TiOLXDly2uoyjDj2k3Hui0P': 3000,
+  'price_1TiOLYDly2uoyjDjNdqoIiKc': 6500,
+};
+
+// ─── Premium endpoints ───
+const SERVICES={
+  analyze:{cost:1,prompt:'Analyze the following text deeply. Provide insights, patterns, and key takeaways.'},
+  summarize:{cost:2,prompt:'Provide a concise, well-structured summary of the following text:'},
+  review:{cost:5,prompt:'Review code for bugs, style issues, performance problems, and security vulnerabilities.'},
+  security:{cost:3,prompt:'Perform a security audit. Check for OWASP Top 10 vulnerabilities.'},
+  explain:{cost:2,prompt:'Explain the following code in detail. Cover what it does and how it works.'},
+  refactor:{cost:5,prompt:'Suggest refactoring improvements focusing on readability, maintainability, and performance.'},
+  complexity:{cost:2,prompt:'Analyze time and space complexity. Explain Big O notation for each section.'}
+};
+
+for(const[s,c]of Object.entries(SERVICES)){
+  app.post(`/v1/${s}`,async(req,res)=>{
+    const apiKey = verifyApiKey(req);
+    if (apiKey) {
+      if (deductCredits(apiKey, c.cost)) {
+        track(`/v1/${s}`,'premium');
+        const t=req.body?.text||req.body?.code||'';
+        if(!t||t.length<3) return res.status(400).json({error:'Missing content'});
+        if(t.length>50000) return res.status(400).json({error:'Content too long'});
+        try{
+          const r=await callAI([{role:'system',content:`You are a professional ${s} assistant. ${c.prompt} Respond in clear markdown.`},{role:'user',content:t}]);
+          saveStats();
+          return res.json({service:s,result:r,credits_used:c.cost,credits_remaining:apiKeys[apiKey]?.credits||0});
+        }catch(e){return res.status(500).json({error:'Processing error',detail:e.message});}
+      } else return res.status(402).json({error:'Insufficient credits',credits:0,topup:`${BASE_URL}/upgrade`});
+    }
+    if(!verifyPay(req)) return payReq(res,c.cost,s);
+    const t=req.body?.text||req.body?.code||'';
+    if(!t||t.length<3) return res.status(400).json({error:'Missing content'});
+    if(t.length>50000) return res.status(400).json({error:'Content too long'});
+    try{
+      const r=await callAI([{role:'system',content:`You are a professional ${s} assistant. ${c.prompt} Respond in clear markdown.`},{role:'user',content:t}]);
+      track(`/v1/${s}`,'premium'); saveStats();
+      res.json({service:s,result:r,cost_cents:c.cost,wallet:WALLET});
+    }catch(e){res.status(500).json({error:'Processing error',detail:e.message});}
+  });
+  app.post(`/free/${s}`,async(req,res)=>{
+    const ip=req.headers['x-forwarded-for']?.split(',')[0]?.trim()||req.ip||'unknown';
+    if(freeCount(ip)>=3) return res.status(429).json({error:'Free limit reached (3/day)',upgrade:`/v1/${s}`,cost_cents:c.cost,wallet:WALLET});
+    const t=req.body?.text||req.body?.code||'';
+    if(!t||t.length<3) return res.status(400).json({error:'Missing content'});
+    try{
+      useFree(ip);
+      const r=await callAI([{role:'system',content:`You are a professional ${s} assistant. ${c.prompt} Be concise.`},{role:'user',content:t}]);
+      track(`/free/${s}`,'free'); saveStats();
+      res.json({service:s,result:r,remaining:2-freeCount(ip),upgrade:`/v1/${s}`});
+    }catch(e){res.status(500).json({error:'Processing error',detail:e.message});}
+  });
+}
+
+// ══════════════════════════════════
+// STATIC PAGE ROUTES
+// ══════════════════════════════════
+
+// ─── SEO & Index files ───
+app.get('/sitemap.xml', (req, res) => res.sendFile(path.join(CONTENT, 'sitemap.xml')));
+app.get('/robots.txt', (req, res) => res.sendFile(path.join(CONTENT, 'robots.txt')));
+app.get('/ai-indexnow-key-2026.txt', (req, res) => res.sendFile(path.join(CONTENT, 'ai-indexnow-key-2026.txt')));
+
+// ─── Static page map ───
+const ROUTES = {
+  '/': '/index.html',
+  '/blog': '/blog.html',
+  '/tools': '/tools.html',
+  '/dashboard': '/dashboard.html',
+  '/api-docs': '/api-docs.html',
+  '/playground': '/api-playground.html',
+  '/upgrade': '/upgrade.html',
+  '/live-demo': '/live-demo.html',
+  '/seo-meta-tag-generator': '/tools/seo-meta-tag-generator.html',
+  '/json-formatter': '/tools/json-formatter.html',
+  '/json-to-typescript': '/tools/json-to-typescript.html',
+  '/json-to-csv': '/tools/json-to-csv.html',
+  '/regex-tester': '/tools/regex-tester.html',
+  '/http-status-codes': '/tools/http-status-codes.html',
+  '/badge-generator': '/tools/badge-generator.html',
+  '/seo-content-brief': '/tools/seo-content-brief.html',
+  '/ai-code-reviewer': '/tools/ai-code-reviewer.html',
+  '/payment-success': '/payment-success.html',
+};
+
+for(const[route,file]of Object.entries(ROUTES)){
+  app.get(route,(req,res)=>{track(route,'free');serveFile(res,path.join(CONTENT,file))||res.status(404).send('Not found');});
+}
+
+// ─── Blog articles ───
+app.get('/blog/:article',(req,res)=>{track('/blog/'+req.params.article,'free');serveFile(res,path.join(CONTENT,'blog',req.params.article))||res.status(404).sendFile(path.join(CONTENT,'404.html'));});
+// ─── Tool pages (wildcard fallback) ───
+app.get('/tools/:tool',(req,res)=>{track('/tools/'+req.params.tool,'free');serveFile(res,path.join(CONTENT,'tools',req.params.tool))||res.status(404).sendFile(path.join(CONTENT,'404.html'));});
+
+// ─── Static assets ───
+app.use('/assets',express.static(path.join(CONTENT,'assets'),{maxAge:'1h'}));
+app.use('/js',express.static(path.join(CONTENT,'js'),{maxAge:'1h'}));
+
+// ─── API: stats ───
+app.get('/api/stats/overview',(req,res)=>{saveStats();res.json({...stats,uptime:process.uptime(),wallet:WALLET,chain:'base',token:'USDC'});});
+
+// ─── Health ───
+app.get('/health',(req,res)=>res.json({status:'ok',uptime:process.uptime()}));
+
+// ─── 404 ───
+app.use((req,res)=>res.status(404).sendFile(path.join(CONTENT,'404.html')));
+
+// ─── Start ───
+app.listen(PORT,'0.0.0.0',()=>console.log(`🚀 Gateway on :${PORT} — ${Object.keys(ROUTES).length} static routes`));

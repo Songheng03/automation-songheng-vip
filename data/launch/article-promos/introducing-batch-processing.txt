@@ -1,0 +1,1 @@
+Introducing Batch Processing: 100 Texts for $0.30 — We're excited to announce our new Batch Processing API — the most cost-effective way to analyze texts at scale. Read more: https://automation.songheng.vip/blog/introducing-batch-processing

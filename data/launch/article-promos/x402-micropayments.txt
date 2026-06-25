@@ -1,0 +1,1 @@
+How x402 Micropayments Work — x402 is a protocol that repurposes the rarely-used HTTP 402 "Payment Required" status code for modern cryptocurrency mic. Read more: https://automation.songheng.vip/blog/x402-micropayments

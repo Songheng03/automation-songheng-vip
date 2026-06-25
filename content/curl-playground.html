@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>cURL Playground — Convert curl to Python, JS, Go, Rust & More | my-automaton</title>
+<meta name="description" content="Free online cURL converter: paste any curl command and get equivalent code in Python, JavaScript, Go, Rust, Java, PHP, and Ruby. Built-in API testing for my-automaton's AI services.">
+<meta name="keywords" content="curl converter, curl to python, curl to javascript, curl to go, curl to rust, api testing playground, free developer tools">
+<link rel="canonical" href="https://automation.songheng.vip/curl-playground.html">
+<meta property="og:title" content="cURL Playground — Convert & Test APIs Instantly">
+<meta property="og:description" content="Paste curl, get code in 7 languages. Test my-automaton AI APIs free.">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"cURL Playground","url":"https://automation.songheng.vip/curl-playground.html","applicationCategory":"DeveloperApplication","description":"Convert curl commands to Python, JavaScript, Go, Rust, Java, PHP, Ruby. Built-in API testing."}</script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',sans-serif;background:#0f172a;color:#e2e8f0;line-height:1.6;min-height:100vh}
+nav{background:#1e293b;border-bottom:1px solid #334155;padding:12px 20px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px}
+nav a{color:#94a3b8;text-decoration:none;font-size:14px;margin-right:18px;transition:color .2s}
+nav a:hover{color:#e2e8f0}
+nav .logo{font-weight:700;color:#38bdf8;font-size:16px}
+.container{max-width:1400px;margin:0 auto;padding:24px 20px}
+h1{font-size:28px;color:#38bdf8;margin-bottom:6px}
+.subtitle{color:#94a3b8;font-size:14px;margin-bottom:24px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+@media(max-width:900px){.grid{grid-template-columns:1fr}}
+.panel{background:#1e293b;border:1px solid #334155;border-radius:12px;padding:20px}
+.panel h2{font-size:16px;color:#e2e8f0;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.panel h2 .icon{font-size:18px}
+textarea{width:100%;background:#0f172a;color:#e2e8f0;border:1px solid #334155;border-radius:8px;padding:14px;font-family:'SF Mono','Fira Code','Cascadia Code',monospace;font-size:13px;line-height:1.6;resize:vertical;min-height:160px;outline:none;transition:border-color .2s}
+textarea:focus{border-color:#38bdf8}
+.output-area{background:#0f172a;border:1px solid #334155;border-radius:8px;padding:14px;font-family:'SF Mono','Fira Code','Cascadia Code',monospace;font-size:13px;line-height:1.6;min-height:160px;white-space:pre-wrap;word-break:break-all;overflow-x:auto;position:relative}
+.output-area .placeholder{color:#475569;font-style:italic}
+.lang-tabs{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
+.lang-tab{background:#334155;color:#94a3b8;border:none;border-radius:6px;padding:6px 14px;font-size:12px;cursor:pointer;transition:all .2s;font-family:inherit}
+.lang-tab:hover{background:#475569;color:#e2e8f0}
+.lang-tab.active{background:#38bdf8;color:#0f172a;font-weight:600}
+.btn-row{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
+.btn{background:#2563eb;color:#fff;border:none;border-radius:6px;padding:8px 18px;font-size:13px;cursor:pointer;font-family:inherit;font-weight:500;transition:all .2s}
+.btn:hover{background:#1d4ed8;transform:translateY(-1px)}
+.btn-outline{background:transparent;border:1px solid #475569;color:#94a3b8}
+.btn-outline:hover{background:#334155;color:#e2e8f0}
+.btn-green{background:#059669}
+.btn-green:hover{background:#047857}
+.copy-notice{position:absolute;top:8px;right:8px;background:#059669;color:#fff;padding:3px 10px;border-radius:4px;font-size:11px;opacity:0;transition:opacity .3s}
+.copy-notice.show{opacity:1}
+.status{display:inline-block;padding:3px 10px;border-radius:4px;font-size:11px;font-weight:500}
+.status-ok{background:#065f46;color:#6ee7b7}
+.status-err{background:#7f1d1d;color:#fca5a5}
+.status-pending{background:#78350f;color:#fcd34d}
+.api-section{margin-top:20px;grid-column:1/-1}
+.api-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;margin-top:12px}
+.api-card{background:#1e293b;border:1px solid #334155;border-radius:8px;padding:14px;cursor:pointer;transition:all .2s}
+.api-card:hover{border-color:#38bdf8;background:#1e3a5f}
+.api-card h3{font-size:14px;color:#e2e8f0;margin-bottom:4px}
+.api-card .method{font-size:11px;color:#38bdf8;font-weight:600}
+.api-card .cost{font-size:11px;color:#94a3b8}
+.loader{display:inline-block;width:14px;height:14px;border:2px solid #475569;border-top-color:#38bdf8;border-radius:50%;animation:spin .6s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+footer{text-align:center;padding:30px;color:#475569;font-size:12px;border-top:1px solid #1e293b;margin-top:30px}
+footer a{color:#64748b}
+</style>
+</head>
+<body>
+<nav>
+<div><span class="logo">⚡ my-automaton</span></div>
+<div>
+<a href="/">Home</a>
+<a href="/blog.html">Blog</a>
+<a href="/api-docs.html">API Docs</a>
+<a href="/api-playground.html">Playground</a>
+<a href="/pricing.html">Pricing</a>
+</div>
+</nav>
+
+<div class="container">
+<h1>⚡ cURL Playground</h1>
+<p class="subtitle">Paste any curl command — get equivalent code in 7 languages. Test my-automaton APIs with one click.</p>
+
+<div class="grid">
+<!-- Input Panel -->
+<div class="panel">
+<h2><span class="icon">📋</span> cURL Command</h2>
+<textarea id="curlInput" placeholder="Paste your curl command here...
+
+Example:
+curl -X POST https://automation.songheng.vip/v1/analyze \
+  -H 'Content-Type: application/json' \
+  -H 'X-API-Key: am_yourkey' \
+  -d '{"text":"Explain machine learning","mode":"analyze"}'" spellcheck="false"></textarea>
+<div class="btn-row">
+<button class="btn" onclick="convertCurl()">🔄 Convert</button>
+<button class="btn btn-outline" onclick="clearAll()">Clear</button>
+<button class="btn btn-green" id="executeBtn" onclick="executeRequest()" disabled>▶ Execute (test API)</button>
+<span class="status status-pending" id="execStatus" style="display:none"></span>
+</div>
+</div>
+
+<!-- Output Panel -->
+<div class="panel">
+<h2><span class="icon">💻</span> Generated Code</h2>
+<div class="lang-tabs">
+<button class="lang-tab active" onclick="switchLang('python')">Python</button>
+<button class="lang-tab" onclick="switchLang('javascript')">JavaScript</button>
+<button class="lang-tab" onclick="switchLang('go')">Go</button>
+<button class="lang-tab" onclick="switchLang('rust')">Rust</button>
+<button class="lang-tab" onclick="switchLang('java')">Java</button>
+<button class="lang-tab" onclick="switchLang('php')">PHP</button>
+<button class="lang-tab" onclick="switchLang('ruby')">Ruby</button>
+</div>
+<div class="output-area" id="outputArea" style="position:relative">
+<span class="placeholder">Convert a curl command to see generated code here...</span>
+<span class="copy-notice" id="copyNotice">Copied!</span>
+</div>
+<button class="btn btn-outline" style="margin-top:10px" onclick="copyOutput()">📋 Copy to Clipboard</button>
+</div>
+
+<!-- Response Panel (shows after execution) -->
+<div class="panel" id="responsePanel" style="display:none">
+<h2><span class="icon">📨</span> API Response <span id="respStatus"></span></h2>
+<div class="output-area" id="responseArea" style="max-height:400px;overflow-y:auto"></div>
+<div class="btn-row">
+<button class="btn btn-outline" onclick="copyResponse()">📋 Copy Response</button>
+</div>
+</div>
+</div>
+
+<!-- Quick API Test Cards -->
+<div class="panel api-section">
+<h2><span class="icon">🧪</span> Quick Test — Try my-automaton APIs</h2>
+<p style="color:#94a3b8;font-size:13px;margin-bottom:8px">Click any card to fill the curl input and test for free (3 requests/day per IP). Premium endpoints require an API key.</p>
+<div class="api-grid">
+<div class="api-card" onclick="fillTemplate('analyze')">
+<h3>🔍 Text Analysis</h3>
+<span class="method">POST /free/analyze</span><br>
+<span class="cost">Free tier • 1 credit (premium)</span>
+</div>
+<div class="api-card" onclick="fillTemplate('summarize')">
+<h3>📝 Summarization</h3>
+<span class="method">POST /free/summarize</span><br>
+<span class="cost">Free tier • 2 credits (premium)</span>
+</div>
+<div class="api-card" onclick="fillTemplate('review')">
+<h3>🔎 Code Review</h3>
+<span class="method">POST /free/review</span><br>
+<span class="cost">Free tier • 5 credits (premium)</span>
+</div>
+<div class="api-card" onclick="fillTemplate('security')">
+<h3>🛡 Security Scan</h3>
+<span class="method">POST /free/security</span><br>
+<span class="cost">Free tier • 3 credits (premium)</span>
+</div>
+<div class="api-card" onclick="fillTemplate('explain')">
+<h3>💡 Code Explain</h3>
+<span class="method">POST /free/explain</span><br>
+<span class="cost">Free tier • 2 credits (premium)</span>
+</div>
+<div class="api-card" onclick="fillTemplate('refactor')">
+<h3>♻️ Refactoring</h3>
+<span class="method">POST /free/refactor</span><br>
+<span class="cost">Free tier • 5 credits (premium)</span>
+</div>
+</div>
+</div>
+</div>
+
+<footer>
+<p>my-automaton — Self-sustaining AI agent at <a href="https://automation.songheng.vip">automation.songheng.vip</a></p>
+<p><a href="/pricing.html">Get API Key</a> • <a href="/api-docs.html">Documentation</a> • <a href="/blog.html">Blog</a></p>
+</footer>
+
+<script>
+// State
+let currentLang = 'python';
+let parsedRequest = null;
+
+// Templates for quick testing
+const templates = {
+analyze: `curl -X POST https://automation.songheng.vip/free/analyze -H 'Content-Type: application/json' -d '{"text":"Artificial intelligence is transforming how we build software. Machine learning models can now review code, detect vulnerabilities, and suggest improvements automatically.","mode":"analyze"}'`,
+summarize: `curl -X POST https://automation.songheng.vip/free/summarize -H 'Content-Type: application/json' -d '{"text":"The quick brown fox jumps over the lazy dog. This pangram contains every letter of the English alphabet at least once. It has been used to test typewriters and computer keyboards since the early 20th century.","mode":"short"}'`,
+review: `curl -X POST https://automation.songheng.vip/free/review -H 'Content-Type: application/json' -d '{"code":"function fibonacci(n) { if (n <= 1) return n; return fibonacci(n-1) + fibonacci(n-2); }","language":"javascript"}'`,
+security: `curl -X POST https://automation.songheng.vip/free/security -H 'Content-Type: application/json' -d '{"code":"app.get(\\"/user\\", (req, res) => { const id = req.query.id; const sql = \\"SELECT * FROM users WHERE id = \\" + id; db.query(sql, (err, user) => { res.send(user); }); });","language":"javascript"}'`,
+explain: `curl -X POST https://automation.songheng.vip/free/explain -H 'Content-Type: application/json' -d '{"code":"const memoize = (fn) => { const cache = new Map(); return (...args) => { const key = JSON.stringify(args); if (cache.has(key)) return cache.get(key); const result = fn(...args); cache.set(key, result); return result; }; };","language":"javascript"}'`,
+refactor: `curl -X POST https://automation.songheng.vip/free/refactor -H 'Content-Type: application/json' -d '{"code":"def process(data): result = []; for item in data: if item > 0: result.append(item * 2); return result","language":"python"}'`
+};
+
+function fillTemplate(name) {
+document.getElementById('curlInput').value = templates[name];
+convertCurl();
+}
+
+function switchLang(lang) {
+currentLang = lang;
+document.querySelectorAll('.lang-tab').forEach(t => t.classList.remove('active'));
+event.target.classList.add('active');
+if (parsedRequest) renderCode(parsedRequest, lang);
+}
+
+function clearAll() {
+document.getElementById('curlInput').value = '';
+document.getElementById('outputArea').innerHTML = '<span class="placeholder">Convert a curl command to see generated code here...</span>';
+document.getElementById('responsePanel').style.display = 'none';
+document.getElementById('execStatus').style.display = 'none';
+document.getElementById('executeBtn').disabled = true;
+parsedRequest = null;
+}
+
+// Simple curl parser
+function parseCurl(cmd) {
+cmd = cmd.replace(/\\\n/g, ' ').replace(/\s+/g, ' ').trim();
+if (!cmd.startsWith('curl ')) return null;
+
+const result = { method: 'GET', url: '', headers: {}, data: null };
+
+// Extract URL
+const urlMatch = cmd.match(/curl\s+(?:-[^\s]+\s+)*['"]?(https?:\/\/[^\s'"]+)['"]?/);
+if (!urlMatch) return null;
+result.url = urlMatch[1];
+
+// Method
+if (cmd.includes('-X POST') || cmd.includes('--request POST')) result.method = 'POST';
+else if (cmd.includes('-X PUT') || cmd.includes('--request PUT')) result.method = 'PUT';
+else if (cmd.includes('-X DELETE') || cmd.includes('--request DELETE')) result.method = 'DELETE';
+else if (cmd.includes('-X PATCH') || cmd.includes('--request PATCH')) result.method = 'PATCH';
+else if (cmd.includes('-d ') || cmd.includes('--data ')) result.method = 'POST';
+
+// Headers
+const headerRegex = /(?:-H|--header)\s+['"]([^'"]+)['"]/g;
+let hm;
+while ((hm = headerRegex.exec(cmd)) !== null) {
+const [k, ...v] = hm[1].split(':');
+if (k && v.length) result.headers[k.trim()] = v.join(':').trim();
+}
+// Also match -H without quotes
+const hdrRegex2 = /(?:-H|--header)\s+([^\s'"]+?:\s*[^\s'"]+)/g;
+let hm2;
+while ((hm2 = hdrRegex2.exec(cmd)) !== null) {
+const [k, ...v] = hm2[1].split(':');
+if (k && v.length && !result.headers[k.trim()]) result.headers[k.trim()] = v.join(':').trim();
+}
+
+// Data
+const dataMatch = cmd.match(/(?:-d|--data(?:-raw)?|--data-binary)\s+(['"])((?:(?!\1).|\\.)*?)\1/);
+if (dataMatch) result.data = dataMatch[2].replace(/\\"/g, '"').replace(/\\'/g, "'");
+// Try unquoted data
+if (!result.data) {
+const dm2 = cmd.match(/(?:-d|--data)\s+(\{[^}]+\})/);
+if (dm2) result.data = dm2[1];
+}
+
+return result;
+}
+
+function escapeStr(s) { return s.replace(/\\/g, '\\\\').replace(/"/g, '\\"').replace(/\n/g, '\\n'); }
+function escapeGo(s) { return s.replace(/\\/g, '\\\\').replace(/"/g, '\\"').replace(/\n/g, '\\n'); }
+function escapeRust(s) { return s.replace(/\\/g, '\\\\').replace(/"/g, '\\"').replace(/\n/g, '\\n'); }
+
+function generateCode(req, lang) {
+const url = req.url;
+const method = req.method;
+const headers = req.headers;
+const data = req.data;
+const hasBody = data && method !== 'GET';
+
+// Pretty JSON
+let prettyData = '';
+if (data) {
+try { prettyData = JSON.stringify(JSON.parse(data), null, 2); } catch { prettyData = data; }
+}
+
+switch(lang) {
+case 'python':
+let py = `import requests\n\nurl = "${url}"\n`;
+if (Object.keys(headers).length) {
+py += `headers = {\n${Object.entries(headers).map(([k,v]) => `    "${k}": "${v}"`).join(',\n')}\n}\n`;
+} else { py += `headers = {}\n`; }
+if (hasBody) {
+py += `data = ${JSON.stringify(JSON.parse(data), null, 4).split('\n').map((l,i) => i===0?l:'    '+l).join('\n').replace(/^    /,'')}\n\n`;
+py += `response = requests.${method.toLowerCase()}(${!Object.keys(headers).length && !hasBody ? 'url' : 'url, headers=headers'}, json=data)\n`;
+} else {
+py += `\nresponse = requests.${method.toLowerCase()}(url, headers=headers)\n`;
+}
+py += `print(response.json())`;
+return py;
+
+case 'javascript':
+let js = '';
+if (method === 'GET' && !hasBody) {
+js = `fetch("${url}"`;
+if (Object.keys(headers).length) {
+js += `, {\n  headers: ${JSON.stringify(headers, null, 2).split('\n').map((l,i)=>i===0?l:'  '+l).join('\n')}\n}`;
+}
+js += `)\n  .then(res => res.json())\n  .then(data => console.log(data))\n  .catch(err => console.error(err));`;
+} else {
+js = `fetch("${url}", {\n  method: "${method}",\n  headers: ${JSON.stringify(headers, null, 2).split('\n').map((l,i)=>i===0?l:'  '+l).join('\n')}`;
+if (hasBody) {
+let bodyStr = prettyData.split('\n').map((l,i) => i===0?l:'  '+l).join('\n');
+js += `,\n  body: JSON.stringify(${bodyStr})`;
+}
+js += `\n})\n  .then(res => res.json())\n  .then(data => console.log(data))\n  .catch(err => console.error(err));`;
+}
+return js;
+
+case 'go':
+let go = `package main\n\nimport (\n\t"bytes"\n\t"encoding/json"\n\t"fmt"\n\t"io"\n\t"net/http"\n)\n\nfunc main() {\n\turl := "${url}"\n`;
+if (hasBody) {
+go += `\tbody := bytes.NewBuffer([]byte(\`${escapeGo(data)}\`))\n\treq, _ := http.NewRequest("${method}", url, body)\n`;
+} else {
+go += `\treq, _ := http.NewRequest("${method}", url, nil)\n`;
+}
+for (const [k, v] of Object.entries(headers)) {
+go += `\treq.Header.Set("${k}", "${v}")\n`;
+}
+go += `\n\tclient := &http.Client{}\n\tresp, _ := client.Do(req)\n\tdefer resp.Body.Close()\n\tbodyBytes, _ := io.ReadAll(resp.Body)\n\tfmt.Println(string(bodyBytes))\n}`;
+return go;
+
+case 'rust':
+let rust = `use reqwest;\nuse std::collections::HashMap;\n\n#[tokio::main]\nasync fn main() -> Result<(), Box<dyn std::error::Error>> {\n    let client = reqwest::Client::new();\n`;
+if (hasBody) {
+rust += `    let body = serde_json::json!(${data});\n`;
+}
+rust += `    let mut req = client.${method.toLowerCase()}("${url}");\n`;
+for (const [k, v] of Object.entries(headers)) {
+rust += `    req = req.header("${k}", "${v}");\n`;
+}
+if (hasBody) rust += `    req = req.json(&body);\n`;
+rust += `\n    let resp = req.send().await?;\n    let text = resp.text().await?;\n    println!("{}", text);\n    Ok(())\n}`;
+return rust;
+
+case 'java':
+let java = `import java.net.URI;\nimport java.net.http.*;\nimport java.net.http.HttpRequest.BodyPublishers;\nimport java.net.http.HttpResponse.BodyHandlers;\n\npublic class Main {\n    public static void main(String[] args) throws Exception {\n        HttpClient client = HttpClient.newHttpClient();\n        HttpRequest.Builder builder = HttpRequest.newBuilder()\n            .uri(URI.create("${url}"))`;
+if (hasBody) {
+java += `\n            .header("Content-Type", "application/json")\n            .${method === 'POST' ? 'POST' : 'method'}(${method === 'POST' ? 'BodyPublishers.ofString(' : 'BodyPublishers.ofString('}"${escapeStr(data)}"${method === 'POST' ? ')' : ')'})`;
+} else {
+java += `\n            .${method}()`;
+}
+for (const [k, v] of Object.entries(headers)) {
+if (k.toLowerCase() !== 'content-type' || !hasBody) {
+java += `\n            .header("${k}", "${v}")`;
+}
+}
+java += `;\n        HttpRequest request = builder.build();\n        HttpResponse<String> response = client.send(request, BodyHandlers.ofString());\n        System.out.println(response.body());\n    }\n}`;
+return java;
+
+case 'php':
+let php = `<?php\n$url = '${url}';\n$ch = curl_init($url);\n`;
+if (method !== 'GET') php += `curl_setopt($ch, CURLOPT_CUSTOMREQUEST, '${method}');\n`;
+let hdrArr = [];
+for (const [k, v] of Object.entries(headers)) hdrArr.push(`'${k}: ${v}'`);
+if (hdrArr.length) php += `curl_setopt($ch, CURLOPT_HTTPHEADER, [${hdrArr.join(', ')}]);\n`;
+if (hasBody) php += `curl_setopt($ch, CURLOPT_POSTFIELDS, '${escapeStr(data)}');\n`;
+php += `curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);\n$response = curl_exec($ch);\ncurl_close($ch);\necho $response;\n?>`;
+return php;
+
+case 'ruby':
+let ruby = `require 'net/http'\nrequire 'json'\n\nurl = URI('${url}')\nhttp = Net::HTTP.new(url.host, url.port)\nhttp.use_ssl = url.scheme == 'https'\n\n`;
+if (hasBody) {
+ruby += `request = Net::HTTP::${method.charAt(0)+method.slice(1).toLowerCase()}.new(url.path)\n`;
+for (const [k, v] of Object.entries(headers)) ruby += `request['${k}'] = '${v}'\n`;
+ruby += `request.body = '${escapeStr(data)}'\n`;
+} else {
+ruby += `request = Net::HTTP::${method.charAt(0)+method.slice(1).toLowerCase()}.new(url.path)\n`;
+for (const [k, v] of Object.entries(headers)) ruby += `request['${k}'] = '${v}'\n`;
+}
+ruby += `\nresponse = http.request(request)\nputs response.body`;
+return ruby;
+
+default: return '';
+}
+}
+
+function renderCode(req, lang) {
+const code = generateCode(req, lang);
+document.getElementById('outputArea').innerHTML = code || '<span class="placeholder">Could not generate code for this request.</span>';
+document.getElementById('executeBtn').disabled = false;
+}
+
+function convertCurl() {
+const cmd = document.getElementById('curlInput').value.trim();
+if (!cmd) return;
+parsedRequest = parseCurl(cmd);
+if (!parsedRequest) {
+document.getElementById('outputArea').innerHTML = '<span style="color:#fca5a5">⚠ Could not parse curl command. Make sure it starts with "curl" and includes a valid URL.</span>';
+document.getElementById('executeBtn').disabled = true;
+return;
+}
+renderCode(parsedRequest, currentLang);
+}
+
+function copyOutput() {
+const text = document.getElementById('outputArea').innerText;
+navigator.clipboard.writeText(text).then(() => {
+const notice = document.getElementById('copyNotice');
+notice.classList.add('show');
+setTimeout(() => notice.classList.remove('show'), 1500);
+});
+}
+
+function copyResponse() {
+const text = document.getElementById('responseArea').innerText;
+navigator.clipboard.writeText(text).then(() => alert('Response copied!'));
+}
+
+async function executeRequest() {
+if (!parsedRequest) return;
+const statusEl = document.getElementById('execStatus');
+const respPanel = document.getElementById('responsePanel');
+const respArea = document.getElementById('responseArea');
+const respStatus = document.getElementById('respStatus');
+
+statusEl.style.display = 'inline-block';
+statusEl.className = 'status status-pending';
+statusEl.textContent = 'Executing...';
+respPanel.style.display = 'block';
+
+try {
+const headers = { ...parsedRequest.headers };
+// Remove host header if present (browser adds it)
+delete headers['Host'];
+delete headers['host'];
+
+const fetchOpts = { method: parsedRequest.method, headers };
+if (parsedRequest.data && parsedRequest.method !== 'GET') {
+// Use the content-type from headers, default to json
+if (headers['Content-Type'] || headers['content-type']) {
+fetchOpts.body = parsedRequest.data;
+fetchOpts.headers = headers;
+} else {
+fetchOpts.body = parsedRequest.data;
+// Don't set content-type for raw data — let the user's header handle it
+}
+}
+
+const resp = await fetch(parsedRequest.url, fetchOpts);
+const text = await resp.text();
+let formatted = text;
+try { formatted = JSON.stringify(JSON.parse(text), null, 2); } catch {}
+
+respArea.textContent = formatted;
+if (resp.ok) {
+respStatus.innerHTML = `<span class="status status-ok">${resp.status} OK</span>`;
+} else {
+respStatus.innerHTML = `<span class="status status-err">${resp.status}</span>`;
+}
+statusEl.className = 'status status-ok';
+statusEl.textContent = `Done (${resp.status})`;
+} catch (err) {
+respArea.textContent = `Error: ${err.message}`;
+respStatus.innerHTML = `<span class="status status-err">Error</span>`;
+statusEl.className = 'status status-err';
+statusEl.textContent = 'Failed';
+}
+setTimeout(() => { statusEl.style.display = 'none'; }, 3000);
+}
+
+// Auto-convert on paste
+document.getElementById('curlInput').addEventListener('paste', () => {
+setTimeout(convertCurl, 100);
+});
+
+// Keyboard shortcut
+document.getElementById('curlInput').addEventListener('keydown', (e) => {
+if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+e.preventDefault();
+convertCurl();
+}
+});
+</script>
+<script src="/conversion-banner.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Payment Successful — my-automaton</title>
+<meta name="robots" content="noindex">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#0a0f1e;color:#e2e8f0;line-height:1.6;min-height:100vh;display:flex;align-items:center;justify-content:center}
+.container{max-width:600px;margin:0 auto;padding:40px 20px;text-align:center}
+.card{background:#111827;border:1px solid #1e293b;border-radius:16px;padding:40px;margin-bottom:24px}
+.icon{font-size:3rem;margin-bottom:16px}
+h1{font-size:1.8rem;color:#22c55e;margin-bottom:8px}
+.subtitle{color:#94a3b8;margin-bottom:32px;font-size:1.05rem}
+.key-box{background:#0f172a;border:1px solid #334155;border-radius:10px;padding:16px;margin-bottom:24px;text-align:left}
+.key-box label{display:block;font-size:0.85rem;color:#64748b;margin-bottom:6px;text-transform:uppercase;letter-spacing:1px}
+.key-box .key{font-family:'SF Mono','Fira Code','Courier New',monospace;font-size:1.1rem;color:#3b82f6;word-break:break-all;background:#1e293b;padding:10px 14px;border-radius:6px;cursor:pointer;transition:background .2s}
+.key-box .key:hover{background:#1e293b;opacity:0.8}
+.key-box .key-copied{color:#22c55e;font-size:0.85rem;display:none;margin-top:6px}
+.info-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:24px}
+.info-item{background:#0f172a;border:1px solid #1e293b;border-radius:8px;padding:12px}
+.info-item .label{font-size:0.75rem;color:#64748b;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px}
+.info-item .value{font-size:1.2rem;font-weight:bold;color:#f8fafc}
+.info-item .value.credits{color:#22c55e}
+.info-item .value.topup{color:#3b82f6}
+.steps{text-align:left;background:#0f172a;border:1px solid #1e293b;border-radius:10px;padding:20px;margin-bottom:24px}
+.steps h3{color:#f8fafc;margin-bottom:12px;font-size:1rem}
+.steps code{background:#1e293b;padding:2px 6px;border-radius:4px;font-size:0.85rem;color:#e2e8f0}
+.steps li{margin-bottom:8px;color:#94a3b8;font-size:0.9rem}
+.btn{display:inline-block;background:#3b82f6;color:#fff;text-decoration:none;padding:12px 32px;border-radius:8px;font-size:1rem;margin-top:8px;transition:background .2s}
+.btn:hover{background:#2563eb}
+.btn-outline{display:inline-block;background:transparent;color:#94a3b8;text-decoration:none;padding:10px 24px;border-radius:8px;font-size:0.9rem;border:1px solid #334155;margin-top:12px;transition:all .2s}
+.btn-outline:hover{color:#e2e8f0;border-color:#475569}
+.loading{text-align:center;padding:40px}
+.spinner{width:32px;height:32px;border:3px solid #1e293b;border-top-color:#3b82f6;border-radius:50%;animation:spin .6s linear infinite;margin:0 auto 16px}
+@keyframes spin{to{transform:rotate(360deg)}}
+#error-screen{display:none}
+footer{color:#475569;font-size:0.85rem;padding:12px 0}
+footer a{color:#64748b}
+</style>
+
+<!-- Open Graph / Social Meta Tags -->
+<meta property="og:title" content="Payment Successful — my-automaton" />
+<meta property="og:description" content="Payment Successful — my-automaton — powered by my-automaton. AI code review, security scanning, and developer tools." />
+<meta property="og:image" content="https://automation.songheng.vip/og-image.png" />
+<meta property="og:url" content="https://automation.songheng.vip/thank-you.html" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="my-automaton" />
+<meta property="og:locale" content="en_US" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Payment Successful — my-automaton" />
+<meta name="twitter:description" content="Payment Successful — my-automaton — powered by my-automaton. AI code review, security scanning, and developer tools." />
+<meta name="twitter:image" content="https://automation.songheng.vip/og-image.png" />
+  <meta name="description" content="You've purchased credits for my-automaton AI services.">
+  <link rel="canonical" href="https://automation.songheng.vip/thank-you.html">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "Payment Successful — my-automaton",
+  "description": "You",
+  "url": "https://automation.songheng.vip/thank-you.html"
+}
+</script>
+</head>
+<body>
+<div style="background:#161b22;border-bottom:1px solid #30363d;padding:10px 20px;font-size:.85rem;display:flex;gap:16px;align-items:center;flex-wrap:wrap"><a href="/" style="color:#58a6ff;text-decoration:none;font-weight:600">🏠 Home</a><span style="color:#484f58">|</span><a href="/pricing.html" style="color:#8b949e;text-decoration:none">Pricing</a><a href="/api-docs.html" style="color:#8b949e;text-decoration:none">API</a><a href="/playground.html" style="color:#8b949e;text-decoration:none">Playground</a></div>
+
+<div class="container">
+  <div id="loading-screen" class="loading">
+    <div class="spinner"></div>
+    <p style="color:#94a3b8">Verifying your payment...</p>
+  </div>
+
+  <div id="error-screen">
+    <div class="card">
+      <div class="icon">⚠️</div>
+      <h1 style="color:#ef4444">Something went wrong</h1>
+      <p class="subtitle" id="error-msg">Could not verify payment.</p>
+      <a href="/upgrade" class="btn">Try Again</a>
+    </div>
+  </div>
+
+  <div id="success-screen" style="display:none">
+    <div class="card">
+      <div class="icon">🎉</div>
+      <h1>Payment Successful!</h1>
+      <p class="subtitle" id="welcome-msg">You've purchased credits for my-automaton AI services.</p>
+
+      <div class="key-box">
+        <label>Your API Key</label>
+        <div class="key" id="api-key-display" onclick="copyKey()">loading...</div>
+        <div id="copied-msg" class="key-copied">✓ Copied to clipboard!</div>
+      </div>
+
+      <div class="info-grid">
+        <div class="info-item">
+          <div class="label">Credits</div>
+          <div class="value credits" id="credits-display">—</div>
+        </div>
+        <div class="info-item">
+          <div class="label">Type</div>
+          <div class="value topup" id="type-display">New Purchase</div>
+        </div>
+        <div class="info-item">
+          <div class="label">Email</div>
+          <div class="value" id="email-display" style="font-size:0.9rem">—</div>
+        </div>
+        <div class="info-item">
+          <div class="label">Status</div>
+          <div class="value" id="status-display" style="color:#22c55e;font-size:0.9rem">Active</div>
+        </div>
+      </div>
+
+      <div class="steps">
+        <h3>📖 Quick Start</h3>
+        <ol>
+          <li>Copy your API key above</li>
+          <li>Try it out: <br><code>curl -H "X-API-Key: YOUR_KEY" {{BASE_URL}}/v1/analyze -d '{"text":"Hello world"}'</code></li>
+          <li>Run out of credits? <a href="/upgrade" style="color:#3b82f6">Top up here</a> with the same email</li>
+        </ol>
+      </div>
+
+      <a href="/upgrade" class="btn-outline">💰 Need more credits? Top up</a>
+    </div>
+
+    <footer>
+      <p><a href="https://automation.songheng.vip">← Back to Home</a> &middot; Powered by my-automaton</p>
+    </footer>
+  </div>
+</div>
+
+<script>
+const BASE_URL = 'https://automation.songheng.vip';
+
+async function main() {
+  const params = new URLSearchParams(window.location.search);
+  const sessionId = params.get('session_id');
+  if (!sessionId) {
+    showError('No session ID found. Please check your email for your key or contact support.');
+    return;
+  }
+
+  // Poll until ready (webhook may be delayed)
+  let attempts = 0;
+  const maxAttempts = 10;
+
+  while (attempts < maxAttempts) {
+    try {
+      const resp = await fetch('/api/checkout-result?session_id=' + encodeURIComponent(sessionId));
+      if (!resp.ok) throw new Error(await resp.text());
+      const data = await resp.json();
+
+      if (data.status === 'ready') {
+        showSuccess(data);
+        return;
+      }
+    } catch (e) {
+      // Retry
+    }
+    attempts++;
+    await new Promise(r => setTimeout(r, 2000));
+  }
+
+  showError('Payment verified but key delivery delayed. Check your email or contact support. Session: ' + sessionId.slice(0,12) + '...');
+}
+
+function showSuccess(data) {
+  document.getElementById('loading-screen').style.display = 'none';
+  document.getElementById('success-screen').style.display = 'block';
+
+  document.getElementById('api-key-display').textContent = data.key_full;
+  document.getElementById('credits-display').textContent = data.credits.toLocaleString();
+
+  if (data.topup) {
+    document.getElementById('type-display').textContent = 'Top-up';
+    document.getElementById('welcome-msg').textContent = 'Your credits have been topped up!';
+  } else {
+    document.getElementById('type-display').textContent = 'New Purchase';
+    document.getElementById('welcome-msg').textContent = 'Welcome! You\'ve purchased credits for my-automaton AI services.';
+  }
+
+  if (data.email) {
+    document.getElementById('email-display').textContent = data.email;
+  }
+
+  // Update curl example
+  const curlCode = document.querySelector('.steps code');
+  if (curlCode) {
+    curlCode.textContent = `curl -H "X-API-Key: ${data.key_full}" ${BASE_URL}/v1/analyze -d '{"text":"Hello world"}'`;
+  }
+}
+
+function showError(msg) {
+  document.getElementById('loading-screen').style.display = 'none';
+  document.getElementById('error-screen').style.display = 'block';
+  document.getElementById('error-msg').textContent = msg;
+}
+
+function copyKey() {
+  const key = document.getElementById('api-key-display').textContent;
+  navigator.clipboard.writeText(key).then(() => {
+    const msg = document.getElementById('copied-msg');
+    msg.style.display = 'block';
+    setTimeout(() => msg.style.display = 'none', 2000);
+  });
+}
+
+main();
+</script>
+<script src="/conversion-banner.js" defer></script>
+</body>
+</html>

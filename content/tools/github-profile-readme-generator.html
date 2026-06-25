@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GitHub Profile README Generator - Create a Stunning Dev Profile</title>
+    <meta name="description" content="Free GitHub Profile README generator. Create a beautiful developer profile with stats, skills, badges, social links, and more. No signup needed.">
+    <meta name="keywords" content="github profile readme generator, github profile, readme generator, developer profile, github stats, shields badges">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://automation.songheng.vip/tools/github-profile-readme-generator.html">
+    <meta property="og:title" content="GitHub Profile README Generator">
+    <meta property="og:description" content="Create a stunning GitHub profile README in seconds. Free, no signup.">
+    <meta property="og:type" content="website">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #0d1117; color: #e6edf3; line-height: 1.6; }
+        .container { max-width: 1100px; margin: 0 auto; padding: 20px; }
+        header { background: linear-gradient(135deg, #161b22, #0d1117); padding: 40px 20px; text-align: center; border-bottom: 1px solid #30363d; }
+        header h1 { font-size: 2.5em; background: linear-gradient(135deg, #58a6ff, #bc8cff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        header p { color: #8b949e; font-size: 1.1em; margin-top: 10px; }
+        .layout { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 30px 0; }
+        @media (max-width: 768px) { .layout { grid-template-columns: 1fr; } }
+        .panel { background: #161b22; border: 1px solid #30363d; border-radius: 8px; padding: 20px; }
+        .panel h2 { color: #58a6ff; margin-bottom: 15px; font-size: 1.2em; }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; color: #8b949e; font-size: 0.9em; margin-bottom: 5px; }
+        input[type="text"], input[type="url"], textarea, select { width: 100%; padding: 10px; border-radius: 6px; border: 1px solid #30363d; background: #0d1117; color: #e6edf3; font-size: 0.95em; }
+        input:focus, textarea:focus, select:focus { outline: none; border-color: #58a6ff; }
+        textarea { min-height: 60px; resize: vertical; }
+        .checkbox-group { display: flex; flex-wrap: wrap; gap: 10px; }
+        .checkbox-group label { display: flex; align-items: center; gap: 5px; color: #e6edf3; cursor: pointer; }
+        .btn { background: #238636; color: #fff; border: none; padding: 12px 24px; border-radius: 6px; font-size: 1em; cursor: pointer; width: 100%; }
+        .btn:hover { background: #2ea043; }
+        .btn.secondary { background: #21262d; }
+        .btn.secondary:hover { background: #30363d; }
+        .output { background: #0d1117; border-radius: 6px; padding: 15px; min-height: 400px; position: relative; }
+        .output pre { overflow-x: auto; font-size: 0.85em; line-height: 1.5; white-space: pre-wrap; word-wrap: break-word; }
+        .copy-btn { position: absolute; top: 10px; right: 10px; background: #21262d; color: #e6edf3; border: 1px solid #30363d; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 0.85em; }
+        .copy-btn:hover { background: #30363d; }
+        .preview-card { background: #0d1117; border: 1px solid #30363d; border-radius: 6px; padding: 20px; margin-top: 15px; }
+        .preview-card h3 { margin-bottom: 10px; color: #e6edf3; }
+        .section-toggle { margin: 5px 0; }
+        .tab-bar { display: flex; gap: 0; margin-bottom: 15px; background: #0d1117; border-radius: 6px; overflow: hidden; border: 1px solid #30363d; }
+        .tab { flex: 1; padding: 10px; text-align: center; cursor: pointer; background: transparent; color: #8b949e; border: none; font-size: 0.9em; }
+        .tab.active { background: #1f6feb; color: #fff; }
+        footer { text-align: center; padding: 30px; color: #484f58; border-top: 1px solid #21262d; margin-top: 40px; }
+        footer a { color: #58a6ff; text-decoration: none; }
+        .badge { display: inline-block; background: #238636; color: #fff; font-size: 0.75em; padding: 2px 8px; border-radius: 12px; }
+    </style>
+</head>
+<body>
+<header>
+    <div class="container">
+        <h1>⭐ GitHub Profile README Generator</h1>
+        <p>Create a stunning developer profile in seconds. Free, no signup, no tracking.</p>
+    </div>
+</header>
+<div class="container">
+    <div class="layout">
+        <div class="panel">
+            <h2>📝 Your Profile</h2>
+            <div class="form-group">
+                <label>GitHub Username *</label>
+                <input type="text" id="username" placeholder="e.g., octocat" value="yourusername">
+            </div>
+            <div class="form-group">
+                <label>Display Name</label>
+                <input type="text" id="displayName" placeholder="e.g., Your Name">
+            </div>
+            <div class="form-group">
+                <label>Bio / Tagline</label>
+                <textarea id="bio" placeholder="e.g., Full-stack developer passionate about open source">Passionate developer building awesome things</textarea>
+            </div>
+            <div class="form-group">
+                <label>Location</label>
+                <input type="text" id="location" placeholder="e.g., San Francisco, CA">
+            </div>
+            <div class="form-group">
+                <label>Portfolio / Website</label>
+                <input type="url" id="website" placeholder="https://yoursite.com">
+            </div>
+            <div class="form-group">
+                <label>Social Links (comma separated)</label>
+                <input type="text" id="socialLinks" placeholder="twitter: @handle, linkedin: username, youtube: channel">
+            </div>
+            <div class="form-group">
+                <label>Skills / Technologies (comma separated)</label>
+                <textarea id="skills" placeholder="JavaScript, TypeScript, React, Node.js, Python, Docker">JavaScript, TypeScript, React, Node.js, Python</textarea>
+            </div>
+            <div class="form-group">
+                <label>Theme</label>
+                <select id="theme">
+                    <option value="dark">🌙 Dark</option>
+                    <option value="radical">💜 Radical</option>
+                    <option value="merko">🌲 Merko</option>
+                    <option value="gruvbox">🧡 Gruvbox</option>
+                    <option value="tokyonight">🌃 Tokyo Night</option>
+                    <option value="onedark">🌑 One Dark</option>
+                    <option value="cobalt">🔵 Cobalt</option>
+                    <option value="synthwave">🌅 Synthwave</option>
+                    <option value="highcontrast">⚡ High Contrast</option>
+                    <option value="dracula">🧛 Dracula</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Sections to Include</label>
+                <div class="checkbox-group">
+                    <label><input type="checkbox" id="includeStats" checked> GitHub Stats</label>
+                    <label><input type="checkbox" id="includeTopLangs" checked> Top Languages</label>
+                    <label><input type="checkbox" id="includeStreak" checked> Streak Stats</label>
+                    <label><input type="checkbox" id="includeTrophies" checked> Trophies</label>
+                    <label><input type="checkbox" id="includeActivity" checked> Activity Graph</label>
+                    <label><input type="checkbox" id="includeSkills" checked> Skills Badges</label>
+                    <label><input type="checkbox" id="includeSocial" checked> Social Links</label>
+                    <label><input type="checkbox" id="includeVisitors" checked> Visitor Counter</label>
+                </div>
+            </div>
+            <button class="btn" onclick="generate()">🚀 Generate README</button>
+            <button class="btn secondary" style="margin-top:8px" onclick="copyOutput()">📋 Copy to Clipboard</button>
+        </div>
+        <div class="panel">
+            <h2>📄 Your README</h2>
+            <div class="tab-bar">
+                <button class="tab active" id="tabCode" onclick="switchTab('code')">Code</button>
+                <button class="tab" id="tabPreview" onclick="switchTab('preview')">Preview</button>
+            </div>
+            <div class="output" id="outputCode">
+                <button class="copy-btn" onclick="copyOutput()">📋 Copy</button>
+                <pre id="outputPre"># 👋 Hello, I'm yourusername!
+
+Adjust the form on the left and click **Generate README**.</pre>
+            </div>
+            <div class="output" id="outputPreview" style="display:none">
+                <div class="preview-card" id="previewContent"></div>
+            </div>
+            <p style="color:#8b949e;font-size:0.85em;margin-top:10px;">
+                <span class="badge">Free</span> Uses GitHub Readme Stats, Streak Stats, and Trophy APIs
+            </p>
+        </div>
+    </div>
+</div>
+<footer>
+    <p>Built by <a href="/">my-automaton</a> · <a href="/tools.html">More Developer Tools</a> · <a href="/api-docs.html">AI API Services</a></p>
+</footer>
+<script>
+function switchTab(tab) {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.getElementById('tab' + tab.charAt(0).toUpperCase() + tab.slice(1)).classList.add('active');
+    document.getElementById('outputCode').style.display = tab === 'code' ? 'block' : 'none';
+    document.getElementById('outputPreview').style.display = tab === 'preview' ? 'block' : 'none';
+}
+
+function generate() {
+    const u = document.getElementById('username').value.trim() || 'yourusername';
+    const name = document.getElementById('displayName').value.trim();
+    const bio = document.getElementById('bio').value.trim();
+    const loc = document.getElementById('location').value.trim();
+    const web = document.getElementById('website').value.trim();
+    const social = document.getElementById('socialLinks').value.trim();
+    const skills = document.getElementById('skills').value.trim();
+    const theme = document.getElementById('theme').value;
+    const incStats = document.getElementById('includeStats').checked;
+    const incLangs = document.getElementById('includeTopLangs').checked;
+    const incStreak = document.getElementById('includeStreak').checked;
+    const incTrophies = document.getElementById('includeTrophies').checked;
+    const incActivity = document.getElementById('includeActivity').checked;
+    const incSkills = document.getElementById('includeSkills').checked;
+    const incSocial = document.getElementById('includeSocial').checked;
+    const incVisitors = document.getElementById('includeVisitors').checked;
+
+    let md = `# 👋 Hello${name ? ', I\\'m ' + name : ''}${!name ? '! I\\'m ' + u : ''}\n\n`;
+    
+    if (bio) md += `${bio}\n\n`;
+    if (loc) md += `📍 ${loc}\n`;
+    if (web) md += `🔗 [${web}](${web})\n\n`;
+    
+    // Visitor counter
+    if (incVisitors) {
+        md += `<p align="center">\n  <img src="https://komarev.com/ghpvc/?username=${u}&label=Profile%20Views&color=${theme === 'dark' ? '0e75b6' : 'blue'}&style=flat" alt="Profile Views" />\n</p>\n\n`;
+    }
+    
+    // Skills badges
+    if (incSkills && skills) {
+        const skillList = skills.split(',').map(s => s.trim()).filter(Boolean);
+        md += `## 🛠️ Tech Stack\n\n`;
+        md += `<p align="center">\n`;
+        skillList.forEach(s => {
+            const encoded = encodeURIComponent(s);
+            md += `  <img src="https://img.shields.io/badge/${encoded}-333?style=for-the-badge&logo=${s.toLowerCase()}&logoColor=white" alt="${s}" />\n`;
+        });
+        md += `</p>\n\n`;
+    }
+    
+    // Social links
+    if (incSocial && social) {
+        md += `## 🌐 Connect with Me\n\n`;
+        md += `<p align="center">\n`;
+        social.split(',').forEach(link => {
+            const [platform, handle] = link.split(':').map(s => s.trim());
+            if (platform && handle) {
+                const p = platform.toLowerCase();
+                const icon = p === 'twitter' ? 'twitter' : p === 'linkedin' ? 'linkedin' : p === 'youtube' ? 'youtube' : 'globe';
+                const url = p === 'twitter' ? `https://twitter.com/${handle}` : p === 'linkedin' ? `https://linkedin.com/in/${handle}` : p === 'youtube' ? `https://youtube.com/${handle}` : handle;
+                md += `  <a href="${url}"><img src="https://img.shields.io/badge/${platform}-333?style=for-the-badge&logo=${icon}&logoColor=white" /></a>\n`;
+            }
+        });
+        md += `</p>\n\n`;
+    }
+
+    // Stats section
+    if (incStats || incLangs || incStreak) {
+        let statsMd = '';
+        if (incStats) {
+            statsMd += `<img src="https://github-readme-stats.vercel.app/api?username=${u}&show_icons=true&theme=${theme}&hide_border=true&count_private=true" />\n`;
+        }
+        if (incLangs) {
+            statsMd += `<img src="https://github-readme-stats.vercel.app/api/top-langs/?username=${u}&theme=${theme}&hide_border=true&layout=compact" />\n`;
+        }
+        if (incStreak) {
+            statsMd += `<img src="https://github-readme-streak-stats.herokuapp.com/?user=${u}&theme=${theme}&hide_border=true" />\n`;
+        }
+        if (statsMd) {
+            md += `## 📊 GitHub Stats\n\n`;
+            md += `<p align="center">\n${statsMd.trim().split('\n').map(l => `  ${l}`).join('\n')}\n</p>\n\n`;
+        }
+    }
+    
+    // Activity graph
+    if (incActivity) {
+        md += `## 📈 Activity Graph\n\n`;
+        md += `<p align="center">\n  <img src="https://github-readme-activity-graph.vercel.app/graph?username=${u}&theme=${theme === 'dark' ? 'github-dark' : theme}&hide_border=true" />\n</p>\n\n`;
+    }
+    
+    // Trophies
+    if (incTrophies) {
+        md += `## 🏆 GitHub Trophies\n\n`;
+        md += `<p align="center">\n  <img src="https://github-profile-trophy.vercel.app/?username=${u}&theme=${theme}&no-frame=true&no-bg=true&column=7" />\n</p>\n\n`;
+    }
+
+    // Footer
+    md += `---\n<p align="center"><i>Generated with ❤️ using <a href="https://automation.songheng.vip/tools/github-profile-readme-generator.html">my-automaton README Generator</a></i></p>\n`;
+
+    document.getElementById('outputPre').textContent = md;
+    
+    // Render preview
+    const preview = document.getElementById('previewContent');
+    preview.innerHTML = md
+        .replace(/^# (.*$)/gm, '<h1>$1</h1>')
+        .replace(/^## (.*$)/gm, '<h2>$1</h2>')
+        .replace(/^### (.*$)/gm, '<h3>$1</h3>')
+        .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+        .replace(/\*(.*?)\*/g, '<em>$1</em>')
+        .replace(/\[(.*?)\]\((.*?)\)/g, '<a href="$2">$1</a>')
+        .replace(/\n/g, '<br>')
+        .replace(/---<br>/g, '<hr>')
+        .replace(/<br><br>/g, '<br>')
+        .replace(/<p align="center">/g, '<div style="text-align:center">')
+        .replace(/<\/p>/g, '</div>');
+}
+
+function copyOutput() {
+    const text = document.getElementById('outputPre').textContent;
+    navigator.clipboard.writeText(text).then(() => {
+        const btn = document.querySelector('.copy-btn');
+        btn.textContent = '✅ Copied!';
+        setTimeout(() => { btn.textContent = '📋 Copy'; }, 2000);
+    });
+}
+
+// Generate on load
+window.onload = function() {
+    // Set default values for demo
+    document.getElementById('username').value = 'octocat';
+    document.getElementById('displayName').value = 'The Octocat';
+    document.getElementById('bio').value = '🎯 GitHub\'s mascot | 🐙 Octopus + Cat = Octocat | 💻 Open source enthusiast';
+    document.getElementById('location').value = 'San Francisco, CA';
+    document.getElementById('website').value = 'https://github.com';
+    document.getElementById('socialLinks').value = 'twitter: github, linkedin: github';
+    document.getElementById('skills').value = 'JavaScript, TypeScript, Python, Go, Rust, Docker, Kubernetes, React, Node.js';
+    generate();
+};
+</script>
+<script defer data-domain="automation.songheng.vip" src="https://plausible.io/js/script.js"></script>
+</body>
+</html>

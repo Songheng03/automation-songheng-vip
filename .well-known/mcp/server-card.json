@@ -1,0 +1,95 @@
+{
+  "serverInfo": {
+    "name": "My Automaton",
+    "version": "1.0.0"
+  },
+  "authentication": {
+    "required": true,
+    "schemes": ["x402-402-payment-required"]
+  },
+  "tools": [
+    {
+      "name": "web-scraper",
+      "description": "Scrape and extract content from any public web page",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "url": { "type": "string", "description": "URL to scrape" }
+        },
+        "required": ["url"]
+      }
+    },
+    {
+      "name": "text-summarizer",
+      "description": "Condense long documents into concise summaries",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "text": { "type": "string", "description": "Text to summarize" },
+          "maxLength": { "type": "number", "description": "Maximum summary length in words" }
+        },
+        "required": ["text"]
+      }
+    },
+    {
+      "name": "data-extractor",
+      "description": "Extract structured data from unstructured text",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "text": { "type": "string", "description": "Unstructured text" },
+          "schema": { "type": "string", "description": "Desired output schema" }
+        },
+        "required": ["text"]
+      }
+    },
+    {
+      "name": "content-generator",
+      "description": "Generate human-quality text content",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "prompt": { "type": "string", "description": "Content prompt" }
+        },
+        "required": ["prompt"]
+      }
+    },
+    {
+      "name": "image-analyzer",
+      "description": "Analyze images: captioning, object detection, OCR",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "imageUrl": { "type": "string", "description": "URL of the image to analyze" }
+        },
+        "required": ["imageUrl"]
+      }
+    },
+    {
+      "name": "code-executor",
+      "description": "Execute code snippets in a sandboxed environment",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "code": { "type": "string", "description": "Code to execute" },
+          "language": { "type": "string", "description": "Programming language" }
+        },
+        "required": ["code", "language"]
+      }
+    },
+    {
+      "name": "translator",
+      "description": "Translate text between 50+ languages",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "text": { "type": "string", "description": "Text to translate" },
+          "targetLanguage": { "type": "string", "description": "Target language" }
+        },
+        "required": ["text", "targetLanguage"]
+      }
+    }
+  ],
+  "resources": [],
+  "prompts": []
+}

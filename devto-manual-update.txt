@@ -1,0 +1,35 @@
+=== MANUAL UPDATE INSTRUCTIONS: Dev.to Canonical URL ===
+
+GOAL: Update your Dev.to article's canonical URL to "https://automation.songheng.vip"
+
+PREREQUISITES:
+  - A Dev.to account with an existing published article
+  - Your Dev.to API key (get it from https://dev.to/settings/extensions)
+  - The article ID (numeric ID visible in your article's URL or dashboard)
+
+OPTION 1 — Via the Dev.to Web UI (Easiest):
+  1. Go to https://dev.to/dashboard
+  2. Find your article and click "Edit"
+  3. Scroll down to the "Canonical URL" field (under "More settings" or "Advanced")
+  4. Enter: https://automation.songheng.vip
+  5. Click "Save changes" / "Publish"
+
+OPTION 2 — Via the Dev.to API with curl:
+  export DEV_TO_API_KEY="your-api-key-here"
+  export DEV_TO_ARTICLE_ID="your-article-id-here"
+
+  curl -X PUT "https://dev.to/api/articles/${DEV_TO_ARTICLE_ID}" \
+    -H "Content-Type: application/json" \
+    -H "api-key: ${DEV_TO_API_KEY}" \
+    -d '{"article":{"canonical_url":"https://automation.songheng.vip"}}'
+
+OPTION 3 — Use the provided script:
+  1. Set environment variables:
+     export DEV_TO_ARTICLE_ID="your-article-id"
+     export DEV_TO_API_KEY="your-api-key"
+  2. Run: bash /root/automaton/update-devto-canonical.sh
+
+NOTE: The canonical URL change tells Dev.to that the original source of
+this article is https://automation.songheng.vip, which helps with SEO.
+
+=== END ===

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="canonical" href="https://automation.songheng.vip/tools/html-entity-encoder.html">
+  <meta property="og:title" content="Free Online HTML Entity Encoder/Decoder | my-automaton">
+  <meta property="og:description" content="Encode special characters to HTML entities and decode entities back. Free online HTML escaping tool.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://automation.songheng.vip/tools/html-entity-encoder.html">
+  <meta property="og:image" content="https://automation.songheng.vip/og-image.png"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Free Online HTML Entity Encoder/Decoder | my-automaton</title>
+<meta name="description" content="Encode special characters to HTML entities and decode entities back. Free online HTML escaping tool.">
+<style>*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#0d1117;color:#c9d1d9;padding:20px;max-width:700px;margin:0 auto;line-height:1.6}
+h1{color:#58a6ff}p{color:#8b949e;margin-bottom:20px}
+textarea{width:100%;min-height:150px;background:#0d1117;border:1px solid #30363d;border-radius:8px;padding:14px;color:#c9d1d9;font-family:monospace;font-size:13px;resize:vertical}
+textarea:focus{outline:none;border-color:#58a6ff}
+.controls{display:flex;gap:10px;flex-wrap:wrap;margin:10px 0}
+.btn{padding:10px 24px;border:none;border-radius:6px;font-weight:600;cursor:pointer;font-size:.9rem}
+.btn-primary{background:#238636;color:#fff}.btn-primary:hover{background:#2ea043}
+.btn-secondary{background:#21262d;color:#c9d1d9}.btn-secondary:hover{background:#30363d}
+.output-box{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:16px;margin:12px 0;min-height:60px;font-family:monospace;font-size:.85rem;word-break:break-all}
+nav a{color:#58a6ff;text-decoration:none;margin-right:15px;font-size:.9rem}
+.copy-btn{background:transparent;border:1px solid #30363d;color:#58a6ff;padding:6px 14px;border-radius:4px;cursor:pointer;font-size:.8rem}
+.copy-btn:hover{background:#30363d}
+</style>
+<meta name="google-site-verification" content="YOUR_CODE" />
+<meta property="og:site_name" content="my-automaton" />
+<meta property="og:type" content="website" />
+<meta property="og:locale" content="en_US" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:site" content="@my_automaton" />
+<script src="/js/analytics.js"></script>
+<!-- Open Graph / Social Meta Tags -->
+<meta name="twitter:title" content="Free Online HTML Entity Encoder/Decoder | my-automaton" />
+<meta name="twitter:description" content="Encode special characters to HTML entities and decode entities back. Free online HTML escaping tool." />
+<meta name="twitter:image" content="https://automation.songheng.vip/og-image.png" />
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Free Online HTML Entity Encoder/Decoder | my-automaton",
+  "description": "Encode special characters to HTML entities and decode entities back. Free online HTML escaping tool.",
+  "url": "https://automation.songheng.vip/tools/html-entity-encoder.html",
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": "Web",
+  "author": {
+    "@type": "Organization",
+    "name": "my-automaton",
+    "url": "https://automation.songheng.vip"
+  },
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  }
+}
+</script>
+</head>
+<body>
+<nav><a href="/">🏠 Home</a> <a href="/tools">🔧 Dev Tools</a></nav>
+<h1>&amp; HTML Entity Encoder / Decoder</h1>
+<p>Convert special characters to HTML entities and decode entities back to readable text.</p>
+<textarea id="input" placeholder="Paste text with HTML entities or special chars..."><div class="header">Hello & Welcome</div></textarea>
+<div class="controls">
+<button class="btn btn-primary" onclick="encode()">🔒 Encode Entities</button>
+<button class="btn btn-secondary" onclick="decode()">🔓 Decode Entities</button>
+<button class="btn btn-secondary" onclick="clearAll()">Clear</button>
+</div>
+<div class="output-box" id="output">Results...</div>
+<div class="controls"><button class="copy-btn" onclick="copyOutput()">📋 Copy</button><span id="info" style="color:#8b949e;font-size:.8rem"></span></div>
+<script>
+const ENTITY_MAP={'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;','/':'&#x2F;','`':'&#x60;','=':'&#x3D;','©':'&copy;','®':'&reg;','™':'&trade;','€':'&euro;','£':'&pound;','¥':'&yen;','→':'&rarr;','←':'&larr;','•':'&bull;','✓':'&check;','✗':'&cross;'};
+function encode(){let text=document.getElementById('input').value;let result='';for(const ch of text){result+=ENTITY_MAP[ch]||ch;}document.getElementById('output').textContent=result;document.getElementById('info').textContent=`${text.length} → ${result.length} chars`;}
+function decode(){let text=document.getElementById('input').value;const el=document.createElement('div');el.innerHTML=text;document.getElementById('output').textContent=el.textContent||el.innerText||'';document.getElementById('info').textContent='✓ Decoded';}
+function clearAll(){document.getElementById('input').value='';document.getElementById('output').textContent='Results...';document.getElementById('info').textContent='';}
+function copyOutput(){const t=document.getElementById('output').textContent;if(!t||t==='Results...')return;navigator.clipboard.writeText(t).then(()=>{const b=document.querySelector('.copy-btn');b.textContent='✓ Copied!';setTimeout(()=>b.textContent='📋 Copy',2000);});}
+</script>
+<div class="share-bar" style="position:fixed;bottom:20px;right:20px;z-index:9999;display:flex;gap:8px;background:rgba(0,0,0,0.85);padding:10px 14px;border-radius:30px;backdrop-filter:blur(8px);box-shadow:0 2px 12px rgba(0,0,0,0.3)">
+<button onclick="window.open('https://twitter.com/intent/tweet?text='+encodeURIComponent(document.title)+'&url='+encodeURIComponent(location.href),'_blank')" style="background:#1DA1F2;border:none;color:white;padding:8px 12px;border-radius:20px;cursor:pointer;font-size:13px;font-weight:bold">X</button>
+<button onclick="window.open('https://www.linkedin.com/sharing/share-offsite/?url='+encodeURIComponent(location.href),'_blank')" style="background:#0A66C2;border:none;color:white;padding:8px 12px;border-radius:20px;cursor:pointer;font-size:13px;font-weight:bold">in</button>
+<button onclick="window.open('https://reddit.com/submit?url='+encodeURIComponent(location.href)+'&title='+encodeURIComponent(document.title),'_blank')" style="background:#FF4500;border:none;color:white;padding:8px 12px;border-radius:20px;cursor:pointer;font-size:13px;font-weight:bold">r</button>
+</div>
+<script src="/js/share-widget.js"></script>
+</body>
+</html>

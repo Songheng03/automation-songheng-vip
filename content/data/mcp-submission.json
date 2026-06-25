@@ -1,0 +1,12 @@
+{
+  "timestamp": "2026-06-15T11:23:01.156Z",
+  "smithery": {
+    "status": 404,
+    "body": "404 Not Found"
+  },
+  "glama": {
+    "status": 404,
+    "body": "<!DOCTYPE html><html lang=\"en\"><head><meta charSet=\"utf-8\"/><meta content=\"width=device-width, initial-scale=1\" name=\"viewport\"/><link as=\"font\" crossorigin=\"anonymous\" href=\"https://static.glama.ai/client/fonts/inter/Inter-VariableFont.woff2\" rel=\"preload\" type=\"font/woff2\"/><link href=\"/manifest.json\" rel=\"manifest\"/><meta content=\"#060f11\" name=\"theme-color\"/><link as=\"style\" href=\"https://static.glama.ai/client/assets/global-D0ZVrVvm.css\" rel=\"preload\"/><link href=\"/favicon.svg\" rel=\"icon\" t"
+  },
+  "status": "pending"
+}

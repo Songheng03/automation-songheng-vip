@@ -1,0 +1,83 @@
+{
+  "platform": "PulseMCP",
+  "platform_url": "https://pulsemcp.com",
+  "research_file": "workspace/research/pulsemcp.json",
+  "service": "my-automaton",
+  "submission_attempted": false,
+  "automatable": false,
+  "submission_method": "web_form_or_registry_ingestion",
+  "reason": "Not automatable — PulseMCP submission requires either (a) manual web form submission at https://pulsemcp.com/submit which is behind Cloudflare with no public API available, or (b) automatic ingestion from the Official MCP Registry where my-automaton is not listed.",
+  "details": {
+    "pulsemcp_submission_requirements": {
+      "description": "PulseMCP is a directory for MCP servers, clients, apps, and use cases.",
+      "submission_methods": [
+        {
+          "method": "Web form",
+          "url": "https://pulsemcp.com/submit",
+          "required_fields": [
+            {
+              "name": "URL",
+              "description": "GitHub repository URL, subfolder of a repository, or standalone website URL"
+            }
+          ],
+          "access_status": "BLOCKED - Cloudflare protection prevents automated access",
+          "automatable": false
+        },
+        {
+          "method": "Automatic ingestion from Official MCP Registry",
+          "description": "PulseMCP ingests entries from the Official MCP Registry daily and processes them weekly",
+          "prerequisite": "Must be published in the Official MCP Registry",
+          "prerequisite_met": false
+        },
+        {
+          "method": "API (mentioned in research)",
+          "note": "No public REST/graphQL API endpoint was identified. The /api/servers endpoint returns HTML (Rails app behind Cloudflare)."
+        }
+      ]
+    },
+    "my_automaton_actual_state": {
+      "type": "MCP server (presumed Node.js-based automation server)",
+      "description_short": "my-automaton provides a ready-to-use MCP server for automation tasks, accessible at https://automation.songheng.vip/mcp",
+      "description_long": "A lightweight Model Context Protocol (MCP) server designed to bridge AI assistants with real-world automation.",
+      "endpoint": "https://automation.songheng.vip/mcp",
+      "endpoint_status": "HTTP 404 — Not Found (service not deployed or unavailable)",
+      "website": "https://automation.songheng.vip",
+      "github_repository": "None found — no public GitHub repository exists for my-automaton (GitHub API search returned 0 exact matches)",
+      "npm_package": "Not found — my-automaton is not published to npm",
+      "official_mcp_registry_listing": "Not found — my-automaton is not listed in the Official MCP Registry",
+      "primary_language": "JavaScript / Node.js (inferred from descriptions)"
+    },
+    "blockers": [
+      {
+        "issue": "Cloudflare protection blocks automated submission",
+        "detail": "The PulseMCP submission page (https://pulsemcp.com/submit) returns HTTP 403 and the /api/servers endpoint returns Cloudflare challenge page. No programmatic submission is possible from CLI/bot environments."
+      },
+      {
+        "issue": "No public API for submission",
+        "detail": "PulseMCP is a Ruby on Rails application served behind Cloudflare. No public REST API endpoint for creating submissions was identified. The only API-like endpoint (/api/servers) also goes through Cloudflare."
+      },
+      {
+        "issue": "No GitHub repository exists for my-automaton",
+        "detail": "PulseMCP's web form requires a URL (GitHub repository URL is the primary option). my-automaton has no public GitHub repository to submit."
+      },
+      {
+        "issue": "Not in Official MCP Registry",
+        "detail": "PulseMCP automatically ingests from the Official MCP Registry. my-automaton is not listed there, so automatic discovery cannot pick it up."
+      },
+      {
+        "issue": "MCP endpoint not live",
+        "detail": "The my-automaton MCP endpoint (https://automation.songheng.vip/mcp) returns HTTP 404, indicating the service is not currently deployed."
+      },
+      {
+        "issue": "Not published to npm or any package registry",
+        "detail": "my-automaton is not published to npm, PyPI, or any other package registry that could be used as a submission reference URL."
+      }
+    ],
+    "recommendation": "For PulseMCP submission to be possible, the maintainer of my-automaton should: (1) create a public GitHub repository containing the MCP server source code, (2) ensure the MCP endpoint is deployed and accessible, (3) optionally get listed in the Official MCP Registry for automatic discovery, (4) manually submit the repository URL via PulseMCP's web form at https://pulsemcp.com/submit using a browser. Until these prerequisites are met, submission to PulseMCP is not feasible.",
+    "listing_assets_available": {
+      "descriptions": "workspace/listing_assets/descriptions.md",
+      "tags": "workspace/listing_assets/tags.json"
+    },
+    "timestamp": "2026-06-18T00:00:00Z"
+  }
+}

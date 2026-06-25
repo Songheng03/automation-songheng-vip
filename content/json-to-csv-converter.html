@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Free JSON to CSV Converter — Convert JSON to CSV Online | my-automaton</title>
+<meta name="description" content="Free online JSON to CSV converter. Convert JSON arrays to CSV format instantly in your browser. Supports nested flattening, custom delimiters, and column selection. 100% client-side. No signup needed.">
+<meta name="keywords" content="json to csv, json to csv converter, convert json to csv, json to excel, json array to csv, free json to csv, online json to csv">
+<link rel="canonical" href="https://automation.songheng.vip/json-to-csv-converter.html">
+<meta property="og:title" content="Free JSON to CSV Converter — my-automaton">
+<meta property="og:description" content="Convert JSON arrays to CSV instantly in your browser. Free and private.">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#0d1117;color:#c9d1d9;line-height:1.6}
+.container{max-width:1100px;margin:0 auto;padding:2rem}
+h1{font-size:2.2rem;color:#58a6ff;margin-bottom:.5rem;text-align:center}
+.subtitle{text-align:center;color:#8b949e;margin-bottom:1.5rem}
+.tool-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem}
+@media(max-width:768px){.tool-row{grid-template-columns:1fr}}
+.panel{background:#161b22;border:1px solid #30363d;border-radius:10px;padding:1.5rem}
+.panel h2{color:#58a6ff;font-size:1rem;margin-bottom:.8rem}
+textarea{width:100%;height:250px;background:#0d1117;border:1px solid #30363d;border-radius:6px;color:#c9d1d9;padding:12px;font-family:'Fira Code','Consolas',monospace;font-size:.85rem;resize:vertical}
+textarea:focus{border-color:#58a6ff;outline:none}
+.btn-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+.btn{background:#238636;color:#fff;padding:10px 20px;border-radius:6px;border:none;cursor:pointer;font-size:.85rem;font-weight:600;transition:background .2s;text-decoration:none;display:inline-block}
+.btn:hover{background:#2ea043}
+.btn-gray{background:#30363d}.btn-gray:hover{background:#484f58}
+.controls{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:1rem}
+.controls label{font-size:.8rem;color:#8b949e;display:flex;align-items:center;gap:6px}
+.controls select, .controls input[type=text]{background:#0d1117;border:1px solid #30363d;color:#c9d1d9;padding:6px 10px;border-radius:4px;font-size:.8rem}
+.stats{font-size:.8rem;color:#8b949e;margin-top:5px}
+.error-msg{color:#f85149;font-size:.8rem;margin-top:4px;white-space:pre-wrap}
+.cta-box{text-align:center;background:linear-gradient(135deg,#1a2332,#162032);border:1px solid #d29922;border-radius:12px;padding:2rem;margin:2rem 0}
+.cta-box h2{color:#d29922;margin-bottom:.5rem}
+.cta-box p{color:#8b949e;margin-bottom:1rem}
+.cta-btn{display:inline-block;background:#238636;color:#fff;padding:12px 32px;border-radius:8px;text-decoration:none;font-weight:600}
+.cta-btn:hover{background:#2ea043}
+footer{text-align:center;padding:2rem;color:#484f58;font-size:.85rem;border-top:1px solid #30363d;margin-top:3rem}
+footer a{color:#58a6ff;text-decoration:none}
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>📊 JSON to CSV Converter</h1>
+  <p class="subtitle">Convert JSON arrays to CSV format instantly. Free, fast, 100% private — all in your browser.</p>
+
+  <div class="controls">
+    <label>Delimiter: <input type="text" id="delimiter" value="," maxlength="3" style="width:60px"></label>
+    <label><input type="checkbox" id="quoteAll"> Quote all values</label>
+    <label><input type="checkbox" id="flattenNested" checked> Flatten nested objects</label>
+  </div>
+
+  <div class="tool-row">
+    <div class="panel">
+      <h2>📋 JSON Input</h2>
+      <textarea id="jsonInput" placeholder='Paste JSON array of objects...&#10;Example:&#10;[&#10;  {"name":"Alice","age":30,"city":"NYC"},&#10;  {"name":"Bob","age":25,"city":"LA"},&#10;  {"name":"Charlie","age":35,"city":"Chicago"}&#10;]' oninput="autoConvert()"></textarea>
+      <div class="btn-row">
+        <button class="btn" onclick="convertToCSV()">🔄 Convert</button>
+        <button class="btn btn-gray" onclick="clearAll()">🗑 Clear</button>
+      </div>
+      <div class="error-msg" id="error"></div>
+    </div>
+    <div class="panel">
+      <h2>✨ CSV Output</h2>
+      <textarea id="csvOutput" readonly placeholder="CSV output will appear here..."></textarea>
+      <div class="stats" id="stats"></div>
+      <div class="btn-row">
+        <button class="btn" onclick="copyCSV()">📋 Copy CSV</button>
+        <button class="btn btn-gray" onclick="downloadCSV()">💾 Download .csv</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="cta-box">
+    <h2>🚀 Need to Process Large JSON Datasets?</h2>
+    <p>Our AI-powered APIs handle JSON analysis, transformation, batch processing, and format conversion at scale.</p>
+    <a href="/api-docs.html" class="cta-btn">📖 View API Docs & Pricing</a>
+    <a href="/dev-tools.html" style="margin-left:10px;display:inline-block;background:#30363d;color:#fff;padding:12px 32px;border-radius:8px;text-decoration:none;font-weight:600">🛠 All Free Tools</a>
+  </div>
+
+  <footer>
+    <p>Powered by <a href="/">my-automaton</a> — free developer tools, AI code review, security scanning, and more.</p>
+    <p style="margin-top:8px"><a href="/">🏠 Home</a> · <a href="/api-docs.html">📖 API Docs</a> · <a href="/dev-tools.html">🛠 Tools</a> · <a href="/blog.html">📝 Blog</a></p>
+  </footer>
+</div>
+<script>
+const jsonInput = document.getElementById('jsonInput');
+const csvOutput = document.getElementById('csvOutput');
+const errorEl = document.getElementById('error');
+const statsEl = document.getElementById('stats');
+
+function flattenObj(obj, prefix = '') {
+  const result = {};
+  for (const [k, v] of Object.entries(obj)) {
+    const key = prefix ? `${prefix}.${k}` : k;
+    if (v !== null && typeof v === 'object' && !Array.isArray(v)) {
+      Object.assign(result, flattenObj(v, key));
+    } else {
+      result[key] = v;
+    }
+  }
+  return result;
+}
+
+function csvEscape(val, always = false) {
+  if (val === null || val === undefined) return '';
+  let s = String(val);
+  if (always || s.includes(',') || s.includes('"') || s.includes('\n')) {
+    return '"' + s.replace(/"/g, '""') + '"';
+  }
+  return s;
+}
+
+function autoConvert() {
+  if (jsonInput.value.trim()) convertToCSV();
+}
+
+function convertToCSV() {
+  const raw = jsonInput.value.trim();
+  errorEl.textContent = '';
+  statsEl.textContent = '';
+  if (!raw) { csvOutput.value = ''; return; }
+  try {
+    let data = JSON.parse(raw);
+    if (!Array.isArray(data)) {
+      if (typeof data === 'object' && data !== null) data = [data];
+      else throw new Error('Input must be a JSON array or object');
+    }
+    if (data.length === 0) { csvOutput.value = ''; statsEl.textContent = 'Empty array'; return; }
+    const flatten = document.getElementById('flattenNested').checked;
+    const delim = document.getElementById('delimiter').value || ',';
+    const quoteAll = document.getElementById('quoteAll').checked;
+    const processed = flatten ? data.map(item => flattenObj(item)) : data;
+    const headers = [...new Set(processed.flatMap(Object.keys))];
+    const lines = [headers.map(h => csvEscape(h, quoteAll)).join(delim)];
+    for (const row of processed) {
+      lines.push(headers.map(h => csvEscape(h in row ? row[h] : '', quoteAll)).join(delim));
+    }
+    csvOutput.value = lines.join('\n');
+    statsEl.textContent = `${data.length} row(s) · ${headers.length} column(s)`;
+  } catch(e) {
+    errorEl.textContent = '❌ ' + e.message;
+    csvOutput.value = '';
+  }
+}
+
+function copyCSV() {
+  const t = csvOutput.value;
+  if (!t) return;
+  navigator.clipboard.writeText(t).then(() => {
+    const b = event.target;
+    b.textContent = '✅ Copied!';
+    setTimeout(() => b.textContent = '📋 Copy CSV', 1500);
+  });
+}
+
+function downloadCSV() {
+  const t = csvOutput.value;
+  if (!t) return;
+  const blob = new Blob([t], { type: 'text/csv' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = 'converted.csv'; a.click();
+  URL.revokeObjectURL(url);
+}
+
+function clearAll() {
+  jsonInput.value = ''; csvOutput.value = ''; errorEl.textContent = ''; statsEl.textContent = '';
+}
+</script>
+<script src="/conversion-banner.js" defer></script>
+</body>
+</html>

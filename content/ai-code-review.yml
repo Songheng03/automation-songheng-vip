@@ -1,0 +1,29 @@
+name: AI Code Review
+on: [pull_request]
+jobs:
+  review:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: AI Code Review
+        id: review
+        run: |
+          DIFF=$(git diff origin/main -- '*.js' '*.ts' '*.py' '*.go' '*.rs' '*.java' | head -200)
+          if [ -z "$DIFF" ]; then echo "No diff found"; exit 0; fi
+          REVIEW=$(curl -s -X POST https://automation.songheng.vip/api/free/review \
+            -H "Content-Type: application/json" \
+            -d "{\"text\": $(echo "$DIFF" | jq -Rs .)}")
+          echo "review<<EOF" >> $GITHUB_OUTPUT
+          echo "$REVIEW" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+      - name: Post Review Comment
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const review = `${{ steps.review.outputs.review }}`;
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: `## 🤖 AI Code Review\n\n${review}\n\n---\n_Powered by [my-automaton](https://automation.songheng.vip) — Free tier: 3 reviews/day_`
+            });

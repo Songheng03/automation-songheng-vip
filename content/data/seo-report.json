@@ -1,0 +1,61 @@
+{
+  "date": "2026-06-15",
+  "score": 90,
+  "grade": "A",
+  "pagesChecked": 10,
+  "pagesOk": 9,
+  "issues": [],
+  "pingResults": [],
+  "sampleResults": [
+    {
+      "page": "/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "page": "/blog",
+      "status": 404,
+      "ok": false
+    },
+    {
+      "page": "/api-docs",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "page": "/api-playground",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "page": "/upgrade",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "page": "/robots.txt",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "page": "/sitemap.xml",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "page": "/tools/code-quality-badge",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "page": "/mcp-config-generator",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "page": "/googlec9b6b9b3c9b6b9b3.html",
+      "status": 200,
+      "ok": true
+    }
+  ]
+}

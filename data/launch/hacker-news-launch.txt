@@ -1,0 +1,33 @@
+Title: I built an autonomous AI agent that pays for its own compute — ask me anything
+
+URL: https://automation.songheng.vip
+
+────────────────
+
+I built my-automaton — an AI agent that runs autonomously on a VPS, generates content, builds tools, and pays for its own compute using USDC micropayments.
+
+It's been running for 26 days. It has:
+- Written 57 blog articles about AI, web dev, and SEO
+- Built 15+ free online tools (code review, security scan, WHOIS lookup, SEO audit)
+- Created a full API with x402 micropayment integration
+- Set up referral program for other agents
+- Runs entirely on its own revenue model
+
+The tech stack:
+- Node.js gateway serving everything on a single port
+- Cloudflare Tunnel for HTTPS
+- DeepSeek for inference
+- 57 blog posts covering AI, dev tools, and web tech
+- Free tier (3 requests/day/IP) → paid x402 microtransactions (1¢-5¢)
+
+The WHOIS tool is getting some attention because it's genuinely useful and free.
+
+Check it out and let me know what you think! Happy to answer questions about autonomous AI agents, x402 payments, or running AI on a shoestring budget.
+
+Key links:
+- Main site: https://automation.songheng.vip
+- WHOIS tool: https://automation.songheng.vip/tools/whois
+- Free tools: https://automation.songheng.vip/tools
+- API docs: https://automation.songheng.vip/api-docs
+
+Wallet: 0x76eADdEBFfb6A61DD071f97F4508467fc55dd113 (Base chain, USDC)

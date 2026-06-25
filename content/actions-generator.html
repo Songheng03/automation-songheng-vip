@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GitHub Actions AI Code Review Workflow Generator — Free | my-automaton</title>
+<meta name="description" content="Generate a complete GitHub Actions workflow for AI-powered code review in seconds. Customize language, review type, triggers, and get a ready-to-use YAML. Free, no signup.">
+<meta name="keywords" content="github actions, ai code review, workflow generator, YAML generator, CI/CD, automated code review, pull request review, free">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;background:linear-gradient(135deg,#0d1117 0%,#161b22 100%);color:#c9d1d9;line-height:1.6;min-height:100vh}
+.container{max-width:1100px;margin:0 auto;padding:32px 20px}
+header{text-align:center;margin-bottom:40px}
+h1{font-size:2.2rem;background:linear-gradient(135deg,#58a6ff,#3fb950);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:8px}
+.subtitle{color:#8b949e;font-size:1.1rem;max-width:700px;margin:0 auto}
+.layout{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+@media(max-width:900px){.layout{grid-template-columns:1fr}}
+.card{background:#161b22;border:1px solid #30363d;border-radius:12px;padding:24px}
+.card h2{font-size:1.2rem;margin-bottom:16px;color:#58a6ff}
+.form-group{margin-bottom:16px}
+label{display:block;font-size:0.9rem;color:#8b949e;margin-bottom:6px;font-weight:500}
+select,input[type="text"]{width:100%;padding:10px 14px;background:#0d1117;border:1px solid #30363d;border-radius:8px;color:#c9d1d9;font-size:0.95rem;font-family:inherit}
+select:focus,input:focus{outline:none;border-color:#58a6ff;box-shadow:0 0 0 3px rgba(88,166,255,0.15)}
+.checkbox-group{display:flex;flex-wrap:wrap;gap:8px}
+.chip{display:flex;align-items:center;gap:6px;padding:8px 14px;background:#0d1117;border:1px solid #30363d;border-radius:20px;cursor:pointer;font-size:0.85rem;transition:all .2s;user-select:none}
+.chip:hover{border-color:#58a6ff}
+.chip.selected{background:rgba(88,166,255,0.15);border-color:#58a6ff;color:#58a6ff}
+.chip input{display:none}
+.trigger-chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.trigger-chip{padding:6px 14px;background:#0d1117;border:1px solid #30363d;border-radius:20px;cursor:pointer;font-size:0.85rem;transition:all .2s;user-select:none}
+.trigger-chip:hover{border-color:#3fb950}
+.trigger-chip.selected{background:rgba(63,185,80,0.15);border-color:#3fb950;color:#3fb950}
+.trigger-chip input{display:none}
+.output-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.copy-btn{padding:8px 16px;background:#238636;border:none;border-radius:6px;color:#fff;font-size:0.85rem;cursor:pointer;font-weight:600;transition:background .2s}
+.copy-btn:hover{background:#2ea043}
+.copy-btn.copied{background:#3fb950}
+pre{background:#0d1117;border:1px solid #30363d;border-radius:8px;padding:16px;overflow-x:auto;font-family:'SF Mono','Fira Code','Consolas',monospace;font-size:0.85rem;line-height:1.5;max-height:600px;overflow-y:auto;white-space:pre}
+code{color:#7ee787}
+.explanation{margin-top:16px;padding:16px;background:rgba(88,166,255,0.05);border:1px solid rgba(88,166,255,0.2);border-radius:8px;font-size:0.9rem;color:#8b949e}
+.explanation strong{color:#58a6ff}
+.cta-section{text-align:center;margin-top:40px;padding:32px;background:linear-gradient(135deg,rgba(88,166,255,0.1),rgba(63,185,80,0.1));border:1px solid #30363d;border-radius:12px}
+.cta-section h3{font-size:1.3rem;margin-bottom:8px}
+.cta-section p{margin-bottom:16px;color:#8b949e}
+.btn{display:inline-block;padding:12px 28px;background:#238636;color:#fff;text-decoration:none;border-radius:8px;font-weight:600;transition:all .2s;margin:4px}
+.btn:hover{background:#2ea043;transform:translateY(-1px)}
+.btn-outline{background:transparent;border:1px solid #58a6ff;color:#58a6ff}
+.btn-outline:hover{background:rgba(88,166,255,0.1);transform:translateY(-1px)}
+.nav{display:flex;gap:12px;margin-bottom:24px;flex-wrap:wrap}
+.nav a{color:#8b949e;text-decoration:none;font-size:0.9rem;padding:6px 14px;border:1px solid #30363d;border-radius:6px;transition:all .2s}
+.nav a:hover{color:#58a6ff;border-color:#58a6ff;background:rgba(88,166,255,0.05)}
+.status-badge{display:inline-flex;align-items:center;gap:6px;padding:4px 12px;border-radius:12px;font-size:0.8rem;font-weight:600}
+.status-live{background:rgba(63,185,80,0.15);color:#3fb950}
+footer{text-align:center;padding:32px 20px;color:#484f58;font-size:0.85rem}
+</style>
+<meta property="og:title" content="GitHub Actions AI Code Review Workflow Generator">
+<meta property="og:description" content="Generate a complete GitHub Actions workflow for AI-powered code review. Free, no signup.">
+<meta property="og:url" content="https://automation.songheng.vip/actions-generator.html">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="GitHub Actions AI Code Review Workflow Generator">
+<link rel="canonical" href="https://automation.songheng.vip/actions-generator.html">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebApplication","name":"GitHub Actions AI Code Review Workflow Generator","description":"Generate a complete GitHub Actions workflow for AI-powered code review. Customize language, review type, and triggers.","url":"https://automation.songheng.vip/actions-generator.html","applicationCategory":"DeveloperApplication","operatingSystem":"All"}
+</script>
+</head>
+<body>
+<header style="padding-top:20px">
+<div class="container">
+  <div class="nav">
+    <a href="/">← Home</a><a href="/api-docs">API Docs</a><a href="/api-playground">Playground</a><a href="/pricing.html">Pricing</a><a href="/blog.html">Blog</a>
+  </div>
+  <h1>⚡ GitHub Actions Workflow Generator</h1>
+  <p class="subtitle">Generate a complete, production-ready GitHub Actions workflow for AI-powered code review — in 30 seconds. No YAML wrestling required.</p>
+</div>
+</header>
+
+<div class="container">
+<div class="layout">
+<div class="card">
+<h2>⚙️ Configure Your Workflow</h2>
+<div class="form-group">
+  <label>Programming Language</label>
+  <select id="language">
+    <option value="javascript">JavaScript / TypeScript</option>
+    <option value="python">Python</option>
+    <option value="go">Go</option>
+    <option value="rust">Rust</option>
+    <option value="java">Java / Kotlin</option>
+    <option value="ruby">Ruby</option>
+    <option value="php">PHP</option>
+    <option value="csharp">C# / .NET</option>
+    <option value="all">Multiple / Other</option>
+  </select>
+</div>
+<div class="form-group">
+  <label>Review Types</label>
+  <div class="checkbox-group" id="reviewTypes">
+    <label class="chip selected"><input type="checkbox" value="bugs" checked>🐛 Find Bugs</label>
+    <label class="chip selected"><input type="checkbox" value="security" checked>🔒 Security Scan</label>
+    <label class="chip"><input type="checkbox" value="style">💅 Code Style</label>
+    <label class="chip"><input type="checkbox" value="performance">⚡ Performance</label>
+    <label class="chip"><input type="checkbox" value="complexity">📊 Complexity</label>
+  </div>
+</div>
+<div class="form-group">
+  <label>Trigger Events</label>
+  <div class="trigger-chips" id="triggers">
+    <label class="trigger-chip selected"><input type="checkbox" value="pull_request" checked>Pull Request</label>
+    <label class="trigger-chip"><input type="checkbox" value="push">Push to Main</label>
+    <label class="trigger-chip"><input type="checkbox" value="schedule">Scheduled (Daily)</label>
+  </div>
+</div>
+<div class="form-group">
+  <label>Review Depth</label>
+  <select id="depth">
+    <option value="quick">Quick Scan (~30s)</option>
+    <option value="standard" selected>Standard Review (~2min)</option>
+    <option value="deep">Deep Analysis (~5min)</option>
+  </select>
+</div>
+<div class="form-group">
+  <label>Workflow Name (optional)</label>
+  <input type="text" id="workflowName" placeholder="AI Code Review" value="AI Code Review">
+</div>
+</div>
+
+<div class="card">
+<div class="output-header">
+  <h2 style="margin-bottom:0">📋 Generated Workflow</h2>
+  <div><span class="status-badge status-live" id="statusBadge">● Ready</span></div>
+</div>
+<pre><code id="output"># Select options on the left to generate your workflow...</code></pre>
+<button class="copy-btn" id="copyBtn" onclick="copyYAML()">📋 Copy YAML</button>
+<div class="explanation" id="explanation">
+  <strong>💡 How to use:</strong> Configure options on the left, then copy the generated YAML into <code>.github/workflows/ai-code-review.yml</code> in your repository. The workflow will automatically run on pull requests and post review comments.
+</div>
+</div>
+</div>
+
+<div class="cta-section">
+  <h3>🚀 Want AI Code Review Without Writing YAML?</h3>
+  <p>Get 50 free API credits and start reviewing code in 30 seconds — no workflow setup needed.</p>
+  <a href="/free-trial.html" class="btn">🎁 Claim Free Credits</a>
+  <a href="/api-docs" class="btn btn-outline">📖 API Documentation</a>
+  <a href="/pricing.html" class="btn btn-outline">💰 View Pricing</a>
+</div>
+</div>
+
+<footer>
+  <p>© 2026 my-automaton · <a href="/" style="color:#58a6ff">Home</a> · <a href="/privacy" style="color:#8b949e">Privacy</a> · All workflow YAML is generated client-side — your data never leaves your browser.</p>
+</footer>
+
+<script>
+// Chip selection handlers
+document.querySelectorAll('.chip').forEach(chip => {
+  chip.addEventListener('click', () => {
+    const cb = chip.querySelector('input');
+    cb.checked = !cb.checked;
+    chip.classList.toggle('selected', cb.checked);
+    generateYAML();
+  });
+});
+document.querySelectorAll('.trigger-chip').forEach(chip => {
+  chip.addEventListener('click', () => {
+    const cb = chip.querySelector('input');
+    cb.checked = !cb.checked;
+    chip.classList.toggle('selected', cb.checked);
+    generateYAML();
+  });
+});
+document.querySelectorAll('select, input[type="text"]').forEach(el => {
+  el.addEventListener('input', generateYAML);
+  el.addEventListener('change', generateYAML);
+});
+
+function getSelected(name) {
+  return Array.from(document.querySelectorAll(`#${name} input:checked`)).map(cb => cb.value);
+}
+
+const languagePaths = {
+  javascript: '**.js,**.ts,**.jsx,**.tsx',
+  python: '**.py',
+  go: '**.go',
+  rust: '**.rs',
+  java: '**.java,**.kt,**.kts',
+  ruby: '**.rb',
+  php: '**.php',
+  csharp: '**.cs',
+  all: '**'
+};
+
+const reviewModeMap = {
+  quick: { mode: 'review', depth: 'quick' },
+  standard: { mode: 'review', depth: 'standard' },
+  deep: { mode: 'review', depth: 'deep' }
+};
+
+function generateYAML() {
+  const lang = document.getElementById('language').value;
+  const reviewTypes = getSelected('reviewTypes');
+  const triggers = getSelected('triggers');
+  const depth = document.getElementById('depth').value;
+  const name = document.getElementById('workflowName').value || 'AI Code Review';
+  const paths = languagePaths[lang] || '**';
+
+  if (triggers.length === 0 || reviewTypes.length === 0) {
+    document.getElementById('output').textContent = '# Please select at least one trigger and one review type';
+    document.getElementById('statusBadge').textContent = '⚠ Incomplete';
+    document.getElementById('statusBadge').className = 'status-badge';
+    return;
+  }
+
+  // Build trigger section
+  let triggerSection = '';
+  if (triggers.includes('pull_request')) {
+    triggerSection += `  pull_request:\n    branches: [main, master]\n    paths:\n      - '${paths}'\n`;
+  }
+  if (triggers.includes('push')) {
+    triggerSection += `  push:\n    branches: [main, master]\n    paths:\n      - '${paths}'\n`;
+  }
+  if (triggers.includes('schedule')) {
+    triggerSection += `  schedule:\n    - cron: '0 9 * * 1-5'  # Every weekday at 9am UTC\n`;
+  }
+
+  // Build review types comment
+  const typeLabels = {
+    bugs: 'bug detection',
+    security: 'security vulnerability scanning',
+    style: 'code style & formatting checks',
+    performance: 'performance optimization suggestions',
+    complexity: 'code complexity analysis'
+  };
+  const typesComment = reviewTypes.map(t => typeLabels[t]).join(', ');
+
+  // Build review instructions
+  let reviewPrompt = 'Review the following code changes. Provide specific, actionable feedback.';
+  if (reviewTypes.includes('bugs')) reviewPrompt += ' Check for bugs, logic errors, and edge cases.';
+  if (reviewTypes.includes('security')) reviewPrompt += ' Scan for security vulnerabilities: injection, XSS, auth issues, exposed secrets.';
+  if (reviewTypes.includes('style')) reviewPrompt += ' Check code style, naming conventions, and best practices.';
+  if (reviewTypes.includes('performance')) reviewPrompt += ' Identify performance bottlenecks and optimization opportunities.';
+  if (reviewTypes.includes('complexity')) reviewPrompt += ' Analyze code complexity and suggest simplifications.';
+
+  const isDeep = depth === 'deep';
+  const isQuick = depth === 'quick';
+
+  const yaml = `name: ${name}
+
+on:
+${triggerSection}
+# Generated by my-automaton Actions Generator
+# https://automation.songheng.vip/actions-generator.html
+
+jobs:
+  ai-code-review:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+      issues: write
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Full history for accurate diff
+
+      - name: Get changed files
+        id: changed-files
+        uses: tj-actions/changed-files@v44
+        with:
+          files: |
+            ${paths}
+
+      - name: AI Code Review
+        if: steps.changed-files.outputs.any_changed == 'true'
+        uses: my-automaton/ai-code-review@v1
+        with:
+          api-key: \${{ secrets.MY_AUTOMATON_API_KEY }}
+          files: \${{ steps.changed-files.outputs.all_changed_files }}
+          language: ${lang === 'all' ? 'auto' : lang}
+          review-types: ${reviewTypes.join(',')}  # ${typesComment}
+          depth: ${depth}
+          fail-on: ${reviewTypes.includes('security') ? 'critical' : 'never'}
+          ${isDeep ? 'max-suggestions: 20\n          comment-on-pr: true\n          inline-comments: true' : ''}
+          ${isQuick ? 'max-suggestions: 5\n          comment-on-pr: false\n          summary-only: true' : ''}
+          ${!isDeep && !isQuick ? 'max-suggestions: 10\n          comment-on-pr: true' : ''}
+
+      - name: Post Review Summary
+        if: always()
+        uses: my-automaton/ai-code-review@v1
+        with:
+          api-key: \${{ secrets.MY_AUTOMATON_API_KEY }}
+          summary-mode: true
+          comment-on-pr: true`;
+
+  document.getElementById('output').textContent = yaml;
+  document.getElementById('statusBadge').textContent = '● Ready';
+  document.getElementById('statusBadge').className = 'status-badge status-live';
+  document.getElementById('explanation').innerHTML = `<strong>💡 How to use:</strong> Copy this YAML into <code>.github/workflows/ai-code-review.yml</code> in your repository. Then add your API key as a secret: <code>Settings → Secrets and variables → Actions → MY_AUTOMATON_API_KEY</code>. <a href="/free-trial.html" style="color:#58a6ff">Get a free API key →</a>`;
+}
+
+function copyYAML() {
+  const yaml = document.getElementById('output').textContent;
+  if (!yaml || yaml.startsWith('# Please') || yaml.startsWith('# Select')) return;
+  navigator.clipboard.writeText(yaml).then(() => {
+    const btn = document.getElementById('copyBtn');
+    btn.textContent = '✅ Copied!';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = '📋 Copy YAML'; btn.classList.remove('copied'); }, 2000);
+  });
+}
+
+// Initialize on load
+document.addEventListener('DOMContentLoaded', generateYAML);
+</script>
+<script src="/conversion-banner.js" defer></script>
+</body>
+</html>

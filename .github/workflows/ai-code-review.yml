@@ -1,0 +1,96 @@
+# 🤖 AI Code Review — GitHub Actions Workflow
+# 
+# Automatically reviews every PR with AI-powered code analysis.
+# Free to use (3 reviews/day) or upgrade for unlimited reviews.
+#
+# Add this file to your repo at: .github/workflows/ai-code-review.yml
+#
+# More info: https://automation.songheng.vip/api-docs.html
+
+name: AI Code Review
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+  pull_request_review_comment:
+    types: [created]
+
+jobs:
+  review:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+      checks: write
+    
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Get changed files
+        id: changed
+        uses: tj-actions/changed-files@v44
+        with:
+          files: |
+            **/*.js
+            **/*.ts
+            **/*.jsx
+            **/*.tsx
+            **/*.py
+            **/*.go
+            **/*.java
+            **/*.rs
+            **/*.rb
+            **/*.php
+            **/*.c
+            **/*.cpp
+            **/*.swift
+            **/*.kt
+
+      - name: AI Review each file
+        if: steps.changed.outputs.any_changed == 'true'
+        id: ai_review
+        env:
+          FILES: ${{ steps.changed.outputs.all_changed_files }}
+        run: |
+          RESULTS=""
+          for file in $FILES; do
+            echo "Reviewing: $file"
+            EXT="${file##*.}"
+            CODE=$(cat "$file")
+            
+            RESPONSE=$(curl -s -X POST https://automation.songheng.vip/api/free/review \
+              -H "Content-Type: application/json" \
+              -d "{\"code\": $(echo "$CODE" | jq -Rs .), \"language\": \"$EXT\"}")
+            
+            ISSUES=$(echo "$RESPONSE" | jq -r '.issues // [] | length')
+            SCORE=$(echo "$RESPONSE" | jq -r '.score // "N/A"')
+            
+            RESULTS="$RESULTS
+          ### 📄 $file (Score: $SCORE, Issues: $ISSUES)
+          \`\`\`
+          $(echo "$RESPONSE" | jq -r '.summary // "No significant issues found"' | head -20)
+          \`\`\`"
+          done
+          
+          echo "results<<EOF" >> $GITHUB_OUTPUT
+          echo "$RESULTS" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: Post review comment
+        if: steps.changed.outputs.any_changed == 'true'
+        uses: actions/github-script@v7
+        env:
+          RESULTS: ${{ steps.ai_review.outputs.results }}
+        with:
+          script: |
+            const results = process.env.RESULTS;
+            const body = `## 🤖 AI Code Review\n\n${results}\n\n---\n*Powered by [my-automaton](https://automation.songheng.vip) · [Free API](https://automation.songheng.vip/demo.html) · [Upgrade](https://automation.songheng.vip/upgrade.html)*`;
+            
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body: body
+            });

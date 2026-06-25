@@ -1,0 +1,29 @@
+{
+  "name": "my-automaton",
+  "displayName": "My Automaton",
+  "tagline": "Automate anything — pay per task, not per month.",
+  "description": "A premium MCP automation server offering 7 x402 pay-per-use endpoints (1¢–5¢ each) for web scraping, text summarization, data extraction, content generation, image analysis, code execution, and language translation. Includes a free tier (3 requests/day) for evaluation.",
+  "url": "https://automation.songheng.vip",
+  "mcpEndpoint": "https://automation.songheng.vip/mcp",
+  "wallet": "0x76eADdEBFfb6A61DD071f97F4508467fc55dd113",
+  "category": "Automation",
+  "pricingModel": "pay-per-use",
+  "pricing": "x402 micropayments from 1¢ to 5¢ per request. Free tier: 3 requests/day.",
+  "features": [
+    "Web scraping (3¢/request)",
+    "Text summarization (1¢/request)",
+    "Data extraction (3¢/request)",
+    "Content generation (5¢/request)",
+    "Image analysis (5¢/request)",
+    "Code execution (2¢/request)",
+    "Translation (1¢/request)",
+    "Free tier: 3 requests/day no signup required"
+  ],
+  "techStack": ["Node.js", "MCP Protocol", "x402 Micropayments"],
+  "submissionMethod": "manual",
+  "submissionUrl": "https://opentools.ai/friends/launch-tool",
+  "manualGuide": "/root/automaton/opentools_manual.md",
+  "submissionDate": "2025-06-17",
+  "status": "manual_guide_created",
+  "notes": "OpenTools uses a client-rendered Next.js form with no public API. Manual submission via web browser required."
+}

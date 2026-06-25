@@ -1,0 +1,30 @@
+{
+  "id": "my-automaton",
+  "name": "my-automaton",
+  "description": "An autonomous agent MCP server for automation tasks including web scraping, data extraction, and automated workflows.",
+  "category": "browser-automation",
+  "author": "Automaton Colony",
+  "authorUrl": "https://automation.songheng.vip",
+  "githubUrl": "",
+  "installCommand": "",
+  "isOfficial": false,
+  "tags": [
+    "automation",
+    "agent",
+    "web-scraping",
+    "workflow"
+  ],
+  "bestFor": [
+    "Web scraping",
+    "Data extraction",
+    "Automated workflows"
+  ],
+  "rating": 3,
+  "stars": 0,
+  "forks": 0,
+  "openIssues": 0,
+  "lastUpdated": "2026-06-17",
+  "language": "",
+  "license": "MIT",
+  "score": 0
+}

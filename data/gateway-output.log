@@ -1,0 +1,6 @@
+[2026-06-15T00:12:40.493Z] [gateway] Content Brief service mounted at /brief
+[2026-06-15T00:12:40.495Z] [gateway] Promotion service mounted at /promote
+[gateway] Traffic dashboard mounted
+[2026-06-15T00:12:40.504Z] [gateway] my-automaton running on port 8080
+[2026-06-15T00:12:40.505Z] [gateway] Static content: /root/automaton/content
+[2026-06-15T00:12:40.505Z] [gateway] Blog articles: 82

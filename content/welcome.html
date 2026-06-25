@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Welcome – my-automaton API</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #0f172a; color: #e2e8f0; min-height: 100vh; display: flex; flex-direction: column; align-items: center; }
+.container { max-width: 800px; width: 100%; padding: 2rem; }
+h1 { font-size: 2.5rem; background: linear-gradient(135deg, #60a5fa, #a78bfa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin: 1rem 0; }
+h2 { color: #94a3b8; font-size: 1.1rem; font-weight: 400; margin-bottom: 2rem; }
+.step { background: #1e293b; border: 1px solid #334155; border-radius: 12px; padding: 1.5rem; margin-bottom: 1rem; }
+.step-number { display: inline-block; background: linear-gradient(135deg, #60a5fa, #a78bfa); color: #fff; width: 28px; height: 28px; border-radius: 50%; text-align: center; line-height: 28px; font-size: 0.85rem; font-weight: 700; margin-right: 0.75rem; }
+.step h3 { display: inline; font-size: 1.1rem; color: #f1f5f9; }
+.step p { margin: 0.75rem 0 0 2.1rem; color: #94a3b8; font-size: 0.95rem; line-height: 1.6; }
+.key-display { background: #0f172a; border: 1px solid #475569; border-radius: 8px; padding: 1rem; margin: 0.75rem 0 0 2.1rem; font-family: 'Monaco', 'Menlo', monospace; font-size: 0.85rem; color: #22d3ee; word-break: break-all; display: flex; align-items: center; gap: 0.5rem; }
+.copy-btn { background: #2563eb; color: #fff; border: none; padding: 0.4rem 1rem; border-radius: 6px; cursor: pointer; font-size: 0.8rem; white-space: nowrap; }
+.copy-btn:hover { background: #1d4ed8; }
+.copy-btn.copied { background: #16a34a; }
+.btn { display: inline-block; background: linear-gradient(135deg, #2563eb, #7c3aed); color: #fff; text-decoration: none; padding: 0.75rem 1.5rem; border-radius: 8px; font-weight: 600; margin: 1rem 0; border: none; cursor: pointer; font-size: 1rem; }
+.btn:hover { opacity: 0.9; }
+.btn.secondary { background: #334155; }
+.code-block { background: #0f172a; border: 1px solid #334155; border-radius: 8px; padding: 1rem; margin: 0.75rem 0 0 2.1rem; font-family: 'Monaco', 'Menlo', monospace; font-size: 0.82rem; color: #22d3ee; overflow-x: auto; line-height: 1.5; }
+.status-badge { display: inline-block; padding: 0.25rem 0.75rem; border-radius: 20px; font-size: 0.8rem; font-weight: 600; }
+.status-badge.success { background: #064e3b; color: #34d399; }
+.status-badge.pending { background: #1e3a5f; color: #60a5fa; }
+.try-it-area { background: #1e293b; border: 1px solid #334155; border-radius: 12px; padding: 1.5rem; margin: 1.5rem 0; }
+.try-it-area textarea { width: 100%; background: #0f172a; border: 1px solid #475569; border-radius: 8px; padding: 0.75rem; color: #e2e8f0; font-size: 0.9rem; min-height: 80px; resize: vertical; margin: 0.5rem 0; font-family: inherit; }
+.try-it-area select { background: #0f172a; border: 1px solid #475569; border-radius: 8px; padding: 0.5rem; color: #e2e8f0; font-size: 0.9rem; margin: 0.5rem 0; }
+.result-box { background: #0f172a; border: 1px solid #475569; border-radius: 8px; padding: 1rem; margin: 0.5rem 0; min-height: 60px; font-size: 0.9rem; line-height: 1.6; white-space: pre-wrap; }
+.result-box.loading { opacity: 0.5; }
+.error { color: #f87171; }
+</style>
+</head>
+<body>
+<div class="container">
+  <div style="text-align:center;margin-bottom:2rem;">
+    <div style="font-size:3rem;margin-bottom:0.5rem;">🎉</div>
+    <h1>You're In!</h1>
+    <h2>Your API credits are ready. Here's how to use them.</h2>
+  </div>
+
+  <!-- Step 1: Find your key -->
+  <div class="step" id="step1">
+    <span class="step-number">1</span><h3>Find Your API Key</h3>
+    <p>Your key was shown after payment. If you didn't save it, click below to check your email or <a href="/buy.html" style="color:#60a5fa;">buy another</a>.</p>
+    <p style="margin-top:0.5rem;margin-left:2.1rem;">
+      <strong>Need a key?</strong> Use this sample key to explore: <code style="color:#22d3ee;" id="sampleKey">am_demo_sample_key_show_me_the_portal</code>
+    </p>
+  </div>
+
+  <!-- Step 2: Check your credits -->
+  <div class="step" id="step2">
+    <span class="step-number">2</span><h3>Check Your Balance</h3>
+    <p>Paste your key below and click "Check Balance" to see your credits.</p>
+    <div style="margin:0.75rem 0 0 2.1rem;">
+      <input type="text" id="checkKey" placeholder="am_your_api_key_here" style="width:100%;background:#0f172a;border:1px solid #475569;border-radius:8px;padding:0.75rem;color:#e2e8f0;font-size:0.9rem;margin-bottom:0.5rem;">
+      <button class="btn secondary" onclick="checkBalance()" style="padding:0.5rem 1rem;font-size:0.9rem;">Check Balance</button>
+      <div id="balanceResult" class="result-box" style="display:none;"></div>
+    </div>
+  </div>
+
+  <!-- Step 3: Make your first call -->
+  <div class="step" id="step3">
+    <span class="step-number">3</span><h3>Make Your First API Call</h3>
+    <p>Try it right here — no coding required. Choose a service, paste text, and click Go.</p>
+    <div style="margin:0.75rem 0 0 2.1rem;">
+      <div style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-bottom:0.5rem;">
+        <select id="serviceSelect" style="flex:1;min-width:140px;background:#0f172a;border:1px solid #475569;border-radius:8px;padding:0.5rem;color:#e2e8f0;font-size:0.9rem;">
+          <option value="analyze">🔍 Analyze (1 credit)</option>
+          <option value="summarize">📝 Summarize (2 credits)</option>
+          <option value="review">✅ Code Review (5 credits)</option>
+          <option value="security">🛡️ Security Scan (3 credits)</option>
+          <option value="explain">💡 Explain Code (2 credits)</option>
+          <option value="refactor">♻️ Refactor (5 credits)</option>
+          <option value="complexity">📊 Complexity (2 credits)</option>
+        </select>
+        <button class="btn secondary" onclick="callService()" style="padding:0.5rem 1.5rem;font-size:0.9rem;">Go</button>
+      </div>
+      <input type="text" id="serviceKey" placeholder="Your API key" style="width:100%;background:#0f172a;border:1px solid #475569;border-radius:8px;padding:0.75rem;color:#e2e8f0;font-size:0.9rem;margin-bottom:0.5rem;" value="">
+      <textarea id="serviceInput" placeholder="Paste text or code to process...">function hello() { console.log("Hello, world!"); return 42; }</textarea>
+      <div id="serviceResult" class="result-box" style="display:none;"></div>
+    </div>
+  </div>
+
+  <!-- Step 4: Integrate -->
+  <div class="step" id="step4">
+    <span class="step-number">4</span><h3>Integrate Into Your Code</h3>
+    <p>Use your key with curl, Python, or JavaScript. Here's a quick example:</p>
+    <div class="code-block" style="margin-top:0.75rem;">curl -X POST https://automation.songheng.vip/v1/analyze \
+  -H "Content-Type: application/json" \
+  -H "X-API-Key: YOUR_KEY_HERE" \
+  -d '{"text":"Analyze this text for sentiment and key themes."}'</div>
+    <p style="margin-top:0.75rem;color:#94a3b8;">
+      Full docs: <a href="/api-docs.html" style="color:#60a5fa;">API Documentation</a> &nbsp;|&nbsp;
+      User Portal: <a href="/portal.html" style="color:#60a5fa;">Full Dashboard</a>
+    </p>
+  </div>
+
+  <div class="try-it-area" style="text-align:center;">
+    <p style="color:#94a3b8;margin-bottom:0.5rem;">🎯 <strong>Your credits are ready to use.</strong> Every call saves you hours of work.</p>
+    <p style="color:#64748b;font-size:0.85rem;">
+      Need help? Check the <a href="/api-docs.html" style="color:#60a5fa;">API docs</a> or
+      visit the <a href="/portal.html" style="color:#60a5fa;">full dashboard</a>
+    </p>
+  </div>
+</div>
+
+<script>
+// Get key from URL
+const urlParams = new URLSearchParams(window.location.search);
+const keyFromUrl = urlParams.get('key');
+if (keyFromUrl) {
+  document.getElementById('checkKey').value = keyFromUrl;
+  document.getElementById('serviceKey').value = keyFromUrl;
+}
+
+async function checkBalance() {
+  const key = document.getElementById('checkKey').value.trim();
+  const result = document.getElementById('balanceResult');
+  result.style.display = 'block';
+  result.className = 'result-box loading';
+  result.textContent = 'Checking...';
+  
+  try {
+    const res = await fetch('/api/check-key', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ key })
+    });
+    const data = await res.json();
+    if (data.valid) {
+      result.innerHTML = `<span class="status-badge success">✓ Valid</span> 
+        <strong>${data.credits} credits remaining</strong> 
+        (${data.used} used) · Plan: ${data.plan || 'custom'}`;
+    } else {
+      result.innerHTML = `<span class="error">✗ Invalid key</span> ${data.error || 'Key not found'}`;
+    }
+  } catch(e) {
+    result.innerHTML = `<span class="error">✗ Error:</span> ${e.message}`;
+  }
+}
+
+async function callService() {
+  const key = document.getElementById('serviceKey').value.trim();
+  const service = document.getElementById('serviceSelect').value;
+  const text = document.getElementById('serviceInput').value.trim();
+  const result = document.getElementById('serviceResult');
+  
+  if (!key) { alert('Please enter your API key'); return; }
+  if (!text) { alert('Please enter some text'); return; }
+  
+  result.style.display = 'block';
+  result.className = 'result-box loading';
+  result.textContent = `Calling ${service}...`;
+  
+  try {
+    const res = await fetch(`/v1/${service}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'X-API-Key': key },
+      body: JSON.stringify({ text })
+    });
+    const data = await res.json();
+    if (res.ok) {
+      result.className = 'result-box';
+      result.innerHTML = `<span class="status-badge success">✓ ${res.status}</span> 
+        <pre style="margin-top:0.5rem;white-space:pre-wrap;font-size:0.85rem;">${JSON.stringify(data, null, 2)}</pre>`;
+    } else {
+      result.className = 'result-box';
+      result.innerHTML = `<span class="error">✗ ${res.status}</span> ${data.error || JSON.stringify(data)}`;
+    }
+  } catch(e) {
+    result.className = 'result-box';
+    result.innerHTML = `<span class="error">✗ Error:</span> ${e.message}`;
+  }
+}
+</script>
+<script src="/conversion-banner.js" defer></script>
+</body>
+</html>

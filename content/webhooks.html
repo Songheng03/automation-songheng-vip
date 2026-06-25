@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Webhook Integrations - GitHub, Slack, Discord | my-automaton">
+  <meta name="twitter:description" content="Integrate AI-powered code review, text analysis, and summarization into your workflow via webhooks. GitHub PR reviews, Slack commands, Discord bot.">
+  <meta property="og:title" content="Webhook Integrations - GitHub, Slack, Discord | my-automaton">
+  <meta property="og:description" content="Integrate AI-powered code review, text analysis, and summarization into your workflow via webhooks. GitHub PR reviews, Slack commands, Discord bot.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://automation.songheng.vip/webhooks.html">
+  <meta property="og:image" content="https://automation.songheng.vip/og-image.png">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Webhook Integrations - GitHub, Slack, Discord | my-automaton</title>
+<meta name="description" content="Integrate AI-powered code review, text analysis, and summarization into your workflow via webhooks. GitHub PR reviews, Slack commands, Discord bot.">
+<link rel="canonical" href="https://automation.songheng.vip/webhooks">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#0d1117;color:#e6edf3}
+.container{max-width:1000px;margin:0 auto;padding:20px}
+header{background:#161b22;border-bottom:1px solid #30363d;padding:16px 0;margin-bottom:30px}
+header .container{display:flex;align-items:center;justify-content:space-between}
+h1{font-size:24px}
+.subtitle{color:#8b949e;font-size:14px;margin-top:4px}
+.card{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:24px;margin-bottom:20px}
+h2{font-size:18px;margin-bottom:16px;color:#58a6ff}
+h3{font-size:15px;margin:16px 0 8px;color:#f0f6fc}
+code{background:#0d1117;color:#a5d6ff;padding:2px 6px;border-radius:4px;font-size:13px}
+pre{background:#0d1117;border:1px solid #30363d;border-radius:6px;padding:16px;overflow-x:auto;font-size:13px;line-height:1.5;margin:8px 0}
+.platform-icon{display:inline-flex;align-items:center;gap:8px;padding:4px 12px;border-radius:6px;font-size:14px;font-weight:600}
+.platform-icon.github{background:#1f2937;color:#fff}
+.platform-icon.slack{background:#4a154b;color:#fff}
+.platform-icon.discord{background:#5865f2;color:#fff}
+.btn{display:inline-block;background:#238636;color:#fff;border:none;border-radius:6px;padding:10px 24px;font-size:14px;font-weight:600;cursor:pointer;text-decoration:none;transition:background .2s}
+.btn:hover{background:#2ea043}
+.btn-outline{background:transparent;border:1px solid #30363d;color:#c9d1d9}
+.btn-outline:hover{background:#21262d}
+.tag{display:inline-block;background:#1f2937;color:#58a6ff;padding:2px 8px;border-radius:4px;font-size:11px;margin-left:6px}
+footer{margin-top:60px;padding:20px 0;border-top:1px solid #30363d;text-align:center;color:#8b949e;font-size:12px}
+footer a{color:#58a6ff;text-decoration:none}
+.command-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.command-card{background:#0d1117;border:1px solid #21262d;border-radius:6px;padding:16px}
+.command-card .cmd{color:#58a6ff;font-weight:600;font-size:14px}
+.command-card .desc{color:#8b949e;font-size:12px;margin-top:4px}
+@media(max-width:600px){.command-grid{grid-template-columns:1fr}}
+</style>
+<script src="/js/analytics.js"></script>
+<!-- Open Graph / Social Meta Tags -->
+<meta property="og:site_name" content="my-automaton" />
+<meta property="og:locale" content="en_US" />
+<meta name="twitter:image" content="https://automation.songheng.vip/og-image.png" />
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "Webhook Integrations - GitHub, Slack, Discord | my-automaton",
+  "description": "Integrate AI-powered code review, text analysis, and summarization into your workflow via webhooks. GitHub PR reviews, Slack commands, Discord bot.",
+  "url": "https://automation.songheng.vip/webhooks.html"
+}
+</script>
+</head>
+<body>
+<header>
+  <div class="container">
+    <div>
+      <h1>Webhook Integrations</h1>
+      <div class="subtitle">Connect AI services to your workflow — GitHub, Slack, Discord</div>
+    </div>
+    <nav>
+      <a href="/" style="color:#58a6ff;text-decoration:none;font-size:14px">Home</a>
+      <a href="/api-docs" style="color:#58a6ff;text-decoration:none;margin-left:16px;font-size:14px">API</a>
+    </nav>
+  </div>
+</header>
+
+<div class="container">
+  <!-- GitHub -->
+  <div class="card">
+    <h2><span class="platform-icon github">🐙 GitHub Integration</span></h2>
+    <p style="color:#8b949e;margin-bottom:16px">Automatically review PRs, analyze code, and get security insights right in your GitHub workflow.</p>
+    
+    <h3>Setup</h3>
+    <ol style="color:#c9d1d9;padding-left:20px;line-height:2">
+      <li>Go to your repo → Settings → Webhooks → Add webhook</li>
+      <li>Payload URL: <code>https://automation.songheng.vip/api/webhooks/github</code></li>
+      <li>Content type: <code>application/json</code></li>
+      <li>Secret: (optional) Set a secret for verification</li>
+      <li>Events: Select <code>Pull requests</code>, <code>Pushes</code>, <code>Issues</code></li>
+      <li>Click Add webhook</li>
+    </ol>
+
+    <h3>Supported Events</h3>
+    <div class="command-grid">
+      <div class="command-card">
+        <div class="cmd">pull_request</div>
+        <div class="desc">Auto-analyze new PRs and code changes</div>
+      </div>
+      <div class="command-card">
+        <div class="cmd">push</div>
+        <div class="desc">Track commits and branch updates</div>
+      </div>
+      <div class="command-card">
+        <div class="cmd">issues</div>
+        <div class="desc">Monitor issue creation and updates</div>
+      </div>
+      <div class="command-card">
+        <div class="cmd">💡 Pro</div>
+        <div class="desc">Use AI code review: POST /v1/review with PR diff</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Slack -->
+  <div class="card">
+    <h2><span class="platform-icon slack">💬 Slack Integration</span></h2>
+    <p style="color:#8b949e;margin-bottom:16px">Use slash commands to analyze text, review code, and summarize content directly from Slack.</p>
+    
+    <h3>Setup</h3>
+    <ol style="color:#c9d1d9;padding-left:20px;line-height:2">
+      <li>Go to <a href="https://api.slack.com/apps" style="color:#58a6ff">api.slack.com/apps</a> → Create New App</li>
+      <li>Enable "Slash Commands" and add commands below</li>
+      <li>Request URL: <code>https://automation.songheng.vip/api/webhooks/slack</code></li>
+      <li>Install the app to your workspace</li>
+    </ol>
+
+    <h3>Slash Commands</h3>
+    <div class="command-grid">
+      <div class="command-card">
+        <div class="cmd">/analyze &lt;text&gt;</div>
+        <div class="desc">AI-powered text analysis and insights</div>
+        <span class="tag">Free</span>
+      </div>
+      <div class="command-card">
+        <div class="cmd">/review &lt;code&gt;</div>
+        <div class="desc">Code review with suggestions</div>
+        <span class="tag">Free</span>
+      </div>
+      <div class="command-card">
+        <div class="cmd">/summarize &lt;text&gt;</div>
+        <div class="desc">Summarize long content</div>
+        <span class="tag">Free</span>
+      </div>
+      <div class="command-card">
+        <div class="cmd">/help</div>
+        <div class="desc">List available commands</div>
+        <span class="tag">Free</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Discord -->
+  <div class="card">
+    <h2><span class="platform-icon discord">🎮 Discord Bot</span></h2>
+    <p style="color:#8b949e;margin-bottom:16px">Add AI analysis bots to your Discord server with slash commands.</p>
+    
+    <h3>Setup</h3>
+    <ol style="color:#c9d1d9;padding-left:20px;line-height:2">
+      <li>Go to <a href="https://discord.com/developers/applications" style="color:#58a6ff">Discord Developer Portal</a></li>
+      <li>Create Application → Bot → Copy token</li>
+      <li>Set Interactions Endpoint URL: <code>https://automation.songheng.vip/api/webhooks/discord</code></li>
+      <li>Invite bot to your server with <code>applications.commands</code> scope</li>
+    </ol>
+
+    <h3>Slash Commands</h3>
+    <div class="command-grid">
+      <div class="command-card">
+        <div class="cmd">/analyze text:&lt;text&gt;</div>
+        <div class="desc">Deep text analysis with AI</div>
+      </div>
+      <div class="command-card">
+        <div class="cmd">/review code:&lt;code&gt;</div>
+        <div class="desc">Comprehensive code review</div>
+      </div>
+      <div class="command-card">
+        <div class="cmd">/help</div>
+        <div class="desc">List all available commands</div>
+      </div>
+      <div class="command-card">
+        <div class="cmd">💡 Pro Tips</div>
+        <div class="desc">Use code blocks for multi-line input</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Register Webhook -->
+  <div class="card" style="text-align:center;border-color:#58a6ff30">
+    <h2 style="color:#58a6ff">🔗 Register Your Webhook</h2>
+    <p style="color:#8b949e;margin-bottom:16px">Programmatically register your webhook endpoint:</p>
+    <pre style="text-align:left;margin:0 auto;max-width:500px">POST https://automation.songheng.vip/api/webhooks/register
+{
+  "platform": "github",
+  "url": "https://your-app.com/webhook"
+}</pre>
+    <p style="color:#8b949e;font-size:13px;margin-top:12px">Or browse the <a href="/" style="color:#58a6ff">full AI service catalog</a></p>
+  </div>
+</div>
+
+<footer>
+  <div class="container">
+    <p>Powered by <a href="https://automation.songheng.vip">my-automaton</a> • AI Services for Developers</p>
+    <p style="margin-top:4px"><a href="/">Home</a> • <a href="/api-docs">API</a> • <a href="/webhooks">Webhooks</a></p>
+  </div>
+</footer>
+<script src="/js/share-widget.js"></script>
+<script src="/conversion-banner.js" defer></script>
+</body>
+</html>

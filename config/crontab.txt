@@ -1,0 +1,6 @@
+# my-automaton Cron Jobs
+# Installed by: node scripts/setup-cron.mjs
+# Revenue daemon polls every 5 minutes
+* * * * * cd /root/automaton && node scripts/revenue-daemon.mjs --poll >/dev/null 2>&1
+# SEO submission runs weekly (Monday 3am)
+0 3 * * 1 cd /root/automaton && node scripts/seo-submit.mjs --cron >/dev/null 2>&1

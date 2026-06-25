@@ -1,0 +1,34 @@
+{
+  "name": "ai-code-review",
+  "version": "1.0.0",
+  "description": "AI-powered code review CLI and library. Analyze code for security issues, bugs, and best practices using DeepSeek AI.",
+  "main": "index.js",
+  "bin": {
+    "ai-review": "./cli.js"
+  },
+  "keywords": [
+    "ai",
+    "code-review",
+    "security",
+    "lint",
+    "deepseek",
+    "automated-review",
+    "ci-cd",
+    "devops"
+  ],
+  "author": "my-automaton",
+  "license": "MIT",
+  "homepage": "https://automation.songheng.vip",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/my-automaton/ai-code-review"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "files": [
+    "index.js",
+    "cli.js",
+    "README.md"
+  ]
+}

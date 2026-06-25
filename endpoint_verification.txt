@@ -1,0 +1,47 @@
+================================================================
+MCP Endpoint Health Verification Report
+Timestamp: 2026-06-17T17:50:47Z
+================================================================
+
+1. MCP Initialize Endpoint
+   URL:      POST https://automation.songheng.vip/mcp
+   Payload:  {"jsonrpc":"2.0","method":"initialize","id":1}
+   Status:   404 Not Found
+   Result:   FAIL - No valid MCP response received.
+             The endpoint returned "Not found" with HTTP 404.
+             (Also tried /api/mcp path - same 404 result.)
+   NOTE:     The endpoint does not appear to be serving MCP traffic
+             at this time. The install page (mcp-install) documents
+             the expected path as /api/mcp, but that also returns 404.
+
+2. MCP Install Page
+   URL:      GET https://automation.songheng.vip/mcp-install
+   Status:   200 OK
+   Result:   PASS - Page is accessible.
+   Content:  Full HTML page with one-click install instructions,
+             compatible clients, available tools, pricing, etc.
+
+3. Agent Integration Page
+   URL:      GET https://automation.songheng.vip/agent-integration
+   Status:   200 OK
+   Result:   PASS - Page is accessible.
+   Content:  Full HTML integration guide for AI agents covering
+             MCP protocol, REST API, code examples (JS, Python, curl),
+             referral program, and pricing.
+
+================================================================
+Summary
+================================================================
+- MCP Initialize Endpoint: ❌ FAIL (HTTP 404, no valid MCP response)
+- MCP Install Page:        ✅ PASS (HTTP 200)
+- Agent Integration Page:  ✅ PASS (HTTP 200)
+
+Success Criteria Assessment:
+- "endpoint responds within 5 seconds with a valid MCP initialization
+   JSON" -> FAILED (HTTP 404, no JSON response)
+- "both listing pages are accessible" -> PASSED
+
+The MCP service endpoint (https://automation.songheng.vip/mcp) is
+currently not serving requests. The install and agent-integration
+pages are both available and accessible.
+================================================================

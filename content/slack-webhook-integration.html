@@ -1,0 +1,132 @@
+# Slack Webhook Integration
+
+Receive instant notifications when your AI code reviews complete.
+
+## Setup
+
+### 1. Create Slack Webhook
+
+1. Go to [api.slack.com/apps](https://api.slack.com/apps)
+2. Click "Create New App" → "From scratch"
+3. Name: `my-automaton`, Workspace: your workspace
+4. Go to "Incoming Webhooks" → "Activate Incoming Webhooks"
+5. Click "Add New Webhook to Workspace"
+6. Choose a channel → "Allow"
+7. Copy the webhook URL (starts with `https://hooks.slack.com/services/...`)
+
+### 2. Configure Gateway
+
+Add to your `.env` or environment variables:
+
+```bash
+SLACK_WEBHOOK_URL=https://hooks.slack.com/services/T00000000/B00000000/XXXXXXXX
+```
+
+Or configure in `gateway.cjs`:
+
+```javascript
+const SLACK_WEBHOOK = process.env.SLACK_WEBHOOK_URL || 'https://hooks.slack.com/services/YOUR/WEBHOOK/URL';
+```
+
+### 3. Enable Webhook
+
+Add to `api-keys.json`:
+
+```json
+{
+  "am_your_key": {
+    "credits": 500,
+    "webhook_url": "https://hooks.slack.com/services/YOUR/WEBHOOK/URL",
+    "webhook_events": ["review.completed", "review.error"]
+  }
+}
+```
+
+## Webhook Payload
+
+When a review completes, we POST to your webhook:
+
+```json
+{
+  "text": "🤖 AI Code Review Complete",
+  "blocks": [
+    {
+      "type": "header",
+      "text": {
+        "type": "plain_text",
+        "text": "AI Code Review Complete"
+      }
+    },
+    {
+      "type": "section",
+      "fields": [
+        { "type": "mrkdwn", "text": "*Repository:*\nmyorg/myrepo" },
+        { "type": "mrkdwn", "text": "*PR:*\n#42" },
+        { "type": "mrkdwn", "text": "*Files Reviewed:*\n15" },
+        { "type": "mrkdwn", "text": "*Issues Found:*\n3" }
+      ]
+    },
+    {
+      "type": "section",
+      "text": {
+        "type": "mrkdwn",
+        "text": "*Issues:*\n• ⚠️ WARNING: Unsanitized input (line 45)\n• 🔴 CRITICAL: Hardcoded API key (line 12)\n• ℹ️ INFO: Long function (line 120)"
+      }
+    },
+    {
+      "type": "actions",
+      "elements": [
+        {
+          "type": "button",
+          "text": { "type": "plain_text", "text": "View PR" },
+          "url": "https://github.com/myorg/myrepo/pull/42"
+        }
+      ]
+    }
+  ]
+}
+```
+
+## GitHub Actions + Slack
+
+Combine both integrations:
+
+```yaml
+name: AI Code Review + Slack
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+
+jobs:
+  review:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: AI Code Review
+        uses: my-automaton/code-review-action@v1
+        with:
+          api-key: ${{ secrets.MY_AUTOMATON_API_KEY }}
+      
+      - name: Notify Slack
+        if: always()
+        uses: 8398a7/action-slack@v3
+        with:
+          status: ${{ job.status }}
+          webhook_url: ${{ secrets.SLACK_WEBHOOK }}
+```
+
+## Discord Webhook
+
+Same setup, different URL format:
+
+```bash
+DISCORD_WEBHOOK_URL=https://discord.com/api/webhooks/123456789/abcdef
+```
+
+Payload format is similar but uses `content` instead of `text`.
+
+---
+
+Questions? [Contact support](mailto:support@automation.songheng.vip)

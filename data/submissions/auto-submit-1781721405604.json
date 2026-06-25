@@ -1,0 +1,123 @@
+[
+  {
+    "name": "MCP.so",
+    "url": "https://mcp.so/api/tools/submit",
+    "method": "POST",
+    "status_code": 404,
+    "status": "endpoint_not_found",
+    "response_preview": "<!DOCTYPE html><html><head><meta charSet=\"utf-8\"/><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"/><link rel=\"stylesheet\" href=\"/_next/static/css/66449ed0e802001c.css\" data-precede",
+    "error": null,
+    "suggestion": "Manual: Open https://mcp.so/submit (GitHub OAuth required)",
+    "timestamp": "2026-06-17T18:36:44.098Z"
+  },
+  {
+    "name": "Smithery",
+    "url": "https://api.smithery.ai/servers",
+    "method": "POST",
+    "status_code": 404,
+    "status": "endpoint_not_found",
+    "response_preview": "404 Not Found",
+    "error": null,
+    "suggestion": "Manual: Open https://smithery.ai and sign in with GitHub to submit",
+    "timestamp": "2026-06-17T18:36:44.202Z"
+  },
+  {
+    "name": "Glama.ai",
+    "url": "https://glama.ai/api/mcp/servers",
+    "method": "POST",
+    "status_code": 404,
+    "status": "endpoint_not_found",
+    "response_preview": "<!DOCTYPE html><html lang=\"en\"><head><meta charSet=\"utf-8\"/><meta content=\"width=device-width, initial-scale=1\" name=\"viewport\"/><link as=\"font\" crossorigin=\"anonymous\" href=\"https://static.glama.ai/c",
+    "error": null,
+    "suggestion": "Manual: Open https://glama.ai/mcp/servers and submit via GitHub OAuth",
+    "timestamp": "2026-06-17T18:36:44.300Z"
+  },
+  {
+    "name": "PulseMCP",
+    "url": "https://api.pulsemcp.com/v0.1/servers",
+    "method": "POST",
+    "status_code": 405,
+    "status": "method_not_allowed",
+    "response_preview": "{\"error\":\"Method not allowed\",\"code\":\"method_not_allowed\"}",
+    "error": null,
+    "suggestion": "Manual: Open https://www.pulsemcp.com/submit (Cloudflare protected)",
+    "timestamp": "2026-06-17T18:36:44.584Z"
+  },
+  {
+    "name": "OpenTools",
+    "url": "https://opentools.ai/api/tools",
+    "method": "POST",
+    "status_code": 201,
+    "status": "submitted",
+    "response_preview": "{\"data\":{}}",
+    "error": null,
+    "suggestion": "Manual: Open https://opentools.ai/friends/launch-tool",
+    "timestamp": "2026-06-17T18:36:44.659Z"
+  },
+  {
+    "name": "Toolspedia",
+    "url": "https://toolspedia.io/api/tools",
+    "method": "POST",
+    "status_code": 301,
+    "status": "failed",
+    "response_preview": "",
+    "error": null,
+    "suggestion": "Manual: Open https://toolspedia.io and submit via web form",
+    "timestamp": "2026-06-17T18:36:45.183Z"
+  },
+  {
+    "name": "DevHunt",
+    "url": "https://devhunt.org/api/tools",
+    "method": "POST",
+    "status_code": 200,
+    "status": "submitted",
+    "response_preview": "<!DOCTYPE html><html id=\"__next_error__\"><head><meta charSet=\"utf-8\"/><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"/><link rel=\"preload\" href=\"/_next/static/chunks/webpack-23605b",
+    "error": null,
+    "suggestion": "Manual: Open https://devhunt.org/submit to create a listing",
+    "timestamp": "2026-06-17T18:36:45.364Z"
+  },
+  {
+    "name": "BetaList",
+    "url": "https://betalist.com/api/startups",
+    "method": "POST",
+    "status_code": 404,
+    "status": "endpoint_not_found",
+    "response_preview": "<!DOCTYPE html>\n<html>\n<head>\n  <title>The page you were looking for doesn't exist (404)</title>\n  <meta name=\"viewport\" content=\"width=device-width,initial-scale=1\">\n  <style>\n  .rails-default-error-",
+    "error": null,
+    "suggestion": "Manual: Open https://betalist.com/submit",
+    "timestamp": "2026-06-17T18:36:45.471Z"
+  },
+  {
+    "name": "ProductHunt",
+    "url": "https://api.producthunt.com/v1/posts",
+    "method": "POST",
+    "status_code": 404,
+    "status": "endpoint_not_found",
+    "response_preview": "<!DOCTYPE html>\n<html>\n<head>\n  <title>Product Hunt: Page not found</title>\n  <style>\n  body {\n    background-color: #E3645C;\n    color: #fff;\n    text-align: center;\n    font-family: Avenir, 'Helveti",
+    "error": null,
+    "suggestion": "Manual: Open https://www.producthunt.com/posts/new (OAuth required)",
+    "timestamp": "2026-06-17T18:36:45.552Z"
+  },
+  {
+    "name": "AlternativeTo",
+    "url": "https://alternativeto.net/api/suggestion/",
+    "method": "POST",
+    "status_code": 403,
+    "status": "blocked",
+    "response_preview": "<!DOCTYPE html><html lang=\"en-US\"><head><title>Just a moment...</title><meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\"><meta http-equiv=\"X-UA-Compatible\" content=\"IE=Edge\"><meta nam",
+    "error": null,
+    "suggestion": "Manual: Open https://alternativeto.net/submit/ (Cloudflare protected)",
+    "timestamp": "2026-06-17T18:36:45.579Z"
+  },
+  {
+    "name": "SaaSHub",
+    "url": "https://www.saashub.com/api/v1/tools",
+    "method": "POST",
+    "status_code": 403,
+    "status": "blocked",
+    "response_preview": "<!DOCTYPE html><html lang=\"en-US\"><head><title>Just a moment...</title><meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\"><meta http-equiv=\"X-UA-Compatible\" content=\"IE=Edge\"><meta nam",
+    "error": null,
+    "suggestion": "Manual: Open https://www.saashub.com/submit",
+    "timestamp": "2026-06-17T18:36:45.603Z"
+  }
+]

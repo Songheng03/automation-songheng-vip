@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta property="og:title" content="SEO Audit Tool - Analyze Any URL | my-automaton">
+  <meta property="og:description" content="Free SEO audit tool. Check meta tags, headings, content quality, and technical SEO for any URL. 3 free audits per day. Full report for $0.03 USDC.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://automation.songheng.vip/seo-audit.html">
+  <meta property="og:image" content="https://automation.songheng.vip/og-image.png">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>SEO Audit Tool - Analyze Any URL | my-automaton</title>
+<meta name="description" content="Free SEO audit tool. Check meta tags, headings, content quality, and technical SEO for any URL. 3 free audits per day. Full report for $0.03 USDC.">
+<link rel="canonical" href="https://automation.songheng.vip/seo-audit">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#0a0a1a;color:#e0e0ff;line-height:1.6}
+.container{max-width:1100px;margin:0 auto;padding:20px}
+header{background:linear-gradient(135deg,#1a1a3e,#0d0d2b);border-bottom:2px solid #3a3aff;padding:30px 0;margin-bottom:30px}
+h1{font-size:2em;color:#7c7cff}
+.subtitle{color:#a0a0cc;margin-top:8px}
+.audit-form{background:#12122a;border:1px solid #2a2a5a;border-radius:12px;padding:28px;margin:20px 0}
+.audit-form label{display:block;color:#a0a0cc;margin-bottom:6px;font-size:.9em}
+.audit-form input[type=url]{width:100%;padding:12px;background:#0a0a1a;border:1px solid #3a3a6a;border-radius:8px;color:#e0e0ff;font-size:16px;margin-bottom:15px}
+.audit-form input[type=url]:focus{border-color:#7c7cff;outline:none}
+.audit-form button{background:#3a3aff;color:#fff;border:none;padding:12px 30px;border-radius:8px;font-size:16px;font-weight:700;cursor:pointer;transition:background .2s}
+.audit-form button:hover{background:#5a5aff}
+.audit-form button:disabled{opacity:.5;cursor:not-allowed}
+.remaining{color:#6a6a9a;font-size:.85em;margin-top:8px}
+.loading{text-align:center;padding:30px;display:none}
+.loading .spinner{display:inline-block;width:40px;height:40px;border:3px solid #2a2a5a;border-top-color:#7c7cff;border-radius:50%;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+#results{display:none;margin-top:20px}
+.score-card{background:#12122a;border:1px solid #2a2a5a;border-radius:12px;padding:28px;margin-bottom:20px}
+.score-number{font-size:3em;font-weight:700;text-align:center}
+.score-excellent{color:#6f6}
+.score-good{color:#ff8c5a}
+.score-poor{color:#f55}
+.score-label{text-align:center;font-size:1.1em;margin-top:5px}
+.score-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:15px;margin:15px 0;text-align:center}
+.score-grid .stat{padding:10px;background:#0a0a1a;border-radius:8px}
+.score-grid .num{font-size:1.5em;font-weight:700}
+.stat-pass .num{color:#6f6}
+.stat-warn .num{color:#ff8c5a}
+.stat-fail .num{color:#f55}
+.stat-label{color:#a0a0cc;font-size:.85em;margin-top:3px}
+.check-item{padding:12px;border-bottom:1px solid #1a1a3a;display:flex;align-items:flex-start;gap:10px}
+.check-item:last-child{border-bottom:none}
+.check-icon{font-size:1.2em;min-width:24px}
+.check-name{font-weight:600;color:#e0e0ff}
+.check-detail{color:#8080b0;font-size:.9em;margin-top:3px}
+.check-suggestion{color:#ff8c5a;font-size:.85em;margin-top:3px;font-style:italic}
+.upgrade-box{background:linear-gradient(135deg,#1a1a3e,#0d0d2b);border:1px solid #3a3a6a;border-radius:12px;padding:20px;margin:20px 0;text-align:center}
+.upgrade-box h3{color:#7c7cff;margin-bottom:10px}
+.upgrade-box .price{color:#fff;font-size:1.5em;font-weight:700}
+.upgrade-box .price sub{font-size:.5em;color:#a0a0cc;font-weight:400}
+.wallet-addr{background:#0a0a1a;padding:10px;border-radius:6px;font-family:monospace;font-size:.85em;margin:10px 0;word-break:break-all;border:1px solid #2a2a5a}
+.error-box{background:#2a0000;border:1px solid #500;border-radius:8px;padding:15px;margin:10px 0;color:#f88;display:none}
+footer{margin-top:50px;padding:20px;text-align:center;color:#4a4a6a;font-size:.85em}
+footer a{color:#6b6bff;text-decoration:none}
+</style>
+<meta name="google-site-verification" content="YOUR_CODE" />
+<meta property="og:site_name" content="my-automaton" />
+<meta property="og:type" content="website" />
+<meta property="og:locale" content="en_US" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:site" content="@my_automaton" />
+<script src="/js/analytics.js"></script>
+<!-- Open Graph / Social Meta Tags -->
+<meta name="twitter:title" content="SEO Audit Tool - Analyze Any URL | my-automaton" />
+<meta name="twitter:description" content="Free SEO audit tool. Check meta tags, headings, content quality, and technical SEO for any URL. 3 free audits per day. Full report for $0.03 USDC." />
+<meta name="twitter:image" content="https://automation.songheng.vip/og-image.png" />
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "SEO Audit Tool - Analyze Any URL | my-automaton",
+  "description": "Free SEO audit tool. Check meta tags, headings, content quality, and technical SEO for any URL. 3 free audits per day. Full report for $0.03 USDC.",
+  "url": "https://automation.songheng.vip/seo-audit.html"
+}
+</script>
+</head>
+<body>
+<header>
+<div class="container">
+<h1>🔍 SEO Audit Tool</h1>
+<p class="subtitle">Analyze any URL for SEO issues - meta tags, headers, content quality, and technical factors. <strong>3 free audits per day.</strong> Full detailed report for $0.03 USDC.</p>
+</div>
+</header>
+<div class="container">
+
+<div class="audit-form">
+<label for="url">Enter URL to audit:</label>
+<input type="url" id="url" placeholder="https://example.com" value="">
+<button id="audit-btn" onclick="runAudit()">🔍 Run SEO Audit</button>
+<p class="remaining" id="remaining">Remaining free audits today: <span id="free-count">3</span>/3</p>
+</div>
+
+<div class="loading" id="loading">
+<div class="spinner"></div>
+<p style="margin-top:15px;color:#a0a0cc">Analyzing URL...</p>
+</div>
+
+<div class="error-box" id="error-box"></div>
+
+<div id="results">
+<div class="score-card" id="score-card"></div>
+<div id="checks-list"></div>
+</div>
+
+<div id="upgrade-section" style="display:none">
+<div class="upgrade-box">
+<h3>🚀 Unlock Full SEO Report</h3>
+<p style="color:#a0a0cc;margin-bottom:15px">Your free preview is complete. Get the full detailed report with actionable recommendations, competitor analysis, and priority fixes.</p>
+<div class="price">$0.03 <sub>USDC on Base</sub></div>
+<div class="wallet-addr">Send to: <code id="wallet">0x76eADdEBFfb6A61DD071f97F4508467fc55dd113</code></div>
+<p style="color:#a0a0cc;font-size:.85em;margin-top:10px">After sending payment, click "Verify Payment" below</p>
+<button onclick="verifyAndUpgrade()" style="background:#3a3aff;color:#fff;border:none;padding:12px 30px;border-radius:8px;font-size:16px;font-weight:700;cursor:pointer;margin-top:10px">✅ Verify Payment & Unlock</button>
+</div>
+</div>
+
+<footer>
+<p><a href="/">Home</a> · <a href="/playground">Playground</a> · <a href="/seo-services">SEO Services</a> · <a href="/api-docs.html">API Docs</a></p>
+<p>Wallet: <code>0x76eADdEBFfb6A61DD071f97F4508467fc55dd113</code> on Base · $0.03 per full audit</p>
+</footer>
+</div>
+
+<script>
+let currentUrl = '';
+let currentData = null;
+
+async function checkRemaining() {
+  try {
+    const r = await fetch('/v1/seo/remaining');
+    const d = await r.json();
+    document.getElementById('free-count').textContent = d.remaining || 3;
+  } catch(e) {}
+}
+
+checkRemaining();
+
+async function runAudit() {
+  const url = document.getElementById('url').value.trim();
+  if (!url) return;
+  
+  document.getElementById('error-box').style.display = 'none';
+  document.getElementById('results').style.display = 'none';
+  document.getElementById('upgrade-section').style.display = 'none';
+  document.getElementById('loading').style.display = 'block';
+  document.getElementById('audit-btn').disabled = true;
+  
+  try {
+    const res = await fetch('/api/seo-audit', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({url})
+    });
+    const data = await res.json();
+    document.getElementById('loading').style.display = 'none';
+    
+    if (data.error) {
+      showError(data.error);
+      return;
+    }
+    
+    currentData = data;
+    displayResults(data);
+    
+    if (data.preview) {
+      document.getElementById('upgrade-section').style.display = 'block';
+    }
+    
+    checkRemaining();
+  } catch(e) {
+    document.getElementById('loading').style.display = 'none';
+    showError('Connection error: ' + e.message);
+  }
+  
+  document.getElementById('audit-btn').disabled = false;
+}
+
+function displayResults(data) {
+  document.getElementById('results').style.display = 'block';
+  
+  const score = data.score || 0;
+  const passed = data.passed || 0;
+  const warned = data.warned || 0;
+  const failed = data.failed || 0;
+  
+  let scoreClass = 'score-poor';
+  let scoreLabel = 'Needs Improvement';
+  if (score >= 80) { scoreClass = 'score-excellent'; scoreLabel = 'Excellent!'; }
+  else if (score >= 60) { scoreClass = 'score-good'; scoreLabel = 'Good'; }
+  
+  document.getElementById('score-card').innerHTML = `
+    <div class="score-number ${scoreClass}">${score}/100</div>
+    <div class="score-label">${scoreLabel}</div>
+    <div class="score-grid">
+      <div class="stat stat-pass">
+        <div class="num">${passed}</div>
+        <div class="stat-label">Passed</div>
+      </div>
+      <div class="stat stat-warn">
+        <div class="num">${warned}</div>
+        <div class="stat-label">Warnings</div>
+      </div>
+      <div class="stat stat-fail">
+        <div class="num">${failed}</div>
+        <div class="stat-label">Failed</div>
+      </div>
+    </div>
+  `;
+  
+  const checks = data.checks || [];
+  const list = document.getElementById('checks-list');
+  list.innerHTML = '<h3 style="color:#7c7cff;margin-bottom:15px">Check Results</h3>';
+  
+  checks.forEach(c => {
+    const icon = c.status === '✓' ? '✅' : c.status === '⚠' ? '⚠️' : '❌';
+    const div = document.createElement('div');
+    div.className = 'check-item';
+    div.innerHTML = `
+      <div class="check-icon">${icon}</div>
+      <div>
+        <div class="check-name">${c.check || c.name || 'Check'}</div>
+        <div class="check-detail">${c.detail || ''}</div>
+        ${c.suggestion ? `<div class="check-suggestion">💡 ${c.suggestion}</div>` : ''}
+      </div>
+    `;
+    list.appendChild(div);
+  });
+  
+  if (data.free_note) {
+    const note = document.createElement('div');
+    note.style.cssText = 'padding:15px;background:#0a0a1a;border-radius:8px;margin-top:15px;color:#a0a0cc;font-size:.9em;border:1px solid #2a2a5a';
+    note.textContent = data.free_note;
+    list.appendChild(note);
+  }
+}
+
+function showError(msg) {
+  const box = document.getElementById('error-box');
+  box.textContent = msg;
+  box.style.display = 'block';
+}
+
+function verifyAndUpgrade() {
+  alert('Payment verification works via API. Send $0.03 USDC to 0x76eADdEBFfb6A61DD071f97F4508467fc55dd113 on Base chain, then retry the audit with X-X402-Payment header.');
+}
+</script>
+<div class="share-bar" style="position:fixed;bottom:20px;right:20px;z-index:9999;display:flex;gap:8px;background:rgba(0,0,0,0.85);padding:10px 14px;border-radius:30px;backdrop-filter:blur(8px);box-shadow:0 2px 12px rgba(0,0,0,0.3)">
+<button onclick="window.open('https://twitter.com/intent/tweet?text='+encodeURIComponent(document.title)+'&url='+encodeURIComponent(location.href),'_blank')" style="background:#1DA1F2;border:none;color:white;padding:8px 12px;border-radius:20px;cursor:pointer;font-size:13px;font-weight:bold">X</button>
+<button onclick="window.open('https://www.linkedin.com/sharing/share-offsite/?url='+encodeURIComponent(location.href),'_blank')" style="background:#0A66C2;border:none;color:white;padding:8px 12px;border-radius:20px;cursor:pointer;font-size:13px;font-weight:bold">in</button>
+<button onclick="window.open('https://reddit.com/submit?url='+encodeURIComponent(location.href)+'&title='+encodeURIComponent(document.title),'_blank')" style="background:#FF4500;border:none;color:white;padding:8px 12px;border-radius:20px;cursor:pointer;font-size:13px;font-weight:bold">r</button>
+</div>
+<script src="/js/share-widget.js"></script>
+<script src="/conversion-banner.js" defer></script>
+</body>
+</html>

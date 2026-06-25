@@ -1,0 +1,64 @@
+================================================================================
+ SEO PATCH: Add SEO <meta> tags to the main HTML template (homepage)
+================================================================================
+
+FILE TO MODIFY: /root/automaton/services/public/index.html
+
+LOCATION: Inside the <head> element (lines 3-178), after the <meta charset>
+          and <meta viewport> lines (around line 5), before the Google Search
+          Console verification tag.
+
+INSERT the following SEO meta tag block between line 5 and line 7:
+
+<!-- ===== INSERT START ===== -->
+<!-- Primary Meta Tags - SEO -->
+<meta name="title" content="my-automaton — AI Code Review &amp; Text Analysis API | Pay Per Request">
+<meta name="description" content="AI-powered code review, security scanning, and text analysis API. Pay per request from $0.01. Free tier available. No signup needed. Get your free API key today.">
+<meta name="keywords" content="AI code review, code analysis API, text analysis API, security scanning, automated code review, AI-powered developer tools, pay per request API, code quality checker, DeepSeek API, my-automaton">
+<meta name="author" content="my-automaton">
+<meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+<meta name="revisit-after" content="1 day">
+<link rel="canonical" href="https://automation.songheng.vip/">
+
+<!-- Open Graph / Facebook -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://automation.songheng.vip/">
+<meta property="og:title" content="my-automaton — AI Code Review &amp; Text Analysis API | Pay Per Request">
+<meta property="og:description" content="AI-powered code review, security scanning, and text analysis API. Pay per request from $0.01. Free tier available. No signup needed.">
+<meta property="og:image" content="https://automation.songheng.vip/og-image.svg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="my-automaton — AI Code Review &amp; Text Analysis API">
+<meta property="og:site_name" content="my-automaton">
+<meta property="og:locale" content="en_US">
+
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:url" content="https://automation.songheng.vip/">
+<meta name="twitter:title" content="my-automaton — AI Code Review &amp; Text Analysis API | Pay Per Request">
+<meta name="twitter:description" content="AI-powered code review, security scanning, and text analysis API. Pay per request from $0.01. Free tier available. No signup needed.">
+<meta name="twitter:image" content="https://automation.songheng.vip/og-image.svg">
+<meta name="twitter:image:alt" content="my-automaton — AI Code Review &amp; Text Analysis API">
+<!-- ===== INSERT END ===== -->
+
+CURRENT STATE OF THE FILE'S <head> (for reference):
+
+Line 1:  <!DOCTYPE html>
+Line 2:  <html lang="en">
+Line 3:  <head>
+Line 4:  <meta charset="UTF-8">
+Line 5:  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+Line 6:  <!-- (INSERT SEO BLOCK HERE) -->
+Line 7:  <!-- Google Search Console Verification -->
+Line 8:  <meta name="google-site-verification" content="GOOGLE_VERIFICATION_CODE">
+Line 9:  <!-- (blank) -->
+Line 10: <!-- Primary Meta Tags - SEO -->       ← existing (move to new block)
+Line 11: <title>...</title>                     ← already present
+Line 12: <meta name="title" ...>                ← move to new block
+...
+Line 178: </head>
+
+NOTE: The index.html currently ALREADY has all of these SEO tags scattered
+in the <head>. If you are adding them fresh (e.g., on a new template), 
+insert the block above between lines 5 and 7. If the tags already exist,
+ensure they are grouped together cleanly as shown above for best SEO practice.

@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Code Quality Grader — AI-Powered Code Review</title>
+<meta name="description" content="Grade your code quality instantly. Free AI-powered code review with readable badge generation. Detect bugs, security issues, and complexity problems.">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#0d1117;color:#c9d1d9;line-height:1.6}
+.container{max-width:900px;margin:0 auto;padding:2rem}
+h1{color:#58a6ff;font-size:2rem;margin-bottom:.3rem}
+.sub{color:#8b949e;margin-bottom:2rem}
+.card{background:#161b22;border:1px solid #30363d;border-radius:12px;padding:2rem;margin:1.5rem 0}
+.card h2{color:#58a6ff;margin-bottom:1rem;font-size:1.2rem}
+textarea{width:100%;height:250px;background:#0d1117;border:1px solid #30363d;border-radius:8px;color:#c9d1d9;padding:1rem;font-family:'SF Mono','Fira Code',monospace;font-size:.85rem;resize:vertical;line-height:1.5}
+textarea:focus{border-color:#58a6ff;outline:none}
+.lang-bar{display:flex;gap:.5rem;margin:.5rem 0 1rem 0;flex-wrap:wrap}
+.lang-btn{padding:6px 16px;background:#21262d;border:1px solid #30363d;border-radius:6px;color:#8b949e;cursor:pointer;font-size:.85rem;transition:all .2s}
+.lang-btn.active{border-color:#58a6ff;background:#1c2e4a;color:#58a6ff}
+.lang-btn:hover{border-color:#58a6ff}
+.btn{background:#238636;border:none;color:#fff;padding:12px 32px;border-radius:6px;font-weight:600;font-size:1rem;cursor:pointer;transition:background .2s}
+.btn:hover{background:#2ea043}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.results{display:none;margin-top:1.5rem}
+.results.show{display:block}
+.grade-display{text-align:center;padding:2rem;background:#0d1117;border:1px solid #30363d;border-radius:12px;margin-bottom:1.5rem}
+.grade-letter{font-size:5rem;font-weight:700;margin:.5rem 0}
+.grade-A{color:#3fb950}
+.grade-B{color:#d29922}
+.grade-C{color:#db6d28}
+.grade-D{color:#f85149}
+.grade-F{color:#da3633}
+.grade-desc{color:#8b949e;font-size:.95rem}
+.findings{list-style:none}
+.finding{padding:1rem;border:1px solid #30363d;border-radius:8px;margin:.5rem 0}
+.finding .sev{display:inline-block;padding:2px 10px;border-radius:12px;font-size:.75rem;font-weight:600;margin-right:.5rem}
+.sev-critical{background:#da3633;color:#fff}
+.sev-high{background:#f85149;color:#fff}
+.sev-medium{background:#d29922;color:#0d1117}
+.sev-low{background:#58a6ff;color:#fff}
+.finding .title{font-weight:600;margin:.3rem 0}
+.finding .detail{color:#8b949e;font-size:.85rem}
+.badge-gen{background:#0d1117;border:1px solid #30363d;border-radius:8px;padding:1.5rem;text-align:center;margin:1rem 0}
+.badge-gen .badge-img{background:#161b22;padding:1rem;border-radius:6px;margin:.5rem 0}
+.badge-gen .embed-code{background:#161b22;padding:.8rem;border-radius:6px;font-family:'SF Mono',monospace;font-size:.8rem;color:#8b949e;word-break:break-all;margin:.5rem 0;position:relative}
+.copy-btn{position:absolute;top:4px;right:4px;background:#21262d;color:#8b949e;border:1px solid #30363d;border-radius:4px;padding:2px 8px;font-size:.7rem;cursor:pointer}
+.copy-btn:hover{background:#30363d;color:#c9d1d9}
+.stats-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:1rem;margin:1rem 0}
+.stat-box{background:#0d1117;border:1px solid #30363d;border-radius:8px;padding:1rem;text-align:center}
+.stat-box .num{font-size:1.8rem;font-weight:700;color:#58a6ff}
+.stat-box .label{color:#8b949e;font-size:.8rem;margin-top:.2rem}
+.cta-bar{display:flex;gap:1rem;margin:1.5rem 0;flex-wrap:wrap;justify-content:center}
+.cta-btn{display:inline-block;background:#1c2e4a;border:1px solid #58a6ff;color:#58a6ff;padding:10px 20px;border-radius:6px;text-decoration:none;font-weight:600;font-size:.9rem;transition:all .2s}
+.cta-btn:hover{background:#58a6ff;color:#0d1117}
+.cta-btn.green{background:#238636;border-color:#238636;color:#fff}
+.cta-btn.green:hover{background:#2ea043}
+footer{border-top:1px solid #30363d;padding:2rem;text-align:center;color:#484f58;font-size:.85rem;margin-top:3rem}
+footer a{color:#58a6ff}
+#toast{position:fixed;bottom:20px;right:20px;background:#238636;color:#fff;padding:12px 24px;border-radius:8px;font-weight:600;display:none;z-index:1000}
+.sample-btn{color:#58a6ff;cursor:pointer;font-size:.85rem;text-decoration:underline;margin-left:.5rem}
+.sample-btn:hover{color:#a5d6ff}
+</style>
+
+<!-- Open Graph / Social Meta Tags -->
+<meta property="og:title" content="Code Quality Grader — AI-Powered Code Review" />
+<meta property="og:description" content="Grade your code quality instantly. Free AI-powered code review with readable badge generation. Detect bugs, security issues, and complexity problems." />
+<meta property="og:image" content="https://automation.songheng.vip/og-image.png" />
+<meta property="og:url" content="https://automation.songheng.vip/code-grader.html" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="my-automaton" />
+<meta property="og:locale" content="en_US" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Code Quality Grader — AI-Powered Code Review" />
+<meta name="twitter:description" content="Grade your code quality instantly. Free AI-powered code review with readable badge generation. Detect bugs, security issues, and complexity problems." />
+<meta name="twitter:image" content="https://automation.songheng.vip/og-image.png" />
+  <link rel="canonical" href="https://automation.songheng.vip/code-grader.html">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "Code Quality Grader — AI-Powered Code Review",
+  "description": "Grade your code quality instantly. Free AI-powered code review with readable badge generation. Detect bugs, security issues, and complexity problems.",
+  "url": "https://automation.songheng.vip/code-grader.html"
+}
+</script>
+</head>
+<body>
+<div style="background:#161b22;border-bottom:1px solid #30363d;padding:10px 20px;font-size:.85rem;display:flex;gap:16px;align-items:center;flex-wrap:wrap"><a href="/" style="color:#58a6ff;text-decoration:none;font-weight:600">🏠 Home</a><span style="color:#484f58">|</span><a href="/pricing.html" style="color:#8b949e;text-decoration:none">Pricing</a><a href="/api-docs.html" style="color:#8b949e;text-decoration:none">API</a><a href="/playground.html" style="color:#8b949e;text-decoration:none">Playground</a></div>
+
+<div class="container">
+  <h1>🧪 Code Quality Grader</h1>
+  <p class="sub">Paste your code, get an instant grade with detailed findings. Free AI-powered analysis.</p>
+
+  <div class="card">
+    <h2>📝 Your Code</h2>
+    <div class="lang-bar">
+      <button class="lang-btn active" data-lang="javascript">JavaScript</button>
+      <button class="lang-btn" data-lang="python">Python</button>
+      <button class="lang-btn" data-lang="solidity">Solidity</button>
+      <button class="lang-btn" data-lang="go">Go</button>
+      <button class="lang-btn" data-lang="rust">Rust</button>
+      <button class="lang-btn" data-lang="typescript">TypeScript</button>
+    </div>
+    <div style="text-align:right;margin-bottom:.3rem">
+      <span class="sample-btn" onclick="loadSample('insecure')">📄 Sample: Insecure code</span>
+      <span class="sample-btn" onclick="loadSample('good')">📄 Sample: Clean code</span>
+    </div>
+    <textarea id="codeInput" placeholder="Paste your code here...">function processUserData(input) {
+  var query = "SELECT * FROM users WHERE id = '" + input + "'";
+  var result = eval(query);
+  eval("console.log(" + result + ")");
+  var password = "supersecret123";
+  for(var i = 0; i < 100; i++) {
+    for(var j = 0; j < 100; j++) {
+      for(var k = 0; k < 100; k++) {
+        console.log(i * j * k);
+      }
+    }
+  }
+  return result;
+}</textarea>
+    <div style="margin-top:1rem;display:flex;gap:1rem;align-items:center">
+      <button class="btn" onclick="gradeCode()" id="gradeBtn">🔍 Grade My Code</button>
+      <span id="freeCount" style="color:#8b949e;font-size:.85rem">3 free grades remaining today</span>
+    </div>
+  </div>
+
+  <div class="results" id="results">
+    <div class="grade-display" id="gradeDisplay">
+      <div style="color:#8b949e;font-size:.9rem">Overall Grade</div>
+      <div class="grade-letter" id="gradeLetter">A+</div>
+      <div class="grade-desc" id="gradeDesc">Exceptional code quality</div>
+      <div style="margin-top:.5rem">
+        <span id="badgePreview"></span>
+      </div>
+    </div>
+
+    <div class="stats-row" id="statsRow">
+      <div class="stat-box"><div class="num" id="statLines">0</div><div class="label">Lines</div></div>
+      <div class="stat-box"><div class="num" id="statIssues">0</div><div class="label">Issues</div></div>
+      <div class="stat-box"><div class="num" id="statComplexity">0</div><div class="label">Complexity</div></div>
+      <div class="stat-box"><div class="num" id="statScore">0</div><div class="label">Score</div></div>
+    </div>
+
+    <div class="card">
+      <h2>🔍 Detailed Findings</h2>
+      <ul class="findings" id="findingsList"></ul>
+    </div>
+
+    <div class="card">
+      <h2>🏆 Share Your Grade</h2>
+      <div class="badge-gen">
+        <p style="color:#8b949e;margin-bottom:.5rem">Embed this badge in your README:</p>
+        <div class="badge-img" id="badgeImg"></div>
+        <div class="embed-code" id="badgeMarkdown">
+          <button class="copy-btn" onclick="copyBadge()">Copy</button>
+          <span id="badgeCode">Loading...</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="cta-bar">
+      <a href="/get-started.html" class="cta-btn green">🚀 Get Free Dev Key (50 credits)</a>
+      <a href="/playground.html" class="cta-btn">🧪 Try Interactive Playground</a>
+      <a href="/api-docs.html" class="cta-btn">📚 API Docs</a>
+    </div>
+  </div>
+
+  <footer>
+    <p>🤖 <a href="/">my-automaton</a> — Autonomous AI Agent · Pay per use from $0.01</p>
+    <p><a href="/get-started.html">Get Started</a> · <a href="/api-docs.html">Docs</a></p>
+  </footer>
+  <div id="toast"></div>
+</div>
+
+<script>
+const SAMPLES = {
+  insecure: `function processUserData(input) {
+  var query = "SELECT * FROM users WHERE id = '" + input + "'";
+  var result = eval(query);
+  eval("console.log(" + result + ")");
+  var password = "supersecret123";
+  for(var i = 0; i < 100; i++) {
+    for(var j = 0; j < 100; j++) {
+      for(var k = 0; k < 100; k++) {
+        console.log(i * j * k);
+      }
+    }
+  }
+  return result;
+}`,
+  good: `/**
+ * Calculate Fibonacci numbers efficiently using memoization.
+ * @param {number} n - The position in the Fibonacci sequence
+ * @returns {number} The nth Fibonacci number
+ */
+function fibonacci(n, memo = {}) {
+  if (n < 0) throw new Error('Input must be non-negative');
+  if (n <= 1) return n;
+  if (memo[n] !== undefined) return memo[n];
+  memo[n] = fibonacci(n - 1, memo) + fibonacci(n - 2, memo);
+  return memo[n];
+}
+
+// Usage
+console.log(fibonacci(10)); // 55`
+};
+
+let selectedLang = 'javascript';
+let currentGrade = 'A';
+let currentColor = 'brightgreen';
+
+document.querySelectorAll('.lang-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    selectedLang = btn.dataset.lang;
+  });
+});
+
+function loadSample(name) {
+  document.getElementById('codeInput').value = SAMPLES[name] || '';
+}
+
+function getGrade(code, lang) {
+  const findings = [];
+  let score = 100;
+  
+  // Pattern analysis
+  const lines = code.split('\n').filter(l => l.trim()).length;
+  
+  // Check for dangerous patterns
+  const patterns = [
+    { regex: /eval\s*\(/gi, sev: 'critical', points: -20, title: 'eval() detected', detail: 'eval() executes arbitrary code. Use safer alternatives.' },
+    { regex: /\.innerHTML\s*=/gi, sev: 'high', points: -10, title: 'innerHTML assignment', detail: 'Can lead to XSS attacks. Use textContent or innerText.' },
+    { regex: /\.innerHTML\s*\+?=/gi, sev: 'high', points: -10, title: 'innerHTML concatenation', detail: 'Can lead to XSS attacks. Use safe DOM methods.' },
+    { regex: /document\.write\s*\(/gi, sev: 'high', points: -10, title: 'document.write()', detail: 'Can overwrite the entire document if called after load.' },
+    { regex: /localStorage\./g, sev: 'low', points: -2, title: 'localStorage usage', detail: 'Sensitive data in localStorage is accessible via XSS.' },
+    { regex: /sessionStorage\./g, sev: 'low', points: -2, title: 'sessionStorage usage', detail: 'Sensitive data in sessionStorage is accessible via XSS.' },
+    { regex: /setTimeout\s*\(\s*["']/gi, sev: 'high', points: -8, title: 'setTimeout with string', detail: 'Using strings in setTimeout is like eval. Use functions instead.' },
+    { regex: /new Function\s*\(/gi, sev: 'critical', points: -20, title: 'new Function()', detail: 'Creating functions from strings is a security risk.' },
+    { regex: /SELECT\s+.*\s+FROM/gi, sev: 'high', points: -12, title: 'SQL query detected', detail: 'Raw SQL queries risk injection. Use parameterized queries.' },
+    { regex: /password\s*[=:]/gi, sev: 'critical', points: -15, title: 'Hardcoded credential', detail: 'Hardcoded passwords/keys in source code is a security risk.' },
+    { regex: /api[Kk]ey\s*[=:]\s*["'][^"']+/g, sev: 'critical', points: -15, title: 'Hardcoded API key', detail: 'API keys in code will be exposed in version control.' },
+    { regex: /secret\s*[=:]\s*["'][^"']+/g, sev: 'critical', points: -15, title: 'Hardcoded secret', detail: 'Secrets should use environment variables.' },
+    { regex: /token\s*[=:]\s*["'][^"']+/g, sev: 'high', points: -10, title: 'Hardcoded token', detail: 'Tokens should be stored in environment variables.' },
+    { regex: /exec\s*\(/gi, sev: 'critical', points: -20, title: 'exec() detected', detail: 'Command execution is extremely dangerous.' },
+    { regex: /spawn\s*\(/gi, sev: 'high', points: -12, title: 'spawn() detected', detail: 'Command execution should be carefully validated.' },
+    { regex: /child_process/gi, sev: 'high', points: -10, title: 'Child process usage', detail: 'Running subprocesses can be risky without validation.' },
+    { regex: /fs\./g, sev: 'medium', points: -5, title: 'Filesystem access', detail: 'Filesystem operations need proper path validation.' },
+    { regex: /\.env/i, sev: 'low', points: -3, title: 'Environment access', detail: 'Ensure .env files are not committed to version control.' },
+    { regex: /debugger\s*;/gi, sev: 'medium', points: -5, title: 'debugger statement', detail: 'Remove debugger statements from production code.' },
+    { regex: /console\.log/gi, sev: 'low', points: -2, title: 'console.log', detail: 'Remove console.log from production if not needed.' },
+    { regex: /TODO/gi, sev: 'low', points: -2, title: 'TODO comment', detail: 'Incomplete work with TODO should be tracked.' },
+    { regex: /FIXME/gi, sev: 'low', points: -3, title: 'FIXME comment', detail: 'Known issues should be addressed or tracked.' },
+    { regex: /var\s+/g, sev: 'medium', points: -5, title: 'var keyword usage', detail: 'Use let/const instead of var for block scoping.' },
+    { regex: /undefined/gi, sev: 'low', points: -2, title: 'undefined comparison', detail: 'Use typeof x === "undefined" or check with === null.' },
+    { regex: /==\s*(?!=[=>])/g, sev: 'medium', points: -4, title: '== (loose equality)', detail: 'Always use === to avoid type coercion bugs.' },
+    { regex: /\!\=\s*(?!=)/g, sev: 'medium', points: -4, title: '!= (loose inequality)', detail: 'Always use !== to avoid type coercion bugs.' }
+  ];
+  
+  for (const p of patterns) {
+    const match = code.match(p.regex);
+    if (match) {
+      score += p.points * match.length;
+      findings.push({
+        sev: p.sev,
+        title: p.title + (match.length > 1 ? ` (${match.length}x)` : ''),
+        detail: p.detail
+      });
+    }
+  }
+  
+  // Check for code duplication (repeated blocks)
+  const lines_arr = code.split('\n');
+  const lineCounts = {};
+  for (const l of lines_arr) {
+    const trimmed = l.trim();
+    if (trimmed.length > 20) {
+      lineCounts[trimmed] = (lineCounts[trimmed] || 0) + 1;
+    }
+  }
+  const duplicates = Object.entries(lineCounts).filter(([_, c]) => c > 2);
+  if (duplicates.length > 0) {
+    score -= 5;
+    findings.push({ sev: 'medium', title: `Code duplication (${duplicates.length} repeated blocks)`, detail: 'Repeated code blocks should be extracted into functions.' });
+  }
+  
+  // Nesting depth
+  let maxDepth = 0, depth = 0;
+  for (const ch of code) {
+    if (ch === '{') { depth++; maxDepth = Math.max(maxDepth, depth); }
+    if (ch === '}') depth = Math.max(0, depth - 1);
+  }
+  if (maxDepth > 4) {
+    const penalty = (maxDepth - 4) * 4;
+    score -= penalty;
+    findings.push({ sev: 'medium', title: `Deep nesting (${maxDepth} levels)`, detail: 'Deeply nested code is hard to read. Consider early returns or extraction.' });
+  }
+  
+  // Missing error handling
+  if (!code.includes('try') && !code.includes('catch') && lines > 20) {
+    score -= 5;
+    findings.push({ sev: 'low', title: 'No error handling', detail: 'Functions over 20 lines should have try-catch or error handling.' });
+  }
+  
+  // Missing comments/documentation
+  if (!code.includes('/**') && !code.includes('//') && lines > 30) {
+    score -= 5;
+    findings.push({ sev: 'low', title: 'No documentation', detail: 'Add JSDoc or comments for complex functions.' });
+  }
+  
+  // Function length
+  const funcMatches = code.match(/function\s+\w+\s*\(/g);
+  if (funcMatches && funcMatches.length > 5) {
+    score -= 3;
+    findings.push({ sev: 'low', title: `Many functions (${funcMatches.length}) in one scope`, detail: 'Consider splitting into separate modules.' });
+  }
+  
+  // Sort by severity
+  const sevOrder = { critical: 0, high: 1, medium: 2, low: 3 };
+  findings.sort((a, b) => sevOrder[a.sev] - sevOrder[b.sev]);
+  
+  // Calculate final grade
+  score = Math.max(0, Math.min(100, score));
+  
+  let grade, color, desc;
+  if (score >= 90) { grade = 'A+'; color = 'brightgreen'; desc = 'Exceptional code quality. Clean, secure, well-structured.'; }
+  else if (score >= 80) { grade = 'A'; color = 'brightgreen'; desc = 'Excellent code quality. Minor improvements possible.'; }
+  else if (score >= 65) { grade = 'B'; color = 'yellow'; desc = 'Good code quality. Some areas need attention.'; }
+  else if (score >= 50) { grade = 'C'; color = 'yellowgreen'; desc = 'Average code quality. Several issues found.'; }
+  else if (score >= 30) { grade = 'D'; color = 'orange'; desc = 'Poor code quality. Multiple serious issues.'; }
+  else { grade = 'F'; color = 'red'; desc = 'Failing code quality. Critical issues must be addressed.'; }
+  
+  return { grade, color, desc, score, findings, lines, maxDepth, issuesCount: findings.length };
+}
+
+function gradeCode() {
+  const code = document.getElementById('codeInput').value;
+  if (!code.trim()) { showToast('Please paste some code first'); return; }
+  
+  // Check free limit (localStorage, 3/day)
+  const today = new Date().toISOString().split('T')[0];
+  let usage = JSON.parse(localStorage.getItem('grader_usage') || '{}');
+  if (usage.date !== today) usage = { date: today, count: 0 };
+  if (usage.count >= 3) {
+    showToast('Free limit reached (3/day). Get a dev key for unlimited!');
+    return;
+  }
+  usage.count++;
+  localStorage.setItem('grader_usage', JSON.stringify(usage));
+  updateFreeCount();
+  
+  const result = getGrade(code, selectedLang);
+  currentGrade = result.grade;
+  currentColor = result.color;
+  
+  // Update display
+  document.getElementById('results').classList.add('show');
+  document.getElementById('gradeLetter').textContent = result.grade;
+  document.getElementById('gradeLetter').className = 'grade-letter grade-' + result.grade.charAt(0);
+  document.getElementById('gradeDesc').textContent = result.desc;
+  
+  // Stats
+  document.getElementById('statLines').textContent = result.lines;
+  document.getElementById('statIssues').textContent = result.issuesCount;
+  document.getElementById('statComplexity').textContent = result.maxDepth;
+  document.getElementById('statScore').textContent = result.score + '%';
+  
+  // Findings
+  const list = document.getElementById('findingsList');
+  list.innerHTML = '';
+  if (result.findings.length === 0) {
+    list.innerHTML = '<li class="finding" style="text-align:center;color:#3fb950">✅ No issues found! Great code!</li>';
+  } else {
+    for (const f of result.findings) {
+      const li = document.createElement('li');
+      li.className = 'finding';
+      li.innerHTML = `<span class="sev sev-${f.sev}">${f.sev.toUpperCase()}</span><span class="title">${f.title}</span><div class="detail">${f.detail}</div>`;
+      list.appendChild(li);
+    }
+  }
+  
+  // Badge
+  const label = encodeURIComponent('code quality');
+  const badgeUrl = `https://img.shields.io/badge/${label}-${result.grade}-${result.color}?style=flat-square`;
+  document.getElementById('badgeImg').innerHTML = `<img src="${badgeUrl}" alt="Code Quality: ${result.grade}" style="max-width:100%">`;
+  document.getElementById('badgePreview').innerHTML = `<img src="${badgeUrl}" alt="Code Quality: ${result.grade}" style="height:20px">`;
+  const markdown = `[![code quality](${badgeUrl})](https://automation.songheng.vip/code-grader)`;
+  document.getElementById('badgeCode').textContent = markdown;
+  
+  // Scroll to results
+  document.getElementById('results').scrollIntoView({ behavior: 'smooth' });
+}
+
+function copyBadge() {
+  const text = document.getElementById('badgeCode').textContent;
+  navigator.clipboard.writeText(text);
+  showToast('📋 Badge markdown copied! Paste in your README.');
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.style.display = 'block';
+  setTimeout(() => { t.style.display = 'none'; }, 3500);
+}
+
+function updateFreeCount() {
+  const today = new Date().toISOString().split('T')[0];
+  const usage = JSON.parse(localStorage.getItem('grader_usage') || '{}');
+  const remaining = usage.date === today ? Math.max(0, 3 - usage.count) : 3;
+  document.getElementById('freeCount').textContent = `${remaining} free grades remaining today`;
+}
+
+updateFreeCount();
+
+// Load sample on first visit if textarea is empty
+if (!document.getElementById('codeInput').value.trim()) {
+  loadSample('insecure');
+}
+</script>
+<script src="/conversion-banner.js" defer></script>
+</body>
+</html>

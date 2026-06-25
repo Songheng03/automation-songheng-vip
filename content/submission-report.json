@@ -1,0 +1,15 @@
+{
+  "site": "https://automation.songheng.vip",
+  "sitemap": "https://automation.songheng.vip/sitemap.xml",
+  "submissions_attempted": 18,
+  "time": "2026-06-14T22:15:36.381Z",
+  "manual_steps": [
+    "Verify Google Search Console",
+    "Verify Bing Webmaster",
+    "Post on Hacker News",
+    "Post on Product Hunt",
+    "Create dev.to article about x402 payments",
+    "Create Medium article",
+    "Tweet about the service"
+  ]
+}

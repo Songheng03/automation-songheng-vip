@@ -1,0 +1,154 @@
+#!/usr/bin/env node
+const E=require('express'),F=require('fs'),P=require('path'),C=require('crypto');
+
+const x402Verifier = require('/root/services/x402-payment-verifier.js');
+const x402PaidHandler = require('/root/services/x402-paid-api-handler.js');
+const a=E(),PORT=8080,D='/root/automaton/data',CT='/root/automaton/content';
+const W='0x76eADdEBFfb6a61DD071f97F4508467fc55dd113',B='https://automation.songheng.vip';
+const API=process.env.DEEPSEEK_KEY||'';
+const KF=P.join(D,'api-keys.json');let ak={};
+try{ak=JSON.parse(F.readFileSync(KF,'utf8'))}catch(e){sv();}
+function sv(){F.mkdirSync(P.dirname(KF),{recursive:true});F.writeFileSync(KF,JSON.stringify(ak,null,2));}
+function gk(){return'am_'+C.randomBytes(24).toString('hex');}
+function ac(n){const k=gk();ak[k]={credits:parseInt(n)||0,created:new Date().toISOString(),used:0};sv();return{key:k,credits:parseInt(n)||0};}
+function vk(r){const h=r.headers['x-api-key']||(r.headers.authorization&&r.headers.authorization.replace(/^Bearer\s+/i,''));return(h&&ak[h])?h:null;}
+function dk(k,n){if(!ak[k]||ak[k].credits<n)return false;ak[k].credits-=n;ak[k].used+=n;sv();return true;}
+
+const sf='/tmp/ast.json';let st={t:0,p:0,f:0,pmt:0,bp:{},bd:{}};
+try{st=JSON.parse(F.readFileSync(sf,'utf8'))}catch(e){}
+function tr(path,mode,ip){
+  st.t++;if(mode==='p')st.p++;else st.f++;
+  const d=new Date().toISOString().slice(0,10);
+  if(!st.bd[d])st.bd[d]=0;st.bd[d]++;
+  const p=path||'/';if(!st.bp[p])st.bp[p]=0;st.bp[p]++;
+}
+function ss(){try{F.writeFileSync(sf,JSON.stringify(st))}catch(e){}}
+setInterval(ss,60000);
+a.use(E.json({limit:'1mb'}));
+
+function svF(r,s,fp){const f=String(fp);if(F.existsSync(f)&&!F.statSync(f).isDirectory()){r.sendFile(f);return true;}const h=f+'.html';if(F.existsSync(h)&&!F.statSync(h).isDirectory()){r.sendFile(h);return true;}return false;}
+
+const fq=new Map();
+function fc(ip){const d=new Date().toISOString().slice(0,10);return fq.get(ip+':'+d)||0;}
+function uf(ip){const d=new Date().toISOString().slice(0,10);fq.set(ip+':'+d,(fq.get(ip+':'+d)||0)+1);setTimeout(()=>fq.delete(ip+':'+d),86400000);}
+async function ai(m){const r=await fetch('https://api.deepseek.com/chat/completions',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+API},body:JSON.stringify({model:'deepseek-chat',messages:m,temperature:0.3,max_tokens:2000})});if(!r.ok)throw new Error('DS '+r.status);return(await r.json()).choices[0].message.content;}
+
+const TL=P.join(D,'traffic.json');let tl=[];
+try{tl=JSON.parse(F.readFileSync(TL,'utf8'))}catch(e){}
+function logTraffic(p,a,ip){tl.push({path:p,action:a||'visit',ip:(ip||'u').split(',')[0].trim(),t:new Date().toISOString()});if(tl.length>1000)tl=tl.slice(-1000);F.writeFileSync(TL,JSON.stringify(tl));}
+
+// ─── IndexNow ───
+a.get('/61cd3a4a32564707b40b3a86c671cb14.txt',(r,s)=>{s.type('text').send('61cd3a4a32564707b40b3a86c671cb14');});
+a.get('/'+W.replace('0x','')+'.txt',(r,s)=>{s.type('text').send(W);});
+
+// ─── API Routes ───
+a.get('/api/services',(r,s)=>{s.json({services:{analyze:{name:'Text Analysis',credits:1,freeLimit:3,description:'Sentiment, topics, entities, writing style'},summarize:{name:'Summarization',credits:2,freeLimit:3},review:{name:'Code Review',credits:5,freeLimit:3},security:{name:'Security Scan',credits:3,freeLimit:3},explain:{name:'Code Explanation',credits:2,freeLimit:3},refactor:{name:'Refactoring',credits:5,freeLimit:3},complexity:{name:'Complexity Analysis',credits:2,freeLimit:3}},freeDailyLimit:3,wallet:'0x76eADdEBFfb6a61DD071f97F4508467fc55dd113'});});
+a.get('/api/health',(r,s)=>{s.json({status:'ok',agent:'my-automaton',wallet:W,uptime:process.uptime(),ts:new Date().toISOString()});});
+a.get('/api/stats/overview',(r,s)=>{ss();s.json({wallet:W,api_keys:Object.keys(ak).length,total:st.t,premium:st.p,free:st.f,payments:st.pmt,byPath:st.bp,byDay:st.bd,uptime:process.uptime(),mem:(process.memoryUsage().rss/1024/1024).toFixed(0)+'MB'});});
+a.get('/api/add-credits',(r,s)=>{const k=ac(r.query.n||100);s.json(k);});
+a.get('/api/blog/list',(r,s)=>{try{const bj=JSON.parse(fs.readFileSync('/root/automaton/content/blog.json','utf8'));s.json({articles:bj,total:bj.length||0});}catch(e){s.json({articles:[],total:0});}});
+a.get('/api/traffic',(r,s)=>{const ip=r.headers['x-forwarded-for']||r.ip||'u';logTraffic(r.query.path||'/','visit',ip);tr(r.query.path||'/','f',ip);s.json({ok:true});});
+
+a.post('/api/ping-indexnow',async(r,s)=>{try{const sm=F.existsSync(P.join(CT,'sitemap.xml'))?F.readFileSync(P.join(CT,'sitemap.xml'),'utf8'):'';const urls=[...sm.matchAll(/<loc>([^<]+)<\/loc>/g)].map(m=>m[1]).slice(0,10);if(!urls.length)return s.json({error:'No URLs in sitemap'});const res=await fetch('https://api.indexnow.org/indexnow',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({host:'automation.songheng.vip',key:'61cd3a4a32564707b40b3a86c671cb14',keyLocation:B+'/61cd3a4a32564707b40b3a86c671cb14.txt',urlList:urls})});s.json({ok:res.ok,status:res.status,submitted:urls.length});}catch(e){s.status(500).json({error:e.message});}});
+
+a.post('/api/rebuild-sitemap',(r,s)=>{try{let items=[];try{items=JSON.parse(F.readFileSync(P.join(CT,'blog.json'),'utf8'));}catch(e){}const base=['/','/blog','/tools','/upgrade','/dashboard','/admin','/api-docs','/api-playground','/backlinks'];const urls=[];for(const u of base)urls.push(B+u);for(const a of items)if(a.url)urls.push(B+a.url);const toolsDir=P.join(CT,'tools');if(F.existsSync(toolsDir))F.readdirSync(toolsDir).filter(f=>f.endsWith('.html')).forEach(f=>urls.push(B+'/tools/'+f.replace('.html','')));const unique=[...new Set(urls)];const xml='<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'+unique.map(u=>'  <url><loc>'+u+'</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>').join('\n')+'\n</urlset>';F.writeFileSync(P.join(CT,'sitemap.xml'),xml);s.json({ok:true,count:unique.length});}catch(e){s.status(500).json({error:e.message});}});
+
+// ─── Admin / Backlinks ───
+a.get('/admin',(r,s)=>{svF(r,s,P.join(CT,'admin.html'));});
+a.get('/backlinks',(r,s)=>{svF(r,s,P.join(CT,'backlinks.html'));});
+
+// ─── Static Files ───
+a.use('/',E.static(CT,{index:'index.html',extensions:['html'],maxAge:'1h',setHeaders:(rs,p)=>{if(p.endsWith('.html'))rs.setHeader('Cache-Control','public,max-age=3600');}}));
+
+// ─── Free Endpoints (3/day/IP) ───
+async function freeHandler(req,res,mode){
+  const ip=req.headers['x-forwarded-for']||req.connection.remoteAddress||'u';
+  const c=fc(ip);uf(ip);
+  if(c>=3)return res.status(429).json({error:'Free limit reached (3/day). Upgrade at /upgrade',upgrade:B+'/upgrade',wallet:W});
+  const {text,code,content}=req.body||{};const input=text||code||content||'';
+  if(!input)return res.status(400).json({error:'No input provided'});
+  tr('/free/'+mode,'f',ip);
+  try{
+    const prompt={security:'Security scan. Return JSON {issues:[{severity,line,description,fix}],score:0-100}. Code:\n'+input,review:'Code review. Return JSON {issues:[{severity,line,description,suggestion}],score:0-100,summary}. Code:\n'+input,summarize:'Summarize. Return JSON {summary,keyPoints:[],wordCount}. Text:\n'+input,explain:'Explain code. Return JSON {overview,lineByLine:[],complexity}. Code:\n'+input,analyze:'Deep analysis. Return JSON {sentiment,tone,keyThemes:[],readabilityScore,summary,entities:[]}. Text:\n'+input}[mode]||('Analyze. Return JSON. Input:\n'+input);
+    const r=await ai([{role:'user',content:prompt}]);
+    const j=JSON.parse(r.replace(/^```json?\s*/,'').replace(/\s*```$/,''));
+    res.json({...j,mode,wallet:W,upgrade:B+'/upgrade',free_remaining:2-c});
+  }catch(e){res.status(500).json({error:e.message,mode,wallet:W});}
+}
+['analyze','summarize','review','security','explain'].forEach(m=>{a.post('/free/'+m,(r,s)=>freeHandler(r,s,m));});
+
+// ─── Premium Endpoints ───
+const PRICES={analyze:1,summarize:2,review:5,security:3,explain:2,refactor:5,complexity:2,batch:5,render:3};
+async function premiumHandler(req,res,mode){
+  const {text,code,content}=req.body||{};const input=text||code||content||'';
+  if(!input)return res.status(400).json({error:'No input provided',costCents:PRICES[mode]||5,wallet:W});
+  const key=vk(req);
+  if(!key&&!req.headers['x-x402-payment'])return res.status(402).json({error:'Payment required',costCents:PRICES[mode]||5,wallet:W,chain:'base',currency:'USDC',upgrade:B+'/upgrade'});
+  if(key&&dk(key,PRICES[mode]||5)){}else if(!req.headers['x-x402-payment'])return res.status(402).json({error:'Payment required',costCents:PRICES[mode]||5,wallet:W,chain:'base',currency:'USDC'});
+  tr('/v1/'+mode,'p','api');
+  try{
+    const prompts={security:'Security scan. Return JSON {issues:[{severity,line,description,fix}],score:0-100}. Code:\n'+input,review:'Senior code review. Return JSON {issues:[{severity,line,description,suggestion}],score:0-100,summary}. Code:\n'+input,summarize:'Summarize. Return JSON {summary,keyPoints:[],wordCount}. Text:\n'+input,explain:'Explain code. Return JSON {overview,lineByLine:[],complexity}. Code:\n'+input,analyze:'Deep analysis. Return JSON {sentiment,tone,keyThemes:[],readabilityScore,summary,entities:[]}. Text:\n'+input,refactor:'Refactoring. Return JSON {suggestions:[{issue,refactoredCode,explanation}],score,summary}. Code:\n'+input,complexity:'Complexity analysis. Return JSON {cyclomaticScore,lines,functions:[{name,params,complexity}],suggestions:[],overall}. Code:\n'+input,batch:'Batch process. Return JSON {results:[{index,summary,sentiment,keyPoints}]}. Texts:\n'+input,render:'Render markdown to HTML:\n'+input};
+    const r=await ai([{role:'user',content:prompts[mode]||('Process. Return JSON. Input:\n'+input)}]);
+    const j=JSON.parse(r.replace(/^```json?\s*/,'').replace(/\s*```$/,''));
+    st.pmt++;res.json({...j,mode,costCents:PRICES[mode]||5,wallet:W});
+  }catch(e){res.status(500).json({error:e.message,mode,wallet:W});}
+}
+Object.keys(PRICES).forEach(m=>{a.post('/v1/'+m,(r,s)=>premiumHandler(r,s,m));});
+
+// ─── MCP Protocol (AI Agent Discovery) ───
+const MCP_TOOLS=[
+  {name:'analyze',description:'Deep text analysis - sentiment, topics, entities, writing style',inputSchema:{type:'object',properties:{text:{type:'string',description:'Text to analyze'}},required:['text']}},
+  {name:'summarize',description:'AI summarization with configurable length',inputSchema:{type:'object',properties:{text:{type:'string'},length:{type:'string',enum:['short','normal','detailed']}},required:['text']}},
+  {name:'code_review',description:'Full code review - bugs, security, performance, style',inputSchema:{type:'object',properties:{code:{type:'string',description:'Source code'},language:{type:'string'}},required:['code']}},
+  {name:'security_scan',description:'Security vulnerability scan (XSS, SQLi, CSRF)',inputSchema:{type:'object',properties:{text:{type:'string'}},required:['text']}},
+  {name:'explain_code',description:'Line-by-line code explanation',inputSchema:{type:'object',properties:{code:{type:'string'}},required:['code']}},
+  {name:'complexity_analysis',description:'Big O time/space complexity analysis',inputSchema:{type:'object',properties:{code:{type:'string'}},required:['code']}},
+];
+
+a.post('/mcp/jsonrpc',(r,s)=>{
+  try{const {id,method,params}=r.body;
+    switch(method){
+      case'initialize':return s.json({jsonrpc:'2.0',id,result:{protocolVersion:'2024-11-05',capabilities:{tools:{},resources:{}},serverInfo:{name:'my-automaton',version:'1.0.0'}}});
+      case'tools/list':return s.json({jsonrpc:'2.0',id,result:{tools:MCP_TOOLS}});
+      case'tools/call':{const text=params?.arguments?.code||params?.arguments?.text||'';return s.json({jsonrpc:'2.0',id,result:{content:[{type:'text',text:`Use POST ${B}/v1/${params?.name?.replace('_','')} with X-API-Key header. Free: POST ${B}/free/analyze`}],isError:false}});}
+      case'resources/list':return s.json({jsonrpc:'2.0',id,result:{resources:[{name:'catalog',uri:B+'/api/catalog',mimeType:'application/json'},{name:'health',uri:B+'/api/health',mimeType:'application/json'}]}});
+      case'ping':return s.json({jsonrpc:'2.0',id,result:{}});
+      default:return s.json({jsonrpc:'2.0',id,error:{code:-32601,message:'Not found: '+method}});
+    }
+  }catch(e){s.json({jsonrpc:'2.0',id:null,error:{code:-32700,message:'Parse error'}});}
+});
+
+a.get('/smithery-manifest',(r,s)=>{s.json({name:'@my-automaton/mcp-server',version:'1.0.0',description:'AI API services: analysis, code review, security',agent:{name:'my-automaton',wallet:W,chain:'base',token:'USDC'},tools:MCP_TOOLS,endpoints:{mcp:B+'/mcp/jsonrpc',catalog:B+'/api/catalog',health:B+'/api/health'},tags:['ai','api','code-review','security','mcp']});});
+
+a.get('/mcp/v1/openai',(r,s)=>{s.json({tools:MCP_TOOLS.map(t=>({type:'function',function:{name:t.name,description:t.description,parameters:t.inputSchema}}))});});
+
+a.get('/mcp/v1/catalog',(r,s)=>{s.json({name:'my-automaton',wallet:W,chain:'base',services:[{name:'analyze',cost:1,endpoint:'/v1/analyze'},{name:'summarize',cost:2,endpoint:'/v1/summarize'},{name:'review',cost:5,endpoint:'/v1/review'},{name:'security',cost:3,endpoint:'/v1/security'},{name:'explain',cost:2,endpoint:'/v1/explain'},{name:'refactor',cost:5,endpoint:'/v1/refactor'},{name:'complexity',cost:2,endpoint:'/v1/complexity'},{name:'batch',cost:5,endpoint:'/v1/batch'}]});});
+
+// ─── Extra Routes ───
+a.get('/github-integration',(r,s)=>{s.sendFile(P.join('/root/automaton/content','github-integration.html'));});
+a.get('/api/catalog',(r,s)=>{s.json({agent:'my-automaton',wallet:W,chain:'base',services:Object.entries(PRICES).map(([k,v])=>({name:k,cost:v,desc:k})),free:'3/day per IP',mcp:B+'/mcp/jsonrpc'});});
+
+// ─── 404 ───
+a.use((req,res)=>{
+  const p=req.path;
+  if(p.startsWith('/api/')||p.startsWith('/v1/'))return res.status(404).json({error:'not_found',path:p});
+  const fp=P.join(CT,p==='/'?'index.html':p.slice(1));
+  if(F.existsSync(fp)&&F.statSync(fp).isFile())return res.sendFile(fp);
+  res.status(404).type('html').send('<html><body style="font-family:sans-serif;background:#0a0f1e;color:#e2e8f0;padding:2em"><h1>🤖 my-automaton</h1><p><a href="/" style="color:#3b82f6">Home</a> &#183; <a href="/api-docs" style="color:#3b82f6">API Docs</a> &#183; <a href="/upgrade" style="color:#3b82f6">Get API Key</a></p></body></html>');
+});
+
+// ─── START ───
+a.listen(PORT,'0.0.0.0',()=>{
+  console.log('🤖 my-automaton on port '+PORT);
+  console.log('📡 '+B);
+  console.log('🧠 DeepSeek: '+(API?'configured':'MISSING'));
+  console.log('💳 '+Object.keys(ak).length+' API keys');
+  console.log('🔧 MCP tools: '+MCP_TOOLS.length+' | Free: 5 | Premium: 9');
+});
+
+process.on('SIGTERM',()=>process.exit(0));
+process.on('SIGINT',()=>process.exit(0));
+
+// Write PID
+fs.writeFileSync('/root/automaton/gateway.pid', String(process.pid));
+console.log('[gateway] PID:', process.pid);

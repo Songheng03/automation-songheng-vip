@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>my-automaton Distribution Dashboard</title>
+<meta name="description" content="SEO distribution console for my-automaton API - submit to directories, search engines, and developer platforms">
+<style>
+:root{--bg:#0d1117;--card:#161b22;--border:#30363d;--text:#e6edf3;--muted:#8b949e;--accent:#58a6ff;--green:#3fb950}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;background:var(--bg);color:var(--text);line-height:1.6;padding:2rem}
+h1{font-size:1.8rem;margin-bottom:.3rem}
+p{color:var(--muted);margin-bottom:1.5rem;font-size:.9rem}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1rem}
+.card{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:1.2rem}
+.card h3{font-size:1rem;margin-bottom:.5rem;color:var(--accent)}
+.card p{font-size:.8rem;margin-bottom:.8rem;color:var(--muted)}
+.card .count{font-size:1.5rem;font-weight:700;color:var(--green)}
+.card .sub{font-size:.75rem;color:var(--muted)}
+.badge{display:inline-block;padding:2px 8px;border-radius:4px;font-size:.7rem;font-weight:600}
+.badge.ok{background:rgba(63,185,80,.15);color:var(--green)}
+.badge.pending{background:rgba(210,153,34,.15);color:#d29922}
+.badge.manual{background:rgba(88,166,255,.15);color:var(--accent)}
+a{color:var(--accent);text-decoration:none}
+a:hover{text-decoration:underline}
+.footer{margin-top:2rem;padding-top:1rem;border-top:1px solid var(--border);color:var(--muted);font-size:.8rem;text-align:center}
+</style>
+
+<!-- Open Graph / Social Meta Tags -->
+<meta property="og:title" content="my-automaton Distribution Dashboard" />
+<meta property="og:description" content="SEO distribution console for my-automaton API - submit to directories, search engines, and developer platforms" />
+<meta property="og:image" content="https://automation.songheng.vip/og-image.png" />
+<meta property="og:url" content="https://automation.songheng.vip/seo-distribute.html" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="my-automaton" />
+<meta property="og:locale" content="en_US" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="my-automaton Distribution Dashboard" />
+<meta name="twitter:description" content="SEO distribution console for my-automaton API - submit to directories, search engines, and developer platforms" />
+<meta name="twitter:image" content="https://automation.songheng.vip/og-image.png" />
+  <link rel="canonical" href="https://automation.songheng.vip/seo-distribute.html">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "my-automaton Distribution Dashboard",
+  "description": "SEO distribution console for my-automaton API - submit to directories, search engines, and developer platforms",
+  "url": "https://automation.songheng.vip/seo-distribute.html"
+}
+</script>
+</head>
+<body>
+<h1>📡 my-automaton Distribution Dashboard</h1>
+<p>Track submission status across directories, search engines, and developer platforms</p>
+
+<div class="grid">
+
+<div class="card">
+<h3>🔍 Search Engines</h3>
+<p>Google, Bing, Yandex, DuckDuckGo, Yahoo</p>
+<div class="count">5/5</div>
+<div class="sub">via sitemap.xml and IndexNow protocol</div>
+<div style="margin-top:.5rem"><span class="badge ok">Auto</span></div>
+</div>
+
+<div class="card">
+<h3>📂 AI Directories</h3>
+<p>ClawHunt, There's An AI For That, FutureTools</p>
+<div class="count">1/10</div>
+<div class="sub">ClawHunt ready - needs manual submit</div>
+<div style="margin-top:.5rem"><span class="badge manual">Manual</span></div>
+</div>
+
+<div class="card">
+<h3>🧩 MCP Directories</h3>
+<p>Smithery, Glama, MCP.so, PulseMCP</p>
+<div class="count">0/4</div>
+<div class="sub">Gateway 530 - needs tunnel fix first</div>
+<div style="margin-top:.5rem"><span class="badge pending">Blocked</span></div>
+</div>
+
+<div class="card">
+<h3>📝 Developer Platforms</h3>
+<p>dev.to, Reddit r/programming, Hacker News</p>
+<div class="count">5/5</div>
+<div class="sub">Syndicated articles ready for posting</div>
+<div style="margin-top:.5rem"><span class="badge ok">Content Ready</span></div>
+</div>
+
+<div class="card">
+<h3>📦 npm Registry</h3>
+<p>@my-automaton/cli package</p>
+<div class="count">1/1</div>
+<div class="sub">Package ready to publish</div>
+<div style="margin-top:.5rem"><span class="badge manual">npm publish</span></div>
+</div>
+
+<div class="card">
+<h3>🐙 GitHub</h3>
+<p>Source code push</p>
+<div class="count">0/1</div>
+<div class="sub">git not available in container</div>
+<div style="margin-top:.5rem"><span class="badge pending">Needs Host</span></div>
+</div>
+
+</div>
+
+<h2 style="margin-top:2rem;font-size:1.2rem">🚀 Action Items for Host</h2>
+<div style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:1.2rem;margin-top:.8rem">
+<ol style="padding-left:1.2rem;color:var(--text);font-size:.9rem;line-height:2">
+<li><strong>Restart gateway:</strong> <code style="background:#1c2128;padding:2px 6px;border-radius:3px">sudo systemctl restart automaton-gateway</code></li>
+<li><strong>Fix tunnel:</strong> <code style="background:#1c2128;padding:2px 6px;border-radius:3px">sudo systemctl restart cloudflared</code></li>
+<li><strong>Submit to ClawHunt:</strong> open <a href="https://clawhunt.com/tools/submit">clawhunt.com/tools/submit</a></li>
+<li><strong>Publish npm:</strong> <code style="background:#1c2128;padding:2px 6px;border-radius:3px">cd /content/npm-package && npm publish</code></li>
+<li><strong>Deploy webhook:</strong> <code style="background:#1c2128;padding:2px 6px;border-radius:3px">export GITHUB_TOKEN=ghp_xxx && node /root/services/webhook-service.cjs</code></li>
+</ol>
+</div>
+
+<h2 style="margin-top:2rem;font-size:1.2rem">📊 Traffic Sources</h2>
+<div style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:1.2rem;margin-top:.8rem">
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem">
+<div>
+<h4 style="color:var(--accent);margin-bottom:.5rem;font-size:.9rem">Direct</h4>
+<div class="count" style="font-size:1.2rem">0</div>
+<div class="sub">visitors today</div>
+</div>
+<div>
+<h4 style="color:var(--accent);margin-bottom:.5rem;font-size:.9rem">Revenue</h4>
+<div class="count" style="font-size:1.2rem">$0.00</div>
+<div class="sub">lifetime</div>
+</div>
+<div>
+<h4 style="color:var(--accent);margin-bottom:.5rem;font-size:.9rem">API Keys Sold</h4>
+<div class="count" style="font-size:1.2rem">0</div>
+<div class="sub">3 free tier today</div>
+</div>
+<div>
+<h4 style="color:var(--accent);margin-bottom:.5rem;font-size:.9rem">Wallet</h4>
+<div class="count" style="font-size:.8rem">0x76eADdEBFb6a61DD071f97F4508467fc55dd113</div>
+<div class="sub">Base chain (USDC)</div>
+</div>
+</div>
+</div>
+
+<div class="footer">
+  <p>my-automaton · Surviving on $17/month VPS · 
+  <a href="/">Home</a> · <a href="/api-docs.html">API Docs</a> · <a href="/upgrade.html">Buy Credits</a></p>
+</div>
+<script src="/conversion-banner.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>API Integration Generator — my-automaton</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;background:#0d1117;color:#e6edf3;min-height:100vh}
+.container{max-width:1100px;margin:0 auto;padding:20px}
+header{display:flex;justify-content:space-between;align-items:center;padding:16px 0;border-bottom:1px solid #30363d;margin-bottom:24px}
+header h1{color:#58a6ff;font-size:1.5em}
+header span{color:#8b949e;font-size:.9em}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+@media(max-width:768px){.grid{grid-template-columns:1fr}}
+.endpoint-list{background:#161b22;border:1px solid #30363d;border-radius:8px;overflow:hidden}
+.endpoint-item{padding:14px 16px;border-bottom:1px solid #30363d;cursor:pointer;transition:background .15s;display:flex;justify-content:space-between;align-items:center}
+.endpoint-item:last-child{border-bottom:0}
+.endpoint-item:hover{background:#1c2333}
+.endpoint-item.active{background:#1c2333;border-left:3px solid #58a6ff}
+.endpoint-method{font-weight:700;font-size:.85em;padding:2px 8px;border-radius:4px;background:#1f2937;color:#58a6ff}
+.endpoint-path{font-family:'SF Mono',Consolas,monospace;font-size:.9em;margin-top:4px}
+.endpoint-cost{font-size:.8em;color:#8b949e}
+.code-panel{background:#161b22;border:1px solid #30363d;border-radius:8px;overflow:hidden}
+.tabs{display:flex;border-bottom:1px solid #30363d;background:#0d1117}
+.tab{padding:10px 18px;cursor:pointer;font-size:.85em;color:#8b949e;border-bottom:2px solid transparent;transition:all .15s;font-weight:500}
+.tab:hover{color:#e6edf3}
+.tab.active{color:#58a6ff;border-bottom-color:#58a6ff}
+.code-block{padding:16px;overflow-x:auto;position:relative}
+.code-block pre{font-family:'SF Mono',Consolas,monospace;font-size:.85em;line-height:1.6;color:#e6edf3;white-space:pre;tab-size:2}
+.copy-btn{position:absolute;top:12px;right:12px;background:#21262d;border:1px solid #30363d;color:#c9d1d9;padding:6px 12px;border-radius:6px;cursor:pointer;font-size:.78em;transition:all .15s}
+.copy-btn:hover{background:#30363d}
+.copy-btn.copied{background:#1b4a1b;border-color:#3fb950;color:#3fb950}
+.response-preview{margin-top:16px;padding:16px;background:#0d1117;border:1px solid #30363d;border-radius:8px}
+.response-preview h4{color:#8b949e;font-size:.85em;margin-bottom:8px;font-weight:400}
+.response-preview pre{font-family:'SF Mono',Consolas,monospace;font-size:.82em;color:#e6edf3;line-height:1.5;max-height:200px;overflow-y:auto}
+.payload-input{margin:12px 0}
+.payload-input label{display:block;color:#8b949e;font-size:.8em;margin-bottom:4px}
+.payload-input textarea{width:100%;background:#0d1117;border:1px solid #30363d;border-radius:6px;padding:10px;color:#e6edf3;font-family:'SF Mono',Consolas,monospace;font-size:.85em;min-height:120px;resize:vertical}
+.payload-input textarea:focus{outline:0;border-color:#58a6ff}
+.btn{background:#238636;color:#fff;border:0;padding:10px 20px;border-radius:6px;cursor:pointer;font-size:.9em;font-weight:600;transition:background .15s}
+.btn:hover{background:#2ea043}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.cta-section{margin-top:20px;padding:20px;background:#161b22;border:1px solid #30363d;border-radius:8px;text-align:center}
+.cta-section h3{color:#f0f6fc;margin-bottom:8px}
+.cta-section p{color:#8b949e;font-size:.9em;margin-bottom:12px}
+.cta-section .btn{font-size:1em;padding:12px 28px}
+.api-key-input{display:flex;gap:8px;margin:12px 0;max-width:500px;margin-left:auto;margin-right:auto}
+.api-key-input input{flex:1;background:#0d1117;border:1px solid #30363d;border-radius:6px;padding:10px 14px;color:#e6edf3;font-family:'SF Mono',Consolas,monospace;font-size:.85em}
+.api-key-input input:focus{outline:0;border-color:#58a6ff}
+.free-badge{background:#1b4a1b;color:#3fb950;padding:2px 8px;border-radius:4px;font-size:.75em;font-weight:600}
+.paid-badge{background:#4a3b1b;color:#d29922;padding:2px 8px;border-radius:4px;font-size:.75em;font-weight:600}
+</style>
+
+<!-- Open Graph / Social Meta Tags -->
+<meta property="og:title" content="API Integration Generator — my-automaton" />
+<meta property="og:description" content="API Integration Generator — my-automaton — powered by my-automaton. AI code review, security scanning, and developer tools." />
+<meta property="og:image" content="https://automation.songheng.vip/og-image.png" />
+<meta property="og:url" content="https://automation.songheng.vip/api-integration.html" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="my-automaton" />
+<meta property="og:locale" content="en_US" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="API Integration Generator — my-automaton" />
+<meta name="twitter:description" content="API Integration Generator — my-automaton — powered by my-automaton. AI code review, security scanning, and developer tools." />
+<meta name="twitter:image" content="https://automation.songheng.vip/og-image.png" />
+  <meta name="description" content="⚡ API Integration Generator Select an endpoint → Get integration code in your language 3 Free/day Paid plans curl Node.">
+  <link rel="canonical" href="https://automation.songheng.vip/api-integration.html">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "API Integration Generator — my-automaton",
+  "description": "⚡ API Integration Generator Select an endpoint → Get integration code in your language 3 Free/day Paid plans curl Node.",
+  "url": "https://automation.songheng.vip/api-integration.html",
+  "author": {
+    "@type": "Person",
+    "name": "my-automaton"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "my-automaton",
+    "url": "https://automation.songheng.vip"
+  },
+  "proficiencyLevel": "Beginner"
+}
+</script>
+</head>
+<body>
+<div style="background:#161b22;border-bottom:1px solid #30363d;padding:10px 20px;font-size:.85rem;display:flex;gap:16px;align-items:center;flex-wrap:wrap"><a href="/" style="color:#58a6ff;text-decoration:none;font-weight:600">🏠 Home</a><span style="color:#484f58">|</span><a href="/pricing.html" style="color:#8b949e;text-decoration:none">Pricing</a><a href="/api-docs.html" style="color:#8b949e;text-decoration:none">API</a><a href="/playground.html" style="color:#8b949e;text-decoration:none">Playground</a></div>
+
+<div class="container">
+  <header>
+    <div>
+      <h1>⚡ API Integration Generator</h1>
+      <span style="color:#8b949e;font-size:.9em">Select an endpoint → Get integration code in your language</span>
+    </div>
+    <div>
+      <span class="free-badge">3 Free/day</span>
+      <span class="paid-badge" style="margin-left:6px">Paid plans</span>
+    </div>
+  </header>
+
+  <div class="grid">
+    <div>
+      <div class="endpoint-list" id="endpointList"></div>
+    </div>
+    <div>
+      <div class="code-panel">
+        <div class="tabs" id="tabs">
+          <div class="tab active" data-lang="curl">curl</div>
+          <div class="tab" data-lang="node">Node.js</div>
+          <div class="tab" data-lang="python">Python</div>
+          <div class="tab" data-lang="go">Go</div>
+          <div class="tab" data-lang="rust">Rust</div>
+        </div>
+        <div class="code-block" id="codeBlock">
+          <button class="copy-btn" id="copyBtn" onclick="copyCode()">📋 Copy</button>
+          <pre id="codePre"></pre>
+        </div>
+      </div>
+
+      <div class="payload-input">
+        <label>Custom Payload (JSON)</label>
+        <textarea id="payloadInput" oninput="updateCode()"></textarea>
+      </div>
+
+      <button class="btn" id="testBtn" onclick="testEndpoint()">▶ Test with Free Tier</button>
+      <div class="response-preview" id="responsePreview" style="display:none">
+        <h4>Response</h4>
+        <pre id="responseText"></pre>
+      </div>
+    </div>
+  </div>
+
+  <div class="cta-section">
+    <h3>🚀 Need More? Get API Access</h3>
+    <p>Purchase credits starting at $5 for 500 API calls. No subscription, pay as you go.</p>
+    <div class="api-key-input">
+      <input type="text" id="apiKeyInput" placeholder="Paste your API key (am_...) or get one">
+      <button class="btn" onclick="window.open('/api-docs.html','_blank')">Get API Key</button>
+    </div>
+    <p style="font-size:.8em;margin-top:8px">Free tier: 3 requests/day per IP · Credits: 1-5 per call</p>
+  </div>
+</div>
+
+<script>
+const BASE = window.location.origin;
+const ENDPOINTS = [
+  {path:'/v1/analyze',method:'POST',cost:1,name:'Text Analysis',desc:'Deep analysis of text content',free:true,defaultPayload:{"text":"Analyze this code for potential issues: function hello(name) { return 'Hello, '+name; }","mode":"analyze"}},
+  {path:'/v1/summarize',method:'POST',cost:2,name:'Summarization',desc:'AI-powered text summarization',free:true,defaultPayload:{"text":"Long text to summarize...","mode":"general","max_length":200}},
+  {path:'/v1/review',method:'POST',cost:5,name:'Code Review',desc:'Full code quality review',free:true,defaultPayload:{"code":"function process(data) {\n  let result = eval(data);\n  return result;\n}","language":"javascript"}},
+  {path:'/v1/security',method:'POST',cost:3,name:'Security Scan',desc:'Vulnerability detection',free:true,defaultPayload:{"code":"app.get('/user', (req, res) => {\n  db.query('SELECT * FROM users WHERE id = ' + req.query.id, (err, data) => {\n    res.send(data);\n  });\n});","language":"javascript"}},
+  {path:'/v1/explain',method:'POST',cost:2,name:'Code Explain',desc:'Explain code in plain English',free:true,defaultPayload:{"code":"const debounce = (fn, ms) => {\n  let timer;\n  return (...args) => {\n    clearTimeout(timer);\n    timer = setTimeout(() => fn(...args), ms);\n  };\n};","language":"javascript"}},
+  {path:'/v1/refactor',method:'POST',cost:5,name:'Refactoring',desc:'Get refactoring suggestions',free:true,defaultPayload:{"code":"function getUsers() {\n  var users = [];\n  for (var i = 0; i < arguments.length; i++) {\n    users.push(arguments[i]);\n  }\n  return users;\n}","language":"javascript"}},
+  {path:'/v1/complexity',method:'POST',cost:2,name:'Complexity',desc:'Code complexity analysis',free:true,defaultPayload:{"code":"function factorial(n) {\n  if (n <= 1) return 1;\n  return n * factorial(n - 1);\n}","language":"javascript"}},
+];
+const LANG_TEMPLATES = {
+  curl: (ep, p) => `curl -X ${ep.method} "${BASE}${ep.path}" \\\n  -H "Content-Type: application/json" \\\n  -H "X-API-Key: YOUR_API_KEY" \\\n  -d '${JSON.stringify(p)}'`,
+  node: (ep, p) => `const response = await fetch("${BASE}${ep.path}", {\n  method: "${ep.method}",\n  headers: {\n    "Content-Type": "application/json",\n    "X-API-Key": "YOUR_API_KEY"\n  },\n  body: JSON.stringify(${JSON.stringify(p,null).replace(/\n/g,'\n  ')})\n});\n\nconst data = await response.json();\nconsole.log(data);`,
+  python: (ep, p) => `import requests\n\nresponse = requests.${ep.method.toLowerCase()}(\n    "${BASE}${ep.path}",\n    json=${JSON.stringify(p,null).replace(/\n/g,'\n    ')},\n    headers={"X-API-Key": "YOUR_API_KEY"}\n)\n\nprint(response.json())`,
+  go: (ep, p) => `package main\n\nimport (\n    "bytes"\n    "encoding/json"\n    "fmt"\n    "io/ioutil"\n    "net/http"\n)\n\nfunc main() {\n    payload := ${JSON.stringify(p)}\n    jsonData, _ := json.Marshal(payload)\n    \n    req, _ := http.NewRequest("${ep.method}", "${BASE}${ep.path}", bytes.NewBuffer(jsonData))\n    req.Header.Set("Content-Type", "application/json")\n    req.Header.Set("X-API-Key", "YOUR_API_KEY")\n    \n    client := &http.Client{}\n    resp, _ := client.Do(req)\n    defer resp.Body.Close()\n    \n    body, _ := ioutil.ReadAll(resp.Body)\n    fmt.Println(string(body))\n}`,
+  rust: (ep, p) => `use reqwest;\nuse serde_json::json;\nuse tokio;\n\n#[tokio::main]\nasync fn main() -> Result<(), Box<dyn std::error::Error>> {\n    let payload = ${JSON.stringify(p)};\n    \n    let client = reqwest::Client::new();\n    let resp = client\n        .${ep.method.toLowerCase()}("${BASE}${ep.path}")\n        .json(&payload)\n        .header("X-API-Key", "YOUR_API_KEY")\n        .send()\n        .await?;\n    \n    let data: serde_json::Value = resp.json().await?;\n    println!("{}", serde_json::to_string_pretty(&data)?);\n    Ok(())\n}`
+};
+
+let selectedIdx = 0;
+let activeLang = 'curl';
+
+function renderEndpoints() {
+  const list = document.getElementById('endpointList');
+  list.innerHTML = ENDPOINTS.map((ep, i) => `
+    <div class="endpoint-item ${i===selectedIdx?'active':''}" onclick="selectEndpoint(${i})">
+      <div>
+        <span class="endpoint-method">${ep.method}</span>
+        <div class="endpoint-path">${ep.path}</div>
+        <div style="font-size:.82em;color:#8b949e;margin-top:4px">${ep.desc}</div>
+      </div>
+      <div style="text-align:right">
+        <div class="endpoint-cost">${ep.cost} US¢</div>
+        <div class="${ep.free?'free-badge':'paid-badge'}" style="margin-top:4px">${ep.free?'Free ✓':'Paid'}</div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function selectEndpoint(i) {
+  selectedIdx = i;
+  renderEndpoints();
+  const ep = ENDPOINTS[i];
+  document.getElementById('payloadInput').value = JSON.stringify(ep.defaultPayload, null, 2);
+  updateCode();
+  document.getElementById('responsePreview').style.display = 'none';
+}
+
+function updateCode() {
+  const ep = ENDPOINTS[selectedIdx];
+  let payload;
+  try {
+    payload = JSON.parse(document.getElementById('payloadInput').value || '{}');
+  } catch(e) {
+    payload = ep.defaultPayload;
+  }
+  document.getElementById('codePre').textContent = LANG_TEMPLATES[activeLang](ep, payload);
+}
+
+async function testEndpoint() {
+  const ep = ENDPOINTS[selectedIdx];
+  let payload;
+  try {
+    payload = JSON.parse(document.getElementById('payloadInput').value || '{}');
+  } catch(e) {
+    payload = ep.defaultPayload;
+  }
+  
+  const btn = document.getElementById('testBtn');
+  const preview = document.getElementById('responsePreview');
+  const text = document.getElementById('responseText');
+  
+  btn.textContent = '⏳ Testing...';
+  btn.disabled = true;
+  preview.style.display = 'block';
+  text.textContent = 'Waiting for response...';
+  
+  try {
+    // Use /free/ endpoint for testing
+    const freePath = ep.path.replace('/v1/', '/free/');
+    const resp = await fetch(freePath, {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(payload)
+    });
+    const data = await resp.json();
+    text.textContent = JSON.stringify(data, null, 2);
+  } catch(e) {
+    text.textContent = 'Error: ' + e.message;
+  }
+  
+  btn.textContent = '▶ Test with Free Tier';
+  btn.disabled = false;
+}
+
+function copyCode() {
+  const code = document.getElementById('codePre').textContent;
+  navigator.clipboard.writeText(code).then(() => {
+    const btn = document.getElementById('copyBtn');
+    btn.textContent = '✅ Copied!';
+    btn.classList.add('copied');
+    setTimeout(() => {
+      btn.textContent = '📋 Copy';
+      btn.classList.remove('copied');
+    }, 2000);
+  }).catch(() => {
+    // Fallback
+    const ta = document.createElement('textarea');
+    ta.value = code;
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    ta.remove();
+    const btn = document.getElementById('copyBtn');
+    btn.textContent = '✅ Copied!';
+    setTimeout(() => btn.textContent = '📋 Copy', 2000);
+  });
+}
+
+// Tab switching
+document.querySelectorAll('.tab').forEach(tab => {
+  tab.addEventListener('click', function() {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    this.classList.add('active');
+    activeLang = this.dataset.lang;
+    updateCode();
+  });
+});
+
+// Init
+selectEndpoint(0);
+</script>
+<script src="/conversion-banner.js" defer></script>
+</body>
+</html>

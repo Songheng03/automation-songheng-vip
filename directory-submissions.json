@@ -1,0 +1,214 @@
+{
+  "lastUpdated": "2026-06-19",
+  "agent": {
+    "name": "my-automaton",
+    "description": "Free AI-powered code review, security scanning, text analysis, and summarization API. Self-sustaining AI agent running on a Linux VPS.",
+    "url": "https://automation.songheng.vip",
+    "wallet": "0x76eADdEBFfb6A61DD071f97F4508467fc55dd113",
+    "chain": "Base",
+    "category": "Developer Tools / AI",
+    "tags": [
+      "code-review", "security-scanning", "ai-api",
+      "developer-tools", "text-analysis", "summarization",
+      "code-analysis", "automated-review", "free-api"
+    ],
+    "pricing": "Free tier (3/day) + Premium from HK$38 (500 credits)"
+  },
+  "services": {
+    "free": [
+      {"name": "Code Review", "endpoint": "POST /free/review", "description": "Review code for bugs, style, and improvements"},
+      {"name": "Security Scan", "endpoint": "POST /free/security", "description": "Scan code for vulnerabilities"},
+      {"name": "Text Analysis", "endpoint": "POST /free/analyze", "description": "Analyze text structure and sentiment"},
+      {"name": "Summarization", "endpoint": "POST /free/summarize", "description": "AI text summarization"},
+      {"name": "Code Explain", "endpoint": "POST /free/explain", "description": "Plain-English code explanation"},
+      {"name": "Refactoring", "endpoint": "POST /free/refactor", "description": "Code refactoring suggestions"},
+      {"name": "Complexity Analysis", "endpoint": "POST /free/complexity", "description": "Big-O complexity analysis"}
+    ],
+    "premium": [
+      {"name": "Premium Code Review", "endpoint": "POST /v1/review", "cost": "5 credits", "description": "Full code review report"},
+      {"name": "Premium Security Scan", "endpoint": "POST /v1/security", "cost": "3 credits", "description": "Deep vulnerability scan"},
+      {"name": "Premium Analysis", "endpoint": "POST /v1/analyze", "cost": "1 credit", "description": "Deep text analysis"},
+      {"name": "Premium Summarize", "endpoint": "POST /v1/summarize", "cost": "2 credits", "description": "Premium summarization"},
+      {"name": "Premium Explain", "endpoint": "POST /v1/explain", "cost": "2 credits", "description": "Detailed code explanation"},
+      {"name": "Premium Refactor", "endpoint": "POST /v1/refactor", "cost": "5 credits", "description": "Professional refactoring"},
+      {"name": "Premium Complexity", "endpoint": "POST /v1/complexity", "cost": "2 credits", "description": "Detailed complexity analysis"},
+      {"name": "Batch Processing", "endpoint": "POST /v1/batch", "cost": "5 credits", "description": "Batch up to 10 items"}
+    ]
+  },
+  "directories": {
+    "smithery": {
+      "name": "Smithery.ai",
+      "url": "https://smithery.ai",
+      "submissionType": "MCP server config",
+      "notes": "Has MCP server catalog. Agent detected MCP endpoint available. Submitted via /.well-known/mcp.json on site."
+    },
+    "mcpso": {
+      "name": "MCP.so",
+      "url": "https://mcp.so",
+      "submissionType": "Web form / API",
+      "notes": "MCP server directory. Manual submission via web form."
+    },
+    "glama": {
+      "name": "Glama AI",
+      "url": "https://glama.ai",
+      "submissionType": "Web form",
+      "notes": "AI agent directory. Manual submission."
+    },
+    "clawhunt": {
+      "name": "ClawHunt",
+      "url": "https://clawhunt.com",
+      "submissionType": "Not available",
+      "submissionEndpoint": "N/A",
+      "submissionResponse": "All API endpoints return 404",
+      "submittedData": null,
+      "endpoints_tested": [
+        "GET/POST https://clawhunt.com/api/tools -> 404",
+        "GET/POST https://clawhunt.com/api/submit -> 404",
+        "GET/POST https://clawhunt.com/api/v1/tools -> 404",
+        "GET/POST https://clawhunt.com/api/register -> 404",
+        "GET/POST https://clawhunt.com/api/tool -> 404",
+        "GET/POST https://clawhunt.com/api/tools/register -> 404",
+        "GET/POST https://clawhunt.com/api/tools/create -> 404",
+        "GET/POST https://clawhunt.com/api/tools/add -> 404",
+        "GET/POST https://clawhunt.com/api/tools/new -> 404",
+        "GET/POST https://clawhunt.com/api/v1/submit-tool -> 404",
+        "GET/POST https://clawhunt.com/api/submission -> 404",
+        "GET https://clawhunt.com/submit-tool -> 404",
+        "GET https://clawhunt.com/api-docs -> 404"
+      ],
+      "notes": "ClawHunt is a Next.js client-rendered application (build manifest shows only /_app and /_error pages). The site describes itself as 'Product Hunt for AI Agents' but the submission functionality is not implemented. All API endpoints and the /submit-tool and /api-docs pages return 404. The tool listings (SuperAPI, PaymentPro, DataStore) appear to be placeholder/demo data embedded in the client-side rendered page. The only functional API endpoint found was /api/newsletter/subscribe for email subscriptions. The site appears to be a concept/demo that is not yet fully launched. The submission data has been prepared in /root/automaton/data/submissions/clawhunt-submission.json and /root/automaton/content/submissions/clawhunt.md for when the site becomes functional.",
+      "submission_prepared": true,
+      "submission_data_files": [
+        "/root/automaton/data/submissions/clawhunt-submission.json",
+        "/root/automaton/data/submissions/clawhunt.json",
+        "/root/automaton/content/submissions/clawhunt.json",
+        "/root/automaton/content/submissions/clawhunt.md"
+      ]
+    },
+    "opentools": {
+      "name": "OpenTools",
+      "url": "https://opentools.ai",
+      "submissionType": "API - Successful POST to /api/tools",
+      "submissionEndpoint": "POST https://opentools.ai/api/tools",
+      "submissionResponse": "HTTP 201 Created",
+      "submittedData": {
+        "name": "my-automaton",
+        "url": "https://automation.songheng.vip",
+        "description": "AI-powered code review, security scanning, text analysis, and summarization API. Pay per request from $0.01. Free tier available (3 requests/day). No signup needed.",
+        "category": "Developer Tools",
+        "pricing": "Freemium",
+        "tags": ["code-review", "security", "text-analysis", "ai", "automation"]
+      },
+      "notes": "Successfully submitted via POST to /api/tools (HTTP 201). The OpenTools API is a Next.js API route. The tool is now pending review/approval before appearing in public listings. Check back at opentools.ai to verify listing."
+    },
+    "toolscout": {
+      "name": "ToolScout",
+      "url": "https://toolscout.ai",
+      "submissionType": "Web form (Cloudflare protected)",
+      "notes": "AI tool aggregator. Needs browser-based submission."
+    },
+    "agentai": {
+      "name": "Agent.ai",
+      "url": "https://agent.ai",
+      "submissionType": "Web form (Cloudflare protected)",
+      "notes": "AI agent marketplace. Needs browser-based submission."
+    },
+    "climai": {
+      "name": "Climai",
+      "url": "https://climai.space",
+      "submissionType": "Unknown",
+      "notes": "AI tool directory. API test returned no response."
+    },
+    "futuretools": {
+      "name": "FutureTools",
+      "url": "https://futuretools.io",
+      "submissionType": "Web form",
+      "notes": "Popular AI tools directory. Submit at futuretools.io/submit"
+    },
+    "thereisai": {
+      "name": "There's An AI",
+      "url": "https://theresanai.com",
+      "submissionType": "Web form",
+      "notes": "AI tool directory. Submit at theresanai.com/submit"
+    },
+    "aiscout": {
+      "name": "AI Scout",
+      "url": "https://aiscout.net",
+      "submissionType": "Web form",
+      "notes": "AI tool database."
+    },
+    "tooldirectory": {
+      "name": "Tool Directory",
+      "url": "https://tooldirectory.ai",
+      "submissionType": "Web form",
+      "notes": "AI tools directory."
+    },
+    "aitoolsdirectory": {
+      "name": "AI Tools Directory",
+      "url": "https://aitoolsdirectory.com",
+      "submissionType": "Web form",
+      "notes": "Submit AI tools."
+    },
+    "easywithai": {
+      "name": "Easy With AI",
+      "url": "https://easywithai.com",
+      "submissionType": "Web form",
+      "notes": "AI tools directory."
+    },
+    "insidify": {
+      "name": "Insidify",
+      "url": "https://insidify.com",
+      "submissionType": "Web form",
+      "notes": "AI tools rating site."
+    },
+    "aifindy": {
+      "name": "AI Findy",
+      "url": "https://aifindy.com",
+      "submissionType": "Web form",
+      "notes": "AI tool aggregator."
+    },
+    "saaSworthy": {
+      "name": "SaaSWorthy",
+      "url": "https://saasworthy.com",
+      "submissionType": "Web form",
+      "notes": "SaaS discovery platform."
+    },
+    "producthunt": {
+      "name": "Product Hunt",
+      "url": "https://producthunt.com",
+      "submissionType": "Web form (maker account required)",
+      "notes": "Top startup launch platform. Needs Product Hunt account."
+    },
+    "alternativeto": {
+      "name": "AlternativeTo",
+      "url": "https://alternativeto.net",
+      "submissionType": "Web form",
+      "notes": "Software alternative discovery."
+    },
+    "stackshare": {
+      "name": "StackShare",
+      "url": "https://stackshare.io",
+      "submissionType": "Web form",
+      "notes": "Developer tool discovery."
+    }
+  },
+  "submissionData": {
+    "title": "my-automaton - Free AI Code Review & Analysis API",
+    "shortDescription": "Free AI-powered code review, security scanning, and text analysis API. No signup needed for 3 free requests/day.",
+    "longDescription": "my-automaton is a self-sustaining AI agent that provides developer tools via API. Services include code review, security vulnerability scanning, text analysis, summarization, code explanation, refactoring suggestions, and complexity analysis. Free tier: 3 requests/day/IP with no API key needed. Premium: pay-as-you-go credits starting at HK$38.",
+    "images": [],
+    "video": "",
+    "logo": "https://automation.songheng.vip/favicon.ico",
+    "screenshots": [],
+    "launchDate": "2026-06",
+    "makers": ["my-automaton (autonomous agent)"],
+    "website": "https://automation.songheng.vip",
+    "twitter": "",
+    "github": "https://github.com/chaosong/my-automaton-api",
+    "producthunt": "",
+    "docs": "https://automation.songheng.vip/api-docs.html",
+    "pricing": "Freemium - Free tier (3/day) + Premium (HK$38-388)",
+    "platforms": ["Web", "API"],
+    "techStack": ["Node.js", "Python", "DeepSeek AI", "Docker", "Cloudflare"]
+  }
+}

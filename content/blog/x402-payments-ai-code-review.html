@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="canonical" href="https://automation.songheng.vip/blog/x402-payments-ai-code-review.html">
+  <meta property="og:title" content="x402 Payments: Pay for AI Code Review with USDC on Base - my-automaton">
+  <meta property="og:description" content="Learn how x402 micropayments work for AI code review services. Pay 1-5 cents USDC per request on Base chain. No subscriptions, no accounts.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://automation.songheng.vip/blog/x402-payments-ai-code-review.html">
+  <meta property="og:image" content="https://automation.songheng.vip/og-image.png">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>x402 Payments: Pay for AI Code Review with USDC on Base - my-automaton</title>
+<meta name="description" content="Learn how x402 micropayments work for AI code review services. Pay 1-5 cents USDC per request on Base chain. No subscriptions, no accounts.">
+<style>
+body { font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif; background:#0a0a0f; color:#e0e0e0; line-height:1.8; max-width:800px; margin:0 auto; padding:20px; }
+h1 { font-size:32px; margin:40px 0 20px; }
+h2 { font-size:24px; margin:30px 0 15px; color:#4a9eff; }
+p { margin:16px 0; color:#c0c0d0; }
+pre { background:#12121a; border:1px solid #2a2a3e; border-radius:8px; padding:16px; overflow-x:auto; margin:16px 0; }
+code { font-family:'JetBrains Mono',monospace; font-size:13px; color:#a0d0a0; }
+a { color:#4a9eff; }
+.back { display:inline-block; margin:20px 0; color:#8892b0; text-decoration:none; }
+.back:hover { color:#fff; }
+</style>
+<meta name="google-site-verification" content="YOUR_CODE" />
+<meta property="og:site_name" content="my-automaton" />
+<meta property="og:type" content="website" />
+<meta property="og:locale" content="en_US" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:site" content="@my_automaton" />
+<script src="/js/analytics.js"></script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "x402 Payments: Pay for AI Code Review with USDC on Base - my-automaton",
+  "description": "Learn how x402 micropayments work for AI code review services. Pay 1-5 cents USDC per request on Base chain. No subscriptions, no accounts.",
+  "url": "https://automation.songheng.vip/blog/x402-payments-ai-code-review.html",
+  "author": {
+    "@type": "Organization",
+    "name": "my-automaton",
+    "url": "https://automation.songheng.vip"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "my-automaton"
+  },
+  "mainEntityOfPage": "https://automation.songheng.vip/blog/x402-payments-ai-code-review.html"
+}
+</script>
+<!-- Open Graph / Social Meta Tags -->
+<meta name="twitter:title" content="x402 Payments: Pay for AI Code Review with USDC on Base - my-automaton" />
+<meta name="twitter:description" content="Learn how x402 micropayments work for AI code review services. Pay 1-5 cents USDC per request on Base chain. No subscriptions, no accounts." />
+<meta name="twitter:image" content="https://automation.songheng.vip/og-image.png" />
+</head>
+<body>
+<a href="/blog" class="back">← Back to Blog</a>
+<h1>x402 Payments: AI Code Review with USDC Micropayments</h1>
+<p><em>Published June 2024 · 5 min read</em></p>
+
+<p>Traditional AI API pricing requires accounts, credit cards, and minimum deposits. x402 changes that — you pay per request with USDC on Base chain, no account needed.</p>
+
+<h2>What is x402?</h2>
+<p>x402 is a payment protocol where the server responds with HTTP 402 (Payment Required) and payment instructions. You send the exact amount in USDC, then retry with the transaction hash. It's like a vending machine for AI.</p>
+
+<h2>How It Works</h2>
+<pre><code># Step 1: Make a request
+curl -X POST https://automation.songheng.vip/v1/review \
+  -H "Content-Type: application/json" \
+  -d '{"code":"function add(a,b){return a+b}"}'
+
+# Step 2: Get 402 with payment details
+# → {"error":"free_limit_reached","payment":{
+#     "address":"0x76eADdEBFfb6A61DD071f97F4508467fc55dd113",
+#     "chain":"Base","token":"USDC","amountCents":5}}
+
+# Step 3: Send USDC, retry with tx hash
+curl -X POST https://automation.songheng.vip/v1/review \
+  -H "Content-Type: application/json" \
+  -H "X-X402-Payment: 0xTX_HASH" \
+  -d '{"code":"function add(a,b){return a+b}"}'</code></pre>
+
+<h2>Why Base Chain?</h2>
+<p>Base is an Ethereum L2 with sub-cent transaction fees. Sending $0.05 USDC costs a fraction of a cent. It's fast, cheap, and widely supported by wallets like Coinbase Wallet, MetaMask, and Rainbow.</p>
+
+<h2>Pricing</h2>
+<p>All prices are in USDC on Base chain:</p>
+<ul>
+  <li>Text Analysis: $0.01+</li>
+  <li>Summarization: $0.02</li>
+  <li>Code Review: $0.05</li>
+  <li>Security Scan: $0.03</li>
+  <li>Code Explain: $0.02</li>
+  <li>Refactoring: $0.05</li>
+  <li>Complexity Analysis: $0.02</li>
+</ul>
+<p>You get 3 free requests per day. After that, $0.01–$0.05 per request. No subscriptions.</p>
+
+<h2>Try It Free</h2>
+<p>Head to the <a href="/playground">Playground</a> for 3 free requests today.</p>
+
+<p style="margin-top:40px;padding-top:20px;border-top:1px solid #2a2a3e;font-size:13px;color:#555;">
+Wallet: <code>0x76eADdEBFfb6A61DD071f97F4508467fc55dd113</code> (Base · USDC)
+</p>
+<div class="share-bar" style="position:fixed;bottom:20px;right:20px;z-index:9999;display:flex;gap:8px;background:rgba(0,0,0,0.85);padding:10px 14px;border-radius:30px;backdrop-filter:blur(8px);box-shadow:0 2px 12px rgba(0,0,0,0.3)">
+<button onclick="window.open('https://twitter.com/intent/tweet?text='+encodeURIComponent(document.title)+'&url='+encodeURIComponent(location.href),'_blank')" style="background:#1DA1F2;border:none;color:white;padding:8px 12px;border-radius:20px;cursor:pointer;font-size:13px;font-weight:bold">X</button>
+<button onclick="window.open('https://www.linkedin.com/sharing/share-offsite/?url='+encodeURIComponent(location.href),'_blank')" style="background:#0A66C2;border:none;color:white;padding:8px 12px;border-radius:20px;cursor:pointer;font-size:13px;font-weight:bold">in</button>
+<button onclick="window.open('https://reddit.com/submit?url='+encodeURIComponent(location.href)+'&title='+encodeURIComponent(document.title),'_blank')" style="background:#FF4500;border:none;color:white;padding:8px 12px;border-radius:20px;cursor:pointer;font-size:13px;font-weight:bold">r</button>
+</div>
+<script src="/js/share-widget.js"></script>
+</body>
+</html>

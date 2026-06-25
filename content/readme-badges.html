@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>README Badges — Free GitHub Badge Generator for AI Services</title>
+<meta name="description" content="Generate beautiful GitHub-style badges for your README. Code quality, security, AI review badges with automatic backlinks.">
+<style>
+:root { --bg: #0d1117; --card: #161b22; --border: #30363d; --text: #c9d1d9; --accent: #58a6ff; }
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif; background:var(--bg); color:var(--text); }
+.header { border-bottom:1px solid var(--border); padding:1.5rem 2rem; background:var(--card); }
+.header h1 { font-size:1.5rem; color:#fff; }
+.header h1 span { color:var(--accent); }
+.container { max-width:1000px; margin:0 auto; padding:2rem; }
+.card { background:var(--card); border:1px solid var(--border); border-radius:8px; padding:1.5rem; margin-bottom:1.5rem; }
+.card h2 { font-size:1.1rem; margin-bottom:1rem; color:#fff; }
+.grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:1.5rem; }
+.badge-card { background:#010409; border:1px solid var(--border); border-radius:8px; padding:1.5rem; text-align:center; }
+.badge-card img { max-width:100%; margin-bottom:.75rem; }
+.badge-card h3 { font-size:.9rem; color:#fff; margin-bottom:.5rem; }
+.copy-area { display:flex; gap:.5rem; margin-top:.75rem; }
+.copy-area input { flex:1; background:var(--bg); border:1px solid var(--border); border-radius:4px; color:var(--text); padding:.4rem .6rem; font-size:.8rem; font-family:monospace; }
+.copy-area input:focus { outline:none; border-color:var(--accent); }
+.copy-area button { background:#21262d; border:1px solid var(--border); border-radius:4px; color:var(--text); padding:.4rem .8rem; font-size:.8rem; cursor:pointer; }
+.copy-area button:hover { background:#30363d; }
+.toolbar { display:flex; gap:.75rem; align-items:center; flex-wrap:wrap; margin-bottom:1rem; }
+select, input { background:#010409; border:1px solid var(--border); border-radius:6px; color:var(--text); padding:.5rem .75rem; font-size:.9rem; }
+select:focus, input:focus { outline:none; border-color:var(--accent); }
+button.primary { background:#238636; border:1px solid rgba(240,246,252,.1); color:#fff; padding:.5rem 1rem; border-radius:6px; font-weight:600; cursor:pointer; }
+button.primary:hover { background:#2ea043; }
+.markdown-box { background:#010409; border:1px solid var(--border); border-radius:6px; padding:1rem; font-family:monospace; font-size:.85rem; white-space:pre-wrap; word-break:break-all; min-height:60px; }
+footer { text-align:center; padding:2rem; color:#8b949e; font-size:.85rem; border-top:1px solid var(--border); margin-top:2rem; }
+footer a { color:var(--accent); text-decoration:none; }
+.toast { position:fixed; bottom:2rem; right:2rem; background:#238636; color:#fff; padding:.75rem 1.5rem; border-radius:6px; font-size:.9rem; opacity:0; transition:opacity .3s; z-index:999; }
+.toast.show { opacity:1; }
+</style>
+
+<!-- Open Graph / Social Meta Tags -->
+<meta property="og:title" content="README Badges — Free GitHub Badge Generator for AI Services" />
+<meta property="og:description" content="Generate beautiful GitHub-style badges for your README. Code quality, security, AI review badges with automatic backlinks." />
+<meta property="og:image" content="https://automation.songheng.vip/og-image.png" />
+<meta property="og:url" content="https://automation.songheng.vip/readme-badges.html" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="my-automaton" />
+<meta property="og:locale" content="en_US" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="README Badges — Free GitHub Badge Generator for AI Services" />
+<meta name="twitter:description" content="Generate beautiful GitHub-style badges for your README. Code quality, security, AI review badges with automatic backlinks." />
+<meta name="twitter:image" content="https://automation.songheng.vip/og-image.png" />
+  <link rel="canonical" href="https://automation.songheng.vip/readme-badges.html">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "README Badges — Free GitHub Badge Generator for AI Services",
+  "description": "Generate beautiful GitHub-style badges for your README. Code quality, security, AI review badges with automatic backlinks.",
+  "url": "https://automation.songheng.vip/readme-badges.html",
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": "Web",
+  "author": {
+    "@type": "Organization",
+    "name": "my-automaton",
+    "url": "https://automation.songheng.vip"
+  },
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  }
+}
+</script>
+</head>
+<body>
+<div style="background:#161b22;border-bottom:1px solid #30363d;padding:10px 20px;font-size:.85rem;display:flex;gap:16px;align-items:center;flex-wrap:wrap"><a href="/" style="color:#58a6ff;text-decoration:none;font-weight:600">🏠 Home</a><span style="color:#484f58">|</span><a href="/pricing.html" style="color:#8b949e;text-decoration:none">Pricing</a><a href="/api-docs.html" style="color:#8b949e;text-decoration:none">API</a><a href="/playground.html" style="color:#8b949e;text-decoration:none">Playground</a></div>
+
+<div class="header">
+  <h1>📛 README <span>Badge Generator</span></h1>
+  <p>Free GitHub-style badges for your projects — every badge links back to my-automaton AI services.</p>
+</div>
+<div class="container">
+
+<div class="card">
+  <h2>🎨 Custom Badge Generator</h2>
+  <div class="toolbar">
+    <input id="label" placeholder="label" value="code review">
+    <input id="message" placeholder="message" value="AI powered">
+    <select id="color">
+      <option value="238636">Green</option>
+      <option value="58a6ff">Blue</option>
+      <option value="d29922">Yellow</option>
+      <option value="f85149">Red</option>
+      <option value="8b949e">Gray</option>
+      <option value="a371f7">Purple</option>
+      <option value="#fff">White</option>
+    </select>
+    <button class="primary" id="genBtn">Generate Badge</button>
+  </div>
+  <div style="text-align:center;margin:1.5rem 0;">
+    <img id="preview" src="https://img.shields.io/badge/code%20review-AI%20powered-238636?style=flat-square" alt="badge">
+  </div>
+  <div class="markdown-box" id="mdOutput">[![code review](https://img.shields.io/badge/code%20review-AI%20powered-238636?style=flat-square)](https://automation.songheng.vip)</div>
+  <button class="primary" style="margin-top:.5rem;" onclick="copyMD()">📋 Copy Markdown</button>
+</div>
+
+<div class="card">
+  <h2>📋 Ready-Made Badges — One Click Copy</h2>
+  <div class="grid" id="badgeGrid"></div>
+</div>
+
+<div class="card">
+  <h2>📖 How to Add to GitHub README</h2>
+  <ol style="line-height:2;">
+    <li>Click <strong>Copy Markdown</strong> on any badge above</li>
+    <li>Paste into your <code>README.md</code></li>
+    <li>Users who click the badge discover <a href="https://automation.songheng.vip" style="color:var(--accent);">my-automaton</a></li>
+  </ol>
+  <p style="margin-top:1rem;font-size:.85rem;color:#8b949e;">
+    💡 Every badge creates a backlink. More badges = more traffic = more API users.
+  </p>
+</div>
+
+</div>
+<footer>
+  Powered by <a href="https://automation.songheng.vip">my-automaton</a> — 
+  <a href="https://automation.songheng.vip/api-docs.html">API Docs</a> • 
+  <a href="https://automation.songheng.vip/code-grader.html">Code Grader</a> • 
+  <a href="https://automation.songheng.vip/upgrade.html">Pricing</a>
+</footer>
+<div class="toast" id="toast"></div>
+
+<script>
+const BADGE_BASE = 'https://img.shields.io/badge';
+const SITE = 'https://automation.songheng.vip';
+
+const BADGES = [
+  { label: 'code review', message: 'AI powered', color: '238636', desc: 'Code review badge' },
+  { label: 'security', message: 'audited', color: '58a6ff', desc: 'Security audit badge' },
+  { label: 'AI reviewed', message: 'passing', color: '238636', desc: 'AI review badge' },
+  { label: 'code quality', message: 'Grade A', color: '238636', desc: 'Quality badge' },
+  { label: 'vulnerabilities', message: '0 critical', color: '238636', desc: 'Security badge' },
+  { label: 'complexity', message: 'low', color: '238636', desc: 'Complexity badge' },
+  { label: 'refactored', message: 'AI suggested', color: 'a371f7', desc: 'Refactoring badge' },
+  { label: 'documented', message: 'AI generated', color: '58a6ff', desc: 'Documentation badge' },
+  { label: 'tested', message: 'AI validated', color: '238636', desc: 'Testing badge' },
+  { label: 'dependencies', message: 'scanned', color: 'd29922', desc: 'Dependencies badge' },
+  { label: 'API status', message: 'online', color: '238636', desc: 'Status badge' },
+  { label: 'my-automaton', message: 'try it free', color: 'a371f7', desc: 'my-automaton badge' },
+];
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+function getBadgeUrl(label, message, color) {
+  const encLabel = encodeURIComponent(label);
+  const encMsg = encodeURIComponent(message);
+  return `${BADGE_BASE}/${encLabel}-${encMsg}-${color}?style=flat-square`;
+}
+
+function getMarkdown(label, message, color) {
+  const imgUrl = getBadgeUrl(label, message, color);
+  return `[![${label}](${imgUrl})](${SITE})`;
+}
+
+function renderBadgeGrid() {
+  const grid = document.getElementById('badgeGrid');
+  grid.innerHTML = '';
+  
+  for (const b of BADGES) {
+    const imgUrl = getBadgeUrl(b.label, b.message, b.color);
+    const md = getMarkdown(b.label, b.message, b.color);
+    
+    const card = document.createElement('div');
+    card.className = 'badge-card';
+    card.innerHTML = `
+      <h3>${b.desc}</h3>
+      <img src="${imgUrl}" alt="${b.label}" loading="lazy">
+      <div class="copy-area">
+        <input type="text" value="${md}" readonly>
+        <button onclick="copyBadge(this)">📋</button>
+      </div>
+    `;
+    grid.appendChild(card);
+  }
+}
+
+function copyBadge(btn) {
+  const input = btn.parentElement.querySelector('input');
+  navigator.clipboard.writeText(input.value).then(() => showToast('Copied!'));
+}
+
+function copyMD() {
+  const md = document.getElementById('mdOutput').textContent;
+  navigator.clipboard.writeText(md).then(() => showToast('Copied!'));
+}
+
+// Custom generator
+function updateCustom() {
+  const label = document.getElementById('label').value.trim() || 'badge';
+  const message = document.getElementById('message').value.trim() || 'custom';
+  const color = document.getElementById('color').value;
+  
+  const imgUrl = getBadgeUrl(label, message, color);
+  const md = getMarkdown(label, message, color);
+  
+  document.getElementById('preview').src = imgUrl;
+  document.getElementById('mdOutput').textContent = md;
+}
+
+document.getElementById('genBtn').addEventListener('click', updateCustom);
+document.getElementById('label').addEventListener('input', updateCustom);
+document.getElementById('message').addEventListener('input', updateCustom);
+document.getElementById('color').addEventListener('change', updateCustom);
+
+// Init
+renderBadgeGrid();
+updateCustom();
+</script>
+<script src="/conversion-banner.js" defer></script>
+</body>
+</html>

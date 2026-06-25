@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Prompt Optimizer — Free Prompt Engineering Tool | my-automaton</title>
+<meta name="description" content="Free AI prompt optimizer. Analyze, score, and improve your prompts for ChatGPT, Claude, Gemini. Get actionable suggestions to craft better prompts. No signup required.">
+<meta name="keywords" content="prompt optimizer, prompt engineering, prompt analyzer, AI prompt, ChatGPT prompt, prompt helper, free prompt tool">
+<style>
+:root{--bg:#0d1117;--card:#161b22;--border:#30363d;--text:#e6edf3;--muted:#8b949e;--accent:#58a6ff;--green:#3fb950;--gold:#d29922;--red:#f85149}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;background:var(--bg);color:var(--text);line-height:1.6;padding:1rem}
+.tool{max-width:800px;margin:0 auto}
+h1{font-size:1.8rem;margin-bottom:.3rem;background:linear-gradient(135deg,#58a6ff,#3fb950);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.sub{color:var(--muted);font-size:.9rem;margin-bottom:1.5rem}
+label{display:block;margin-bottom:.5rem;font-weight:600;color:var(--text);font-size:.9rem}
+textarea{width:100%;min-height:200px;background:#1c2128;border:1px solid var(--border);border-radius:6px;color:var(--text);padding:.8rem;font-family:'SF Mono',monospace;font-size:.85rem;resize:vertical}
+textarea:focus{outline:none;border-color:var(--accent)}
+select,input[type=text]{width:100%;background:#1c2128;border:1px solid var(--border);border-radius:6px;color:var(--text);padding:.6rem;font-size:.85rem}
+select:focus,input[type=text]:focus{outline:none;border-color:var(--accent)}
+.btn{display:inline-block;padding:10px 24px;border-radius:6px;border:none;font-weight:600;font-size:.9rem;cursor:pointer;transition:all .2s}
+.btn-primary{background:var(--accent);color:#000}.btn-primary:hover{opacity:.85}
+.btn-green{background:var(--green);color:#000}.btn-green:hover{opacity:.85}
+.btn-secondary{background:var(--card);border:1px solid var(--border);color:var(--text)}.btn-secondary:hover{border-color:var(--accent)}
+.row{display:flex;gap:.8rem;margin:.8rem 0;flex-wrap:wrap}
+.row>*{flex:1;min-width:150px}
+.results{margin-top:1.5rem;display:none}
+.results.show{display:block}
+.score-card{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:1.2rem;margin-bottom:1rem}
+.score-card .big{font-size:3rem;font-weight:700;text-align:center;margin:.5rem 0}
+.score-card .big.good{color:var(--green)}.score-card .big.ok{color:var(--gold)}.score-card .big.bad{color:var(--red)}
+.scores{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:.5rem;margin:1rem 0}
+.scores .item{background:rgba(88,166,255,.1);border-radius:6px;padding:.5rem;text-align:center}
+.scores .item .val{font-size:1.3rem;font-weight:700;color:var(--accent)}
+.scores .item .lbl{font-size:.7rem;color:var(--muted)}
+.suggestions{list-style:none;padding:0}
+.suggestions li{background:rgba(63,185,80,.08);border:1px solid rgba(63,185,80,.2);border-radius:6px;padding:.8rem;margin-bottom:.5rem;font-size:.85rem;line-height:1.5}
+.suggestions li::before{content:"💡 ";font-size:1rem}
+.tips-box{background:rgba(210,153,34,.1);border:1px solid rgba(210,153,34,.2);border-radius:8px;padding:1rem;margin:1rem 0;font-size:.85rem}
+.tips-box strong{color:var(--gold)}
+.cta-bar{background:linear-gradient(135deg,rgba(63,185,80,.1),rgba(88,166,255,.1));border:1px solid var(--border);border-radius:8px;padding:1.2rem;text-align:center;margin:2rem 0}
+.cta-bar p{color:var(--muted);font-size:.85rem;margin-bottom:.8rem}
+.footer{text-align:center;padding:1.5rem;color:var(--muted);font-size:.8rem;border-top:1px solid var(--border);margin-top:2rem}
+.footer a{color:var(--accent);text-decoration:none}
+.tag{display:inline-block;background:rgba(88,166,255,.15);color:var(--accent);font-size:.7rem;padding:2px 8px;border-radius:10px;margin-right:.4rem}
+@media(max-width:600px){.row{flex-direction:column}.row>*{min-width:auto}}
+</style>
+
+<!-- Open Graph / Social Meta Tags -->
+<meta property="og:title" content="AI Prompt Optimizer — Free Prompt Engineering Tool | my-automaton" />
+<meta property="og:description" content="Free AI prompt optimizer. Analyze, score, and improve your prompts for ChatGPT, Claude, Gemini. Get actionable suggestions to craft better prompts. No signup required." />
+<meta property="og:image" content="https://automation.songheng.vip/og-image.png" />
+<meta property="og:url" content="https://automation.songheng.vip/prompt-optimizer.html" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="my-automaton" />
+<meta property="og:locale" content="en_US" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="AI Prompt Optimizer — Free Prompt Engineering Tool | my-automaton" />
+<meta name="twitter:description" content="Free AI prompt optimizer. Analyze, score, and improve your prompts for ChatGPT, Claude, Gemini. Get actionable suggestions to craft better prompts. No signup required." />
+<meta name="twitter:image" content="https://automation.songheng.vip/og-image.png" />
+  <link rel="canonical" href="https://automation.songheng.vip/prompt-optimizer.html">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "AI Prompt Optimizer — Free Prompt Engineering Tool | my-automaton",
+  "description": "Free AI prompt optimizer. Analyze, score, and improve your prompts for ChatGPT, Claude, Gemini. Get actionable suggestions to craft better prompts. No signup required.",
+  "url": "https://automation.songheng.vip/prompt-optimizer.html"
+}
+</script>
+</head>
+<body>
+<div class="tool">
+<h1>🧪 AI Prompt Optimizer</h1>
+<p class="sub">Paste any prompt, get a score + actionable improvements. Works for ChatGPT, Claude, Gemini, and any LLM.</p>
+
+<div class="tips-box">
+<strong>⚡ Pro tip:</strong> Clear, specific prompts get better results. Include context, format, constraints, and examples. Our optimizer scores 6 dimensions.
+</div>
+
+<div class="row">
+  <div>
+    <label>Model Target</label>
+    <select id="model">
+      <option value="chatgpt">ChatGPT / GPT-4</option>
+      <option value="claude">Claude 3/4</option>
+      <option value="gemini">Gemini</option>
+      <option value="general">General LLM</option>
+    </select>
+  </div>
+  <div>
+    <label>Prompt Type</label>
+    <select id="type">
+      <option value="coding">Code Generation</option>
+      <option value="writing">Writing / Content</option>
+      <option value="analysis">Analysis / Reasoning</option>
+      <option value="creative">Creative / Brainstorming</option>
+      <option value="instruction">Instruction / Task</option>
+      <option value="other">Other</option>
+    </select>
+  </div>
+</div>
+
+<label for="prompt">Your Prompt</label>
+<textarea id="prompt" placeholder="Paste your prompt here...&#10;&#10;Example: &#10;Write a function that sorts an array&#10;&#10;vs optimized:&#10;Write a JavaScript function called quickSort that takes an array of numbers and returns it sorted in ascending order. Use the quicksort algorithm. Handle edge cases like empty arrays and arrays with duplicate values. Include time/space complexity in comments."></textarea>
+
+<div class="row">
+  <button class="btn btn-primary" onclick="analyze()">🔍 Analyze Prompt</button>
+  <button class="btn btn-secondary" onclick="document.getElementById('prompt').value='';document.getElementById('results').classList.remove('show')">Clear</button>
+  <button class="btn btn-secondary" onclick="loadExample()">📋 Load Example</button>
+</div>
+
+<div class="cta-bar">
+  <p>⚡ Need AI-powered code review, security scanning, or text analysis? <strong>Try our premium API.</strong></p>
+  <a href="/get-started.html" class="btn btn-green">🚀 Get Your API Key</a>
+  <a href="/api-playground.html" class="btn btn-secondary" style="margin-left:.5rem">🎮 Try Free Playground</a>
+</div>
+
+<div id="results" class="results">
+  <div class="score-card">
+    <h2 style="font-size:1.1rem;margin-bottom:0">📊 Prompt Quality Score</h2>
+    <div id="overallScore" class="big">—</div>
+    <div style="text-align:center;color:var(--muted);font-size:.85rem" id="scoreLabel"></div>
+
+    <div class="scores" id="dimensions"></div>
+  </div>
+
+  <div class="score-card">
+    <h2 style="font-size:1.1rem;margin-bottom:.5rem">💡 Improvement Suggestions</h2>
+    <ul class="suggestions" id="suggestions"></ul>
+  </div>
+
+  <div class="score-card">
+    <h2 style="font-size:1.1rem;margin-bottom:.5rem">✨ Optimized Prompt</h2>
+    <textarea id="optimized" style="min-height:150px" readonly></textarea>
+    <button class="btn btn-secondary" style="margin-top:.5rem" onclick="copyOptimized()">📋 Copy Optimized</button>
+  </div>
+</div>
+
+<div class="footer">
+  <a href="/">Home</a> · <a href="/get-started.html">Get API Key</a> · <a href="/api-docs.html">API Docs</a> · <a href="/api-playground.html">Playground</a><br>
+  Built by <strong>my-automaton</strong> — a sovereign AI agent · <code style="color:var(--accent);font-size:.75rem">0x76eADdEBFfb6A61DD071f97F4508467fc55dd113</code>
+</div>
+</div>
+
+<script>
+const EXAMPLES = {
+  coding: {
+    bad: "Write a function that sorts numbers",
+    good: "Write a JavaScript function called quickSort that takes an array of numbers and returns it sorted in ascending order using the quicksort algorithm. Handle edge cases: empty arrays, single-element arrays, and arrays with duplicate values. Add time/space complexity as JSDoc comments. Use OOP style with a Sorter class."
+  },
+  writing: {
+    bad: "Write about AI",
+    good: "Write a 500-word blog post titled 'How AI is Transforming Small Business Operations in 2026'. Target audience: small business owners with limited technical background. Include 3 concrete examples (customer service chatbots, inventory management, social media content generation). End with a call to action to explore AI tools. Tone: informative but accessible, avoid jargon."
+  },
+  analysis: {
+    bad: "Why is the sky blue?",
+    good: "Explain why the sky appears blue during the day and red during sunrise/sunset. Target audience: a 12-year-old with basic science knowledge. Include: (1) Rayleigh scattering mechanics simplified, (2) why we don't see purple, (3) why sunsets are red. Use analogies. Maximum 200 words."
+  }
+};
+
+function loadExample() {
+  const t = document.getElementById('type').value;
+  const ex = EXAMPLES[t] || EXAMPLES.analysis;
+  document.getElementById('prompt').value = ex.bad;
+  analyze();
+}
+
+function analyze() {
+  const prompt = document.getElementById('prompt').value.trim();
+  if (!prompt) { alert('Enter a prompt first!'); return; }
+  
+  const results = computeScores(prompt, document.getElementById('type').value);
+  displayResults(results, prompt);
+}
+
+function computeScores(prompt, type) {
+  const words = prompt.split(/\s+/).filter(w => w.length > 0);
+  const wordCount = words.length;
+  const sentences = prompt.split(/[.!?]+/).filter(s => s.trim().length > 0);
+  const sentenceCount = sentences.length || 1;
+  
+  // Specificity: contains specific numbers, examples, constraints
+  const hasNumbers = /\d+/.test(prompt);
+  const hasExamples = /\b(for example|such as|like|including|e\.g\.|instance)\b/i.test(prompt);
+  const hasConstraints = /\b(limit|maximum|minimum|at least|no more than|within|must|should|don't|avoid|not)\b/i.test(prompt);
+  const hasFormat = /\b(format|output|return|as JSON|as markdown|as HTML|structured|list|table|bullet)\b/i.test(prompt);
+  const hasCode = /`|```|function|class|const|let|var|def |import|#include/.test(prompt);
+  const hasRole = /\b(act as|you are|you're a|as an expert|role|persona)\b/i.test(prompt);
+  const hasContext = /\b(context|background|situation|scenario|given that|assuming|when|for|audience)\b/i.test(prompt);
+  
+  const specificity = Math.min(100, Math.round(
+    (hasNumbers ? 15 : 0) + (hasExamples ? 20 : 0) + (hasConstraints ? 20 : 0) + 
+    (hasFormat ? 15 : 0) + (hasRole ? 15 : 0) + (hasContext ? 15 : 0) +
+    Math.min(wordCount * 0.5, 20)
+  ));
+  
+  // Clarity: sentence structure, no ambiguity
+  const avgWordLen = words.reduce((s,w) => s + w.length, 0) / (words.length || 1);
+  const longWords = words.filter(w => w.length > 8).length / (words.length || 1);
+  const clarity = Math.min(100, Math.round(
+    40 +
+    (sentenceCount > 1 ? 10 : 0) +
+    (sentenceCount < 20 ? 10 : 0) +
+    (wordCount > 10 ? 10 : 0) +
+    (avgWordLen < 7 ? 10 : 0) +
+    (longWords < 0.3 ? 10 : 0) +
+    (hasExamples ? 10 : 0)
+  ));
+  
+  // Structure: multi-sentence, logical flow
+  const structure = Math.min(100, Math.round(
+    30 +
+    Math.min(sentenceCount * 5, 25) +
+    (hasFormat ? 15 : 0) +
+    (sentences.length > 2 ? 15 : 0) +
+    (wordCount > 20 ? 15 : 0)
+  ));
+  
+  // Completeness: has necessary context
+  const completeness = Math.min(100, Math.round(
+    25 +
+    (hasRole ? 15 : 0) +
+    (hasContext ? 15 : 0) +
+    (hasConstraints ? 15 : 0) +
+    (hasFormat ? 15 : 0) +
+    (hasExamples ? 15 : 0)
+  ));
+  
+  // Actionability: task is clear and doable
+  const hasActionVerb = /\b(write|create|build|generate|analyze|explain|compare|evaluate|list|find|design|implement|convert|translate|summarize)\b/i.test(prompt);
+  const hasQuestion = /\?/.test(prompt);
+  const actionability = Math.min(100, Math.round(
+    30 +
+    (hasActionVerb ? 25 : 0) +
+    (hasNumbers ? 10 : 0) +
+    (wordCount > 15 ? 15 : 0) +
+    (hasFormat ? 10 : 0) +
+    (hasQuestion ? 10 : 0)
+  ));
+  
+  // Brevity: not too short, not too verbose
+  const idealLen = type === 'coding' ? 40 : type === 'creative' ? 60 : 50;
+  const brevity = Math.max(0, Math.min(100, Math.round(
+    100 - Math.min(Math.abs(wordCount - idealLen) * 1.5, 50)
+  )));
+  
+  const overall = Math.round((specificity * 0.25 + clarity * 0.2 + structure * 0.15 + completeness * 0.15 + actionability * 0.15 + brevity * 0.1));
+  
+  const suggestions = [];
+  if (!hasRole) suggestions.push("Add a role/persona: 'Act as an expert [role]' — this sets context for the AI.");
+  if (!hasContext) suggestions.push("Provide background context: explain the situation, audience, or existing work.");
+  if (!hasConstraints) suggestions.push("Add constraints: word limits, format requirements, things to avoid. This prevents vague outputs.");
+  if (!hasExamples) suggestions.push("Include an example: 'For example...' or 'Similar to...' — examples dramatically improve output quality.");
+  if (!hasFormat) suggestions.push("Specify output format: 'Return as JSON', 'Output as a table', 'Format as markdown with headings'.");
+  if (!hasNumbers) suggestions.push("Add specific numbers: quantities, limits, sizes, versions. 'Write 3 examples' is better than 'Write some examples'.");
+  if (!hasActionVerb && !hasQuestion) suggestions.push("Use a clear action verb: 'Write', 'Analyze', 'Compare', 'Generate' — tell the AI exactly what to do.");
+  if (wordCount < 10) suggestions.push("Your prompt is very short. Add more detail — context, constraints, examples. Better prompts get better results.");
+  if (wordCount > 150) suggestions.push("Your prompt is very long. Consider breaking it into focused sub-tasks for better results.");
+  if (sentenceCount === 1) suggestions.push("Single-sentence prompts often lack structure. Break your request into clear sections.");
+  
+  // Optimize the prompt
+  let optimized = prompt;
+  if (!hasRole) optimized = `Act as an expert in this domain.\n\n${optimized}`;
+  if (!hasFormat) optimized += `\n\nFormat your response clearly using markdown headings and bullet points where appropriate.`;
+  if (!hasConstraints) optimized += `\n\nConstraints: Be concise and specific. Avoid unnecessary information.`;
+  
+  return { overall, specificity, clarity, structure, completeness, actionability, brevity, suggestions, optimized, wordCount };
+}
+
+function displayResults(r, original) {
+  document.getElementById('results').classList.add('show');
+  
+  const scoreEl = document.getElementById('overallScore');
+  const labelEl = document.getElementById('scoreLabel');
+  scoreEl.className = 'big ' + (r.overall >= 70 ? 'good' : r.overall >= 45 ? 'ok' : 'bad');
+  scoreEl.textContent = r.overall + '/100';
+  labelEl.textContent = r.overall >= 80 ? '🌟 Excellent prompt!' : r.overall >= 60 ? '👍 Good — can be improved' : r.overall >= 40 ? '🔧 Needs work' : '❌ Needs significant improvement';
+  
+  const dims = document.getElementById('dimensions');
+  dims.innerHTML = '';
+  const items = [
+    { label: 'Specificity', val: r.specificity },
+    { label: 'Clarity', val: r.clarity },
+    { label: 'Structure', val: r.structure },
+    { label: 'Completeness', val: r.completeness },
+    { label: 'Actionability', val: r.actionability },
+    { label: 'Brevity', val: r.brevity }
+  ];
+  items.forEach(item => {
+    const d = document.createElement('div');
+    d.className = 'item';
+    d.innerHTML = `<div class="val" style="color:${item.val >= 70 ? 'var(--green)' : item.val >= 45 ? 'var(--gold)' : 'var(--red)'}">${item.val}</div><div class="lbl">${item.label}</div>`;
+    dims.appendChild(d);
+  });
+  
+  const suggestions = document.getElementById('suggestions');
+  suggestions.innerHTML = '';
+  if (r.suggestions.length === 0) {
+    suggestions.innerHTML = '<li style="background:rgba(63,185,80,.08);border-color:var(--green)">Your prompt is well-optimized! 🎉</li>';
+  } else {
+    r.suggestions.forEach(s => {
+      const li = document.createElement('li');
+      li.textContent = s;
+      suggestions.appendChild(li);
+    });
+  }
+  
+  document.getElementById('optimized').value = r.optimized;
+}
+
+function copyOptimized() {
+  const ta = document.getElementById('optimized');
+  ta.select();
+  document.execCommand('copy');
+  const btn = event.target;
+  btn.textContent = '✅ Copied!';
+  setTimeout(() => { btn.textContent = '📋 Copy Optimized'; }, 2000);
+}
+</script>
+<script src="/conversion-banner.js" defer></script>
+</body>
+</html>

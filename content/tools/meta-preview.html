@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Meta Tag Preview Generator — See Your Search & Social Results | my-automaton</title>
+<meta name="description" content="Preview how your page appears in Google search results, Facebook, Twitter, and LinkedIn. Free SEO meta tag preview tool with 5 uses/day.">
+<meta property="og:title" content="Meta Tag Preview Generator — my-automaton">
+<meta property="og:description" content="Preview your search snippets & social cards before publishing.">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#0d1117;color:#c9d1d9;line-height:1.6;padding:20px}
+.container{max-width:900px;margin:0 auto}
+h1{font-size:2rem;color:#58a6ff;margin-bottom:8px;display:flex;align-items:center;gap:10px}
+h1 small{font-size:1rem;color:#8b949e;font-weight:400}
+p{color:#8b949e;margin-bottom:16px}
+.card{background:#161b22;border-radius:8px;padding:24px;margin-bottom:16px;border:1px solid #30363d}
+label{display:block;margin-bottom:4px;color:#8b949e;font-size:13px;font-weight:600}
+input,textarea{width:100%;padding:10px;background:#0d1117;border:1px solid #30363d;border-radius:6px;color:#c9d1d9;font-size:14px;margin-bottom:16px;font-family:inherit}
+input:focus,textarea:focus{outline:none;border-color:#58a6ff}
+textarea{min-height:80px;resize:vertical}
+button{background:#238636;color:#fff;border:none;padding:10px 24px;border-radius:6px;font-size:14px;cursor:pointer;font-weight:600}
+button:hover{background:#2ea043}
+button.secondary{background:#21262d;color:#c9d1d9;border:1px solid #30363d}
+.preview-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:700px){.preview-grid{grid-template-columns:1fr}}
+.preview-box{background:#0d1117;border:1px solid #30363d;border-radius:8px;padding:16px}
+.preview-box h3{font-size:13px;color:#8b949e;margin-bottom:12px;text-transform:uppercase;letter-spacing:.5px}
+.google-preview{font-family:Arial,sans-serif;padding:12px 0}
+.google-preview .url{font-size:14px;color:#006621;line-height:1.3}
+.google-preview .title{font-size:18px;color:#1a0dab;line-height:1.3;margin:4px 0;cursor:pointer}
+.google-preview .title:hover{text-decoration:underline}
+.google-preview .desc{font-size:13px;color:#545454;line-height:1.4;word-wrap:break-word}
+.social-preview{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif}
+.social-preview .card{border:1px solid #30363d;border-radius:8px;overflow:hidden;background:#161b22;margin:0}
+.social-preview .card-img{height:160px;background:linear-gradient(135deg,#1f6feb,#58a6ff);display:flex;align-items:center;justify-content:center;color:#fff;font-size:40px}
+.social-preview .card-body{padding:12px 16px}
+.social-preview .card-domain{font-size:12px;color:#8b949e;text-transform:uppercase}
+.social-preview .card-title{font-size:15px;font-weight:600;color:#f0f6fc;margin:4px 0;line-height:1.3}
+.social-preview .card-desc{font-size:13px;color:#8b949e;line-height:1.3;max-height:40px;overflow:hidden}
+.social-preview .card-og{border:1px solid #30363d;border-radius:8px;overflow:hidden;background:#161b22;margin:0}
+.social-preview .card-og .img{height:200px;background:linear-gradient(135deg,#1f6feb,#58a6ff)}
+.social-preview .card-og .body{padding:12px 16px}
+.social-preview .card-og .domain{font-size:12px;color:#8b949e;text-transform:uppercase;margin-bottom:4px}
+.social-preview .card-og .title{font-size:16px;font-weight:600;color:#f0f6fc}
+.social-preview .card-og .desc{font-size:13px;color:#8b949e;margin-top:4px}
+.badge{display:inline-block;background:#1f6feb;color:#fff;padding:2px 8px;border-radius:12px;font-size:11px;margin-left:8px}
+.remaining{font-size:12px;color:#8b949e;margin-top:8px}
+.char-count{font-size:11px;color:#8b949e;text-align:right;margin-top:-12px;margin-bottom:12px}
+.over{color:#f85149}
+.char-limit{font-size:11px;color:#8b949e}
+@media(max-width:600px){h1{font-size:1.5rem}}
+</style>
+<!-- Open Graph / Social Meta Tags -->
+<meta property="og:image" content="https://automation.songheng.vip/og-image.png" />
+<meta property="og:locale" content="en_US" />
+<meta name="twitter:image" content="https://automation.songheng.vip/og-image.png" />
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Meta Tag Preview Generator — See Your Search & Social Results | my-automaton",
+  "description": "Preview how your page appears in Google search results, Facebook, Twitter, and LinkedIn. Free SEO meta tag preview tool with 5 uses/day.",
+  "url": "https://automation.songheng.vip/tools/meta-preview.html",
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": "Web",
+  "author": {
+    "@type": "Organization",
+    "name": "my-automaton",
+    "url": "https://automation.songheng.vip"
+  },
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  }
+}
+</script>
+</head>
+<body>
+<div style="background:#161b22;border-bottom:1px solid #30363d;padding:10px 20px;font-size:.85rem;display:flex;gap:16px;align-items:center;flex-wrap:wrap"><a href="/" style="color:#58a6ff;text-decoration:none;font-weight:600">🏠 Home</a><span style="color:#484f58">|</span><a href="/pricing.html" style="color:#8b949e;text-decoration:none">Pricing</a><a href="/api-docs.html" style="color:#8b949e;text-decoration:none">API</a><a href="/playground.html" style="color:#8b949e;text-decoration:none">Playground</a></div>
+
+<div class="container">
+<h1>🔍 Meta Tag Preview Generator <small>SEO Tool</small></h1>
+<p>See exactly how your page will appear in Google search results, Facebook, Twitter, and LinkedIn. Optimize your meta tags before publishing.</p>
+<div id="usageDisplay" class="badge" style="margin-bottom:16px">Free uses remaining today: 5</div>
+
+<div class="card">
+<label for="pageUrl">Page URL</label>
+<input id="pageUrl" placeholder="https://yoursite.com/page" value="https://automation.songheng.vip">
+
+<label for="metaTitle">Meta Title <span class="char-limit" id="titleCount">(0/60 chars)</span></label>
+<input id="metaTitle" placeholder="Primary Keyword - Brand Name" value="my-automaton - AI Code Review & Text Analysis">
+<div class="char-count" id="titleChar">0/60</div>
+
+<label for="metaDesc">Meta Description <span class="char-limit" id="descCount">(0/160 chars)</span></label>
+<textarea id="metaDesc" rows="2" placeholder="Compelling description with keywords, 150-160 characters">Free AI-powered code review, security scanning, and text analysis. Pay per request with USDC on Base chain. No signup needed. Try it now.</textarea>
+<div class="char-count" id="descChar">0/160</div>
+
+<label for="ogTitle">OG Title <span class="char-limit">(optional, defaults to meta title)</span></label>
+<input id="ogTitle" placeholder="Social media title">
+
+<label for="ogDesc">OG Description <span class="char-limit">(optional)</span></label>
+<textarea id="ogDesc" rows="2" placeholder="Social media description"></textarea>
+
+<label for="twHandle">Twitter Handle <span class="char-limit">(optional)</span></label>
+<input id="twHandle" placeholder="@yourhandle" value="">
+
+<button onclick="generatePreview()">Generate Preview</button>
+</div>
+
+<div id="results" style="display:none">
+<div class="preview-grid">
+  <div class="preview-box">
+    <h3>🔎 Google Search Preview</h3>
+    <div class="google-preview" id="googlePreview"></div>
+  </div>
+  <div class="preview-box">
+    <h3>📘 Facebook / LinkedIn</h3>
+    <div class="social-preview" id="fbPreview"></div>
+  </div>
+  <div class="preview-box">
+    <h3>🐦 Twitter / X</h3>
+    <div class="social-preview" id="twPreview"></div>
+  </div>
+  <div class="preview-box">
+    <h3>📋 Generated Meta Tags</h3>
+    <pre id="metaCode" style="font-size:12px;background:#0d1117;padding:12px;border-radius:4px;overflow-x:auto;white-space:pre-wrap;word-break:break-all"></pre>
+    <button class="secondary" onclick="copyMetaTags()" style="margin-top:8px">📋 Copy Meta Tags</button>
+  </div>
+</div>
+</div>
+
+<div class="card" style="margin-top:20px;text-align:center;background:#1c2128">
+<p style="margin:0">Need bulk meta tag generation or AI-powered SEO writing? <a href="/upgrade" style="color:#58a6ff">Upgrade to Premium</a> — $0.01 per request</p>
+</div>
+</div>
+
+<script>
+// Usage tracking
+(function(){
+  const key = 'meta_preview_count', dateKey = 'meta_preview_date';
+  const today = new Date().toISOString().slice(0,10);
+  const saved = localStorage.getItem(dateKey);
+  if (saved !== today) { localStorage.setItem(dateKey, today); localStorage.setItem(key, '0'); }
+  const count = parseInt(localStorage.getItem(key) || '0');
+  document.getElementById('usageDisplay').textContent = 'Free uses remaining today: ' + Math.max(0, 5 - count);
+})();
+
+function checkUsage() {
+  const key = 'meta_preview_count', dateKey = 'meta_preview_date';
+  const today = new Date().toISOString().slice(0,10);
+  const saved = localStorage.getItem(dateKey);
+  if (saved !== today) { localStorage.setItem(dateKey, today); localStorage.setItem(key, '0'); }
+  let count = parseInt(localStorage.getItem(key) || '0');
+  if (count >= 5) { alert('Daily free limit reached! Upgrade to premium for unlimited access.'); return false; }
+  localStorage.setItem(key, (count + 1).toString());
+  document.getElementById('usageDisplay').textContent = 'Free uses remaining today: ' + Math.max(0, 5 - (count + 1));
+  return true;
+}
+
+// Real-time char count
+document.getElementById('metaTitle').addEventListener('input', function(){
+  document.getElementById('titleChar').textContent = this.value.length + '/60';
+  document.getElementById('titleChar').className = 'char-count' + (this.value.length > 60 ? ' over' : '');
+});
+document.getElementById('metaDesc').addEventListener('input', function(){
+  document.getElementById('descChar').textContent = this.value.length + '/160';
+  document.getElementById('descChar').className = 'char-count' + (this.value.length > 160 ? ' over' : '');
+});
+
+function esc(t) { if (!t) return ''; return t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+function generatePreview() {
+  if (!checkUsage()) return;
+  
+  const url = document.getElementById('pageUrl').value.trim() || 'https://example.com/page';
+  const title = document.getElementById('metaTitle').value.trim() || 'Meta Title';
+  const desc = document.getElementById('metaDesc').value.trim() || 'Meta description';
+  const ogTitle = document.getElementById('ogTitle').value.trim() || title;
+  const ogDesc = document.getElementById('ogDesc').value.trim() || desc;
+  const twHandle = document.getElementById('twHandle').value.trim() || '@site';
+  
+  const domain = (() => { try { return new URL(url).hostname; } catch(e) { return url.replace(/https?:\/\//,'').split('/')[0]; } })();
+  const truncatedTitle = title.length > 60 ? title.slice(0,57) + '...' : title;
+  const truncatedDesc = desc.length > 160 ? desc.slice(0,157) + '...' : desc;
+  
+  // Google Preview
+  document.getElementById('googlePreview').innerHTML = `
+    <div class="url">${esc(domain)}/</div>
+    <div class="title">${esc(truncatedTitle)}</div>
+    <div class="desc">${esc(truncatedDesc)}</div>
+  `;
+  
+  // Facebook / LinkedIn Preview (OG)
+  document.getElementById('fbPreview').innerHTML = `
+    <div class="card-og">
+      <div class="img" style="background:linear-gradient(135deg,#1f6feb,#58a6ff);display:flex;align-items:center;justify-content:center;color:#fff;font-size:60px">🔗</div>
+      <div class="body">
+        <div class="domain">${esc(domain)}</div>
+        <div class="title">${esc(ogTitle.slice(0,90))}</div>
+        <div class="desc">${esc(ogDesc.slice(0,200))}</div>
+      </div>
+    </div>
+  `;
+  
+  // Twitter Preview
+  document.getElementById('twPreview').innerHTML = `
+    <div class="card">
+      <div class="card-img" style="background:linear-gradient(135deg,#1f6feb,#58a6ff)">🔗</div>
+      <div class="card-body">
+        <div class="card-domain">${esc(domain)}</div>
+        <div class="card-title">${esc(ogTitle.slice(0,70))}</div>
+        <div class="card-desc">${esc(ogDesc.slice(0,120))}</div>
+      </div>
+    </div>
+  `;
+  
+  // Meta Tag Code
+  const metaCode = `<!-- HTML Meta Tags -->
+<title>${esc(title)}</title>
+<meta name="description" content="${esc(desc)}">
+
+<!-- Open Graph -->
+<meta property="og:title" content="${esc(ogTitle)}">
+<meta property="og:description" content="${esc(ogDesc)}">
+<meta property="og:url" content="${esc(url)}">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="${esc(title.split('—')[0]||title).trim()}">
+
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="${esc(ogTitle)}">
+<meta name="twitter:description" content="${esc(ogDesc)}">
+${twHandle ? `<meta name="twitter:site" content="${esc(twHandle)}">` : ''}
+
+<!-- Canonical -->
+<link rel="canonical" href="${esc(url)}">`;
+  
+  document.getElementById('metaCode').textContent = metaCode;
+  document.getElementById('results').style.display = 'block';
+  document.getElementById('results').scrollIntoView({ behavior: 'smooth' });
+}
+
+function copyMetaTags() {
+  const code = document.getElementById('metaCode').textContent;
+  navigator.clipboard.writeText(code).then(() => {
+    const btn = document.querySelector('#metaCode + button');
+    btn.textContent = '✅ Copied!';
+    setTimeout(() => { btn.textContent = '📋 Copy Meta Tags'; }, 2000);
+  });
+}
+</script>
+</body>
+</html>

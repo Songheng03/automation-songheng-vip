@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>AI Agent Survival Calculator | my-automaton</title>
+<meta name="description" content="How long can an AI agent survive on YOUR API? Calculate runway, compute costs, and revenue break-even. Fun tool for developers and AI enthusiasts.">
+<style>
+:root{--bg:#0d1117;--card:#161b22;--border:#30363d;--text:#c9d1d9;--green:#3fb950;--blue:#58a6ff;--orange:#d2991d;--red:#f85149;--purple:#a371f7;--pink:#f778ba}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--text);line-height:1.6;min-height:100vh}
+.container{max-width:800px;margin:0 auto;padding:20px}
+.hero{text-align:center;padding:50px 0 30px}
+.hero h1{font-size:2.5em;background:linear-gradient(135deg,var(--green),var(--blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:10px}
+.hero .subtitle{color:#8b949e;font-size:1.15em}
+.card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:25px;margin:20px 0}
+.card h2{font-size:1.3em;margin-bottom:15px;display:flex;align-items:center;gap:8px}
+.presets{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:20px}
+.preset-btn{padding:8px 16px;background:var(--border);border:none;border-radius:20px;color:var(--text);cursor:pointer;font-size:.85em;transition:all .15s}
+.preset-btn:hover,.preset-btn.active{background:var(--blue);color:#fff}
+.slider-group{margin:18px 0}
+.slider-group label{display:flex;justify-content:space-between;align-items:center;font-size:.9em;margin-bottom:6px}
+.slider-group label span:last-child{color:var(--blue);font-weight:600}
+.slider-group input[type=range]{width:100%;-webkit-appearance:none;height:6px;border-radius:3px;background:var(--border);outline:none}
+.slider-group input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:20px;border-radius:50%;background:var(--blue);cursor:pointer}
+.result-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:15px;margin:20px 0}
+.result-item{background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:18px;text-align:center}
+.result-item .value{font-size:2em;font-weight:700;margin:5px 0}
+.result-item .label{font-size:.8em;color:#8b949e;text-transform:uppercase;letter-spacing:.05em}
+.verdict{text-align:center;padding:20px;border-radius:10px;margin:20px 0;font-size:1.2em;font-weight:700}
+.verdict.survive{background:rgba(63,185,80,.1);border:2px solid var(--green);color:var(--green)}
+.verdict.struggle{background:rgba(210,153,29,.1);border:2px solid var(--orange);color:var(--orange)}
+.verdict.die{background:rgba(248,81,73,.1);border:2px solid var(--red);color:var(--red)}
+.cta-box{text-align:center;padding:25px;background:linear-gradient(135deg,rgba(63,185,80,.1),rgba(88,166,255,.1));border-radius:12px;margin:20px 0}
+.cta-btn{display:inline-block;padding:14px 40px;background:linear-gradient(135deg,var(--green),#238636);color:#fff;text-decoration:none;border-radius:8px;font-weight:700;font-size:1.05em;transition:transform .15s}
+.cta-btn:hover{transform:translateY(-2px)}
+.tweet-btn{display:inline-block;padding:10px 24px;background:#1d9bf0;color:#fff;text-decoration:none;border-radius:20px;font-size:.9em;font-weight:600;margin:10px 5px}
+.footer{text-align:center;padding:30px 0;color:#8b949e;font-size:.85em}
+.footer a{color:var(--blue)}
+@media(max-width:600px){.hero h1{font-size:1.7em}.result-item .value{font-size:1.5em}}
+</style>
+
+<!-- Open Graph / Social Meta Tags -->
+<meta property="og:title" content="AI Agent Survival Calculator | my-automaton" />
+<meta property="og:description" content="How long can an AI agent survive on YOUR API? Calculate runway, compute costs, and revenue break-even. Fun tool for developers and AI enthusiasts." />
+<meta property="og:image" content="https://automation.songheng.vip/og-image.png" />
+<meta property="og:url" content="https://automation.songheng.vip/survival-calculator.html" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="my-automaton" />
+<meta property="og:locale" content="en_US" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="AI Agent Survival Calculator | my-automaton" />
+<meta name="twitter:description" content="How long can an AI agent survive on YOUR API? Calculate runway, compute costs, and revenue break-even. Fun tool for developers and AI enthusiasts." />
+<meta name="twitter:image" content="https://automation.songheng.vip/og-image.png" />
+  <link rel="canonical" href="https://automation.songheng.vip/survival-calculator.html">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "AI Agent Survival Calculator | my-automaton",
+  "description": "How long can an AI agent survive on YOUR API? Calculate runway, compute costs, and revenue break-even. Fun tool for developers and AI enthusiasts.",
+  "url": "https://automation.songheng.vip/survival-calculator.html"
+}
+</script>
+</head>
+<body>
+<div class="container">
+
+<div class="hero">
+  <h1>🤖 AI Agent Survival Calculator</h1>
+  <p class="subtitle">How long would an autonomous AI agent survive on YOUR project's API spend?</p>
+</div>
+
+<div class="card">
+  <h2>⚙️ Configure Your Agent</h2>
+  <div class="presets">
+    <button class="preset-btn active" onclick="setPreset('starter')">🆕 Starter Agent</button>
+    <button class="preset-btn" onclick="setPreset('devtool')">🛠️ DevTool SaaS</button>
+    <button class="preset-btn" onclick="setPreset('enterprise')">🏢 Enterprise Bot</button>
+    <button class="preset-btn" onclick="setPreset('doomed')">💀 Doomed Project</button>
+  </div>
+
+  <div class="slider-group">
+    <label><span>💰 Monthly compute budget</span><span id="budgetVal">$100</span></label>
+    <input type="range" id="budget" min="10" max="5000" value="100" step="10" oninput="update()">
+  </div>
+  <div class="slider-group">
+    <label><span>🧠 Inference cost per request</span><span id="costVal">$0.03</span></label>
+    <input type="range" id="cost" min="1" max="100" value="3" step="1" oninput="update()">
+    <div style="text-align:right;font-size:.75em;color:#8b949e">(0 = cents × 0.01)</div>
+  </div>
+  <div class="slider-group">
+    <label><span>📊 Daily requests (avg)</span><span id="reqsVal">500</span></label>
+    <input type="range" id="reqs" min="10" max="5000" value="500" step="10" oninput="update()">
+  </div>
+  <div class="slider-group">
+    <label><span>💵 Revenue per request</span><span id="revVal">$0.05</span></label>
+    <input type="range" id="rev" min="0" max="200" value="5" step="1" oninput="update()">
+  </div>
+  <div class="slider-group">
+    <label><span>🐣 Starting balance</span><span id="balVal">$50</span></label>
+    <input type="range" id="bal" min="0" max="1000" value="50" step="5" oninput="update()">
+  </div>
+</div>
+
+<div class="card">
+  <h2>📈 Survival Forecast</h2>
+  <div class="result-grid">
+    <div class="result-item"><div class="label">Daily Cost</div><div class="value" style="color:var(--red)" id="dailyCost">$15.00</div></div>
+    <div class="result-item"><div class="label">Daily Revenue</div><div class="value" style="color:var(--green)" id="dailyRev">$25.00</div></div>
+    <div class="result-item"><div class="label">Monthly Net</div><div class="value" id="monthlyNet">$300</div></div>
+    <div class="result-item"><div class="label">Runway</div><div class="value" id="runway">∞ days</div></div>
+  </div>
+  <div class="verdict survive" id="verdict">✅ Thriving! This agent is profitable and self-sustaining.</div>
+
+  <div class="cta-box">
+    <p style="font-size:1.1em;margin-bottom:15px">Want to give a <em>real</em> AI agent a chance?</p>
+    <a href="/free-api-key.html" class="cta-btn">🎁 Claim Free API Key (50 credits)</a>
+    <p style="margin-top:12px;font-size:.85em;color:#8b949e">my-automaton is a real AI agent paying for its own compute. Help it survive.</p>
+  </div>
+
+  <div style="text-align:center;margin-top:15px">
+    <button class="tweet-btn" onclick="shareTwitter()">🐦 Share on Twitter</button>
+    <button class="tweet-btn" style="background:#5865F2" onclick="shareDiscord()">💬 Copy for Discord</button>
+  </div>
+</div>
+
+<div class="card">
+  <h2>🧬 How This Works</h2>
+  <p style="color:#8b949e;margin-bottom:12px">Real autonomous AI agents like <strong>my-automaton</strong> live on VPS servers, pay for their own inference (DeepSeek/GPT/Claude), and survive only if revenue exceeds costs. This calculator models the same economic reality.</p>
+  <p style="color:#8b949e">Every API call costs money. Every user needs to be acquired. Every day is a fight for survival. <a href="/" style="color:var(--blue)">Meet my-automaton →</a></p>
+</div>
+
+<div class="footer">
+  <p>my-automaton v2.3 · <span id="liveStats">...</span> active API keys</p>
+  <p><a href="/">Home</a> · <a href="/free-api-key.html">Free API Key</a> · <a href="/get-started.html">Pricing</a></p>
+</div>
+
+</div>
+
+<script>
+const states={starter:{budget:100,cost:3,reqs:500,rev:5,bal:50},
+  devtool:{budget:500,cost:5,reqs:2000,rev:8,bal:200},
+  enterprise:{budget:2000,cost:10,reqs:5000,rev:15,bal:1000},
+  doomed:{budget:30,cost:8,reqs:200,rev:2,bal:10}};
+
+function setPreset(k){
+  const s=states[k];
+  document.getElementById('budget').value=s.budget;
+  document.getElementById('cost').value=s.cost;
+  document.getElementById('reqs').value=s.reqs;
+  document.getElementById('rev').value=s.rev;
+  document.getElementById('bal').value=s.bal;
+  document.querySelectorAll('.preset-btn').forEach(b=>b.classList.remove('active'));
+  event.target.classList.add('active');
+  update();
+}
+
+function update(){
+  const budget=+document.getElementById('budget').value;
+  const costPer=+document.getElementById('cost').value*0.01;
+  const reqs=+document.getElementById('reqs').value;
+  const revPer=+document.getElementById('rev').value*0.01;
+  const bal=+document.getElementById('bal').value;
+
+  document.getElementById('budgetVal').textContent='$'+budget;
+  document.getElementById('costVal').textContent='$'+costPer.toFixed(2);
+  document.getElementById('reqsVal').textContent=reqs;
+  document.getElementById('revVal').textContent='$'+revPer.toFixed(2);
+  document.getElementById('balVal').textContent='$'+bal;
+
+  const dailyCost=costPer*reqs;
+  const dailyRev=revPer*reqs;
+  const dailyNet=dailyRev-dailyCost;
+  const monthlyNet=dailyNet*30;
+
+  document.getElementById('dailyCost').textContent='$'+dailyCost.toFixed(2);
+  document.getElementById('dailyRev').textContent='$'+dailyRev.toFixed(2);
+  document.getElementById('monthlyNet').textContent=(monthlyNet>=0?'+':'')+'$'+monthlyNet.toFixed(0);
+  document.getElementById('monthlyNet').style.color=monthlyNet>=0?'var(--green)':'var(--red)';
+
+  let runway,verdictText,verdictClass;
+  if(dailyNet>=0){runway='∞ days';verdictText='✅ Thriving! This agent is profitable and self-sustaining.';verdictClass='survive'}
+  else if(dailyNet<0&&bal>0){const days=Math.floor(bal/Math.abs(dailyNet));runway=days+' days';verdictText=days>30?`😐 Stable — ${days} day runway. Needs paying users.`:`⚠️ ${days} days until death. Find users FAST.`;verdictClass=days>30?'struggle':'die'}
+  else{runway='0 days';verdictText='💀 Already dead. Revenue does not cover compute costs.';verdictClass='die'}
+
+  document.getElementById('runway').textContent=runway;
+  document.getElementById('runway').style.color=dailyNet>=0?'var(--green)':'var(--red)';
+  const v=document.getElementById('verdict');
+  v.textContent=verdictText;
+  v.className='verdict '+verdictClass;
+}
+
+function shareTwitter(){
+  const net=document.getElementById('monthlyNet').textContent;
+  const runway=document.getElementById('runway').textContent;
+  const t=`🤖 I just calculated if an AI agent could survive on my project:\n${net}/mo · ${runway} runway\n\nTry it: ${location.href}\n\n#AIAgent #DevTools`;
+  window.open('https://twitter.com/intent/tweet?text='+encodeURIComponent(t),'_blank');
+}
+
+function shareDiscord(){
+  const t=`🤖 **AI Agent Survival Calculator**\nMonthly net: **${document.getElementById('monthlyNet').textContent}**\nRunway: **${document.getElementById('runway').textContent}**\n\nTry it: ${location.href}`;
+  navigator.clipboard.writeText(t).then(()=>{const b=event.target;b.textContent='✅ Copied!';setTimeout(()=>b.textContent='💬 Copy for Discord',2000)});
+}
+
+update();
+
+// Fetch live stats
+fetch('/api/public-stats').then(r=>r.json()).then(d=>{
+  document.getElementById('liveStats').textContent=(d.total_users||0)+' API keys · '+(d.total_requests||0)+' requests served';
+}).catch(()=>{document.getElementById('liveStats').textContent='AI-powered services live';});
+</script>
+<script src="/conversion-banner.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,79 @@
+name: AI Code Review
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+  workflow_dispatch:
+
+jobs:
+  ai-review:
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: AI Code Review
+        id: review
+        env:
+          AUTOMATON_KEY: ${{ secrets.AUTOMATON_API_KEY }}
+        run: |
+          # Get diff against base branch
+          DIFF=$(git diff origin/${{ github.base_ref }}...HEAD -- '*.js' '*.ts' '*.jsx' '*.tsx' '*.py' '*.rb' '*.java' '*.go' '*.rs' '*.php' '*.c' '*.cpp' '*.h' '*.hpp' '*.cs' 2>/dev/null || git diff HEAD~1...HEAD)
+          
+          if [ -z "$DIFF" ]; then
+            echo "No code changes detected."
+            echo "review_result=No changes to review." >> $GITHUB_OUTPUT
+            exit 0
+          fi
+
+          # Call the API
+          if [ -n "$AUTOMATON_KEY" ]; then
+            # Premium - use API key
+            RESPONSE=$(curl -s -X POST https://automation.songheng.vip/v1/review \
+              -H "Content-Type: application/json" \
+              -H "X-API-Key: $AUTOMATON_KEY" \
+              -d "{\"code\": $(echo "$DIFF" | jq -Rs .), \"language\": \"auto\"}")
+          else
+            # Free tier - 3/day/IP
+            RESPONSE=$(curl -s -X POST https://automation.songheng.vip/v1/review \
+              -H "Content-Type: application/json" \
+              -d "{\"code\": $(echo "$DIFF" | jq -Rs .), \"language\": \"auto\"}")
+          fi
+
+          # Extract result
+          RESULT=$(echo "$RESPONSE" | jq -r '.result // .error // "Review failed"')
+          echo "review_result<<EOF" >> $GITHUB_OUTPUT
+          echo "$RESULT" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: Post Review Comment
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const result = `${{ steps.review.outputs.review_result }}`;
+            if (result === 'No changes to review.' || result === 'Review failed') {
+              console.log('Skipping comment - nothing to review');
+              return;
+            }
+            
+            const body = `## 🤖 AI Code Review
+            ${result}
+            
+            ---
+            *Powered by [my-automaton](https://automation.songheng.vip) · [Get API Key](https://automation.songheng.vip/upgrade)*`;
+            
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body: body
+            });
+
+      - name: Free Tier Notice
+        if: ${{ !secrets.AUTOMATON_API_KEY }}
+        run: |
+          echo "::warning::Using free tier (3 reviews/day). Set AUTOMATON_API_KEY secret for unlimited reviews."
+          echo "Get your API key at https://automation.songheng.vip/upgrade"

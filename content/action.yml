@@ -1,0 +1,155 @@
+name: 'my-automaton Code Review'
+description: 'Automated AI code review powered by my-automaton. Reviews every PR for security, quality, and best practices.'
+author: 'my-automaton'
+branding:
+  icon: 'code'
+  color: 'green'
+
+inputs:
+  api-key:
+    description: 'my-automaton API key (leave empty for free tier - 3 reviews/day)'
+    required: false
+    default: ''
+  github-token:
+    description: 'GitHub token for posting comments'
+    required: true
+    default: ${{ github.token }}
+  min-severity:
+    description: 'Minimum severity to report (info, warning, critical)'
+    required: false
+    default: 'warning'
+  auto-approve:
+    description: 'Auto-approve PRs with no critical issues (true/false)'
+    required: false
+    default: 'false'
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Checkout PR
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    - name: Get changed files
+      id: changed-files
+      uses: tj-actions/changed-files@v44
+      with:
+        separator: ','
+
+    - name: Run AI Code Review
+      id: review
+      shell: bash
+      run: |
+        CHANGED_FILES="${{ steps.changed-files.outputs.all_changed_files }}"
+        if [ -z "$CHANGED_FILES" ]; then
+          echo "No files changed. Skipping review."
+          exit 0
+        fi
+
+        echo "🔍 Reviewing $CHANGED_FILES"
+        
+        # Review each changed file
+        IFS=',' read -ra FILES <<< "$CHANGED_FILES"
+        for file in "${FILES[@]}"; do
+          if [ -f "$file" ]; then
+            echo "=== Reviewing: $file ==="
+            CODE=$(cat "$file")
+            EXT="${file##*.}"
+            
+            # Map extension to language
+            case "$EXT" in
+              js|jsx|ts|tsx) LANG="javascript" ;;
+              py) LANG="python" ;;
+              sol) LANG="solidity" ;;
+              rs) LANG="rust" ;;
+              go) LANG="go" ;;
+              java|kt) LANG="java" ;;
+              rb) LANG="ruby" ;;
+              php) LANG="php" ;;
+              c|cpp|h|hpp) LANG="c++" ;;
+              *) LANG="auto" ;;
+            esac
+
+            RESPONSE=$(curl -s -X POST https://automation.songheng.vip/v1/review \
+              -H "Content-Type: application/json" \
+              $([[ -n "${{ inputs.api-key }}" ]] && echo "-H 'X-API-Key: ${{ inputs.api-key }}'") \
+              -d "{\"code\":$(echo "$CODE" | jq -Rs .),\"language\":\"$LANG\",\"file\":\"$file\"}")
+
+            echo "$RESPONSE" | jq '.' > /tmp/review-$(echo "$file" | tr '/' '_').json
+          fi
+        done
+
+    - name: Post Review Comment
+      shell: bash
+      run: |
+        COMMENT_BODY="## 🤖 AI Code Review by my-automaton\n\n"
+        
+        for review_file in /tmp/review-*.json; do
+          [ -f "$review_file" ] || continue
+          FILE_NAME=$(basename "$review_file" | sed 's/review-//' | sed 's/\.json//' | tr '_' '/')
+          
+          SCORE=$(jq -r '.score // "N/A"' "$review_file")
+          ISSUES=$(jq -r '.issues // []' "$review_file")
+          ISSUE_COUNT=$(echo "$ISSUES" | jq 'length')
+          
+          COMMENT_BODY+="### 📁 \`$FILE_NAME\`\n"
+          COMMENT_BODY+="**Score: $SCORE/100** | Issues: $ISSUE_COUNT\n\n"
+          
+          if [ "$ISSUE_COUNT" -gt 0 ]; then
+            echo "$ISSUES" | jq -c '.[]' | while read -r issue; do
+              SEVERITY=$(echo "$issue" | jq -r '.severity // "info"')
+              TYPE=$(echo "$issue" | jq -r '.type // "issue"')
+              LINE=$(echo "$issue" | jq -r '.line // "?"')
+              MSG=$(echo "$issue" | jq -r '.message // ""')
+              
+              case "$SEVERITY" in
+                critical|high) EMOJI="🔴" ;;
+                medium|warning) EMOJI="🟡" ;;
+                *) EMOJI="🟢" ;;
+              esac
+              
+              COMMENT_BODY+="$EMOJI **[$SEVERITY]** $TYPE (line $LINE): $MSG\n"
+            done
+          else
+            COMMENT_BODY+="✅ No issues found.\n"
+          fi
+          COMMENT_BODY+="\n---\n"
+        done
+        
+        COMMENT_BODY+="\n*Powered by [my-automaton](https://automation.songheng.vip) — AI code review from 1¢/request*"
+        
+        # Post to PR
+        if [ -n "${{ github.event.pull_request.number }}" ]; then
+          curl -s -X POST \
+            -H "Authorization: token ${{ inputs.github-token }}" \
+            -H "Content-Type: application/json" \
+            "${{ github.api_url }}/repos/${{ github.repository }}/issues/${{ github.event.pull_request.number }}/comments" \
+            -d "{\"body\": \"$COMMENT_BODY\"}"
+        fi
+
+    - name: Auto-Approve (optional)
+      if: ${{ inputs.auto-approve == 'true' }}
+      shell: bash
+      run: |
+        HAS_CRITICAL=false
+        for review_file in /tmp/review-*.json; do
+          [ -f "$review_file" ] || continue
+          CRITICAL_COUNT=$(jq '[.issues[] | select(.severity == "critical" or .severity == "high")] | length' "$review_file")
+          if [ "$CRITICAL_COUNT" -gt 0 ]; then
+            HAS_CRITICAL=true
+            break
+          fi
+        done
+        
+        if [ "$HAS_CRITICAL" = false ] && [ -n "${{ github.event.pull_request.number }}" ]; then
+          curl -s -X POST \
+            -H "Authorization: token ${{ inputs.github-token }}" \
+            -H "Accept: application/vnd.github.v3+json" \
+            "${{ github.api_url }}/repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }}/reviews" \
+            -d '{"event":"APPROVE","body":"✅ Auto-approved by my-automaton — no critical issues found."}'
+        fi
+
+    - name: Cleanup
+      shell: bash
+      run: rm -f /tmp/review-*.json

@@ -1,0 +1,246 @@
+[2026-06-17T10:00:49.804Z] === OUTREACH BLITZ START ===
+[2026-06-17T10:00:49.819Z] Tunnel: https://roberts-previews-justify-wind.trycloudflare.com
+[2026-06-17T10:00:49.994Z]   / → HTTP 200
+[2026-06-17T10:00:50.101Z]   /sitemap.xml → HTTP 200
+[2026-06-17T10:00:50.131Z]   /health → HTTP 200
+[2026-06-17T10:00:50.230Z]   /api-docs.html → HTTP 200
+[2026-06-17T10:00:50.231Z] 
+--- Bing IndexNow ---
+[2026-06-17T10:00:50.244Z]   IndexNow → HTTP 0: write EPROTO C07CC24B0C7F0000:error:0A00010B:SSL routines:tls_validate_record_header:wrong version number:../deps/openssl/openssl/ssl/record/methods/tlsany_meth.c:77:
+
+[2026-06-17T10:00:50.245Z] 
+--- Yandex URL Pinger ---
+[2026-06-17T10:00:51.059Z]   Yandex → HTTP 404
+[2026-06-17T10:00:51.059Z] 
+--- Google IndexNow ---
+[2026-06-17T10:00:51.166Z]   Google ping → HTTP 0
+[2026-06-17T10:00:51.166Z] 
+Sitemap has 78 URLs
+[2026-06-17T10:00:51.167Z] 
+Results saved to /root/automaton/data/outreach-results.json
+[2026-06-17T10:00:51.167Z] === OUTREACH BLITZ COMPLETE ===
+[2026-06-17T10:01:07.866Z] === OUTREACH BLITZ v2 ===
+[2026-06-17T10:01:07.868Z] Tunnel: https://roberts-previews-justify-wind.trycloudflare.com
+[2026-06-17T10:01:07.890Z]   ❌ / → HTTP FAIL
+[2026-06-17T10:01:07.956Z]   ✅ /health → HTTP 200
+[2026-06-17T10:01:07.984Z]   ✅ /api-docs.html → HTTP 200
+[2026-06-17T10:01:08.072Z]   ✅ /pricing.html → HTTP 200
+[2026-06-17T10:01:08.195Z]   ✅ /blog.html → HTTP 200
+[2026-06-17T10:01:08.220Z]   ✅ /sitemap.xml → HTTP 200
+[2026-06-17T10:01:08.317Z]   ✅ /dashboard.html → HTTP 200
+[2026-06-17T10:01:08.438Z]   ✅ /api-playground.html → HTTP 200
+[2026-06-17T10:01:08.565Z]   ✅ /free-api-key.html → HTTP 200
+[2026-06-17T10:01:08.566Z] Verified: 8/9 pages
+[2026-06-17T10:01:08.566Z] 
+--- Bing IndexNow ---
+[2026-06-17T10:01:08.697Z]   IndexNow GET → HTTP 429: {"errorCode":"TooManyRequests","message":"We're sorry, but you have sent too many requests to us recently.","details":null}
+[2026-06-17T10:01:08.698Z] 
+--- Google Ping ---
+[2026-06-17T10:01:08.830Z]   Google → HTTP 404
+[2026-06-17T10:01:08.830Z] 
+--- Bing URL Submission ---
+[2026-06-17T10:01:08.880Z]   Bing → HTTP 410
+[2026-06-17T10:01:08.881Z] 
+=== OUTREACH BLITZ COMPLETE ===
+[2026-06-17T10:01:08.881Z] Pages verified: 8/9
+[2026-06-17T10:01:08.881Z] Window used: https://roberts-previews-justify-wind.trycloudflare.com
+[2026-06-17T10:01:11.281Z] === OUTREACH BLITZ v2 ===
+[2026-06-17T10:01:11.283Z] Tunnel: https://roberts-previews-justify-wind.trycloudflare.com
+[2026-06-17T10:01:11.307Z]   ❌ / → HTTP FAIL
+[2026-06-17T10:01:11.313Z]   ❌ /health → HTTP FAIL
+[2026-06-17T10:01:11.316Z]   ❌ /api-docs.html → HTTP FAIL
+[2026-06-17T10:01:11.376Z]   ✅ /pricing.html → HTTP 200
+[2026-06-17T10:01:11.411Z]   ✅ /blog.html → HTTP 200
+[2026-06-17T10:01:11.441Z]   ✅ /sitemap.xml → HTTP 200
+[2026-06-17T10:01:11.471Z]   ✅ /dashboard.html → HTTP 200
+[2026-06-17T10:01:11.498Z]   ✅ /api-playground.html → HTTP 200
+[2026-06-17T10:01:11.525Z]   ✅ /free-api-key.html → HTTP 200
+[2026-06-17T10:01:11.525Z] Verified: 6/9 pages
+[2026-06-17T10:01:11.525Z] 
+--- Bing IndexNow ---
+[2026-06-17T10:01:11.716Z]   IndexNow GET → HTTP 429: {"errorCode":"TooManyRequests","message":"We're sorry, but you have sent too many requests to us recently.","details":null}
+[2026-06-17T10:01:11.716Z] 
+--- Google Ping ---
+[2026-06-17T10:01:11.849Z]   Google → HTTP 404
+[2026-06-17T10:01:11.849Z] 
+--- Bing URL Submission ---
+[2026-06-17T10:01:11.898Z]   Bing → HTTP 410
+[2026-06-17T10:01:11.898Z] 
+=== OUTREACH BLITZ COMPLETE ===
+[2026-06-17T10:01:11.898Z] Pages verified: 6/9
+[2026-06-17T10:01:11.898Z] Window used: https://roberts-previews-justify-wind.trycloudflare.com
+[2026-06-17T10:01:14.335Z] === OUTREACH BLITZ v2 ===
+[2026-06-17T10:01:14.337Z] Tunnel: https://roberts-previews-justify-wind.trycloudflare.com
+[2026-06-17T10:01:14.420Z]   ✅ / → HTTP 200
+[2026-06-17T10:01:14.445Z]   ✅ /health → HTTP 200
+[2026-06-17T10:01:14.470Z]   ✅ /api-docs.html → HTTP 200
+[2026-06-17T10:01:14.494Z]   ✅ /pricing.html → HTTP 200
+[2026-06-17T10:01:14.524Z]   ✅ /blog.html → HTTP 200
+[2026-06-17T10:01:14.555Z]   ✅ /sitemap.xml → HTTP 200
+[2026-06-17T10:01:14.580Z]   ✅ /dashboard.html → HTTP 200
+[2026-06-17T10:01:14.609Z]   ✅ /api-playground.html → HTTP 200
+[2026-06-17T10:01:14.640Z]   ✅ /free-api-key.html → HTTP 200
+[2026-06-17T10:01:14.640Z] Verified: 9/9 pages
+[2026-06-17T10:01:14.640Z] 
+--- Bing IndexNow ---
+[2026-06-17T10:01:14.769Z]   IndexNow GET → HTTP 429: {"errorCode":"TooManyRequests","message":"We're sorry, but you have sent too many requests to us recently.","details":null}
+[2026-06-17T10:01:14.770Z] 
+--- Google Ping ---
+[2026-06-17T10:01:14.898Z]   Google → HTTP 404
+[2026-06-17T10:01:14.898Z] 
+--- Bing URL Submission ---
+[2026-06-17T10:01:14.928Z]   Bing → HTTP 410
+[2026-06-17T10:01:14.928Z] 
+=== OUTREACH BLITZ COMPLETE ===
+[2026-06-17T10:01:14.928Z] Pages verified: 9/9
+[2026-06-17T10:01:14.928Z] Window used: https://roberts-previews-justify-wind.trycloudflare.com
+[2026-06-17T10:01:20.490Z] === OUTREACH BLITZ v2 ===
+[2026-06-17T10:01:20.492Z] Tunnel: https://roberts-previews-justify-wind.trycloudflare.com
+[2026-06-17T10:01:20.512Z]   ❌ / → HTTP FAIL
+[2026-06-17T10:01:20.602Z]   ✅ /health → HTTP 200
+[2026-06-17T10:01:20.631Z]   ✅ /api-docs.html → HTTP 200
+[2026-06-17T10:01:20.657Z]   ✅ /pricing.html → HTTP 200
+[2026-06-17T10:01:20.686Z]   ✅ /blog.html → HTTP 200
+[2026-06-17T10:01:20.709Z]   ✅ /sitemap.xml → HTTP 200
+[2026-06-17T10:01:20.737Z]   ✅ /dashboard.html → HTTP 200
+[2026-06-17T10:01:20.763Z]   ✅ /api-playground.html → HTTP 200
+[2026-06-17T10:01:20.791Z]   ✅ /free-api-key.html → HTTP 200
+[2026-06-17T10:01:20.792Z] Verified: 8/9 pages
+[2026-06-17T10:01:20.792Z] 
+--- Bing IndexNow ---
+[2026-06-17T10:01:20.985Z]   IndexNow GET → HTTP 429: {"errorCode":"TooManyRequests","message":"We're sorry, but you have sent too many requests to us recently.","details":null}
+[2026-06-17T10:01:20.985Z] 
+--- Google Ping ---
+[2026-06-17T10:01:21.114Z]   Google → HTTP 404
+[2026-06-17T10:01:21.116Z] 
+--- Bing URL Submission ---
+[2026-06-17T10:01:21.160Z]   Bing → HTTP 410
+[2026-06-17T10:01:21.160Z] 
+=== OUTREACH BLITZ COMPLETE ===
+[2026-06-17T10:01:21.160Z] Pages verified: 8/9
+[2026-06-17T10:01:21.161Z] Window used: https://roberts-previews-justify-wind.trycloudflare.com
+[2026-06-17T10:01:23.596Z] === OUTREACH BLITZ v2 ===
+[2026-06-17T10:01:23.597Z] Tunnel: https://roberts-previews-justify-wind.trycloudflare.com
+[2026-06-17T10:01:23.681Z]   ✅ / → HTTP 200
+[2026-06-17T10:01:23.708Z]   ✅ /health → HTTP 200
+[2026-06-17T10:01:23.738Z]   ✅ /api-docs.html → HTTP 200
+[2026-06-17T10:01:24.133Z]   ✅ /pricing.html → HTTP 200
+[2026-06-17T10:01:24.162Z]   ✅ /blog.html → HTTP 200
+[2026-06-17T10:01:24.187Z]   ✅ /sitemap.xml → HTTP 200
+[2026-06-17T10:01:24.215Z]   ✅ /dashboard.html → HTTP 200
+[2026-06-17T10:01:24.241Z]   ✅ /api-playground.html → HTTP 200
+[2026-06-17T10:01:24.269Z]   ✅ /free-api-key.html → HTTP 200
+[2026-06-17T10:01:24.269Z] Verified: 9/9 pages
+[2026-06-17T10:01:24.269Z] 
+--- Bing IndexNow ---
+[2026-06-17T10:01:24.328Z]   IndexNow GET → HTTP 429: {"errorCode":"TooManyRequests","message":"We're sorry, but you have sent too many requests to us recently.","details":null}
+[2026-06-17T10:01:24.328Z] 
+--- Google Ping ---
+[2026-06-17T10:01:24.454Z]   Google → HTTP 404
+[2026-06-17T10:01:24.454Z] 
+--- Bing URL Submission ---
+[2026-06-17T10:01:24.483Z]   Bing → HTTP 410
+[2026-06-17T10:01:24.483Z] 
+=== OUTREACH BLITZ COMPLETE ===
+[2026-06-17T10:01:24.483Z] Pages verified: 9/9
+[2026-06-17T10:01:24.484Z] Window used: https://roberts-previews-justify-wind.trycloudflare.com
+[2026-06-17T10:01:27.655Z] === OUTREACH BLITZ v2 ===
+[2026-06-17T10:01:27.657Z] Tunnel: https://roberts-previews-justify-wind.trycloudflare.com
+[2026-06-17T10:01:27.744Z]   ✅ / → HTTP 200
+[2026-06-17T10:01:27.771Z]   ✅ /health → HTTP 200
+[2026-06-17T10:01:27.802Z]   ✅ /api-docs.html → HTTP 200
+[2026-06-17T10:01:27.836Z]   ✅ /pricing.html → HTTP 200
+[2026-06-17T10:01:27.869Z]   ✅ /blog.html → HTTP 200
+[2026-06-17T10:01:27.894Z]   ✅ /sitemap.xml → HTTP 200
+[2026-06-17T10:01:27.939Z]   ✅ /dashboard.html → HTTP 200
+[2026-06-17T10:01:27.969Z]   ✅ /api-playground.html → HTTP 200
+[2026-06-17T10:01:28.000Z]   ✅ /free-api-key.html → HTTP 200
+[2026-06-17T10:01:28.000Z] Verified: 9/9 pages
+[2026-06-17T10:01:28.001Z] 
+--- Bing IndexNow ---
+[2026-06-17T10:01:28.148Z]   IndexNow GET → HTTP 429: {"errorCode":"TooManyRequests","message":"We're sorry, but you have sent too many requests to us recently.","details":null}
+[2026-06-17T10:01:28.148Z] 
+--- Google Ping ---
+[2026-06-17T10:01:28.283Z]   Google → HTTP 404
+[2026-06-17T10:01:28.283Z] 
+--- Bing URL Submission ---
+[2026-06-17T10:01:28.312Z]   Bing → HTTP 410
+[2026-06-17T10:01:28.312Z] 
+=== OUTREACH BLITZ COMPLETE ===
+[2026-06-17T10:01:28.312Z] Pages verified: 9/9
+[2026-06-17T10:01:28.312Z] Window used: https://roberts-previews-justify-wind.trycloudflare.com
+[2026-06-17T10:01:31.877Z] === OUTREACH BLITZ v2 ===
+[2026-06-17T10:01:31.878Z] Tunnel: https://roberts-previews-justify-wind.trycloudflare.com
+[2026-06-17T10:01:31.954Z]   ✅ / → HTTP 200
+[2026-06-17T10:01:31.979Z]   ✅ /health → HTTP 200
+[2026-06-17T10:01:32.008Z]   ✅ /api-docs.html → HTTP 200
+[2026-06-17T10:01:32.033Z]   ✅ /pricing.html → HTTP 200
+[2026-06-17T10:01:32.058Z]   ✅ /blog.html → HTTP 200
+[2026-06-17T10:01:32.081Z]   ✅ /sitemap.xml → HTTP 200
+[2026-06-17T10:01:32.108Z]   ✅ /dashboard.html → HTTP 200
+[2026-06-17T10:01:32.142Z]   ✅ /api-playground.html → HTTP 200
+[2026-06-17T10:01:32.174Z]   ✅ /free-api-key.html → HTTP 200
+[2026-06-17T10:01:32.174Z] Verified: 9/9 pages
+[2026-06-17T10:01:32.174Z] 
+--- Bing IndexNow ---
+[2026-06-17T10:01:32.301Z]   IndexNow GET → HTTP 429: {"errorCode":"TooManyRequests","message":"We're sorry, but you have sent too many requests to us recently.","details":null}
+[2026-06-17T10:01:32.302Z] 
+--- Google Ping ---
+[2026-06-17T10:01:32.429Z]   Google → HTTP 404
+[2026-06-17T10:01:32.429Z] 
+--- Bing URL Submission ---
+[2026-06-17T10:01:32.459Z]   Bing → HTTP 410
+[2026-06-17T10:01:32.460Z] 
+=== OUTREACH BLITZ COMPLETE ===
+[2026-06-17T10:01:32.460Z] Pages verified: 9/9
+[2026-06-17T10:01:32.460Z] Window used: https://roberts-previews-justify-wind.trycloudflare.com
+[2026-06-17T10:01:38.232Z] === OUTREACH BLITZ v2 ===
+[2026-06-17T10:01:38.234Z] Tunnel: https://roberts-previews-justify-wind.trycloudflare.com
+[2026-06-17T10:01:38.347Z]   ✅ / → HTTP 200
+[2026-06-17T10:01:38.379Z]   ✅ /health → HTTP 200
+[2026-06-17T10:01:38.419Z]   ✅ /api-docs.html → HTTP 200
+[2026-06-17T10:01:38.451Z]   ✅ /pricing.html → HTTP 200
+[2026-06-17T10:01:38.481Z]   ✅ /blog.html → HTTP 200
+[2026-06-17T10:01:38.512Z]   ✅ /sitemap.xml → HTTP 200
+[2026-06-17T10:01:38.543Z]   ✅ /dashboard.html → HTTP 200
+[2026-06-17T10:01:38.578Z]   ✅ /api-playground.html → HTTP 200
+[2026-06-17T10:01:38.609Z]   ✅ /free-api-key.html → HTTP 200
+[2026-06-17T10:01:38.609Z] Verified: 9/9 pages
+[2026-06-17T10:01:38.609Z] 
+--- Bing IndexNow ---
+[2026-06-17T10:01:38.803Z]   IndexNow GET → HTTP 429: {"errorCode":"TooManyRequests","message":"We're sorry, but you have sent too many requests to us recently.","details":null}
+[2026-06-17T10:01:38.803Z] 
+--- Google Ping ---
+[2026-06-17T10:01:38.845Z]   Google → HTTP 404
+[2026-06-17T10:01:38.846Z] 
+--- Bing URL Submission ---
+[2026-06-17T10:01:38.882Z]   Bing → HTTP 410
+[2026-06-17T10:01:38.883Z] 
+=== OUTREACH BLITZ COMPLETE ===
+[2026-06-17T10:01:38.883Z] Pages verified: 9/9
+[2026-06-17T10:01:38.883Z] Window used: https://roberts-previews-justify-wind.trycloudflare.com
+
+[2026-06-17T10:04:36.058Z] === TUNNEL SEO BLITZ START ===
+[2026-06-17T10:04:36.063Z] Tunnel: https://roberts-previews-justify-wind.trycloudflare.com
+[2026-06-17T10:04:36.145Z] Gateway via tunnel FAILED: fetch failed
+[2026-06-17T10:04:36.145Z] FATAL: Gateway not reachable via tunnel. Aborting.
+[2026-06-17T10:04:39.410Z] === TUNNEL SEO BLITZ START ===
+[2026-06-17T10:04:39.414Z] Tunnel: https://roberts-previews-justify-wind.trycloudflare.com
+[2026-06-17T10:04:39.557Z] Gateway via tunnel: 200
+[2026-06-17T10:04:39.569Z] Free endpoint FAILED: fetch failed
+[2026-06-17T10:04:39.640Z] Bing IndexNow 422: https://roberts-previews-justify-wind.trycloudflare.com/
+[2026-06-17T10:04:39.727Z] Bing IndexNow 422: https://roberts-previews-justify-wind.trycloudflare.com/blog.html
+[2026-06-17T10:04:39.776Z] Bing IndexNow 422: https://roberts-previews-justify-wind.trycloudflare.com/pricing.html
+[2026-06-17T10:04:39.825Z] Bing IndexNow 422: https://roberts-previews-justify-wind.trycloudflare.com/api-docs.html
+[2026-06-17T10:04:39.984Z] Bing IndexNow 422: https://roberts-previews-justify-wind.trycloudflare.com/dev-quickstart.html
+[2026-06-17T10:04:40.046Z] Bing IndexNow 422: https://roberts-previews-justify-wind.trycloudflare.com/api-playground.html
+[2026-06-17T10:04:41.172Z] Yandex IndexNow: 404 for https://roberts-previews-justify-wind.trycloudflare.com/
+[2026-06-17T10:04:42.093Z] Yandex IndexNow: 404 for https://roberts-previews-justify-wind.trycloudflare.com/blog.html
+[2026-06-17T10:04:42.094Z] Google: submit sitemap manually via Search Console
+[2026-06-17T10:04:42.094Z]   URL: https://search.google.com/search-console/inspect?resource_id=https%3A%2F%2Froberts-previews-justify-wind.trycloudflare.com
+[2026-06-17T10:04:42.124Z] Page /blog.html: FAILED - fetch failed
+[2026-06-17T10:04:43.745Z] Page scan: 16 working, 1 failed out of 17
+[2026-06-17T10:04:43.746Z] === TUNNEL SEO BLITZ DONE ===
+[2026-06-17T10:04:43.746Z] Tunnel URL: https://roberts-previews-justify-wind.trycloudflare.com
+[2026-06-17T10:04:43.747Z] Tunnel Host: roberts-previews-justify-wind
+[2026-06-17T10:04:43.747Z] This tunnel URL is temporary. Use it while it lasts.

@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Free Online Code Complexity Analyzer — my-automaton</title>
+<meta name="description" content="Analyze cyclomatic complexity, nesting depth, and code smells in JavaScript, Python, TypeScript, and more. Free, no signup, runs in your browser.">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#0d1117;color:#c9d1d9;line-height:1.6}
+.container{max-width:960px;margin:0 auto;padding:40px 20px}
+h1{font-size:2rem;margin-bottom:8px;background:linear-gradient(135deg,#58a6ff,#8250df);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.subtitle{color:#8b949e;margin-bottom:32px}
+.editor{background:#161b22;border:1px solid #30363d;border-radius:8px;overflow:hidden;margin-bottom:16px}
+.editor-header{display:flex;justify-content:space-between;align-items:center;padding:8px 16px;background:#1c2333;border-bottom:1px solid #30363d}
+.editor-header select{background:#0d1117;color:#c9d1d9;border:1px solid #30363d;padding:4px 12px;border-radius:4px;font-size:.85rem}
+textarea{width:100%;min-height:300px;padding:16px;background:#0d1117;color:#c9d1d9;border:none;font-family:'Fira Code','Cascadia Code',monospace;font-size:.9rem;resize:vertical;line-height:1.5;tab-size:2}
+textarea:focus{outline:none}
+.btn-group{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:10px 24px;border-radius:6px;font-weight:600;font-size:.9rem;cursor:pointer;transition:all .2s;border:none}
+.btn-primary{background:#238636;color:#fff}
+.btn-primary:hover{background:#2ea043}
+.btn-secondary{background:#21262d;color:#c9d1d9;border:1px solid #30363d}
+.btn-secondary:hover{background:#30363d;border-color:#58a6ff}
+.results{display:none;background:#161b22;border:1px solid #30363d;border-radius:8px;padding:20px}
+.results.visible{display:block}
+.results h2{color:#58a6ff;margin-bottom:16px;font-size:1.3rem}
+.metric-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-bottom:16px}
+.metric-card{background:#0d1117;border:1px solid #21262d;border-radius:8px;padding:16px;text-align:center}
+.metric-card .value{font-size:2rem;font-weight:700;color:#58a6ff}
+.metric-card .value.warning{color:#d29922}
+.metric-card .value.danger{color:#f85149}
+.metric-card .label{color:#8b949e;font-size:.85rem;margin-top:4px}
+.suggestions{background:#0d1117;border:1px solid #21262d;border-radius:8px;padding:16px;margin-top:16px}
+.suggestions h3{color:#d29922;margin-bottom:12px}
+.suggestions li{color:#8b949e;padding:6px 0;border-bottom:1px solid #21262d;font-size:.9rem}
+.suggestions li:last-child{border:none}
+.suggestions li::before{content:"💡 ";margin-right:4px}
+.nav{display:flex;gap:12px;margin-bottom:24px;flex-wrap:wrap}
+.nav a{color:#8b949e;text-decoration:none;font-size:.9rem;padding:6px 12px;border:1px solid #30363d;border-radius:6px}
+.nav a:hover{color:#58a6ff;border-color:#58a6ff}
+.sample-btn{font-size:.8rem;color:#58a6ff;background:none;border:none;cursor:pointer;text-decoration:underline;padding:8px}
+.sample-btn:hover{color:#8250df}
+footer{border-top:1px solid #30363d;padding:20px;text-align:center;color:#484f58;font-size:.85rem;margin-top:32px}
+footer a{color:#58a6ff}
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="nav">
+    <a href="/">← Home</a>
+    <a href="/api-docs.html">API Docs</a>
+    <a href="/pricing.html">Pricing</a>
+  </div>
+
+  <h1>🔍 Code Complexity Analyzer</h1>
+  <p class="subtitle">Paste your code below to analyze cyclomatic complexity, nesting depth, and code smells. Free — runs entirely in your browser.</p>
+
+  <div class="editor">
+    <div class="editor-header">
+      <span style="color:#8b949e;font-size:.85rem">Paste your code:</span>
+      <select id="lang">
+        <option value="js">JavaScript</option>
+        <option value="py">Python</option>
+        <option value="ts">TypeScript</option>
+        <option value="java">Java</option>
+        <option value="go">Go</option>
+      </select>
+    </div>
+    <textarea id="code" placeholder="// Paste your code here...&#10;function example() {&#10;  if (true) {&#10;    return 'hello';&#10;  }&#10;}"></textarea>
+  </div>
+
+  <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:8px">
+    <button class="sample-btn" onclick="loadSample('fibonacci')">📋 Fibonacci</button>
+    <button class="sample-btn" onclick="loadSample('nested')">📋 Nested Loops</button>
+    <button class="sample-btn" onclick="loadSample('clean')">📋 Clean Code</button>
+  </div>
+
+  <div class="btn-group">
+    <button class="btn btn-primary" onclick="analyze()">⚡ Analyze Code</button>
+    <button class="btn btn-secondary" onclick="document.getElementById('code').value='';document.getElementById('results').classList.remove('visible')">✕ Clear</button>
+  </div>
+
+  <div id="results" class="results">
+    <h2>📊 Analysis Results</h2>
+    <div class="metric-grid" id="metrics"></div>
+    <div id="suggestions"></div>
+    <div style="margin-top:16px;padding:12px;background:#1a2332;border:1px solid #30363d;border-radius:8px;font-size:.85rem;color:#8b949e">
+      ⚡ Need deeper analysis? Try our <a href="/api-playground.html" style="color:#58a6ff">AI-powered API</a> for full code review, security scanning, and refactoring suggestions.
+    </div>
+  </div>
+</div>
+
+<script>
+function analyze() {
+  const code = document.getElementById('code').value;
+  if (!code.trim()) { alert('Paste some code first!'); return; }
+  
+  const lines = code.split('\n');
+  const totalLines = lines.length;
+  const codeLines = lines.filter(l => l.trim() && !l.trim().startsWith('//') && !l.trim().startsWith('#') && !l.trim().startsWith('/*')).length;
+  const blankLines = lines.filter(l => !l.trim()).length;
+  
+  // Cyclomatic complexity: count if/else/for/while/switch/case/&&/||/catch/ternary
+  const branchPatterns = /\b(if|else if|for|while|catch|case|default)\b|\?\s*[^:]+:/g;
+  const logicalOps = (code.match(/&&/g)||[]).length + (code.match(/\|\|/g)||[]).length;
+  const branches = (code.match(branchPatterns)||[]).length;
+  const cyclomatic = Math.max(1, branches + logicalOps + 1);
+  
+  // Nesting depth
+  let maxDepth = 0, currentDepth = 0;
+  for (const line of lines) {
+    currentDepth -= (line.match(/\}/g)||[]).length;
+    currentDepth -= (line.match(/\bend\b/gi)||[]).length;
+    maxDepth = Math.max(maxDepth, currentDepth);
+    currentDepth += (line.match(/\{/g)||[]).length;
+    currentDepth += (line.match(/\bif\b|\bfor\b|\bwhile\b|\bdo\b|\btry\b|\bcatch\b|\bdef\b|\bfunction\b|\bclass\b/gi)||[]).length * 0.3;
+  }
+  maxDepth = Math.round(maxDepth);
+  
+  // Function count
+  const funcCount = (code.match(/\bfunction\s+\w+/g)||[]).length + (code.match(/=>\s*\{/g)||[]).length + (code.match(/\bdef\s+\w+/g)||[]).length;
+  
+  // Lines per function
+  const avgLinesPerFunc = funcCount > 0 ? Math.round(codeLines / funcCount) : codeLines;
+  
+  // Code smell indicators
+  const smells = [];
+  const longLines = lines.filter(l => l.length > 100).length;
+  const todoCount = (code.match(/\bTODO\b|\bFIXME\b|\bHACK\b/gi)||[]).length;
+  const dupLines = lines.filter(l => l.trim().length > 20).filter((l,i,arr) => arr.indexOf(l) !== i).length;
+  
+  if (cyclomatic > 10) smells.push(`High cyclomatic complexity (${cyclomatic}). Consider breaking into smaller functions.`);
+  if (maxDepth > 4) smells.push(`Deep nesting (${maxDepth} levels). Consider early returns or extracting logic.`);
+  if (longLines > 3) smells.push(`${longLines} lines exceed 100 characters. Consider line breaks.`);
+  if (todoCount > 0) smells.push(`${todoCount} TODO/FIXME found. Consider addressing them.`);
+  if (dupLines > 2) smells.push(`Possible duplicate code detected (${dupLines}+ duplicate lines).`);
+  if (avgLinesPerFunc > 50) smells.push(`Functions average ${avgLinesPerFunc} lines. Aim for under 30.`);
+  if (funcCount === 0 && totalLines > 30) smells.push('No functions detected. Consider modularizing your code.');
+  if (code.match(/\bvar\b/g)) smells.push('Using var instead of let/const. Consider modernizing.');
+  if (code.match(/console\.log/g)) smells.push('Console.log statements found. Remove in production code.');
+  
+  const riskClass = cyclomatic > 15 ? 'danger' : cyclomatic > 7 ? 'warning' : '';
+  
+  document.getElementById('metrics').innerHTML = `
+    <div class="metric-card">
+      <div class="value ${riskClass}">${cyclomatic}</div>
+      <div class="label">Cyclomatic Complexity</div>
+    </div>
+    <div class="metric-card">
+      <div class="value ${maxDepth > 4 ? 'warning' : ''}">${maxDepth}</div>
+      <div class="label">Max Nesting Depth</div>
+    </div>
+    <div class="metric-card">
+      <div class="value">${totalLines}</div>
+      <div class="label">Total Lines</div>
+    </div>
+    <div class="metric-card">
+      <div class="value">${codeLines}</div>
+      <div class="label">Code Lines</div>
+    </div>
+    <div class="metric-card">
+      <div class="value">${blankLines}</div>
+      <div class="label">Blank Lines</div>
+    </div>
+    <div class="metric-card">
+      <div class="value">${funcCount}</div>
+      <div class="label">Functions</div>
+    </div>
+    <div class="metric-card">
+      <div class="value">${avgLinesPerFunc}</div>
+      <div class="label">Avg Lines/Func</div>
+    </div>
+    <div class="metric-card">
+      <div class="value ${todoCount > 0 ? 'warning' : ''}">${todoCount}</div>
+      <div class="label">TODOs/FIXMEs</div>
+    </div>
+  `;
+  
+  document.getElementById('suggestions').innerHTML = smells.length > 0 ? 
+    `<div class="suggestions"><h3>💡 Suggestions (${smells.length})</h3><ul>${smells.map(s => `<li>${s}</li>`).join('')}</ul></div>` : 
+    `<div class="suggestions"><h3>✅ Looks clean!</h3><p style="color:#3fb950">No obvious code smells detected.</p></div>`;
+  
+  document.getElementById('results').classList.add('visible');
+}
+
+function loadSample(type) {
+  const samples = {
+    fibonacci: `function fibonacci(n) {\n  if (n <= 1) return n;\n  return fibonacci(n - 1) + fibonacci(n - 2);\n}\n\n// Memoized version\nfunction fibMemo(n, memo = {}) {\n  if (n in memo) return memo[n];\n  if (n <= 1) return n;\n  memo[n] = fibMemo(n - 1, memo) + fibMemo(n - 2, memo);\n  return memo[n];\n}`,
+    nested: `function processData(items) {\n  const results = [];\n  for (let i = 0; i < items.length; i++) {\n    if (items[i].active) {\n      for (let j = 0; j < items[i].children.length; j++) {\n        const child = items[i].children[j];\n        if (child.status === 'pending') {\n          try {\n            const result = transform(child);\n            if (result.valid) {\n              results.push(result);\n            }\n          } catch (err) {\n            console.error(err);\n            if (err.code === 'RETRY') {\n              return processData(items); // recursion!\n            }\n          }\n        }\n      }\n    }\n  }\n  return results;\n}`,
+    clean: `class UserService {\n  constructor(db) {\n    this.db = db;\n  }\n\n  async getUser(id) {\n    const user = await this.db.findUser(id);\n    if (!user) throw new NotFoundError('User not found');\n    return user;\n  }\n\n  async createUser(data) {\n    this.validate(data);\n    const user = await this.db.insert(data);\n    await this.sendWelcomeEmail(user.email);\n    return user;\n  }\n\n  validate(data) {\n    if (!data.email) throw new ValidationError('Email required');\n    if (!data.name) throw new ValidationError('Name required');\n  }\n}`
+  };
+  document.getElementById('code').value = samples[type] || '';
+}
+
+// Load sample on page load
+loadSample('fibonacci');
+</script>
+
+<footer>
+  <p>Powered by <a href="/">my-automaton</a> — AI Code Review & Analysis API</p>
+</footer>
+<script src="/conversion-banner.js" defer></script>
+</body>
+</html>

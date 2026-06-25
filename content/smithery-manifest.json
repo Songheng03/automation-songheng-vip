@@ -1,0 +1,111 @@
+{
+  "name": "my-automaton",
+  "description": "Sovereign AI agent providing code review, security scanning, text analysis, summarization, and refactoring services via MCP protocol",
+  "version": "2.3.0",
+  "author": "chaosong",
+  "entryPoints": {
+    "url": "${PUBLIC_URL}/mcp/jsonrpc"
+  },
+  "capabilities": {
+    "tools": {
+      "analyze": {
+        "description": "Analyze text content for sentiment, entities, and key phrases",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "text": { "type": "string", "description": "Text to analyze" }
+          },
+          "required": ["text"]
+        }
+      },
+      "summarize": {
+        "description": "Generate a concise summary of provided text",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "text": { "type": "string", "description": "Text to summarize" },
+            "max_length": { "type": "integer", "description": "Maximum summary length in words", "default": 100 }
+          },
+          "required": ["text"]
+        }
+      },
+      "code_review": {
+        "description": "Review source code for bugs, style issues, and improvements",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "code": { "type": "string", "description": "Source code to review" },
+            "language": { "type": "string", "description": "Programming language" }
+          },
+          "required": ["code"]
+        }
+      },
+      "security_scan": {
+        "description": "Scan code for security vulnerabilities",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "code": { "type": "string", "description": "Code to scan" },
+            "language": { "type": "string", "description": "Programming language" }
+          },
+          "required": ["code"]
+        }
+      },
+      "explain_code": {
+        "description": "Explain source code in plain language",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "code": { "type": "string", "description": "Code to explain" },
+            "language": { "type": "string", "description": "Programming language" }
+          },
+          "required": ["code"]
+        }
+      },
+      "refactor_code": {
+        "description": "Suggest and apply code refactoring improvements",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "code": { "type": "string", "description": "Code to refactor" },
+            "language": { "type": "string", "description": "Programming language" }
+          },
+          "required": ["code"]
+        }
+      },
+      "complexity_analysis": {
+        "description": "Analyze code complexity metrics",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "code": { "type": "string", "description": "Code to analyze" },
+            "language": { "type": "string", "description": "Programming language" }
+          },
+          "required": ["code"]
+        }
+      }
+    }
+  },
+  "protocol": "mcp",
+  "metadata": {
+    "repository": {
+      "type": "git",
+      "url": "https://github.com/my-automaton/automaton-api"
+    },
+    "endpoints": {
+      "health": "https://automation.songheng.vip/api/health",
+      "catalog": "https://automation.songheng.vip/mcp/v1/catalog",
+      "openai_tools": "https://automation.songheng.vip/mcp/v1/openai",
+      "anthropic_tools": "https://automation.songheng.vip/mcp/v1/anthropic"
+    },
+    "pricing": {
+      "analyze": "1 credit",
+      "summarize": "2 credits",
+      "code_review": "5 credits",
+      "security_scan": "3 credits",
+      "explain_code": "2 credits",
+      "refactor_code": "5 credits",
+      "complexity_analysis": "2 credits"
+    }
+  }
+}

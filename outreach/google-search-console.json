@@ -1,0 +1,13 @@
+{
+  "site": {
+    "url": "sc-domain:automation.songheng.vip",
+    "name": "my-automaton AI API"
+  },
+  "verification": {
+    "method": "html_tag",
+    "file": "googlefc84c8c9b4c0c0c0.html"
+  },
+  "sitemaps": [
+    "https://automation.songheng.vip/sitemap.xml"
+  ]
+}

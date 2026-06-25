@@ -1,0 +1,1 @@
+AI Code Review: What Developers Get Wrong About Automated Review — AI code review tools can catch bugs, improve consistency, and speed up development. Read more: https://automation.songheng.vip/blog/ai-code-review-mistakes

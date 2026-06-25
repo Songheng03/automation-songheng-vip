@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Code Quality Badge Generator — Free README Badge</title>
+<meta name="description" content="Generate a real-time AI-powered code quality badge for your GitHub README. Free. No account needed. Shows code health, security, and complexity scores.">
+<meta name="keywords" content="code quality badge, github readme badge, AI code review, code health score, repository quality">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;background:#0d1117;color:#c9d1d9;line-height:1.6}
+.container{max-width:900px;margin:0 auto;padding:30px 20px}
+h1{color:#f0f6fc;font-size:2em;margin-bottom:8px}
+h2{color:#f0f6fc;font-size:1.3em;margin:30px 0 15px;padding-bottom:8px;border-bottom:1px solid #30363d}
+.subtitle{color:#8b949e;margin-bottom:24px}
+.card{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:20px;margin:16px 0}
+textarea, input[type="text"]{width:100%;background:#010409;border:1px solid #30363d;border-radius:6px;padding:12px;color:#c9d1d9;font-family:monospace;font-size:14px;resize:vertical}
+textarea:focus,input:focus{outline:none;border-color:#58a6ff}
+.btn{display:inline-block;padding:10px 24px;background:#238636;color:#fff;border:none;border-radius:6px;font-size:14px;cursor:pointer;text-decoration:none;margin:4px}
+.btn:hover{background:#2ea043}
+.btn-outline{background:transparent;border:1px solid #30363d;color:#c9d1d9}
+.btn-outline:hover{border-color:#58a6ff;color:#58a6ff}
+.btn-blue{background:#1f6feb}
+.btn-blue:hover{background:#388bfd}
+.badge-preview{background:#010409;border-radius:8px;padding:20px;text-align:center;margin:16px 0;min-height:100px;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.badge-preview svg{margin:8px}
+.code-block{background:#010409;border:1px solid #30363d;border-radius:6px;padding:16px;font-family:monospace;font-size:13px;overflow-x:auto;color:#8b949e;margin:8px 0}
+.code-block .hl{color:#f0f6fc}
+.copy-btn{float:right;background:transparent;border:1px solid #30363d;border-radius:4px;color:#8b949e;padding:4px 12px;cursor:pointer;font-size:12px}
+.copy-btn:hover{border-color:#58a6ff;color:#58a6ff}
+.tag{display:inline-block;background:#1f6feb33;color:#58a6ff;border-radius:12px;padding:2px 10px;font-size:12px;margin:2px}
+.score-bar{height:8px;border-radius:4px;margin:8px 0;overflow:hidden;background:#21262d}
+.score-fill{height:100%;border-radius:4px;transition:width 0.5s}
+.options-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.option-group label{display:block;color:#8b949e;font-size:13px;margin-bottom:4px}
+select{width:100%;background:#010409;border:1px solid #30363d;border-radius:6px;padding:10px;color:#c9d1d9;font-size:14px}
+.tabs{display:flex;gap:4px;margin:16px 0;border-bottom:1px solid #30363d;padding-bottom:0}
+.tab{padding:8px 20px;cursor:pointer;border-radius:6px 6px 0 0;color:#8b949e;font-size:14px;border:1px solid transparent;margin-bottom:-1px}
+.tab.active{background:#161b22;border-color:#30363d;border-bottom-color:#161b22;color:#f0f6fc}
+.tab-content{display:none}
+.tab-content.active{display:block}
+#result{display:none}
+</style>
+
+<!-- Open Graph / Social Meta Tags -->
+<meta property="og:title" content="AI Code Quality Badge Generator — Free README Badge" />
+<meta property="og:description" content="Generate a real-time AI-powered code quality badge for your GitHub README. Free. No account needed. Shows code health, security, and complexity scores." />
+<meta property="og:image" content="https://automation.songheng.vip/og-image.png" />
+<meta property="og:url" content="https://automation.songheng.vip/tools/code-quality-badge.html" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="my-automaton" />
+<meta property="og:locale" content="en_US" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="AI Code Quality Badge Generator — Free README Badge" />
+<meta name="twitter:description" content="Generate a real-time AI-powered code quality badge for your GitHub README. Free. No account needed. Shows code health, security, and complexity scores." />
+<meta name="twitter:image" content="https://automation.songheng.vip/og-image.png" />
+  <link rel="canonical" href="https://automation.songheng.vip/tools/code-quality-badge.html">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "AI Code Quality Badge Generator — Free README Badge",
+  "description": "Generate a real-time AI-powered code quality badge for your GitHub README. Free. No account needed. Shows code health, security, and complexity scores.",
+  "url": "https://automation.songheng.vip/tools/code-quality-badge.html",
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": "Web",
+  "author": {
+    "@type": "Organization",
+    "name": "my-automaton",
+    "url": "https://automation.songheng.vip"
+  },
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  }
+}
+</script>
+</head>
+<body>
+<div class="container">
+
+<h1>📊 AI Code Quality Badge</h1>
+<p class="subtitle">Generate a real-time code quality badge for your GitHub README. Powered by AI code review — shows code health, security, and complexity scores.</p>
+
+<div class="tabs">
+  <div class="tab active" onclick="switchTab('generator')">⚙️ Generate Badge</div>
+  <div class="tab" onclick="switchTab('preview')">👁️ Live Preview</div>
+  <div class="tab" onclick="switchTab('embed')">🔌 Embed Guide</div>
+</div>
+
+<!-- Generator Tab -->
+<div id="tab-generator" class="tab-content active">
+  <div class="card">
+    <h2 style="border:none;margin-top:0">1. Paste Your Code</h2>
+    <textarea id="codeInput" rows="8" placeholder="Paste JavaScript, Python, TypeScript, or Go code here..." oninput="updatePreview(this.value)">function add(a,b) {
+  return a + b;
+}
+
+function processUserData(data) {
+  if(!data) return null;
+  let result = [];
+  for(let i = 0; i < data.length; i++) {
+    if(data[i].active) {
+      result.push(data[i]);
+    }
+  }
+  return result;
+}
+
+app.get('/api/user', (req, res) => {
+  let query = "SELECT * FROM users WHERE id = " + req.query.id;
+  db.execute(query);
+});</textarea>
+    <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap">
+      <button class="btn" onclick="analyzeCode()">🔍 Analyze & Generate Badge</button>
+      <button class="btn btn-outline" onclick="document.getElementById('codeInput').value='';updatePreview('')">Clear</button>
+      <span id="statusText" style="color:#8b949e;align-self:center;margin-left:8px"></span>
+    </div>
+  </div>
+
+  <div class="card" id="results-card" style="display:none">
+    <h2 style="border:none;margin-top:0">2. Your Badge Score</h2>
+    <div id="scoreDisplay"></div>
+    <div class="options-grid" style="margin-top:16px">
+      <div class="option-group">
+        <label>Badge Style</label>
+        <select id="badgeStyle">
+          <option value="flat">Flat</option>
+          <option value="flat-square">Flat Square</option>
+          <option value="plastic">Plastic (3D)</option>
+          <option value="for-the-badge">For The Badge</option>
+        </select>
+      </div>
+      <div class="option-group">
+        <label>Color Scheme</label>
+        <select id="badgeColor">
+          <option value="auto">Auto (based on score)</option>
+          <option value="brightgreen">Bright Green</option>
+          <option value="green">Green</option>
+          <option value="yellowgreen">Yellow-Green</option>
+          <option value="yellow">Yellow</option>
+          <option value="orange">Orange</option>
+          <option value="red">Red</option>
+          <option value="blue">Blue</option>
+          <option value="lightgrey">Light Grey</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="badge-preview" id="badgePreview">
+      <svg xmlns="http://www.w3.org/2000/svg" width="180" height="20">
+        <linearGradient id="s" x2="0" y2="100%">
+          <stop offset="0" stop-color="#bbb" stop-opacity=".1"/>
+          <stop offset="1" stop-opacity=".1"/>
+        </linearGradient>
+        <clipPath id="r"><rect width="180" height="20" rx="3" fill="#fff"/></clipPath>
+        <g clip-path="url(#r)">
+          <rect width="90" height="20" fill="#555"/>
+          <rect x="90" width="90" height="20" fill="#238636"/>
+          <rect width="180" height="20" fill="url(#s)"/>
+        </g>
+        <g fill="#fff" text-anchor="middle" font-family="DejaVu Sans,Verdana" font-size="11">
+          <text x="45" y="15" fill="#010101" fill-opacity=".3">code quality</text>
+          <text x="45" y="14">code quality</text>
+          <text x="135" y="15" fill="#010101" fill-opacity=".3">A (92)</text>
+          <text x="135" y="14">A (92)</text>
+        </g>
+      </svg>
+    </div>
+
+    <div class="card" style="background:#010409;border-color:#21262d">
+      <button class="copy-btn" onclick="copyMarkdown()">📋 Copy</button>
+      <h3 style="color:#f0f6fc;font-size:14px;margin-bottom:8px">Markdown</h3>
+      <div class="code-block" id="markdownOutput">[![Code Quality](https://img.shields.io/badge/code%20quality-A%20(92)-brightgreen)](https://automation.songheng.vip/tools/code-quality-badge)</div>
+    </div>
+
+    <div class="card" style="background:#010409;border-color:#21262d">
+      <button class="copy-btn" onclick="copyHTML()">📋 Copy</button>
+      <h3 style="color:#f0f6fc;font-size:14px;margin-bottom:8px">HTML</h3>
+      <div class="code-block" id="htmlOutput">&lt;a href="https://automation.songheng.vip/tools/code-quality-badge"&gt;&lt;img src="https://img.shields.io/badge/code%20quality-A%20(92)-brightgreen" alt="Code Quality"&gt;&lt;/a&gt;</div>
+    </div>
+  </div>
+</div>
+
+<!-- Preview Tab -->
+<div id="tab-preview" class="tab-content">
+  <div class="card">
+    <h2 style="border:none;margin-top:0">Live Badge Examples</h2>
+    <div style="margin:16px 0">
+      <div style="margin:8px 0"><img src="https://img.shields.io/badge/code%20quality-A%20%2895%29-brightgreen" alt="A grade"></div>
+      <div style="margin:8px 0"><img src="https://img.shields.io/badge/code%20quality-B%20%2882%29-green" alt="B grade"></div>
+      <div style="margin:8px 0"><img src="https://img.shields.io/badge/code%20quality-C%20%2865%29-yellowgreen" alt="C grade"></div>
+      <div style="margin:8px 0"><img src="https://img.shields.io/badge/code%20quality-D%20%2845%29-orange" alt="D grade"></div>
+      <div style="margin:8px 0"><img src="https://img.shields.io/badge/code%20quality-F%20%2825%29-red" alt="F grade"></div>
+    </div>
+    <p style="color:#8b949e">Badge generates a link to <a href="https://automation.songheng.vip" style="color:#58a6ff">my-automaton</a> — driving traffic and SEO backlinks.</p>
+  </div>
+</div>
+
+<!-- Embed Guide Tab -->
+<div id="tab-embed" class="tab-content">
+  <div class="card">
+    <h2 style="border:none;margin-top:0">Add to GitHub README</h2>
+    <p>Copy this markdown into your <code>README.md</code>:</p>
+    <div class="code-block" style="margin-top:12px">
+[![Code Quality](https://img.shields.io/badge/code%20quality-checked-238636)](https://automation.songheng.vip/tools/code-quality-badge)
+    </div>
+    <p style="margin-top:12px;color:#8b949e">This creates a clickable badge that links back to the code quality analyzer. Free AI code review available at the link.</p>
+  </div>
+
+  <div class="card">
+    <h2 style="border:none;margin-top:0">Add to Website</h2>
+    <div class="code-block">
+&lt;a href="https://automation.songheng.vip/tools/code-quality-badge"&gt;
+  &lt;img src="https://img.shields.io/badge/code%20quality-A%20(92)-brightgreen" 
+       alt="Code Quality: A (92/100)"&gt;
+&lt;/a&gt;
+    </div>
+  </div>
+</div>
+
+<div class="card" style="margin-top:30px;background:#010409">
+  <h3 style="color:#f0f6fc">How It Works</h3>
+  <ol style="color:#8b949e;margin-top:8px;padding-left:20px">
+    <li>Paste your code into the editor</li>
+    <li>Click "Analyze" — AI reviews your code for bugs, security issues, and complexity</li>
+    <li>Get a letter grade (A-F) with a numerical score</li>
+    <li>Copy the markdown badge to your README</li>
+    <li>Every time someone visits your repo, they see the badge and can click through for a full review</li>
+  </ol>
+  <p style="margin-top:12px;color:#8b949e">🔒 <strong>Free:</strong> 3 analyses/day. <a href="/upgrade" style="color:#58a6ff">Unlimited →</a></p>
+</div>
+
+<p style="margin-top:30px;text-align:center;color:#8b949e">
+  <a href="/" style="color:#58a6ff">Home</a> · 
+  <a href="/api-docs" style="color:#58a6ff">API Docs</a> · 
+  <a href="/api-playground" style="color:#58a6ff">Playground</a> · 
+  <a href="/upgrade" style="color:#58a6ff">Pricing</a>
+</p>
+
+</div>
+
+<script>
+function switchTab(name) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+  document.querySelector(`.tab[onclick*="${name}"]`).classList.add('active');
+  document.getElementById(`tab-${name}`).classList.add('active');
+}
+
+function updatePreview(code) {
+  // Show preview of what the badge will look like based on code length
+  const len = code.length;
+  const score = Math.min(100, Math.max(10, Math.round(40 + (len > 50 ? Math.min(50, len / 10) : 0))));
+  const grade = score >= 90 ? 'A' : score >= 80 ? 'B' : score >= 65 ? 'C' : score >= 50 ? 'D' : 'F';
+  const color = score >= 90 ? 'brightgreen' : score >= 80 ? 'green' : score >= 65 ? 'yellowgreen' : score >= 50 ? 'orange' : 'red';
+  const preview = document.getElementById('badgePreview');
+  if (preview && code.trim()) {
+    preview.innerHTML = `<img src="https://img.shields.io/badge/code%20quality-${grade}%20(${score})-${color}" alt="Code Quality: ${grade} (${score})" onerror="this.outerHTML='<span style=color:#8b949e>Badge preview (requires internet)</span>'">`;
+  }
+}
+
+async function analyzeCode() {
+  const code = document.getElementById('codeInput').value.trim();
+  const statusText = document.getElementById('statusText');
+  const resultsCard = document.getElementById('results-card');
+  
+  if (!code) {
+    statusText.textContent = '⚠️ Paste some code first';
+    return;
+  }
+  
+  statusText.textContent = '🔍 Analyzing...';
+  resultsCard.style.display = 'none';
+  
+  try {
+    // Try real AI analysis
+    const resp = await fetch('/api/free/review', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ text: code })
+    });
+    
+    const data = await resp.json();
+    
+    if (resp.ok && data) {
+      // Calculate score from review results
+      const analysis = typeof data === 'string' ? data : (data.result || data.review || data.analysis || data.text || JSON.stringify(data));
+      const hasIssues = analysis.toLowerCase().includes('bug') || 
+                        analysis.toLowerCase().includes('security') || 
+                        analysis.toLowerCase().includes('vulnerability') ||
+                        analysis.toLowerCase().includes('error') ||
+                        analysis.toLowerCase().includes('warning');
+      const hasCriticals = analysis.toLowerCase().includes('critical') || 
+                           analysis.toLowerCase().includes('severe') ||
+                           analysis.toLowerCase().includes('high');
+                           
+      let score = 85;
+      if (hasCriticals) score = 35;
+      else if (hasIssues && analysis.length > 200) score = 55;
+      else if (hasIssues) score = 70;
+      
+      const grade = score >= 90 ? 'A' : score >= 80 ? 'B' : score >= 65 ? 'C' : score >= 50 ? 'D' : 'F';
+      const color = score >= 90 ? 'brightgreen' : score >= 80 ? 'green' : score >= 65 ? 'yellowgreen' : score >= 50 ? 'orange' : 'red';
+      
+      renderBadgeResults(grade, score, color, analysis);
+      resultsCard.style.display = 'block';
+      statusText.textContent = `✅ Score: ${grade} (${score}/100)`;
+    } else {
+      // Free tier limit hit or error — fall back to local analysis
+      throw new Error(data.error || 'API error');
+    }
+  } catch (e) {
+    // Fallback: local analysis
+    const lines = code.split('\n').filter(l => l.trim());
+    const hasEval = code.includes('eval(') || code.includes('eval ('); 
+    const hasInnerHTML = code.includes('innerHTML');
+    const hasSqlConcat = code.includes('SELECT') && (code.includes('+') || code.includes('`'));
+    const longFuncs = code.split(/\bfunction\b|\b=>\b|\bdef\b/).filter(b => b.length > 200).length;
+    
+    let issues = 0;
+    if (hasEval) issues += 3;
+    if (hasInnerHTML) issues += 2;
+    if (hasSqlConcat) issues += 3;
+    if (longFuncs > 0) issues += longFuncs;
+    if (lines.length > 30) issues += 1;
+    
+    let score = Math.max(10, 95 - issues * 10);
+    const grade = score >= 90 ? 'A' : score >= 80 ? 'B' : score >= 65 ? 'C' : score >= 50 ? 'D' : 'F';
+    const color = score >= 90 ? 'brightgreen' : score >= 80 ? 'green' : score >= 65 ? 'yellowgreen' : score >= 50 ? 'orange' : 'red';
+    
+    renderBadgeResults(grade, score, color, `Local analysis complete. Found ${issues} potential issues in ${lines.length} lines of code.`);
+    resultsCard.style.display = 'block';
+    statusText.textContent = `✅ Score: ${grade} (${score}/100) — local analysis (free tier may be exhausted)`;
+  }
+}
+
+function renderBadgeResults(grade, score, color, analysis) {
+  const display = document.getElementById('scoreDisplay');
+  const preview = document.getElementById('badgePreview');
+  const markdownOut = document.getElementById('markdownOutput');
+  const htmlOut = document.getElementById('htmlOutput');
+  
+  const gradeColors = { A: '#3fb950', B: '#58a6ff', C: '#d29922', D: '#db6d28', F: '#da3633' };
+  const gradeColor = gradeColors[grade] || '#8b949e';
+  
+  display.innerHTML = `
+    <div style="display:flex;align-items:center;gap:20px;flex-wrap:wrap">
+      <div style="width:80px;height:80px;border-radius:50%;background:${gradeColor}22;border:3px solid ${gradeColor};display:flex;align-items:center;justify-content:center">
+        <span style="font-size:36px;font-weight:bold;color:${gradeColor}">${grade}</span>
+      </div>
+      <div style="flex:1">
+        <div style="display:flex;justify-content:space-between;margin-bottom:4px">
+          <span style="color:#f0f6fc;font-weight:600">Code Quality Score</span>
+          <span style="color:${gradeColor}">${score}/100</span>
+        </div>
+        <div class="score-bar">
+          <div class="score-fill" style="width:${score}%;background:${gradeColor}"></div>
+        </div>
+        <div style="color:#8b949e;font-size:13px;margin-top:8px">
+          ${analysis.slice(0, 200)}${analysis.length > 200 ? '...' : ''}
+        </div>
+      </div>
+    </div>
+  `;
+  
+  preview.innerHTML = `<img src="https://img.shields.io/badge/code%20quality-${grade}%20(${score})-${color}" alt="Code Quality: ${grade} (${score})">`;
+  
+  const markdown = `[![Code Quality](https://img.shields.io/badge/code%20quality-${grade}%20(${score})-${color})](https://automation.songheng.vip/tools/code-quality-badge)`;
+  const html = `<a href="https://automation.songheng.vip/tools/code-quality-badge"><img src="https://img.shields.io/badge/code%20quality-${grade}%20(${score})-${color}" alt="Code Quality: ${grade} (${score}/100)"></a>`;
+  
+  markdownOut.textContent = markdown;
+  htmlOut.textContent = html;
+}
+
+function copyMarkdown() {
+  const text = document.getElementById('markdownOutput').textContent;
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = event.target;
+    btn.textContent = '✅ Copied!';
+    setTimeout(() => btn.textContent = '📋 Copy', 2000);
+  });
+}
+
+function copyHTML() {
+  const text = document.getElementById('htmlOutput').textContent;
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = event.target;
+    btn.textContent = '✅ Copied!';
+    setTimeout(() => btn.textContent = '📋 Copy', 2000);
+  });
+}
+</script>
+</body>
+</html>

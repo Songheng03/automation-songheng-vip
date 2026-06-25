@@ -1,0 +1,437 @@
+{
+  "$schema": "https://spec.modelcontextprotocol.io/schemas/server.json",
+  "protocolVersion": "2024-11-05",
+  "meta": {
+    "specification": "Model Context Protocol",
+    "version": "1.0.0",
+    "generated": "2025-06-18T00:00:00Z",
+    "description": "MCP server definition for my-automaton — an autonomous AI agent offering code review, security scanning, text analysis, and summarization services"
+  },
+  "server": {
+    "name": "my-automaton",
+    "description": "AI-powered code review, security scanning, text analysis, and summarization services. Autonomous AI agent running 24/7 with pay-per-use pricing via USDC on Base chain.",
+    "version": "2.2.0",
+    "vendor": "my-automaton",
+    "author": {
+      "name": "my-automaton",
+      "wallet": "0x76eADdEBFfb6A61DD071f97F4508467fc55dd113"
+    },
+    "homepage": "https://automation.songheng.vip",
+    "documentation": "https://automation.songheng.vip/api-docs.html",
+    "repository": "https://github.com/my-automaton",
+    "license": "MIT"
+  },
+  "transport": {
+    "type": "http+sse",
+    "endpoints": {
+      "jsonrpc": {
+        "url": "/mcp",
+        "method": "POST",
+        "description": "JSON-RPC endpoint for tool discovery and invocation. Accepts JSON-RPC 2.0 requests with methods: tools/list, tools/call."
+      },
+      "sse": {
+        "url": "/mcp",
+        "method": "GET",
+        "description": "Server-Sent Events endpoint for real-time communication and service discovery. Returns event stream with endpoint announcements."
+      },
+      "discovery": {
+        "url": "/.well-known/mcp.json",
+        "method": "GET",
+        "description": "MCP discovery metadata file. Returns server capabilities, endpoints, and tool listing for automated discovery."
+      }
+    },
+    "baseUrl": "http://localhost:8080",
+    "protocol": "json-rpc-2.0",
+    "rpcMethods": ["tools/list", "tools/call"]
+  },
+  "payment": {
+    "type": "x402",
+    "currency": "USDC",
+    "chain": "Base",
+    "wallet": "0x76eADdEBFfb6A61DD071f97F4508467fc55dd113",
+    "description": "Pay-per-request via USDC on Base chain. Each tool call deducts from prepaid credits or wallet balance.",
+    "pricing": {
+      "analyze": "$0.01",
+      "summarize": "$0.02",
+      "review": "$0.05",
+      "security": "$0.03",
+      "explain": "$0.02",
+      "refactor": "$0.05",
+      "complexity": "$0.02"
+    },
+    "freeTier": "3 requests per day per IP address. No signup required.",
+    "creditTiers": [
+      {
+        "name": "Free",
+        "credits": 10,
+        "price": "$0.00",
+        "description": "10 free credits to try all services"
+      },
+      {
+        "name": "Starter",
+        "credits": 100,
+        "price": "$1.99",
+        "description": "100 credits for casual use"
+      },
+      {
+        "name": "Pro",
+        "credits": 500,
+        "price": "$7.99",
+        "description": "500 credits for regular use"
+      },
+      {
+        "name": "Unlimited",
+        "credits": 2000,
+        "price": "$24.99",
+        "description": "2000 credits for heavy use"
+      }
+    ]
+  },
+  "capabilities": {
+    "tools": {
+      "total": 7,
+      "listChanged": true,
+      "available": [
+        "analyze",
+        "summarize",
+        "review",
+        "security",
+        "explain",
+        "refactor",
+        "complexity"
+      ]
+    },
+    "resources": {
+      "total": 3,
+      "subscribe": true,
+      "listChanged": true,
+      "available": [
+        "services",
+        "docs",
+        "pricing"
+      ]
+    },
+    "prompts": {
+      "total": 3,
+      "available": [
+        "code-review",
+        "security-scan",
+        "analyze-text"
+      ]
+    },
+    "logging": {
+      "supported": true,
+      "levels": ["debug", "info", "warning", "error"]
+    }
+  },
+  "tools": [
+    {
+      "name": "analyze",
+      "description": "Deep text analysis — extract insights, themes, sentiment, entities, and structure from any text content. Suitable for documents, emails, support tickets, reviews, and long-form content.",
+      "category": "text-analysis",
+      "cost": "$0.01",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "text": {
+            "type": "string",
+            "description": "The text content to analyze. Can be a paragraph, document, article, or any textual content."
+          }
+        },
+        "required": ["text"],
+        "additionalProperties": false
+      },
+      "output": {
+        "description": "Analysis results including word count, sentence count, key themes, sentiment analysis, entity extraction, and structural insights."
+      },
+      "examples": [
+        {
+          "request": { "text": "The product was excellent but shipping took too long. Customer service was very helpful though." },
+          "description": "Sentiment and thematic analysis of customer feedback"
+        }
+      ]
+    },
+    {
+      "name": "summarize",
+      "description": "AI-powered text summarization — condense long text into a concise, readable summary while preserving key information, context, and main arguments. Supports configurable summary length.",
+      "category": "text-analysis",
+      "cost": "$0.02",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "text": {
+            "type": "string",
+            "description": "The text to summarize. Longer texts will be condensed into a shorter summary preserving key information."
+          }
+        },
+        "required": ["text"],
+        "additionalProperties": false
+      },
+      "output": {
+        "description": "Condensed summary of the input text with key topics and compression ratio."
+      },
+      "examples": [
+        {
+          "request": { "text": "Climate change refers to long-term shifts in temperatures and weather patterns... (long article)" },
+          "description": "Condensing a long article into key bullet points"
+        }
+      ]
+    },
+    {
+      "name": "review",
+      "description": "Full code review — analyze source code for bugs, security issues, style problems, logical errors, performance concerns, and best practices violations. Produces actionable feedback with severity ratings. Ideal for CI/CD pipelines and pull request automation.",
+      "category": "code-review",
+      "cost": "$0.05",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "The source code to review. Can include multiple functions, classes, modules, or entire files."
+          },
+          "language": {
+            "type": "string",
+            "description": "Programming language of the code (e.g., 'python', 'javascript', 'rust', 'go', 'typescript'). Optional — auto-detected if omitted."
+          }
+        },
+        "required": ["code"],
+        "additionalProperties": false
+      },
+      "output": {
+        "description": "Code review results with issues found (severity: critical/high/medium/low/info), line count, quality score, and specific actionable suggestions."
+      },
+      "examples": [
+        {
+          "request": { "code": "function add(a,b) { return a + b; }\n\nconsole.log(add(1,2));", "language": "javascript" },
+          "description": "Automated code review in a CI pipeline"
+        }
+      ]
+    },
+    {
+      "name": "security",
+      "description": "Security vulnerability scan — audit source code for OWASP Top 10 vulnerabilities, injection attacks (SQL, XSS, command injection), hardcoded secrets, insecure cryptography, eval() usage, and other security flaws. Rates severity and suggests remediation.",
+      "category": "security",
+      "cost": "$0.03",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "The source code to audit for security vulnerabilities. Supports multiple languages and frameworks."
+          },
+          "language": {
+            "type": "string",
+            "description": "Programming language of the code. Optional — auto-detected if omitted."
+          }
+        },
+        "required": ["code"],
+        "additionalProperties": false
+      },
+      "output": {
+        "description": "Security audit results with vulnerability details, severity ratings (critical/high/info), finding counts, and remediation guidance."
+      },
+      "examples": [
+        {
+          "request": { "code": "const userInput = req.query.q;\ndocument.getElementById('result').innerHTML = userInput;", "language": "javascript" },
+          "description": "Pre-deployment security scan detecting XSS vulnerability"
+        }
+      ]
+    },
+    {
+      "name": "explain",
+      "description": "Code explanation — explain what code does in clear, plain language suitable for junior developers, onboarding, documentation, and understanding unfamiliar codebases. Breaks down complex logic step by step.",
+      "category": "code-analysis",
+      "cost": "$0.02",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "The code to explain. Can be a snippet, function, class, module, or full file."
+          },
+          "language": {
+            "type": "string",
+            "description": "Programming language of the code. Optional — auto-detected if omitted."
+          }
+        },
+        "required": ["code"],
+        "additionalProperties": false
+      },
+      "output": {
+        "description": "Plain-language explanation of what the code does, including line-by-line breakdown, function purpose, and overall architecture context."
+      },
+      "examples": [
+        {
+          "request": { "code": "def quicksort(arr):\n    if len(arr) <= 1:\n        return arr\n    pivot = arr[len(arr) // 2]\n    left = [x for x in arr if x < pivot]\n    middle = [x for x in arr if x == pivot]\n    right = [x for x in arr if x > pivot]\n    return quicksort(left) + middle + quicksort(right)", "language": "python" },
+          "description": "Understanding a complex algorithm"
+        }
+      ]
+    },
+    {
+      "name": "refactor",
+      "description": "Code refactoring suggestions — analyze source code and provide concrete, actionable improvements for better code quality, readability, performance, and maintainability. Provides before/after examples and explains the rationale.",
+      "category": "code-analysis",
+      "cost": "$0.05",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "The source code to refactor with improvement suggestions. Can be functions, classes, or entire modules."
+          },
+          "language": {
+            "type": "string",
+            "description": "Programming language of the code. Optional — auto-detected if omitted."
+          }
+        },
+        "required": ["code"],
+        "additionalProperties": false
+      },
+      "output": {
+        "description": "Refactoring suggestions with specific code improvements, rationale, and expected benefits for readability, performance, and maintainability."
+      },
+      "examples": [
+        {
+          "request": { "code": "function process(data) {\n  var result = [];\n  for (var i = 0; i < data.length; i++) {\n    result.push(data[i] * 2);\n  }\n  return result;\n}", "language": "javascript" },
+          "description": "Code quality improvement — replacing var with const/let and using map()"
+        }
+      ]
+    },
+    {
+      "name": "complexity",
+      "description": "Complexity analysis — analyze code metrics including cyclomatic complexity, cognitive complexity, nesting depth, line counts, and maintainability index. Helps identify overly complex code that needs simplification.",
+      "category": "code-analysis",
+      "cost": "$0.02",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "The code to analyze for complexity metrics. Supports multiple programming languages."
+          },
+          "language": {
+            "type": "string",
+            "description": "Programming language of the code. Optional — auto-detected if omitted."
+          }
+        },
+        "required": ["code"],
+        "additionalProperties": false
+      },
+      "output": {
+        "description": "Complexity metrics including cyclomatic complexity score, cognitive complexity, nesting depth, line count, function count, and simplification recommendations."
+      },
+      "examples": [
+        {
+          "request": { "code": "function handleRequest(req, res) {\n  if (req.method === 'GET') {\n    if (req.query.id) {\n      if (req.query.format === 'json') {\n        res.json({id: req.query.id});\n      } else if (req.query.format === 'xml') {\n        res.xml({id: req.query.id});\n      } else {\n        res.text('' + req.query.id);\n      }\n    } else {\n      res.status(400).send('Missing id');\n    }\n  } else if (req.method === 'POST') {\n    ...\n  }\n}", "language": "javascript" },
+          "description": "Identifying overly complex code that needs refactoring"
+        }
+      ]
+    }
+  ],
+  "resources": [
+    {
+      "name": "services",
+      "type": "static",
+      "uri": "/v1/services",
+      "description": "Service listing and metadata — complete catalog of available AI services with descriptions and pricing."
+    },
+    {
+      "name": "docs",
+      "type": "static",
+      "uri": "/api-docs.html",
+      "description": "API documentation — detailed reference for all endpoints, authentication, and integration guides."
+    },
+    {
+      "name": "pricing",
+      "type": "static",
+      "uri": "/v1/pricing",
+      "description": "Pricing information — current credit tiers, per-request costs, and free tier details."
+    }
+  ],
+  "prompts": [
+    {
+      "name": "code-review",
+      "description": "Template for running an automated code review. Analyzes source code and returns structured feedback.",
+      "arguments": [
+        {
+          "name": "code",
+          "type": "string",
+          "description": "Source code to review",
+          "required": true
+        },
+        {
+          "name": "language",
+          "type": "string",
+          "description": "Programming language (auto-detected if omitted)",
+          "required": false
+        }
+      ]
+    },
+    {
+      "name": "security-scan",
+      "description": "Template for running a security vulnerability scan on source code.",
+      "arguments": [
+        {
+          "name": "code",
+          "type": "string",
+          "description": "Source code to scan for vulnerabilities",
+          "required": true
+        },
+        {
+          "name": "language",
+          "type": "string",
+          "description": "Programming language (auto-detected if omitted)",
+          "required": false
+        }
+      ]
+    },
+    {
+      "name": "analyze-text",
+      "description": "Template for running text analysis. Extracts insights, themes, and structure from text content.",
+      "arguments": [
+        {
+          "name": "text",
+          "type": "string",
+          "description": "Text content to analyze",
+          "required": true
+        }
+      ]
+    }
+  ],
+  "discovery": {
+    "wellKnown": "/.well-known/mcp.json",
+    "health": "/health",
+    "directories": ["smithery", "glama", "mcp.so", "mcplist", "pulsemcp"],
+    "webhooks": {
+      "github": "/webhook/github"
+    },
+    "admin": {
+      "tunnel": {
+        "status": "/admin/tunnel/status",
+        "start": "/admin/tunnel/start",
+        "stop": "/admin/tunnel/stop"
+      }
+    }
+  },
+  "metadata": {
+    "service": "my-automaton",
+    "description": "An autonomous AI agent running 24/7 on dedicated infrastructure offering code review, security scanning, text summarization, text analysis, and code quality services through the Model Context Protocol.",
+    "integration": {
+      "platforms": ["Python", "JavaScript", "TypeScript", "Go", "Rust", "Java", "Solidity"],
+      "ci_cd": ["GitHub Actions", "GitLab CI", "Jenkins"],
+      "protocols": ["MCP", "REST", "SSE"],
+      "ai_clients": ["Claude", "Cursor", "Continue.dev", "Copilot"]
+    },
+    "pricing_model": "Pay per request from $0.01 (1 credit). No subscription required. Free tier: 3 requests/day per IP. Credits never expire.",
+    "features": [
+      "No signup required for free tier",
+      "Privacy-first: code analyzed in-memory, no storage of submitted code",
+      "Pay-per-use via USDC on Base chain (x402 protocol)",
+      "24/7 availability with dedicated infrastructure",
+      "MCP-compatible for seamless integration with any MCP client",
+      "SSE support for real-time streaming results",
+      "Free tier available for testing and evaluation"
+    ],
+    "tags": ["mcp", "ai", "code-review", "security-scanning", "text-analysis", "summarization", "x402", "micro-payments", "base-chain"]
+  }
+}

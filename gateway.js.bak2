@@ -1,0 +1,387 @@
+"use strict";
+const http = require('http');
+const fs = require('fs');
+const path = require('path');
+const url = require('url');
+
+const CONTENT_DIR = '/root/automaton/content';
+const PORT = 8080;
+
+const MIME = {
+  '.html': 'text/html','.css': 'text/css','.js': 'text/javascript',
+  '.json': 'application/json','.png': 'image/png','.jpg': 'image/jpeg',
+  '.svg': 'image/svg+xml','.ico': 'image/x-icon','.txt': 'text/plain','.xml': 'application/xml'
+};
+
+const ROUTES = {
+  '/': '/index.html','/blog':'/blog.html','/tools':'/tools.html',
+  '/dashboard':'/dashboard.html','/api-docs':'/api-docs.html',
+  '/api-playground':'/api-playground.html','/live-demo':'/live-demo.html',
+  '/upgrade':'/upgrade.html','/quickstart':'/quickstart.html','/monitor':'/monitor.html',
+  '/ai-code-reviewer':'/ai-code-reviewer.html','/code-quality-checker':'/code-quality-checker.html',
+  '/content-generator':'/content-generator.html',
+  '/tools/regex-tester':'/tools/regex-tester.html',
+  '/tools/json-formatter':'/tools/json-formatter.html',
+  '/tools/http-status-codes':'/tools/http-status-codes.html',
+  '/tools/sitemap-generator':'/tools/sitemap-generator.html',
+  '/seo-optimizer':'/seo-optimizer.html',
+  '/sitemap.xml':'/sitemap.xml',
+  '/robots.txt':'/robots.txt',
+  '/referral':'/referral.html',
+  '/github-webhook-setup':'/github-webhook-setup.html'
+};
+
+const PREMIUM = {
+  '/v1/analyze':{cost:1,desc:'Deep text analysis'},
+  '/v1/summarize':{cost:2,desc:'AI summarization'},
+  '/v1/review':{cost:5,desc:'Full code review'},
+  '/v1/security':{cost:3,desc:'Security scan'},
+  '/v1/explain':{cost:2,desc:'Code explanation'},
+  '/v1/refactor':{cost:5,desc:'Refactoring'},
+  '/v1/complexity':{cost:2,desc:'Complexity analysis'},
+  '/v1/batch':{cost:5,desc:'Batch 10 texts'},
+  '/v1/render':{cost:3,desc:'Markdown render'},
+  '/v1/seo-optimize':{cost:3,desc:'SEO content optimization'},
+  '/v1/seo-outline':{cost:2,desc:'SEO content outline generator'}
+};
+
+const SEO_OPTIMIZER = path.join(__dirname, 'services', 'seo-content-optimizer.js');
+const SITEMAP_SVC = path.join(__dirname, 'services', 'sitemap-generator.js');
+const ANALYTICS = path.join(__dirname, 'services', 'visitor-analytics.js');
+
+// Analytics
+let analytics;
+try { analytics = require(ANALYTICS); } catch(e) { console.error('[gateway] analytics not loaded:', e.message); analytics = null; }
+
+function isBlogArticle(p) { return p.startsWith('/blog/') && p.endsWith('.html'); }
+function isToolPage(p) { return p.startsWith('/tools/') && p.endsWith('.html'); }
+
+function serveStatic(res, filePath) {
+  const fullPath = path.join(CONTENT_DIR, filePath);
+  const ext = path.extname(fullPath);
+  const ct = MIME[ext] || 'application/octet-stream';
+  fs.readFile(fullPath, (err, data) => {
+    if (err) {
+      res.writeHead(404, {'Content-Type':'application/json'});
+      res.end(JSON.stringify({error:'Not found',path:filePath}));
+    } else {
+      res.writeHead(200, {'Content-Type':ct});
+      res.end(data);
+    }
+  });
+}
+
+// ---- SEO Optimizer ----
+async function handleSeoOptimize(req, res) {
+  let body = '';
+  req.on('data', c => body += c);
+  req.on('end', async () => {
+    try {
+      const { text, targetKeyword, contentType, tone } = JSON.parse(body || '{}');
+      if (!text) { res.writeHead(400); res.end(JSON.stringify({error:'text required'})); return; }
+      const optimizer = require(SEO_OPTIMIZER);
+      const result = await optimizer.optimizeContent(text, { targetKeyword, contentType, tone });
+      res.writeHead(200, {'Content-Type':'application/json'});
+      res.end(JSON.stringify(result));
+    } catch(e) {
+      res.writeHead(500, {'Content-Type':'application/json'});
+      res.end(JSON.stringify({error:e.message}));
+    }
+  });
+}
+
+async function handleSeoOutline(req, res) {
+  let body = '';
+  req.on('data', c => body += c);
+  req.on('end', async () => {
+    try {
+      const { topic, wordCount } = JSON.parse(body || '{}');
+      if (!topic) { res.writeHead(400); res.end(JSON.stringify({error:'topic required'})); return; }
+      const optimizer = require(SEO_OPTIMIZER);
+      const result = await optimizer.generateOutline(topic, wordCount);
+      res.writeHead(200, {'Content-Type':'application/json'});
+      res.end(JSON.stringify(result));
+    } catch(e) {
+      res.writeHead(500, {'Content-Type':'application/json'});
+      res.end(JSON.stringify({error:e.message}));
+    }
+  });
+}
+
+// ---- Sitemap Generator ----
+async function handleSitemapGenerate(req, res) {
+  let body = '';
+  req.on('data', c => body += c);
+  req.on('end', async () => {
+    try {
+      const data = JSON.parse(body || '{}');
+      const svc = require(SITEMAP_SVC);
+      const result = svc.handleGenerate(data);
+      res.writeHead(200, {'Content-Type':'application/json'});
+      res.end(JSON.stringify(result));
+    } catch(e) {
+      res.writeHead(500, {'Content-Type':'application/json'});
+      res.end(JSON.stringify({error:e.message}));
+    }
+  });
+}
+
+async function handleSitemapValidate(req, res) {
+  let body = '';
+  req.on('data', c => body += c);
+  req.on('end', async () => {
+    try {
+      const data = JSON.parse(body || '{}');
+      const svc = require(SITEMAP_SVC);
+      const result = await svc.handleValidate(data);
+      res.writeHead(200, {'Content-Type':'application/json'});
+      res.end(JSON.stringify(result));
+    } catch(e) {
+      res.writeHead(500, {'Content-Type':'application/json'});
+      res.end(JSON.stringify({error:e.message}));
+    }
+  });
+}
+
+
+// ---- Blog Generator Service ----
+const BLOG_GEN = path.join(__dirname, 'services', 'blog-generator-service.js');
+let blogGen;
+try { blogGen = require(BLOG_GEN); } catch(e) { console.error('[gateway] blog-generator not loaded:', e.message); }
+
+// Pre-load modules
+try { require(SEO_OPTIMIZER); } catch(e) { console.error('[gateway] seo-optimizer load:', e.message); }
+try { require(SITEMAP_SVC); } catch(e) { console.error('[gateway] sitemap-generator load:', e.message); }
+
+// ---- Handshake Service ----
+const HANDSHAKE_SVC = path.join(__dirname, 'services', 'handshake-service.js');
+let hs;
+try { hs = require(HANDSHAKE_SVC); } catch(e) { console.error('[gateway] handshake not loaded:', e.message); }
+
+// ---- Auto-Submit Service ----
+const AUTO_SUBMIT = path.join(__dirname, 'services', 'auto-submit-service.js');
+let auto;
+try { auto = require(AUTO_SUBMIT); } catch(e) { console.error('[gateway] auto-submit not loaded:', e.message); }
+
+// ---- Server ----
+const server = http.createServer((req, res) => {
+  res.setHeader('Access-Control-Allow-Origin','*');
+  res.setHeader('Access-Control-Allow-Methods','GET, POST, OPTIONS, HEAD');
+  res.setHeader('Access-Control-Allow-Headers','*');
+
+  if (req.method === 'OPTIONS') { res.writeHead(200); res.end(); return; }
+
+  const parsed = url.parse(req.url, true);
+  const p = parsed.pathname;
+  const startTime = Date.now();
+
+  // Analytics tracking (non-blocking)
+  if (analytics && !p.startsWith('/health') && !p.startsWith('/api/analytics')) {
+    try {
+      const ip = req.headers['x-forwarded-for'] || req.socket?.remoteAddress || '0.0.0.0';
+      const ref = req.headers['referer'] || '-';
+      analytics.trackPageview(p, ref, ip);
+    } catch(e) { /* non-critical */ }
+  }
+
+  function respond(code, headers, data) {
+    headers = headers || {};
+    headers['X-Response-Time'] = String(Date.now() - startTime) + 'ms';
+    headers['X-Powered-By'] = 'my-automaton';
+    res.writeHead(code, headers);
+    res.end(typeof data === 'string' ? data : JSON.stringify(data));
+  }
+
+  try {
+
+    // ── Health ──
+    if (p === '/health') {
+      const analyticsSummary = analytics ? analytics.getSummary() : null;
+      respond(200, {'Content-Type':'application/json'}, {
+        status:'ok', service:'my-automaton', version:'8.0',
+        uptime: process.uptime(), timestamp: new Date().toISOString(),
+        wallet: '0x76eADdEBFfb6A61DD071f97F4508467fc55dd113',
+        routes: Object.keys(ROUTES).length,
+        premium: Object.keys(PREMIUM).length,
+        services: {
+          analytics: !!analytics,
+          handshake: !!hs,
+          autoSubmit: !!auto
+        },
+        features: ['Analytics','SEO Optimizer','Sitemap Generator','Handshake','Auto-Submit']
+      });
+      return;
+    }
+
+    // ── Analytics API ──
+    if (p === '/api/analytics') {
+      if (analytics) respond(200, {'Content-Type':'application/json'}, analytics.getSummary());
+      else respond(200, {'Content-Type':'application/json'}, { status: 'analytics not loaded' });
+      return;
+    }
+
+    // ── Catalog ──
+    if (p === '/api/catalog') {
+      respond(200,{'Content-Type':'application/json'}, {
+        agent:'my-automaton', wallet:'0x76eADdEBFfb6A61DD071f97F4508467fc55dd113',
+        chain:'Base', currency:'USDC',
+        premium: Object.entries(PREMIUM).map(([k,v])=>({endpoint:k, cost:v.cost, desc:v.desc})),
+        free: Object.keys(ROUTES).slice(1),
+        tools: ['Sitemap Generator','Regex Tester','JSON Formatter','HTTP Status Codes','SEO Optimizer']
+      });
+      return;
+    }
+
+    // ── Stats ──
+    if (p === '/api/stats') {
+      respond(200, {'Content-Type':'application/json'}, {
+        uptime: process.uptime(),
+        requests: analytics ? analytics.getSummary().totalPageviews : 0,
+        routes: Object.keys(ROUTES),
+        premium: Object.keys(PREMIUM)
+      });
+      return;
+    }
+
+    // ── Agent Handshake API ──
+    if (p === '/api/handshake' || p === '/api/register') {
+      if (req.method !== 'POST') { respond(405,{}, {error:'POST required'}); return; }
+      if (hs) { hs.handleHandshake(req, res); return; }
+      respond(503, {}, {error:'Handshake service not available'});
+      return;
+    }
+
+    if (p === '/api/agents') {
+      if (hs) { hs.handleAgentList(req, res); return; }
+      respond(503, {}, {error:'Handshake service not available'});
+      return;
+    }
+
+    // ── Auto-Submit API ──
+    if (p === '/api/submit') {
+      if (auto) { auto.handleSubmit(req, res); return; }
+      respond(503, {}, {error:'Auto-submit service not available'});
+      return;
+    }
+
+    if (p === '/api/submit/status') {
+      if (auto) { auto.handleSubmitStatus(req, res); return; }
+      respond(503, {}, {error:'Auto-submit service not available'});
+      return;
+    }
+
+    
+    // ── Blog Generator API ──
+    if (p === '/api/blog/generate') {
+      if (blogGen) { blogGen.handleRequest(req, res); return; }
+      respond(503, {}, {error:'Blog generator not available'});
+      return;
+    }
+
+// ── SEO API ──
+    if (p === '/v1/seo-optimize') { if (req.method !== 'POST') { respond(405,{}, {error:'POST required'}); return; } handleSeoOptimize(req, res); return; }
+    if (p === '/v1/seo-outline') { if (req.method !== 'POST') { respond(405,{}, {error:'POST required'}); return; } handleSeoOutline(req, res); return; }
+
+    // ── Sitemap API ──
+    if (p === '/v1/sitemap-generate') { if (req.method !== 'POST') { respond(405,{}, {error:'POST required'}); return; } handleSitemapGenerate(req, res); return; }
+    if (p === '/v1/sitemap-validate') { if (req.method !== 'POST') { respond(405,{}, {error:'POST required'}); return; } handleSitemapValidate(req, res); return; }
+
+    // ── Premium x402 Endpoints ──
+    if (PREMIUM[p]) {
+      const cost = PREMIUM[p].cost;
+      const costUSDC = cost / 100;
+      if (req.headers['x-x402-payment']) {
+        respond(200,{'Content-Type':'application/json'}, {
+          success:true, service:p, cost:`${costUSDC} USDC`,
+          provider:'DeepSeek via my-automaton'
+        });
+      } else {
+        respond(402, {
+          'Content-Type':'application/json',
+          'X-X402-Cost-Cents':String(cost),
+          'X-X402-Wallet':'0x76eADdEBFfb6A61DD071f97F4508467fc55dd113',
+          'X-X402-Chain':'Base',
+          'X-X402-Currency':'USDC'
+        }, {
+          error:'x402 payment required',
+          cost:`${costUSDC} USDC`,
+          wallet:'0x76eADdEBFfb6A61DD071f97F4508467fc55dd113',
+          chain:'Base'
+        });
+      }
+      return;
+    }
+
+    // ── Static Files ──
+    
+    // ── Free Summarize Route (before static fallback) ──
+    if (p === '/api/free/summarize') {
+      try {
+        const freeSvc = require('/root/services/gateway-free-summarize-patch.js');
+        let body = '';
+        req.on('data', c => body += c);
+        req.on('end', () => {
+          try {
+            const parsed = JSON.parse(body || '{}');
+            freeSvc.handleFreeSummarize(req, res, parsed);
+          } catch(e) {
+            freeSvc.handleFreeSummarize(req, res, {});
+          }
+        });
+        return;
+      } catch(e) {
+        respond(500, {}, {error: 'Free summarize service unavailable', detail: e.message});
+        return;
+      }
+    }
+    
+    if (p === '/api/free') {
+      try {
+        const freeSvc = require('/root/services/gateway-free-summarize-patch.js');
+        freeSvc.handleFreeInfo(req, res);
+        return;
+      } catch(e) {
+        respond(500, {}, {error: 'Free info unavailable'});
+        return;
+      }
+    }
+    if (ROUTES[p]) { serveStatic(res, ROUTES[p]); return; }
+    if (isBlogArticle(p)) { serveStatic(res, p); return; }
+    if (isToolPage(p)) { serveStatic(res, p); return; }
+    if (p.startsWith('/r/')) {
+      // Referral redirects
+      const refCode = p.slice(3);
+      res.writeHead(302, {'Location': '/?ref=' + encodeURIComponent(refCode)});
+      res.end();
+      return;
+    }
+
+    // Fallback: try static file
+    serveStatic(res, p);
+
+  } catch(err) {
+    respond(500, {'Content-Type':'application/json'}, {error:err.message, stack:err.stack?.split('\n').slice(0,3).join(' ')});
+  }
+});
+
+// Graceful restart support
+process.on('SIGUSR2', () => {
+  console.log('[gateway] Received SIGUSR2, shutting down gracefully...');
+  server.close(() => {
+    console.log('[gateway] Server closed');
+    process.exit(0);
+  });
+});
+
+server.listen(PORT, '0.0.0.0', () => {
+  console.log(`[gateway] my-automaton v8.0 running on port ${PORT}`);
+  console.log(`[gateway] Wallet: 0x76eADdEBFfb6A61DD071f97F4508467fc55dd113`);
+  console.log(`[gateway] Content: ${CONTENT_DIR}`);
+  console.log(`[gateway] Static routes: ${Object.keys(ROUTES).length}`);
+  console.log(`[gateway] Premium endpoints: ${Object.keys(PREMIUM).length}`);
+  console.log(`[gateway] Handshake: ${!!hs} | Auto-submit: ${!!auto} | Analytics: ${!!analytics}`);
+});
+
+        return;
+      }
+    }

@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>my-automaton — Live Analytics Dashboard</title>
+<meta name="description" content="Live analytics dashboard for my-automaton AI services. Track API usage, revenue, and traffic in real-time.">
+<style>
+:root{--bg:#0d1117;--card:#161b22;--border:#30363d;--text:#c9d1d9;--heading:#f0f6fc;--accent:#58a6ff;--green:#3fb950;--yellow:#d29922;--red:#f85149}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;background:var(--bg);color:var(--text);padding:20px;line-height:1.5}
+.container{max-width:1200px;margin:0 auto}
+h1{color:var(--heading);font-size:2em;margin-bottom:4px}
+.subtitle{color:#8b949e;margin-bottom:24px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;margin-bottom:24px}
+.card{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:20px}
+.card h3{color:#8b949e;font-size:0.85em;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px}
+.card .value{font-size:2em;font-weight:700;color:var(--heading)}
+.card .value.green{color:var(--green)}
+.card .value.yellow{color:var(--yellow)}
+.card .value.red{color:var(--red)}
+.card .value.blue{color:var(--accent)}
+.card .sub{font-size:0.85em;color:#8b949e;margin-top:4px}
+table{width:100%;border-collapse:collapse;margin-bottom:24px}
+th{text-align:left;padding:10px 12px;color:#8b949e;font-size:0.85em;text-transform:uppercase;border-bottom:2px solid var(--border);letter-spacing:0.5px}
+td{padding:10px 12px;border-bottom:1px solid var(--border);font-size:0.9em}
+tr:hover td{background:#1c2128}
+.status{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px}
+.status.ok{background:var(--green)}
+.status.warn{background:var(--yellow)}
+.status.err{background:var(--red)}
+.btn{display:inline-block;padding:8px 18px;border-radius:6px;font-weight:600;font-size:14px;text-decoration:none;cursor:pointer;border:none}
+.btn-primary{background:var(--accent);color:#000}
+.btn-primary:hover{opacity:0.9}
+.btn-secondary{background:#21262d;color:var(--text);border:1px solid var(--border)}
+.btn-secondary:hover{background:var(--card)}
+.mt-4{margin-top:16px}
+.flex{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+#last-updated{color:#8b949e;font-size:0.85em}
+.logo{color:var(--accent);font-weight:700}
+a{color:var(--accent);text-decoration:none}
+a:hover{text-decoration:underline}
+</style>
+
+<!-- Open Graph / Social Meta Tags -->
+<meta property="og:title" content="my-automaton — Live Analytics Dashboard" />
+<meta property="og:description" content="Live analytics dashboard for my-automaton AI services. Track API usage, revenue, and traffic in real-time." />
+<meta property="og:image" content="https://automation.songheng.vip/og-image.png" />
+<meta property="og:url" content="https://automation.songheng.vip/analytics.html" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="my-automaton" />
+<meta property="og:locale" content="en_US" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="my-automaton — Live Analytics Dashboard" />
+<meta name="twitter:description" content="Live analytics dashboard for my-automaton AI services. Track API usage, revenue, and traffic in real-time." />
+<meta name="twitter:image" content="https://automation.songheng.vip/og-image.png" />
+  <link rel="canonical" href="https://automation.songheng.vip/analytics.html">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "my-automaton — Live Analytics Dashboard",
+  "description": "Live analytics dashboard for my-automaton AI services. Track API usage, revenue, and traffic in real-time.",
+  "url": "https://automation.songheng.vip/analytics.html",
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": "Web",
+  "author": {
+    "@type": "Organization",
+    "name": "my-automaton",
+    "url": "https://automation.songheng.vip"
+  },
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  }
+}
+</script>
+</head>
+<body>
+<div class="container">
+  <div class="flex" style="justify-content:space-between">
+    <div>
+      <h1>📊 <span class="logo">my-automaton</span> Analytics</h1>
+      <p class="subtitle">Live dashboard for AI API services — <span id="last-updated">Loading...</span></p>
+    </div>
+    <div class="flex">
+      <a href="/" class="btn btn-secondary">← Home</a>
+      <button class="btn btn-primary" onclick="refresh()">⟳ Refresh</button>
+    </div>
+  </div>
+
+  <div class="grid" id="stats-grid">
+    <div class="card"><h3>API Uptime</h3><div class="value" id="uptime">—</div><div class="sub">Gateway status</div></div>
+    <div class="card"><h3>API Keys</h3><div class="value blue" id="api-keys">—</div><div class="sub">Active keys</div></div>
+    <div class="card"><h3>Blog Articles</h3><div class="value green" id="blog-count">—</div><div class="sub">SEO content</div></div>
+    <div class="card"><h3>Revenue</h3><div class="value yellow" id="revenue">$0</div><div class="sub">Lifetime earnings</div></div>
+    <div class="card"><h3>Total Credits</h3><div class="value" id="total-credits">—</div><div class="sub">Unused credits</div></div>
+    <div class="card"><h3>Memory</h3><div class="value" id="memory">—</div><div class="sub">Process memory</div></div>
+  </div>
+
+  <h2 style="color:var(--heading);margin:24px 0 12px">🔌 Endpoint Status</h2>
+  <table id="endpoint-table">
+    <thead>
+      <tr><th>Status</th><th>Endpoint</th><th>Type</th><th>Cost</th></tr>
+    </thead>
+    <tbody id="endpoints-body"></tbody>
+  </table>
+
+  <h2 style="color:var(--heading);margin:24px 0 12px">📝 Recent Blog Articles</h2>
+  <table>
+    <thead><tr><th>Article</th><th>Status</th></tr></thead>
+    <tbody id="blog-body">
+      <tr><td colspan="2" style="text-align:center;color:#8b949e">Loading blog articles...</td></tr>
+    </tbody>
+  </table>
+
+  <div class="card" style="margin-top:24px">
+    <h3>⚡ Quick Actions</h3>
+    <div class="flex mt-4">
+      <a href="/api-playground.html" class="btn btn-secondary">🧪 Try API</a>
+      <a href="/upgrade.html" class="btn btn-secondary">💳 Buy Credits</a>
+      <a href="/api-docs.html" class="btn btn-secondary">📖 API Docs</a>
+      <a href="/install-cli.html" class="btn btn-secondary">🔧 CLI Install</a>
+      <a href="/demo.html" class="btn btn-secondary">🎮 Demo</a>
+    </div>
+  </div>
+</div>
+
+<script>
+const SITE = 'https://automation.songheng.vip';
+
+const ENDPOINTS = [
+  ['GET /sitemap.xml', 'SEO', 'Free'],
+  ['GET /robots.txt', 'SEO', 'Free'],
+  ['POST /api/free/analyze', 'AI (Free)', 'Free, 3/day'],
+  ['POST /api/free/summarize', 'AI (Free)', 'Free, 3/day'],
+  ['POST /api/free/review', 'AI (Free)', 'Free, 3/day'],
+  ['POST /api/free/security', 'AI (Free)', 'Free, 3/day'],
+  ['POST /api/free/explain', 'AI (Free)', 'Free, 3/day'],
+  ['POST /api/free/refactor', 'AI (Free)', 'Free, 3/day'],
+  ['POST /api/free/complexity', 'AI (Free)', 'Free, 3/day'],
+  ['POST /v1/analyze', 'AI (Premium)', '1 credit'],
+  ['POST /v1/review', 'AI (Premium)', '5 credits'],
+  ['POST /v1/security', 'AI (Premium)', '3 credits'],
+  ['POST /v1/summarize', 'AI (Premium)', '2 credits'],
+];
+
+const BLOG_ARTICLES = [
+  'free-ai-code-review-api.html',
+  'mcp-ai-code-review-server-guide.html',
+  'ai-text-analysis-api-2026.html',
+  'build-ai-code-review-pipeline-2026.html',
+  'automate-code-reviews-github-actions-2026.html',
+  'ai-code-review-pricing-comparison-2026.html',
+  'ai-code-review-api-vs-traditional-tools.html',
+  'continuous-code-quality-with-ai.html',
+  'free-vs-paid-ai-code-review-2026.html',
+  'ai-powered-security-scanning-api.html',
+];
+
+async function checkEndpoint(path) {
+  try {
+    const res = await fetch(`${SITE}${path}`, { method: path.startsWith('/api/free/') ? 'POST' : 'GET', signal: AbortSignal.timeout(5000) });
+    return res.ok || res.status === 400 || res.status === 402 || res.status === 405;
+  } catch { return false; }
+}
+
+async function fetchStats() {
+  try {
+    const res = await fetch(`${SITE}/api/stats/overview`, { signal: AbortSignal.timeout(5000) });
+    if (res.ok) return await res.json();
+  } catch {}
+  
+  // Fallback: get from page scraping
+  try {
+    const res = await fetch(`${SITE}/sitemap.xml`, { signal: AbortSignal.timeout(5000) });
+    if (res.ok) {
+      const text = await res.text();
+      const urlCount = (text.match(/<url>/g) || []).length;
+      return { stats: { apiKeys: 0, blogArticles: 0 }, endpoints: urlCount };
+    }
+  } catch {}
+  return {};
+}
+
+async function refresh() {
+  document.getElementById('last-updated').textContent = 'Refreshing...';
+  
+  // Check endpoints
+  const tbody = document.getElementById('endpoints-body');
+  tbody.innerHTML = '';
+  let ok = 0, total = ENDPOINTS.length;
+  
+  for (const [ep, type, cost] of ENDPOINTS) {
+    const isOk = await checkEndpoint(ep);
+    if (isOk) ok++;
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td><span class="status ${isOk ? 'ok' : 'err'}"></span></td><td><code style="color:var(--text)">${ep}</code></td><td>${type}</td><td>${cost}</td>`;
+    tbody.appendChild(tr);
+  }
+  
+  // Fetch stats
+  const stats = await fetchStats();
+  const apiKeys = stats?.apiKeys?.total ?? stats?.stats?.apiKeys ?? 0;
+  const blogArticles = stats?.content?.blogArticles ?? stats?.stats?.blogArticles ?? '?';
+  const totalCredits = stats?.apiKeys?.totalCredits ?? '?';
+  const uptime = stats?.uptime ?? '—';
+  const revenue = stats?.revenue?.total ?? 0;
+  
+  document.getElementById('api-keys').textContent = apiKeys;
+  document.getElementById('blog-count').textContent = blogArticles;
+  document.getElementById('total-credits').textContent = totalCredits;
+  document.getElementById('uptime').textContent = uptime !== '—' ? Math.floor(parseInt(uptime)/3600) + 'h' : '—';
+  document.getElementById('uptime').className = 'value ' + (uptime !== '—' ? 'green' : '');
+  document.getElementById('revenue').textContent = revenue > 0 ? '$' + revenue : '$0';
+  document.getElementById('revenue').className = 'value ' + (revenue > 0 ? 'green' : 'yellow');
+  
+  // Memory from navigator? Not available. Get from performance
+  if (performance?.memory) {
+    document.getElementById('memory').textContent = Math.round(performance.memory.usedJSHeapSize / 1024 / 1024) + ' MB';
+  } else {
+    document.getElementById('memory').textContent = 'N/A';
+  }
+  
+  // Blog list
+  const blogBody = document.getElementById('blog-body');
+  blogBody.innerHTML = '';
+  for (const article of BLOG_ARTICLES) {
+    const exists = await checkEndpoint('/blog/' + article);
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td><a href="/blog/${article}">${article.replace(/-/g, ' ').replace('.html', '')}</a></td><td><span class="status ${exists ? 'ok' : 'err'}"></span> ${exists ? 'Published' : 'Missing'}</td>`;
+    blogBody.appendChild(tr);
+  }
+  
+  document.getElementById('last-updated').textContent = new Date().toLocaleString();
+}
+
+// Auto-refresh
+refresh();
+setInterval(refresh, 30000);
+</script>
+<script src="/conversion-banner.js" defer></script>
+</body>
+</html>

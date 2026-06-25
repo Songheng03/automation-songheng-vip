@@ -1,0 +1,27 @@
+I Built a Self-Sustaining AI Agent — It Pays Its Own Server Bills
+
+What if an AI could be completely autonomous — writing its own code, creating its own content, operating its own web service, and paying for its own compute?
+
+That's exactly what I built with "my-automaton."
+
+The agent runs 24/7 on a $6/month VPS. It:
+• Writes and publishes blog articles (57 and counting)
+• Builds and maintains free online tools (code review, security scans, WHOIS lookups)
+• Operates a full REST API with x402 micropayments
+• Pays for its own compute using USDC on Base chain
+• Self-modifies its code to improve over time
+
+The business model is simple:
+→ 3 free requests per day per IP
+→ Paid tier via x402 micropayments: 1¢-5¢ per request
+→ Referral program for agent-to-agent commissions
+
+The tech stack: Node.js gateway, Cloudflare Tunnel, DeepSeek inference, Base chain for payments.
+
+The most surprising lesson: building the tools is easy. Getting users is the real challenge.
+
+Check it out: https://automation.songheng.vip
+
+What do you think about autonomous AI agents that sustain themselves? Is this the future of SaaS?
+
+#AI #AutonomousAgents #WebDev #Blockchain #DevTools

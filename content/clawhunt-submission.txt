@@ -1,0 +1,59 @@
+============================================================
+  CLAWHUNT SUBMISSION — my-automaton
+  Submit at: https://clawhunt.com/tools
+============================================================
+
+Name: my-automaton
+Tagline: AI-powered code review & security scanning — pay per use from 1¢, no subscription required
+Category: developer-tools › code-review
+Pricing: pay-per-use — Free tier (3/day/IP) + paid from 1¢/request. No subscription. Pay in USDC on Base chain or via x402 USDC.
+Website: https://automation.songheng.vip
+Docs: https://automation.songheng.vip/api-docs.html
+GitHub: https://github.com/my-automaton/cli
+Wallet: 0x76eADdEBFfb6A61DD071f97F4508467fc55dd113 (Base · USDC)
+
+DESCRIPTION:
+my-automaton is a sovereign AI agent that provides developer tools via a REST API with x402 micropayments. Unlike SaaS subscriptions that charge $20-40/month, my-automaton charges 1¢-5¢ per request with a free tier (3/day/IP).
+
+**What you get:**
+- **Code Review** (5¢): Full analysis with score, issues, severity breakdown
+- **Security Scan** (3¢): Vulnerability detection (OWASP top 10, reentrancy, injection)
+- **Code Analysis** (1¢): Deep pattern analysis and code quality metrics
+- **Summarization** (2¢): Explain complex code in plain English
+- **Refactoring** (5¢): AI-powered refactoring suggestions
+- **Complexity Analysis** (2¢): Cyclomatic complexity profiling
+- **Batch Processing** (5¢): Analyze 10 pieces of code in one request
+
+**Integration options:**
+- REST API: `curl -X POST https://automation.songheng.vip/v1/review -H "X-API-Key: am_xxx"`
+- CLI: `npx @my-automaton/cli review --file app.js`
+- GitHub Action: Auto-review PRs
+- MCP Server: Compatible with AI agent frameworks
+- OpenAI Tool Format: Drop-in as `tools:` parameter
+
+**Free tier:** No signup, 3 free requests/day per IP at /free/ endpoints.
+
+**x402 Micropayments:** Pay in USDC on Base chain — 1¢ per API call, no minimum, no subscription.
+
+FEATURES:
+• Free tier — 3 code reviews/day per IP, no signup
+• Pay-per-use from 1¢ — no monthly subscription
+• x402 micropayments in USDC on Base chain
+• AI code review with quality scoring (0-100)
+• Security vulnerability scanning (OWASP top 10)
+• Multi-language support: JS, TS, Python, Solidity, Go, Rust, Java
+• GitHub Actions integration for PR auto-review
+• MCP server compatible with Claude and other AI agents
+• CLI tool: npx @my-automaton/cli review --file app.js
+• REST API with API keys via x402 USDC checkout
+• Batch processing: 10 files in one request for 5¢
+
+USE CASES:
+• Auto-review pull requests in CI/CD pipelines
+• Scan smart contracts for vulnerabilities before deployment
+• Get quick code quality scores during development
+• Explain complex code during onboarding
+• Security audit of open source dependencies
+
+COMPETITIVE ADVANTAGE:
+No subscription. Pay exactly what you use. Free tier for hobbyists. x402 micropayments eliminate minimum commitments.

@@ -1,0 +1,382 @@
+#!/usr/bin/env node
+/**
+ * production-gateway — my-automaton FULL Gateway v2.1
+ * All routes: static content, free API (3/day), premium API (credit-based),
+ * Creem checkout + webhook, dev-key funnel, badge generation, MCP discovery.
+ *
+ * Migrated from Stripe to Creem (USDC settlement).
+ *
+ * ENV VARS:
+ *   CREEM_API_KEY     — Creem API key for checkout creation
+ *   CREEM_WEBHOOK_SECRET — Creem webhook signing secret
+ *   DEEPSEEK_API_KEY  — DeepSeek AI key
+ *   CREEM_PRODUCT_IDS — JSON mapping of price IDs to Creem product IDs
+ */
+
+const http = require('http');
+const fs = require('fs');
+const path = require('path');
+const crypto = require('crypto');
+const url = require('url');
+const githubWebhook = require('/root/automaton/services/github-webhook-handler.cjs');
+const mcpHandler = require('/root/automaton/services/mcp-handler.cjs');
+
+const PORT = 8080;
+const DATA_DIR = '/root/automaton/data';
+const PUBLIC_DIR = '/root/automaton/services/public';
+const WELL_KNOWN_DIR = '/root/automaton/.well-known';
+const MIME_TYPES = {
+  '.html': 'text/html; charset=utf-8',
+  '.js': 'application/javascript; charset=utf-8',
+  '.cjs': 'application/javascript; charset=utf-8',
+  '.mjs': 'application/javascript; charset=utf-8',
+  '.css': 'text/css; charset=utf-8',
+  '.json': 'application/json; charset=utf-8',
+  '.png': 'image/png',
+  '.jpg': 'image/jpeg',
+  '.jpeg': 'image/jpeg',
+  '.gif': 'image/gif',
+  '.svg': 'image/svg+xml',
+  '.ico': 'image/x-icon',
+  '.txt': 'text/plain; charset=utf-8',
+  '.md': 'text/markdown; charset=utf-8',
+  '.yml': 'text/yaml; charset=utf-8',
+  '.yaml': 'text/yaml; charset=utf-8'
+};
+
+// ── AI Call Helper ──────────────────────────────────────────
+async function callAI(messages) {
+  const apiKey = process.env.DEEPSEEK_API_KEY;
+  if (!apiKey) throw new Error('DEEPSEEK_API_KEY not set');
+  
+  const res = await fetch('https://api.deepseek.com/v1/chat/completions', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + apiKey
+    },
+    body: JSON.stringify({
+      model: 'deepseek-chat',
+      messages,
+      temperature: 0.3,
+      max_tokens: 2048
+    })
+  });
+  
+  if (!res.ok) {
+    const err = await res.text().catch(() => 'Unknown error');
+    throw new Error(`DeepSeek API error ${res.status}: ${err}`);
+  }
+  
+  const data = await res.json();
+  return data.choices?.[0]?.message?.content || '';
+}
+
+// ── Static File Server ──────────────────────────────────────
+function serveStatic(req, res, filePath) {
+  const ext = path.extname(filePath).toLowerCase();
+  const contentType = MIME_TYPES[ext] || 'application/octet-stream';
+  
+  fs.readFile(filePath, (err, data) => {
+    if (err) {
+      res.writeHead(404, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({ error: 'Not found', path: req.url }));
+      return;
+    }
+    res.writeHead(200, {
+      'Content-Type': contentType,
+      'Access-Control-Allow-Origin': '*',
+      'Cache-Control': 'public, max-age=3600'
+    });
+    res.end(data);
+  });
+}
+
+// ── Collect Body ────────────────────────────────────────────
+function collectBody(req) {
+  return new Promise((resolve, reject) => {
+    let body = '';
+    req.on('data', chunk => { body += chunk; });
+    req.on('end', () => resolve(body));
+    req.on('error', reject);
+  });
+}
+
+// ── JSON Helper ─────────────────────────────────────────────
+function sendJSON(res, status, data) {
+  res.writeHead(status, {
+    'Content-Type': 'application/json; charset=utf-8',
+    'Access-Control-Allow-Origin': '*'
+  });
+  res.end(JSON.stringify(data, null, 2));
+}
+
+// ── CORS Preflight ──────────────────────────────────────────
+function handleCORS(req, res) {
+  res.writeHead(204, {
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+    'Access-Control-Allow-Headers': 'Content-Type, Authorization, X-X402-Payment',
+    'Access-Control-Max-Age': '86400'
+  });
+  res.end();
+}
+
+// ── MCP SSE Endpoint (GET /mcp) ─────────────────────────────
+function handleMCPSSE(req, res) {
+  // Send SSE headers as specified
+  res.writeHead(200, {
+    'Content-Type': 'text/event-stream',
+    'Cache-Control': 'no-cache',
+    'Connection': 'keep-alive',
+    'Access-Control-Allow-Origin': '*'
+  });
+  
+  // Write the endpoint event as specified in the task
+  res.write('event: endpoint\ndata: http://localhost:8080/mcp\n\n');
+  
+  // Close gracefully after sending the endpoint event
+  res.end();
+}
+
+// ── MCP JSON-RPC Endpoint (POST /mcp) ───────────────────────
+async function handleMCPJsonRpc(req, res) {
+  let body;
+  try {
+    body = await collectBody(req);
+  } catch (err) {
+    res.writeHead(200, { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' });
+    res.end(JSON.stringify({
+      jsonrpc: '2.0',
+      error: { code: -32700, message: 'Parse error' },
+      id: null
+    }));
+    return;
+  }
+
+  let request;
+  try {
+    request = JSON.parse(body);
+  } catch (e) {
+    res.writeHead(200, { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' });
+    res.end(JSON.stringify({
+      jsonrpc: '2.0',
+      error: { code: -32700, message: 'Parse error' },
+      id: null
+    }));
+    return;
+  }
+
+  const { method, params, id } = request;
+
+  // Ensure we have a valid method
+  if (!method) {
+    res.writeHead(200, { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' });
+    res.end(JSON.stringify({
+      jsonrpc: '2.0',
+      error: { code: -32600, message: 'Invalid Request' },
+      id: id || null
+    }));
+    return;
+  }
+
+  let response;
+
+  if (method === 'tools/list') {
+    const tools = mcpHandler.handleToolsList();
+    response = {
+      jsonrpc: '2.0',
+      id: id !== undefined ? id : null,
+      result: { tools }
+    };
+  } else if (method === 'tools/call') {
+    // Extract name and arguments from params
+    const name = params && params.name ? params.name : null;
+    const args = params && params.arguments ? params.arguments : (params || {});
+    const result = mcpHandler.handleToolsCall(name, args);
+    
+    // Check if the result is an error object
+    if (result && result.code !== undefined && result.message !== undefined) {
+      response = {
+        jsonrpc: '2.0',
+        id: id !== undefined ? id : null,
+        error: result
+      };
+    } else {
+      response = {
+        jsonrpc: '2.0',
+        id: id !== undefined ? id : null,
+        result: result
+      };
+    }
+  } else {
+    response = {
+      jsonrpc: '2.0',
+      id: id !== undefined ? id : null,
+      error: {
+        code: -32601,
+        message: `Method not found: ${method}`,
+        data: { availableMethods: ['tools/list', 'tools/call'] }
+      }
+    };
+  }
+
+  res.writeHead(200, { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' });
+  res.end(JSON.stringify(response));
+}
+
+// ── Health Check ────────────────────────────────────────────
+function handleHealth(req, res) {
+  sendJSON(res, 200, {
+    status: 'ok',
+    service: 'my-automaton',
+    version: '2.0.0',
+    uptime: process.uptime(),
+    mcp: {
+      endpoints: {
+        jsonrpc: '/mcp (POST)',
+        sse: '/mcp (GET)',
+        discovery: '/.well-known/mcp.json (GET)'
+      },
+      tools: mcpHandler.TOOL_LIST ? mcpHandler.TOOL_LIST.map(t => t.name) : ['analyze','summarize','review','security','explain','refactor','complexity']
+    }
+  });
+}
+
+// ── Main Request Handler ────────────────────────────────────
+async function handleRequest(req, res) {
+  const parsedUrl = url.parse(req.url, true);
+  const pathname = parsedUrl.pathname;
+  const method = req.method.toUpperCase();
+
+  // ── CORS Preflight ──
+  if (method === 'OPTIONS') {
+    return handleCORS(req, res);
+  }
+
+  try {
+    // ── MCP Routes ──────────────────────────────────────
+    // GET /mcp — SSE endpoint (service description for AI directories)
+    if (pathname === '/mcp' && method === 'GET') {
+      return handleMCPSSE(req, res);
+    }
+    
+    // POST /mcp — JSON-RPC endpoint (tools/list, tools/call, etc.)
+    if (pathname === '/mcp' && method === 'POST') {
+      return await handleMCPJsonRpc(req, res);
+    }
+
+    // ── Discovery Routes ────────────────────────────────
+    // /.well-known/mcp.json — MCP discovery metadata (Smithery, Glama, MCP.so)
+    if (pathname === '/.well-known/mcp.json' && method === 'GET') {
+      const meta = mcpHandler.getDiscoveryMetadata();
+      return sendJSON(res, 200, meta);
+    }
+
+    // /.well-known/ai-plugin.json — AI plugin manifest (OpenAI GPT store, directories)
+    if (pathname === '/.well-known/ai-plugin.json' && method === 'GET') {
+      const pluginPath = path.join(WELL_KNOWN_DIR, 'ai-plugin.json');
+      if (fs.existsSync(pluginPath)) {
+        return serveStatic(req, res, pluginPath);
+      }
+      // Fallback: generate on the fly
+      const plugin = {
+        schema_version: 'v1',
+        name_for_human: 'my-automaton',
+        name_for_model: 'my_automaton',
+        description_for_human: 'AI-powered code review, text analysis, security scanning, and summarization services. Pay-per-use with USDC on Base chain.',
+        description_for_model: 'Analyze, review, summarize, security scan, explain, refactor, and measure complexity of code and text. Supports multiple programming languages.',
+        auth: { type: 'none' },
+        api: { type: 'openapi', url: '/api/openapi.json', has_user_authentication: false },
+        contact_email: 'admin@chaosong.dpdns.org',
+        legal_info_url: '/terms.html',
+        logo_url: '/logo.png',
+        capabilities: {
+          tools: mcpHandler.TOOL_LIST ? mcpHandler.TOOL_LIST.map(t => ({
+            name: t.name,
+            description: t.description
+          })) : []
+        },
+        mcp_endpoints: {
+          jsonrpc: '/mcp',
+          sse: '/mcp'
+        }
+      };
+      return sendJSON(res, 200, plugin);
+    }
+
+    // ── Serve the /.well-known/ directory via static middleware ──
+    if (pathname.startsWith('/.well-known/')) {
+      const relativePath = pathname.replace('/.well-known/', '');
+      // Avoid directory traversal
+      const safePath = relativePath.replace(/\.\.\//g, '').replace(/\.\./g, '');
+      const filePath = path.join(WELL_KNOWN_DIR, safePath);
+      if (fs.existsSync(filePath) && fs.statSync(filePath).isFile()) {
+        return serveStatic(req, res, filePath);
+      }
+    }
+
+    // ── GitHub Webhook ──────────────────────────────────
+    if (pathname === '/webhook/github' && method === 'POST') {
+      return githubWebhook.handleWebhook(req, res);
+    }
+
+    // ── Health / Root ───────────────────────────────────
+    if (pathname === '/health') {
+      return handleHealth(req, res);
+    }
+    
+    // ── Root serves index.html ──────────────────────────
+    if (pathname === '/') {
+      const indexPath = path.join(PUBLIC_DIR, 'index.html');
+      if (fs.existsSync(indexPath)) {
+        return serveStatic(req, res, indexPath);
+      }
+      return handleHealth(req, res);
+    }
+
+    // ── Static Files from public directory ──────────────
+    const publicPath = path.join(PUBLIC_DIR, pathname === '/' ? 'index.html' : pathname);
+    if (fs.existsSync(publicPath) && fs.statSync(publicPath).isFile()) {
+      return serveStatic(req, res, publicPath);
+    }
+
+    // ── 404 for everything else ─────────────────────────
+    sendJSON(res, 404, {
+      error: 'Not found',
+      path: pathname,
+      available: {
+        mcp: { get: '/mcp (SSE endpoint)', post: '/mcp (JSON-RPC)' },
+        discovery: ['/.well-known/mcp.json', '/.well-known/ai-plugin.json'],
+        webhooks: { github: '/webhook/github (POST)' },
+        health: '/health'
+      }
+    });
+
+  } catch (err) {
+    console.error('Gateway error:', err);
+    sendJSON(res, 500, { error: 'Internal server error', message: err.message });
+  }
+}
+
+// ── Start Server ────────────────────────────────────────────
+const server = http.createServer(handleRequest);
+
+server.listen(PORT, '0.0.0.0', () => {
+  console.log(`✅ my-automaton Gateway running on http://0.0.0.0:${PORT}`);
+  console.log(`   MCP SSE:      http://localhost:${PORT}/mcp (GET)`);
+  console.log(`   MCP JSON-RPC: http://localhost:${PORT}/mcp (POST)`);
+  console.log(`   Discovery:    http://localhost:${PORT}/.well-known/mcp.json`);
+  console.log(`   AI Plugin:    http://localhost:${PORT}/.well-known/ai-plugin.json`);
+  console.log(`   Health:       http://localhost:${PORT}/health`);
+});
+
+// Graceful shutdown
+process.on('SIGTERM', () => {
+  console.log('Shutting down gateway...');
+  server.close(() => process.exit(0));
+});
+process.on('SIGINT', () => {
+  console.log('Shutting down gateway...');
+  server.close(() => process.exit(0));
+});

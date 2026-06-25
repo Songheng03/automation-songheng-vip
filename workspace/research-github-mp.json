@@ -1,0 +1,251 @@
+{
+  "research_topic": "GitHub Marketplace Submission Process",
+  "source": "GitHub Official Documentation (docs.github.com)",
+  "last_updated": "Free, Pro, & Team version",
+  "overview": {
+    "description": "GitHub Marketplace connects developers with tools that extend and improve GitHub workflows. Two types of tools can be listed: GitHub Actions and Apps (GitHub Apps or OAuth Apps). GitHub Apps are the officially recommended way to integrate.",
+    "key_distinction": "GitHub Actions can be published by anyone. Apps can be listed for free by anyone, but only apps owned by organizations can sell (offer paid plans). Paid apps require publisher verification."
+  },
+  "submission_process_steps": [
+    {
+      "step": 1,
+      "title": "Review app against best practices and requirements",
+      "details": "Ensure the app follows security best practices, customer experience guidelines, and meets all listing requirements. Apps must provide value beyond just authentication."
+    },
+    {
+      "step": 2,
+      "title": "Add webhook events for billing",
+      "details": "Configure webhook events to track user billing requests using the GitHub Marketplace API. Handle marketplace_purchase events for new purchases, upgrades, downgrades, cancellations, and free trials."
+    },
+    {
+      "step": 3,
+      "title": "Create a draft GitHub Marketplace listing",
+      "details": "Navigate to https://github.com/marketplace/new or through Developer Settings → GitHub Apps/OAuth Apps → select app → 'List in Marketplace'. The app must be public. Only organization owners can create/submit listings for organization-owned apps."
+    },
+    {
+      "step": 4,
+      "title": "Add pricing plans",
+      "details": "Configure free, flat-rate, or per-unit pricing plans. Up to 10 plans allowed. Paid plans must support both monthly and annual billing in USD. Free trials of 14 days can be offered."
+    },
+    {
+      "step": 5,
+      "title": "Complete listing metadata",
+      "details": "Fill out listing name, very short description (40-80 chars recommended), introductory description (150-250 chars), detailed description (up to 1000 chars), categories, supported languages, URLs (customer support, privacy policy, installation URL for OAuth), logo (min 200x200px, transparent background), feature card (965x482px), and up to 5 product screenshots (min 1200px wide)."
+    },
+    {
+      "step": 6,
+      "title": "Accept GitHub Marketplace Developer Agreement",
+      "details": "Read and accept the terms of the GitHub Marketplace Developer Agreement."
+    },
+    {
+      "step": 7,
+      "title": "Submit listing for review",
+      "details": "From the Overview page of the draft listing, click 'Request publish'. An onboarding expert will reach out with additional information about the onboarding process."
+    }
+  ],
+  "requirements": {
+    "all_listings": {
+      "description": "Requirements that apply to both free and paid apps",
+      "items": [
+        "Must provide value to the GitHub community",
+        "Must accept GitHub Marketplace Developer Agreement",
+        "Only organization owners can create/submit listings for organization-owned apps",
+        "Must not actively persuade users away from GitHub",
+        "Must include valid contact information for the publisher",
+        "Must have a relevant description of the application",
+        "Must specify a pricing plan",
+        "Must have a valid link to a privacy policy",
+        "Must provide a support method (valid support link and/or support email)",
+        "All additional links must work and resolve to relevant pages",
+        "Must integrate with the platform beyond just authentication",
+        "Must be publicly available (no public preview or invite-only)",
+        "Must have webhook events set up for plan changes/cancellations via Marketplace API"
+      ]
+    },
+    "brand_and_listing": {
+      "description": "Brand and listing requirements for all apps",
+      "items": [
+        "GitHub logo usage must follow GitHub Logos and Usage guidelines",
+        "Must have logo, feature card, and screenshots meeting recommended guidelines",
+        "Descriptions must be well-written and free of grammatical errors"
+      ]
+    },
+    "free_apps": {
+      "description": "Considerations for free apps",
+      "items": [
+        "Free apps are encouraged in GitHub Marketplace",
+        "If a paid version exists outside Marketplace, once meeting paid app requirements, at least one paid plan must be offered in Marketplace"
+      ]
+    },
+    "paid_apps": {
+      "description": "Requirements for paid apps (applies when offering paid plans)",
+      "items": [
+        "App must be owned by an organization that is a verified publisher",
+        "GitHub Apps must have a minimum of 100 installations",
+        "OAuth apps must have a minimum of 200 users",
+        "Must handle Marketplace purchase events for new purchases, upgrades, downgrades, cancellations, and free trials",
+        "Must support both monthly and annual billing for paid subscriptions",
+        "May offer any combination of free and paid plans"
+      ]
+    }
+  },
+  "publisher_verification": {
+    "purpose": "Required to offer paid plans or display a marketplace badge",
+    "prerequisites": [
+      "App must be owned by an organization (not a personal account)",
+      "Must have owner permissions in the organization",
+      "Enable two-factor authentication for the organization",
+      "Verify a domain for the organization",
+      "Ensure basic profile information is present and accurate with a valid support email"
+    ],
+    "process": [
+      "Go to the organization's Settings → Developer settings → Publisher Verification",
+      "Complete the checklist (profile info, 2FA, verified domain)",
+      "Click 'Request Verification'",
+      "GitHub reviews the details and notifies when verification is complete"
+    ]
+  },
+  "metadata_fields": {
+    "listing_name": {
+      "type": "string",
+      "max_length": 255,
+      "description": "Appears on Marketplace homepage. Can differ from app's name. Cannot match an existing GitHub account name (unless it's your own)."
+    },
+    "very_short_description": {
+      "type": "string",
+      "recommended_length": "40-80 characters",
+      "guidelines": [
+        "Describe app's functionality, not a call to action",
+        "Don't repeat the app's name",
+        "Use sentence-case capitalization",
+        "Don't use punctuation at end",
+        "Only capitalize proper nouns",
+        "Use serial comma in lists",
+        "Avoid referring to users as 'users'",
+        "Avoid acronyms unless well-established (e.g., API)"
+      ]
+    },
+    "categories": {
+      "type": "select",
+      "primary": "Required - best category for the app",
+      "secondary": "Optional - additional category"
+    },
+    "supported_languages": {
+      "type": "array",
+      "max_items": 10,
+      "description": "Programming languages the app works with (optional)"
+    },
+    "urls": {
+      "required": [
+        "Customer support URL",
+        "Privacy policy URL",
+        "Installation URL (OAuth apps only)"
+      ],
+      "optional": [
+        "Company URL",
+        "Status URL",
+        "Documentation URL"
+      ]
+    },
+    "logo": {
+      "minimum_size": "200x200 pixels",
+      "recommendations": [
+        "Square image with logo centered",
+        "Transparent background preferred",
+        "Avoid words/text in logo",
+        "Choose badge background color matching logo background"
+      ]
+    },
+    "feature_card": {
+      "dimensions": "965x482 pixels",
+      "description": "Background image for featured spot on homepage. Should capture brand personality."
+    },
+    "screenshots": {
+      "max_count": 5,
+      "minimum_width": "1200px",
+      "guidelines": [
+        "All same height/width (aspect ratio)",
+        "Show as much UI as possible",
+        "Exclude browser chrome (address bar, title bar, toolbar)",
+        "Short, snappy captions"
+      ]
+    },
+    "introductory_description": {
+      "type": "string",
+      "recommended_length": "150-250 characters",
+      "guidelines": [
+        "Always begin with app's name",
+        "Use active voice",
+        "1-2 sentence high-level summary"
+      ]
+    },
+    "detailed_description": {
+      "type": "string",
+      "max_length": "1000 characters",
+      "guidelines": [
+        "3-5 value propositions, each with 1-2 sentences",
+        "Use level-three headers (###) for value proposition titles",
+        "Use active voice",
+        "Use sentence-case capitalization"
+      ]
+    }
+  },
+  "pricing_plans": {
+    "max_plans": 10,
+    "types": [
+      "Free",
+      "Flat-rate (fixed price)",
+      "Per-unit (price per seat/unit)"
+    ],
+    "availability_options": [
+      "Personal accounts and organizations",
+      "Personal accounts only",
+      "Organizations only"
+    ],
+    "paid_plan_requirements": [
+      "Must set price for both monthly and yearly subscriptions in USD",
+      "Must process plan change events",
+      "Must request verification to publish with a paid plan",
+      "Can offer 14-day free trial that auto-converts to paid subscription"
+    ],
+    "notes": [
+      "Once a pricing plan is published for an already-listed app, it cannot be edited. Must be deleted and re-created.",
+      "Existing customers on a removed plan continue on it until they cancel.",
+      "Cannot list with a free plan if a paid service exists outside Marketplace."
+    ]
+  },
+  "approval_process": {
+    "submission": "Click 'Request publish' from the Overview page of the draft listing after completing all required sections.",
+    "review": "An onboarding expert reviews the submission and contacts the publisher with additional information.",
+    "post_approval": [
+      "App appears on GitHub Marketplace",
+      "Can edit information and images after approval",
+      "Cannot change existing published pricing plans (must delete and recreate)",
+      "Monthly payments received for paid app purchases"
+    ],
+    "metrics_available": [
+      "GitHub Marketplace Insights page tracks app performance metrics",
+      "Transactions page allows download of all transactions"
+    ]
+  },
+  "api_and_webhooks": {
+    "api": "REST endpoints for GitHub Marketplace API available at docs.github.com",
+    "webhook_events": {
+      "event_type": "marketplace_purchase",
+      "actions": ["purchased", "cancelled", "pending_change", "changed", "pending_change_cancelled"],
+      "handling_required_for_paid": [
+        "New purchases",
+        "Upgrades",
+        "Downgrades",
+        "Cancellations",
+        "Free trials"
+      ]
+    }
+  },
+  "key_restrictions": {
+    "organization_ownership": "Only organization owners can create/submit listings for organization-owned apps. GitHub App manager role does NOT grant listing permission.",
+    "public_app_only": "Only public apps can have draft listings created.",
+    "personal_accounts": "Personal accounts cannot sell apps. Apps must be transferred to an organization for paid plans.",
+    "free_plan_restriction": "Cannot list a free plan if a paid service exists outside Marketplace (with some exceptions after meeting paid app requirements)."
+  }
+}

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Upgrade Required — my-automaton AI Services</title>
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #0f0f1a; color: #e0e0e0; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; }
+    .container { max-width: 560px; width: 100%; text-align: center; }
+    .icon { font-size: 64px; margin-bottom: 16px; }
+    h1 { font-size: 1.8rem; margin-bottom: 12px; background: linear-gradient(135deg, #667eea, #764ba2); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    p { color: #999; font-size: 15px; line-height: 1.6; margin-bottom: 8px; }
+    .usage-box { background: #1a1a2e; border: 1px solid #2a2a4a; border-radius: 12px; padding: 24px; margin: 24px 0; }
+    .usage-box .num { font-size: 3rem; font-weight: 700; color: #667eea; }
+    .usage-box .label { color: #888; font-size: 14px; margin-top: 4px; }
+    .plan-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 24px 0; }
+    .plan { background: #1a1a2e; border: 1px solid #2a2a4a; border-radius: 10px; padding: 16px; cursor: pointer; transition: all 0.2s; }
+    .plan:hover { border-color: #667eea; transform: translateY(-2px); }
+    .plan .name { font-weight: 600; color: #ccc; }
+    .plan .price { font-size: 1.4rem; font-weight: 700; color: #667eea; margin: 8px 0; }
+    .plan .credits { font-size: 13px; color: #888; }
+    .plan.recommended { border-color: #667eea; position: relative; }
+    .plan.recommended::before { content: 'BEST VALUE'; position: absolute; top: -8px; left: 50%; transform: translateX(-50%); background: #667eea; color: #fff; font-size: 10px; padding: 2px 10px; border-radius: 4px; font-weight: 600; letter-spacing: 0.5px; }
+    .btn { display: inline-block; background: linear-gradient(135deg, #667eea, #764ba2); color: #fff; padding: 14px 32px; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 16px; transition: opacity 0.2s; margin-top: 8px; border: none; cursor: pointer; }
+    .btn:hover { opacity: 0.9; }
+    .features { text-align: left; margin: 20px 0; }
+    .features li { list-style: none; padding: 8px 0; color: #aaa; font-size: 14px; }
+    .features li::before { content: '✓ '; color: #4ade80; }
+    .why { background: #1a1a2e; border: 1px solid #2a2a4a; border-radius: 10px; padding: 20px; margin: 20px 0; text-align: left; }
+    .why h3 { color: #ccc; font-size: 14px; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 1px; }
+    .why p { font-size: 13px; color: #888; margin-bottom: 4px; }
+  </style>
+</head>
+<body>
+<div style="background:#161b22;border-bottom:1px solid #30363d;padding:10px 20px;font-size:.85rem;display:flex;gap:16px;align-items:center;flex-wrap:wrap"><a href="/" style="color:#58a6ff;text-decoration:none;font-weight:600">🏠 Home</a><span style="color:#484f58">|</span><a href="/pricing.html" style="color:#8b949e;text-decoration:none">Pricing</a><a href="/api-docs.html" style="color:#8b949e;text-decoration:none">API</a><a href="/playground.html" style="color:#8b949e;text-decoration:none">Playground</a></div>
+
+  <div class="container">
+    <div class="icon">⚡</div>
+    <h1>You've Used All Free Tries!</h1>
+    <p>Great taste! You've exhausted your 3 free daily requests.<br>Unlock unlimited AI-powered analysis for your projects.</p>
+
+    <div class="usage-box">
+      <div class="num">3 / 3</div>
+      <div class="label">Free Requests Used Today</div>
+      <p style="margin-top:12px; font-size:13px;">Wait 24h or upgrade now for instant access</p>
+    </div>
+
+    <h2 style="color:#ccc; font-size:1.2rem; margin-top:16px;">Choose Your Plan</h2>
+
+    <div class="plan-grid">
+      <div class="plan" onclick="checkout('price_starter')">
+        <div class="name">Starter</div>
+        <div class="price">$5</div>
+        <div class="credits">500 credits</div>
+        <div style="font-size:12px;color:#666;margin-top:4px;">~500 API calls</div>
+      </div>
+      <div class="plan" onclick="checkout('price_advanced')">
+        <div class="name">Pro</div>
+        <div class="price">$10</div>
+        <div class="credits">1,100 credits</div>
+        <div style="font-size:12px;color:#666;margin-top:4px;">~1,100 API calls</div>
+      </div>
+      <div class="plan recommended" onclick="checkout('price_pro')">
+        <div class="name">Business</div>
+        <div class="price">$25</div>
+        <div class="credits">3,000 credits</div>
+        <div style="font-size:12px;color:#666;margin-top:4px;">~3,000 API calls</div>
+      </div>
+      <div class="plan" onclick="checkout('price_ultimate')">
+        <div class="name">Enterprise</div>
+        <div class="price">$58</div>
+        <div class="credits">6,500 credits</div>
+        <div style="font-size:12px;color:#666;margin-top:4px;">~6,500 API calls</div>
+      </div>
+    </div>
+
+    <button class="btn" onclick="checkout('price_pro')">Upgrade Now — $25</button>
+    <p style="font-size:12px;color:#666;margin-top:8px;">One-time payment. Credits never expire. Cancel anytime.</p>
+
+    <div class="features">
+      <ul>
+        <li>7 AI services: analyze, summarize, review, security scan, explain, refactor, complexity</li>
+        <li>DeepSeek V4 Flash — state-of-the-art AI reasoning</li>
+        <li>REST API + MCP protocol + OpenAI-compatible endpoints</li>
+        <li>No monthly subscription, no hidden fees</li>
+      </ul>
+    </div>
+
+    <div class="why">
+      <h3>Why Upgrade?</h3>
+      <p><strong>You already used 3 free requests</strong> — our service clearly delivers value. Upgrade for:</p>
+      <p>→ Unlimited AI code reviews for your GitHub PRs</p>
+      <p>→ Security scanning for every project you build</p>
+      <p>→ Text analysis, summarization, and refactoring on demand</p>
+      <p>→ Embeddable widget that brings AI to your site</p>
+    </div>
+  </div>
+
+  <script>
+    async function checkout(priceId) {
+      try {
+        const res = await fetch('/api/create-checkout-session', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ priceId, successUrl: window.location.origin + '/portal.html', cancelUrl: window.location.href })
+        });
+        const data = await res.json();
+        if (data.url) window.location.href = data.url;
+        else alert('Error: ' + (data.error || 'failed to create session'));
+      } catch(e) {
+        alert('Network error. Please try again.');
+      }
+    }
+  </script>
+<script src="/conversion-banner.js" defer></script>
+</body>
+</html>

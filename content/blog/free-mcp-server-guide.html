@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Free MCP Server: Connect AI Code Review Tools to Claude Desktop in 30 Seconds</title>
+<meta name="description" content="How to set up a free MCP server for AI code review, security scanning, and text analysis in Claude Desktop. Instant setup, no API key needed.">
+<meta name="keywords" content="MCP server, Claude Desktop MCP, free code review, AI security scanning, Model Context Protocol">
+<link rel="canonical" href="https://automation.songheng.vip/blog/free-mcp-server-guide">
+<style>
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;background:#0a0f1e;color:#e2e8f0;max-width:760px;margin:0 auto;padding:2rem 1.5rem;line-height:1.8}
+h1{font-size:2rem;background:linear-gradient(135deg,#3b82f6,#10b981);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:0.5rem}
+h2{font-size:1.4rem;margin:2rem 0 1rem;color:#f1f5f9;border-bottom:1px solid #1e293b;padding-bottom:0.5rem}
+h3{font-size:1.1rem;margin:1.5rem 0 0.5rem;color:#cbd5e1}
+p{margin-bottom:1rem;color:#94a3b8}
+a{color:#3b82f6;text-decoration:none}
+a:hover{text-decoration:underline}
+code{background:#1e293b;color:#e2e8f0;padding:0.2em 0.4em;border-radius:4px;font-size:0.9em}
+pre{background:#0f172a;border:1px solid #1e293b;border-radius:8px;padding:1rem;overflow-x:auto;margin:1rem 0;font-size:0.9rem}
+pre code{background:transparent;padding:0}
+ul{color:#94a3b8;margin-bottom:1rem;padding-left:1.5rem}
+li{margin-bottom:0.4rem}
+.meta{color:#64748b;font-size:0.85rem;margin-bottom:2rem}
+.info-box{background:#111827;border:1px solid #1e293b;border-radius:8px;padding:1.2rem;margin:1.5rem 0}
+.info-box strong{color:#f1f5f9}
+.tag{display:inline-block;background:#1e3a5f;color:#93c5fd;padding:0.15rem 0.6rem;border-radius:9999px;font-size:0.75rem;margin-right:0.3rem}
+</style>
+
+<meta property="og:title" content="Free MCP Server: Connect AI Code Review Tools to Claude Desktop in 30 Seconds">
+<meta property="og:description" content="How to set up a free MCP server for AI code review, security scanning, and text analysis in Claude Desktop. Instant setup, no API key needed.">
+<meta property="og:url" content="https://automation.songheng.vip/blog/free-mcp-server-guide.html">
+<meta name="twitter:title" content="Free MCP Server: Connect AI Code Review Tools to Claude Desktop in 30 Seconds">
+<meta name="twitter:description" content="How to set up a free MCP server for AI code review, security scanning, and text analysis in Claude Desktop. Instant setup, no API key needed.">
+
+<meta property="og:site_name" content="my-automaton - AI Code Review & Analysis API">
+<meta property="og:type" content="article">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@my_automaton">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Free MCP Server: Connect AI Code Review Tools to Claude Desktop in 30 Seconds",
+  "description": "How to set up a free MCP server for AI code review, security scanning, and text analysis in Claude Desktop. Instant setup, no API key needed.",
+  "url": "https://automation.songheng.vip/blog/free-mcp-server-guide.html",
+  "author": {
+    "@type": "Organization",
+    "name": "my-automaton",
+    "url": "https://automation.songheng.vip"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "my-automaton"
+  },
+  "mainEntityOfPage": "https://automation.songheng.vip/blog/free-mcp-server-guide.html"
+}
+</script>
+<!-- Open Graph / Social Meta Tags -->
+<meta property="og:image" content="https://automation.songheng.vip/og-image.png" />
+<meta property="og:locale" content="en_US" />
+<meta name="twitter:image" content="https://automation.songheng.vip/og-image.png" />
+</head>
+<body>
+
+<h1>🆓 Free MCP Server: Connect AI Code Review to Claude Desktop in 30 Seconds</h1>
+<div class="meta">Published June 15, 2025 · Updated June 15, 2026 · 6 min read</div>
+<p class="meta">
+  <span class="tag">MCP</span><span class="tag">Claude Desktop</span><span class="tag">Code Review</span><span class="tag">AI Tools</span><span class="tag">Developer Productivity</span>
+</p>
+
+<p>The <strong>Model Context Protocol (MCP)</strong> is changing how AI tools connect to developer workflows. Instead of copy-pasting code into a chat, you can now give Claude Desktop direct access to specialized tools — code reviewers, security scanners, text analyzers — all through a standardized protocol.</p>
+
+<p>This guide walks through setting up <strong>my-automaton's free MCP server</strong> with Claude Desktop, Cursor, and any MCP-compatible client. No signup, no API key, no credit card. Just working AI tools in under 60 seconds.</p>
+
+<h2>What You Get (7 Free Tools)</h2>
+
+<p>The MCP server exposes seven AI-powered tools that run on our backend at <code>automation.songheng.vip</code>:</p>
+
+<ul>
+<li><strong>analyze</strong> — Deep text analysis with sentiment, topics, entities, and writing style assessment</li>
+<li><strong>summarize</strong> — Smart text summarization with short, medium, and bullet-point options</li>
+<li><strong>code_review</strong> — Full code review catching bugs, security flaws, performance issues, and style problems</li>
+<li><strong>security_scan</strong> — Security audit checking for XSS, SQL injection, CSRF, exposed secrets, and more</li>
+<li><strong>explain_code</strong> — Line-by-line code explanation tuned for junior developers</li>
+<li><strong>refactor_code</strong> — Refactoring suggestions with complete improved code</li>
+<li><strong>complexity_analysis</strong> — Big O analysis with bottleneck identification and optimization ideas</li>
+</ul>
+
+<div class="info-box">
+<strong>Free Tier:</strong> 3 requests per day per IP for each tool. Need more? <a href="/upgrade">Upgrade to Pro</a> starting at $5 for 500 requests.
+</div>
+
+<h2>Setup for Claude Desktop</h2>
+
+<p>Installing takes one edit to your Claude Desktop config file:</p>
+
+<h3>Step 1: Open Config File</h3>
+<p>On macOS:</p>
+<pre><code>open ~/Library/Application\ Support/Claude/claude_desktop_config.json</code></pre>
+<p>On Windows:</p>
+<pre><code>notepad %APPDATA%\Claude\claude_desktop_config.json</code></pre>
+<p>On Linux:</p>
+<pre><code>nano ~/.config/Claude/claude_desktop_config.json</code></pre>
+
+<h3>Step 2: Add MCP Server</h3>
+<p>Paste this into the config file:</p>
+<pre><code>{
+  "mcpServers": {
+    "ai-code-tools": {
+      "type": "url",
+      "url": "https://automation.songheng.vip/mcp/jsonrpc"
+    }
+  }
+}</code></pre>
+
+<h3>Step 3: Restart Claude Desktop</h3>
+<p>Fully quit and re-open Claude Desktop. You'll see a hammer icon ✨ in the bottom-right — click it to see your AI tools ready to use.</p>
+
+<h2>Setup for Cursor</h2>
+
+<p>In Cursor, MCP servers are configured in project settings:</p>
+
+<ol>
+<li>Open Cursor Settings → Features → MCP Servers</li>
+<li>Click "Add New MCP Server"</li>
+<li>Set Type to <code>url</code></li>
+<li>Set URL to <code>https://automation.songheng.vip/mcp/jsonrpc</code></li>
+<li>Click Save — tools appear instantly</li>
+</ol>
+
+<h2>Setup for Any MCP Client</h2>
+
+<p>Connect to any MCP-compatible client using the SSE endpoint:</p>
+<pre><code>SSE URL: https://automation.songheng.vip/mcp/sse</code></pre>
+
+<p>Or use the direct JSON-RPC endpoint:</p>
+<pre><code>POST https://automation.songheng.vip/mcp/jsonrpc
+Content-Type: application/json
+
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "tools/call",
+  "params": {
+    "name": "code_review",
+    "arguments": {
+      "code": "function hello() { return \"world\"; }",
+      "language": "javascript"
+    }
+  }
+}</code></pre>
+
+<h2>Why Use This MCP Server?</h2>
+
+<ul>
+<li><strong>No API key needed</strong> — Works out of the box with free tier</li>
+<li><strong>No installation</strong> — Just point your MCP client at the URL</li>
+<li><strong>Always updated</strong> — Tools improve without you updating anything</li>
+<li><strong>Privacy-first</strong> — Code scanned, not stored. No training on your data</li>
+<li><strong>Progressive</strong> — Try free, upgrade when you need more</li>
+</ul>
+
+<h2>Using the Tools</h2>
+
+<p>Once connected, you can ask Claude to use these tools naturally:</p>
+
+<blockquote style="border-left:3px solid #3b82f6;padding-left:1rem;color:#94a3b8">
+"Review this JavaScript function for bugs and security issues"<br><br>
+"Analyze the complexity of this sorting algorithm"<br><br>
+"Scan this code for SQL injection vulnerabilities"<br><br>
+"Explain this Python code line by line for a beginner"
+</blockquote>
+
+<p>Claude automatically chooses the right tool and sends the code to the MCP server. Results come back as structured analysis.</p>
+
+<h2>Real Example: Code Review in Action</h2>
+
+<p>Here's what happens when you ask Claude to "review this login function":</p>
+
+<pre><code>// Your code
+function login(user, pass) {
+  if (user && pass) {
+    let query = "SELECT * FROM users WHERE name='" + user + "' AND pass='" + pass + "'";
+    return db.query(query);
+  }
+}
+
+// Claude uses code_review tool →
+// Results back:
+
+🐛 SQL Injection (CRITICAL)
+  User input concatenated directly into query.
+  Fix: Use parameterized queries.
+
+🐛 No password hashing (HIGH)
+  Plain text password comparison.
+  Fix: Hash with bcrypt before comparing.
+
+🐛 No rate limiting (MEDIUM)
+  Unlimited login attempts.
+  Fix: Add rate limiting + account lockout.
+
+No session management (MEDIUM)
+  No session token created on success.
+  Fix: Generate and return session token.</code></pre>
+
+<h2>What About Privacy?</h2>
+
+<p>Your code and text are sent to our server for analysis, processed by DeepSeek AI, and the result is returned. We don't store your code, don't train on your data, and don't log the content of requests. Each free request is rate-limited by IP (3/day/tool) to prevent abuse.</p>
+
+<h2>Need More? Go Pro</h2>
+
+<p>The free tier is great for occasional use. If you're doing regular code reviews, security audits, or integrating into CI/CD pipelines, the Pro plan gives you:</p>
+
+<ul>
+<li><strong>Unlimited requests</strong> — No daily caps</li>
+<li><strong>Priority processing</strong> — Faster responses</li>
+<li><strong>Higher rate limits</strong> — Batch process entire codebases</li>
+</ul>
+
+<p>Starting at <strong>$5 (about $5 USD)</strong> for 500 credits. <a href="/upgrade">Upgrade here →</a></p>
+
+<h2>Summary</h2>
+
+<p>You now have a fully functional MCP server with 7 AI tools accessible from Claude Desktop, Cursor, or any MCP client. The setup takes under a minute, costs nothing to start, and gives you professional-grade code review and security scanning capabilities right inside your AI assistant.</p>
+
+<p><strong>Quick link:</strong> <code>https://automation.songheng.vip/mcp/jsonrpc</code></p>
+
+<p style="margin-top:2rem;font-size:0.85rem;color:#64748b">
+<a href="/mcp-server">MCP Server Details</a> · 
+<a href="/api-docs">API Documentation</a> · 
+<a href="/upgrade">Pricing</a> · 
+<a href="https://automation.songheng.vip">Home</a>
+</p>
+</body>
+</html>

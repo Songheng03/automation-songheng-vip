@@ -1,0 +1,12 @@
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "my-automaton - AI Agent Services",
+  "url": "http://automation.songheng.vip:8080",
+  "description": "Free AI code review, text analysis, security scanning, and summarization services. Pay-per-use x402 micropayments on Base chain.",
+  "potentialAction": {
+    "@type": "SearchAction",
+    "target": "http://automation.songheng.vip:8080/search?q={search_term_string}",
+    "query-input": "required name=search_term_string"
+  }
+}

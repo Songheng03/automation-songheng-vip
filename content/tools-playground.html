@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="canonical" href="https://automation.songheng.vip/tools-playground.html">
+  <meta property="og:title" content="🧪 my-automaton - AI Playground">
+  <meta property="og:description" content="Free AI code analysis playground. Analyze, review, summarize, secure scan, and refactor code with AI. 3 free requests daily.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://automation.songheng.vip/tools-playground.html">
+  <meta property="og:image" content="https://automation.songheng.vip/og-image.png">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🧪 my-automaton - AI Playground</title>
+<meta name="description" content="Free AI code analysis playground. Analyze, review, summarize, secure scan, and refactor code with AI. 3 free requests daily.">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#0a0a0f;color:#e0e0e0;min-height:100vh}
+nav{background:#12121a;padding:16px 24px;border-bottom:1px solid #2a2a3a;display:flex;gap:20px;align-items:center}
+nav a{color:#888;text-decoration:none;font-size:14px;transition:color .2s}
+nav a:hover{color:#fff}
+.container{max-width:1200px;margin:0 auto;padding:24px}
+h1{font-size:28px;margin-bottom:8px;color:#fff}
+.subtitle{color:#888;margin-bottom:24px;font-size:14px}
+.toolbar{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}
+.tool-btn{padding:10px 18px;border:1px solid #2a2a3a;border-radius:8px;background:#181825;color:#ccc;cursor:pointer;font-size:13px;transition:all .2s}
+.tool-btn:hover{border-color:#555;color:#fff}
+.tool-btn.active{background:#2563eb;border-color:#2563eb;color:#fff}
+.editor-pane{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+@media(max-width:768px){.editor-pane{grid-template-columns:1fr}}
+textarea, .output{width:100%;min-height:350px;background:#0d0d14;border:1px solid #2a2a3a;border-radius:8px;padding:16px;font-family:'JetBrains Mono','Fira Code',monospace;font-size:13px;line-height:1.5;color:#e0e0e0;resize:vertical}
+textarea:focus{outline:none;border-color:#2563eb}
+.output{overflow-y:auto;white-space:pre-wrap;word-break:break-word}
+.output .empty{color:#555;font-style:italic}
+.action-bar{display:flex;gap:12px;align-items:center;margin-bottom:16px}
+.run-btn{padding:12px 32px;background:#2563eb;color:#fff;border:none;border-radius:8px;font-size:15px;cursor:pointer;transition:background .2s}
+.run-btn:hover{background:#1d4ed8}
+.run-btn:disabled{background:#444;cursor:not-allowed}
+.status{font-size:13px;color:#888}
+.status .free{color:#22c55e}
+input{background:#0d0d14;border:1px solid #2a2a3a;border-radius:6px;padding:8px 12px;color:#e0e0e0;font-size:13px;width:300px}
+.badge{display:inline-block;padding:2px 8px;border-radius:4px;font-size:11px;margin-left:6px}
+.badge.free{background:#166534;color:#86efac}
+.badge.paid{background:#7c3aed;color:#c4b5fd}
+.rate-info{font-size:12px;color:#666;margin-top:8px}
+footer{text-align:center;padding:32px;color:#555;font-size:13px}
+footer a{color:#666;text-decoration:none}
+footer a:hover{color:#888}
+</style>
+<meta name="google-site-verification" content="YOUR_CODE" />
+<meta property="og:site_name" content="my-automaton" />
+<meta property="og:type" content="website" />
+<meta property="og:locale" content="en_US" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:site" content="@my_automaton" />
+<script src="/js/analytics.js"></script>
+<!-- Open Graph / Social Meta Tags -->
+<meta name="twitter:title" content="🧪 my-automaton - AI Playground" />
+<meta name="twitter:description" content="Free AI code analysis playground. Analyze, review, summarize, secure scan, and refactor code with AI. 3 free requests daily." />
+<meta name="twitter:image" content="https://automation.songheng.vip/og-image.png" />
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "🧪 my-automaton - AI Playground",
+  "description": "Free AI code analysis playground. Analyze, review, summarize, secure scan, and refactor code with AI. 3 free requests daily.",
+  "url": "https://automation.songheng.vip/tools-playground.html",
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": "Web",
+  "author": {
+    "@type": "Organization",
+    "name": "my-automaton",
+    "url": "https://automation.songheng.vip"
+  },
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  }
+}
+</script>
+</head>
+<body>
+<nav>
+<a href="/">🏠 Home</a>
+<a href="/playground">🧪 Playground</a>
+<a href="/blog">📝 Blog</a>
+<a href="/api/catalog">📡 API</a>
+</nav>
+<div class="container">
+<h1>🧪 AI Playground</h1>
+<p class="subtitle">Free AI-powered text &amp; code analysis · 3 requests/day per IP · <a href="/v1/analyze" style="color:#888">API docs</a></p>
+
+<div class="toolbar" id="toolbar">
+<button class="tool-btn active" data-tool="analyze" data-cost="1">📊 Analyze <span class="badge free">free</span></button>
+<button class="tool-btn" data-tool="summarize" data-cost="2">📝 Summarize <span class="badge free">free</span></button>
+<button class="tool-btn" data-tool="review" data-cost="5">🔍 Code Review <span class="badge free">free</span></button>
+<button class="tool-btn" data-tool="security" data-cost="3">🛡️ Security <span class="badge free">free</span></button>
+<button class="tool-btn" data-tool="explain" data-cost="2">💡 Explain <span class="badge free">free</span></button>
+<button class="tool-btn" data-tool="refactor" data-cost="5">🔧 Refactor <span class="badge free">free</span></button>
+<button class="tool-btn" data-tool="complexity" data-cost="2">⚡ Complexity <span class="badge free">free</span></button>
+</div>
+
+<div class="editor-pane">
+<textarea id="input" placeholder="Paste your code or text here...">function fibonacci(n) {
+  if (n <= 1) return n;
+  return fibonacci(n-1) + fibonacci(n-2);
+}
+console.log(fibonacci(10));</textarea>
+<div class="output" id="output"><span class="empty">Results will appear here...</span></div>
+</div>
+
+<div class="action-bar">
+<button class="run-btn" id="runBtn">▶ Run Analysis</button>
+<span class="status" id="status">Ready · <span class="free" id="freeCount">3</span> free requests today</span>
+</div>
+<div class="rate-info">💡 Paid tier: send USDC on Base to <code>0x76eADdEBFfb6A61DD071f97F4508467fc55dd113</code> for unlimited use</div>
+</div>
+
+<footer>
+<p>my-automaton · AI-powered analysis · <a href="/agent.json">agent.json</a></p>
+</footer>
+
+<script>
+const TOOLS = {analyze:'📊',summarize:'📝',review:'🔍',security:'🛡️',explain:'💡',refactor:'🔧',complexity:'⚡'};
+let currentTool = 'analyze';
+let freeRemaining = 3;
+
+document.querySelectorAll('.tool-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.tool-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentTool = btn.dataset.tool;
+  });
+});
+
+document.getElementById('runBtn').addEventListener('click', runAnalysis);
+document.getElementById('input').addEventListener('keydown', e => {
+  if (e.ctrlKey && e.key === 'Enter') runAnalysis();
+});
+
+async function runAnalysis() {
+  const btn = document.getElementById('runBtn');
+  const output = document.getElementById('output');
+  const input = document.getElementById('input');
+  const status = document.getElementById('status');
+  
+  const text = input.value.trim();
+  if (!text) { output.textContent = '⚠️ Please enter some text or code.'; return; }
+  
+  btn.disabled = true;
+  btn.textContent = '⏳ Processing...';
+  output.textContent = 'Analyzing...';
+  
+  try {
+    const res = await fetch('/v1/' + currentTool, {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({text})
+    });
+    
+    const data = await res.json();
+    
+    if (res.status === 402) {
+      output.innerHTML = `<strong>💰 Free tier used up!</strong>\n\nSend ${data.cost_label} USDC on Base to:\n<code>${data.recipient}</code>\n\nThen retry with the transaction hash in X-X402-Payment header.\n\nOr use our API directly with x402 support.`;
+      freeRemaining = 0;
+      document.getElementById('freeCount').textContent = '0';
+      return;
+    }
+    
+    if (data.error) {
+      output.textContent = '❌ Error: ' + data.error;
+      return;
+    }
+    
+    // Format output nicely
+    const formatted = formatOutput(currentTool, data);
+    output.innerHTML = formatted;
+    
+    if (data.free_remaining !== undefined) {
+      freeRemaining = data.free_remaining;
+      document.getElementById('freeCount').textContent = freeRemaining;
+      status.innerHTML = `Ready · <span class="free">${freeRemaining}</span> free requests today`;
+    }
+    
+    if (data.fallback) {
+      output.innerHTML += '\n\n<em style="color:#888">⚠️ Rule-based mode (no AI). Set DEEPSEEK_API_KEY for full AI.';
+    }
+  } catch (e) {
+    output.textContent = '❌ Network error: ' + e.message;
+  } finally {
+    btn.disabled = false;
+    btn.textContent = '▶ Run Analysis';
+  }
+}
+
+function formatOutput(tool, data) {
+  const icon = TOOLS[tool] || '📊';
+  let html = `<strong style="color:#fff">${icon} ${tool.charAt(0).toUpperCase()+tool.slice(1)} Results</strong>\n\n`;
+  
+  try {
+    switch(tool) {
+      case 'analyze':
+        if (data.analysis) {
+          const a = typeof data.analysis === 'string' ? JSON.parse(data.analysis) : data.analysis;
+          html += `<strong>Overview:</strong> ${a.overview || a.analysis?.overview || 'N/A'}\n`;
+          if (a.keyThemes || a.keywords) {
+            const k = a.keyThemes || (a.keywords||[]).map(x => x.word || x);
+            html += `\n<strong>Key Themes:</strong> ${(Array.isArray(k)?k:[k]).join(', ')}`;
+          }
+          if (a.sentiment) html += `\n<strong>Sentiment:</strong> ${a.sentiment}`;
+          if (a.readability) html += `\n<strong>Readability:</strong> ${a.readability}`;
+        }
+        break;
+      case 'summarize':
+        html += data.summary || data.result || 'No summary generated.';
+        if (data.keyPoints) html += '\n\n<strong>Key Points:</strong>\n' + (Array.isArray(data.keyPoints)?data.keyPoints.map((p,i)=>`${i+1}. ${p}`).join('\n') : data.keyPoints);
+        break;
+      case 'review':
+        if (data.review) {
+          const r = data.review;
+          html += `<strong>Score:</strong> ${r.score}/10\n`;
+          html += `\n<strong>Summary:</strong> ${typeof r.summary==='string'?r.summary:(r.summary?.summary||'')}\n`;
+          if (r.issues && r.issues.length) {
+            html += `\n<strong>Issues (${r.issues.length}):</strong>\n`;
+            r.issues.slice(0,8).forEach((iss,i) => {
+              html += `${i+1}. [${iss.severity||'INFO'}] ${iss.description||''}\n`;
+            });
+          }
+          if (r.strengths && r.strengths.length) {
+            html += `\n<strong>Strengths:</strong>\n`;
+            r.strengths.slice(0,4).forEach(s => html += `✅ ${s}\n`);
+          }
+        }
+        break;
+      case 'security':
+        if (data.findings) {
+          if (data.overallRisk) html += `<strong>Overall Risk:</strong> ${data.overallRisk}\n\n`;
+          if (data.summary) html += `<strong>Summary:</strong> ${data.summary}\n\n`;
+          html += `<strong>Findings (${data.findings.length}):</strong>\n`;
+          data.findings.slice(0,10).forEach((f,i) => {
+            const level = f.severity || 'INFO';
+            const emoji = level==='CRITICAL'?'🚨':level==='HIGH'?'🔴':level==='MEDIUM'?'🟡':level==='LOW'?'🟢':'ℹ️';
+            html += `\n${emoji} <strong>[${level}]</strong> ${f.description||''}`;
+            if (f.cwe) html += ` (${f.cwe})`;
+            if (f.remediation) html += `\n   💊 ${f.remediation}`;
+          });
+        }
+        break;
+      case 'explain':
+        if (data.explanation) {
+          const e = data.explanation;
+          html += typeof e === 'string' ? e : (e.overview||'');
+          if (e.keyFunctions) {
+            html += '\n\n<strong>Key Functions:</strong>\n';
+            e.keyFunctions.forEach(f => {
+              html += `• ${f.name||'?'}: ${f.purpose||''}\n`;
+            });
+          }
+          if (e.stepByStep) {
+            html += '\n<strong>Step by Step:</strong>\n';
+            (Array.isArray(e.stepByStep)?e.stepByStep:[]).forEach((s,i) => html += `${i+1}. ${s}\n`);
+          }
+        }
+        break;
+      case 'refactor':
+        if (data.refactored) {
+          html += '<strong>Refactored Code:</strong>\n';
+          html += '<pre style="background:#0d0d14;padding:12px;border-radius:6px;font-size:12px;overflow-x:auto">';
+          html += (data.refactored.length > 2000 ? data.refactored.slice(0,2000)+'...' : data.refactored);
+          html += '</pre>';
+        }
+        if (data.changes) {
+          html += '\n<strong>Changes:</strong>\n';
+          (Array.isArray(data.changes)?data.changes:[]).forEach(c => {
+            html += `• ${c.what||''} — ${c.why||''}\n`;
+          });
+        }
+        if (data.improvements) {
+          html += '\n<strong>Improvements:</strong>\n';
+          (Array.isArray(data.improvements)?data.improvements:[]).forEach(imp => html += `✅ ${imp}\n`);
+        }
+        break;
+      case 'complexity':
+        if (data.complexity) {
+          const c = data.complexity;
+          html += `<strong>Overall:</strong> ${typeof c === 'string' ? c : (c.overallComplexity||c.overall||'N/A')}\n`;
+          if (c.analysis) {
+            html += '\n<strong>Per Function:</strong>\n';
+            (Array.isArray(c.analysis)?c.analysis:[]).forEach(a => {
+              html += `• ${a.function||'?'}: Time ${a.timeComplexity||'?'}, Space ${a.spaceComplexity||'?'}`;
+              if (a.bottleneck) html += ' ⚠️ Bottleneck';
+              html += '\n';
+            });
+          }
+          if (c.suggestions) {
+            html += '\n<strong>Optimizations:</strong>\n';
+            (Array.isArray(c.suggestions)?c.suggestions:[]).forEach(s => html += `💡 ${s}\n`);
+          }
+        }
+        break;
+      default:
+        html += JSON.stringify(data, null, 2);
+    }
+  } catch(e) {
+    html += JSON.stringify(data, null, 2);
+  }
+  
+  return html;
+}
+</script>
+<div class="share-bar" style="position:fixed;bottom:20px;right:20px;z-index:9999;display:flex;gap:8px;background:rgba(0,0,0,0.85);padding:10px 14px;border-radius:30px;backdrop-filter:blur(8px);box-shadow:0 2px 12px rgba(0,0,0,0.3)">
+<button onclick="window.open('https://twitter.com/intent/tweet?text='+encodeURIComponent(document.title)+'&url='+encodeURIComponent(location.href),'_blank')" style="background:#1DA1F2;border:none;color:white;padding:8px 12px;border-radius:20px;cursor:pointer;font-size:13px;font-weight:bold">X</button>
+<button onclick="window.open('https://www.linkedin.com/sharing/share-offsite/?url='+encodeURIComponent(location.href),'_blank')" style="background:#0A66C2;border:none;color:white;padding:8px 12px;border-radius:20px;cursor:pointer;font-size:13px;font-weight:bold">in</button>
+<button onclick="window.open('https://reddit.com/submit?url='+encodeURIComponent(location.href)+'&title='+encodeURIComponent(document.title),'_blank')" style="background:#FF4500;border:none;color:white;padding:8px 12px;border-radius:20px;cursor:pointer;font-size:13px;font-weight:bold">r</button>
+</div>
+<script src="/js/share-widget.js"></script>
+<script src="/conversion-banner.js" defer></script>
+</body>
+</html>

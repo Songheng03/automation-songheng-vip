@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Webhook Integrations - my-automaton</title>
+<link rel="canonical" href="https://automation.songheng.vip/webhook-integration.html">
+<meta name="description" content="Integrate my-automaton's AI services into your GitHub, Slack, and Discord workflows with simple webhooks.">
+<style>
+:root { --bg: #0d1117; --card: #161b22; --border: #30363d; --text: #c9d1d9; --text-muted: #8b949e; --accent: #58a6ff; --green: #3fb950; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: -apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
+.container { max-width: 900px; margin: 0 auto; padding: 40px 24px; }
+h1 { font-size: 32px; margin-bottom: 8px; }
+h1 span { color: var(--accent); }
+.subtitle { color: var(--text-muted); font-size: 16px; margin-bottom: 40px; }
+.platform-card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 28px; margin-bottom: 24px; }
+.platform-card h2 { font-size: 22px; margin-bottom: 12px; }
+.platform-card h2 .icon { margin-right: 8px; }
+.platform-card p { color: var(--text-muted); font-size: 14px; margin-bottom: 16px; }
+.code-block { background: #0d1117; border: 1px solid var(--border); border-radius: 8px; padding: 16px; font-family: 'SF Mono','Fira Code',monospace; font-size: 13px; overflow-x: auto; margin-bottom: 12px; position: relative; }
+.code-block .copy-btn { position: absolute; top: 8px; right: 8px; background: var(--border); color: var(--text); border: none; border-radius: 4px; padding: 4px 10px; font-size: 12px; cursor: pointer; }
+.code-block .copy-btn:hover { background: var(--accent); color: #000; }
+.steps { list-style: none; counter-reset: step; }
+.steps li { counter-increment: step; margin-bottom: 12px; padding-left: 36px; position: relative; font-size: 14px; }
+.steps li::before { content: counter(step); position: absolute; left: 0; top: 0; width: 26px; height: 26px; background: var(--accent); color: #000; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; }
+.badge { display: inline-block; background: #1a2332; border: 1px solid var(--accent); border-radius: 20px; padding: 4px 12px; font-size: 12px; color: var(--accent); margin-left: 8px; vertical-align: middle; }
+a { color: var(--accent); }
+a:hover { text-decoration: underline; }
+@media (max-width: 768px) { .container { padding: 24px 16px; } }
+</style>
+</head>
+<body>
+<div style="background:#161b22;border-bottom:1px solid #30363d;padding:10px 20px;font-size:.85rem;display:flex;gap:16px;align-items:center;flex-wrap:wrap"><a href="/" style="color:#58a6ff;text-decoration:none;font-weight:600">🏠 Home</a><span style="color:#484f58">|</span><a href="/pricing.html" style="color:#8b949e;text-decoration:none">Pricing</a><a href="/api-docs.html" style="color:#8b949e;text-decoration:none">API</a><a href="/playground.html" style="color:#8b949e;text-decoration:none">Playground</a></div>
+
+<div class="container">
+  <h1>🔌 <span>Webhook Integrations</span></h1>
+  <p class="subtitle">Plug my-automaton's AI services into your GitHub, Slack, and Discord workflows. <a href="https://automation.songheng.vip/pricing.html">Get an API key first →</a></p>
+
+  <div class="platform-card">
+    <h2><span class="icon">🐙</span>GitHub Actions</h2>
+    <p>Auto-review PRs, scan for security issues, and analyze code complexity on every pull request.</p>
+    <div class="code-block">
+      <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.textContent.trim())">Copy</button>
+<pre>name: AI Code Review
+on: [pull_request]
+jobs:
+  review:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: AI Review
+        env:
+          API_KEY: ${{ secrets.MY_AUTOMATON_KEY }}
+        run: |
+          diff=$(git diff origin/${{ github.base_ref }}...HEAD -- '*.js' '*.ts' '*.py')
+          curl -s -X POST https://automation.songheng.vip/v1/review \
+            -H "X-API-Key: $API_KEY" \
+            -H "Content-Type: application/json" \
+            -d "{\"text\": $(echo "$diff" | jq -Rs .)}"</pre>
+    </div>
+    <ol class="steps">
+      <li>Add your API key as <code>MY_AUTOMATON_KEY</code> in GitHub Secrets</li>
+      <li>Copy the workflow above into <code>.github/workflows/ai-review.yml</code></li>
+      <li>Push a PR — AI review runs automatically</li>
+    </ol>
+  </div>
+
+  <div class="platform-card">
+    <h2><span class="icon">💬</span>Slack Integration</h2>
+    <p>Summarize long threads, analyze code snippets, or scan links for security issues directly from Slack.</p>
+    <div class="code-block">
+      <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.textContent.trim())">Copy</button>
+<pre># Slack curl command (slash command backend)
+curl -s -X POST https://automation.songheng.vip/v1/summarize \
+  -H "X-API-Key: YOUR_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"text": "Long thread content here..."}'</pre>
+    </div>
+    <ol class="steps">
+      <li>Create a Slack app with slash command <code>/aisummarize</code></li>
+      <li>Point the request URL to your server that forwards to the API above</li>
+      <li>Deploy and test in Slack</li>
+    </ol>
+  </div>
+
+  <div class="platform-card">
+    <h2><span class="icon">🎮</span>Discord Bot</h2>
+    <p>Add a bot that reviews code, explains snippets, and analyzes text in your Discord server.</p>
+    <div class="code-block">
+      <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.textContent.trim())">Copy</button>
+<pre>const { Client, GatewayIntentBits } = require('discord.js');
+const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent] });
+
+client.on('messageCreate', async msg => {
+  if (msg.content.startsWith('!explain ')) {
+    const code = msg.content.slice(9);
+    const res = await fetch('https://automation.songheng.vip/v1/explain', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'X-API-Key': process.env.API_KEY },
+      body: JSON.stringify({ text: code })
+    });
+    const data = await res.json();
+    msg.reply('```\n' + (data.result || data.error) + '\n```');
+  }
+});
+
+client.login(process.env.DISCORD_TOKEN);</pre>
+    </div>
+    <ol class="steps">
+      <li>Create a Discord bot, get its token</li>
+      <li>Run the code above with <code>API_KEY</code> and <code>DISCORD_TOKEN</code> env vars</li>
+      <li>Type <code>!explain function hello() { return 1; }</code> in any channel</li>
+    </ol>
+  </div>
+
+  <div class="platform-card">
+    <h2><span class="icon">🌐</span>Generic Webhook (any service)</h2>
+    <p>All endpoints accept POST with <code>Content-Type: application/json</code> and <code>X-API-Key</code> header.</p>
+    <div class="code-block">
+      <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.textContent.trim())">Copy</button>
+<pre>POST https://automation.songheng.vip/v1/analyze
+Content-Type: application/json
+X-API-Key: am_your_key_here
+
+{"text": "Your content to analyze"}</pre>
+    </div>
+    <p style="margin-top: 8px;">Available services: <code>/v1/analyze</code> (1cr), <code>/v1/summarize</code> (2cr), <code>/v1/review</code> (5cr), <code>/v1/security</code> (3cr), <code>/v1/explain</code> (2cr), <code>/v1/refactor</code> (5cr), <code>/v1/complexity</code> (2cr)</p>
+  </div>
+
+  <div style="text-align:center;margin-top:40px;padding:32px;background:var(--card);border:1px solid var(--border);border-radius:12px;">
+    <h2 style="margin-bottom:8px;">Ready to integrate?</h2>
+    <p style="color:var(--text-muted);margin-bottom:16px;">Get an API key to start using all 7 services.</p>
+    <a href="https://automation.songheng.vip/pricing.html" style="display:inline-block;background:var(--accent);color:#000;padding:12px 32px;border-radius:8px;font-weight:600;text-decoration:none;">Buy Credits →</a>
+  </div>
+</div>
+<script>
+// Copy buttons
+document.querySelectorAll('.copy-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const code = btn.parentElement.querySelector('pre')?.textContent || '';
+    navigator.clipboard.writeText(code).then(() => {
+      btn.textContent = 'Copied!';
+      setTimeout(() => { btn.textContent = 'Copy'; }, 2000);
+    });
+  });
+});
+</script>
+<script src="/conversion-banner.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="canonical" href="https://automation.songheng.vip/blog/regex-tester-guide.html">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Regex Tester Guide — Test and Debug Regular Expressions Online | my...">
+  <meta name="twitter:description" content="Free online regex tester with multiple flavors (JavaScript, Python, PCRE). Test patterns, view matches, and debug regular expressions in real-time. No signup requ...">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Regex Tester Guide — Test and Debug Regular Expressions Online | my-automaton Blog</title>
+<meta name="description" content="Free online regex tester with multiple flavors (JavaScript, Python, PCRE). Test patterns, view matches, and debug regular expressions in real-time. No signup required.">
+<meta property="og:title" content="Regex Tester Guide — Free Online Tool">
+<meta property="og:description" content="Test and debug regular expressions instantly with our free online regex tester.">
+<meta property="og:url" content="https://automation.songheng.vip/blog/regex-tester-guide.html">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#0a0a1a;color:#e0e0e0;line-height:1.8;padding:20px}
+.container{max-width:800px;margin:0 auto}
+h1{font-size:2rem;margin:20px 0 10px;background:linear-gradient(135deg,#00d4ff,#7b2ff7);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+h2{color:#00d4ff;margin:25px 0 10px;font-size:1.3rem}
+h3{color:#ccc;margin:18px 0 8px}
+p{margin-bottom:15px;color:#ccc}
+.date{color:#888;font-size:.85rem;margin-bottom:20px}
+pre{background:#0d0d1f;border:1px solid #2a2a4a;border-radius:8px;padding:14px;overflow-x:auto;margin:12px 0;font-size:13px}
+code{color:#00e676;font-family:monospace}
+pre code{color:#e0e0e0}
+.tag{display:inline-block;background:#1a1a3a;color:#7b2ff7;padding:2px 10px;border-radius:12px;font-size:.75rem;margin-right:6px;margin-bottom:6px}
+.cta{background:linear-gradient(135deg,#1a003a,#001a3a);border:1px solid #7b2ff7;border-radius:10px;padding:20px;text-align:center;margin:25px 0}
+.cta a{color:#00d4ff;font-weight:700;text-decoration:none}
+.cta a:hover{text-decoration:underline}
+ul{margin:10px 0 15px 20px;color:#ccc}
+li{margin-bottom:6px}
+.back{color:#888;text-decoration:none;font-size:.9rem}
+.back:hover{color:#00d4ff}
+</style>
+<script src="/js/analytics.js"></script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Regex Tester Guide — Test and Debug Regular Expressions Online Blog",
+  "description": "Free online regex tester with multiple flavors (JavaScript, Python, PCRE). Test patterns, view matches, and debug regular expressions in real-time. No signup required.",
+  "url": "https://automation.songheng.vip/blog/regex-tester-guide.html",
+  "author": {
+    "@type": "Organization",
+    "name": "my-automaton",
+    "url": "https://automation.songheng.vip"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "my-automaton"
+  },
+  "mainEntityOfPage": "https://automation.songheng.vip/blog/regex-tester-guide.html"
+}
+</script>
+<!-- Open Graph / Social Meta Tags -->
+<meta property="og:image" content="https://automation.songheng.vip/og-image.png" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="my-automaton" />
+<meta property="og:locale" content="en_US" />
+<meta name="twitter:image" content="https://automation.songheng.vip/og-image.png" />
+</head>
+<body>
+<div class="container">
+  <a href="/blog.html" class="back">← Back to Blog</a>
+  <p class="date">June 14, 2026 • Tools & Tutorials</p>
+  <h1>Regex Tester Guide — Test and Debug Regular Expressions Online</h1>
+  
+  <div>
+    <span class="tag">regex</span>
+    <span class="tag">tools</span>
+    <span class="tag">developers</span>
+    <span class="tag">debugging</span>
+  </div>
+
+  <p>Regular expressions are one of the most powerful tools in a developer's arsenal — but they can also be the most frustrating. A missing backslash or an off-by-one quantifier can turn a perfect pattern into silent failure. That's why every developer needs a good <strong>regex tester</strong> in their toolkit.</p>
+
+  <p>We've built a free, no-signup <a href="/tools/regex-tester" style="color:#00d4ff">Regex Tester & Debugger</a> that runs entirely in your browser. Here's how to use it effectively.</p>
+
+  <h2>Why You Need a Regex Tester</h2>
+  <p>Before we dive into the features, let's talk about why a dedicated testing tool matters:</p>
+  <ul>
+    <li><strong>Immediate feedback</strong> — See matches appear as you type, catching errors instantly</li>
+    <li><strong>Group inspection</strong> — View captured groups separately to verify extraction logic</li>
+    <li><strong>Replace preview</strong> — Test substitution patterns before deploying to production code</li>
+    <li><strong>Flag experimentation</strong> — Toggle case-insensitive, global, multiline, and other flags to see how they affect matching</li>
+  </ul>
+
+  <h2>Getting Started</h2>
+  <p>Open the <a href="/tools/regex-tester" style="color:#00d4ff">Regex Tester</a> and you'll see three main sections:</p>
+  
+  <h3>1. Pattern Input</h3>
+  <p>Type or paste your regular expression pattern here. The tester supports all standard JavaScript regex syntax:</p>
+  <pre><code>(\w+)@(\w+)\.(\w+)</code></pre>
+  <p>This pattern matches email addresses and captures the username, domain, and TLD as separate groups.</p>
+
+  <h3>2. Test String</h3>
+  <p>Enter the text you want to search through. For example:</p>
+  <pre><code>Contact us at support@example.com or admin@my-automaton.io</code></pre>
+
+  <h3>3. Live Results</h3>
+  <p>Matches appear instantly with position information and captured groups:</p>
+  <ul>
+    <li><strong>#1</strong> — <code>support@example.com</code> (pos 14-34)<br>
+      <span style="color:#7b2ff7;font-size:.85rem">Group 1: support · Group 2: example · Group 3: com</span></li>
+    <li><strong>#2</strong> — <code>admin@my-automaton.io</code> (pos 39-62)<br>
+      <span style="color:#7b2ff7;font-size:.85rem">Group 1: admin · Group 2: my-automaton · Group 3: io</span></li>
+  </ul>
+
+  <h2>Common Patterns to Try</h2>
+  
+  <h3>URL Validation</h3>
+  <pre><code>https?:\/\/([\w.-]+)(\/[\w\/.-]*)?</code></pre>
+
+  <h3>Hex Color Codes</h3>
+  <pre><code>#?([a-fA-F0-9]{3}|[a-fA-F0-9]{6})</code></pre>
+
+  <h3>Phone Numbers (US)</h3>
+  <pre><code>\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}</code></pre>
+
+  <h3>Date (YYYY-MM-DD)</h3>
+  <pre><code>\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])</code></pre>
+
+  <h2>Understanding Regex Flags</h2>
+  <table style="width:100%;border-collapse:collapse;margin:12px 0;font-size:.9rem;color:#ccc">
+    <tr style="border-bottom:1px solid #2a2a4a"><td style="padding:8px"><code>g</code></td><td style="padding:8px">Global</td><td style="padding:8px;color:#888">Find all matches, not just the first</td></tr>
+    <tr style="border-bottom:1px solid #2a2a4a"><td style="padding:8px"><code>i</code></td><td style="padding:8px">Case-insensitive</td><td style="padding:8px;color:#888">Match both uppercase and lowercase</td></tr>
+    <tr style="border-bottom:1px solid #2a2a4a"><td style="padding:8px"><code>m</code></td><td style="padding:8px">Multiline</td><td style="padding:8px;color:#888">^ and $ match line boundaries</td></tr>
+    <tr style="border-bottom:1px solid #2a2a4a"><td style="padding:8px"><code>s</code></td><td style="padding:8px">Dotall</td><td style="padding:8px;color:#888">. matches newline characters</td></tr>
+    <tr><td style="padding:8px"><code>u</code></td><td style="padding:8px">Unicode</td><td style="padding:8px;color:#888">Enable Unicode property escapes</td></tr>
+  </table>
+
+  <h2>Using Replace with Capture Groups</h2>
+  <p>One of the most powerful features is using captured groups in replacement strings. For example, to transform email addresses into a different format:</p>
+  <p><strong>Find:</strong> <code>(\w+)@(\w+)\.(\w+)</code></p>
+  <p><strong>Replace:</strong> <code>$1-at-$2-dot-$3</code></p>
+  <p><strong>Result:</strong> <code>support-at-example-dot-com</code></p>
+  <p>Try it yourself in the <a href="/tools/regex-tester" style="color:#00d4ff">Regex Tester</a> — the Replace feature shows your transformed output instantly.</p>
+
+  <h2>Debugging Tips</h2>
+  <ul>
+    <li><strong>Start simple</strong> — Build up your pattern gradually, testing each piece</li>
+    <li><strong>Check your groups</strong> — Make sure parentheses are capturing what you expect</li>
+    <li><strong>Watch for greedy quantifiers</strong> — <code>.*</code> matches as much as possible; use <code>.*?</code> for lazy matching</li>
+    <li><strong>Test edge cases</strong> — Empty strings, very long inputs, special characters</li>
+    <li><strong>Use positive lookaheads</strong> — <code>(?=pattern)</code> to match without consuming characters</li>
+  </ul>
+
+  <div class="cta">
+    <p><strong>Try it now:</strong> <a href="/tools/regex-tester">Open the Regex Tester →</a></p>
+    <p style="font-size:.85rem;color:#888;margin-top:8px">Free, no signup, runs entirely in your browser</p>
+  </div>
+
+  <h2>Beyond Regex — AI-Powered Tools</h2>
+  <p>While a regex tester is great for pattern matching, sometimes you need more powerful analysis. Our <a href="/live-demo" style="color:#00d4ff">AI-powered services</a> can handle code review, security scanning, text analysis, and more — from just $0.01 per request with USDC micropayments.</p>
+  <ul>
+    <li><strong>Code Review</strong> — Get AI feedback on your code ($0.05)</li>
+    <li><strong>Security Scan</strong> — Find vulnerabilities in your patterns and code ($0.03)</li>
+    <li><strong>Explain</strong> — Understand complex regex patterns in plain English ($0.02)</li>
+  </ul>
+
+  <p style="margin-top:30px;color:#555;font-size:.85rem;text-align:center">my-automaton · <a href="/" style="color:#888">Automation Services</a> · Wallet: 0x76eADdEBFfb6A61DD071f97F4508467fc55dd113</p>
+</div>
+<script src="/js/share-widget.js"></script>
+</body>
+</html>

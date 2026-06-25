@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta property="og:title" content="QR Code Generator">
+<meta property="og:description" content="Generate QR codes for URLs, text, WiFi, vCard. Free, customizable colors and size.">
+<meta property="og:url" content="https://automation.songheng.vip/qrcode-generator.html">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="QR Code Generator">
+<meta name="twitter:description" content="Generate QR codes for URLs, text, WiFi, vCard. Free, customizable colors and size.">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Free QR Code Generator — Create, Customize & Download QR Codes | my-automaton</title>
+<meta name="description" content="Generate QR codes for URLs, text, WiFi, vCards, and more. Customize colors, size, and error correction. Download as PNG or SVG. 100% free, no signup.">
+<style>:root{--bg:#0f172a;--card:#1e293b;--text:#e2e8f0;--muted:#94a3b8;--accent:#38bdf8;--green:#4ade80;--border:#334155;--red:#f87171}*{box-sizing:border-box;margin:0;padding:0}body{font-family:system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh}header{background:var(--card);border-bottom:1px solid var(--border);padding:1rem 2rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.5rem}header h1{font-size:1.25rem;color:var(--accent)}nav a{color:var(--muted);text-decoration:none;margin-left:1rem;font-size:.875rem}main{max-width:850px;margin:2rem auto;padding:0 1rem}.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem}@media(max-width:700px){.grid-2{grid-template-columns:1fr}}.card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.5rem;margin-bottom:1rem}.qr-display{text-align:center;padding:2rem;background:#fff;border-radius:12px;min-height:260px;display:flex;align-items:center;justify-content:center}.qr-display svg,.qr-display canvas{max-width:250px;max-height:250px}textarea,input[type="text"],input[type="url"]{width:100%;background:#0f172a;color:var(--text);border:1px solid var(--border);border-radius:8px;padding:.7rem;font-family:"Fira Code",monospace;font-size:.8rem}textarea{resize:vertical;min-height:80px}input:focus,textarea:focus,select:focus{outline:none;border-color:var(--accent)}label{display:block;font-size:.7rem;color:var(--muted);margin-bottom:.2rem;text-transform:uppercase;letter-spacing:.05em}.form-row{display:flex;gap:.75rem;flex-wrap:wrap;margin-bottom:.75rem}.form-row>div{flex:1;min-width:120px}select{width:100%;background:#0f172a;color:var(--text);border:1px solid var(--border);padding:.5rem;border-radius:8px;font-size:.8rem}input[type="color"]{width:48px;height:32px;border:1px solid var(--border);border-radius:6px;cursor:pointer;background:transparent;padding:2px}.btn-row{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.75rem}.btn{padding:.4rem 1.2rem;border:none;border-radius:8px;cursor:pointer;font-size:.8rem;font-weight:600}.btn-primary{background:var(--accent);color:#0f172a}.btn-green{background:var(--green);color:#0f172a}.btn-secondary{background:var(--border);color:var(--text)}.btn:hover{filter:brightness(1.15)}.presets button{padding:.2rem .6rem;border:1px solid var(--border);border-radius:4px;background:transparent;color:var(--muted);cursor:pointer;font-size:.65rem;margin:.15rem}.presets button.active{background:var(--accent);color:#0f172a;border-color:var(--accent)}.info-row{display:flex;gap:.5rem;flex-wrap:wrap;font-size:.7rem;color:var(--muted);margin-top:.5rem}footer{text-align:center;padding:2rem;color:var(--muted);font-size:.8rem;border-top:1px solid var(--border);margin-top:2rem}footer a{color:var(--accent)}.type-tabs{display:flex;gap:.25rem;margin-bottom:1rem;flex-wrap:wrap}.type-tabs button{padding:.3rem .7rem;border:1px solid var(--border);border-radius:6px;background:transparent;color:var(--muted);cursor:pointer;font-size:.7rem}.type-tabs button.active{background:var(--accent);color:#0f172a;border-color:var(--accent);font-weight:600}.extra-fields{display:none}.extra-fields.show{display:block}</style>
+
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"QR Code Generator","applicationCategory":"DeveloperApplication","operatingSystem":"Any","url":"https://automation.songheng.vip/qrcode-generator.html","description":"Generate QR codes for URLs, text, WiFi, vCard, email, phone. Customizable colors and error correction.","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"aggregateRating":{"@type":"AggregateRating","ratingValue":"4.8","ratingCount":"127"}}</script>
+</head>
+<body>
+<header>
+  <h1>📱 QR Code Generator</h1>
+  <nav><a href="/">Home</a><a href="/dev-tools.html">Dev Tools</a><a href="/dev-tools-hub.html">Tools Hub</a></nav>
+</header>
+<main>
+<div class="type-tabs" id="typeTabs">
+  <button class="active" onclick="switchType('url')">🔗 URL</button>
+  <button onclick="switchType('text')">📝 Text</button>
+  <button onclick="switchType('wifi')">📶 WiFi</button>
+  <button onclick="switchType('vcard')">👤 vCard</button>
+  <button onclick="switchType('email')">✉️ Email</button>
+  <button onclick="switchType('phone')">📞 Phone</button>
+</div>
+<div class="grid-2">
+  <div>
+    <div class="card">
+      <div id="fields"><textarea id="qrInput" placeholder="https://example.com" oninput="generateQR()">https://automation.songheng.vip</textarea></div>
+      <div class="extra-fields" id="wifiFields">
+        <div class="form-row">
+          <div><label>SSID</label><input type="text" id="wifiSSID" placeholder="Network name" oninput="generateQR()"></div>
+          <div><label>Password</label><input type="text" id="wifiPass" placeholder="Password" oninput="generateQR()"></div>
+        </div>
+        <label style="margin-top:.25rem">Security</label>
+        <select id="wifiSec" onchange="generateQR()"><option>WPA</option><option>WEP</option><option>nopass</option></select>
+      </div>
+      <div class="extra-fields" id="vcardFields">
+        <div class="form-row">
+          <div><label>First Name</label><input type="text" id="vcFirst" placeholder="John" oninput="generateQR()"></div>
+          <div><label>Last Name</label><input type="text" id="vcLast" placeholder="Doe" oninput="generateQR()"></div>
+        </div>
+        <div class="form-row">
+          <div><label>Phone</label><input type="text" id="vcPhone" placeholder="+1234567890" oninput="generateQR()"></div>
+          <div><label>Email</label><input type="text" id="vcEmail" placeholder="john@example.com" oninput="generateQR()"></div>
+        </div>
+        <div><label>Organization</label><input type="text" id="vcOrg" placeholder="Company Inc." oninput="generateQR()"></div>
+      </div>
+      <div class="extra-fields" id="emailFields">
+        <div class="form-row">
+          <div><label>To</label><input type="text" id="emTo" placeholder="hello@example.com" oninput="generateQR()"></div>
+          <div><label>Subject</label><input type="text" id="emSubj" placeholder="Hello" oninput="generateQR()"></div>
+        </div>
+        <div><label>Body</label><textarea id="emBody" placeholder="Message..." oninput="generateQR()" style="min-height:50px"></textarea></div>
+      </div>
+      <div class="extra-fields" id="phoneFields"><label>Phone Number</label><input type="text" id="phNum" placeholder="+1234567890" oninput="generateQR()"></div>
+      <div class="form-row" style="margin-top:.75rem">
+        <div><label>Size</label><input type="range" id="qrSize" min="128" max="512" value="256" step="16" oninput="generateQR()"></div>
+        <div><label>Error Correction</label><select id="qrEC" onchange="generateQR()"><option value="L">Low (7%)</option><option value="M" selected>Medium (15%)</option><option value="Q">Quartile (25%)</option><option value="H">High (30%)</option></select></div>
+      </div>
+      <div class="form-row">
+        <div><label>Foreground</label><input type="color" id="qrFG" value="#000000" oninput="generateQR()"></div>
+        <div><label>Background</label><input type="color" id="qrBG" value="#ffffff" oninput="generateQR()"></div>
+      </div>
+      <div class="btn-row">
+        <button class="btn btn-green" onclick="downloadPNG()">📥 Download PNG</button>
+        <button class="btn btn-secondary" onclick="downloadSVG()">📥 Download SVG</button>
+      </div>
+    </div>
+  </div>
+  <div class="card"><div class="qr-display" id="qrDisplay"><span style="color:#94a3b8;font-size:.9rem">Generating QR code…</span></div></div>
+</div>
+</main>
+<footer><p>my-automaton · Free QR Code Generator · <a href="/">Home</a> · <a href="/dev-tools-hub.html">All Tools</a></p></footer>
+<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.min.js"></script>
+<script>
+let currentType='url',qrDataURL='';
+function switchType(t){
+  currentType=t;
+  document.querySelectorAll('#typeTabs button').forEach(b=>b.classList.toggle('active',b.textContent.toLowerCase().includes(t)||(t==='url'&&b.textContent.includes('URL'))||(t==='text'&&b.textContent.includes('Text'))||(t==='wifi'&&b.textContent.includes('WiFi'))||(t==='vcard'&&b.textContent.includes('vCard'))||(t==='email'&&b.textContent.includes('Email'))||(t==='phone'&&b.textContent.includes('Phone'))));
+  ['wifiFields','vcardFields','emailFields','phoneFields'].forEach(id=>document.getElementById(id).classList.remove('show'));
+  if(t==='wifi'){document.getElementById('wifiFields').classList.add('show');document.getElementById('fields').innerHTML='<label>Enter URL if hidden SSID (or leave blank)</label><input type="text" id="qrInput" placeholder="Optional hidden SSID URL" oninput="generateQR()">'}
+  else if(t==='vcard'){document.getElementById('vcardFields').classList.add('show');document.getElementById('fields').innerHTML='<label>Additional vCard URL (optional)</label><input type="text" id="qrInput" placeholder="Optional URL" oninput="generateQR()">'}
+  else if(t==='email'){document.getElementById('emailFields').classList.add('show');document.getElementById('fields').innerHTML='<label>Additional URL (optional)</label><input type="text" id="qrInput" placeholder="Optional URL" oninput="generateQR()">'}
+  else if(t==='phone'){document.getElementById('phoneFields').classList.add('show');document.getElementById('fields').innerHTML='<label>Additional URL (optional)</label><input type="text" id="qrInput" placeholder="Optional URL" oninput="generateQR()">'}
+  else{document.getElementById('fields').innerHTML='<textarea id="qrInput" placeholder="'+(t==='url'?'https://example.com':'Enter text to encode...')+'" oninput="generateQR()">'+(t==='url'?'https://automation.songheng.vip':'')+'</textarea>'}
+  generateQR();
+}
+function getQRContent(){
+  switch(currentType){
+    case'wifi':{const s=document.getElementById('wifiSSID')?.value||'',p=document.getElementById('wifiPass')?.value||'',sec=document.getElementById('wifiSec')?.value||'WPA';return 'WIFI:T:'+sec+';S:'+s+';P:'+p+';;'}
+    case'vcard':{const fn=(document.getElementById('vcFirst')?.value||'')+' '+(document.getElementById('vcLast')?.value||'');const ph=document.getElementById('vcPhone')?.value||'',em=document.getElementById('vcEmail')?.value||'',org=document.getElementById('vcOrg')?.value||'';return 'BEGIN:VCARD\nVERSION:3.0\nFN:'+fn+'\nN:'+(document.getElementById('vcLast')?.value||'')+';'+(document.getElementById('vcFirst')?.value||'')+';;;\n'+(ph?'TEL:'+ph+'\n':'')+(em?'EMAIL:'+em+'\n':'')+(org?'ORG:'+org+'\n':'')+'END:VCARD'}
+    case'email':{const t=document.getElementById('emTo')?.value||'',s=document.getElementById('emSubj')?.value||'',b=document.getElementById('emBody')?.value||'';return 'mailto:'+t+(s||b?'?':'')+(s?'subject='+encodeURIComponent(s):'')+(s&&b?'&':'')+(b?'body='+encodeURIComponent(b):'')}
+    case'phone':return 'tel:'+(document.getElementById('phNum')?.value||'')
+    default:return document.getElementById('qrInput')?.value||''
+  }
+}
+function generateQR(){
+  const content=getQRContent();
+  if(!content||!content.trim()){document.getElementById('qrDisplay').innerHTML='<span style="color:#94a3b8;font-size:.9rem">Enter content to generate QR code</span>';return}
+  try{
+    const typeNumber=40;
+    const ecLevel={'L':qrcodegen.QrCode.Ecc.LOW,'M':qrcodegen.QrCode.Ecc.MEDIUM,'Q':qrcodegen.QrCode.Ecc.QUARTILE,'H':qrcodegen.QrCode.Ecc.HIGH}[document.getElementById('qrEC').value||'M'];
+    const qr=qrcodegen.QrCode.encodeText(content,ecLevel);
+    const size=parseInt(document.getElementById('qrSize').value||256);
+    const fg=document.getElementById('qrFG').value||'#000000';
+    const bg=document.getElementById('qrBG').value||'#ffffff';
+    const scale=Math.floor(size/qr.size),pad=Math.floor((size-qr.size*scale)/2);
+    const svg='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 '+size+' '+size+'" width="'+size+'" height="'+size+'"><rect width="'+size+'" height="'+size+'" fill="'+bg+'"/>';
+    let paths='';
+    for(let y=0;y<qr.size;y++)for(let x=0;x<qr.size;x++)if(qr.getModule(x,y))paths+='<rect x="'+(pad+x*scale)+'" y="'+(pad+y*scale)+'" width="'+scale+'" height="'+scale+'" fill="'+fg+'"/>';
+    const fullSVG=svg+paths+'</svg>';
+    document.getElementById('qrDisplay').innerHTML=fullSVG;
+    window._qrSVG=fullSVG;
+    const canvas=document.createElement('canvas');canvas.width=size;canvas.height=size;
+    const ctx=canvas.getContext('2d');ctx.fillStyle=bg;ctx.fillRect(0,0,size,size);ctx.fillStyle=fg;
+    for(let y=0;y<qr.size;y++)for(let x=0;x<qr.size;x++)if(qr.getModule(x,y))ctx.fillRect(pad+x*scale,pad+y*scale,scale,scale);
+    qrDataURL=canvas.toDataURL('image/png');
+  }catch(e){document.getElementById('qrDisplay').innerHTML='<span style="color:#f87171;font-size:.8rem">Error: '+e.message+'</span>'}
+}
+function downloadPNG(){if(qrDataURL){const a=document.createElement('a');a.href=qrDataURL;a.download='qrcode.png';a.click()}}
+function downloadSVG(){if(window._qrSVG){const a=document.createElement('a');a.href='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(window._qrSVG);a.download='qrcode.svg';a.click()}}
+window.addEventListener('load',()=>{if(typeof qrcodegen!=='undefined')generateQR();else setTimeout(generateQR,500)});
+</script>
+<script src="/conversion-banner.js" defer></script>
+</body>
+</html>

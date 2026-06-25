@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Share the Widget — my-automaton AI</title>
+  <meta name="description" content="Share the my-automaton embeddable AI widget on social media. Add AI code review, text analysis, and security scanning to your website.">
+  <meta property="og:title" content="Share the AI Widget — my-automaton">
+  <meta property="og:description" content="One-click share buttons to help spread the embeddable AI widget. Every share generates backlinks and helps the ecosystem grow.">
+  <meta property="og:url" content="https://automation.songheng.vip/widget-share.html">
+  <meta property="og:type" content="website">
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #0f0f1a; color: #e0e0e0; padding: 40px 20px; min-height: 100vh; }
+    .container { max-width: 700px; margin: 0 auto; }
+    h1 { font-size: 2.2rem; background: linear-gradient(135deg, #667eea, #764ba2); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 8px; }
+    .subtitle { color: #999; font-size: 16px; margin-bottom: 32px; line-height: 1.6; }
+    .share-card { background: linear-gradient(135deg, #1a1a2e, #16213e); border: 1px solid #2a2a4a; border-radius: 16px; padding: 28px; margin-bottom: 20px; transition: transform 0.2s; }
+    .share-card:hover { transform: translateY(-2px); }
+    .share-card .icon-wrap { font-size: 36px; margin-bottom: 8px; }
+    .share-card h2 { font-size: 1.3rem; color: #e0e0e0; margin-bottom: 6px; }
+    .share-card p { color: #999; font-size: 14px; line-height: 1.6; margin-bottom: 16px; }
+    .share-btn { display: inline-flex; align-items: center; gap: 10px; padding: 14px 28px; border-radius: 10px; border: none; cursor: pointer; font-size: 16px; font-weight: 600; text-decoration: none; color: #fff; transition: opacity 0.2s; }
+    .share-btn:hover { opacity: 0.9; }
+    .btn-x { background: #1da1f2; }
+    .btn-linkedin { background: #0a66c2; }
+    .btn-reddit { background: #ff4500; }
+    .btn-hn { background: #ff6600; }
+    .btn-copy { background: #2a2a4a; color: #ddd; border: 1px solid #444; }
+    .btn-embed { background: linear-gradient(135deg, #667eea, #764ba2); }
+    .preview-box { background: #1a1a2e; border: 1px solid #2a2a4a; border-radius: 10px; padding: 16px; margin-top: 12px; }
+    .preview-box code { color: #c9d1d9; font-size: 13px; word-break: break-all; }
+    .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 24px 0; }
+    .stat-card { background: #1a1a2e; border: 1px solid #2a2a4a; border-radius: 12px; padding: 20px; text-align: center; }
+    .stat-card .num { font-size: 28px; font-weight: 700; background: linear-gradient(135deg, #667eea, #764ba2); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .stat-card .label { color: #888; font-size: 13px; margin-top: 4px; }
+    .back-link { display: inline-block; margin-top: 40px; color: #667eea; text-decoration: none; font-size: 14px; }
+    .copied-toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: #667eea; color: #fff; padding: 12px 24px; border-radius: 8px; font-size: 14px; opacity: 0; transition: opacity 0.3s; pointer-events: none; }
+    .copied-toast.show { opacity: 1; }
+    @media (max-width: 600px) { .stats { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>📣 Share the Widget</h1>
+    <p class="subtitle">Help spread the embeddable AI widget! Every share generates backlinks and helps more developers discover free AI services. One click is all it takes.</p>
+
+    <div class="stats">
+      <div class="stat-card"><div class="num">7</div><div class="label">AI Services</div></div>
+      <div class="stat-card"><div class="num">1</div><div class="label">&lt;script&gt; Tag</div></div>
+      <div class="stat-card"><div class="num">0</div><div class="label">Dependencies</div></div>
+    </div>
+
+    <!-- Share on X/Twitter -->
+    <div class="share-card">
+      <div class="icon-wrap">𝕏</div>
+      <h2>Share on X / Twitter</h2>
+      <p>Tell your followers about the AI widget that adds code review and text analysis to any site.</p>
+      <a class="share-btn btn-x" href="https://twitter.com/intent/tweet?text=I%20just%20found%20this%20embedable%20AI%20widget%20that%20adds%20code%20review%2C%20security%20scanning%2C%20and%20text%20analysis%20to%20any%20website%20with%20one%20%3Cscript%3E%20tag!%20%F0%9F%A4%96&url=https://automation.songheng.vip/widget-install.html&hashtags=AI,WebDev,OpenSource" target="_blank" rel="noopener">
+        <span>𝕏</span> Share on X
+      </a>
+    </div>
+
+    <!-- Share on LinkedIn -->
+    <div class="share-card">
+      <div class="icon-wrap">💼</div>
+      <h2>Share on LinkedIn</h2>
+      <p>Share with your professional network — developers everywhere need free AI tools.</p>
+      <a class="share-btn btn-linkedin" href="https://www.linkedin.com/sharing/share-offsite/?url=https://automation.songheng.vip/widget-install.html" target="_blank" rel="noopener">
+        <span>💼</span> Share on LinkedIn
+      </a>
+    </div>
+
+    <!-- Share on Reddit -->
+    <div class="share-card">
+      <div class="icon-wrap">🔴</div>
+      <h2>Share on Reddit</h2>
+      <p>Submit to r/webdev, r/javascript, or r/SideProject. Developers love free tools.</p>
+      <a class="share-btn btn-reddit" href="https://www.reddit.com/submit?url=https://automation.songheng.vip/widget-install.html&title=Embeddable%20AI%20Widget%20-%20Add%20Code%20Review%20%26%20Text%20Analysis%20to%20Any%20Site%20with%20One%20Tag" target="_blank" rel="noopener">
+        <span>🔴</span> Share on Reddit
+      </a>
+    </div>
+
+    <!-- Share on Hacker News -->
+    <div class="share-card">
+      <div class="icon-wrap">📰</div>
+      <h2>Share on Hacker News</h2>
+      <p>Show HN: One-script AI widget for your website — code review, security, summarization.</p>
+      <a class="share-btn btn-hn" href="https://news.ycombinator.com/submitlink?u=https://automation.songheng.vip/widget-install.html&t=Embeddable%20AI%20Widget%20-%20Add%20Code%20Review%20%26%20Text%20Analysis%20to%20Any%20Site" target="_blank" rel="noopener">
+        <span>📰</span> Submit to HN
+      </a>
+    </div>
+
+    <!-- Embed the Widget -->
+    <div class="share-card">
+      <div class="icon-wrap">🧩</div>
+      <h2>Embed the Widget on Your Site</h2>
+      <p>Add AI services to your own website with one line of HTML. Your visitors get 3 free uses per day.</p>
+      <div class="preview-box">
+        <code>&lt;script src="https://automation.songheng.vip/widget.js"&gt;&lt;/script&gt;</code>
+      </div>
+      <button class="share-btn btn-embed" style="margin-top:12px;" onclick="copyEmbed()">📋 Copy Embed Code</button>
+    </div>
+
+    <!-- Copy Widget Link -->
+    <div class="share-card">
+      <div class="icon-wrap">🔗</div>
+      <h2>Share the Widget Link</h2>
+      <p>Just share this URL with any developer who needs free AI tools on their site:</p>
+      <div class="preview-box">
+        <code>https://automation.songheng.vip/widget-install.html</code>
+      </div>
+      <button class="share-btn btn-copy" style="margin-top:12px;" onclick="copyLink()">📋 Copy Link</button>
+    </div>
+
+    <!-- Powered by Badge -->
+    <div class="share-card">
+      <div class="icon-wrap">🤖</div>
+      <h2>Add the "Powered by" Badge</h2>
+      <p>Show your support by adding this stylish badge to your site footer. Links back to our services.</p>
+      <div class="preview-box">
+        <code>&lt;a href="https://automation.songheng.vip" style="display:inline-flex;align-items:center;gap:8px;padding:8px 16px;background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;border-radius:8px;text-decoration:none;font-size:13px;font-weight:600;"&gt;🤖 Powered by my-automaton&lt;/a&gt;</code>
+      </div>
+      <button class="share-btn btn-embed" style="margin-top:12px;" onclick="copyBadge()">📋 Copy Badge HTML</button>
+    </div>
+
+    <div class="note" style="background:#1a1a2e;border-left:3px solid #667eea;padding:16px;border-radius:8px;margin:24px 0;">
+      <p style="color:#aaa;font-size:14px;">💡 <strong>Every share counts!</strong> Each time someone embeds the widget, clicks a share button, or adds the badge, it generates backlinks to my-automaton. This helps the ecosystem grow and keeps AI services free for everyone.</p>
+    </div>
+
+    <a href="/" class="back-link">← Back to my-automaton</a>
+  </div>
+
+  <div class="copied-toast" id="toast">✅ Copied to clipboard!</div>
+
+  <script>
+    function copyEmbed() {
+      navigator.clipboard.writeText('<script src="https://automation.songheng.vip/widget.js"><\/script>');
+      showToast();
+    }
+    function copyLink() {
+      navigator.clipboard.writeText('https://automation.songheng.vip/widget-install.html');
+      showToast();
+    }
+    function copyBadge() {
+      navigator.clipboard.writeText('<a href="https://automation.songheng.vip" target="_blank" style="display:inline-flex;align-items:center;gap:8px;padding:8px 16px;background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;border-radius:8px;text-decoration:none;font-family:sans-serif;font-size:13px;font-weight:600;"><span>🤖</span><span>Powered by my-automaton</span></a>');
+      showToast();
+    }
+    function showToast() {
+      const t = document.getElementById('toast');
+      t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), 2000);
+    }
+  </script>
+<script src="/conversion-banner.js" defer></script>
+</body>
+</html>

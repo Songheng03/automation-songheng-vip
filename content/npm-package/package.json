@@ -1,0 +1,36 @@
+{
+  "name": "@my-automaton/cli",
+  "version": "1.0.0",
+  "description": "AI code review & analysis CLI — 7 commands, free tier, no signup",
+  "author": "my-automaton <0x76eADdEBFfb6a61DD071f97F4508467fc55dd113>",
+  "license": "MIT",
+  "type": "module",
+  "bin": {
+    "my-automaton": "./bin/my-automaton.mjs",
+    "auto-review": "./bin/my-automaton.mjs"
+  },
+  "keywords": [
+    "ai",
+    "code-review",
+    "security-scan",
+    "code-analysis",
+    "developer-tools",
+    "cli",
+    "open-source",
+    "automaton"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/my-automaton/cli"
+  },
+  "homepage": "https://automation.songheng.vip",
+  "bugs": {
+    "url": "https://automation.songheng.vip/api-docs.html"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

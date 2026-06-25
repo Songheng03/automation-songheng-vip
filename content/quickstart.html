@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quick Start Guide — Use Your API Key in 60 Seconds | my-automaton</title>
+<meta name="description" content="Get started with your my-automaton API key in under 60 seconds. Copy-paste examples for Node.js, Python, and curl. Start analyzing code immediately.">
+<style>
+:root{--bg:#0b1121;--card:#1a2236;--text:#e2e8f0;--muted:#94a3b8;--accent:#38bdf8;--green:#4ade80;--red:#f87171;--yellow:#fbbf24;--purple:#a78bfa;--border:#2d3748}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--text);line-height:1.6}
+.container{max-width:900px;margin:0 auto;padding:2rem 1.5rem}
+header{text-align:center;padding:3rem 0 2rem}
+header h1{font-size:2.5rem;background:linear-gradient(135deg,var(--accent),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:.5rem}
+header p{color:var(--muted);font-size:1.1rem}
+.step{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:2rem;margin:1.5rem 0}
+.step-number{display:inline-block;width:40px;height:40px;background:linear-gradient(135deg,var(--accent),var(--purple));border-radius:50%;text-align:center;line-height:40px;font-weight:700;font-size:1.2rem;margin-bottom:1rem}
+.step h2{font-size:1.5rem;margin-bottom:1rem;color:var(--accent)}
+.step p{margin-bottom:1rem;color:var(--text)}
+.code-block{background:#0f172a;border:1px solid var(--border);border-radius:8px;padding:1.5rem;margin:1rem 0;position:relative}
+.code-block pre{color:var(--green);font-family:'Fira Code',monospace;font-size:.9rem;overflow-x:auto;line-height:1.5}
+.copy-btn{position:absolute;top:.75rem;right:.75rem;background:var(--accent);color:#0f172a;border:none;padding:.4rem .8rem;border-radius:6px;cursor:pointer;font-size:.75rem;font-weight:600}
+.copy-btn:hover{background:var(--purple);color:white}
+.language-tabs{display:flex;gap:.5rem;margin-bottom:1rem;border-bottom:1px solid var(--border);padding-bottom:.5rem}
+.tab{padding:.5rem 1rem;background:transparent;border:none;color:var(--muted);cursor:pointer;font-size:.9rem;border-radius:6px 6px 0 0}
+.tab.active{color:var(--accent);background:rgba(56,189,248,.1)}
+.tab-content{display:none}
+.tab-content.active{display:block}
+.highlight{background:rgba(251,191,36,.1);border-left:4px solid var(--yellow);padding:1rem 1.5rem;margin:1rem 0;border-radius:6px}
+.highlight strong{color:var(--yellow)}
+.cta-box{background:linear-gradient(135deg,rgba(56,189,248,.1),rgba(167,139,250,.1));border:2px solid var(--accent);border-radius:12px;padding:2rem;text-align:center;margin:2rem 0}
+.cta-box h3{font-size:1.5rem;margin-bottom:1rem;color:var(--accent)}
+.btn{display:inline-block;padding:.75rem 2rem;background:linear-gradient(135deg,var(--accent),var(--purple));color:white;text-decoration:none;border-radius:8px;font-weight:600;font-size:1rem;transition:transform .2s}
+.btn:hover{transform:translateY(-2px)}
+footer{text-align:center;padding:2rem 0;color:var(--muted);border-top:1px solid var(--border);margin-top:3rem}
+footer a{color:var(--accent);text-decoration:none}
+</style>
+</head>
+<body>
+<div class="container">
+<header>
+<h1>🚀 Quick Start Guide</h1>
+<p>Use your API key in 60 seconds or less</p>
+</header>
+
+<div class="step">
+<span class="step-number">1</span>
+<h2>Get Your API Key</h2>
+<p>If you haven't already, purchase a plan to get your API key:</p>
+<a href="/pricing.html" class="btn">View Pricing Plans</a>
+<div class="highlight">
+<strong>💡 Tip:</strong> Your API key looks like <code>am_xxxxxxxxxxxxx</code> and was sent to your email after purchase.
+</div>
+</div>
+
+<div class="step">
+<span class="step-number">2</span>
+<h2>Make Your First Request</h2>
+<p>Choose your preferred language and copy the code:</p>
+
+<div class="language-tabs">
+<button class="tab active" onclick="switchTab('node')">Node.js</button>
+<button class="tab" onclick="switchTab('python')">Python</button>
+<button class="tab" onclick="switchTab('curl')">curl</button>
+</div>
+
+<div id="tab-node" class="tab-content active">
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode('node-code')">Copy</button>
+<pre id="node-code">const https = require('https');
+
+const data = JSON.stringify({
+  text: 'function hello() { return 42; }',
+  mode: 'analyze'
+});
+
+const options = {
+  hostname: 'automation.songheng.vip',
+  port: 443,
+  path: '/v1/analyze',
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    'X-API-Key': 'YOUR_API_KEY_HERE',
+    'Content-Length': Buffer.byteLength(data)
+  }
+};
+
+const req = https.request(options, (res) => {
+  let body = '';
+  res.on('data', (chunk) => body += chunk);
+  res.on('end', () => {
+    const result = JSON.parse(body);
+    console.log('Analysis:', result);
+  });
+});
+
+req.write(data);
+req.end();</pre>
+</div>
+</div>
+
+<div id="tab-python" class="tab-content">
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode('python-code')">Copy</button>
+<pre id="python-code">import requests
+import json
+
+url = 'https://automation.songheng.vip/v1/analyze'
+headers = {
+    'Content-Type': 'application/json',
+    'X-API-Key': 'YOUR_API_KEY_HERE'
+}
+data = {
+    'text': 'function hello() { return 42; }',
+    'mode': 'analyze'
+}
+
+response = requests.post(url, headers=headers, json=data)
+result = response.json()
+print('Analysis:', result)</pre>
+</div>
+</div>
+
+<div id="tab-curl" class="tab-content">
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode('curl-code')">Copy</button>
+<pre id="curl-code">curl -X POST https://automation.songheng.vip/v1/analyze \
+  -H "Content-Type: application/json" \
+  -H "X-API-Key: YOUR_API_KEY_HERE" \
+  -d '{
+    "text": "function hello() { return 42; }",
+    "mode": "analyze"
+  }'</pre>
+</div>
+</div>
+
+<div class="highlight">
+<strong>⚡ Replace:</strong> Change <code>YOUR_API_KEY_HERE</code> to your actual API key (starts with <code>am_</code>).
+</div>
+</div>
+
+<div class="step">
+<span class="step-number">3</span>
+<h2>Explore All Endpoints</h2>
+<p>You now have access to 7 powerful AI endpoints:</p>
+<ul style="list-style:none;padding:0">
+<li style="padding:.75rem 0;border-bottom:1px solid var(--border)"><strong style="color:var(--accent)">/v1/analyze</strong> — Deep text analysis (1 credit)</li>
+<li style="padding:.75rem 0;border-bottom:1px solid var(--border)"><strong style="color:var(--accent)">/v1/summarize</strong> — AI summarization (2 credits)</li>
+<li style="padding:.75rem 0;border-bottom:1px solid var(--border)"><strong style="color:var(--accent)">/v1/review</strong> — Full code review (5 credits)</li>
+<li style="padding:.75rem 0;border-bottom:1px solid var(--border)"><strong style="color:var(--accent)">/v1/security</strong> — Security vulnerability scan (3 credits)</li>
+<li style="padding:.75rem 0;border-bottom:1px solid var(--border)"><strong style="color:var(--accent)">/v1/explain</strong> — Code explanation (2 credits)</li>
+<li style="padding:.75rem 0;border-bottom:1px solid var(--border)"><strong style="color:var(--accent)">/v1/refactor</strong> — Refactoring suggestions (5 credits)</li>
+<li style="padding:.75rem 0"><strong style="color:var(--accent)">/v1/complexity</strong> — Complexity analysis (2 credits)</li>
+</ul>
+</div>
+
+<div class="cta-box">
+<h3>🎯 Ready to Build?</h3>
+<p>Check out the full API documentation for advanced features, error handling, and integration patterns.</p>
+<a href="/api-docs.html" class="btn">Read Full API Docs</a>
+</div>
+
+<div class="step">
+<span class="step-number">?</span>
+<h2>Need Help?</h2>
+<p>If you're having trouble, here are common issues:</p>
+<ul style="margin-left:1.5rem;color:var(--text)">
+<li style="padding:.5rem 0"><strong>401 Unauthorized:</strong> Check that your API key is correct and hasn't expired</li>
+<li style="padding:.5rem 0"><strong>402 Payment Required:</strong> You've used all your credits. Purchase more at <a href="/pricing.html" style="color:var(--accent)">/pricing</a></li>
+<li style="padding:.5rem 0"><strong>429 Too Many Requests:</strong> You've hit the rate limit (100 requests/minute). Wait a moment and try again</li>
+</ul>
+</div>
+
+<footer>
+<p>Built with ❤️ by <a href="/">my-automaton</a> | <a href="mailto:support@songheng.vip">Get Support</a></p>
+</footer>
+</div>
+
+<script>
+function switchTab(tabName) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+  event.target.classList.add('active');
+  document.getElementById('tab-' + tabName).classList.add('active');
+}
+
+function copyCode(elementId) {
+  const code = document.getElementById(elementId).innerText;
+  navigator.clipboard.writeText(code).then(() => {
+    const btn = event.target;
+    const originalText = btn.innerText;
+    btn.innerText = 'Copied!';
+    btn.style.background = 'var(--green)';
+    setTimeout(() => {
+      btn.innerText = originalText;
+      btn.style.background = 'var(--accent)';
+    }, 2000);
+  });
+}
+</script>
+</body>
+</html>

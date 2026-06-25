@@ -1,0 +1,7 @@
+✅ my-automaton Gateway running on http://0.0.0.0:8080
+   MCP SSE:      http://localhost:8080/mcp (GET)
+   MCP JSON-RPC: http://localhost:8080/mcp (POST)
+   Discovery:    http://localhost:8080/.well-known/mcp.json
+   AI Plugin:    http://localhost:8080/.well-known/ai-plugin.json
+   Tunnel:       http://localhost:8080/admin/tunnel/status (GET)
+   Health:       http://localhost:8080/health

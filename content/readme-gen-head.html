@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>README Generator — AI-Powered Markdown README Generator | my-automaton</title>
+<meta name="description" content="Generate beautiful, professional README.md files for your projects with AI. Free online markdown README generator supporting multiple programming languages.">
+<meta name="keywords" content="readme generator, markdown readme generator, readme.md generator, AI readme generator, readme file generator, github readme maker">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://automation.songheng.vip/content/readme-generator.html">
+
+<!-- Open Graph -->
+<meta property="og:title" content="README Generator — AI-Powered Markdown README Generator | my-automaton">
+<meta property="og:description" content="Generate beautiful, professional README.md files for your projects with AI. Free online markdown README generator.">
+<meta property="og:image" content="https://automation.songheng.vip/og-image.png">
+<meta property="og:url" content="https://automation.songheng.vip/content/readme-generator.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="my-automaton">
+<meta property="og:locale" content="en_US">
+
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="README Generator — AI-Powered Markdown README Generator">
+<meta name="twitter:description" content="Generate beautiful, professional README.md files for your projects with AI. Free online tool.">
+<meta name="twitter:image" content="https://automation.songheng.vip/og-image.png">
+
+<!-- Schema.org -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "AI README Generator",
+  "description": "Generate beautiful, professional README.md files for your projects with AI. Free online markdown README generator.",
+  "url": "https://automation.songheng.vip/content/readme-generator.html",
+  "applicationCategory": "Developer Tool",
+  "operatingSystem": "Web",
+  "browserRequirements": "Requires JavaScript"
+}
+</script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Oxygen,Ubuntu,sans-serif;background:#0a0a0f;color:#e0e0e0;min-height:100vh;line-height:1.6}
+.navbar{background:linear-gradient(135deg,#1a1a2e,#16213e);padding:12px 24px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #2a2a4a;flex-wrap:wrap;gap:8px}
+.navbar .brand{font-size:18px;font-weight:700;color:#fff;text-decoration:none;display:flex;align-items:center;gap:6px}
+.navbar .brand span{background:linear-gradient(135deg,#667eea,#764ba2);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.navbar .nav-links{display:flex;gap:16px;align-items:center}
+.navbar .nav-links a{color:#8b949e;text-decoration:none;font-size:14px;transition:color .2s}
+.navbar .nav-links a:hover{color:#58a6ff}
+.container{max-width:1060px;margin:0 auto;padding:24px 20px}
+.hero{text-align:center;padding:32px 0 24px}
+.hero .badge{display:inline-block;background:rgba(102,126,234,0.15);color:#667eea;border:1px solid rgba(102,126,234,0.3);border-radius:20px;padding:4px 14px;font-size:12px;margin-bottom:12px;letter-spacing:0.5px}
+.hero h1{font-size:2.4rem;font-weight:800;margin-bottom:10px;background:linear-gradient(135deg,#667eea,#764ba2);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero p{color:#8b949e;font-size:1.05rem;max-width:640px;margin:0 auto}
+.tool-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:24px}
+@media(max-width:860px){.tool-grid{grid-template-columns:1fr}}
+.input-panel{background:#1a1a2e;border:1px solid #2a2a4a;border-radius:12px;overflow:hidden;display:flex;flex-direction:column}
+.input-panel .panel-header{background:#16213e;padding:14px 18px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #2a2a4a;flex-wrap:wrap;gap:8px}
+.input-panel .panel-header label{font-size:13px;color:#aaa;font-weight:600}
+.input-panel .panel-header select{background:#0f3460;color:#e0e0e0;border:1px solid #3a3a5a;padding:6px 10px;border-radius:6px;font-size:13px;cursor:pointer}
+.input-panel .panel-header select:focus{outline:none;border-color:#667eea}
+.input-panel textarea{flex:1;width:100%;min-height:320px;background:#1a1a2e;color:#e0e0e0;border:none;padding:16px;font-family:'JetBrains Mono','Fira Code','Cascadia Code',monospace;font-size:13px;resize:vertical;line-height:1.6;tab-size:2}
+.input-panel textarea:focus{outline:none}
+.input-panel textarea::placeholder{color:#555}
+.panel-actions{padding:14px 18px;display:flex;gap:10px;flex-wrap:wrap;align-items:center;border-top:1px solid #2a2a4a;background:#16213e}
+.btn{background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;border:none;padding:10px 20px;border-radius:6px;font-size:14px;font-weight:600;cursor:pointer;transition:opacity .2s,transform .1s;display:inline-flex;align-items:center;gap:6px}
+.btn:hover{opacity:.9}
+.btn:active{transform:scale(.97)}
+.btn:disabled{opacity:.4;cursor:not-allowed;transform:none}
+.btn-secondary{background:#2a2a4a;color:#ccc}
+.btn-secondary:hover{background:#3a3a5a}
+.btn-outline{background:transparent;border:1px solid #3a3a5a;color:#aaa}
+.btn-outline:hover{background:#2a2a4a;color:#e0e0e0}
+.btn-sm{padding:6px 12px;font-size:12px}
+.result-panel{background:#1a1a2e;border:1px solid #2a2a4a;border-radius:12px;overflow:hidden;display:flex;flex-direction:column;min-height:400px}
+.result-panel .panel-header{background:#16213e;padding:14px 18px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #2a2a4a;flex-wrap:wrap;gap:8px}
+.result-panel .panel-header h3{font-size:14px;color:#667eea;font-weight:600}
+.result-panel .panel-header .result-actions{display:flex;gap:6px;flex-wrap:wrap}
+.result-panel .result-content{flex:1;padding:18px;overflow-y:auto;font-family:'JetBrains Mono','Fira Code',monospace;font-size:13px;line-height:1.6;white-space:pre-wrap;word-wrap:break-word;color:#e0e0e0}
+.result-panel .result-content.loading{display:flex;align-items:center;justify-content:center;color:#888;font-family:inherit}
+.result-panel .result-content.empty{display:flex;align-items:center;justify-content:center;color:#555;font-family:inherit;font-size:14px;text-align:center}
+.result-panel .result-content .spinner{width:24px;height:24px;border:3px solid #2a2a4a;border-top:3px solid #667eea;border-radius:50%;animation:spin .8s linear infinite;margin-right:10px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.share-section{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.share-btn{display:inline-flex;align-items:center;gap:4px;padding:5px 10px;border-radius:4px;font-size:12px;text-decoration:none;color:#fff;transition:opacity .2s}
+.share-btn:hover{opacity:.8}
+.share-btn.twitter{background:#1da1f2}
+.share-btn.linkedin{background:#0077b5}
+.free-badge{font-size:12px;color:#888;background:#2a2a4a;padding:4px 10px;border-radius:12px;display:inline-flex;align-items:center;gap:4px}
+.toast{position:fixed;bottom:24px;right:24px;background:#2ea043;color:#fff;padding:12px 20px;border-radius:8px;font-size:14px;box-shadow:0 4px 20px rgba(0,0,0,.4);opacity:0;transform:translateY(10px);transition:opacity .3s,transform .3s;z-index:9999;pointer-events:none}
+.toast.show{opacity:1;transform:translateY(0)}
+.toast.error{background:#e74c3c}
+.error-banner{background:rgba(231,76,60,0.12);border:1px solid rgba(231,76,60,0.3);border-radius:8px;padding:12px 16px;margin-bottom:16px;color:#ff6b6b;font-size:13px;display:none}
+.error-banner.show{display:block}
+.error-banner a{color:#58a6ff}
+.sample-tag{background:transparent;border:1px dashed #3a3a5a;color:#888;padding:4px 10px;border-radius:4px;cursor:pointer;font-size:11px;transition:all .2s}
+.sample-tag:hover{border-color:#667eea;color:#667eea}
+.limit-info{font-size:12px;color:#555;margin-left:auto}
+.promo-footer{margin-top:40px;padding:24px;text-align:center;border-top:1px solid #2a2a4a}
+.promo-footer p{color:#555;font-size:13px}
+.promo-footer a{color:#667eea;text-decoration:none}
+.promo-footer a:hover{text-decoration:underline}
+.promo-footer .heart{color:#ff6b6b}
+.status-bar{display:flex;align-items:center;gap:6px;font-size:12px;color:#888;padding:8px 18px;border-top:1px solid #2a2a4a;background:#16213e}
+.status-bar .dot{width:6px;height:6px;border-radius:50%;background:#2ea043}
+.status-bar .dot.error{background:#e74c3c}
+.markdown-rendered{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;line-height:1.7;color:#e0e0e0}
+.markdown-rendered h1{font-size:1.5em;color:#fff;margin:1em 0 .5em;border-bottom:1px solid #2a2a4a;padding-bottom:.3em}
+.markdown-rendered h2{font-size:1.3em;color:#eee;margin:1em 0 .5em;border-bottom:1px solid #2a2a4a;padding-bottom:.2em}
+.markdown-rendered h3{font-size:1.1em;color:#ddd;margin:1em 0 .5em}
+.markdown-rendered p{margin:.6em 0}
+.markdown-rendered code{background:#2a2a4a;padding:2px 6px;border-radius:4px;font-size:.9em;font-family:'JetBrains Mono',monospace;color:#e0e0e0}
+.markdown-rendered pre{background:#0a0a0f;border:1px solid #2a2a4a;border-radius:8px;padding:14px;overflow-x:auto;margin:.8em 0}
+.markdown-rendered pre code{background:transparent;padding:0;border-radius:0;font-size:.9em}
+.markdown-rendered ul,.markdown-rendered ol{padding-left:1.8em;margin:.6em 0}
+.markdown-rendered li{margin:.3em 0}
+.markdown-rendered blockquote{border-left:3px solid #667eea;padding:.3em 1em;margin:.8em 0;color:#888;background:#16213e;border-radius:0 4px 4px 0}
+.markdown-rendered table{width:100%;border-collapse:collapse;margin:.8em 0}
+.markdown-rendered th,.markdown-rendered td{border:1px solid #2a2a4a;padding:8px 12px;text-align:left}
+.markdown-rendered th{background:#16213e;color:#ccc;font-weight:600}
+.markdown-rendered td{color:#bbb}
+.markdown-rendered hr{border:none;border-top:1px solid #2a2a4a;margin:1.2em 0}
+.markdown-rendered a{color:#58a6ff}
+.markdown-rendered strong{color:#fff}
+.markdown-rendered img{max-width:100%;border-radius:4px}
+.markdown-rendered .built-with{color:#555;font-size:.85em;text-align:center;margin-top:1.5em}
+.tab-bar{display:flex;gap:0;margin-bottom:0}
+.tab-btn{background:transparent;border:none;color:#555;padding:8px 16px;font-size:13px;cursor:pointer;border-bottom:2px solid transparent;transition:all .2s}
+.tab-btn:hover{color:#888}
+.tab-btn.active{color:#667eea;border-bottom-color:#667eea}
+</style>
+</head>
+<body>

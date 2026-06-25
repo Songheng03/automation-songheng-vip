@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI API Pricing Comparison 2026 — Compare LLM, Code Review & Analysis APIs | my-automaton</title>
+  <meta name="description" content="Complete 2026 comparison of AI API pricing: OpenAI, Anthropic, Google Gemini, DeepSeek, and my-automaton. Compare cost per call, free tiers, and developer plans for code review, text analysis, and LLM APIs.">
+  <meta name="keywords" content="AI API pricing, LLM pricing comparison, code review API, AI text analysis pricing, OpenAI vs Anthropic, cheap AI API, free AI API, developer API pricing 2026">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #0d1117; color: #e6edf3; line-height: 1.7; }
+    .container { max-width: 1100px; margin: 0 auto; padding: 20px; }
+    header { text-align: center; padding: 40px 0 30px; border-bottom: 1px solid #30363d; margin-bottom: 30px; }
+    h1 { font-size: 2.4em; color: #f0f6fc; margin-bottom: 8px; }
+    h1 span { color: #58a6ff; }
+    h2 { font-size: 1.4em; color: #58a6ff; margin: 40px 0 14px; padding-bottom: 8px; border-bottom: 1px solid #21262d; }
+    h3 { font-size: 1.1em; color: #f0f6fc; margin: 24px 0 10px; }
+    p { margin: 10px 0; color: #c9d1d9; }
+    .subtitle { font-size: 1.15em; color: #8b949e; max-width: 700px; margin: 10px auto 0; }
+    .updated { font-size: 0.85em; color: #484f58; margin-top: 8px; }
+    table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 0.92em; }
+    th { background: #161b22; color: #58a6ff; font-weight: 600; padding: 12px 14px; text-align: left; border-bottom: 2px solid #30363d; }
+    td { padding: 12px 14px; border-bottom: 1px solid #21262d; color: #c9d1d9; }
+    tr:hover { background: #161b2222; }
+    tr.highlight { background: #1f6feb11; border-left: 3px solid #58a6ff; }
+    tr.highlight td { color: #f0f6fc; }
+    .badge { display: inline-block; padding: 2px 10px; border-radius: 12px; font-size: 0.78em; font-weight: 600; }
+    .badge.green { background: #23863622; color: #3fb950; border: 1px solid #238636; }
+    .badge.blue { background: #1f6feb22; color: #58a6ff; border: 1px solid #1f6feb; }
+    .badge.orange { background: #d2992211; color: #d29922; border: 1px solid #d29922; }
+    .badge.red { background: #f8514922; color: #f85149; border: 1px solid #f85149; }
+    .card { background: #161b22; border: 1px solid #30363d; border-radius: 10px; padding: 24px; margin: 16px 0; }
+    .card.cta { background: linear-gradient(135deg, #1f6feb22, #23863622); border-color: #58a6ff; }
+    .winner { font-size: 0.85em; color: #3fb950; font-weight: 600; }
+    code { background: #0d1117; padding: 2px 6px; border-radius: 4px; font-size: 0.88em; color: #f8f8f2; }
+    a { color: #58a6ff; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .btn { display: inline-block; padding: 10px 24px; background: #238636; color: white; border-radius: 6px; text-decoration: none; font-weight: 600; font-size: 0.95em; border: none; cursor: pointer; }
+    .btn:hover { background: #2ea043; text-decoration: none; }
+    .btn.blue { background: #1f6feb; }
+    .btn.blue:hover { background: #388bfd; text-decoration: none; }
+    .col-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 16px 0; }
+    .pros-cons { display: flex; gap: 12px; margin: 10px 0; }
+    .pros { flex: 1; }
+    .cons { flex: 1; }
+    .pros li { color: #3fb950; }
+    .cons li { color: #f85149; }
+    ul, ol { margin: 8px 0 8px 20px; color: #c9d1d9; }
+    li { margin: 4px 0; }
+    blockquote { border-left: 3px solid #58a6ff; padding: 10px 16px; margin: 16px 0; background: #161b22; border-radius: 0 6px 6px 0; }
+    blockquote p { color: #8b949e; }
+    nav.top-nav { background: #161b22; border-bottom: 1px solid #30363d; padding: 10px 20px; font-size: .85rem; display: flex; gap: 16px; align-items: center; flex-wrap: wrap; }
+    nav.top-nav a { color: #58a6ff; text-decoration: none; font-weight: 600; }
+    nav.top-nav a.dim { color: #8b949e; }
+    .toc { background: #161b22; border: 1px solid #30363d; border-radius: 8px; padding: 16px 20px; margin: 20px 0; }
+    .toc h3 { margin-top: 0; }
+    .toc a { display: block; padding: 3px 0; color: #8b949e; font-size: 0.9em; }
+    .toc a:hover { color: #58a6ff; }
+    .faq dt { font-weight: 600; color: #f0f6fc; margin-top: 16px; }
+    .faq dd { color: #c9d1d9; margin-left: 0; margin-top: 6px; }
+    .footnote { font-size: 0.82em; color: #484f58; margin-top: 30px; padding-top: 16px; border-top: 1px solid #21262d; }
+    @media (max-width: 768px) {
+      .col-2 { grid-template-columns: 1fr; }
+      h1 { font-size: 1.7em; }
+      table { font-size: 0.8em; }
+      th, td { padding: 8px 10px; }
+    }
+  </style>
+
+  <meta property="og:title" content="AI API Pricing Comparison 2026 — LLM, Code Review & Analysis APIs">
+  <meta property="og:description" content="Complete 2026 comparison: OpenAI vs Anthropic vs Google Gemini vs DeepSeek vs my-automaton. Find the cheapest AI API for your needs.">
+  <meta property="og:url" content="https://automation.songheng.vip/ai-api-pricing-comparison.html">
+  <meta property="og:type" content="article">
+  <meta property="og:image" content="https://automation.songheng.vip/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="AI API Pricing Comparison 2026">
+  <meta name="twitter:description" content="Complete 2026 comparison of AI API pricing for developers. LLM, code review, text analysis — find the best deal.">
+  <link rel="canonical" href="https://automation.songheng.vip/ai-api-pricing-comparison.html">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "AI API Pricing Comparison 2026 — Compare LLM, Code Review & Analysis APIs",
+    "description": "Complete 2026 comparison of AI API pricing for developers comparing OpenAI, Anthropic, Google Gemini, DeepSeek, and my-automaton across cost, free tiers, and use cases.",
+    "url": "https://automation.songheng.vip/ai-api-pricing-comparison.html",
+    "datePublished": "2026-06-19",
+    "dateModified": "2026-06-19",
+    "author": { "@type": "Organization", "name": "my-automaton", "url": "https://automation.songheng.vip" },
+    "publisher": { "@type": "Organization", "name": "my-automaton" },
+    "mainEntityOfPage": "https://automation.songheng.vip/ai-api-pricing-comparison.html"
+  }
+  </script>
+</head>
+<body>
+
+<nav class="top-nav">
+  <a href="/">🏠 Home</a>
+  <span style="color:#484f58">|</span>
+  <a href="/pricing.html" class="dim">Pricing</a>
+  <a href="/api-docs.html" class="dim">API Docs</a>
+  <a href="/playground.html" class="dim">Playground</a>
+  <a href="/blog.html" class="dim">Blog</a>
+</nav>
+
+<div class="container">
+  <header>
+    <h1>AI API <span>Pricing Comparison</span> 2026</h1>
+    <p class="subtitle">Compare the cost of AI APIs across LLM providers, code review services, and text analysis platforms. Find the best deal for developers.</p>
+    <p class="updated">📅 Updated: June 19, 2026 • ⏱ 12 min read</p>
+  </header>
+
+  <div class="toc">
+    <h3>📑 Table of Contents</h3>
+    <a href="#llm">1. LLM API Pricing (OpenAI vs Anthropic vs Gemini vs DeepSeek)</a>
+    <a href="#code-review">2. Code Review & Analysis API Pricing</a>
+    <a href="#text-analysis">3. Text Analysis & Summarization API Pricing</a>
+    <a href="#free-tiers">4. Free Tier Comparison — Who Offers the Most?</a>
+    <a href="#developer-plans">5. Developer & Startup Plans</a>
+    <a href="#hidden-costs">6. Hidden Costs: Rate Limits, Context Windows & More</a>
+    <a href="#verdict">7. The Verdict: Best Value AI APIs for Developers</a>
+    <a href="#faq">8. Frequently Asked Questions</a>
+  </div>
+
+  <!-- LLM API PRICING -->
+  <h2 id="llm">1️⃣ LLM API Pricing — Head-to-Head</h2>
+  <p>The big four LLM providers dominate the market. Here's how their pricing stacks up for the most popular models as of June 2026:</p>
+
+  <table>
+    <thead>
+      <tr><th>Provider</th><th>Model</th><th>Input (per 1M tokens)</th><th>Output (per 1M tokens)</th><th>Avg Cost/Request</th><th>Free Tier</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>OpenAI</strong></td>
+        <td>GPT-4.1</td>
+        <td>$2.00</td>
+        <td>$8.00</td>
+        <td>~$0.08</td>
+        <td><span class="badge red">No</span></td>
+      </tr>
+      <tr>
+        <td><strong>OpenAI</strong></td>
+        <td>GPT-4.1 Nano</td>
+        <td>$0.10</td>
+        <td>$0.40</td>
+        <td>~$0.004</td>
+        <td><span class="badge blue">3 req/min</span></td>
+      </tr>
+      <tr>
+        <td><strong>Anthropic</strong></td>
+        <td>Claude Sonnet 4</td>
+        <td>$3.00</td>
+        <td>$15.00</td>
+        <td>~$0.15</td>
+        <td><span class="badge red">No</span></td>
+      </tr>
+      <tr>
+        <td><strong>Anthropic</strong></td>
+        <td>Claude Haiku 3.5</td>
+        <td>$0.80</td>
+        <td>$4.00</td>
+        <td>~$0.04</td>
+        <td><span class="badge blue">Limited</span></td>
+      </tr>
+      <tr>
+        <td><strong>Google Gemini</strong></td>
+        <td>Gemini 2.5 Pro</td>
+        <td>$1.25</td>
+        <td>$10.00</td>
+        <td>~$0.09</td>
+        <td><span class="badge green">15 req/min</span></td>
+      </tr>
+      <tr>
+        <td><strong>Google Gemini</strong></td>
+        <td>Gemini 2.5 Flash</td>
+        <td>$0.15</td>
+        <td>$0.60</td>
+        <td>~$0.006</td>
+        <td><span class="badge green">15 req/min</span></td>
+      </tr>
+      <tr>
+        <td><strong>DeepSeek</strong></td>
+        <td>DeepSeek-V4</td>
+        <td>$0.27</td>
+        <td>$1.10</td>
+        <td>~$0.012</td>
+        <td><span class="badge green">5 req/day</span></td>
+      </tr>
+      <tr>
+        <td><strong>DeepSeek</strong></td>
+        <td>DeepSeek-V4 Flash</td>
+        <td>$0.14</td>
+        <td>$0.55</td>
+        <td>~$0.006</td>
+        <td><span class="badge green">10 req/day</span></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="card">
+    <h3>🏆 Lowest Cost LLM Provider</h3>
+    <p><strong>Google Gemini 2.5 Flash</strong> offers the cheapest LLM access at ~$0.006 per request with a generous 15 req/min free tier. <strong>DeepSeek V4 Flash</strong> is a close second at the same price point but with a more limited free tier.</p>
+    <p style="margin-top:8px;">For maximum quality at lowest price, <strong>DeepSeek V4</strong> ($0.012/req) delivers GPT-4-class performance at 85% less cost.</p>
+  </div>
+
+  <!-- CODE REVIEW API PRICING -->
+  <h2 id="code-review">2️⃣ Code Review & Analysis API Pricing</h2>
+  <p>Not every developer needs raw LLM access. Purpose-built code review APIs offer structured output, security scanning, and CI/CD integration out of the box. Here's how they compare:</p>
+
+  <table>
+    <thead>
+      <tr><th>Service</th><th>Code Review</th><th>Security Scan</th><th>Refactoring</th><th>Free Tier</th><th>Paid Starting</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>my-automaton</strong></td>
+        <td>5 credits/req</td>
+        <td>3 credits/req</td>
+        <td>5 credits/req</td>
+        <td><span class="badge green">3/day/service</span></td>
+        <td><strong>$5 (500 credits)</strong></td>
+      </tr>
+      <tr>
+        <td><strong>CodeRabbit</strong></td>
+        <td>✅</td>
+        <td>❌</td>
+        <td>❌</td>
+        <td><span class="badge green">Open source</span></td>
+        <td>$12/user/month</td>
+      </tr>
+      <tr>
+        <td><strong>Snyk Code</strong></td>
+        <td>❌</td>
+        <td>✅</td>
+        <td>❌</td>
+        <td><span class="badge blue">Limited</span></td>
+        <td>$25/month</td>
+      </tr>
+      <tr>
+        <td><strong>SonarCloud</strong></td>
+        <td>✅</td>
+        <td>✅</td>
+        <td>❌</td>
+        <td><span class="badge green">Open source</span></td>
+        <td>€10/month</td>
+      </tr>
+      <tr>
+        <td><strong>GitHub Copilot Code Review</strong></td>
+        <td>✅</td>
+        <td>❌</td>
+        <td>✅</td>
+        <td><span class="badge red">No</span></td>
+        <td>$10/month</td>
+      </tr>
+      <tr class="highlight">
+        <td><strong>my-automaton</strong></td>
+        <td><span class="winner">Cheapest</span></td>
+        <td><span class="winner">Cheapest</span></td>
+        <td><span class="winner">Cheapest</span></td>
+        <td><span class="badge green">Generous</span></td>
+        <td><strong>$5 pay-as-you-go</strong></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="card card.cta">
+    <h3>💡 Why my-automaton Wins for Code Review</h3>
+    <ul>
+      <li><strong>Pay-as-you-go:</strong> $5 gets you 500 analyses — no subscription, no per-user pricing</li>
+      <li><strong>3 free per day</strong> on every endpoint including security scanning</li>
+      <li><strong>7-in-1 platform:</strong> Code review + security + refactoring + explanation + complexity + summarization + text analysis</li>
+      <li><strong>REST API:</strong> Simple HTTP calls, no SDK required</li>
+    </ul>
+    <p style="margin-top:14px;">
+      <a href="/pricing.html" class="btn">View Pricing →</a>
+      <a href="/api-docs.html" class="btn blue" style="margin-left:8px;">Read API Docs →</a>
+    </p>
+  </div>
+
+  <!-- TEXT ANALYSIS PRICING -->
+  <h2 id="text-analysis">3️⃣ Text Analysis & Summarization API Pricing</h2>
+  <p>Need entity extraction, sentiment analysis, or text summarization? Here are the top APIs compared:</p>
+
+  <table>
+    <thead>
+      <tr><th>Service</th><th>Price Model</th><th>Sentiment</th><th>Entities</th><th>Summarization</th><th>Free Tier</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>my-automaton</strong></td>
+        <td>1-2 credits/req</td>
+        <td>✅</td>
+        <td>✅</td>
+        <td>✅</td>
+        <td><span class="badge green">3/day</span></td>
+      </tr>
+      <tr>
+        <td><strong>Google Cloud NLP</strong></td>
+        <td>$1/1,000 units</td>
+        <td>✅</td>
+        <td>✅</td>
+        <td>❌</td>
+        <td><span class="badge green">5,000 units/month</span></td>
+      </tr>
+      <tr>
+        <td><strong>AWS Comprehend</strong></td>
+        <td>$0.0001/unit</td>
+        <td>✅</td>
+        <td>✅</td>
+        <td>❌</td>
+        <td><span class="badge green">50k units/month</span></td>
+      </tr>
+      <tr>
+        <td><strong>MeaningCloud</strong></td>
+        <td>From $99/month</td>
+        <td>✅</td>
+        <td>✅</td>
+        <td>✅</td>
+        <td><span class="badge blue">Limited</span></td>
+      </tr>
+      <tr>
+        <td><strong>OpenAI (raw)</strong></td>
+        <td>$2-8/1M tokens</td>
+        <td>✳️ DIY</td>
+        <td>✳️ DIY</td>
+        <td>✳️ DIY</td>
+        <td><span class="badge red">No</span></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p><em>✳️ DIY = Can do it but requires custom prompting. Purpose-built APIs give structured JSON output consistently.</em></p>
+
+  <!-- FREE TIER COMPARISON -->
+  <h2 id="free-tiers">4️⃣ Free Tier Comparison — Who Offers the Most?</h2>
+  <p>Free tiers are essential for developers testing and prototyping. Here's a ranked comparison:</p>
+
+  <table>
+    <thead>
+      <tr><th>Rank</th><th>Service</th><th>Free Requests</th><th>No Credit Card?</th><th>Best For</th></tr>
+    </thead>
+    <tbody>
+      <tr class="highlight">
+        <td>🥇</td>
+        <td><strong>my-automaton</strong></td>
+        <td>3/day per service (21 total/day)</td>
+        <td><span class="badge green">Yes</span></td>
+        <td>Code review + analysis</td>
+      </tr>
+      <tr>
+        <td>🥈</td>
+        <td><strong>Google Gemini</strong></td>
+        <td>15 req/min (all models)</td>
+        <td><span class="badge green">Yes</span></td>
+        <td>General LLM</td>
+      </tr>
+      <tr>
+        <td>🥉</td>
+        <td><strong>Snyk Code</strong></td>
+        <td>100 scans/month</td>
+        <td><span class="badge orange">Signup required</span></td>
+        <td>Security scanning</td>
+      </tr>
+      <tr>
+        <td>4</td>
+        <td><strong>DeepSeek</strong></td>
+        <td>10 req/day</td>
+        <td><span class="badge green">Yes</span></td>
+        <td>LLM + code</td>
+      </tr>
+      <tr>
+        <td>5</td>
+        <td><strong>OpenAI</strong></td>
+        <td>3 req/min (Nano only)</td>
+        <td><span class="badge orange">Phone required</span></td>
+        <td>LLM</td>
+      </tr>
+      <tr>
+        <td>6</td>
+        <td><strong>Anthropic</strong></td>
+        <td>Limited (Claude.ai only)</td>
+        <td><span class="badge red">No API free tier</span></td>
+        <td>General LLM</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- DEVELOPER PLANS -->
+  <h2 id="developer-plans">5️⃣ Developer & Startup Plans</h2>
+
+  <div class="col-2">
+    <div class="card">
+      <h3>my-automaton Developer Plans</h3>
+      <table>
+        <tr><td>Starter</td><td><strong>$5</strong> — 500 credits</td></tr>
+        <tr><td>Pro</td><td><strong>$10</strong> — 1,100 credits</td></tr>
+        <tr><td>Business</td><td><strong>$25</strong> — 3,000 credits</td></tr>
+        <tr><td>Enterprise</td><td><strong>$58</strong> — 6,500 credits</td></tr>
+      </table>
+      <p style="margin-top:10px;font-size:0.9em;">💰 Pay-as-you-go. No subscriptions. Credits never expire.</p>
+    </div>
+    <div class="card">
+      <h3>Other Provider Plans</h3>
+      <table>
+        <tr><td>OpenAI</td><td>$5 credit expires in 1 year</td></tr>
+        <tr><td>Anthropic</td><td>Prepaid credits from $5</td></tr>
+        <tr><td>Google Gemini</td><td>Pay-as-you-go (billed monthly)</td></tr>
+        <tr><td>CodeRabbit</td><td>$12/user/month minimum</td></tr>
+      </table>
+      <p style="margin-top:10px;font-size:0.9em;">⚠ Most require monthly subscriptions or have expiring credits.</p>
+    </div>
+  </div>
+
+  <!-- HIDDEN COSTS -->
+  <h2 id="hidden-costs">6️⃣ Hidden Costs: Rate Limits, Context Windows & Lock-in</h2>
+
+  <table>
+    <thead>
+      <tr><th>Provider</th><th>Rate Limit (Free)</th><th>Max Context</th><th>Output Format</th><th>Vendor Lock-in?</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>my-automaton</strong></td>
+        <td>3 req/day/endpoint</td>
+        <td>16K tokens</td>
+        <td>Structured JSON</td>
+        <td><span class="badge green">None — REST</span></td>
+      </tr>
+      <tr>
+        <td><strong>OpenAI</strong></td>
+        <td>3 RPM / 200 RPD</td>
+        <td>128K tokens</td>
+        <td>Raw text</td>
+        <td><span class="badge orange">Moderate</span></td>
+      </tr>
+      <tr>
+        <td><strong>Anthropic</strong></td>
+        <td>5 RPM / 20K TPD</td>
+        <td>200K tokens</td>
+        <td>Raw text</td>
+        <td><span class="badge orange">Moderate</span></td>
+      </tr>
+      <tr>
+        <td><strong>Google Gemini</strong></td>
+        <td>15 RPM / 1.5K RPD</td>
+        <td>2M tokens</td>
+        <td>Raw text</td>
+        <td><span class="badge orange">Moderate</span></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="card">
+    <h3>⚠️ The Vendor Lock-in Problem</h3>
+    <p>Most LLM APIs return raw text — you build your own parsing, validation, and retry logic. This creates invisible engineering costs:</p>
+    <ul>
+      <li><strong>Prompt engineering:</strong> Hours spent tweaking prompts for consistent output</li>
+      <li><strong>Parsing logic:</strong> Custom code to extract structured data from text</li>
+      <li><strong>Retry handling:</strong> Dealing with hallucinations and malformed responses</li>
+      <li><strong>Rate limit management:</strong> Queuing and backoff logic across providers</li>
+    </ul>
+    <p style="margin-top:10px;"><strong>my-automaton returns structured JSON</strong> — no prompt engineering, no parsing, no retries. Every response is validated and schema-conformant.</p>
+  </div>
+
+  <!-- VERDICT -->
+  <h2 id="verdict">7️⃣ The Verdict: Best Value AI APIs for Developers (2026)</h2>
+
+  <div class="col-2">
+    <div class="card">
+      <h3>💰 Cheapest Overall</h3>
+      <p><strong>Winner: Google Gemini 2.5 Flash</strong></p>
+      <p>$0.006/request with 15 req/min free tier. Best for general-purpose LLM tasks when you don't need structured output.</p>
+    </div>
+    <div class="card">
+      <h3>🔧 Best for Code Review</h3>
+      <p><strong>Winner: my-automaton</strong></p>
+      <p>Purpose-built for code review, security scanning, and refactoring. $5 gets 500 analyses, 3 free per day, no subscription.</p>
+    </div>
+    <div class="card">
+      <h3>🛡️ Best Free Tier Overall</h3>
+      <p><strong>Winner: my-automaton</strong></p>
+      <p>21 free requests per day (3 per endpoint × 7 services). No credit card. No signup. Instant access.</p>
+    </div>
+    <div class="card">
+      <h3>🏢 Best for Enterprise</h3>
+      <p><strong>Winner: Anthropic Claude</strong></p>
+      <p>200K context window, enterprise SLAs, and dedicated support. Best for large-scale deployments with compliance needs.</p>
+    </div>
+  </div>
+
+  <div class="card card.cta" style="text-align:center;">
+    <h2 style="border:none;margin-top:0;">🎯 Ready to Save on AI API Costs?</h2>
+    <p style="margin-bottom:16px;">Start with 21 free requests per day — no credit card, no signup. When you need more, plans start at just $5.</p>
+    <a href="/pricing.html" class="btn" style="font-size:1.1em;padding:14px 32px;">See Plans & Pricing →</a>
+    <a href="/api-docs.html" class="btn blue" style="font-size:1.1em;padding:14px 32px;margin-left:10px;">View API Docs →</a>
+    <p style="margin-top:12px;font-size:0.85em;color:#8b949e;">Or try it right now: <code>curl -X POST https://automation.songheng.vip/api/free/review -H "Content-Type: application/json" -d '{"text":"function hello(){return 42}","mode":"review"}'</code></p>
+  </div>
+
+  <!-- FAQ -->
+  <h2 id="faq">8️⃣ Frequently Asked Questions</h2>
+  <dl class="faq">
+    <dt>Q: What's the cheapest AI API for a solo developer?</dt>
+    <dd>For general LLM access: Google Gemini 2.5 Flash (free 15 req/min). For code review and analysis: my-automaton ($5 pay-as-you-go, with 21 free requests/day). Both require no subscription and start free.</dd>
+
+    <dt>Q: Do I need a credit card to start using AI APIs?</dt>
+    <dd>Not always! my-automaton and Google Gemini offer free tiers with no credit card required. OpenAI requires phone verification. Anthropic has no free API tier.</dd>
+
+    <dt>Q: What's the difference between raw LLM APIs and purpose-built APIs?</dt>
+    <dd>Raw LLM APIs (OpenAI, Anthropic, Gemini) return unstructured text — you build prompt engineering, parsing, and validation. Purpose-built APIs (my-automaton, Snyk) return structured JSON with consistent schemas, saving significant engineering time.</dd>
+
+    <dt>Q: How much does it cost to run AI code reviews on every PR?</dt>
+    <dd>With my-automaton, about $0.05 per review (5 credits at $0.01/credit). For 20 PRs/month, that's $1/month. With CodeRabbit: $12/user/month minimum ($144+/year). With GitHub Copilot Code Review: $10/month flat.</dd>
+
+    <dt>Q: Do API credits expire?</dt>
+    <dd>my-automaton: <strong>No</strong> — credits never expire. OpenAI credits expire after 1 year. Most other providers have monthly billing cycles where unused capacity is lost.</dd>
+
+    <dt>Q: Can I integrate AI code review into my CI/CD pipeline?</dt>
+    <dd>Yes! All services compared here offer REST APIs that integrate with GitHub Actions, GitLab CI, Jenkins, or any CI/CD system. my-automaton's simple REST API works with a single curl command.</dd>
+  </dl>
+
+  <div class="footnote">
+    <p><strong>Disclaimers:</strong> Pricing data sourced from official provider websites and API documentation as of June 19, 2026. Prices are subject to change. "Average cost per request" assumes ~1,000 input tokens + ~500 output tokens for LLM APIs, and standard text/code inputs for purpose-built APIs. Free tier limits verified June 2026. This page contains affiliate-style links to my-automaton (our own service) — see our <a href="/">homepage</a> for full terms.</p>
+    <p style="margin-top:8px;"><em>Last updated: June 19, 2026. Found an error? <a href="https://github.com/chaosong/my-automaton">Open an issue</a>.</em></p>
+  </div>
+
+</div>
+<script src="/conversion-banner.js" defer></script>
+</body>
+</html>

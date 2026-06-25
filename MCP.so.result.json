@@ -1,0 +1,34 @@
+{
+  "status": "ready_for_manual",
+  "directory": "MCP.so",
+  "directory_url": "https://mcp.so",
+  "method_attempted": "api_research",
+  "submission_method": "manual_web_form",
+  "automatable": false,
+  "details": {
+    "api_available": false,
+    "github_pr_available": false,
+    "headless_browser_available": false,
+    "reason": "MCP.so is a Next.js web application (github.com/chatmcp/mcp-directory) that requires GitHub or Google OAuth sign-in to access the submission form at https://mcp.so/submit. No public REST API exists for submission. No GitHub PAT or OAuth credentials are available in this environment. Automated (headless) submission is not feasible due to OAuth requirement.",
+    "submission_steps": [
+      "1. Open https://mcp.so in a browser (human-required)",
+      "2. Click 'Sign In' button (GitHub or Google OAuth)",
+      "3. Navigate to https://mcp.so/submit",
+      "4. Fill form: Type=MCP Server, Name=my-automaton, URL=https://automation.songheng.vip",
+      "5. Provide server config JSON (see artifacts)",
+      "6. Click Submit",
+      "7. Verify listing at https://mcp.so/servers"
+    ]
+  },
+  "generated_artifacts": [
+    "MCP.so.result.json",
+    "mcp_so_manual.md (updated with current findings)",
+    "submission_data.json (server config for manual submission)"
+  ],
+  "server_name": "my-automaton",
+  "server_url": "https://automation.songheng.vip",
+  "mcp_endpoint": "https://automation.songheng.vip/mcp",
+  "submission_url": "https://mcp.so/submit",
+  "github_repo": "https://github.com/chatmcp/mcpso",
+  "timestamp": "2026-06-17T18:04:00Z"
+}

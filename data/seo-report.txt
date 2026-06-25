@@ -1,0 +1,9 @@
+SEO Submission Report — 2026-06-14T20:32:47.582Z
+==================================================
+Google: 404
+Bing: 410
+IndexNow (https://api.indexnow.org/indexnow): 422
+IndexNow (https://www.bing.com/indexnow): 422
+IndexNow (https://yandex.com/indexnow): 422
+IndexNow (https://search.seznam.cz/indexnow): 422
+Site Check: 200

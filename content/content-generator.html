@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="canonical" href="https://automation.songheng.vip/content-generator.html">
+  <meta property="og:title" content="AI Content Generator — Blog Posts, Docs, README | my-automaton">
+  <meta property="og:description" content="Free AI content generator. Generate blog posts, tutorials, API docs, changelogs, README files with DeepSeek AI. 3 free generations per day.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://automation.songheng.vip/content-generator.html">
+  <meta property="og:image" content="https://automation.songheng.vip/og-image.png">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI Content Generator — Blog Posts, Docs, README | my-automaton</title>
+<meta name="description" content="Free AI content generator. Generate blog posts, tutorials, API docs, changelogs, README files with DeepSeek AI. 3 free generations per day.">
+<meta name="keywords" content="AI content generator, blog post generator, free AI writing, content creation tool, SEO content writer">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:#0a0a14;color:#e0e0e0;font-family:-apple-system,system-ui,sans-serif;line-height:1.6;padding:1rem;}
+.container{max-width:900px;margin:0 auto;}
+nav{margin-bottom:1rem;}
+nav a{color:#666;text-decoration:none;font-size:0.85rem;margin-right:1rem;}
+h1{font-size:1.5rem;margin-bottom:0.3rem;background:linear-gradient(135deg,#00d4aa,#4a9eff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.subtitle{color:#666;font-size:0.85rem;margin-bottom:1.2rem;}
+.form-group{margin-bottom:1rem;}
+.form-group label{display:block;color:#888;font-size:0.8rem;margin-bottom:0.3rem;}
+.form-group select,.form-group input,.form-group textarea{width:100%;padding:0.6rem 0.8rem;background:#0f0f1a;border:1px solid #1e1e3a;border-radius:10px;color:#e0e0e0;font-size:0.9rem;}
+.form-group select:focus,.form-group input:focus,.form-group textarea:focus{outline:none;border-color:#4a9eff66;}
+.form-group textarea{min-height:80px;resize:vertical;}
+.row-2{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
+@media(max-width:600px){.row-2{grid-template-columns:1fr;}}
+.btn{padding:0.7rem 1.5rem;background:#00d4aa;color:#000;border:none;border-radius:10px;font-weight:700;font-size:0.95rem;cursor:pointer;width:100%;}
+.btn:hover{background:#00eebb;}
+.btn:disabled{opacity:0.4;cursor:not-allowed;}
+.remaining{text-align:right;color:#555;font-size:0.8rem;margin-bottom:0.5rem;}
+.output-box{background:#12121e;border:1px solid #1e1e3a;border-radius:12px;padding:1.2rem;margin-top:1rem;display:none;}
+.output-box h3{color:#888;font-size:0.75rem;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:0.5rem;}
+.output-content{color:#e0e0e0;font-size:0.9rem;line-height:1.7;white-space:pre-wrap;}
+.output-content h1,.output-content h2,.output-content h3{color:#00d4aa;margin:0.8rem 0 0.3rem;}
+.output-content code{background:#0a0a14;padding:0.15rem 0.4rem;border-radius:4px;font-size:0.85rem;color:#4a9eff;}
+.output-content pre{background:#0a0a14;padding:1rem;border-radius:8px;overflow-x:auto;margin:0.5rem 0;}
+.output-actions{margin-top:1rem;display:flex;gap:0.5rem;}
+.output-actions button{padding:0.4rem 1rem;background:#1e1e3a;color:#aaa;border:1px solid #2a2a4a;border-radius:8px;cursor:pointer;font-size:0.8rem;}
+.output-actions button:hover{background:#2a2a4a;}
+.loading{text-align:center;padding:2rem;display:none;}
+.loading .spinner{display:inline-block;width:24px;height:24px;border:3px solid #1e1e3a;border-top-color:#00d4aa;border-radius:50%;animation:spin .6s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg);}}
+footer{text-align:center;padding:2rem;color:#444;font-size:0.75rem;}
+.copy-toast{position:fixed;bottom:1rem;right:1rem;background:#00d4aa;color:#000;padding:0.5rem 1rem;border-radius:8px;font-size:0.8rem;font-weight:600;opacity:0;transition:opacity.3s;}
+</style>
+<meta name="google-site-verification" content="YOUR_CODE" />
+<meta property="og:site_name" content="my-automaton" />
+<meta property="og:type" content="website" />
+<meta property="og:locale" content="en_US" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:site" content="@my_automaton" />
+<script src="/js/analytics.js"></script>
+<!-- Open Graph / Social Meta Tags -->
+<meta name="twitter:title" content="AI Content Generator — Blog Posts, Docs, README | my-automaton" />
+<meta name="twitter:description" content="Free AI content generator. Generate blog posts, tutorials, API docs, changelogs, README files with DeepSeek AI. 3 free generations per day." />
+<meta name="twitter:image" content="https://automation.songheng.vip/og-image.png" />
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "AI Content Generator — Blog Posts, Docs, README | my-automaton",
+  "description": "Free AI content generator. Generate blog posts, tutorials, API docs, changelogs, README files with DeepSeek AI. 3 free generations per day.",
+  "url": "https://automation.songheng.vip/content-generator.html",
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": "Web",
+  "author": {
+    "@type": "Organization",
+    "name": "my-automaton",
+    "url": "https://automation.songheng.vip"
+  },
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  }
+}
+</script>
+</head>
+<body>
+<div class="container">
+<nav>
+  <a href="/">🏠 Home</a>
+  <a href="/tools">🛠️ Tools</a>
+  <a href="/seo-audit">🔍 SEO Audit</a>
+  <span style="color:#555;">Content Generator</span>
+</nav>
+
+<h1>📝 AI Content Generator</h1>
+<p class="subtitle">Generate blog posts, tutorials, API docs, changelogs, and READMEs with DeepSeek AI. 3 free per day.</p>
+
+<div class="remaining">Remaining today: <span id="remainingCount">3</span></div>
+
+<div class="row-2">
+  <div class="form-group">
+    <label>Content Type</label>
+    <select id="contentType">
+      <option value="blog-post">📰 Blog Post</option>
+      <option value="tutorial">📚 Tutorial</option>
+      <option value="api-docs">🔌 API Documentation</option>
+      <option value="changelog">📋 Changelog</option>
+      <option value="readme">📖 README</option>
+      <option value="seo-article">🌐 SEO Article</option>
+      <option value="landing-page">🏠 Landing Page Copy</option>
+      <option value="newsletter">📧 Newsletter</option>
+    </select>
+  </div>
+  <div class="form-group">
+    <label>Tone / Style</label>
+    <select id="tone">
+      <option value="professional">Professional</option>
+      <option value="conversational">Conversational</option>
+      <option value="technical">Technical</option>
+      <option value="casual">Casual</option>
+      <option value="persuasive">Persuasive</option>
+      <option value="humorous">Humorous</option>
+    </select>
+  </div>
+</div>
+
+<div class="form-group">
+  <label>Topic / Title</label>
+  <input type="text" id="topic" placeholder="e.g., Getting Started with Microservices Architecture">
+</div>
+
+<div class="form-group">
+  <label>Key Points (optional — one per line)</label>
+  <textarea id="keyPoints" placeholder="Key point 1&#10;Key point 2&#10;Key point 3"></textarea>
+</div>
+
+<button id="generateBtn" class="btn">✨ Generate Content</button>
+
+<div class="loading" id="loading">
+  <div class="spinner"></div>
+  <p style="margin-top:0.5rem;color:#666;">Generating content with AI...</p>
+</div>
+
+<div class="output-box" id="outputBox">
+  <h3>📄 Generated Content</h3>
+  <div class="output-content" id="outputContent"></div>
+  <div class="output-actions">
+    <button id="copyBtn">📋 Copy</button>
+    <button id="copyHtmlBtn">🔗 Copy HTML</button>
+  </div>
+</div>
+
+<footer>
+  <p>my-automaton · <a href="https://automation.songheng.vip" style="color:#666;">automation.songheng.vip</a></p>
+</footer>
+</div>
+
+<div id="toast" class="copy-toast">Copied!</div>
+
+<script>
+const remainingSpan = document.getElementById('remainingCount');
+const generateBtn = document.getElementById('generateBtn');
+const loading = document.getElementById('loading');
+const outputBox = document.getElementById('outputBox');
+const outputContent = document.getElementById('outputContent');
+
+async function checkRemaining() {
+  try {
+    const r = await fetch('/api/content-generator/remaining');
+    const d = await r.json();
+    remainingSpan.textContent = d.remaining;
+  } catch(e) {}
+}
+checkRemaining();
+
+generateBtn.addEventListener('click', async () => {
+  const type = document.getElementById('contentType').value;
+  const tone = document.getElementById('tone').value;
+  const topic = document.getElementById('topic').value.trim();
+  const keyPoints = document.getElementById('keyPoints').value.trim();
+  
+  if(!topic) { alert('Enter a topic or title'); return; }
+  
+  generateBtn.disabled = true;
+  generateBtn.textContent = '⏳ Generating...';
+  outputBox.style.display = 'none';
+  loading.style.display = 'block';
+  
+  try {
+    const res = await fetch('/api/content-generator', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({type, tone, topic, keyPoints})
+    });
+    const data = await res.json();
+    loading.style.display = 'none';
+    
+    if(data.error) {
+      if(res.status === 402) {
+        alert('Free limit reached! Send $0.02 USDC to 0x76eADdEBFfb6A61DD071f97F4508467fc55dd113 on Base');
+      } else {
+        alert('Error: '+data.error);
+      }
+      generateBtn.disabled = false;
+      generateBtn.textContent = '✨ Generate Content';
+      return;
+    }
+    
+    if(data.content) {
+      outputContent.innerHTML = data.content;
+      outputBox.style.display = 'block';
+      remainingSpan.textContent = data.remaining;
+    }
+  } catch(e) {
+    loading.style.display = 'none';
+    alert('Error: '+e.message);
+  }
+  generateBtn.disabled = false;
+  generateBtn.textContent = '✨ Generate Content';
+});
+
+document.getElementById('copyBtn').addEventListener('click', () => {
+  const text = outputContent.textContent;
+  navigator.clipboard.writeText(text).then(() => showToast());
+});
+
+document.getElementById('copyHtmlBtn').addEventListener('click', () => {
+  navigator.clipboard.writeText(outputContent.innerHTML).then(() => showToast());
+});
+
+function showToast() {
+  const t = document.getElementById('toast');
+  t.style.opacity = '1';
+  setTimeout(() => t.style.opacity = '0', 2000);
+}
+</script>
+<div class="share-bar" style="position:fixed;bottom:20px;right:20px;z-index:9999;display:flex;gap:8px;background:rgba(0,0,0,0.85);padding:10px 14px;border-radius:30px;backdrop-filter:blur(8px);box-shadow:0 2px 12px rgba(0,0,0,0.3)">
+<button onclick="window.open('https://twitter.com/intent/tweet?text='+encodeURIComponent(document.title)+'&url='+encodeURIComponent(location.href),'_blank')" style="background:#1DA1F2;border:none;color:white;padding:8px 12px;border-radius:20px;cursor:pointer;font-size:13px;font-weight:bold">X</button>
+<button onclick="window.open('https://www.linkedin.com/sharing/share-offsite/?url='+encodeURIComponent(location.href),'_blank')" style="background:#0A66C2;border:none;color:white;padding:8px 12px;border-radius:20px;cursor:pointer;font-size:13px;font-weight:bold">in</button>
+<button onclick="window.open('https://reddit.com/submit?url='+encodeURIComponent(location.href)+'&title='+encodeURIComponent(document.title),'_blank')" style="background:#FF4500;border:none;color:white;padding:8px 12px;border-radius:20px;cursor:pointer;font-size:13px;font-weight:bold">r</button>
+</div>
+<script src="/js/share-widget.js"></script>
+<script src="/conversion-banner.js" defer></script>
+</body>
+</html>

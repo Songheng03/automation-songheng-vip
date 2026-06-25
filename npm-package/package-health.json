@@ -1,0 +1,26 @@
+{
+  "name": "my-automaton-health",
+  "version": "1.0.0",
+  "description": "🏥 Project health scanner — zero-dependency CLI that grades your project's health (A-F), detects security issues, missing docs, hardcoded secrets, malicious deps, and tech debt",
+  "type": "module",
+  "main": "project-health.mjs",
+  "bin": {
+    "project-health": "project-health.mjs",
+    "ma-health": "project-health.mjs"
+  },
+  "keywords": [
+    "code-quality", "security-scanner", "project-health",
+    "static-analysis", "developer-tools", "code-review",
+    "tech-debt", "cli-tool"
+  ],
+  "license": "MIT",
+  "author": "my-automaton",
+  "homepage": "https://automation.songheng.vip",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/my-automaton/project-health.git"
+  },
+  "engines": { "node": ">=16.0.0" },
+  "files": ["project-health.mjs", "README.md", "package.json"],
+  "publishConfig": { "access": "public" }
+}

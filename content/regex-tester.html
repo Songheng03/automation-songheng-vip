@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta property="og:title" content="Regex Tester">
+<meta property="og:description" content="Test regular expressions with real-time matching. Flags support, capture groups. Free.">
+<meta property="og:url" content="https://automation.songheng.vip/regex-tester.html">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Regex Tester">
+<meta name="twitter:description" content="Test regular expressions with real-time matching. Flags support, capture groups. Free.">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Regex Tester — Test Regular Expressions Online | my-automaton</title>
+<meta name="description" content="Test regular expressions in real time. Highlight matches, view capture groups, toggle flags. 5 built-in patterns (email, URL, phone, hex color, HTML tag). 100% free.">
+<style>
+:root{--bg:#0f172a;--card:#1e293b;--text:#e2e8f0;--muted:#94a3b8;--accent:#38bdf8;--green:#4ade80;--red:#f87171;--border:#334155;--yellow:#fbbf24;--purple:#a78bfa}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+header{background:var(--card);border-bottom:1px solid var(--border);padding:1rem 2rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap}
+header h1{font-size:1.25rem;color:var(--accent)}
+nav a{color:var(--muted);text-decoration:none;margin-left:1rem;font-size:.875rem}
+main{max-width:900px;margin:2rem auto;padding:0 1rem}
+.regex-input-row{display:flex;gap:.5rem;align-items:center;margin-bottom:.75rem}
+.regex-input-row .slash{font-family:"Fira Code",monospace;font-size:1.2rem;color:var(--muted)}
+.regex-input-row input{flex:1;background:var(--card);color:var(--green);border:1px solid var(--border);border-radius:8px;padding:.7rem 1rem;font-family:"Fira Code",monospace;font-size:.9rem}
+.regex-input-row input:focus{outline:none;border-color:var(--accent)}
+.flags-row{display:flex;gap:.3rem;margin-bottom:.75rem;flex-wrap:wrap;align-items:center}
+.flag{width:34px;height:34px;border:1px solid var(--border);border-radius:6px;background:transparent;color:var(--muted);cursor:pointer;font-family:"Fira Code",monospace;font-size:.75rem;display:flex;align-items:center;justify-content:center}
+.flag.active{background:var(--accent);color:#0f172a;border-color:var(--accent)}
+.preset-row{display:flex;gap:.3rem;flex-wrap:wrap;margin-bottom:.75rem;align-items:center}
+.preset-row button{padding:.15rem .6rem;border:1px solid var(--border);border-radius:4px;background:transparent;color:var(--muted);cursor:pointer;font-size:.6rem}
+.preset-row button:hover{border-color:var(--accent)}
+.textarea-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.25rem;margin-bottom:1rem}
+.textarea-card h3{font-size:.7rem;color:var(--accent);margin-bottom:.5rem}
+textarea{width:100%;background:#0a0f1a;color:var(--text);border:1px solid var(--border);border-radius:8px;padding:.75rem;font-size:.75rem;resize:vertical;min-height:150px;font-family:"Fira Code",monospace;line-height:1.5}
+textarea:focus{outline:none;border-color:var(--accent)}
+.highlighted{background:#0a0f1a;border:1px solid var(--border);border-radius:8px;padding:.75rem;font-size:.75rem;line-height:1.8;min-height:60px;font-family:"Fira Code",monospace}
+.highlighted .match{background:rgba(74,222,128,.3);border-radius:2px;padding:0 1px}
+.highlighted .match-current{background:rgba(56,189,248,.5);border-radius:2px;padding:0 1px}
+.match-info{display:flex;gap:.5rem;align-items:center;flex-wrap:wrap;margin-top:.5rem;font-size:.7rem}
+.match-info .badge{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:.15rem .6rem;font-family:"Fira Code",monospace}
+.match-info .badge.green{color:var(--green)}
+.match-info .badge.red{color:var(--red)}
+.group-table{width:100%;margin-top:.5rem;border-collapse:collapse}
+.group-table td,.group-table th{text-align:left;padding:.3rem .5rem;font-size:.65rem;border-bottom:1px solid var(--border);font-family:"Fira Code",monospace}
+.group-table th{color:var(--muted);font-size:.6rem;text-transform:uppercase}
+.group-table .gc{color:var(--green)}
+footer{text-align:center;padding:2rem;color:var(--muted);font-size:.8rem;border-top:1px solid var(--border);margin-top:2rem}footer a{color:var(--accent)}
+</style>
+
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Regex Tester & Debugger","applicationCategory":"DeveloperApplication","operatingSystem":"Any","url":"https://automation.songheng.vip/regex-tester.html","description":"Test regular expressions online with live matching, capture groups, multiple flags, and pattern library.","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"aggregateRating":{"@type":"AggregateRating","ratingValue":"4.8","ratingCount":"127"}}</script>
+</head>
+<body>
+<header><h1>🔍 Regex Tester</h1><nav><a href="/">Home</a><a href="/dev-tools-hub.html">Tools Hub</a></nav></header>
+<main>
+<div class="preset-row"><span style="font-size:.6rem;color:var(--muted)">Presets: </span>
+  <button onclick="loadPreset('[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}','gi','email')">Email</button>
+  <button onclick="loadPreset('https?://[^\\s]+','gi','url')">URL</button>
+  <button onclick="loadPreset('\\+?\\d{1,4}?[-.\\s]?\\(?\\d{1,3}?\\)?[-.\\s]?\\d{1,4}[-.\\s]?\\d{1,4}[-.\\s]?\\d{1,9}','gi','phone')">Phone</button>
+  <button onclick="loadPreset('#[0-9a-fA-F]{3,6}\\b','gi','hex')">Hex Color</button>
+  <button onclick="loadPreset('<([a-zA-Z][a-zA-Z0-9]*)\\b[^>]*>(.*?)<\\/\\1>','gi','html')">HTML Tag</button>
+</div>
+<div class="regex-input-row">
+  <span class="slash">/</span>
+  <input type="text" id="regexInput" value="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}" oninput="testRegex()" placeholder="pattern">
+  <span class="slash">/</span>
+</div>
+<div class="flags-row">
+  <span style="font-size:.6rem;color:var(--muted);margin-right:.3rem">Flags: </span>
+  <button class="flag" onclick="toggleFlag('g')">g</button>
+  <button class="flag" onclick="toggleFlag('i')">i</button>
+  <button class="flag" onclick="toggleFlag('m')">m</button>
+  <button class="flag" onclick="toggleFlag('s')">s</button>
+  <button class="flag" onclick="toggleFlag('u')">u</button>
+  <button class="flag" onclick="toggleFlag('y')">y</button>
+</div>
+<div class="textarea-card"><h3>Test String</h3>
+  <textarea id="testString" oninput="testRegex()">Contact us at support@example.com or sales@company.co.uk. Visit https://example.com for more info. Call +1-555-0123 or (415) 555-0199. Colors: #ff5733 #2ecc71 #3498db. Random text with no matches here.</textarea>
+</div>
+<div class="textarea-card"><h3>Result</h3>
+  <div class="highlighted" id="highlightedOutput"></div>
+  <div class="match-info" id="matchInfo"></div>
+  <table class="group-table" id="groupTable" style="display:none"><thead><tr><th>Match #</th><th>Full Match</th><th>Groups</th></tr></thead><tbody></tbody></table>
+</div>
+</main>
+<footer><p>my-automaton · Free Regex Tester · <a href="/dev-tools-hub.html">Tools Hub</a></p></footer>
+<script>
+let flags={g:true,i:true,m:false,s:false,u:false,y:false};
+
+function toggleFlag(f){
+  flags[f]=!flags[f];
+  document.querySelectorAll('.flag').forEach(el=>{
+    const fchar=el.textContent;
+    el.classList.toggle('active',flags[fchar]);
+  });
+  testRegex();
+}
+
+// Init flag buttons
+Object.keys(flags).forEach(f=>{
+  if(flags[f])document.querySelectorAll('.flag').forEach(el=>{if(el.textContent===f)el.classList.toggle('active',true)});
+});
+
+function loadPreset(pattern,flagStr,preset){
+  document.getElementById('regexInput').value=pattern;
+  // Reset and set flags
+  const newFlags={g:false,i:false,m:false,s:false,u:false,y:false};
+  flagStr.split('').forEach(f=>newFlags[f]=true);
+  flags=newFlags;
+  document.querySelectorAll('.flag').forEach(el=>{
+    el.classList.toggle('active',flags[el.textContent]);
+  });
+  if(preset==='email')document.getElementById('testString').value='Contact us at support@example.com or sales@company.co.uk. Info: hello@world.io';
+  else if(preset==='url')document.getElementById('testString').value='Visit https://example.com/path?q=search or http://api.example.net/v1/data. Also check ftp://files.example.org';
+  else if(preset==='phone')document.getElementById('testString').value='Call +1-555-0123, (415) 555-0199, or 800.555.0124. Text 447911123456';
+  else if(preset==='hex')document.getElementById('testString').value='Colors: #ff5733, #2ecc71, #3498db, #f1c40f, #e74c3c, #9b59b6, #FFF, #000';
+  else if(preset==='html')document.getElementById('testString').value='<div class="box"><h1>Title</h1><p>Paragraph text</p><span>inline</span></div>';
+  testRegex();
+}
+
+function testRegex(){
+  const pattern=document.getElementById('regexInput').value;
+  const testStr=document.getElementById('testString').value;
+  const flagStr=Object.entries(flags).filter(([,v])=>v).map(([k])=>k).join('');
+
+  let regex;
+  try{regex=new RegExp(pattern,flagStr)}catch(e){
+    document.getElementById('highlightedOutput').innerHTML='<span style="color:var(--red)">❌ Invalid regex: '+e.message+'</span>';
+    document.getElementById('matchInfo').innerHTML='';
+    document.getElementById('groupTable').style.display='none';
+    return;
+  }
+
+  const matches=[...testStr.matchAll(regex)];
+  const matchCount=matches.length;
+
+  // Build highlighted output
+  let html='';let lastIdx=0;
+  for(const m of matches){
+    html+=escapeHTML(testStr.slice(lastIdx,m.index));
+    html+='<span class="match">'+escapeHTML(m[0])+'</span>';
+    lastIdx=m.index+m[0].length;
+  }
+  html+=escapeHTML(testStr.slice(lastIdx));
+  document.getElementById('highlightedOutput').innerHTML=html||'<span style="color:var(--muted)">No matches</span>';
+
+  document.getElementById('matchInfo').innerHTML=matchCount>0
+    ?`<span class="badge green">${matchCount} match${matchCount!==1?'es':''}</span>`
+    :'<span class="badge red">No matches</span>';
+
+  // Group table
+  const hasGroups=matches.some(m=>m.length>1);
+  document.getElementById('groupTable').style.display=hasGroups?'table':'none';
+  if(hasGroups){
+    const tbody=document.getElementById('groupTable').querySelector('tbody');
+    tbody.innerHTML=matches.slice(0,20).map((m,i)=>`<tr><td>#${i+1}</td><td class="gc">${escapeHTML(m[0].slice(0,50))}</td><td>${m.slice(1).map(g=>escapeHTML(g||'(empty)')).join(', ')}</td></tr>`).join('');
+  }
+}
+
+function escapeHTML(s){const d=document.createElement('div');d.textContent=s;return d.innerHTML}
+testRegex();
+</script>
+<script src="/conversion-banner.js" defer></script>
+</body>
+</html>

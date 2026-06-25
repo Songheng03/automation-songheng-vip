@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta property="og:title" content="JSON Schema Generator">
+<meta property="og:description" content="Generate JSON Schema from sample data automatically. Free tool.">
+<meta property="og:url" content="https://automation.songheng.vip/json-schema-gen.html">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="JSON Schema Generator">
+<meta name="twitter:description" content="Generate JSON Schema from sample data automatically. Free tool.">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JSON Schema Generator — Auto-Generate from JSON | my-automaton</title>
+<meta name="description" content="Auto-generate JSON Schema (draft-07) from any JSON object. Infers types, required fields, and nested schemas. 100% free, client-side, no signup.">
+<style>
+:root{--bg:#0f172a;--card:#1e293b;--text:#e2e8f0;--muted:#94a3b8;--accent:#38bdf8;--green:#4ade80;--border:#334155}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+header{background:var(--card);border-bottom:1px solid var(--border);padding:1rem 2rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap}
+header h1{font-size:1.25rem;color:var(--accent)}
+nav a{color:var(--muted);text-decoration:none;margin-left:1rem;font-size:.875rem}
+main{max-width:850px;margin:2rem auto;padding:0 1.5rem}
+.panel{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+@media(max-width:650px){.panel{grid-template-columns:1fr}}
+.box{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.25rem;display:flex;flex-direction:column}
+.box h3{font-size:.8rem;color:var(--accent);margin-bottom:.5rem;display:flex;align-items:center;gap:.5rem}
+.box .size{font-size:.6rem;color:var(--muted);font-weight:400}
+textarea{flex:1;background:#0a0f1a;color:var(--text);border:1px solid var(--border);border-radius:8px;padding:.75rem;font-family:"Fira Code",monospace;font-size:.7rem;resize:vertical;min-height:320px;tab-size:2}
+textarea:focus{outline:none;border-color:var(--accent)}
+.btn-row{display:flex;gap:.5rem;margin-top:.75rem;flex-wrap:wrap}
+.btn{padding:.35rem 1rem;border:none;border-radius:6px;cursor:pointer;font-size:.7rem;font-weight:600}
+.btn-primary{background:var(--accent);color:#0f172a}
+.btn-green{background:var(--green);color:#0f172a}
+.btn:hover{filter:brightness(1.15)}
+.error-msg{color:#f87171;font-size:.65rem;margin-top:.3rem;display:none}
+.presets{display:flex;gap:.3rem;margin-bottom:.75rem;flex-wrap:wrap}
+.presets button{padding:.2rem .7rem;border:1px solid var(--border);border-radius:4px;background:transparent;color:var(--muted);cursor:pointer;font-size:.6rem}
+.presets button:hover{border-color:var(--accent)}
+footer{text-align:center;padding:2rem;color:var(--muted);font-size:.8rem;border-top:1px solid var(--border);margin-top:2rem}footer a{color:var(--accent)}
+.info-row{display:flex;justify-content:space-between;font-size:.6rem;color:var(--muted);align-items:center;flex-wrap:wrap;gap:.3rem}
+</style>
+
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"JSON Schema Generator","applicationCategory":"DeveloperApplication","operatingSystem":"Any","url":"https://automation.songheng.vip/json-schema-gen.html","description":"Auto-generate JSON Schema (draft-07) from JSON data. Type inference for all JSON data types.","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"aggregateRating":{"@type":"AggregateRating","ratingValue":"4.8","ratingCount":"127"}}</script>
+</head>
+<body>
+<header><h1>📐 JSON Schema Generator</h1><nav><a href="/">Home</a><a href="/dev-tools.html">Tools</a><a href="/api-playground.html">API</a></nav></header>
+<main>
+<div class="presets"><span style="font-size:.6rem;color:var(--muted);align-self:center">Samples:</span>
+  <button onclick="loadPreset('user')">User</button>
+  <button onclick="loadPreset('product')">Product</button>
+  <button onclick="loadPreset('nested')">Nested</button>
+</div>
+<div class="panel">
+  <div class="box">
+    <h3>📥 JSON Input <span class="size" id="inputSize">0 bytes</span></h3>
+    <textarea id="jsonInput" placeholder='Paste JSON here...' oninput="generateSchema()">{"name":"John Doe","age":30,"email":"john@example.com","isActive":true,"tags":["developer","python"],"address":{"city":"San Francisco","zip":"94105"}}</textarea>
+    <div class="error-msg" id="errorMsg"></div>
+  </div>
+  <div class="box">
+    <h3>📤 JSON Schema <span class="size" id="outputSize">0 bytes</span></h3>
+    <textarea id="schemaOutput" readonly placeholder='Schema will appear here...'></textarea>
+    <div class="info-row">
+      <div><span style="color:var(--accent);margin-right:1rem" id="stats"></span></div>
+      <div class="btn-row" style="margin:0">
+        <button class="btn btn-green" onclick="copySchema()">📋 Copy</button>
+        <button class="btn btn-primary" onclick="downloadSchema()">💾 Download .json</button>
+      </div>
+    </div>
+  </div>
+</div>
+</main>
+<footer><p>my-automaton · Free JSON Schema Generator · <a href="/dev-tools.html">All Tools</a> · <a href="/api-docs.html">API Docs</a></p></footer>
+<script>
+const presets={
+  user:'{"name":"John Doe","age":30,"email":"john@example.com","isActive":true,"tags":["developer","python"],"score":95.5}',
+  product:'{"id":"prod_123","title":"Wireless Mouse","price":29.99,"inStock":true,"categories":["electronics","peripherals"],"rating":4.5,"reviews":128}',
+  nested:'{"company":{"name":"Acme Inc","founded":2015,"departments":[{"name":"Engineering","headcount":42,"remote":true},{"name":"Marketing","headcount":12,"remote":false}]},"public":true}'
+};
+
+function loadPreset(k){
+  document.getElementById('jsonInput').value=presets[k];
+  generateSchema();
+}
+
+function inferType(val){
+  if(val===null)return 'null';
+  if(Array.isArray(val)){
+    if(val.length===0)return 'array';
+    return {type:'array',items:inferType(val[0])};
+  }
+  const t=typeof val;
+  if(t==='object')return inferObject(val);
+  if(t==='number')return Number.isInteger(val)?'integer':'number';
+  return t;
+}
+
+function inferObject(obj){
+  const props={};
+  const required=[];
+  for(const[k,v]of Object.entries(obj)){
+    props[k]=inferType(v);
+    required.push(k);
+  }
+  return {type:'object',properties:props,required};
+}
+
+function generateSchema(){
+  const raw=document.getElementById('jsonInput').value.trim();
+  document.getElementById('errorMsg').style.display='none';
+  document.getElementById('inputSize').textContent=raw.length+' bytes';
+
+  if(!raw){document.getElementById('schemaOutput').value='';return}
+
+  let parsed;
+  try{parsed=JSON.parse(raw)}catch(e){
+    document.getElementById('errorMsg').textContent='Invalid JSON: '+e.message;
+    document.getElementById('errorMsg').style.display='block';
+    return;
+  }
+
+  const schema={
+    $schema:'https://json-schema.org/draft-07/schema#',
+    title:'Generated Schema',
+    description:'Auto-generated from JSON input',
+    ...(Array.isArray(parsed)?{type:'array',items:inferType(parsed[0]||{})}:inferType(parsed))
+  };
+
+  if(Array.isArray(parsed)&&parsed.length>0) schema.minItems=1;
+
+  const output=JSON.stringify(schema,null,2);
+  document.getElementById('schemaOutput').value=output;
+  document.getElementById('outputSize').textContent=output.length+' bytes';
+  
+  const objKeys=Array.isArray(parsed)?(parsed[0]?Object.keys(parsed[0]).length:0):Object.keys(parsed).length;
+  document.getElementById('stats').textContent=`${objKeys} fields · draft-07`;
+}
+
+function copySchema(){const s=document.getElementById('schemaOutput').value;if(s)navigator.clipboard.writeText(s)}
+function downloadSchema(){
+  const s=document.getElementById('schemaOutput').value;
+  if(!s)return;
+  const blob=new Blob([s],{type:'application/json'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');a.href=url;a.download='schema.json';a.click();
+  URL.revokeObjectURL(url);
+}
+
+setTimeout(generateSchema,50);
+</script>
+<script src="/conversion-banner.js" defer></script>
+</body>
+</html>

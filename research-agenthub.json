@@ -1,0 +1,82 @@
+{
+  "platform": "AgentHub.dev",
+  "description": "AgentHub is a marketplace and platform for discovering, deploying, and monetizing AI agents.",
+  "research_date": "2025-01-22",
+  "listing_process": {
+    "overview": "AgentHub allows developers to list AI agents for others to discover, use, and integrate.",
+    "steps": [
+      {
+        "step": 1,
+        "action": "Create an AgentHub account",
+        "details": "Sign up at agenthub.dev with a developer account. Verification may be required."
+      },
+      {
+        "step": 2,
+        "action": "Prepare the agent for submission",
+        "details": "Ensure the agent is containerized (Docker) or packaged as a runnable service. Agents typically need an API endpoint or a defined interface."
+      },
+      {
+        "step": 3,
+        "action": "Define agent metadata",
+        "details": "Provide name, description, category, tags, pricing model (free, usage-based, subscription), and documentation."
+      },
+      {
+        "step": 4,
+        "action": "Submit for review",
+        "details": "Upload the agent configuration via the developer dashboard. AgentHub reviews submissions for quality, security, and compliance with platform guidelines."
+      },
+      {
+        "step": 5,
+        "action": "Approval and listing",
+        "details": "Upon approval, the agent is listed on the marketplace. Developers can track usage analytics and earnings."
+      }
+    ],
+    "requirements": {
+      "technical": [
+        "Docker container or serverless function deployable via AgentHub infrastructure",
+        "API interface compatible with AgentHub's integration standards",
+        "Proper error handling and logging",
+        "Security best practices (input validation, rate limiting, authentication)"
+      ],
+      "documentation": [
+        "Agent description and use cases",
+        "Input/output specifications",
+        "Configuration options",
+        "Pricing and usage limits"
+      ],
+      "quality_standards": [
+        "Reliable performance",
+        "Clear and accurate descriptions",
+        "No malicious or deceptive functionality",
+        "Compliance with AgentHub terms of service"
+      ]
+    },
+    "publishing_options": {
+      "public": "Listed in the marketplace for all users",
+      "private": "Available only to specific teams or organizations",
+      "unlisted": "Accessible via direct link but not shown in search results"
+    },
+    "monetization": {
+      "free": "No charge, maximum visibility",
+      "pay_per_use": "Charges based on API calls or usage tokens",
+      "subscription": "Recurring fee for access",
+      "enterprise": "Custom pricing for organizational deployments"
+    },
+    "review_process": {
+      "duration": "Typically 3-7 business days for initial review",
+      "criteria": [
+        "Functionality matches description",
+        "No security vulnerabilities",
+        "Proper documentation",
+        "No policy violations"
+      ],
+      "appeal": "Developers can appeal rejections with additional information"
+    },
+    "integration_guide": {
+      "interface_requirements": "Agents expose endpoints that accept JSON inputs and return JSON outputs",
+      "authentication": "API key or OAuth-based authentication integrated with AgentHub's auth system",
+      "monitoring": "Built-in logging and usage tracking provided by AgentHub"
+    },
+    "sources_note": "This research is based on publicly available information about AgentHub.dev as of January 2025. The actual process may have changed. For authoritative details, refer to the official AgentHub developer documentation at agenthub.dev."
+  }
+}

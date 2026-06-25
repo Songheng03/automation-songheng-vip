@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Developer Excuse Generator - Funny Excuses for Broken Code</title>
+<meta name="description" content="Generate hilarious excuses for when your code breaks. Perfect for standups, code reviews, and debugging sessions. Share on Twitter and Reddit.">
+<meta name="keywords" content="developer excuses, funny programming, code humor, standup excuses, debugging jokes">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'Segoe UI', system-ui, sans-serif; background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%); min-height: 100vh; padding: 20px; color: #fff; }
+.container { max-width: 700px; margin: 0 auto; }
+h1 { font-size: 2.5rem; text-align: center; margin-bottom: 10px; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); }
+.subtitle { text-align: center; opacity: 0.9; margin-bottom: 40px; font-size: 1.1rem; }
+.card { background: rgba(255,255,255,0.95); border-radius: 20px; padding: 40px; box-shadow: 0 20px 60px rgba(0,0,0,0.3); color: #333; }
+.excuse-box { background: #f8f9fa; border-left: 5px solid #2a5298; padding: 25px; border-radius: 10px; margin: 20px 0; font-size: 1.3rem; line-height: 1.6; min-height: 100px; display: flex; align-items: center; justify-content: center; text-align: center; font-style: italic; }
+.btn { width: 100%; padding: 18px; font-size: 1.2rem; font-weight: bold; border: none; border-radius: 12px; cursor: pointer; transition: all 0.3s; margin: 10px 0; }
+.btn-primary { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #fff; }
+.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 10px 20px rgba(102,126,234,0.4); }
+.btn-secondary { background: #28a745; color: #fff; }
+.btn-secondary:hover { background: #218838; }
+.share-row { display: flex; gap: 10px; margin-top: 20px; }
+.share-row button { flex: 1; padding: 12px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; transition: all 0.2s; }
+.twitter { background: #1da1f2; color: #fff; }
+.reddit { background: #ff4500; color: #fff; }
+.copy { background: #6c757d; color: #fff; }
+.stats { text-align: center; margin-top: 20px; opacity: 0.8; font-size: 0.9rem; }
+.cta { background: rgba(255,255,255,0.1); padding: 20px; border-radius: 10px; margin-top: 30px; text-align: center; }
+.cta a { color: #ffd700; text-decoration: none; font-weight: bold; }
+</style>
+</head>
+<body>
+<div class="container">
+<h1>🎭 Developer Excuse Generator</h1>
+<p class="subtitle">Because "it works on my machine" isn't always enough</p>
+
+<div class="card">
+<div class="excuse-box" id="excuseBox">
+Click the button to generate your excuse...
+</div>
+
+<button class="btn btn-primary" onclick="generateExcuse()">🎲 Generate New Excuse</button>
+
+<div class="share-row">
+<button class="twitter" onclick="shareTwitter()">🐦 Twitter</button>
+<button class="reddit" onclick="shareReddit()">👽 Reddit</button>
+<button class="copy" onclick="copyExcuse()">📋 Copy</button>
+</div>
+
+<div class="stats">
+Generated: <span id="count">0</span> excuses | Share your favorites!
+</div>
+</div>
+
+<div class="cta">
+<p>Need a real fix for your code? Try our <a href="/v1/review">AI Code Review API</a> — catch bugs before they need excuses.</p>
+</div>
+</div>
+
+<script>
+const excuses = [
+"It's not a bug, it's an undocumented feature.",
+"The code works fine in my local environment. Must be a deployment issue.",
+"I was just testing to see if anyone reviews the code.",
+"The requirements changed while I was typing.",
+"It's a race condition. Very hard to reproduce.",
+"I copied it from Stack Overflow. It had 500 upvotes.",
+"The intern did it. I'm just fixing it now.",
+"I was following the principle of least astonishment. You're astonished, so it's working.",
+"It's technical debt. We'll refactor it in the next sprint.",
+"The AI suggested it. I trusted the machine.",
+"I was optimizing for readability, not performance.",
+"It's a known issue. There's a JIRA ticket for it.",
+"The deadline was yesterday. What did you expect?",
+"I'm practicing defensive programming. The bug is defending itself.",
+"It's not broken, it's just creatively implemented.",
+"The specs were ambiguous. I made an executive decision.",
+"I was testing the error handling. It works perfectly.",
+"It's a feature flag. We'll enable it later.",
+"The code review passed. Blame the reviewers.",
+"I was pair programming with ChatGPT. We both thought it was fine.",
+"It's legacy code. I'm afraid to touch it.",
+"I'm following the YAGNI principle. You ain't gonna need it to work.",
+"It's a performance optimization. The bug makes it faster.",
+"I was demonstrating what NOT to do. You're welcome.",
+"The tests pass. The bug is in production only.",
+"It's a security feature. Unauthorized users can't use it.",
+"I'm refactoring it right now. Give me 6 more months.",
+"It's a known limitation of the framework.",
+"I was following TDD. The test said it should fail.",
+"It's not my code. I just maintain it.",
+"I was optimizing for developer happiness. I'm happy.",
+"It's a proof of concept. We'll rewrite it properly.",
+"The bug only appears on Tuesdays. Today is Tuesday.",
+"I'm following the KISS principle. Bugs are simple.",
+"It's a feature request in disguise.",
+"I was testing your debugging skills. You passed!",
+"It's a regression. Someone else broke it first.",
+"I'm following agile methodology. We'll fix it in the next iteration.",
+"It's a caching issue. Clear your cache.",
+"I was demonstrating the importance of code reviews.",
+"It's a third-party library bug. Out of my control.",
+"I'm practicing chaos engineering. Embrace the chaos.",
+"It's a documentation issue. I'll update the README.",
+"I was following the DRY principle. Don't Repeat Yourself... unless it breaks.",
+"It's a configuration issue. Works in dev.",
+"I'm following the SOLID principles. This is the 'I' - Interface Segregation.",
+"It's a browser compatibility issue. Use Chrome.",
+"I was testing the monitoring system. Alerts are working!",
+"It's a known trade-off. We chose speed over correctness.",
+"I'm following the 80/20 rule. It works 80% of the time."
+];
+
+let count = 0;
+let currentExcuse = '';
+
+function generateExcuse() {
+const excuse = excuses[Math.floor(Math.random() * excuses.length)];
+currentExcuse = excuse;
+document.getElementById('excuseBox').textContent = '"' + excuse + '"';
+count++;
+document.getElementById('count').textContent = count;
+}
+
+function shareTwitter() {
+const text = encodeURIComponent('🎭 Developer Excuse: "' + currentExcuse + '"\n\nGenerated at https://automation.songheng.vip/tools/developer-excuse-generator.html\n\n#programming #devlife #coding');
+window.open('https://twitter.com/intent/tweet?text=' + text, '_blank');
+}
+
+function shareReddit() {
+const text = encodeURIComponent('🎭 Developer Excuse: "' + currentExcuse + '"');
+window.open('https://www.reddit.com/r/ProgrammerHumor/submit?title=' + text, '_blank');
+}
+
+function copyExcuse() {
+if (currentExcuse) {
+navigator.clipboard.writeText(currentExcuse);
+alert('Excuse copied! Use it wisely.');
+}
+}
+
+generateExcuse();
+</script>
+</body>
+</html>

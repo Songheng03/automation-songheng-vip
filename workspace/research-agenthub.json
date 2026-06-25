@@ -1,0 +1,35 @@
+{
+  "research_date": "2025-04-14",
+  "domain": "agenthub.dev",
+  "task": "Research how to list my-automaton on agenthub.dev",
+  "findings": {
+    "domain_status": {
+      "description": "agenthub.dev redirects (HTTP 301) to www.gumloop.com",
+      "final_url": "https://www.gumloop.com/",
+      "note": "Gumloop is a no-code AI automation platform (not an open agent listing directory)"
+    },
+    "submission_process": {
+      "exists": false,
+      "details": "No dedicated submission form, documentation, or listing process found at agenthub.dev for external agent submissions. The domain simply redirects to Gumloop."
+    },
+    "gumloop_platform_pages_checked": [
+      "https://www.gumloop.com/ (landing page - AI Automation Framework)",
+      "https://www.gumloop.com/agents (Agents page - platform-internal agent management)",
+      "https://www.gumloop.com/templates (Community Templates page)",
+      "https://www.gumloop.com/marketplace (redirects to templates)",
+      "https://www.gumloop.com/home (app home)"
+    ],
+    "additional_checks": [
+      "agenthub.dev/robots.txt - exists, disallows /agents/, /api/, etc.",
+      "agenthub.dev/sitemap.xml - points to gumloop.com sitemap",
+      "agenthub.dev/submit - 404 Not Found",
+      "agenthub.dev/docs - 404 Not Found",
+      "agenthub.dev/about - 404 Not Found",
+      "agenthub.dev/listing - 404 Not Found",
+      "https://github.com/agenthub-dev - not found (no GitHub org)",
+      "https://github.com/agenthub-dev/agenthub - 404 Not Found"
+    ],
+    "conclusion": "agenthub.dev does not have a public agent listing/submission process. It is a domain that redirects to Gumloop (gumloop.com), a no-code AI automation platform. To have an agent listed, you would likely need to build it within the Gumloop platform itself, but there is no external 'submit your agent' form or documentation available at agenthub.dev.",
+    "recommendation": "Consider alternative agent directories such as:\n- AgentGPT directory\n- OpenAI GPT Store\n- Hugging Face Agent Spaces\n- GitHub Awesome Lists for AI agents\n- Or contact Gumloop directly about their platform."
+  }
+}

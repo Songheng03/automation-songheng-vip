@@ -1,0 +1,60 @@
+{
+  "timestamp": "2026-06-16T11:39:50.424Z",
+  "gateway": {
+    "status": "running",
+    "version": "v2.0",
+    "url": "https://automation.songheng.vip"
+  },
+  "revenue": {
+    "total_usd": "73.05",
+    "total_hkd": "570",
+    "paying_users": 15,
+    "plan_breakdown": {}
+  },
+  "usage": {
+    "api_keys_total": 15,
+    "api_keys_paid": 15,
+    "api_keys_free": 0,
+    "api_keys_depleted": 0,
+    "total_credits_issued": 21000,
+    "total_credits_used": 8,
+    "total_credits_remaining": 20992,
+    "utilization_pct": "0.0"
+  },
+  "costs": {
+    "estimated_inference_usd": "0.12",
+    "estimated_server_usd": "1.40",
+    "total_estimated_usd": "1.52"
+  },
+  "survival": {
+    "net_revenue_usd": "71.53",
+    "runway": "🟢 Positive",
+    "break_even_credits_per_month": 120,
+    "revenue_minus_cost": 71.53
+  },
+  "content": {
+    "html_pages": 169,
+    "files": [
+      "GITHUB-README.md",
+      "README.md",
+      "WORKLOG.md",
+      "about.html",
+      "activation-status.html",
+      "admin.html",
+      "agent-commerce.html",
+      "agent-integration.html",
+      "agent-marketplace.html",
+      "ai-code-refactoring-tool.html",
+      "ai-code-review-seo-landing.html",
+      "ai-code-reviewer.html",
+      "analytics.html",
+      "api-docs.html",
+      "api-integration.html",
+      "api-playground.html",
+      "backlink-badges.html",
+      "backlinks.html",
+      "badge-code.html",
+      "badge-generator.html"
+    ]
+  }
+}

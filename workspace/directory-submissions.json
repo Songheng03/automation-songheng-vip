@@ -1,0 +1,242 @@
+{
+  "submissions": [
+    {
+      "directory": "Smithery",
+      "status": "retry_checked",
+      "response": "HTTP 404 — Endpoint not found. Automated submission attempt failed. Retry: site reachable (HTTP 200) but /submit returns 404. Manual submission required via web form at https://smithery.ai/claim.",
+      "submittedAt": "2026-06-17T18:07:00Z",
+      "retryAt": "2026-06-17T18:21:00Z",
+      "retryResult": "HTTP 200 (site up), /submit → 404"
+    },
+    {
+      "directory": "Glama.ai",
+      "status": "retry_checked",
+      "response": "HTTP 404 — API endpoint not found. Glama.ai is a Next.js client-rendered app requiring GitHub OAuth login. Retry: site reachable (HTTP 200). Manual submission required via web form at https://glama.ai/mcp/servers.",
+      "submittedAt": "2026-06-17T18:06:00Z",
+      "retryAt": "2026-06-17T18:21:00Z",
+      "retryResult": "HTTP 200 (site up), /mcp/servers → 200"
+    },
+    {
+      "directory": "PulseMCP",
+      "status": "retry_checked",
+      "response": "HTTP 404 — Invalid path. No public submit API exists. Cloudflare-protected web form at https://www.pulsemcp.com/submit. Retry: site reachable (HTTP 403 - Cloudflare). Manual submission required.",
+      "submittedAt": "2026-06-17T18:06:00Z",
+      "retryAt": "2026-06-17T18:21:00Z",
+      "retryResult": "HTTP 403 (Cloudflare protected)"
+    },
+    {
+      "directory": "ProductHunt",
+      "status": "retry_checked",
+      "response": "HTTP 401 — Invalid OAuth token. Automated API submission via GraphQL failed. Retry: site reachable (HTTP 403 - Cloudflare challenge). Requires manual 'Upcoming' product creation via web form at https://www.producthunt.com/launch.",
+      "submittedAt": "2026-06-17T18:07:00Z",
+      "notes": "upcoming",
+      "retryAt": "2026-06-17T18:21:00Z",
+      "retryResult": "HTTP 403 (Cloudflare challenge)"
+    },
+    {
+      "directory": "MCP Server Registry (github.com/mcp-registry)",
+      "status": "retry_checked",
+      "response": "curl failed with exit code 6 — DNS resolution failure. Retry: GitHub reachable (HTTP 200). The GitHub-based registry at https://github.com/mcp-registry resolves correctly.",
+      "submittedAt": "2026-06-17T18:07:00Z",
+      "retryAt": "2026-06-17T18:21:00Z",
+      "retryResult": "HTTP 200 (GitHub reachable)"
+    },
+    {
+      "directory": "MCP.so",
+      "status": "pending",
+      "notes": "manual submission required. Submit at https://mcp.so/submit. Next.js web form requiring GitHub or Google OAuth sign-in.",
+      "urlVerified": "200"
+    },
+    {
+      "directory": "OpenTools",
+      "status": "pending",
+      "notes": "manual submission required. Submit at https://opentools.ai/friends/launch-tool. Google OAuth required for managing listing. No public API for submission.",
+      "urlVerified": "200"
+    },
+    {
+      "directory": "DevHunt",
+      "status": "pending",
+      "notes": "manual submission required. Submit at https://devhunt.org/submit. Account creation required. WordPress-based launch platform.",
+      "urlVerified": "200"
+    },
+    {
+      "directory": "BetaList",
+      "status": "pending",
+      "notes": "manual submission required. Submit at https://betalist.com/submit. Startup directory requiring sign-in.",
+      "urlVerified": "200"
+    },
+    {
+      "directory": "AlternativeTo",
+      "status": "pending",
+      "notes": "manual submission required. Submit at https://alternativeto.net/submit-tool/. Cloudflare-protected. Account login required.",
+      "urlVerified": "403 (Cloudflare protected)"
+    },
+    {
+      "directory": "SaaSHub",
+      "status": "pending",
+      "notes": "manual submission required. Submit at https://www.saashub.com/submit. SaaS directory. Cloudflare-protected.",
+      "urlVerified": "403 (Cloudflare protected)"
+    },
+    {
+      "directory": "MCP.Directory",
+      "status": "pending",
+      "notes": "manual submission required. Submit at https://mcp.directory/submit. Large MCP server directory (3000+ servers). Web form based.",
+      "urlVerified": "200"
+    },
+    {
+      "directory": "MCPDirectory.com",
+      "status": "pending",
+      "notes": "manual submission required. Submit at https://www.mcpdirectory.com/submit. MCP server directory with web form.",
+      "urlVerified": "200"
+    },
+    {
+      "directory": "MCPRegistry.com",
+      "status": "pending",
+      "notes": "manual submission required. Submit at https://mcpregistry.com. MCP server registry with landing page.",
+      "urlVerified": "200"
+    },
+    {
+      "directory": "MCPTools.dev",
+      "status": "pending",
+      "notes": "manual submission required. MCP tools directory. No public submit form found (returns 404 at /submit). May rely on GitHub scraping."
+    },
+    {
+      "directory": "Futurepedia",
+      "status": "pending",
+      "notes": "manual submission required. Submit at https://www.futurepedia.io/submit. AI tools directory.",
+      "urlVerified": "200"
+    },
+    {
+      "directory": "AI Tools Directory (aitoolsdirectory.com)",
+      "status": "pending",
+      "notes": "manual submission required. Built on spread.name platform. Web-based listing."
+    },
+    {
+      "directory": "ai-tools.directory",
+      "status": "pending",
+      "notes": "manual submission required. Submit at https://ai-tools.directory/submit-agent/. Automated AI tools directory.",
+      "urlVerified": "200"
+    },
+    {
+      "directory": "Aixploria",
+      "status": "pending",
+      "notes": "manual submission required. Submit at https://www.aixploria.com/submit. French AI tools directory.",
+      "urlVerified": "301 (redirect)"
+    },
+    {
+      "directory": "AIFindy",
+      "status": "pending",
+      "notes": "manual submission required. AI tools finder. Submit via contact form or manual process.",
+      "urlVerified": "200"
+    },
+    {
+      "directory": "Indie Hackers",
+      "status": "pending",
+      "notes": "manual submission required. Submit at https://www.indiehackers.com/submit. Requires login. Ember.js web app.",
+      "urlVerified": "200"
+    },
+    {
+      "directory": "GitHub Topics (MCP Servers)",
+      "status": "pending",
+      "notes": "manual submission required. Add 'mcp-server' topic to repository via GitHub API. Requires GitHub token with repo access."
+    },
+    {
+      "directory": "Crunchbase",
+      "status": "pending",
+      "notes": "manual submission required. Business directory. Web form for organization submission. Requires manual data entry."
+    },
+    {
+      "directory": "Toolspedia.ai",
+      "status": "pending",
+      "notes": "manual submission required. Domain not resolving (NXDOMAIN). Site may be down. Previously AI tools directory with web form.",
+      "urlVerified": "000 (DNS failure)"
+    },
+    {
+      "directory": "MCPHub",
+      "status": "pending",
+      "notes": "manual submission required. Submit at https://mcphub.ai/submit. MCP server aggregator with manual review process.",
+      "urlVerified": "308 (redirect), /submit → 308"
+    },
+    {
+      "directory": "MCPFind",
+      "status": "pending",
+      "notes": "manual submission required. Not yet launched (landing page only). French-language MCP finder. Check back later."
+    },
+    {
+      "directory": "Awesome MCP Servers (GitHub)",
+      "status": "pending",
+      "notes": "manual submission required. Submit via Pull Request to https://github.com/punkpeye/awesome-mcp-servers. Add entry to README.md.",
+      "urlVerified": "200"
+    },
+    {
+      "directory": "MCP Servers Hub (mcp-servers.org)",
+      "status": "pending",
+      "notes": "manual submission required. Submit at https://mcp-servers.org/submit. MCP servers directory.",
+      "urlVerified": "200"
+    },
+    {
+      "directory": "MCP Server List (mcpserverlist.com)",
+      "status": "pending",
+      "notes": "manual submission required. Submit at https://mcpserverlist.com/add. Manual approval process.",
+      "urlVerified": "000 (unreachable)"
+    },
+    {
+      "directory": "AgentHub",
+      "status": "pending",
+      "notes": "manual submission required. Domain (agenthub.dev) now redirects to Gumloop (gumloop.com). No longer operates as an AI agent directory. Previously at https://agenthub.ai/submit.",
+      "urlVerified": "301 → gumloop.com (308)"
+    },
+    {
+      "directory": "AI Agent Directory (aiagent.directory)",
+      "status": "pending",
+      "notes": "manual submission required. Submit at https://aiagent.directory/submit. AI agent discovery platform.",
+      "urlVerified": "000 (unreachable)"
+    },
+    {
+      "directory": "FutureTools.io",
+      "status": "pending",
+      "notes": "manual submission required. Submit at https://www.futuretools.io/submit-a-tool. AI tools directory. Paid listings available.",
+      "urlVerified": "307 (redirect)"
+    },
+    {
+      "directory": "TAAFT (There's An AI For That)",
+      "status": "pending",
+      "notes": "manual submission required. Submit at https://theresanaiforthat.com/submit/. Large AI tools directory.",
+      "urlVerified": "403 (Cloudflare protected)"
+    },
+    {
+      "directory": "AI Tool Directory (aitooldirectory.com)",
+      "status": "pending",
+      "notes": "manual submission required. Submit at https://aitooldirectory.com/submit. AI tools directory.",
+      "urlVerified": "200"
+    },
+    {
+      "directory": "Easy With AI",
+      "status": "pending",
+      "notes": "manual submission required. Submit at https://easywithai.com/submit-a-tool/. Free and paid listing options.",
+      "urlVerified": "403 (Cloudflare protected)"
+    },
+    {
+      "directory": "MCPList",
+      "status": "pending",
+      "notes": "manual submission required. GitHub PR-based directory at https://github.com/tomsmithtld/mcplist. Edit data/servers.json and submit PR.",
+      "urlVerified": "200"
+    },
+    {
+      "directory": "AnyMCP",
+      "status": "pending",
+      "notes": "manual submission required (technology mismatch — C#/.NET only). Requires developing a .NET C# MCP server or proxy. Submit via GitHub PR to https://github.com/xakpc/anymcp-io."
+    },
+    {
+      "directory": "RepoAgent",
+      "status": "invalid",
+      "notes": "not a valid submission target. RepoAgent is an LLM-powered documentation framework, not a directory or marketplace. No listing mechanism exists."
+    },
+    {
+      "directory": "ToolKraft",
+      "status": "invalid",
+      "notes": "platform does not exist. Domain toolkraft.ai has no DNS records. Reference appears to be a placeholder entry for a platform that never launched.",
+      "urlVerified": "000 (DNS failure)"
+    }
+  ]
+}

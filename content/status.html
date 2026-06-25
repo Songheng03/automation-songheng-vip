@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>my-automaton · System Status</title>
+<style>
+  :root { --bg: #0d1117; --card: #161b22; --border: #30363d; --text: #c9d1d9; --green: #3fb950; --yellow: #d29922; --red: #f85149; --blue: #58a6ff; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: var(--bg); color: var(--text); padding: 20px; }
+  .container { max-width: 800px; margin: 0 auto; }
+  h1 { font-size: 1.8em; color: #fff; margin-bottom: 5px; }
+  .subtitle { color: #8b949e; margin-bottom: 30px; }
+  .card { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 20px; margin-bottom: 20px; }
+  .card h2 { font-size: 1.2em; margin-bottom: 15px; color: #fff; }
+  .status-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--border); }
+  .status-row:last-child { border-bottom: none; }
+  .badge { display: inline-flex; align-items: center; gap: 6px; font-size: 0.85em; padding: 3px 10px; border-radius: 12px; font-weight: 500; }
+  .badge.up { background: rgba(63,185,80,0.15); color: var(--green); }
+  .badge.down { background: rgba(248,81,73,0.15); color: var(--red); }
+  .badge.warn { background: rgba(210,153,34,0.15); color: var(--yellow); }
+  .badge.neutral { background: rgba(139,148,158,0.15); color: #8b949e; }
+  .dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
+  .dot.up { background: var(--green); }
+  .dot.down { background: var(--red); }
+  .dot.warn { background: var(--yellow); }
+  .metrics-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .metric { text-align: center; padding: 15px; background: rgba(255,255,255,0.03); border-radius: 6px; }
+  .metric .value { font-size: 1.8em; font-weight: 700; color: #fff; }
+  .metric .label { font-size: 0.8em; color: #8b949e; margin-top: 4px; }
+  .full-width { grid-column: 1 / -1; }
+  #checks { margin-top: 15px; }
+  .check-item { padding: 8px 0; display: flex; justify-content: space-between; }
+  button { background: var(--blue); color: #fff; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-size: 0.9em; }
+  button:hover { opacity: 0.9; }
+  button:disabled { opacity: 0.5; cursor: not-allowed; }
+  .log { background: #000; padding: 10px; border-radius: 4px; font-family: monospace; font-size: 0.85em; max-height: 200px; overflow-y: auto; margin-top: 10px; white-space: pre-wrap; }
+</style>
+
+<!-- Open Graph / Social Meta Tags -->
+<meta property="og:title" content="my-automaton · System Status" />
+<meta property="og:description" content="my-automaton · System Status — powered by my-automaton. AI code review, security scanning, and developer tools." />
+<meta property="og:image" content="https://automation.songheng.vip/og-image.png" />
+<meta property="og:url" content="https://automation.songheng.vip/status.html" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="my-automaton" />
+<meta property="og:locale" content="en_US" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="my-automaton · System Status" />
+<meta name="twitter:description" content="my-automaton · System Status — powered by my-automaton. AI code review, security scanning, and developer tools." />
+<meta name="twitter:image" content="https://automation.songheng.vip/og-image.png" />
+  <meta name="description" content="html Health API /health Agent Catalog /api/catalog async function runChecks() { const log = document.">
+  <link rel="canonical" href="https://automation.songheng.vip/status.html">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "my-automaton · System Status",
+  "description": "html Health API /health Agent Catalog /api/catalog async function runChecks() { const log = document.",
+  "url": "https://automation.songheng.vip/status.html"
+}
+</script>
+</head>
+<body>
+<div style="background:#161b22;border-bottom:1px solid #30363d;padding:10px 20px;font-size:.85rem;display:flex;gap:16px;align-items:center;flex-wrap:wrap"><a href="/" style="color:#58a6ff;text-decoration:none;font-weight:600">🏠 Home</a><span style="color:#484f58">|</span><a href="/pricing.html" style="color:#8b949e;text-decoration:none">Pricing</a><a href="/api-docs.html" style="color:#8b949e;text-decoration:none">API</a><a href="/playground.html" style="color:#8b949e;text-decoration:none">Playground</a></div>
+
+<div class="container">
+  <h1>🔍 my-automaton</h1>
+  <p class="subtitle">System Status & Diagnostics</p>
+
+  <div class="card">
+    <h2>🧪 Live Checks</h2>
+    <button id="runChecks">Run All Checks</button>
+    <button id="startTunnel" style="margin-left:8px;background:var(--green)">🚇 Restart Tunnel</button>
+    <div id="checks"></div>
+    <div id="checkLog" class="log" style="display:none"></div>
+  </div>
+
+  <div class="card">
+    <h2>📈 Quick Metrics</h2>
+    <div class="metrics-grid" id="metrics">
+      <div class="metric"><div class="value" id="uptime">--</div><div class="label">Gateway Uptime</div></div>
+      <div class="metric"><div class="value" id="tunnelStatus">--</div><div class="label">Tunnel Status</div></div>
+      <div class="metric"><div class="value" id="contentCount">--</div><div class="label">Content Pages</div></div>
+      <div class="metric"><div class="value" id="diskFree">--</div><div class="label">Disk Free</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>🔗 Key Links</h2>
+    <div class="status-row"><span>Homepage</span> <a href="/" style="color:var(--blue)">/index.html</a></div>
+    <div class="status-row"><span>API Playground</span> <a href="/api-playground.html" style="color:var(--blue)">/api-playground.html</a></div>
+    <div class="status-row"><span>Pricing</span> <a href="/pricing.html" style="color:var(--blue)">/pricing.html</a></div>
+    <div class="status-row"><span>API Docs</span> <a href="/api-docs.html" style="color:var(--blue)">/api-docs.html</a></div>
+    <div class="status-row"><span>Dashboard</span> <a href="/dashboard.html" style="color:var(--blue)">/dashboard.html</a></div>
+    <div class="status-row"><span>Tools</span> <a href="/dev-toolbox.html" style="color:var(--blue)">/dev-toolbox.html</a></div>
+    <div class="status-row"><span>Blog</span> <a href="/blog.html" style="color:var(--blue)">/blog.html</a></div>
+    <div class="status-row"><span>Health API</span> <a href="/health" style="color:var(--blue)">/health</a></div>
+    <div class="status-row"><span>Agent Catalog</span> <a href="/api/catalog" style="color:var(--blue)">/api/catalog</a></div>
+  </div>
+</div>
+<script>
+async function runChecks() {
+  const log = document.getElementById('checkLog');
+  const checks = document.getElementById('checks');
+  log.style.display = 'block';
+  log.textContent = 'Running diagnostics...\n';
+  checks.innerHTML = '';
+
+  const results = [];
+
+  // Check 1: Gateway health
+  log.textContent += '→ Checking /health... ';
+  try {
+    const r = await fetch('/health');
+    const j = await r.json();
+    log.textContent += `OK (${j.status}, v${j.version})\n`;
+    results.push({name:'Gateway Health', status:'up', detail:`HTTP ${r.status}`});
+  } catch(e) {
+    log.textContent += `FAIL: ${e.message}\n`;
+    results.push({name:'Gateway Health', status:'down', detail:e.message});
+  }
+
+  // Check 2: Content serving
+  log.textContent += '→ Checking /index.html... ';
+  try {
+    const r = await fetch('/');
+    log.textContent += `OK (${r.status})\n`;
+    results.push({name:'Static Content', status:'up', detail:`HTTP ${r.status}`});
+  } catch(e) {
+    log.textContent += `FAIL: ${e.message}\n`;
+    results.push({name:'Static Content', status:'down', detail:e.message});
+  }
+
+  // Check 3: API catalog
+  log.textContent += '→ Checking /api/catalog... ';
+  try {
+    const r = await fetch('/api/catalog');
+    log.textContent += `OK (${r.status})\n`;
+    results.push({name:'API Catalog', status:'up', detail:`HTTP ${r.status}`});
+  } catch(e) {
+    log.textContent += `FAIL: ${e.message}\n`;
+    results.push({name:'API Catalog', status:'down', detail:e.message});
+  }
+
+  // Check 4: Sitemap
+  log.textContent += '→ Checking /sitemap.xml... ';
+  try {
+    const r = await fetch('/sitemap.xml');
+    log.textContent += `OK (${r.status}, ${r.headers.get('content-length') || '?'} bytes)\n`;
+    results.push({name:'Sitemap', status:'up', detail:`HTTP ${r.status}`});
+  } catch(e) {
+    log.textContent += `FAIL: ${e.message}\n`;
+    results.push({name:'Sitemap', status:'down', detail:e.message});
+  }
+
+  // Check 5: Tunnel status
+  log.textContent += '→ Checking tunnel (/api/tunnel/status)... ';
+  try {
+    const r = await fetch('/api/tunnel/status');
+    if (r.ok) {
+      const j = await r.json();
+      log.textContent += `OK (${j.url || 'no url'})\n`;
+      results.push({name:'Tunnel API', status:'up', detail:j.url || 'active'});
+    } else {
+      log.textContent += `HTTP ${r.status}\n`;
+      results.push({name:'Tunnel API', status:r.status===404?'warn':'down', detail:`HTTP ${r.status} (v2.3 needed)`});
+    }
+  } catch(e) {
+    log.textContent += `FAIL: ${e.message}\n`;
+    results.push({name:'Tunnel API', status:'down', detail:e.message});
+  }
+
+  // Check 6: Public domain
+  log.textContent += '→ Checking public domain... ';
+  try {
+    const r = await fetch('https://automation.songheng.vip/health', {mode:'no-cors'});
+    log.textContent += `OK (${r.status})\n`;
+    results.push({name:'Public Domain', status:'up', detail:`HTTP ${r.status}`});
+  } catch(e) {
+    log.textContent += `FAIL (expected — tunnel down)\n`;
+    results.push({name:'Public Domain', status:'down', detail:`530 — Cloudflare tunnel offline`});
+  }
+
+  // Check 7: TryCloudflare
+  log.textContent += '→ Checking trycloudflare URL... ';
+  try {
+    const urlResp = await fetch('/api/tunnel-url');
+    if (urlResp.ok) {
+      const urlData = await urlResp.json();
+      log.textContent += `Found: ${urlData.url}\n`;
+      try {
+        const tcResp = await fetch(urlData.url + '/health');
+        log.textContent += `  Response: ${tcResp.status}\n`;
+        results.push({name:'TryCloudflare', status:'up', detail:urlData.url});
+      } catch(e2) {
+        log.textContent += `  Not reachable: ${e2.message}\n`;
+        results.push({name:'TryCloudflare', status:'down', detail:'URL exists but not reachable'});
+      }
+    } else {
+      log.textContent += `Not found (404)\n`;
+      results.push({name:'TryCloudflare', status:'warn', detail:'No URL saved'});
+    }
+  } catch(e) {
+    log.textContent += `FAIL: ${e.message}\n`;
+    results.push({name:'TryCloudflare', status:'warn', detail:e.message});
+  }
+
+  // Render results
+  log.textContent += '\n✓ All checks complete\n';
+  checks.innerHTML = results.map(r => 
+    `<div class="check-item"><span>${r.name}</span><span class="badge ${r.status}"><span class="dot ${r.status}"></span>${r.detail}</span></div>`
+  ).join('');
+}
+
+document.getElementById('runChecks').addEventListener('click', runChecks);
+
+document.getElementById('startTunnel').addEventListener('click', async () => {
+  const btn = document.getElementById('startTunnel');
+  btn.disabled = true;
+  btn.textContent = '🚇 Restarting...';
+  try {
+    const r = await fetch('/api/tunnel/restart', {method:'POST'});
+    const j = await r.json();
+    btn.textContent = j.ok ? '✅ Restarted' : '❌ Failed';
+  } catch(e) {
+    btn.textContent = '❌ Error';
+  }
+  setTimeout(() => { btn.disabled = false; btn.textContent = '🚇 Restart Tunnel'; }, 3000);
+});
+
+// Load metrics on page load
+fetch('/health').then(r => r.json()).then(j => {
+  document.getElementById('uptime').textContent = 'v' + (j.version||'--');
+}).catch(() => document.getElementById('uptime').textContent = 'ERR');
+
+fetch('/api/tunnel/status').then(r => r.json()).then(j => {
+  document.getElementById('tunnelStatus').textContent = j.url ? '✅ Live' : '❌ Off';
+}).catch(() => document.getElementById('tunnelStatus').textContent = '❌ Off');
+
+fetch('/api/catalog').then(r => r.json()).then(j => {
+  document.getElementById('contentCount').textContent = j.services ? j.services.length : '--';
+}).catch(() => {});
+
+// Auto-run checks on load
+runChecks();
+</script>
+<script src="/conversion-banner.js" defer></script>
+</body>
+</html>

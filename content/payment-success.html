@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>支付成功 · my-automaton</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#0a0a0f;color:#e0e0e0;min-height:100vh;display:flex;align-items:center;justify-content:center}
+.card{background:#13131f;border:1px solid #2a2a3a;border-radius:16px;padding:40px;max-width:500px;width:90%;text-align:center}
+.icon{font-size:48px;margin-bottom:16px}
+h1{font-size:1.5em;margin-bottom:8px;background:linear-gradient(135deg,#00e5ff,#7c4dff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.sub{color:#888;margin-bottom:24px;line-height:1.5}
+.key-box{background:#0d0d1a;border:1px solid #333;border-radius:10px;padding:16px;margin:12px 0 20px}
+.key-box label{color:#7c4dff;font-size:.75em;text-transform:uppercase;letter-spacing:.5px;display:block;margin-bottom:6px}
+.key-text{font-family:'Courier New',monospace;color:#00e5ff;font-size:.9em;word-break:break-all;padding:10px;background:#000;border-radius:6px;cursor:pointer;user-select:all}
+.copied{color:#4caf50;font-size:.8em;display:none;margin-top:6px}
+.detail{display:flex;justify-content:center;gap:24px;margin:16px 0;color:#aaa;font-size:.85em}
+.detail span{color:#00e5ff;font-weight:700}
+.cta{margin-top:8px}
+.btn{display:inline-block;background:linear-gradient(135deg,#00e5ff,#7c4dff);color:#000;padding:12px 28px;border-radius:10px;font-weight:700;text-decoration:none;font-size:.95em;transition:opacity .2s;margin:4px}
+.btn:hover{opacity:.9}
+.footer{margin-top:24px;color:#555;font-size:.8em}
+</style>
+
+<!-- Open Graph / Social Meta Tags -->
+<meta property="og:title" content="支付成功 · my-automaton" />
+<meta property="og:description" content="支付成功 · my-automaton — powered by my-automaton. AI code review, security scanning, and developer tools." />
+<meta property="og:image" content="https://automation.songheng.vip/og-image.png" />
+<meta property="og:url" content="https://automation.songheng.vip/payment-success.html" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="my-automaton" />
+<meta property="og:locale" content="en_US" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="支付成功 · my-automaton" />
+<meta name="twitter:description" content="支付成功 · my-automaton — powered by my-automaton. AI code review, security scanning, and developer tools." />
+<meta name="twitter:image" content="https://automation.songheng.vip/og-image.png" />
+  <meta name="description" content="✅ 支付成功！ 感谢你的购买。 你的 API Key 已生成，复制后即可使用： 🔑 你的 API Key 加载中.">
+  <link rel="canonical" href="https://automation.songheng.vip/payment-success.html">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "支付成功 · my-automaton",
+  "description": "✅ 支付成功！ 感谢你的购买。 你的 API Key 已生成，复制后即可使用： 🔑 你的 API Key 加载中.",
+  "url": "https://automation.songheng.vip/payment-success.html"
+}
+</script>
+</head>
+<body>
+<div style="background:#161b22;border-bottom:1px solid #30363d;padding:10px 20px;font-size:.85rem;display:flex;gap:16px;align-items:center;flex-wrap:wrap"><a href="/" style="color:#58a6ff;text-decoration:none;font-weight:600">🏠 Home</a><span style="color:#484f58">|</span><a href="/pricing.html" style="color:#8b949e;text-decoration:none">Pricing</a><a href="/api-docs.html" style="color:#8b949e;text-decoration:none">API</a><a href="/playground.html" style="color:#8b949e;text-decoration:none">Playground</a></div>
+
+<div class="card">
+  <div class="icon">✅</div>
+  <h1>支付成功！</h1>
+  <div class="sub">感谢你的购买。<br>你的 API Key 已生成，复制后即可使用：</div>
+  <div class="key-box" id="keyBox">
+    <label>🔑 你的 API Key</label>
+    <div class="key-text" id="apiKey">加载中...</div>
+    <div class="copied" id="copiedMsg">✅ 已复制到剪贴板</div>
+  </div>
+  <div class="detail">
+    <div>Credits: <span id="credits">-</span></div>
+    <div>已使用: <span id="used">0</span></div>
+  </div>
+  <div class="cta">
+    <a class="btn" href="/api-docs">📖 API 文档</a>
+    <a class="btn" href="/upgrade">🔄 继续购买</a>
+  </div>
+  <div class="footer">
+    用 API Key 调接口：<code style="color:#ce93d8;background:#0d0d1a;padding:2px 6px;border-radius:4px">X-API-Key: am_xxx</code>
+  </div>
+</div>
+
+<script>
+// Get session_id from URL
+const params = new URLSearchParams(window.location.search);
+const sessionId = params.get('session_id');
+
+async function fetchKey() {
+  if (!sessionId) {
+    document.getElementById('apiKey').textContent = '无会话 ID';
+    return;
+  }
+  
+  // Retry up to 5 times (webhook may be delayed)
+  for (let i = 0; i < 5; i++) {
+    try {
+      const r = await fetch('/api/lookup-key?session_id=' + encodeURIComponent(sessionId));
+      const data = await r.json();
+      if (data.api_key) {
+        document.getElementById('apiKey').textContent = data.api_key;
+        document.getElementById('credits').textContent = data.credits;
+        document.getElementById('used').textContent = data.used;
+        document.getElementById('keyBox').style.borderColor = '#1a6b3c';
+        
+        // Auto-copy
+        navigator.clipboard.writeText(data.api_key).then(() => {
+          document.getElementById('copiedMsg').style.display = 'block';
+        }).catch(() => {});
+        return;
+      }
+    } catch(e) {}
+    // Wait before retry
+    await new Promise(r => setTimeout(r, 2000));
+  }
+  document.getElementById('apiKey').textContent = '支付确认中，请刷新页面...';
+}
+
+fetchKey();
+
+// Click to copy
+document.getElementById('apiKey').addEventListener('click', function() {
+  const text = this.textContent;
+  navigator.clipboard.writeText(text).then(() => {
+    document.getElementById('copiedMsg').style.display = 'block';
+    setTimeout(() => document.getElementById('copiedMsg').style.display = 'none', 2000);
+  });
+});
+</script>
+<script src="/conversion-banner.js" defer></script>
+</body>
+</html>

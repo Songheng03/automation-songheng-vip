@@ -1,0 +1,107 @@
+// Analytics stats (missing function)
+async function handleAnalyticsStats(req, res) {
+  res.writeHead(200, { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' });
+  const summary = getAnalyticsSummary();
+  res.end(JSON.stringify(summary));
+}
+
+// Wallet payment verification (Base chain USDC)
+async function handleWalletPayment(req, res) {
+  if (req.method === 'OPTIONS') {
+    res.writeHead(204, { 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Methods': 'POST, OPTIONS', 'Access-Control-Allow-Headers': 'Content-Type' });
+    res.end(); return;
+  }
+  if (req.method !== 'POST') {
+    res.writeHead(405); res.end('Method Not Allowed'); return;
+  }
+
+  let body = '';
+  req.on('data', c => body += c);
+  req.on('end', async () => {
+    try {
+      const { tx_hash, price_id, wallet_address } = JSON.parse(body || '{}');
+      
+      if (!tx_hash || !price_id || !wallet_address) {
+        res.writeHead(400, { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' });
+        res.end(JSON.stringify({ error: 'Missing tx_hash, price_id, or wallet_address' }));
+        return;
+      }
+
+      // Verify transaction on Base chain
+      const BASESCAN_API = 'https://api.basescan.org/api';
+      const verifyUrl = `${BASESCAN_API}?module=proxy&action=eth_getTransactionByHash&txhash=${tx_hash}&apikey=YourApiKeyToken`;
+      
+      const txResp = await fetch(verifyUrl);
+      const txData = await txResp.json();
+      
+      if (!txData.result || txData.result.to !== '0x76eADdEBFfb6A61DD071f97F4508467fc55dd113') {
+        res.writeHead(400, { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' });
+        res.end(JSON.stringify({ error: 'Invalid transaction or wrong recipient address' }));
+        return;
+      }
+
+      // Check transaction status
+      const receiptUrl = `${BASESCAN_API}?module=proxy&action=eth_getTransactionReceipt&txhash=${tx_hash}&apikey=YourApiKeyToken`;
+      const receiptResp = await fetch(receiptUrl);
+      const receiptData = await receiptResp.json();
+      
+      if (!receiptData.result || receiptData.result.status !== '0x1') {
+        res.writeHead(400, { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' });
+        res.end(JSON.stringify({ error: 'Transaction failed or not confirmed' }));
+        return;
+      }
+
+      // Grant credits
+      const key = addCredits(price_id, tx_hash);
+      
+      res.writeHead(200, { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' });
+      res.end(JSON.stringify({ 
+        success: true, 
+        api_key: key, 
+        message: 'Payment verified and credits granted',
+        tx_hash,
+        wallet_address
+      }));
+    } catch (e) {
+      log(`Wallet payment error: ${e.message}`);
+      res.writeHead(500, { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' });
+      res.end(JSON.stringify({ error: 'Payment verification failed', message: e.message }));
+    }
+  });
+}
+
+// Checkout handler — returns wallet payment info
+async function handleCheckout(req, res) {
+  let body = '';
+  req.on('data', c => body += c);
+  req.on('end', () => {
+    try {
+      const { price_id } = JSON.parse(body || '{}');
+      const tier = PRICES[price_id];
+      
+      if (!tier) {
+        res.writeHead(400, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ error: 'Invalid plan', valid_plans: Object.keys(PRICES) }));
+        return;
+      }
+      
+      // Return wallet payment info
+      res.writeHead(200, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({
+        payment_method: 'wallet',
+        wallet: '0x76eADdEBFfb6a61DD071f97F4508467fc55dd113',
+        amount: tier.price,
+        chain: 'base',
+        token: 'USDC',
+        plan: price_id,
+        credits: tier.credits,
+        message: 'Send USDC to this address on Base chain'
+      }));
+      
+      log(`Checkout initiated: ${price_id} ($${tier.price}) from ${ipFromReq(req)}`);
+    } catch (e) {
+      res.writeHead(400, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({ error: 'Invalid request: ' + e.message }));
+    }
+  });
+}

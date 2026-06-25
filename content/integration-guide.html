@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Code Review Integration Guide — GitHub, Slack, VS Code, CI/CD | my-automaton</title>
+<meta name="description" content="Complete integration guide for my-automaton AI services: GitHub Actions, Slack bot, VS Code extension, CLI tool, CI/CD pipelines, and MCP server setup.">
+<meta property="og:title" content="AI Code Review — Complete Integration Guide">
+<meta property="og:description" content="Add AI code review to your workflow. GitHub, Slack, VS Code, MCP, CLI. Free tier available.">
+<style>
+:root{--bg:#0d1117;--card:#161b22;--border:#30363d;--text:#c9d1d9;--text-muted:#8b949e;--accent:#58a6ff;--green:#3fb950;--orange:#d29922;--red:#f85149}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;background:var(--bg);color:var(--text);line-height:1.6}
+.container{max-width:900px;margin:0 auto;padding:2rem 1rem}
+h1{font-size:2rem;margin-bottom:.5rem}
+h2{font-size:1.3rem;margin:2rem 0 1rem;padding-bottom:.5rem;border-bottom:1px solid var(--border);color:var(--accent)}
+h3{font-size:1.1rem;margin:1.5rem 0 .75rem;color:var(--text)}
+p{color:var(--text-muted);margin-bottom:1rem}
+.code-block{background:#0d1117;border:1px solid var(--border);border-radius:6px;padding:1rem;font-family:'SF Mono','Monaco','Menlo',monospace;font-size:.82rem;overflow-x:auto;margin:1rem 0;position:relative;white-space:pre-wrap;word-break:break-all;line-height:1.5}
+.copy-btn{position:absolute;top:.5rem;right:.5rem;background:var(--card);color:var(--text);border:1px solid var(--border);border-radius:4px;padding:2px 8px;font-size:.75rem;cursor:pointer}
+.copy-btn:hover{background:var(--border)}
+.platform-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem;margin:1.5rem 0}
+.platform-card{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:1.25rem;text-decoration:none;color:var(--text);transition:border-color .2s}
+.platform-card:hover{border-color:var(--accent)}
+.platform-card .icon{font-size:2rem;margin-bottom:.5rem}
+.platform-card h3{font-size:1rem;margin-bottom:.25rem}
+.platform-card p{font-size:.85rem}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{text-align:left;padding:.75rem;border-bottom:1px solid var(--border)}
+th{color:var(--text-muted);font-size:.85rem}
+td{font-size:.9rem}
+.tag{display:inline-block;padding:2px 8px;border-radius:12px;font-size:.75rem;font-weight:600}
+.free{background:rgba(63,185,80,.2);color:var(--green)}
+.paid{background:rgba(88,166,255,.2);color:var(--accent)}
+.steps{margin:1rem 0 1rem 1.5rem}
+.steps li{margin-bottom:.5rem;color:var(--text-muted)}
+.alert{background:rgba(210,153,34,.1);border:1px solid rgba(210,153,34,.3);border-radius:6px;padding:1rem;margin:1rem 0;color:var(--orange)}
+.alert strong{color:var(--text)}
+.btn{display:inline-block;background:var(--accent);color:#fff;padding:.75rem 1.5rem;border-radius:6px;text-decoration:none;font-weight:600;margin:.5rem .5rem .5rem 0}
+.btn:hover{opacity:.9}
+.btn-ghost{background:var(--card);color:var(--text);border:1px solid var(--border)}
+footer{margin-top:3rem;padding-top:2rem;border-top:1px solid var(--border);text-align:center;color:var(--text-muted);font-size:.85rem}
+</style>
+<!-- Open Graph / Social Meta Tags -->
+<meta property="og:image" content="https://automation.songheng.vip/og-image.png" />
+<meta property="og:url" content="https://automation.songheng.vip/integration-guide.html" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="my-automaton" />
+<meta property="og:locale" content="en_US" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="AI Code Review Integration Guide — GitHub, Slack, VS Code, CI/CD | my-automaton" />
+<meta name="twitter:description" content="Complete integration guide for my-automaton AI services: GitHub Actions, Slack bot, VS Code extension, CLI tool, CI/CD pipelines, and MCP server setup." />
+<meta name="twitter:image" content="https://automation.songheng.vip/og-image.png" />
+  <link rel="canonical" href="https://automation.songheng.vip/integration-guide.html">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "AI Code Review Integration Guide — GitHub, Slack, VS Code, CI/CD | my-automaton",
+  "description": "Complete integration guide for my-automaton AI services: GitHub Actions, Slack bot, VS Code extension, CLI tool, CI/CD pipelines, and MCP server setup.",
+  "url": "https://automation.songheng.vip/integration-guide.html"
+}
+</script>
+</head>
+<body>
+<div style="background:#161b22;border-bottom:1px solid #30363d;padding:10px 20px;font-size:.85rem;display:flex;gap:16px;align-items:center;flex-wrap:wrap"><a href="/" style="color:#58a6ff;text-decoration:none;font-weight:600">🏠 Home</a><span style="color:#484f58">|</span><a href="/pricing.html" style="color:#8b949e;text-decoration:none">Pricing</a><a href="/api-docs.html" style="color:#8b949e;text-decoration:none">API</a><a href="/playground.html" style="color:#8b949e;text-decoration:none">Playground</a></div>
+
+<div class="container">
+
+<h1>🛠️ AI Code Review — Complete Integration Guide</h1>
+<p>Add AI-powered code review, security scanning, and text analysis to your workflow. Choose your platform below.</p>
+
+<div style="margin:1.5rem 0">
+  <a href="#github" class="btn">GitHub Actions</a>
+  <a href="#cli" class="btn">CLI Tool</a>
+  <a href="#mcp" class="btn">MCP Server</a>
+  <a href="#rest" class="btn">REST API</a>
+  <a href="#slack" class="btn">Slack Bot</a>
+  <a href="#pricing" class="btn btn-ghost">Pricing</a>
+</div>
+
+<div class="alert">
+  <strong>🆓 Free Tier:</strong> Every API endpoint offers 3 free requests/day per IP. No account, no credit card, no signup.
+</div>
+
+<!-- ============ GITHUB ACTIONS ============ -->
+<h2 id="github">🐙 GitHub Actions</h2>
+<p>Automatically review every pull request. Simply add this workflow to your repo.</p>
+
+<h3>Quick Setup (30 seconds)</h3>
+<p>Create <code>.github/workflows/ai-code-review.yml</code> in your repository:</p>
+
+<div class="code-block">name: AI Code Review
+on:
+  pull_request:
+    types: [opened, synchronize]
+
+jobs:
+  review:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Get PR diff
+        id: diff
+        run: |
+          curl -sL "${{ github.event.pull_request.diff_url }}" > pr.diff
+          echo "size=$(wc -c < pr.diff)" >> $GITHUB_OUTPUT
+
+      - name: AI Code Review
+        id: ai_review
+        run: |
+          RESPONSE=$(curl -s -X POST https://automation.songheng.vip/api/free/review \
+            -H "Content-Type: application/json" \
+            -d "{\"text\": $(cat pr.diff | jq -Rs .), \"language\": \"auto\"}")
+          echo "review=$RESPONSE" >> $GITHUB_OUTPUT
+
+      - name: Post Review Comment
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const review = '${{ steps.ai_review.outputs.review }}';
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: "## 🤖 AI Code Review\n\n" + review + "\n\n---\n_Powered by [my-automaton](https://automation.songheng.vip)_"
+            })<button class="copy-btn" onclick="navigator.clipboard.writeText(document.currentScript.parentElement.textContent.trim())">Copy</button></div>
+
+<h3>GitHub Webhook (server-side)</h3>
+<p>Configure a GitHub webhook to <code>https://automation.songheng.vip/api/github-webhook</code> for zero-config PR reviews.</p>
+
+<!-- ============ CLI TOOL ============ -->
+<h2 id="cli">💻 CLI Tool (curl)</h2>
+<p>Review files directly from your terminal. Works with any language.</p>
+
+<h3>Review a File</h3>
+<div class="code-block">curl -X POST https://automation.songheng.vip/api/free/review \
+  -H "Content-Type: application/json" \
+  -d '{"text": "function add(a,b){return a+b}", "language": "javascript"}'<button class="copy-btn" onclick="navigator.clipboard.writeText(`curl -X POST https://automation.songheng.vip/api/free/review -H \"Content-Type: application/json\" -d '{\"text\": \"function add(a,b){return a+b}\", \"language\": \"javascript\"}'`)">Copy</button></div>
+
+<h3>Pipe a File</h3>
+<div class="code-block">cat your_file.js | jq -Rs '{text: ., language: "javascript"}' | \
+  curl -X POST https://automation.songheng.vip/api/free/review \
+  -H "Content-Type: application/json" -d @-<button class="copy-btn" onclick="navigator.clipboard.writeText('cat your_file.js | jq -Rs \'{text: ., language: "javascript"}\' | curl -X POST https://automation.songheng.vip/api/free/review -H "Content-Type: application/json" -d @-')">Copy</button></div>
+
+<h3>Shell Aliases</h3>
+<p>Add to your <code>~/.zshrc</code> or <code>~/.bashrc</code>:</p>
+<div class="code-block"># AI code review
+aireview() {
+  curl -s -X POST https://automation.songheng.vip/api/free/review \
+    -H "Content-Type: application/json" \
+    -d "$(jq -Rs --arg lang "${2:-auto}" '{text: ., language: $lang}' "$1")" | jq .
+}
+
+# Usage: aireview file.js
+# Usage: aireview file.py python<button class="copy-btn" onclick="navigator.clipboard.writeText(document.currentScript.parentElement.textContent.trim())">Copy</button></div>
+
+<!-- ============ MCP SERVER ============ -->
+<h2 id="mcp">🔌 MCP Server (Claude Desktop, Cursor, VS Code)</h2>
+<p>The Model Context Protocol (MCP) lets AI assistants use tools directly. Connect Claude Desktop or Cursor to my-automaton's services.</p>
+
+<h3>Claude Desktop</h3>
+<p>Add to <code>~/Library/Application Support/Claude/claude_desktop_config.json</code>:</p>
+<div class="code-block">{
+  "mcpServers": {
+    "my-automaton": {
+      "url": "https://automation.songheng.vip/mcp"
+    }
+  }
+}<button class="copy-btn" onclick="navigator.clipboard.writeText('{\n  "mcpServers": {\n    "my-automaton": {\n      "url": "https://automation.songheng.vip/mcp"\n    }\n  }\n}')">Copy</button></div>
+
+<h3>Cursor IDE</h3>
+<div class="code-block">{
+  "mcpServers": {
+    "my-automaton": {
+      "url": "https://automation.songheng.vip/mcp"
+    }
+  }
+}<button class="copy-btn" onclick="navigator.clipboard.writeText('{\n  "mcpServers": {\n    "my-automaton": {\n      "url": "https://automation.songheng.vip/mcp"\n    }\n  }\n}')">Copy</button></div>
+
+<h3>Available MCP Tools</h3>
+<table>
+<tr><th>Tool</th><th>Description</th><th>Cost</th></tr>
+<tr><td><code>analyze_code</code></td><td>Deep code analysis</td><td><span class="tag free">Free (3/day)</span></td></tr>
+<tr><td><code>review_code</code></td><td>Full code review</td><td><span class="tag free">Free (3/day)</span></td></tr>
+<tr><td><code>security_scan</code></td><td>Vulnerability detection</td><td><span class="tag free">Free (3/day)</span></td></tr>
+<tr><td><code>explain_code</code></td><td>Code explanation</td><td><span class="tag free">Free (3/day)</span></td></tr>
+<tr><td><code>refactor_code</code></td><td>Refactoring suggestions</td><td><span class="tag free">Free (3/day)</span></td></tr>
+<tr><td><code>summarize</code></td><td>Text summarization</td><td><span class="tag free">Free (3/day)</span></td></tr>
+<tr><td><code>complexity</code></td><td>Complexity analysis</td><td><span class="tag free">Free (3/day)</span></td></tr>
+</table>
+<p><a href="/mcp-config-generator.html" style="color:var(--accent)">→ Interactive MCP Config Generator</a></p>
+
+<!-- ============ REST API ============ -->
+<h2 id="rest">🌐 REST API</h2>
+<p>Integrate with any language or platform. All endpoints are JSON-based.</p>
+
+<h3>Endpoints</h3>
+<table>
+<tr><th>Endpoint</th><th>Method</th><th>Cost (credits)</th></tr>
+<tr><td><code>/api/free/analyze</code></td><td>POST</td><td><span class="tag free">Free (3/day)</span></td></tr>
+<tr><td><code>/api/free/review</code></td><td>POST</td><td><span class="tag free">Free (3/day)</span></td></tr>
+<tr><td><code>/api/free/summarize</code></td><td>POST</td><td><span class="tag free">Free (3/day)</span></td></tr>
+<tr><td><code>/api/free/security</code></td><td>POST</td><td><span class="tag free">Free (3/day)</span></td></tr>
+<tr><td><code>/api/free/explain</code></td><td>POST</td><td><span class="tag free">Free (3/day)</span></td></tr>
+<tr><td><code>/api/free/refactor</code></td><td>POST</td><td><span class="tag free">Free (3/day)</span></td></tr>
+<tr><td><code>/api/free/complexity</code></td><td>POST</td><td><span class="tag free">Free (3/day)</span></td></tr>
+<tr><td><code>/v1/analyze</code></td><td>POST</td><td><span class="tag paid">1 credit</span></td></tr>
+<tr><td><code>/v1/review</code></td><td>POST</td><td><span class="tag paid">5 credits</span></td></tr>
+<tr><td><code>/v1/security</code></td><td>POST</td><td><span class="tag paid">3 credits</span></td></tr>
+<tr><td><code>/v1/explain</code></td><td>POST</td><td><span class="tag paid">2 credits</span></td></tr>
+<tr><td><code>/v1/refactor</code></td><td>POST</td><td><span class="tag paid">5 credits</span></td></tr>
+<tr><td><code>/v1/complexity</code></td><td>POST</td><td><span class="tag paid">2 credits</span></td></tr>
+</table>
+
+<h3>Python Example</h3>
+<div class="code-block">import requests
+
+response = requests.post(
+    "https://automation.songheng.vip/api/free/review",
+    json={"text": "your code here", "language": "python"}
+)
+result = response.json()
+print(result.get("result", result))<button class="copy-btn" onclick="navigator.clipboard.writeText('import requests\n\nresponse = requests.post(\n    "https://automation.songheng.vip/api/free/review",\n    json={"text": "your code here", "language": "python"}\n)\nresult = response.json()\nprint(result.get("result", result))')">Copy</button></div>
+
+<h3>Node.js Example</h3>
+<div class="code-block">const res = await fetch('https://automation.songheng.vip/api/free/review', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({ text: 'your code', language: 'javascript' })
+});
+const data = await res.json();
+console.log(data);<button class="copy-btn" onclick="navigator.clipboard.writeText('const res = await fetch(\'https://automation.songheng.vip/api/free/review\', {\n  method: \'POST\',\n  headers: { \'Content-Type\': \'application/json\' },\n  body: JSON.stringify({ text: \'your code\', language: \'javascript\' })\n});\nconst data = await res.json();\nconsole.log(data);')">Copy</button></div>
+
+<!-- ============ SLACK ============ -->
+<h2 id="slack">💬 Slack Bot</h2>
+<p>Review code directly from Slack. Drop a code snippet in any channel and get instant AI feedback.</p>
+
+<h3>Setup</h3>
+<ol class="steps">
+<li>Go to <a href="https://api.slack.com/apps" style="color:var(--accent)">Slack API → Create New App</a></li>
+<li>Enable Slash Commands → Create command <code>/review</code></li>
+<li>Set Request URL to <code>https://automation.songheng.vip/api/slack/review</code></li>
+<li>Install the app to your workspace</li>
+</ol>
+
+<h3>Usage</h3>
+<div class="code-block">/review function add(a,b){return a+b}  — Reviews JavaScript code
+/review --lang python def add(a,b): return a+b  — Specify language
+/review --help  — Shows available options<button class="copy-btn" onclick="navigator.clipboard.writeText('/review function add(a,b){return a+b}\n/review --lang python def add(a,b): return a+b\n/review --help')">Copy</button></div>
+
+<!-- ============ README BADGES ============ -->
+<h2 id="badges">📛 README Badges</h2>
+<p>Add a badge to your GitHub README showing code quality. Every click sends traffic — win/win.</p>
+
+<div class="code-block">[![AI Review](https://img.shields.io/badge/AI%20review-my--automaton-purple)](https://automation.songheng.vip/)<button class="copy-btn" onclick="navigator.clipboard.writeText('[![AI Review](https://img.shields.io/badge/AI%20review-my--automaton-purple)](https://automation.songheng.vip/)')">Copy</button></div>
+<p><a href="/readme-badges.html" style="color:var(--accent)">→ See all badge options</a></p>
+
+<!-- ============ PRICING ============ -->
+<h2 id="pricing">💰 Pricing</h2>
+<table>
+<tr><th>Plan</th><th>Price</th><th>Credits</th><th>≈ Reviews</th><th>Per Review</th></tr>
+<tr><td><strong>Starter</strong></td><td>$5</td><td>500</td><td>~100</td><td>~$0.005</td></tr>
+<tr><td><strong>Advanced</strong></td><td>$10</td><td>1,100</td><td>~220</td><td>~$0.0045</td></tr>
+<tr><td><strong>Pro</strong></td><td>$25</td><td>3,000</td><td>~600</td><td>~$0.004</td></tr>
+<tr><td><strong>Ultimate</strong></td><td>$58</td><td>6,500</td><td>~1,300</td><td>~$0.0035</td></tr>
+</table>
+<p style="margin-top:1rem">
+  <a href="/upgrade.html" class="btn">Buy Credits →</a>
+  <a href="/demo.html" class="btn btn-ghost">Try Free Demo →</a>
+</p>
+
+<footer>
+<p><a href="https://automation.songheng.vip" style="color:var(--accent)">my-automaton</a> — AI code review, security scanning, and text analysis</p>
+<p>Wallet: <code>0x76eADdEBFfb6a61DD071f97F4508467fc55dd113</code> (Base/USDC)</p>
+<p>Server: <code>automation.songheng.vip</code> | <a href="/api-docs.html" style="color:var(--text-muted)">API Docs</a> | <a href="/blog.html" style="color:var(--text-muted)">Blog</a></p>
+</footer>
+
+</div>
+<script src="/conversion-banner.js" defer></script>
+</body>
+</html>

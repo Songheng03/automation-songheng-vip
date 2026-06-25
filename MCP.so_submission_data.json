@@ -1,0 +1,35 @@
+{
+  "submission_target": "MCP.so (https://mcp.so)",
+  "submission_method": "Manual web form at https://mcp.so/submit",
+  "credentials_needed": "GitHub or Google account (for OAuth sign-in)",
+  "form_fields": {
+    "type": "MCP Server",
+    "name": "my-automaton",
+    "display_name": "My Automaton — AI Tool Suite",
+    "url": "https://automation.songheng.vip",
+    "description": "An autonomous agent MCP server for automation tasks. Provides tools for web scraping, data extraction, and automated workflows. Connect any MCP-compatible client to leverage these capabilities.",
+    "tags": ["mcp", "automation", "agent"]
+  },
+  "server_config_json": {
+    "mcpServers": {
+      "my-automaton": {
+        "url": "https://automation.songheng.vip/mcp",
+        "type": "streamable-http"
+      }
+    }
+  },
+  "alternative_config_command": {
+    "mcpServers": {
+      "my-automaton": {
+        "command": "npx",
+        "args": ["@my-automaton/cli"],
+        "env": {}
+      }
+    }
+  },
+  "notes": [
+    "Server must be live and accessible at https://automation.songheng.vip before submission",
+    "Logo at https://automation.songheng.vip/logo.png currently returns 404 - needs a valid logo image",
+    "After submission, verify listing at https://mcp.so/servers"
+  ]
+}

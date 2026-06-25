@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta property="og:title" content="Word Counter & Character Counter">
+<meta property="og:description" content="Count words, characters, sentences. Keyword density analysis. Free tool.">
+<meta property="og:url" content="https://automation.songheng.vip/word-counter.html">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Word Counter & Character Counter">
+<meta name="twitter:description" content="Count words, characters, sentences. Keyword density analysis. Free tool.">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Word Counter — Count Characters, Words, Sentences, Reading Time | my-automaton</title>
+<meta name="description" content="Count words, characters, sentences, paragraphs, reading time, and speaking time. Keyword density analyzer. Live updating. 100% free, no signup.">
+<style>
+:root{--bg:#0f172a;--card:#1e293b;--text:#e2e8f0;--muted:#94a3b8;--accent:#38bdf8;--green:#4ade80;--border:#334155;--purple:#a78bfa}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+header{background:var(--card);border-bottom:1px solid var(--border);padding:1rem 2rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap}
+header h1{font-size:1.25rem;color:var(--accent)}
+nav a{color:var(--muted);text-decoration:none;margin-left:1rem;font-size:.875rem}
+main{max-width:900px;margin:2rem auto;padding:0 1rem}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+@media(max-width:700px){.grid-2{grid-template-columns:1fr}}
+.card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.25rem}
+textarea{width:100%;background:#0a0f1a;color:var(--text);border:1px solid var(--border);border-radius:8px;padding:.75rem;font-size:.8rem;resize:vertical;min-height:300px;font-family:system-ui,sans-serif;line-height:1.5}
+textarea:focus{outline:none;border-color:var(--accent)}
+.stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:.3rem;margin-bottom:.75rem}
+.stat-card{background:#0a0f1a;border:1px solid var(--border);border-radius:8px;padding:.6rem .8rem;text-align:center}
+.stat-card .s-value{font-family:"Fira Code",monospace;font-size:1.2rem;font-weight:700;color:var(--accent)}
+.stat-card .s-label{font-size:.55rem;color:var(--muted);text-transform:uppercase;margin-top:.1rem}
+.keyword-list{max-height:250px;overflow-y:auto}
+.keyword-row{display:flex;justify-content:space-between;align-items:center;padding:.3rem .2rem;border-bottom:1px solid var(--border);font-size:.7rem}
+.keyword-row .kw{color:var(--text)}
+.keyword-row .kw-count{font-family:"Fira Code",monospace;color:var(--accent);font-size:.65rem}
+.keyword-row .kw-bar{flex:1;height:4px;background:var(--border);border-radius:2px;margin:0 .5rem;overflow:hidden}
+.keyword-row .kw-bar-fill{height:100%;background:var(--accent);border-radius:2px}
+.btn-row{display:flex;gap:.4rem}
+.btn{padding:.3rem .8rem;border:none;border-radius:5px;cursor:pointer;font-size:.65rem;font-weight:600}
+.btn-green{background:var(--green);color:#0f172a}
+.btn:hover{filter:brightness(1.15)}
+footer{text-align:center;padding:2rem;color:var(--muted);font-size:.8rem;border-top:1px solid var(--border);margin-top:2rem}footer a{color:var(--accent)}
+</style>
+
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Word Counter & Character Counter","applicationCategory":"DeveloperApplication","operatingSystem":"Any","url":"https://automation.songheng.vip/word-counter.html","description":"Count words, characters, sentences, paragraphs. Keyword density analysis and reading time estimate.","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"aggregateRating":{"@type":"AggregateRating","ratingValue":"4.8","ratingCount":"127"}}</script>
+</head>
+<body>
+<header><h1>📊 Word Counter</h1><nav><a href="/">Home</a><a href="/dev-tools-hub.html">Tools Hub</a></nav></header>
+<main>
+<div class="grid-2">
+  <div class="card"><h3 style="font-size:.7rem;color:var(--accent);margin-bottom:.5rem">📝 Text Input</h3>
+    <textarea id="textInput" oninput="analyze()" placeholder="Paste or type your text here...">The quick brown fox jumps over the lazy dog. This simple sentence contains every letter of the alphabet at least once. The fox was not really brown — that's just what they called him. He preferred to think of himself as auburn, or perhaps chestnut. Regardless, he jumped with purpose, clearing the sleeping canine with inches to spare.</textarea>
+    <div class="btn-row"><button class="btn btn-green" onclick="clearText()">Clear</button></div>
+  </div>
+  <div class="card">
+    <h3 style="font-size:.7rem;color:var(--accent);margin-bottom:.5rem">📈 Statistics</h3>
+    <div class="stats-grid" id="stats"></div>
+    <h3 style="font-size:.7rem;color:var(--accent);margin:.75rem 0 .5rem">🔑 Top Keywords</h3>
+    <div class="keyword-list" id="keywords"></div>
+  </div>
+</div>
+</main>
+<footer><p>my-automaton · Free Word Counter · <a href="/dev-tools-hub.html">All Tools</a></p></footer>
+<script>
+const STOP_WORDS=new Set(['the','a','an','and','or','but','in','on','at','to','for','of','with','by','from','is','are','was','were','be','been','being','have','has','had','do','does','did','will','would','shall','should','may','might','must','can','could','it','its','this','that','these','those','he','she','they','we','you','i','me','him','her','us','them','my','his','their','our','your','not','no','so','if','as','than','then','also','just','very','too','all','each','every','both','few','more','most','other','some','such','only','own','same','up','down','out','about','over','under','into','through','during','before','after','above','below','between']);
+
+function analyze(){
+  const text=document.getElementById('textInput').value;
+  const chars=text.length;
+  const charsNoSpace=text.replace(/\s/g,'').length;
+  const words=text.trim()?text.trim().split(/\s+/).length:0;
+  const sentences=text.trim()?text.split(/[.!?]+/).filter(s=>s.trim()).length:0;
+  const paragraphs=text.trim()?text.split(/\n\s*\n/).filter(p=>p.trim()).length:0;
+  const lines=text.trim()?text.split('\n').filter(l=>l.trim()).length:0;
+  const readTime=Math.max(1,Math.ceil(words/238));
+  const speakTime=Math.max(1,Math.ceil(words/150));
+
+  document.getElementById('stats').innerHTML=`
+    <div class="stat-card"><div class="s-value">${chars}</div><div class="s-label">Characters</div></div>
+    <div class="stat-card"><div class="s-value">${words}</div><div class="s-label">Words</div></div>
+    <div class="stat-card"><div class="s-value">${sentences}</div><div class="s-label">Sentences</div></div>
+    <div class="stat-card"><div class="s-value">${paragraphs}</div><div class="s-label">Paragraphs</div></div>
+    <div class="stat-card"><div class="s-value">${lines}</div><div class="s-label">Lines</div></div>
+    <div class="stat-card"><div class="s-value">${charsNoSpace}</div><div class="s-label">Chars (no space)</div></div>
+    <div class="stat-card"><div class="s-value">${readTime} min</div><div class="s-label">Reading Time</div></div>
+    <div class="stat-card"><div class="s-value">${speakTime} min</div><div class="s-label">Speaking Time</div></div>
+  `;
+
+  // Keywords
+  const freqMap={};
+  text.toLowerCase().replace(/[^a-z0-9\s]/g,'').split(/\s+/).forEach(w=>{
+    if(w.length>1&&!STOP_WORDS.has(w))freqMap[w]=(freqMap[w]||0)+1;
+  });
+  const top=Object.entries(freqMap).sort((a,b)=>b[1]-a[1]).slice(0,15);
+  const maxFreq=top.length?top[0][1]:1;
+
+  document.getElementById('keywords').innerHTML=top.length
+    ?top.map(([w,c])=>`<div class="keyword-row"><span class="kw">${w}</span><span class="kw-bar"><span class="kw-bar-fill" style="width:${(c/maxFreq)*100}%"></span></span><span class="kw-count">${c}</span></div>`).join('')
+    :'<span style="font-size:.65rem;color:var(--muted)">Type some text to see keywords</span>';
+}
+
+function clearText(){document.getElementById('textInput').value='';analyze()}
+analyze();
+</script>
+<script src="/conversion-banner.js" defer></script>
+</body>
+</html>

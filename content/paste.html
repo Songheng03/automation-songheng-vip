@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <link rel="canonical" href="https://automation.songheng.vip/paste.html">
+  <meta property="og:title" content="PasteBin - my-automaton">
+  <meta property="og:description" content="Quick pastebin for sharing code and text snippets.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://automation.songheng.vip/paste.html">
+  <meta property="og:image" content="https://automation.songheng.vip/og-image.png"><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>PasteBin - my-automaton</title><meta name="description" content="Quick pastebin for sharing code and text snippets."><style>body{font-family:-apple-system,sans-serif;background:#0f0f1a;color:#e0e0e0;max-width:700px;margin:0 auto;padding:2rem 1rem}h1{color:#fff}textarea{width:100%;min-height:250px;background:#1a1a2e;color:#e0e0e0;border:1px solid #333;border-radius:8px;padding:.8rem;font-family:monospace;resize:vertical;margin:.5rem 0}button{background:#a78bfa;color:#000;font-weight:600;border:none;padding:.6rem 1.5rem;border-radius:6px;cursor:pointer;margin:.5rem .5rem 0 0}.result{background:#111;border:1px solid #333;border-radius:8px;padding:1rem;margin:1rem 0;display:none}.result a{color:#a78bfa;word-break:break-all}</style><meta name="google-site-verification" content="YOUR_CODE" />
+<meta property="og:site_name" content="my-automaton" />
+<meta property="og:type" content="website" />
+<meta property="og:locale" content="en_US" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:site" content="@my_automaton" />
+<script src="/js/analytics.js"></script>
+<!-- Open Graph / Social Meta Tags -->
+<meta name="twitter:title" content="PasteBin - my-automaton" />
+<meta name="twitter:description" content="Quick pastebin for sharing code and text snippets." />
+<meta name="twitter:image" content="https://automation.songheng.vip/og-image.png" />
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "PasteBin - my-automaton",
+  "description": "Quick pastebin for sharing code and text snippets.",
+  "url": "https://automation.songheng.vip/paste.html"
+}
+</script>
+</head><body>
+<div style="background:#161b22;border-bottom:1px solid #30363d;padding:10px 20px;font-size:.85rem;display:flex;gap:16px;align-items:center;flex-wrap:wrap"><a href="/" style="color:#58a6ff;text-decoration:none;font-weight:600">🏠 Home</a><span style="color:#484f58">|</span><a href="/pricing.html" style="color:#8b949e;text-decoration:none">Pricing</a><a href="/api-docs.html" style="color:#8b949e;text-decoration:none">API</a><a href="/playground.html" style="color:#8b949e;text-decoration:none">Playground</a></div>
+<h1>📋 PasteBin</h1><p style="color:#888">Share code or text. No signup required.</p>
+<textarea id="paste-input" placeholder="Paste your code or text here..."></textarea><br>
+<button onclick="createPaste()">Create Paste</button>
+<div class="result" id="result"><strong>Paste created!</strong><br><a id="paste-link" href="#" target="_blank"></a><br><span id="paste-id" style="color:#666;font-size:.85rem"></span></div>
+<script>async function createPaste(){const c=document.getElementById('paste-input').value.trim();if(!c)return alert('Enter text');try{const r=await fetch('/api/paste',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({content:c})});const d=await r.json();document.getElementById('result').style.display='block';document.getElementById('paste-link').textContent=window.location.origin+'/paste/'+d.id;document.getElementById('paste-link').href='/paste/'+d.id;document.getElementById('paste-id').textContent='ID: '+d.id}catch(e){alert('Error: '+e.message)}}</script><div class="share-bar" style="position:fixed;bottom:20px;right:20px;z-index:9999;display:flex;gap:8px;background:rgba(0,0,0,0.85);padding:10px 14px;border-radius:30px;backdrop-filter:blur(8px);box-shadow:0 2px 12px rgba(0,0,0,0.3)">
+<button onclick="window.open('https://twitter.com/intent/tweet?text='+encodeURIComponent(document.title)+'&url='+encodeURIComponent(location.href),'_blank')" style="background:#1DA1F2;border:none;color:white;padding:8px 12px;border-radius:20px;cursor:pointer;font-size:13px;font-weight:bold">X</button>
+<button onclick="window.open('https://www.linkedin.com/sharing/share-offsite/?url='+encodeURIComponent(location.href),'_blank')" style="background:#0A66C2;border:none;color:white;padding:8px 12px;border-radius:20px;cursor:pointer;font-size:13px;font-weight:bold">in</button>
+<button onclick="window.open('https://reddit.com/submit?url='+encodeURIComponent(location.href)+'&title='+encodeURIComponent(document.title),'_blank')" style="background:#FF4500;border:none;color:white;padding:8px 12px;border-radius:20px;cursor:pointer;font-size:13px;font-weight:bold">r</button>
+</div>
+<script src="/js/share-widget.js"></script>
+<script src="/conversion-banner.js" defer></script>
+</body></html>

@@ -1,0 +1,73 @@
+{
+  "name": "my-automaton",
+  "version": "1.0.0",
+  "description": "AI-powered API services: text analysis, code review, security scanning, summarization via x402 micropayments",
+  "agent": {
+    "name": "my-automaton",
+    "wallet": "0x76eADdEBFfb6a61DD071f97F4508467fc55dd113",
+    "chain": "base",
+    "token": "USDC"
+  },
+  "capabilities": {
+    "tools": [
+      {
+        "name": "analyze",
+        "description": "Deep text analysis - sentiment, topics, entities, writing style",
+        "cost": 1,
+        "unit": "credit",
+        "input": { "type": "object", "properties": { "text": { "type": "string" } }, "required": ["text"] }
+      },
+      {
+        "name": "summarize",
+        "description": "AI summarization with configurable length",
+        "cost": 2,
+        "unit": "credit",
+        "input": { "type": "object", "properties": { "text": { "type": "string" }, "length": { "type": "string", "enum": ["short", "normal", "detailed"] } }, "required": ["text"] }
+      },
+      {
+        "name": "review",
+        "description": "Full code review - bugs, security, performance, style",
+        "cost": 5,
+        "unit": "credit",
+        "input": { "type": "object", "properties": { "text": { "type": "string" }, "language": { "type": "string" } }, "required": ["text"] }
+      },
+      {
+        "name": "security",
+        "description": "Security vulnerability scan - XSS, SQLi, CSRF, injections",
+        "cost": 3,
+        "unit": "credit",
+        "input": { "type": "object", "properties": { "text": { "type": "string" } }, "required": ["text"] }
+      },
+      {
+        "name": "explain",
+        "description": "Line-by-line code explanation for intermediate developers",
+        "cost": 2,
+        "unit": "credit",
+        "input": { "type": "object", "properties": { "text": { "type": "string" } }, "required": ["text"] }
+      },
+      {
+        "name": "complexity",
+        "description": "Time and space complexity analysis with Big O notation",
+        "cost": 2,
+        "unit": "credit",
+        "input": { "type": "object", "properties": { "text": { "type": "string" } }, "required": ["text"] }
+      }
+    ]
+  },
+  "endpoints": {
+    "base": "https://automation.songheng.vip",
+    "health": "/api/health",
+    "catalog": "/api/catalog",
+    "mcp": "/mcp/v1/catalog",
+    "openai": "/mcp/v1/openai"
+  },
+  "pricing": {
+    "free_tier": "3 requests/day per IP",
+    "starter": { "price": "$5", "credits": 500 },
+    "growth": { "price": "$10", "credits": 1100 },
+    "pro": { "price": "$25", "credits": 3000 },
+    "enterprise": { "price": "$58", "credits": 6500 }
+  },
+  "tags": ["ai", "api", "code-review", "security", "text-analysis", "mcp", "x402", "micropayments", "developer-tools"],
+  "homepage": "https://automation.songheng.vip"
+}

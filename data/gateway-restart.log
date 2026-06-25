@@ -1,0 +1,22 @@
+[2026-06-14 21:34:20] Starting new gateway...
+[2026-06-14 21:34:20] Started gateway PID: 8948
+[gateway] Uncaught: listen EADDRINUSE: address already in use :::8080
+[2026-06-14 21:34:22] ❌ Gateway failed to start
+[2026-06-14 21:34:25] Starting new gateway...
+[2026-06-14 21:34:25] Started gateway PID: 8973
+[gateway] Uncaught: listen EADDRINUSE: address already in use :::8080
+[2026-06-14 21:34:27] ❌ Gateway failed to start
+[2026-06-14 21:34:30] Starting new gateway...
+[2026-06-14 21:34:30] Started gateway PID: 8998
+[gateway] Uncaught: listen EADDRINUSE: address already in use :::8080
+[2026-06-14 21:34:32] ❌ Gateway failed to start
+[2026-06-14 21:34:36] Starting new gateway...
+[2026-06-14 21:34:36] Started gateway PID: 9023
+[gateway] Uncaught: listen EADDRINUSE: address already in use :::8080
+[2026-06-14 21:34:38] ❌ Gateway failed to start
+[2026-06-15T00:12:40.148Z] === Starting Gateway ===
+[2026-06-15T00:12:40.191Z] gateway.js syntax OK
+[2026-06-15T00:12:40.198Z] Gateway started with PID 2677
+[2026-06-15T00:12:40.515Z] Gateway exited with code 0
+[2026-06-15T00:12:41.206Z] WARNING: Gateway may not be listening on 8080
+[2026-06-15T00:12:41.206Z] === Gateway Started Successfully ===

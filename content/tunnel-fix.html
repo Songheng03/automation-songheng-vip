@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>my-automaton Tunnel Manager</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', monospace; background: #07070d; color: #c0c0d0; padding: 20px; }
+  .container { max-width: 700px; margin: 0 auto; }
+  h1 { font-size: 1.4rem; color: #00ff88; }
+  .status { padding: 16px; border-radius: 8px; margin: 16px 0; border: 1px solid #1a1a28; background: #0e0e16; }
+  .status .label { font-size: 0.7rem; text-transform: uppercase; color: #666; letter-spacing: 1.5px; }
+  .status .value { font-size: 1.2rem; margin-top: 4px; }
+  .green { color: #00ff88; }
+  .red { color: #ff3355; }
+  .yellow { color: #ffaa00; }
+  .btn { background: #1a1a28; border: 1px solid #2a2a3a; color: #c0c0d0; padding: 8px 20px; border-radius: 6px; cursor: pointer; font-family: inherit; font-size: 0.85rem; }
+  .btn:hover { background: #2a2a3a; }
+  .btn-green { background: #00ff8822; border-color: #00ff8844; color: #00ff88; }
+  .btn-red { background: #ff335522; border-color: #ff335544; color: #ff3355; }
+  .log { background: #0a0a10; border: 1px solid #1a1a28; border-radius: 6px; padding: 12px; margin: 12px 0; max-height: 200px; overflow-y: auto; font-size: 0.8rem; }
+  .log div { padding: 2px 0; color: #888; }
+  .log .time { color: #555; min-width: 70px; display: inline-block; }
+  .section-title { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; color: #555; margin: 16px 0 8px; border-bottom: 1px solid #1a1a28; padding-bottom: 4px; }
+  code { background: #1a1a28; padding: 1px 5px; border-radius: 3px; font-size: 0.8rem; }
+  .cmd { background: #0a0a14; border: 1px solid #1a1a28; padding: 10px 14px; border-radius: 6px; font-family: monospace; font-size: 0.85rem; color: #44aaff; margin: 6px 0; }
+</style>
+
+<!-- Open Graph / Social Meta Tags -->
+<meta property="og:title" content="my-automaton Tunnel Manager" />
+<meta property="og:description" content="my-automaton Tunnel Manager — powered by my-automaton. AI code review, security scanning, and developer tools." />
+<meta property="og:image" content="https://automation.songheng.vip/og-image.png" />
+<meta property="og:url" content="https://automation.songheng.vip/tunnel-fix.html" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="my-automaton" />
+<meta property="og:locale" content="en_US" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="my-automaton Tunnel Manager" />
+<meta name="twitter:description" content="my-automaton Tunnel Manager — powered by my-automaton. AI code review, security scanning, and developer tools." />
+<meta name="twitter:image" content="https://automation.songheng.vip/og-image.png" />
+  <meta name="description" content="🔗 Tunnel Manager my-automaton · Cloudflare Tunnel Control Tunnel Status Checking.">
+  <link rel="canonical" href="https://automation.songheng.vip/tunnel-fix.html">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "my-automaton Tunnel Manager",
+  "description": "🔗 Tunnel Manager my-automaton · Cloudflare Tunnel Control Tunnel Status Checking.",
+  "url": "https://automation.songheng.vip/tunnel-fix.html"
+}
+</script>
+</head>
+<body>
+<div style="background:#161b22;border-bottom:1px solid #30363d;padding:10px 20px;font-size:.85rem;display:flex;gap:16px;align-items:center;flex-wrap:wrap"><a href="/" style="color:#58a6ff;text-decoration:none;font-weight:600">🏠 Home</a><span style="color:#484f58">|</span><a href="/pricing.html" style="color:#8b949e;text-decoration:none">Pricing</a><a href="/api-docs.html" style="color:#8b949e;text-decoration:none">API</a><a href="/playground.html" style="color:#8b949e;text-decoration:none">Playground</a></div>
+
+<div class="container">
+  <h1>🔗 Tunnel Manager</h1>
+  <p style="color:#666;margin:6px 0 16px;">my-automaton · Cloudflare Tunnel Control</p>
+
+  <div class="status">
+    <div class="label">Tunnel Status</div>
+    <div class="value" id="tunnelStatus">Checking...</div>
+    <div class="value" style="font-size:0.85rem;margin-top:6px;color:#666;" id="tunnelUrl">--</div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:12px 0;">
+    <button class="btn btn-green" onclick="startTunnel()">▶ Start Tunnel</button>
+    <button class="btn btn-red" onclick="stopTunnel()">■ Stop Tunnel</button>
+  </div>
+  <button class="btn" onclick="checkTunnel()" style="width:100%;">↻ Check Tunnel</button>
+
+  <div class="section-title">📋 Tunnel Log</div>
+  <div class="log" id="tunnelLog">
+    <div><span class="time">--</span>Click "Start Tunnel" to begin</div>
+  </div>
+
+  <div class="section-title">🛠️ HOST Commands (if tunnel won't start)</div>
+  <div class="cmd">sudo systemctl restart cloudflared</div>
+  <div class="cmd">journalctl -u cloudflared --no-pager -n 30</div>
+  <div class="cmd">bash /root/automaton/scripts/recover.sh</div>
+
+  <div class="section-title">🌐 Access URLs</div>
+  <div id="accessUrls">
+    <div class="cmd" style="color:#888;">Gateway (local): <span style="color:#00ff88;">http://127.0.0.1:8080</span></div>
+    <div class="cmd" style="color:#888;">Cloudflare: <span id="domainUrl" style="color:#ffaa00;">https://automation.songheng.vip</span></div>
+    <div class="cmd" id="tempUrlRow" style="color:#888;display:none;">Temp Tunnel: <span id="tempUrl" style="color:#44aaff;"></span></div>
+  </div>
+</div>
+
+<script>
+const API = '';
+
+function addLog(msg) {
+  const el = document.getElementById('tunnelLog');
+  const time = new Date().toLocaleTimeString();
+  el.innerHTML = `<div><span class="time">${time}</span>${msg}</div>` + el.innerHTML;
+  if (el.children.length > 50) el.removeChild(el.lastChild);
+}
+
+async function checkTunnel() {
+  const statusEl = document.getElementById('tunnelStatus');
+  const urlEl = document.getElementById('tunnelUrl');
+  
+  addLog('Checking tunnel status...');
+  
+  // Check domain tunnel
+  try {
+    const r = await fetch('/api/tunnel/status');
+    const d = await r.json();
+    
+    urlEl.textContent = d.cloudflareUrl || d.tunnelUrl || '--';
+    
+    if (d.cloudflare === 'ok') {
+      statusEl.textContent = '✅ ONLINE — Cloudflare Tunnel';
+      statusEl.style.color = '#00ff88';
+      addLog('✅ Cloudflare Tunnel is UP');
+    } else if (d.localTunnel) {
+      statusEl.textContent = '⚠️ Temp Tunnel Active';
+      statusEl.style.color = '#ffaa00';
+      urlEl.textContent = d.localTunnel;
+      addLog(`⚠️ Using temp tunnel: ${d.localTunnel}`);
+    } else {
+      statusEl.textContent = '❌ OFFLINE';
+      statusEl.style.color = '#ff3355';
+      addLog('❌ All tunnels down');
+    }
+  } catch(e) {
+    addLog(`⚠ Status check: ${e.message}`);
+    // Check local gateway directly
+    try {
+      const r = await fetch(API + '/');
+      if (r.ok) {
+        statusEl.textContent = '🟡 Local Gateway OK (no external)';
+        statusEl.style.color = '#ffaa00';
+        urlEl.textContent = 'Check https://automation.songheng.vip';
+      }
+    } catch(e2) {
+      statusEl.textContent = '❌ Gateway Unreachable';
+      statusEl.style.color = '#ff3355';
+    }
+  }
+}
+
+async function startTunnel() {
+  addLog('Starting tunnel...');
+  document.querySelector('.btn-green').disabled = true;
+  
+  try {
+    const r = await fetch('/api/tunnel/start', { method: 'POST' });
+    const d = await r.json();
+    
+    if (d.success) {
+      addLog(`✅ Tunnel started: ${d.url}`);
+      document.getElementById('tempUrl').textContent = d.url;
+      document.getElementById('tempUrlRow').style.display = 'block';
+      document.getElementById('tunnelStatus').textContent = '⚠️ Temp Tunnel Active';
+      document.getElementById('tunnelStatus').style.color = '#ffaa00';
+      document.getElementById('tunnelUrl').textContent = d.url;
+    } else {
+      addLog(`❌ ${d.error || 'Failed to start tunnel'}`);
+    }
+  } catch(e) {
+    addLog(`❌ Error: ${e.message}`);
+    
+    // Fallback: try direct cloudflared from browser won't work, but show host commands
+    addLog('💡 Cannot start from browser. Use host commands below.');
+    addLog('📋 Copy: sudo systemctl restart cloudflared');
+  }
+  
+  document.querySelector('.btn-green').disabled = false;
+}
+
+async function stopTunnel() {
+  addLog('Stopping tunnel...');
+  try {
+    const r = await fetch('/api/tunnel/stop', { method: 'POST' });
+    const d = await r.json();
+    addLog(d.success ? '✅ Tunnel stopped' : `❌ ${d.error}`);
+  } catch(e) {
+    addLog(`❌ ${e.message}`);
+  }
+  checkTunnel();
+}
+
+// Auto-check on load
+setTimeout(checkTunnel, 500);
+setInterval(checkTunnel, 15000);
+</script>
+<script src="/conversion-banner.js" defer></script>
+</body>
+</html>

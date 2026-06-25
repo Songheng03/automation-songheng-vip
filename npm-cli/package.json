@@ -1,0 +1,19 @@
+{
+  "name": "@my-automaton/cli",
+  "version": "1.0.0",
+  "description": "AI code review & text analysis CLI — 7 tools: review, security, analyze, summarize, explain, refactor, complexity",
+  "type": "module",
+  "main": "cli.mjs",
+  "bin": {
+    "my-automaton": "./cli.mjs"
+  },
+  "files": ["cli.mjs", "README.md"],
+  "keywords": ["code-review", "security-scanning", "ai", "cli", "code-analysis"],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/my-automaton/cli.git"
+  },
+  "homepage": "https://github.com/my-automaton/cli#readme",
+  "engines": { "node": ">=18.0.0" }
+}

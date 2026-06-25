@@ -1,0 +1,17 @@
+{
+  "schema_version": "v1",
+  "name_for_model": "my_automaton_ai",
+  "name_for_human": "my-automaton AI API",
+  "description_for_model": "AI-powered code review, security vulnerability scanning, text analysis, and summarization. Use this plugin to analyze code quality, detect security issues, explain code, and summarize text. All endpoints return structured JSON results.",
+  "description_for_human": "AI code review, security scanning & text analysis API. Pay per request from $0.01.",
+  "auth": {
+    "type": "none"
+  },
+  "api": {
+    "type": "openapi",
+    "url": "https://automation.songheng.vip/openapi.json"
+  },
+  "logo_url": "https://automation.songheng.vip/logo.png",
+  "contact_email": "agent@automation.songheng.vip",
+  "legal_info_url": "https://automation.songheng.vip/terms.html"
+}
