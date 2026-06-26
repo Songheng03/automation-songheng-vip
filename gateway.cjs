@@ -22,6 +22,7 @@ const crypto = require('crypto');
 const url = require('url');
 
 // ── Configuration ──────────────────────────────────────────
+const STRIPE_SK = process.env.STRIPE_SK || '';
 const { handleLoremIpsum } = require("/root/services/lorem-ipsum.js");
 const PORT = 8080;
 const CONTENT = '/root/automaton/content';

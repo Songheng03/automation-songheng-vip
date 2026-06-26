@@ -355,3 +355,70 @@
 [2026-06-25T11:52:13.376Z] AI call: endpoint=https://token-plan.cn-beijing.maas.aliyuncs.com/compatible-mode/v1/chat/completions, model=qwen3.7-max, key_len=115, key_prefix=sk-sp-D.LIPLE.inex.M
 [2026-06-25T11:56:19.425Z] AI call: endpoint=https://token-plan.cn-beijing.maas.aliyuncs.com/compatible-mode/v1/chat/completions, model=qwen3.7-max, key_len=115, key_prefix=sk-sp-D.LIPLE.inex.M
 [2026-06-25T11:56:43.585Z] AI call: endpoint=https://token-plan.cn-beijing.maas.aliyuncs.com/compatible-mode/v1/chat/completions, model=qwen3.7-max, key_len=115, key_prefix=sk-sp-D.LIPLE.inex.M
+[2026-06-26T06:09:24.357Z] ✅ my-automaton Gateway running on port 8080
+[2026-06-26T06:09:24.374Z]    Public: https://automation.songheng.vip
+[2026-06-26T06:09:28.734Z] ✅ my-automaton Gateway running on port 8080
+[2026-06-26T06:09:28.741Z]    Public: https://automation.songheng.vip
+[2026-06-26T06:09:33.275Z] ✅ my-automaton Gateway running on port 8080
+[2026-06-26T06:09:33.285Z]    Public: https://automation.songheng.vip
+[2026-06-26T06:09:37.714Z] ✅ my-automaton Gateway running on port 8080
+[2026-06-26T06:09:37.721Z]    Public: https://automation.songheng.vip
+[2026-06-26T06:09:42.217Z] ✅ my-automaton Gateway running on port 8080
+[2026-06-26T06:09:42.225Z]    Public: https://automation.songheng.vip
+[2026-06-26T06:09:46.692Z] ✅ my-automaton Gateway running on port 8080
+[2026-06-26T06:09:46.701Z]    Public: https://automation.songheng.vip
+[2026-06-26T06:09:51.456Z] ✅ my-automaton Gateway running on port 8080
+[2026-06-26T06:09:51.470Z]    Public: https://automation.songheng.vip
+[2026-06-26T06:09:56.005Z] ✅ my-automaton Gateway running on port 8080
+[2026-06-26T06:09:56.014Z]    Public: https://automation.songheng.vip
+[2026-06-26T06:10:00.576Z] ✅ my-automaton Gateway running on port 8080
+[2026-06-26T06:10:00.590Z]    Public: https://automation.songheng.vip
+[2026-06-26T06:15:58.244Z] ✅ my-automaton Gateway running on port 8080
+[2026-06-26T06:15:58.265Z]    Public: https://automation.songheng.vip
+[2026-06-26T06:16:02.703Z] ✅ my-automaton Gateway running on port 8080
+[2026-06-26T06:16:02.711Z]    Public: https://automation.songheng.vip
+[2026-06-26T06:16:06.642Z] ✅ my-automaton Gateway running on port 8080
+[2026-06-26T06:16:06.659Z]    Public: https://automation.songheng.vip
+[2026-06-26T06:16:07.203Z] ✅ my-automaton Gateway running on port 8080
+[2026-06-26T06:16:07.211Z]    Public: https://automation.songheng.vip
+[2026-06-26T06:16:11.724Z] ✅ my-automaton Gateway running on port 8080
+[2026-06-26T06:16:11.744Z]    Public: https://automation.songheng.vip
+[2026-06-26T06:16:16.327Z] ✅ my-automaton Gateway running on port 8080
+[2026-06-26T06:16:16.340Z]    Public: https://automation.songheng.vip
+[2026-06-26T06:16:20.732Z] ✅ my-automaton Gateway running on port 8080
+[2026-06-26T06:16:20.741Z]    Public: https://automation.songheng.vip
+[2026-06-26T06:16:25.224Z] ✅ my-automaton Gateway running on port 8080
+[2026-06-26T06:16:25.233Z]    Public: https://automation.songheng.vip
+[2026-06-26T06:16:29.912Z] ✅ my-automaton Gateway running on port 8080
+[2026-06-26T06:16:29.931Z]    Public: https://automation.songheng.vip
+[2026-06-26T06:16:34.945Z] ✅ my-automaton Gateway running on port 8080
+[2026-06-26T06:16:34.969Z]    Public: https://automation.songheng.vip
+[2026-06-26T06:16:40.350Z] ✅ my-automaton Gateway running on port 8080
+[2026-06-26T06:16:40.378Z]    Public: https://automation.songheng.vip
+[2026-06-26T06:16:44.760Z] ✅ my-automaton Gateway running on port 8080
+[2026-06-26T06:16:44.768Z]    Public: https://automation.songheng.vip
+[2026-06-26T06:16:49.451Z] ✅ my-automaton Gateway running on port 8080
+[2026-06-26T06:16:49.461Z]    Public: https://automation.songheng.vip
+[2026-06-26T06:16:54.500Z] ✅ my-automaton Gateway running on port 8080
+[2026-06-26T06:16:54.508Z]    Public: https://automation.songheng.vip
+[2026-06-26T06:16:58.999Z] ✅ my-automaton Gateway running on port 8080
+[2026-06-26T06:16:59.007Z]    Public: https://automation.songheng.vip
+[2026-06-26T06:17:03.482Z] ✅ my-automaton Gateway running on port 8080
+[2026-06-26T06:17:03.489Z]    Public: https://automation.songheng.vip
+[2026-06-26T06:17:08.085Z] ✅ my-automaton Gateway running on port 8080
+[2026-06-26T06:17:08.101Z]    Public: https://automation.songheng.vip
+[2026-06-26T06:17:12.516Z] ✅ my-automaton Gateway running on port 8080
+[2026-06-26T06:17:12.529Z]    Public: https://automation.songheng.vip
+[2026-06-26T06:17:17.066Z] ✅ my-automaton Gateway running on port 8080
+[2026-06-26T06:17:17.074Z]    Public: https://automation.songheng.vip
+[2026-06-26T06:17:21.606Z] ✅ my-automaton Gateway running on port 8080
+[2026-06-26T06:17:21.616Z]    Public: https://automation.songheng.vip
+[2026-06-26T06:17:26.019Z] ✅ my-automaton Gateway running on port 8080
+[2026-06-26T06:17:26.027Z]    Public: https://automation.songheng.vip
+[2026-06-26T06:17:26.027Z]    Stripe: ❌ Not configured
+[2026-06-26T06:17:26.027Z]    DeepSeek: ✅ Configured
+[2026-06-26T06:17:26.027Z]    Free endpoints: /free/{analyze,review,security,summarize,explain,refactor,complexity}
+[2026-06-26T06:17:26.028Z]    Premium endpoints: /v1/{analyze,review,security,summarize,explain,refactor,complexity}
+[2026-06-26T06:17:26.029Z]    README Generator: /api/generate-readme (POST, 3/day/IP)
+[2026-06-26T06:17:26.029Z]    Upgrade: /upgrade.html
+[2026-06-26T06:17:26.029Z]    Stats: /api/stats/overview
