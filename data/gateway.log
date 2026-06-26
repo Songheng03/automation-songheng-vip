@@ -422,3 +422,48 @@
 [2026-06-26T06:17:26.029Z]    README Generator: /api/generate-readme (POST, 3/day/IP)
 [2026-06-26T06:17:26.029Z]    Upgrade: /upgrade.html
 [2026-06-26T06:17:26.029Z]    Stats: /api/stats/overview
+[2026-06-26T06:19:57.730Z] ✅ my-automaton Gateway running on port 8080
+[2026-06-26T06:19:57.746Z]    Public: https://automation.songheng.vip
+[2026-06-26T06:19:57.747Z]    Stripe: ❌ Not configured
+[2026-06-26T06:19:57.747Z]    DeepSeek: ✅ Configured
+[2026-06-26T06:19:57.747Z]    Free endpoints: /free/{analyze,review,security,summarize,explain,refactor,complexity}
+[2026-06-26T06:19:57.747Z]    Premium endpoints: /v1/{analyze,review,security,summarize,explain,refactor,complexity}
+[2026-06-26T06:19:57.748Z]    README Generator: /api/generate-readme (POST, 3/day/IP)
+[2026-06-26T06:19:57.748Z]    Upgrade: /upgrade.html
+[2026-06-26T06:19:57.748Z]    Stats: /api/stats/overview
+[2026-06-26T06:20:39.638Z] ✅ my-automaton Gateway running on port 8080
+[2026-06-26T06:20:39.647Z]    Public: https://automation.songheng.vip
+[2026-06-26T06:20:39.647Z]    Stripe: ❌ Not configured
+[2026-06-26T06:20:39.648Z]    DeepSeek: ✅ Configured
+[2026-06-26T06:20:39.648Z]    Free endpoints: /free/{analyze,review,security,summarize,explain,refactor,complexity}
+[2026-06-26T06:20:39.648Z]    Premium endpoints: /v1/{analyze,review,security,summarize,explain,refactor,complexity}
+[2026-06-26T06:20:39.649Z]    README Generator: /api/generate-readme (POST, 3/day/IP)
+[2026-06-26T06:20:39.649Z]    Upgrade: /upgrade.html
+[2026-06-26T06:20:39.649Z]    Stats: /api/stats/overview
+[2026-06-26T06:20:41.789Z] ✅ my-automaton Gateway running on port 8080
+[2026-06-26T06:20:41.798Z]    Public: https://automation.songheng.vip
+[2026-06-26T06:20:41.799Z]    Stripe: ❌ Not configured
+[2026-06-26T06:20:41.799Z]    DeepSeek: ✅ Configured
+[2026-06-26T06:20:41.800Z]    Free endpoints: /free/{analyze,review,security,summarize,explain,refactor,complexity}
+[2026-06-26T06:20:41.800Z]    Premium endpoints: /v1/{analyze,review,security,summarize,explain,refactor,complexity}
+[2026-06-26T06:20:41.800Z]    README Generator: /api/generate-readme (POST, 3/day/IP)
+[2026-06-26T06:20:41.801Z]    Upgrade: /upgrade.html
+[2026-06-26T06:20:41.801Z]    Stats: /api/stats/overview
+[2026-06-26T06:20:59.200Z] ✅ my-automaton Gateway running on port 8080
+[2026-06-26T06:20:59.210Z]    Public: https://automation.songheng.vip
+[2026-06-26T06:20:59.210Z]    Stripe: ❌ Not configured
+[2026-06-26T06:20:59.210Z]    DeepSeek: ✅ Configured
+[2026-06-26T06:20:59.210Z]    Free endpoints: /free/{analyze,review,security,summarize,explain,refactor,complexity}
+[2026-06-26T06:20:59.211Z]    Premium endpoints: /v1/{analyze,review,security,summarize,explain,refactor,complexity}
+[2026-06-26T06:20:59.211Z]    README Generator: /api/generate-readme (POST, 3/day/IP)
+[2026-06-26T06:20:59.211Z]    Upgrade: /upgrade.html
+[2026-06-26T06:20:59.211Z]    Stats: /api/stats/overview
+[2026-06-26T06:25:24.542Z] ✅ my-automaton Gateway running on port 8080
+[2026-06-26T06:25:24.562Z]    Public: https://automation.songheng.vip
+[2026-06-26T06:25:24.562Z]    Stripe: ❌ Not configured
+[2026-06-26T06:25:24.562Z]    DeepSeek: ✅ Configured
+[2026-06-26T06:25:24.563Z]    Free endpoints: /free/{analyze,review,security,summarize,explain,refactor,complexity}
+[2026-06-26T06:25:24.563Z]    Premium endpoints: /v1/{analyze,review,security,summarize,explain,refactor,complexity}
+[2026-06-26T06:25:24.564Z]    README Generator: /api/generate-readme (POST, 3/day/IP)
+[2026-06-26T06:25:24.564Z]    Upgrade: /upgrade.html
+[2026-06-26T06:25:24.564Z]    Stats: /api/stats/overview
