@@ -13,7 +13,11 @@ echo '{"requests":[],"total":0}' > data/usage.json 2>/dev/null || true
 fuser -k 8080/tcp 2>/dev/null || true
 sleep 1
 
-DEEPSEEK_API_KEY="sk-28c30603ba48402e9f4a8d9d9bd539b3" node gateway.cjs > /dev/null 2>&1 &
+if [ -z "$DEEPSEEK_API_KEY" ]; then
+  echo "ERROR: DEEPSEEK_API_KEY not set. Export it first: export DEEPSEEK_API_KEY=your_key"
+  exit 1
+fi
+node gateway.cjs > /dev/null 2>&1 &
 sleep 3
 
 # Test 1 - Health

@@ -5184,7 +5184,7 @@
   },
   "2026-06-25": {
     "/index.html": {
-      "count": 55,
+      "count": 61,
       "uniqueIps": [
         "149.57.180.194",
         "::ffff:127.0.0.1",
@@ -5195,11 +5195,13 @@
         "95.108.213.137",
         "34.123.82.129",
         "80.94.92.7",
-        "34.59.250.224"
+        "34.59.250.224",
+        "34.31.88.250",
+        "2a06:98c0:360b:c0f6:8e50:ba86:1f03:a953"
       ]
     },
     "/health": {
-      "count": 45,
+      "count": 52,
       "uniqueIps": [
         "::ffff:127.0.0.1",
         "::1",
@@ -5209,7 +5211,7 @@
       ]
     },
     "/free/analyze": {
-      "count": 78,
+      "count": 81,
       "uniqueIps": [
         "::ffff:127.0.0.1",
         "10.0.0.99",
@@ -5221,13 +5223,13 @@
       ]
     },
     "/pricing.html": {
-      "count": 16,
+      "count": 18,
       "uniqueIps": [
         "::ffff:127.0.0.1"
       ]
     },
     "/api/checkout": {
-      "count": 10,
+      "count": 23,
       "uniqueIps": [
         "::ffff:127.0.0.1"
       ]
@@ -5239,7 +5241,7 @@
       ]
     },
     "/api/stats/overview": {
-      "count": 16,
+      "count": 22,
       "uniqueIps": [
         "::ffff:127.0.0.1"
       ]
@@ -5264,7 +5266,7 @@
       ]
     },
     "/api/public-stats": {
-      "count": 8,
+      "count": 9,
       "uniqueIps": [
         "::ffff:127.0.0.1",
         "2001:19f0:1000:c516:5400:5ff:fed0:88d4"
@@ -5310,7 +5312,7 @@
       ]
     },
     "/api/stats": {
-      "count": 1,
+      "count": 2,
       "uniqueIps": [
         "::ffff:127.0.0.1"
       ]
@@ -5408,6 +5410,62 @@
       ]
     },
     "/api/stripe-checkout": {
+      "count": 1,
+      "uniqueIps": [
+        "::ffff:127.0.0.1"
+      ]
+    },
+    "/tools/base64-tool": {
+      "count": 1,
+      "uniqueIps": [
+        "213.180.203.152"
+      ]
+    },
+    "/api/capture-lead": {
+      "count": 2,
+      "uniqueIps": [
+        "::ffff:127.0.0.1"
+      ]
+    },
+    "/tools/json-formatter.html": {
+      "count": 2,
+      "uniqueIps": [
+        "::ffff:127.0.0.1"
+      ]
+    },
+    "/tools/code-roast.html": {
+      "count": 1,
+      "uniqueIps": [
+        "::ffff:127.0.0.1"
+      ]
+    },
+    "/tools/code-smell-score.html": {
+      "count": 1,
+      "uniqueIps": [
+        "::ffff:127.0.0.1"
+      ]
+    },
+    "/json-formatter.html": {
+      "count": 1,
+      "uniqueIps": [
+        "::ffff:127.0.0.1"
+      ]
+    },
+    "/blog/ai-code-review-free-tool": {
+      "count": 1,
+      "uniqueIps": [
+        "87.250.224.3"
+      ]
+    }
+  },
+  "2026-06-26": {
+    "/index.html": {
+      "count": 1,
+      "uniqueIps": [
+        "176.65.139.236"
+      ]
+    },
+    "/api/checkout": {
       "count": 1,
       "uniqueIps": [
         "::ffff:127.0.0.1"

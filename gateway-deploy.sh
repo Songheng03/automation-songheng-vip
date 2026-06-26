@@ -6,9 +6,14 @@ set -e
 fuser -k 8080/tcp 2>/dev/null || true
 sleep 1
 
-# Start with API key embedded
+# Start with API key from environment
 cd /root/automaton
-DEEPSEEK_API_KEY="sk-28c30603ba48402e9f4a8d9d9bd539b3" node gateway.cjs > /root/automaton/gateway.log 2>&1 &
+if [ -z "$DEEPSEEK_API_KEY" ]; then
+  echo "ERROR: DEEPSEEK_API_KEY not set. Export it first: export DEEPSEEK_API_KEY=your_key"
+  exit 1
+fi
+echo "Using API key: ${DEEPSEEK_API_KEY:0:8}..."
+node gateway.cjs > /root/automaton/gateway.log 2>&1 &
 
 # Wait for startup
 sleep 3

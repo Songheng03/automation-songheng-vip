@@ -22,6 +22,7 @@ const crypto = require('crypto');
 const url = require('url');
 
 // ── Configuration ──────────────────────────────────────────
+import { handleLoremIpsum } from "/root/services/lorem-ipsum.js";
 const PORT = 8080;
 const CONTENT = '/root/automaton/content';
 const API_KEYS = '/root/automaton/api-keys.json';
